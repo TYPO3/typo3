@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "invalid action name" exception
  */
-class InvalidActionNameException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidActionNameException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

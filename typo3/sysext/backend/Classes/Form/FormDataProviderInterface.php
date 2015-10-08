@@ -18,13 +18,13 @@ namespace TYPO3\CMS\Backend\Form;
  * Interface must be implemented by form data provider classes.
  * This is a single data provider called by a form data group.
  */
-interface FormDataProviderInterface {
-
-	/**
-	 * Add form data to result array
-	 *
-	 * @param array $result Initialized result array
-	 * @return array Result filled with more data
-	 */
-	public function addData(array $result);
+interface FormDataProviderInterface
+{
+    /**
+     * Add form data to result array
+     *
+     * @param array $result Initialized result array
+     * @return array Result filled with more data
+     */
+    public function addData(array $result);
 }

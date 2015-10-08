@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * A generic Object Exception
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
-
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 }

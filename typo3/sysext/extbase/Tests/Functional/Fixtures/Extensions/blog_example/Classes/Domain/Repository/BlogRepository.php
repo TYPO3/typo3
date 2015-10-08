@@ -17,24 +17,24 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
 /**
  * A repository for blogs
  */
-class BlogRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class BlogRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+    protected $defaultOrderings = array(
+        'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+    );
 
-	protected $defaultOrderings = array(
-		'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
-		'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-	);
-
-	/**
-	 * Life cycle method.
-	 *
-	 * @return void
-	 */
-	public function initializeObject() {
-		/*
-		$querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-		$querySettings->setRespectStoragePage(FALSE);
-		$this->setDefaultQuerySettings($querySettings);
-		 */
-	}
-
+    /**
+     * Life cycle method.
+     *
+     * @return void
+     */
+    public function initializeObject()
+    {
+        /*
+        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings->setRespectStoragePage(FALSE);
+        $this->setDefaultQuerySettings($querySettings);
+         */
+    }
 }

@@ -21,5 +21,6 @@ namespace TYPO3\CMS\Core\Configuration\TypoScript\Exception;
  *
  * @api
  */
-class InvalidTypoScriptConditionException extends \TYPO3\CMS\Core\Exception {
+class InvalidTypoScriptConditionException extends \TYPO3\CMS\Core\Exception
+{
 }

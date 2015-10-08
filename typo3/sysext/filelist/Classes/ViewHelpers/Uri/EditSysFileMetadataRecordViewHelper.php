@@ -24,47 +24,48 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 /**
  * Class EditSysFileMetadataRecordViewHelper
  */
-class EditSysFileMetadataRecordViewHelper extends AbstractViewHelper implements CompilableInterface {
+class EditSysFileMetadataRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Renders a link to edit sys_file_metadata
+     *
+     * @param int $uid
+     * @param string $returnUrl
+     *
+     * @return string
+     */
+    public function render($uid, $returnUrl = '')
+    {
+        return static::renderStatic(
+            [
+                'uid' => $uid,
+                'returnUrl' => $returnUrl,
+            ],
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Renders a link to edit sys_file_metadata
-	 *
-	 * @param int $uid
-	 * @param string $returnUrl
-	 *
-	 * @return string
-	 */
-	public function render($uid, $returnUrl = '') {
-		return static::renderStatic(
-			[
-				'uid' => $uid,
-				'returnUrl' => $returnUrl,
-			],
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Renders a link to edit sys_file_metadata
+     *
+     * @param array $arguments
+     * @param Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if (empty($arguments['returnUrl'])) {
+            $arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+        }
 
-	/**
-	 * Renders a link to edit sys_file_metadata
-	 *
-	 * @param array $arguments
-	 * @param Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (empty($arguments['returnUrl'])) {
-			$arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
-		}
+        $params = [
+            'edit' => ['sys_file_metadata' => [$arguments['uid'] => 'edit']],
+            'returnUrl' => $arguments['returnUrl']
+        ];
 
-		$params = [
-			'edit' => ['sys_file_metadata' => [$arguments['uid'] => 'edit']],
-			'returnUrl' => $arguments['returnUrl']
-		];
-
-		return BackendUtility::getModuleUrl('record_edit', $params);
-	}
-
+        return BackendUtility::getModuleUrl('record_edit', $params);
+    }
 }

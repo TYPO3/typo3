@@ -19,20 +19,20 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Charset conversion feature
  */
-class CharsetFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface {
+class CharsetFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+{
+    /**
+     * @var string Name of feature
+     */
+    protected $name = 'Charset';
 
-	/**
-	 * @var string Name of feature
-	 */
-	protected $name = 'Charset';
-
-	/**
-	 * @var array List of preset classes
-	 */
-	protected $presetRegistry = array(
-		\TYPO3\CMS\Install\Configuration\Charset\MbstringPreset::class,
-		\TYPO3\CMS\Install\Configuration\Charset\IconvPreset::class,
-		\TYPO3\CMS\Install\Configuration\Charset\CoreInternalPreset::class,
-		\TYPO3\CMS\Install\Configuration\Charset\CustomPreset::class,
-	);
+    /**
+     * @var array List of preset classes
+     */
+    protected $presetRegistry = array(
+        \TYPO3\CMS\Install\Configuration\Charset\MbstringPreset::class,
+        \TYPO3\CMS\Install\Configuration\Charset\IconvPreset::class,
+        \TYPO3\CMS\Install\Configuration\Charset\CoreInternalPreset::class,
+        \TYPO3\CMS\Install\Configuration\Charset\CustomPreset::class,
+    );
 }

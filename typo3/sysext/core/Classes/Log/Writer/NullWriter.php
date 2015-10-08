@@ -18,17 +18,17 @@ use TYPO3\CMS\Core\Log\LogRecord;
 /**
  * Null writer - just forgets about everything
  */
-class NullWriter extends AbstractWriter {
-
-	/**
-	 * Writes the log record
-	 *
-	 * @param LogRecord $record Log record
-	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
-	 */
-	public function writeLog(LogRecord $record) {
-		// do nothing
-		return $this;
-	}
-
+class NullWriter extends AbstractWriter
+{
+    /**
+     * Writes the log record
+     *
+     * @param LogRecord $record Log record
+     * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
+     */
+    public function writeLog(LogRecord $record)
+    {
+        // do nothing
+        return $this;
+    }
 }

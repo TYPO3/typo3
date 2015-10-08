@@ -41,55 +41,56 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  *
  * whereas "bullets" can be used as a variable {bullets} inside Fluid for iteration.
  */
-class SplitProcessor implements DataProcessorInterface {
+class SplitProcessor implements DataProcessorInterface
+{
+    /**
+     * Process field data to split in an array
+     *
+     * @param ContentObjectRenderer $cObj The data of the content element or page
+     * @param array $contentObjectConfiguration The configuration of Content Object
+     * @param array $processorConfiguration The configuration of this processor
+     * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
+     * @return array the processed data as key/value store
+     */
+    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
+    {
+        if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
+            return $processedData;
+        }
 
-	/**
-	 * Process field data to split in an array
-	 *
-	 * @param ContentObjectRenderer $cObj The data of the content element or page
-	 * @param array $contentObjectConfiguration The configuration of Content Object
-	 * @param array $processorConfiguration The configuration of this processor
-	 * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
-	 * @return array the processed data as key/value store
-	 */
-	public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData) {
-		if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
-			return $processedData;
-		}
+        // The field name to process
+        $fieldName = $cObj->stdWrapValue('fieldName', $processorConfiguration);
+        if (empty($fieldName)) {
+            return $processedData;
+        }
 
-		// The field name to process
-		$fieldName = $cObj->stdWrapValue('fieldName', $processorConfiguration);
-		if (empty($fieldName)) {
-			return $processedData;
-		}
+        $originalValue = $cObj->data[$fieldName];
 
-		$originalValue = $cObj->data[$fieldName];
+        // Set the target variable
+        $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $fieldName);
 
-		// Set the target variable
-		$targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $fieldName);
+        // Set the delimiter which is "LF" by default
+        $delimiter = $cObj->stdWrapValue('delimiter', $processorConfiguration, LF);
 
-		// Set the delimiter which is "LF" by default
-		$delimiter = $cObj->stdWrapValue('delimiter', $processorConfiguration, LF);
+        // Filter integers
+        $filterIntegers = (bool)$cObj->stdWrapValue('filterIntegers', $processorConfiguration, false);
 
-		// Filter integers
-		$filterIntegers = (bool)$cObj->stdWrapValue('filterIntegers', $processorConfiguration, FALSE);
+        // Filter unique
+        $filterUnique = (bool)$cObj->stdWrapValue('filterUnique', $processorConfiguration, false);
 
-		// Filter unique
-		$filterUnique = (bool)$cObj->stdWrapValue('filterUnique', $processorConfiguration, FALSE);
+        // Remove empty entries
+        $removeEmptyEntries = (bool)$cObj->stdWrapValue('removeEmptyEntries', $processorConfiguration, false);
 
-		// Remove empty entries
-		$removeEmptyEntries = (bool)$cObj->stdWrapValue('removeEmptyEntries', $processorConfiguration, FALSE);
+        if ($filterIntegers === true) {
+            $processedData[$targetVariableName] = GeneralUtility::intExplode($delimiter, $originalValue, $removeEmptyEntries);
+        } else {
+            $processedData[$targetVariableName] = GeneralUtility::trimExplode($delimiter, $originalValue, $removeEmptyEntries);
+        }
 
-		if ($filterIntegers === TRUE) {
-			$processedData[$targetVariableName] = GeneralUtility::intExplode($delimiter, $originalValue, $removeEmptyEntries);
-		} else {
-			$processedData[$targetVariableName] = GeneralUtility::trimExplode($delimiter, $originalValue, $removeEmptyEntries);
-		}
+        if ($filterUnique === true) {
+            $processedData[$targetVariableName] = array_unique($processedData[$targetVariableName]);
+        }
 
-		if ($filterUnique === TRUE) {
-			$processedData[$targetVariableName] = array_unique($processedData[$targetVariableName]);
-		}
-
-		return $processedData;
-	}
+        return $processedData;
+    }
 }

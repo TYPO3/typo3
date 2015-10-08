@@ -17,46 +17,48 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Alphanumeric filter
  */
-class AlphanumericFilter extends AbstractFilter implements FilterInterface {
+class AlphanumericFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Allow whitespace
+     *
+     * @var bool
+     */
+    protected $allowWhiteSpace;
 
-	/**
-	 * Allow whitespace
-	 *
-	 * @var bool
-	 */
-	protected $allowWhiteSpace;
+    /**
+     * Constructor
+     *
+     * @param array $arguments Filter configuration
+     */
+    public function __construct($arguments = array())
+    {
+        $this->setAllowWhiteSpace($arguments['allowWhiteSpace']);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $arguments Filter configuration
-	 */
-	public function __construct($arguments = array()) {
-		$this->setAllowWhiteSpace($arguments['allowWhiteSpace']);
-	}
+    /**
+     * Allow white space in the submitted value
+     *
+     * @param bool $allowWhiteSpace True if allowed
+     * @return void
+     */
+    public function setAllowWhiteSpace($allowWhiteSpace = true)
+    {
+        $this->allowWhiteSpace = (bool)$allowWhiteSpace;
+    }
 
-	/**
-	 * Allow white space in the submitted value
-	 *
-	 * @param bool $allowWhiteSpace True if allowed
-	 * @return void
-	 */
-	public function setAllowWhiteSpace($allowWhiteSpace = TRUE) {
-		$this->allowWhiteSpace = (bool)$allowWhiteSpace;
-	}
-
-	/**
-	 * Return filtered value
-	 * Remove all but alphabetic and numeric characters
-	 * Allow whitespace by choice
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		$whiteSpace = $this->allowWhiteSpace ? '\\s' : '';
-		$pattern = '/[^\pL\d' . $whiteSpace . ']/u';
-		return preg_replace($pattern, '', (string)$value);
-	}
-
+    /**
+     * Return filtered value
+     * Remove all but alphabetic and numeric characters
+     * Allow whitespace by choice
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        $whiteSpace = $this->allowWhiteSpace ? '\\s' : '';
+        $pattern = '/[^\pL\d' . $whiteSpace . ']/u';
+        return preg_replace($pattern, '', (string)$value);
+    }
 }

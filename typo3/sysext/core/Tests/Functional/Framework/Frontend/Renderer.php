@@ -17,73 +17,76 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend;
 /**
  * Model of frontend response
  */
-class Renderer implements \TYPO3\CMS\Core\SingletonInterface {
+class Renderer implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array
+     */
+    protected $sections = array();
 
-	/**
-	 * @var array
-	 */
-	protected $sections = array();
+    /**
+     * @param string $content
+     * @param NULL|array $configuration
+     * @return void
+     */
+    public function parseValues($content, array $configuration = null)
+    {
+        if (empty($content)) {
+            return;
+        }
 
-	/**
-	 * @param string $content
-	 * @param NULL|array $configuration
-	 * @return void
-	 */
-	public function parseValues($content, array $configuration = NULL) {
-		if (empty($content)) {
-			return;
-		}
+        $values = json_decode($content, true);
 
-		$values = json_decode($content, TRUE);
+        if (empty($values) || !is_array($values)) {
+            return;
+        }
 
-		if (empty($values) || !is_array($values)) {
-			return;
-		}
+        $asPrefix = (!empty($configuration['as']) ? $configuration['as'] . ':' : null);
+        foreach ($values as $identifier => $structure) {
+            $parser = $this->createParser();
+            $parser->parse($structure);
 
-		$asPrefix = (!empty($configuration['as']) ? $configuration['as'] . ':' : NULL);
-		foreach ($values as $identifier => $structure) {
-			$parser = $this->createParser();
-			$parser->parse($structure);
+            $section = array(
+                'structure' => $structure,
+                'structurePaths' => $parser->getPaths(),
+                'records' => $parser->getRecords(),
+            );
 
-			$section = array(
-				'structure' => $structure,
-				'structurePaths' => $parser->getPaths(),
-				'records' => $parser->getRecords(),
-			);
+            $this->addSection($section, $asPrefix . $identifier);
+        }
+    }
 
-			$this->addSection($section, $asPrefix . $identifier);
-		}
-	}
+    /**
+     * @param array $section
+     * @param NULL|string $as
+     */
+    public function addSection(array $section, $as = null)
+    {
+        if (!empty($as)) {
+            $this->sections[$as] = $section;
+        } else {
+            $this->sections[] = $section;
+        }
+    }
 
-	/**
-	 * @param array $section
-	 * @param NULL|string $as
-	 */
-	public function addSection(array $section, $as = NULL) {
-		if (!empty($as)) {
-			$this->sections[$as] = $section;
-		} else {
-			$this->sections[] = $section;
-		}
-	}
+    /**
+     * @param string $content
+     * @param NULL|array $configuration
+     * @return string
+     */
+    public function renderSections($content, array $configuration = null)
+    {
+        $content = json_encode($this->sections);
+        return $content;
+    }
 
-	/**
-	 * @param string $content
-	 * @param NULL|array $configuration
-	 * @return string
-	 */
-	public function renderSections($content, array $configuration = NULL) {
-		$content = json_encode($this->sections);
-		return $content;
-	}
-
-	/**
-	 * @return Parser
-	 */
-	protected function createParser() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Parser::class
-		);
-	}
-
+    /**
+     * @return Parser
+     */
+    protected function createParser()
+    {
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Parser::class
+        );
+    }
 }

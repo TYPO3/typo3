@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Documentation\Exception;
 /**
  * An exception when something is wrong within an XML file
  */
-class XmlParser extends \TYPO3\CMS\Core\Exception {
-
+class XmlParser extends \TYPO3\CMS\Core\Exception
+{
 }

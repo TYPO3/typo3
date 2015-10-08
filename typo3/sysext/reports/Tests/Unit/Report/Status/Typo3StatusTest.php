@@ -17,62 +17,66 @@ namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 /**
  * Test case
  */
-class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', false);
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
-	}
+    /**
+     * @test
+     */
+    public function getStatusReturnsOldXclassStatusObjectWithSeverityOkIfNoOldXclassExists()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS'] = array();
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $result = $fixture->getStatus();
+        $statusObject = $result['oldXclassStatus'];
+        $this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStatusReturnsOldXclassStatusObjectWithSeverityOkIfNoOldXclassExists() {
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array();
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS'] = array();
-		$fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-		$result = $fixture->getStatus();
-		$statusObject = $result['oldXclassStatus'];
-		$this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
-	}
+    /**
+     * @test
+     */
+    public function getStatusReturnsOldXclassStatusObjectWithSeverityNoticeIfOldXclassExists()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array('foo' => 'bar');
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $result = $fixture->getStatus();
+        $statusObject = $result['oldXclassStatus'];
+        $this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStatusReturnsOldXclassStatusObjectWithSeverityNoticeIfOldXclassExists() {
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array('foo' => 'bar');
-		$fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-		$result = $fixture->getStatus();
-		$statusObject = $result['oldXclassStatus'];
-		$this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
-	}
+    /**
+     * @test
+     */
+    public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array();
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $result = $fixture->getStatus();
+        $statusObject = $result['registeredXclass'];
+        $this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array();
-		$fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-		$result = $fixture->getStatus();
-		$statusObject = $result['registeredXclass'];
-		$this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array(
-			'foo' => array(
-				'className' => 'bar',
-			)
-		);
-		$fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-		$result = $fixture->getStatus();
-		$statusObject = $result['registeredXclass'];
-		$this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
-	}
-
+    /**
+     * @test
+     */
+    public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array(
+            'foo' => array(
+                'className' => 'bar',
+            )
+        );
+        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
+        $result = $fixture->getStatus();
+        $statusObject = $result['registeredXclass'];
+        $this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
+    }
 }

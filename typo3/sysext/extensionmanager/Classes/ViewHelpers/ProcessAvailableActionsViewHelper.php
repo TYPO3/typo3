@@ -19,54 +19,56 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * actions for a given extension.
  * @internal
  */
-class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
+class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+{
+    const SIGNAL_ProcessActions = 'processActions';
 
-	const SIGNAL_ProcessActions = 'processActions';
+    /**
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected $signalSlotDispatcher;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+    /**
+     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     */
+    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+    {
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+    /**
+     * Processes the list of actions.
+     *
+     * @param string $extension
+     * @return string the rendered list of actions
+     */
+    public function render($extension)
+    {
+        $html = $this->renderChildren();
+        $actions = preg_split('#\\n\\s*#s', trim($html));
 
-	/**
-	 * Processes the list of actions.
-	 *
-	 * @param string $extension
-	 * @return string the rendered list of actions
-	 */
-	public function render($extension) {
-		$html = $this->renderChildren();
-		$actions = preg_split('#\\n\\s*#s', trim($html));
+        $actions = $this->emitProcessActionsSignal($extension, $actions);
 
-		$actions = $this->emitProcessActionsSignal($extension, $actions);
+        return implode(' ', $actions);
+    }
 
-		return implode(' ', $actions);
-	}
-
-	/**
-	 * Emits a signal after the list of actions is processed
-	 *
-	 * @param string $extension
-	 * @param array $actions
-	 * @return array Modified action array
-	 */
-	protected function emitProcessActionsSignal($extension, array $actions) {
-		$this->signalSlotDispatcher->dispatch(
-			__CLASS__,
-			static::SIGNAL_ProcessActions,
-			array(
-				$extension,
-				&$actions,
-			)
-		);
-		return $actions;
-	}
-
+    /**
+     * Emits a signal after the list of actions is processed
+     *
+     * @param string $extension
+     * @param array $actions
+     * @return array Modified action array
+     */
+    protected function emitProcessActionsSignal($extension, array $actions)
+    {
+        $this->signalSlotDispatcher->dispatch(
+            __CLASS__,
+            static::SIGNAL_ProcessActions,
+            array(
+                $extension,
+                &$actions,
+            )
+        );
+        return $actions;
+    }
 }

@@ -20,82 +20,82 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Testcase for handling jump URLs when given with a test parameter
  */
-class JumpUrlProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class JumpUrlProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer
+     */
+    protected $contentObjectRenderer;
 
-	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer
-	 */
-	protected $contentObjectRenderer;
+    /**
+     * The default location data used for JumpUrl secure.
+     *
+     * @var string
+     */
+    protected $defaultLocationData = '1234:tt_content:999';
 
-	/**
-	 * The default location data used for JumpUrl secure.
-	 *
-	 * @var string
-	 */
-	protected $defaultLocationData = '1234:tt_content:999';
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|JumpUrlProcessorMock
+     */
+    protected $jumpUrlProcessor;
 
-	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|JumpUrlProcessorMock
-	 */
-	protected $jumpUrlProcessor;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected $tsfe;
 
-	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected $tsfe;
+    /**
+     * Sets environment variables and initializes global mock object.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Sets environment variables and initializes global mock object.
-	 */
-	protected function setUp() {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
-		parent::setUp();
+        $this->jumpUrlProcessor = $this->getMock(
+            JumpUrlProcessorMock::class,
+            array('getTypoScriptFrontendController', 'getContentObjectRenderer')
+        );
 
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $this->tsfe = $this->getAccessibleMock(
+            TypoScriptFrontendController::class,
+            array('getPagesTSconfig'),
+            array(),
+            '',
+            false
+        );
+        $this->jumpUrlProcessor->expects($this->any())
+            ->method('getTypoScriptFrontendController')
+            ->will($this->returnValue($this->tsfe));
 
-		$this->jumpUrlProcessor = $this->getMock(
-			JumpUrlProcessorMock::class,
-			array('getTypoScriptFrontendController', 'getContentObjectRenderer')
-		);
+        $this->contentObjectRenderer = $this->getMock(ContentObjectRenderer::class);
+        $this->jumpUrlProcessor->expects($this->any())
+            ->method('getContentObjectRenderer')
+            ->will($this->returnValue($this->contentObjectRenderer));
+    }
 
-		$this->tsfe = $this->getAccessibleMock(
-			TypoScriptFrontendController::class,
-			array('getPagesTSconfig'),
-			array(),
-			'',
-			FALSE
-		);
-		$this->jumpUrlProcessor->expects($this->any())
-			->method('getTypoScriptFrontendController')
-			->will($this->returnValue($this->tsfe));
+    /**
+     * @test
+     */
+    public function getJumpUrlSecureParametersReturnsValidParameters()
+    {
+        $this->tsfe->id = 456;
+        $this->contentObjectRenderer->currentRecord = 'tt_content:123';
 
-		$this->contentObjectRenderer = $this->getMock(ContentObjectRenderer::class);
-		$this->jumpUrlProcessor->expects($this->any())
-			->method('getContentObjectRenderer')
-			->will($this->returnValue($this->contentObjectRenderer));
-	}
+        $jumpUrlSecureParameters = $this->jumpUrlProcessor->getParametersForSecureFile(
+            '/fileadmin/a/test/file.txt',
+            array('mimeTypes' => 'dummy=application/x-executable,txt=text/plain')
+        );
 
-	/**
-	 * @test
-	 */
-	public function getJumpUrlSecureParametersReturnsValidParameters() {
-
-		$this->tsfe->id = 456;
-		$this->contentObjectRenderer->currentRecord = 'tt_content:123';
-
-		$jumpUrlSecureParameters = $this->jumpUrlProcessor->getParametersForSecureFile(
-			'/fileadmin/a/test/file.txt',
-			array('mimeTypes' => 'dummy=application/x-executable,txt=text/plain')
-		);
-
-		$this->assertSame(
-			array(
-				'juSecure' => 1,
-				'locationData' => '456:tt_content:123',
-				'mimeType' => 'text/plain',
-				'juHash' => '1cccb7f01c8a3f58ee890377b5de9bdc05115a37',
-			),
-			$jumpUrlSecureParameters
-		);
-	}
+        $this->assertSame(
+            array(
+                'juSecure' => 1,
+                'locationData' => '456:tt_content:123',
+                'mimeType' => 'text/plain',
+                'juHash' => '1cccb7f01c8a3f58ee890377b5de9bdc05115a37',
+            ),
+            $jumpUrlSecureParameters
+        );
+    }
 }

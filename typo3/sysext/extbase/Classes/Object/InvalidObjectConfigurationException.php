@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * "Invalid Object Configuration" Exception
  */
-class InvalidObjectConfigurationException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class InvalidObjectConfigurationException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

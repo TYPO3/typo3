@@ -19,20 +19,19 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Mail feature detects sendmail settings
  */
-class MailFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface {
+class MailFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+{
+    /**
+     * @var string Name of feature
+     */
+    protected $name = 'Mail';
 
-	/**
-	 * @var string Name of feature
-	 */
-	protected $name = 'Mail';
 
-
-	/**
-	 * @var array List of preset classes
-	 */
-	protected $presetRegistry = array(
-		SendmailPreset::class,
-		CustomPreset::class,
-	);
-
+    /**
+     * @var array List of preset classes
+     */
+    protected $presetRegistry = array(
+        SendmailPreset::class,
+        CustomPreset::class,
+    );
 }

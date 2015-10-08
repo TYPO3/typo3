@@ -17,13 +17,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A persistence query factory interface
  */
-interface QueryFactoryInterface {
-
-	/**
-	 * Creates a query object working on the given class name
-	 *
-	 * @param string $className The class name
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-	 */
-	public function create($className);
+interface QueryFactoryInterface
+{
+    /**
+     * Creates a query object working on the given class name
+     *
+     * @param string $className The class name
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     */
+    public function create($className);
 }

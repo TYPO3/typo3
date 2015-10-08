@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * A "Missing Backend" exception
  */
-class MissingBackendException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class MissingBackendException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

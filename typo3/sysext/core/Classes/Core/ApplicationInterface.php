@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Core\Core;
  * is used for all Entry Points for TYPO3, may it be
  * Frontend, Backend, Install Tool or Command Line.
  */
-interface ApplicationInterface {
-
-	/**
-	 * Starting point
-	 *
-	 * @param callable $execute
-	 * @return void
-	 */
-	public function run(callable $execute = NULL);
+interface ApplicationInterface
+{
+    /**
+     * Starting point
+     *
+     * @param callable $execute
+     * @return void
+     */
+    public function run(callable $execute = null);
 }

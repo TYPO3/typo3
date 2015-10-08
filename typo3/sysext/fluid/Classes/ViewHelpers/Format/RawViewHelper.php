@@ -47,45 +47,46 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class RawViewHelper extends AbstractViewHelper implements CompilableInterface {
+class RawViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+     * can decode the text's entities.
+     *
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
-	 * can decode the text's entities.
-	 *
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * @param mixed $value The value to output
+     * @return string
+     */
+    public function render($value = null)
+    {
+        return static::renderStatic(
+            array(
+                'value' => $value
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param mixed $value The value to output
-	 * @return string
-	 */
-	public function render($value = NULL) {
-		return static::renderStatic(
-			array(
-				'value' => $value
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Render children without escaping
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		if ($value === NULL) {
-			return $renderChildrenClosure();
-		} else {
-			return $value;
-		}
-	}
-
+    /**
+     * Render children without escaping
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        if ($value === null) {
+            return $renderChildrenClosure();
+        } else {
+            return $value;
+        }
+    }
 }

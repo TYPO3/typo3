@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Interface for filters
  */
-interface FilterInterface {
-
-	/**
-	 * Return filtered value
-	 *
-	 * @param mixed $value
-	 * @return mixed
-	 */
-	public function filter($value);
-
+interface FilterInterface
+{
+    /**
+     * Return filtered value
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    public function filter($value);
 }

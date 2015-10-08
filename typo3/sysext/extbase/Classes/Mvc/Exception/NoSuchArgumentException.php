@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Argument" exception
  */
-class NoSuchArgumentException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class NoSuchArgumentException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

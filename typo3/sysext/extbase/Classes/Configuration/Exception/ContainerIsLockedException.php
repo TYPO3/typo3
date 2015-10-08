@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
 /**
  * A Container Is Locked exception
  */
-class ContainerIsLockedException extends \TYPO3\CMS\Extbase\Configuration\Exception {
-
+class ContainerIsLockedException extends \TYPO3\CMS\Extbase\Configuration\Exception
+{
 }

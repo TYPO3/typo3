@@ -27,102 +27,102 @@ use TYPO3\CMS\Core\Resource;
  * specifies the steps to be executed without a concrete file. However, new tasks can easily be created from an
  * existing task object.
  */
-interface TaskInterface {
+interface TaskInterface
+{
+    /**
+     * @param \TYPO3\CMS\Core\Resource\ProcessedFile $targetFile
+     * @param array $configuration
+     */
+    public function __construct(Resource\ProcessedFile $targetFile, array $configuration);
 
-	/**
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $targetFile
-	 * @param array $configuration
-	 */
-	public function __construct(Resource\ProcessedFile $targetFile, array $configuration);
+    /**
+     * Returns the name of this task.
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Returns the name of this task.
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Returns the type of this task.
+     *
+     * @return string
+     */
+    public function getType();
 
-	/**
-	 * Returns the type of this task.
-	 *
-	 * @return string
-	 */
-	public function getType();
+    /**
+     * Returns the processed file this task is executed on.
+     *
+     * @return Resource\ProcessedFile
+     */
+    public function getTargetFile();
 
-	/**
-	 * Returns the processed file this task is executed on.
-	 *
-	 * @return Resource\ProcessedFile
-	 */
-	public function getTargetFile();
+    /**
+     * Returns the original file this task is based on.
+     *
+     * @return Resource\File
+     */
+    public function getSourceFile();
 
-	/**
-	 * Returns the original file this task is based on.
-	 *
-	 * @return Resource\File
-	 */
-	public function getSourceFile();
+    /**
+     * Returns the configuration for this task.
+     *
+     * @return array
+     */
+    public function getConfiguration();
 
-	/**
-	 * Returns the configuration for this task.
-	 *
-	 * @return array
-	 */
-	public function getConfiguration();
+    /**
+     * Returns the configuration checksum of this task.
+     *
+     * @return string
+     */
+    public function getConfigurationChecksum();
 
-	/**
-	 * Returns the configuration checksum of this task.
-	 *
-	 * @return string
-	 */
-	public function getConfigurationChecksum();
+    /**
+     * Returns the name the processed file should have in the filesystem.
+     *
+     * @return string
+     */
+    public function getTargetFileName();
 
-	/**
-	 * Returns the name the processed file should have in the filesystem.
-	 *
-	 * @return string
-	 */
-	public function getTargetFileName();
+    /**
+     * Gets the file extension the processed file should have in the filesystem.
+     *
+     * @return string
+     */
+    public function getTargetFileExtension();
 
-	/**
-	 * Gets the file extension the processed file should have in the filesystem.
-	 *
-	 * @return string
-	 */
-	public function getTargetFileExtension();
+    /**
+     * Returns TRUE if the file has to be processed at all, such as e.g. the original file does.
+     *
+     * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
+     * This check is done in ProcessedFile::isOutdated(). @todo isOutdated()/needsReprocessing()?
+     *
+     * @return bool
+     */
+    public function fileNeedsProcessing();
 
-	/**
-	 * Returns TRUE if the file has to be processed at all, such as e.g. the original file does.
-	 *
-	 * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
-	 * This check is done in ProcessedFile::isOutdated(). @todo isOutdated()/needsReprocessing()?
-	 *
-	 * @return bool
-	 */
-	public function fileNeedsProcessing();
+    /**
+     * Returns TRUE if this task has been executed, no matter if the execution was successful.
+     *
+     * @return bool
+     */
+    public function isExecuted();
 
-	/**
-	 * Returns TRUE if this task has been executed, no matter if the execution was successful.
-	 *
-	 * @return bool
-	 */
-	public function isExecuted();
+    /**
+     * Mark this task as executed. This is used by the Processors in order to transfer the state of this task to
+     * the file processing service.
+     *
+     * @param bool $successful Set this to FALSE if executing the task failed
+     * @return void
+     */
+    public function setExecuted($successful);
 
-	/**
-	 * Mark this task as executed. This is used by the Processors in order to transfer the state of this task to
-	 * the file processing service.
-	 *
-	 * @param bool $successful Set this to FALSE if executing the task failed
-	 * @return void
-	 */
-	public function setExecuted($successful);
-
-	/**
-	 * Returns TRUE if this task has been successfully executed. Only call this method if the task has been processed
-	 * at all.
-	 *
-	 * @return bool
-	 * @throws \LogicException If the task has not been executed already
-	 */
-	public function isSuccessful();
+    /**
+     * Returns TRUE if this task has been successfully executed. Only call this method if the task has been processed
+     * at all.
+     *
+     * @return bool
+     * @throws \LogicException If the task has not been executed already
+     */
+    public function isSuccessful();
 }

@@ -27,43 +27,43 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
+class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('float', 'integer', 'string');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('float', 'integer', 'string');
+    /**
+     * @var string
+     */
+    protected $targetType = 'float';
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = 'float';
+    /**
+     * @var int
+     */
+    protected $priority = 1;
 
-	/**
-	 * @var int
-	 */
-	protected $priority = 1;
+    /**
+     * Actually convert from $source to $targetType, by doing a typecast.
+     *
+     * @param mixed $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+     * @return float|\TYPO3\CMS\Extbase\Error\Error
+     * @api
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    {
+        if ($source === null || (string)$source === '') {
+            return null;
+        }
+        // We won't backport the full flavored locale parsing of floats from Flow here
 
-	/**
-	 * Actually convert from $source to $targetType, by doing a typecast.
-	 *
-	 * @param mixed $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return float|\TYPO3\CMS\Extbase\Error\Error
-	 * @api
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		if ($source === NULL || (string)$source === '') {
-			return NULL;
-		}
-		// We won't backport the full flavored locale parsing of floats from Flow here
-
-		if (!is_numeric($source)) {
-			return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, array($source));
-		}
-		return (float) $source;
-	}
-
+        if (!is_numeric($source)) {
+            return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, array($source));
+        }
+        return (float) $source;
+    }
 }

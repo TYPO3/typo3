@@ -19,37 +19,38 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseSection;
 /**
  * Model of frontend response
  */
-class HasRecordConstraint extends AbstractRecordConstraint {
+class HasRecordConstraint extends AbstractRecordConstraint
+{
+    /**
+     * @param ResponseSection $responseSection
+     * @return bool
+     */
+    protected function matchesSection(ResponseSection $responseSection)
+    {
+        $records = $responseSection->getRecords();
 
-	/**
-	 * @param ResponseSection $responseSection
-	 * @return bool
-	 */
-	protected function matchesSection(ResponseSection $responseSection) {
-		$records = $responseSection->getRecords();
+        if (empty($records) || !is_array($records)) {
+            $this->sectionFailures[$responseSection->getIdentifier()] = 'No records found.';
+            return false;
+        }
 
-		if (empty($records) || !is_array($records)) {
-			$this->sectionFailures[$responseSection->getIdentifier()] = 'No records found.';
-			return FALSE;
-		}
+        $nonMatchingValues = $this->getNonMatchingValues($records);
 
-		$nonMatchingValues = $this->getNonMatchingValues($records);
+        if (!empty($nonMatchingValues)) {
+            $this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert all values for "' . $this->table . '.' . $this->field . '": ' . implode(', ', $nonMatchingValues);
+            return false;
+        }
 
-		if (!empty($nonMatchingValues)) {
-			$this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert all values for "' . $this->table . '.' . $this->field . '": ' . implode(', ', $nonMatchingValues);
-			return FALSE;
-		}
+        return true;
+    }
 
-		return TRUE;
-	}
-
-	/**
-	 * Returns a string representation of the constraint.
-	 *
-	 * @return string
-	 */
-	public function toString() {
-		return 'response has records';
-	}
-
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'response has records';
+    }
 }

@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
 /**
  * An "Invalid Subject" Exception
  */
-class InvalidSubjectException extends \TYPO3\CMS\Extbase\Validation\Exception {
-
+class InvalidSubjectException extends \TYPO3\CMS\Extbase\Validation\Exception
+{
 }

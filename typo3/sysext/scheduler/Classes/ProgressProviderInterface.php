@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Scheduler;
 /**
  * Interface for tasks who can provide their progress
  */
-interface ProgressProviderInterface {
-
-	/**
-	 * Gets the progress of a task.
-	 *
-	 * @return float Progress of the task as a two decimal precision float. f.e. 44.87
-	 */
-	public function getProgress();
-
+interface ProgressProviderInterface
+{
+    /**
+     * Gets the progress of a task.
+     *
+     * @return float Progress of the task as a two decimal precision float. f.e. 44.87
+     */
+    public function getProgress();
 }

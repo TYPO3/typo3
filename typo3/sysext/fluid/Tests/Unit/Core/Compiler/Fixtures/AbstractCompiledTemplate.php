@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler\Fixtures;
 /**
  * Class AbstractCompiledTemplate
  */
-abstract class AbstractCompiledTemplate extends \TYPO3\CMS\Fluid\Core\Compiler\AbstractCompiledTemplate {
-
-	static protected $defaultEncoding = 'ISO-8859-1';
+abstract class AbstractCompiledTemplate extends \TYPO3\CMS\Fluid\Core\Compiler\AbstractCompiledTemplate
+{
+    protected static $defaultEncoding = 'ISO-8859-1';
 }

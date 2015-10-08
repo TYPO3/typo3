@@ -25,46 +25,48 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the node has a mixin node type that is nodeType, or
  * the node has a mixin node type that is a subtype of nodeType.
  */
-class Selector implements SelectorInterface {
+class Selector implements SelectorInterface
+{
+    /**
+     * @var string
+     */
+    protected $nodeTypeName;
 
-	/**
-	 * @var string
-	 */
-	protected $nodeTypeName;
+    /**
+     * @var string
+     */
+    protected $selectorName;
 
-	/**
-	 * @var string
-	 */
-	protected $selectorName;
+    /**
+     * Constructs the Selector instance
+     *
+     * @param string $selectorName
+     * @param string $nodeTypeName
+     */
+    public function __construct($selectorName, $nodeTypeName)
+    {
+        $this->selectorName = $selectorName;
+        $this->nodeTypeName = $nodeTypeName;
+    }
 
-	/**
-	 * Constructs the Selector instance
-	 *
-	 * @param string $selectorName
-	 * @param string $nodeTypeName
-	 */
-	public function __construct($selectorName, $nodeTypeName) {
-		$this->selectorName = $selectorName;
-		$this->nodeTypeName = $nodeTypeName;
-	}
+    /**
+     * Gets the name of the required node type.
+     *
+     * @return string the node type name; non-null
+     */
+    public function getNodeTypeName()
+    {
+        return $this->nodeTypeName;
+    }
 
-	/**
-	 * Gets the name of the required node type.
-	 *
-	 * @return string the node type name; non-null
-	 */
-	public function getNodeTypeName() {
-		return $this->nodeTypeName;
-	}
-
-	/**
-	 * Gets the selector name.
-	 * A selector's name can be used elsewhere in the query to identify the selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelectorName() {
-		return $this->selectorName;
-	}
-
+    /**
+     * Gets the selector name.
+     * A selector's name can be used elsewhere in the query to identify the selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelectorName()
+    {
+        return $this->selectorName;
+    }
 }

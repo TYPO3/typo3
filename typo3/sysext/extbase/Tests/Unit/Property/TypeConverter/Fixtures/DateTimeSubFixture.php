@@ -17,22 +17,24 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures;
 /**
  * Fixture date time sub
  */
-class DateTimeSubFixture extends \DateTime {
+class DateTimeSubFixture extends \DateTime
+{
+    /**
+     * @param string $format
+     * @param string $time
+     * @param \DateTimeZone $timezone
+     * @return DateTimeSubFixture
+     */
+    public static function createFromFormat($format, $time, $timezone = null)
+    {
+        return new DateTimeSubFixture();
+    }
 
-	/**
-	 * @param string $format
-	 * @param string $time
-	 * @param \DateTimeZone $timezone
-	 * @return DateTimeSubFixture
-	 */
-	static public function createFromFormat($format, $time, $timezone = NULL) {
-		return new DateTimeSubFixture();
-	}
-
-	/**
-	 * @return string
-	 */
-	public function foo() {
-		return 'Bar';
-	}
+    /**
+     * @return string
+     */
+    public function foo()
+    {
+        return 'Bar';
+    }
 }

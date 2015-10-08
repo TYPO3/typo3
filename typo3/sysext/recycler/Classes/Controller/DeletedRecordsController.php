@@ -24,123 +24,129 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 /**
  * Deleted Records View
  */
-class DeletedRecordsController {
+class DeletedRecordsController
+{
+    /**
+     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     */
+    protected $runtimeCache = null;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-	 */
-	protected $runtimeCache = NULL;
+    /**
+     * @var DataHandler
+     */
+    protected $tce;
 
-	/**
-	 * @var DataHandler
-	 */
-	protected $tce;
+    public function __construct()
+    {
+        $this->runtimeCache = $this->getMemoryCache();
+        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
+    }
 
-	public function __construct() {
-		$this->runtimeCache = $this->getMemoryCache();
-		$this->tce = GeneralUtility::makeInstance(DataHandler::class);
-	}
+    /**
+     * Transforms the rows for the deleted records
+     *
+     * @param array $deletedRowsArray Array with table as key and array with all deleted rows
+     * @param int $totalDeleted Number of deleted records in total
+     * @return string JSON array
+     */
+    public function transform($deletedRowsArray, $totalDeleted)
+    {
+        $total = 0;
+        $jsonArray = array(
+            'rows' => array()
+        );
 
-	/**
-	 * Transforms the rows for the deleted records
-	 *
-	 * @param array $deletedRowsArray Array with table as key and array with all deleted rows
-	 * @param int $totalDeleted Number of deleted records in total
-	 * @return string JSON array
-	 */
-	public function transform($deletedRowsArray, $totalDeleted) {
-		$total = 0;
-		$jsonArray = array(
-			'rows' => array()
-		);
+        if (is_array($deletedRowsArray)) {
+            $lang = $this->getLanguageService();
+            $backendUser = $this->getBackendUser();
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-		if (is_array($deletedRowsArray)) {
-			$lang = $this->getLanguageService();
-			$backendUser = $this->getBackendUser();
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            foreach ($deletedRowsArray as $table => $rows) {
+                $total += count($deletedRowsArray[$table]);
+                foreach ($rows as $row) {
+                    $pageTitle = $this->getPageTitle((int)$row['pid']);
+                    $backendUser = BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', false);
+                    $jsonArray['rows'][] = array(
+                        'uid' => $row['uid'],
+                        'pid' => $row['pid'],
+                        'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                        'pageTitle' => RecyclerUtility::getUtf8String($pageTitle),
+                        'table' => $table,
+                        'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
+                        'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+                        'owner' => htmlspecialchars($backendUser['username']),
+                        'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
+                        'tableTitle' => RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
+                        'title' => htmlspecialchars(RecyclerUtility::getUtf8String(BackendUtility::getRecordTitle($table, $row))),
+                        'path' => RecyclerUtility::getRecordPath($row['pid'])
+                    );
+                }
+            }
+        }
+        $jsonArray['total'] = $totalDeleted;
+        return $jsonArray;
+    }
 
-			foreach ($deletedRowsArray as $table => $rows) {
-				$total += count($deletedRowsArray[$table]);
-				foreach ($rows as $row) {
-					$pageTitle = $this->getPageTitle((int)$row['pid']);
-					$backendUser = BackendUtility::getRecord('be_users', $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']], 'username', '', FALSE);
-					$jsonArray['rows'][] = array(
-						'uid' => $row['uid'],
-						'pid' => $row['pid'],
-						'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
-						'pageTitle' => RecyclerUtility::getUtf8String($pageTitle),
-						'table' => $table,
-						'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
-						'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
-						'owner' => htmlspecialchars($backendUser['username']),
-						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
-						'tableTitle' => RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-						'title' => htmlspecialchars(RecyclerUtility::getUtf8String(BackendUtility::getRecordTitle($table, $row))),
-						'path' => RecyclerUtility::getRecordPath($row['pid'])
-					);
-				}
-			}
-		}
-		$jsonArray['total'] = $totalDeleted;
-		return $jsonArray;
-	}
+    /**
+     * Gets the page title of the given page id
+     *
+     * @param int $pageId
+     * @return string
+     */
+    protected function getPageTitle($pageId)
+    {
+        $cacheId = 'recycler-pagetitle-' . $pageId;
+        if ($this->runtimeCache->has($cacheId)) {
+            $pageTitle = $this->runtimeCache->get($cacheId);
+        } else {
+            if ($pageId === 0) {
+                $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            } else {
+                $recordInfo = $this->tce->recordInfo('pages', $pageId, 'title');
+                $pageTitle = $recordInfo['title'];
+            }
+            $this->runtimeCache->set($cacheId, $pageTitle);
+        }
+        return $pageTitle;
+    }
 
-	/**
-	 * Gets the page title of the given page id
-	 *
-	 * @param int $pageId
-	 * @return string
-	 */
-	protected function getPageTitle($pageId) {
-		$cacheId = 'recycler-pagetitle-' . $pageId;
-		if ($this->runtimeCache->has($cacheId)) {
-			$pageTitle = $this->runtimeCache->get($cacheId);
-		} else {
-			if ($pageId === 0) {
-				$pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-			} else {
-				$recordInfo = $this->tce->recordInfo('pages', $pageId, 'title');
-				$pageTitle = $recordInfo['title'];
-			}
-			$this->runtimeCache->set($cacheId, $pageTitle);
-		}
-		return $pageTitle;
-	}
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * Returns an instance of LanguageService
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * Create and returns an instance of the CacheManager
+     *
+     * @return \TYPO3\CMS\Core\Cache\CacheManager
+     */
+    protected function getCacheManager()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+    }
 
-	/**
-	 * Create and returns an instance of the CacheManager
-	 *
-	 * @return \TYPO3\CMS\Core\Cache\CacheManager
-	 */
-	protected function getCacheManager() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-	}
-
-	/**
-	 * Gets an instance of the memory cache.
-	 *
-	 * @return \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-	 */
-	protected function getMemoryCache() {
-		return $this->getCacheManager()->getCache('cache_runtime');
-	}
-
+    /**
+     * Gets an instance of the memory cache.
+     *
+     * @return \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     */
+    protected function getMemoryCache()
+    {
+        return $this->getCacheManager()->getCache('cache_runtime');
+    }
 }

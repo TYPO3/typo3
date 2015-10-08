@@ -27,38 +27,39 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class CheckFlexFormValue {
+class CheckFlexFormValue
+{
+    /**
+     * Check flexform value before merge
+     *
+     * @param DataHandler $dataHander
+     * @param array &$currentValue
+     * @param array &$newValue
+     * @return void
+     */
+    public function checkFlexFormValue_beforeMerge(DataHandler $dataHander, array &$currentValue, array &$newValue)
+    {
+        $currentValue = $this->removeSwitchableControllerActionsRecursive($currentValue);
+    }
 
-	/**
-	 * Check flexform value before merge
-	 *
-	 * @param DataHandler $dataHander
-	 * @param array &$currentValue
-	 * @param array &$newValue
-	 * @return void
-	 */
-	public function checkFlexFormValue_beforeMerge(DataHandler $dataHander, array &$currentValue, array &$newValue) {
-		$currentValue = $this->removeSwitchableControllerActionsRecursive($currentValue);
-	}
+    /**
+     * Remove switchable controller actions recursively
+     *
+     * @param array $a
+     * @return array
+     */
+    protected function removeSwitchableControllerActionsRecursive(array $a)
+    {
+        $r = array();
 
-	/**
-	 * Remove switchable controller actions recursively
-	 *
-	 * @param array $a
-	 * @return array
-	 */
-	protected function removeSwitchableControllerActionsRecursive(array $a) {
-		$r = array();
+        foreach ($a as $k => $v) {
+            if ($k === 'switchableControllerActions') {
+                continue;
+            }
 
-		foreach ($a as $k => $v) {
-			if ($k === 'switchableControllerActions') {
-				continue;
-			}
+            $r[$k] = is_array($v) ? $this->removeSwitchableControllerActionsRecursive($v) : $v;
+        }
 
-			$r[$k] = is_array($v) ? $this->removeSwitchableControllerActionsRecursive($v) : $v;
-		}
-
-		return $r;
-	}
-
+        return $r;
+    }
 }

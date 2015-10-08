@@ -19,67 +19,69 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the ImportExport
  */
-abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase {
+abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
+{
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array('impexp');
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array('impexp');
+    /**
+     * @var \TYPO3\CMS\Impexp\ImportExport
+     */
+    protected $import;
 
-	/**
-	 * @var \TYPO3\CMS\Impexp\ImportExport
-	 */
-	protected $import;
+    /**
+     * Absolute path to files that must be removed
+     * after a test - handled in tearDown
+     *
+     * @var array
+     */
+    protected $testFilesToDelete = array();
 
-	/**
-	 * Absolute path to files that must be removed
-	 * after a test - handled in tearDown
-	 *
-	 * @var array
-	 */
-	protected $testFilesToDelete = array();
+    /**
+     * Set up for initialization of the ImportExport instance
+     *
+     * @return void
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Set up for initialization of the ImportExport instance
-	 *
-	 * @return void
-	 */
-	protected function setUp() {
-		parent::setUp();
+        $this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+        $this->import->init(0, 'import');
+    }
 
-		$this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
-		$this->import->init(0, 'import');
-	}
+    /**
+     * Tear down for remove of the test files
+     */
+    protected function tearDown()
+    {
+        foreach ($this->testFilesToDelete as $absoluteFileName) {
+            if (@is_file($absoluteFileName)) {
+                unlink($absoluteFileName);
+            }
+        }
+        parent::tearDown();
+    }
 
-	/**
-	 * Tear down for remove of the test files
-	 */
-	protected function tearDown() {
-		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			if (@is_file($absoluteFileName)) {
-				unlink($absoluteFileName);
-			}
-		}
-		parent::tearDown();
-	}
+    /**
+     * Test if the local filesystem is case sensitive
+     *
+     * @return bool
+     */
+    protected function isCaseSensitiveFilesystem()
+    {
+        $caseSensitive = true;
+        $path = GeneralUtility::tempnam('aAbB');
 
-	/**
-	 * Test if the local filesystem is case sensitive
-	 *
-	 * @return bool
-	 */
-	protected function isCaseSensitiveFilesystem() {
-		$caseSensitive = TRUE;
-		$path = GeneralUtility::tempnam('aAbB');
+        // do the actual sensitivity check
+        if (@file_exists(strtoupper($path)) && @file_exists(strtolower($path))) {
+            $caseSensitive = false;
+        }
 
-		// do the actual sensitivity check
-		if (@file_exists(strtoupper($path)) && @file_exists(strtolower($path))) {
-			$caseSensitive = FALSE;
-		}
-
-		// clean filesystem
-		unlink($path);
-		return $caseSensitive;
-	}
-
+        // clean filesystem
+        unlink($path);
+        return $caseSensitive;
+    }
 }

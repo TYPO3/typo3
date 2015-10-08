@@ -27,118 +27,123 @@ use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutInterfaceFixture;
 /**
  * Testcase for PostProcessor
  */
-class PostProcessorTest extends UnitTestCase {
+class PostProcessorTest extends UnitTestCase
+{
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = array();
 
-	/**
-	 * @var array A backup of registered singleton instances
-	 */
-	protected $singletonInstances = array();
+    /**
+     * @var Element|\Prophecy\Prophecy\ObjectProphecy
+     */
+    protected $elementProphecy;
 
-	/**
-	 * @var Element|\Prophecy\Prophecy\ObjectProphecy
-	 */
-	protected $elementProphecy;
+    /**
+     * @var ObjectManager|\Prophecy\Prophecy\ObjectProphecy
+     */
+    protected $objectManagerProphecy;
 
-	/**
-	 * @var ObjectManager|\Prophecy\Prophecy\ObjectProphecy
-	 */
-	protected $objectManagerProphecy;
+    /**
+     * @var ControllerContext|\Prophecy\Prophecy\ObjectProphecy
+     */
+    protected $controllerContextProphecy;
 
-	/**
-	 * @var ControllerContext|\Prophecy\Prophecy\ObjectProphecy
-	 */
-	protected $controllerContextProphecy;
+    /**
+     * Sets up this test case.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->elementProphecy = $this->prophesize(Element::class);
+        $this->objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $this->controllerContextProphecy = $this->prophesize(ControllerContext::class);
+    }
 
-	/**
-	 * Sets up this test case.
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->elementProphecy = $this->prophesize(Element::class);
-		$this->objectManagerProphecy = $this->prophesize(ObjectManager::class);
-		$this->controllerContextProphecy = $this->prophesize(ControllerContext::class);
-	}
+    /**
+     * Tears down this test case.
+     */
+    protected function tearDown()
+    {
+        parent::tearDown();
+        unset($this->elementProphecy);
+        unset($this->objectManagerProphecy);
+        unset($this->controllerContextProphecy);
+    }
 
-	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		parent::tearDown();
-		unset($this->elementProphecy);
-		unset($this->objectManagerProphecy);
-		unset($this->controllerContextProphecy);
-	}
+    /**
+     * @test
+     */
+    public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix()
+    {
+        $typoScript = array(
+            10 => $this->getUniqueId('postprocess'),
+            20 => PostProcessorWithoutFormPrefixFixture::class
+        );
 
-	/**
-	 * @test
-	 */
-	public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix() {
-		$typoScript = array(
-			10 => $this->getUniqueId('postprocess'),
-			20 => PostProcessorWithoutFormPrefixFixture::class
-		);
+        $this->objectManagerProphecy
+            ->get(Argument::cetera())
+            ->will(function ($arguments) {
+                return new $arguments[0]($arguments[1], $arguments[2]);
+            });
 
-		$this->objectManagerProphecy
-			->get(Argument::cetera())
-			->will(function($arguments) {
-				return new $arguments[0]($arguments[1], $arguments[2]);
-			});
+        $subject = $this->createSubject($typoScript);
+        $this->assertEquals('processedWithoutPrefix', $subject->process());
+    }
 
-		$subject = $this->createSubject($typoScript);
-		$this->assertEquals('processedWithoutPrefix', $subject->process());
-	}
+    /**
+     * @test
+     */
+    public function processFindsClassSpecifiedByTypoScriptWithFormPrefix()
+    {
+        $typoScript = array(
+            10 => $this->getUniqueId('postprocess'),
+            20 => PostProcessorWithFormPrefixFixture::class
+        );
 
-	/**
-	 * @test
-	 */
-	public function processFindsClassSpecifiedByTypoScriptWithFormPrefix() {
-		$typoScript = array(
-			10 => $this->getUniqueId('postprocess'),
-			20 => PostProcessorWithFormPrefixFixture::class
-		);
+        $this->objectManagerProphecy
+            ->get(Argument::cetera())
+            ->will(function ($arguments) {
+                return new $arguments[0]($arguments[1], $arguments[2]);
+            });
 
-		$this->objectManagerProphecy
-			->get(Argument::cetera())
-			->will(function($arguments) {
-				return new $arguments[0]($arguments[1], $arguments[2]);
-			});
+        $subject = $this->createSubject($typoScript);
+        $this->assertEquals('processedWithPrefix', $subject->process());
+    }
 
-		$subject = $this->createSubject($typoScript);
-		$this->assertEquals('processedWithPrefix', $subject->process());
-	}
+    /**
+     * @test
+     */
+    public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface()
+    {
+        $typoScript = array(
+            10 => $this->getUniqueId('postprocess'),
+            20 => PostProcessorWithoutInterfaceFixture::class
+        );
 
-	/**
-	 * @test
-	 */
-	public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface() {
-		$typoScript = array(
-			10 => $this->getUniqueId('postprocess'),
-			20 => PostProcessorWithoutInterfaceFixture::class
-		);
+        $this->objectManagerProphecy
+            ->get(Argument::cetera())
+            ->will(function ($arguments) {
+                return new $arguments[0]($arguments[1], $arguments[2]);
+            });
 
-		$this->objectManagerProphecy
-			->get(Argument::cetera())
-			->will(function($arguments) {
-				return new $arguments[0]($arguments[1], $arguments[2]);
-			});
+        $subject = $this->createSubject($typoScript);
+        $this->assertEquals('', $subject->process());
+    }
 
-		$subject = $this->createSubject($typoScript);
-		$this->assertEquals('', $subject->process());
-	}
-
-	/**
-	 * @param array $typoScript
-	 * @return PostProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-	 */
-	protected function createSubject(array $typoScript) {
-		$subject = $this->getAccessibleMock(
-			PostProcessor::class,
-			array('__none'),
-			array($this->elementProphecy->reveal(), $typoScript)
-		);
-		$subject->_set('controllerContext', $this->controllerContextProphecy->reveal());
-		$subject->_set('objectManager', $this->objectManagerProphecy->reveal());
-		return $subject;
-	}
-
+    /**
+     * @param array $typoScript
+     * @return PostProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected function createSubject(array $typoScript)
+    {
+        $subject = $this->getAccessibleMock(
+            PostProcessor::class,
+            array('__none'),
+            array($this->elementProphecy->reveal(), $typoScript)
+        );
+        $subject->_set('controllerContext', $this->controllerContextProphecy->reveal());
+        $subject->_set('objectManager', $this->objectManagerProphecy->reveal());
+        return $subject;
+    }
 }

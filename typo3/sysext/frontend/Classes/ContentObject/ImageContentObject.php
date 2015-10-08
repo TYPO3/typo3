@@ -17,24 +17,24 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Contains IMAGE class object.
  */
-class ImageContentObject extends AbstractContentObject {
+class ImageContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, IMAGE
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Output
+     */
+    public function render($conf = array())
+    {
+        if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+            return '';
+        }
 
-	/**
-	 * Rendering the cObject, IMAGE
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 */
-	public function render($conf = array()) {
-		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
-			return '';
-		}
-
-		$theValue = $this->cObj->cImage($conf['file'], $conf);
-		if (isset($conf['stdWrap.'])) {
-			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-		}
-		return $theValue;
-	}
-
+        $theValue = $this->cObj->cImage($conf['file'], $conf);
+        if (isset($conf['stdWrap.'])) {
+            $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+        }
+        return $theValue;
+    }
 }

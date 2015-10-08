@@ -37,41 +37,42 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class ExternalViewHelper extends AbstractViewHelper implements CompilableInterface {
+class ExternalViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @param string $uri target URI
+     * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
+     * @return string Rendered URI
+     * @api
+     */
+    public function render($uri, $defaultScheme = 'http')
+    {
+        return static::renderStatic(
+            array(
+                'uri' => $uri,
+                'defaultScheme' => $defaultScheme
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param string $uri target URI
-	 * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
-	 * @return string Rendered URI
-	 * @api
-	 */
-	public function render($uri, $defaultScheme = 'http') {
-		return static::renderStatic(
-			array(
-				'uri' => $uri,
-				'defaultScheme' => $defaultScheme
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $uri = $arguments['uri'];
+        $defaultScheme = $arguments['defaultScheme'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$uri = $arguments['uri'];
-		$defaultScheme = $arguments['defaultScheme'];
-
-		$scheme = parse_url($uri, PHP_URL_SCHEME);
-		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = $defaultScheme . '://' . $uri;
-		}
-		return $uri;
-	}
-
+        $scheme = parse_url($uri, PHP_URL_SCHEME);
+        if ($scheme === null && $defaultScheme !== '') {
+            $uri = $defaultScheme . '://' . $uri;
+        }
+        return $uri;
+    }
 }

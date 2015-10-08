@@ -35,30 +35,31 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * @see TYPO3\CMS\Fluid\ViewHelpers\IfViewHelper
  * @api
  */
-class ElseViewHelper extends AbstractViewHelper implements CompilableInterface {
+class ElseViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @return string the rendered string
+     * @api
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            array(),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @return string the rendered string
-	 * @api
-	 */
-	public function render() {
-		return static::renderStatic(
-			array(),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Render children
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return $renderChildrenClosure();
-	}
-
+    /**
+     * Render children
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return $renderChildrenClosure();
+    }
 }

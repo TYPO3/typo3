@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu\Exception;
 /**
  * No such menu type exception
  */
-class NoSuchMenuTypeException extends \TYPO3\CMS\Frontend\Exception {
-
+class NoSuchMenuTypeException extends \TYPO3\CMS\Frontend\Exception
+{
 }

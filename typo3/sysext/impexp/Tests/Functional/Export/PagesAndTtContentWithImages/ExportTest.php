@@ -19,184 +19,182 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Functional test for the ImportExport
  */
-class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase {
+class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
+{
+    protected $pathsToLinkInTestInstance = array(
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+    );
 
-	protected $pathsToLinkInTestInstance = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
-	);
+    protected function setUp()
+    {
+        parent::setUp();
 
-	protected function setUp() {
-		parent::setUp();
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content-with-image.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_language.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_metadata.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_reference.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
+    }
 
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content-with-image.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_language.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_metadata.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_reference.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
+    /**
+     * @test
+     */
+    public function exportPagesAndRelatedTtContentWithImages()
+    {
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
 
-	}
+        $this->compileExportPagesAndRelatedTtContentWithImages();
 
-	/**
-	 * @test
-	 */
-	public function exportPagesAndRelatedTtContentWithImages() {
+        $out = $this->export->compileMemoryToFileContent('xml');
 
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+        $errors = $this->export->printErrorLog();
+        $this->assertSame('', $errors);
 
-		$this->compileExportPagesAndRelatedTtContentWithImages();
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+    }
 
-		$out = $this->export->compileMemoryToFileContent('xml');
+    /**
+     * @test
+     */
+    public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord()
+    {
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_corrupt.xml');
 
-		$errors = $this->export->printErrorLog();
-		$this->assertSame('', $errors);
+        $this->compileExportPagesAndRelatedTtContentWithImages();
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
-	}
+        $out = $this->export->compileMemoryToFileContent('xml');
 
-	/**
-	 * @test
-	 */
-	public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord() {
+        $expectedErrors = array(
+            'File size of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added with current size.',
+            'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
+        );
+        $errors = $this->export->errorLog;
+        $this->assertSame($expectedErrors, $errors);
 
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_corrupt.xml');
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+    }
 
-		$this->compileExportPagesAndRelatedTtContentWithImages();
+    /**
+     * @test
+     */
+    public function exportPagesAndRelatedTtContentWithImagesButNotIncluded()
+    {
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
 
-		$out = $this->export->compileMemoryToFileContent('xml');
+        $this->export->setSaveFilesOutsideExportFile(true);
 
-		$expectedErrors = array(
-			'File size of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added with current size.',
-			'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
-		);
-		$errors = $this->export->errorLog;
-		$this->assertSame($expectedErrors, $errors);
+        $this->compileExportPagesAndRelatedTtContentWithImages();
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
-	}
+        $out = $this->export->compileMemoryToFileContent('xml');
 
-	/**
-	 * @test
-	 */
-	public function exportPagesAndRelatedTtContentWithImagesButNotIncluded() {
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', $out);
 
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+        $temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
+    }
 
-		$this->export->setSaveFilesOutsideExportFile(TRUE);
+    protected function compileExportPagesAndRelatedTtContentWithImages()
+    {
+        $this->export->setRecordTypesIncludeFields(
+            array(
+                'pages' => array(
+                    'title',
+                    'deleted',
+                    'doktype',
+                    'hidden',
+                    'perms_everybody'
+                ),
+                'tt_content' => array(
+                    'CType',
+                    'header',
+                    'header_link',
+                    'deleted',
+                    'hidden',
+                    'image',
+                    't3ver_oid'
+                ),
+                'sys_language' => array(
+                    'uid',
+                    'pid',
+                    'hidden',
+                    'title',
+                    'flag'
+                ),
+                'sys_file_reference' => array(
+                    'uid_local',
+                    'uid_foreign',
+                    'tablenames',
+                    'fieldname',
+                    'sorting_foreign',
+                    'table_local',
+                    'title',
+                    'description',
+                    'alternative',
+                    'link',
+                ),
+                'sys_file' => array(
+                    'storage',
+                    'type',
+                    'metadata',
+                    'identifier',
+                    'identifier_hash',
+                    'folder_hash',
+                    'mime_type',
+                    'name',
+                    'sha1',
+                    'size',
+                    'creation_date',
+                    'modification_date',
+                ),
+                'sys_file_storage' => array(
+                    'name',
+                    'description',
+                    'driver',
+                    'configuration',
+                    'is_default',
+                    'is_browsable',
+                    'is_public',
+                    'is_writable',
+                    'is_online'
+                ),
+                'sys_file_metadata' => array(
+                    'title',
+                    'width',
+                    'height',
+                    'description',
+                    'alternative',
+                    'file',
+                    'sys_language_uid',
+                    'l10n_parent'
+                )
+            )
+        );
 
-		$this->compileExportPagesAndRelatedTtContentWithImages();
+        $this->export->relOnlyTables = array(
+            'sys_file',
+            'sys_file_metadata',
+            'sys_file_storage',
+            'sys_language'
+        );
 
-		$out = $this->export->compileMemoryToFileContent('xml');
+        $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
+        $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
+        $this->export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
+        $this->export->export_addRecord('sys_language', BackendUtility::getRecord('sys_language', 1));
+        $this->export->export_addRecord('sys_file_reference', BackendUtility::getRecord('sys_file_reference', 1));
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', $out);
+        $this->setPageTree(1, 1);
 
-		$temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
+        // After adding ALL records we set relations:
+        for ($a = 0; $a < 10; $a++) {
+            $addR = $this->export->export_addDBRelations($a);
+            if (empty($addR)) {
+                break;
+            }
+        }
 
-	}
-
-	protected function compileExportPagesAndRelatedTtContentWithImages() {
-
-		$this->export->setRecordTypesIncludeFields(
-			array(
-				'pages' => array(
-					'title',
-					'deleted',
-					'doktype',
-					'hidden',
-					'perms_everybody'
-				),
-				'tt_content' => array(
-					'CType',
-					'header',
-					'header_link',
-					'deleted',
-					'hidden',
-					'image',
-					't3ver_oid'
-				),
-				'sys_language' => array(
-					'uid',
-					'pid',
-					'hidden',
-					'title',
-					'flag'
-				),
-				'sys_file_reference' => array(
-					'uid_local',
-					'uid_foreign',
-					'tablenames',
-					'fieldname',
-					'sorting_foreign',
-					'table_local',
-					'title',
-					'description',
-					'alternative',
-					'link',
-				),
-				'sys_file' => array(
-					'storage',
-					'type',
-					'metadata',
-					'identifier',
-					'identifier_hash',
-					'folder_hash',
-					'mime_type',
-					'name',
-					'sha1',
-					'size',
-					'creation_date',
-					'modification_date',
-				),
-				'sys_file_storage' => array(
-					'name',
-					'description',
-					'driver',
-					'configuration',
-					'is_default',
-					'is_browsable',
-					'is_public',
-					'is_writable',
-					'is_online'
-				),
-				'sys_file_metadata' => array(
-					'title',
-					'width',
-					'height',
-					'description',
-					'alternative',
-					'file',
-					'sys_language_uid',
-					'l10n_parent'
-				)
-			)
-		);
-
-		$this->export->relOnlyTables = array(
-			'sys_file',
-			'sys_file_metadata',
-			'sys_file_storage',
-			'sys_language'
-		);
-
-		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
-		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
-		$this->export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
-		$this->export->export_addRecord('sys_language', BackendUtility::getRecord('sys_language', 1));
-		$this->export->export_addRecord('sys_file_reference', BackendUtility::getRecord('sys_file_reference', 1));
-
-		$this->setPageTree(1, 1);
-
-		// After adding ALL records we set relations:
-		for ($a = 0; $a < 10; $a++) {
-			$addR = $this->export->export_addDBRelations($a);
-			if (empty($addR)) {
-				break;
-			}
-		}
-
-		$this->export->export_addFilesFromRelations();
-		$this->export->export_addFilesFromSysFilesRecords();
-	}
-
+        $this->export->export_addFilesFromRelations();
+        $this->export->export_addFilesFromSysFilesRecords();
+    }
 }

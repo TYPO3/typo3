@@ -17,54 +17,56 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  */
-class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter();
-	}
+    public function validDataProvider()
+    {
+        return array(
+            '1200 => 1.200,00' => array(
+                1200, // input
+                '.', // thousand separator
+                ',', // decimal point
+                '1.200,00' // expected
+            ),
+            '0 => 0,00' => array(
+                0,
+                null,
+                ',',
+                '0,00'
+            ),
+            '3333.33 => 3,333.33' => array(
+                3333.33,
+                ',',
+                '.',
+                '3,333.33'
+            ),
+            '1099.33 => 1 099,33' => array(
+                1099.33,
+                ' ',
+                ',',
+                '1 099,33'
+            ),
+        );
+    }
 
-	public function validDataProvider() {
-		return array(
-			'1200 => 1.200,00' => array(
-				1200, // input
-				'.', // thousand separator
-				',', // decimal point
-				'1.200,00' // expected
-			),
-			'0 => 0,00' => array(
-				0,
-				NULL,
-				',',
-				'0,00'
-			),
-			'3333.33 => 3,333.33' => array(
-				3333.33,
-				',',
-				'.',
-				'3,333.33'
-			),
-			'1099.33 => 1 099,33' => array(
-				1099.33,
-				' ',
-				',',
-				'1 099,33'
-			),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider validDataProvider
-	 */
-	public function filterForVariousIntegerInputsReturnsFormattedCurrencyNotation($input, $thousandSeparator, $decimalPoint, $expected) {
-		$this->subject->setThousandSeparator($thousandSeparator);
-		$this->subject->setDecimalsPoint($decimalPoint);
-		$this->assertSame($expected, $this->subject->filter($input));
-	}
-
+    /**
+     * @test
+     * @dataProvider validDataProvider
+     */
+    public function filterForVariousIntegerInputsReturnsFormattedCurrencyNotation($input, $thousandSeparator, $decimalPoint, $expected)
+    {
+        $this->subject->setThousandSeparator($thousandSeparator);
+        $this->subject->setDecimalsPoint($decimalPoint);
+        $this->assertSame($expected, $this->subject->filter($input));
+    }
 }

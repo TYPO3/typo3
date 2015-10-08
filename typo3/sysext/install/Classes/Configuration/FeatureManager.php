@@ -17,116 +17,119 @@ namespace TYPO3\CMS\Install\Configuration;
 /**
  * Instantiate and configure all known features and presets
  */
-class FeatureManager {
+class FeatureManager
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager = NULL;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+    /**
+     * @var array List of feature class names
+     */
+    protected $featureRegistry = array(
+        \TYPO3\CMS\Install\Configuration\Charset\CharsetFeature::class,
+        \TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
+        \TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
+        \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
+        \TYPO3\CMS\Install\Configuration\Mail\MailFeature::class,
+    );
 
-	/**
-	 * @var array List of feature class names
-	 */
-	protected $featureRegistry = array(
-		\TYPO3\CMS\Install\Configuration\Charset\CharsetFeature::class,
-		\TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
-		\TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
-		\TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
-		\TYPO3\CMS\Install\Configuration\Mail\MailFeature::class,
-	);
+    /**
+     * Get initialized list of features with possible presets
+     *
+     * @param array $postValues List of $POST values
+     * @return array<FeatureInterface>
+     * @throws Exception
+     */
+    public function getInitializedFeatures(array $postValues)
+    {
+        $features = array();
+        foreach ($this->featureRegistry as $featureClass) {
+            /** @var FeatureInterface $featureInstance */
+            $featureInstance = $this->objectManager->get($featureClass);
+            if (!($featureInstance instanceof FeatureInterface)) {
+                throw new Exception(
+                    'Feature ' . $featureClass . ' does not implement FeatureInterface',
+                    1378644593
+                );
+            }
+            $featureInstance->initializePresets($postValues);
+            $features[] = $featureInstance;
+        }
+        return $features;
+    }
 
-	/**
-	 * Get initialized list of features with possible presets
-	 *
-	 * @param array $postValues List of $POST values
-	 * @return array<FeatureInterface>
-	 * @throws Exception
-	 */
-	public function getInitializedFeatures(array $postValues) {
-		$features = array();
-		foreach ($this->featureRegistry as $featureClass) {
-			/** @var FeatureInterface $featureInstance */
-			$featureInstance = $this->objectManager->get($featureClass);
-			if (!($featureInstance instanceof FeatureInterface)) {
-				throw new Exception(
-					'Feature ' . $featureClass . ' does not implement FeatureInterface',
-					1378644593
-				);
-			}
-			$featureInstance->initializePresets($postValues);
-			$features[] = $featureInstance;
-		}
-		return $features;
-	}
+    /**
+     * Get configuration values to be set to LocalConfiguration from
+     * list of selected $POST feature presets
+     *
+     * @param array $postValues List of $POST values
+     * @return array List of configuration values
+     */
+    public function getConfigurationForSelectedFeaturePresets(array $postValues)
+    {
+        $localConfigurationValuesToSet = array();
+        $features = $this->getInitializedFeatures($postValues);
+        foreach ($features as $feature) {
+            /** @var FeatureInterface $feature */
+            $featureName = $feature->getName();
+            $presets = $feature->getPresetsOrderedByPriority();
+            foreach ($presets as $preset) {
+                /** @var PresetInterface $preset */
+                $presetName = $preset->getName();
+                if (!empty($postValues[$featureName]['enable'])
+                    && $postValues[$featureName]['enable'] === $presetName
+                    && (!$preset->isActive() || $preset instanceof CustomPresetInterface)
+                ) {
+                    $localConfigurationValuesToSet = array_merge(
+                        $localConfigurationValuesToSet,
+                        $preset->getConfigurationValues()
+                    );
+                }
+            }
+        }
+        return $localConfigurationValuesToSet;
+    }
 
-	/**
-	 * Get configuration values to be set to LocalConfiguration from
-	 * list of selected $POST feature presets
-	 *
-	 * @param array $postValues List of $POST values
-	 * @return array List of configuration values
-	 */
-	public function getConfigurationForSelectedFeaturePresets(array $postValues) {
-		$localConfigurationValuesToSet = array();
-		$features = $this->getInitializedFeatures($postValues);
-		foreach ($features as $feature) {
-			/** @var FeatureInterface $feature */
-			$featureName = $feature->getName();
-			$presets = $feature->getPresetsOrderedByPriority();
-			foreach ($presets as $preset) {
-				/** @var PresetInterface $preset */
-				$presetName = $preset->getName();
-				if (!empty($postValues[$featureName]['enable'])
-					&& $postValues[$featureName]['enable'] === $presetName
-					&& (!$preset->isActive() || $preset instanceof CustomPresetInterface)
-				) {
-					$localConfigurationValuesToSet = array_merge(
-						$localConfigurationValuesToSet,
-						$preset->getConfigurationValues()
-					);
-				}
-			}
-		}
-		return $localConfigurationValuesToSet;
-	}
+    /**
+     * Cycle through features and get settings. First matching
+     * preset (highest priority) will be selected.
+     *
+     * @return array Configuration settings
+     */
+    public function getBestMatchingConfigurationForAllFeatures()
+    {
+        $localConfigurationValuesToSet = array();
+        $features = $this->getInitializedFeatures(array());
+        foreach ($features as $feature) {
+            /** @var FeatureInterface $feature */
+            $presets = $feature->getPresetsOrderedByPriority();
+            foreach ($presets as $preset) {
+                // Only choose "normal" presets, no custom presets
+                if ($preset instanceof CustomPresetInterface) {
+                    break;
+                }
 
-	/**
-	 * Cycle through features and get settings. First matching
-	 * preset (highest priority) will be selected.
-	 *
-	 * @return array Configuration settings
-	 */
-	public function getBestMatchingConfigurationForAllFeatures() {
-		$localConfigurationValuesToSet = array();
-		$features = $this->getInitializedFeatures(array());
-		foreach ($features as $feature) {
-			/** @var FeatureInterface $feature */
-			$presets = $feature->getPresetsOrderedByPriority();
-			foreach ($presets as $preset) {
-				// Only choose "normal" presets, no custom presets
-				if ($preset instanceof CustomPresetInterface) {
-					break;
-				}
-
-				/** @var PresetInterface $preset */
-				if ($preset->isAvailable()) {
-					$localConfigurationValuesToSet = array_merge(
-						$localConfigurationValuesToSet,
-						$preset->getConfigurationValues()
-					);
-					// Setting for this feature done, go to next feature
-					break;
-				}
-			}
-		}
-		return $localConfigurationValuesToSet;
-	}
-
+                /** @var PresetInterface $preset */
+                if ($preset->isAvailable()) {
+                    $localConfigurationValuesToSet = array_merge(
+                        $localConfigurationValuesToSet,
+                        $preset->getConfigurationValues()
+                    );
+                    // Setting for this feature done, go to next feature
+                    break;
+                }
+            }
+        }
+        return $localConfigurationValuesToSet;
+    }
 }

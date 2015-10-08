@@ -18,70 +18,76 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * This class provides Check Base plugin implementation
  */
-abstract class AbstractLinktype implements LinktypeInterface {
+abstract class AbstractLinktype implements LinktypeInterface
+{
+    /**
+     * Contains parameters needed for the rendering of the error message
+     *
+     * @var array
+     */
+    protected $errorParams = array();
 
-	/**
-	 * Contains parameters needed for the rendering of the error message
-	 *
-	 * @var array
-	 */
-	protected $errorParams = array();
+    /**
+     * Base type fetching method, based on the type that softRefParserObj returns
+     *
+     * @param array $value Reference properties
+     * @param string $type Current type
+     * @param string $key Validator hook name
+     * @return string Fetched type
+     */
+    public function fetchType($value, $type, $key)
+    {
+        if ($value['type'] == $key) {
+            $type = $value['type'];
+        }
+        return $type;
+    }
 
-	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns
-	 *
-	 * @param array $value Reference properties
-	 * @param string $type Current type
-	 * @param string $key Validator hook name
-	 * @return string Fetched type
-	 */
-	public function fetchType($value, $type, $key) {
-		if ($value['type'] == $key) {
-			$type = $value['type'];
-		}
-		return $type;
-	}
+    /**
+     * Set the value of the protected property errorParams
+     *
+     * @param array $value All parameters needed for the rendering of the error message
+     * @return void
+     */
+    protected function setErrorParams($value)
+    {
+        $this->errorParams = $value;
+    }
 
-	/**
-	 * Set the value of the protected property errorParams
-	 *
-	 * @param array $value All parameters needed for the rendering of the error message
-	 * @return void
-	 */
-	protected function setErrorParams($value) {
-		$this->errorParams = $value;
-	}
+    /**
+     * Get the value of the private property errorParams
+     *
+     * @return array All parameters needed for the rendering of the error message
+     */
+    public function getErrorParams()
+    {
+        return $this->errorParams;
+    }
 
-	/**
-	 * Get the value of the private property errorParams
-	 *
-	 * @return array All parameters needed for the rendering of the error message
-	 */
-	public function getErrorParams() {
-		return $this->errorParams;
-	}
+    /**
+     * Construct a valid Url for browser output
+     *
+     * @param array $row Broken link record
+     * @return string Parsed broken url
+     */
+    public function getBrokenUrl($row)
+    {
+        return $row['url'];
+    }
 
-	/**
-	 * Construct a valid Url for browser output
-	 *
-	 * @param array $row Broken link record
-	 * @return string Parsed broken url
-	 */
-	public function getBrokenUrl($row) {
-		return $row['url'];
-	}
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

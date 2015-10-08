@@ -18,7 +18,6 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
-
 /**
  * View helper for rendering a styled content infobox markup.
  *
@@ -49,106 +48,107 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterface {
+class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    const STATE_NOTICE = -2;
+    const STATE_INFO = -1;
+    const STATE_OK = 0;
+    const STATE_WARNING = 1;
+    const STATE_ERROR = 2;
 
-	const STATE_NOTICE = -2;
-	const STATE_INFO = -1;
-	const STATE_OK = 0;
-	const STATE_WARNING = 1;
-	const STATE_ERROR = 2;
+    /**
+     * @param string $title The title of the infobox
+     * @param string $message The message of the infobox, if NULL tag content is used
+     * @param int $state The state of the box, InfoboxViewHelper::STATE_*
+     * @param string $iconName The icon name from fontawsome, NULL sets default icon
+     * @param bool $disableIcon If set to TRUE, the icon is not rendered.
+     *
+     * @return string
+     */
+    public function render($title = null, $message = null, $state = self::STATE_NOTICE, $iconName = null, $disableIcon = false)
+    {
+        return static::renderStatic(
+            array(
+                'title' => $title,
+                'message' => $message,
+                'state' => $state,
+                'iconName' => $iconName,
+                'disableIcon' => $disableIcon
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param string $title The title of the infobox
-	 * @param string $message The message of the infobox, if NULL tag content is used
-	 * @param int $state The state of the box, InfoboxViewHelper::STATE_*
-	 * @param string $iconName The icon name from fontawsome, NULL sets default icon
-	 * @param bool $disableIcon If set to TRUE, the icon is not rendered.
-	 *
-	 * @return string
-	 */
-	public function render($title = NULL, $message = NULL, $state = self::STATE_NOTICE, $iconName = NULL, $disableIcon = FALSE) {
-		return static::renderStatic(
-			array(
-				'title' => $title,
-				'message' => $message,
-				'state' => $state,
-				'iconName' => $iconName,
-				'disableIcon' => $disableIcon
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     * @throws Exception
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $title = $arguments['title'];
+        $message = $arguments['message'];
+        $state = $arguments['state'];
+        $iconName = $arguments['iconName'];
+        $disableIcon = $arguments['disableIcon'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$title = $arguments['title'];
-		$message = $arguments['message'];
-		$state = $arguments['state'];
-		$iconName = $arguments['iconName'];
-		$disableIcon = $arguments['disableIcon'];
-
-		if ($message === NULL) {
-			$message = $renderChildrenClosure();
-		}
-		switch ($state) {
-			case self::STATE_NOTICE:
-				$stateClass = 'notice';
-				$icon = 'lightbulb-o';
-				break;
-			case self::STATE_INFO:
-				$stateClass = 'info';
-				$icon = 'info';
-				break;
-			case self::STATE_OK:
-				$stateClass = 'success';
-				$icon = 'check';
-				break;
-			case self::STATE_WARNING:
-				$stateClass = 'warning';
-				$icon = 'exclamation';
-				break;
-			case self::STATE_ERROR:
-				$stateClass = 'danger';
-				$icon = 'times';
-				break;
-			default:
-				$stateClass = 'notice';
-				$icon = 'lightbulb-o';
-		}
-		if ($iconName !== NULL) {
-			$icon = htmlspecialchars($iconName);
-		}
-		$iconTemplate = '';
-		if (!$disableIcon) {
-			$iconTemplate = '' .
-				'<div class="media-left">' .
-					'<span class="fa-stack fa-lg callout-icon">' .
-						'<i class="fa fa-circle fa-stack-2x"></i>' .
-						'<i class="fa fa-' . $icon . ' fa-stack-1x"></i>' .
-					'</span>' .
-				'</div>';
-		}
-		$titleTemplate = '';
-		if ($title !== NULL) {
-			$titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
-		}
-		return '<div class="callout callout-' . $stateClass . '">' .
-				'<div class="media">' .
-					$iconTemplate .
-					'<div class="media-body">' .
-						$titleTemplate .
-						'<div class="callout-body">' . $message . '</div>' .
-					'</div>' .
-				'</div>' .
-			'</div>';
-	}
-
+        if ($message === null) {
+            $message = $renderChildrenClosure();
+        }
+        switch ($state) {
+            case self::STATE_NOTICE:
+                $stateClass = 'notice';
+                $icon = 'lightbulb-o';
+                break;
+            case self::STATE_INFO:
+                $stateClass = 'info';
+                $icon = 'info';
+                break;
+            case self::STATE_OK:
+                $stateClass = 'success';
+                $icon = 'check';
+                break;
+            case self::STATE_WARNING:
+                $stateClass = 'warning';
+                $icon = 'exclamation';
+                break;
+            case self::STATE_ERROR:
+                $stateClass = 'danger';
+                $icon = 'times';
+                break;
+            default:
+                $stateClass = 'notice';
+                $icon = 'lightbulb-o';
+        }
+        if ($iconName !== null) {
+            $icon = htmlspecialchars($iconName);
+        }
+        $iconTemplate = '';
+        if (!$disableIcon) {
+            $iconTemplate = '' .
+                '<div class="media-left">' .
+                    '<span class="fa-stack fa-lg callout-icon">' .
+                        '<i class="fa fa-circle fa-stack-2x"></i>' .
+                        '<i class="fa fa-' . $icon . ' fa-stack-1x"></i>' .
+                    '</span>' .
+                '</div>';
+        }
+        $titleTemplate = '';
+        if ($title !== null) {
+            $titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
+        }
+        return '<div class="callout callout-' . $stateClass . '">' .
+                '<div class="media">' .
+                    $iconTemplate .
+                    '<div class="media-body">' .
+                        $titleTemplate .
+                        '<div class="callout-body">' . $message . '</div>' .
+                    '</div>' .
+                '</div>' .
+            '</div>';
+    }
 }

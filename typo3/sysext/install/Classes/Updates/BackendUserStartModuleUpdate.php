@@ -17,61 +17,62 @@ namespace TYPO3\CMS\Install\Updates;
 /**
  * Update backend user setting startModule if set to "help_aboutmodules"
  */
-class BackendUserStartModuleUpdate extends AbstractUpdate {
+class BackendUserStartModuleUpdate extends AbstractUpdate
+{
+    /**
+     * @var string
+     */
+    protected $title = 'Update backend user setting "startModule"';
 
-	/**
-	 * @var string
-	 */
-	protected $title = 'Update backend user setting "startModule"';
+    /**
+     * Checks if an update is needed
+     *
+     * @param string &$description The description for the update
+     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     */
+    public function checkForUpdate(&$description)
+    {
+        $backendUsersCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users');
+        if ($this->isWizardDone() || $backendUsersCount === 0) {
+            return false;
+        }
 
-	/**
-	 * Checks if an update is needed
-	 *
-	 * @param string &$description The description for the update
-	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
-	 */
-	public function checkForUpdate(&$description) {
-		$backendUsersCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users');
-		if ($this->isWizardDone() || $backendUsersCount === 0) {
-			return FALSE;
-		}
+        $description = 'The backend user setting startModule is changed for the extension aboutmodules. Update all backend users that use ext:aboutmodules as startModule.';
 
-		$description = 'The backend user setting startModule is changed for the extension aboutmodules. Update all backend users that use ext:aboutmodules as startModule.';
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Performs the database update if backend user's startmodule is help_aboutmodules
+     *
+     * @param array &$databaseQueries Queries done in this update
+     * @param mixed &$customMessages Custom messages
+     * @return bool
+     */
+    public function performUpdate(array &$databaseQueries, &$customMessages)
+    {
+        $db = $this->getDatabaseConnection();
+        $backendUsers = $db->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');
+        if (!empty($backendUsers)) {
+            foreach ($backendUsers as $backendUser) {
+                if ($backendUser['uc'] !== null) {
+                    $userConfig = unserialize($backendUser['uc']);
+                    if ($userConfig['startModule'] === 'help_aboutmodules') {
+                        $userConfig['startModule'] = 'help_AboutmodulesAboutmodules';
+                        $db->exec_UPDATEquery(
+                            'be_users',
+                            'uid=' . (int)$backendUser['uid'],
+                            array(
+                                'uc' => serialize($userConfig),
+                            )
+                        );
+                        $databaseQueries[] = $db->debug_lastBuiltQuery;
+                    }
+                }
+            }
+        }
 
-	/**
-	 * Performs the database update if backend user's startmodule is help_aboutmodules
-	 *
-	 * @param array &$databaseQueries Queries done in this update
-	 * @param mixed &$customMessages Custom messages
-	 * @return bool
-	 */
-	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$db = $this->getDatabaseConnection();
-		$backendUsers = $db->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');
-		if (!empty($backendUsers)) {
-			foreach ($backendUsers as $backendUser) {
-				if ($backendUser['uc'] !== NULL) {
-					$userConfig = unserialize($backendUser['uc']);
-					if ($userConfig['startModule'] === 'help_aboutmodules') {
-						$userConfig['startModule'] = 'help_AboutmodulesAboutmodules';
-						$db->exec_UPDATEquery(
-							'be_users',
-							'uid=' . (int)$backendUser['uid'],
-							array(
-								'uc' => serialize($userConfig),
-							)
-						);
-						$databaseQueries[] = $db->debug_lastBuiltQuery;
-					}
-				}
-			}
-		}
-
-		$this->markWizardAsDone();
-		return TRUE;
-	}
-
+        $this->markWizardAsDone();
+        return true;
+    }
 }

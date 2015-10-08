@@ -21,21 +21,21 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
  * This class contains a hook to implement RSA authentication for the TYPO3
  * Frontend. Warning: felogin must be USER_INT for this to work!
  */
-class FrontendLoginHook {
+class FrontendLoginHook
+{
+    /**
+     * Hooks to the felogin extension to provide additional code for FE login
+     *
+     * @return array 0 => onSubmit function, 1 => extra fields and required files
+     */
+    public function loginFormHook()
+    {
+        /** @var RsaEncryptionEncoder $rsaEncryptionEncoder */
+        $rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
+        if ($rsaEncryptionEncoder->isAvailable()) {
+            $rsaEncryptionEncoder->enableRsaEncryption();
+        }
 
-	/**
-	 * Hooks to the felogin extension to provide additional code for FE login
-	 *
-	 * @return array 0 => onSubmit function, 1 => extra fields and required files
-	 */
-	public function loginFormHook() {
-		/** @var RsaEncryptionEncoder $rsaEncryptionEncoder */
-		$rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
-		if ($rsaEncryptionEncoder->isAvailable()) {
-			$rsaEncryptionEncoder->enableRsaEncryption();
-		}
-
-		return array(0 => '', 1 => '');
-	}
-
+        return array(0 => '', 1 => '');
+    }
 }

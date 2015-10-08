@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Type\Exception;
 /**
  * Exception for an invalid enumeration value
  */
-class InvalidEnumerationValueException extends \TYPO3\CMS\Core\Type\Exception implements InvalidValueExceptionInterface {
-
+class InvalidEnumerationValueException extends \TYPO3\CMS\Core\Type\Exception implements InvalidValueExceptionInterface
+{
 }

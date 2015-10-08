@@ -18,42 +18,42 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * Download from TER controller test
  *
  */
-class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown()
+    {
+        $dummyExceptionMessage = 'exception message';
+        $dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage);
 
-	/**
-	 * @test
-	 *
-	 * @return void
-	 */
-	public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown() {
-		$dummyExceptionMessage = 'exception message';
-		$dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage);
+        $dummyExtensionName = 'dummy_extension';
+        $dummyExtension = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
+        $dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
 
-		$dummyExtensionName = 'dummy_extension';
-		$dummyExtension = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
-		$dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
+        $downloadUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class);
+        $downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
 
-		$downloadUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class);
-		$downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, array('dummy'));
+        $subject->_set('downloadUtility', $downloadUtilityMock);
 
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, array('dummy'));
-		$subject->_set('downloadUtility', $downloadUtilityMock);
+        $result = $subject->_call('installFromTer', $dummyExtension);
 
-		$result = $subject->_call('installFromTer', $dummyExtension);
+        $expectedResult = array(
+            false,
+            array(
+                $dummyExtensionName => array(
+                    array(
+                        'code' => 0,
+                        'message' => $dummyExceptionMessage
+                    )
+                )
+            )
+        );
 
-		$expectedResult = array(
-			FALSE,
-			array(
-				$dummyExtensionName => array(
-					array(
-						'code' => 0,
-						'message' => $dummyExceptionMessage
-					)
-				)
-			)
-		);
-
-		$this->assertSame($expectedResult, $result);
-	}
-
+        $this->assertSame($expectedResult, $result);
+    }
 }

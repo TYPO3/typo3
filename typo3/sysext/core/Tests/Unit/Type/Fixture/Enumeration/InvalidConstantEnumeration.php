@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 /**
  * This is an invalid enumeration because an unsupported constant value is used
  */
-class InvalidConstantEnumeration extends \TYPO3\CMS\Core\Type\Enumeration {
-	const FOO = 1.11;
+class InvalidConstantEnumeration extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const FOO = 1.11;
 }

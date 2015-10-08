@@ -19,12 +19,12 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Custom preset is a fallback if no other preset fits
  */
-class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface {
-
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'MAIL/transport_sendmail_command' => '',
-	);
+class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface
+{
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'MAIL/transport_sendmail_command' => '',
+    );
 }

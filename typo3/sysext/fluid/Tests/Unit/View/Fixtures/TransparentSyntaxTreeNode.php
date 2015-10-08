@@ -14,10 +14,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View\Fixtures;
 /**
  * [Enter description here]
  */
-class TransparentSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
-	public $variableContainer;
+class TransparentSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+{
+    public $variableContainer;
 
-	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-	}
-
+    public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+    }
 }

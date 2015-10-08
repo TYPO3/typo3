@@ -24,80 +24,89 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Test case
  */
-class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     */
+    protected $converter;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
-	 */
-	protected $converter;
+    protected function setUp()
+    {
+        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter();
+    }
 
-	protected function setUp() {
-		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter();
-	}
+    /**
+     * @test
+     */
+    public function checkMetadata()
+    {
+        $this->assertEquals(array('float', 'integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
+    }
 
-	/**
-	 * @test
-	 */
-	public function checkMetadata() {
-		$this->assertEquals(array('float', 'integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-		$this->assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
-		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
-	}
+    /**
+     * @test
+     */
+    public function convertFromShouldCastTheStringToFloat()
+    {
+        $this->assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromShouldCastTheStringToFloat() {
-		$this->assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
-	}
+    /**
+     * @test
+     */
+    public function convertFromReturnsNullIfEmptyStringSpecified()
+    {
+        $this->assertNull($this->converter->convertFrom('', 'float'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromReturnsNullIfEmptyStringSpecified() {
-		$this->assertNull($this->converter->convertFrom('', 'float'));
-	}
+    /**
+     * @test
+     */
+    public function convertFromShouldAcceptIntegers()
+    {
+        $this->assertSame((float)123, $this->converter->convertFrom(123, 'float'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromShouldAcceptIntegers() {
-		$this->assertSame((float)123, $this->converter->convertFrom(123, 'float'));
-	}
+    /**
+     * @test
+     */
+    public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
+    {
+        $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric() {
-		$this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));
-	}
+    /**
+     * @test
+     */
+    public function canConvertFromShouldReturnTrue()
+    {
+        $this->assertTrue($this->converter->canConvertFrom('1.5', 'float'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canConvertFromShouldReturnTrue() {
-		$this->assertTrue($this->converter->canConvertFrom('1.5', 'float'));
-	}
+    /**
+     * @test
+     */
+    public function canConvertFromShouldReturnTrueForAnEmptyValue()
+    {
+        $this->assertTrue($this->converter->canConvertFrom('', 'integer'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canConvertFromShouldReturnTrueForAnEmptyValue() {
-		$this->assertTrue($this->converter->canConvertFrom('', 'integer'));
-	}
+    /**
+     * @test
+     */
+    public function canConvertFromShouldReturnTrueForANullValue()
+    {
+        $this->assertTrue($this->converter->canConvertFrom(null, 'integer'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canConvertFromShouldReturnTrueForANullValue() {
-		$this->assertTrue($this->converter->canConvertFrom(NULL, 'integer'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
-		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
-	}
-
+    /**
+     * @test
+     */
+    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
+    {
+        $this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+    }
 }

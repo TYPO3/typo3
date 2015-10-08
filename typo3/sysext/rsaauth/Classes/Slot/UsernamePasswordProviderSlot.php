@@ -21,13 +21,14 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 /**
  * Class UsernamePasswordProviderSlot
  */
-class UsernamePasswordProviderSlot {
-
-	/**
-	 * @param PageRenderer $pageRenderer
-	 */
-	public function getPageRenderer(PageRenderer $pageRenderer) {
-		$rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
-		$rsaEncryptionEncoder->enableRsaEncryption(TRUE);
-	}
+class UsernamePasswordProviderSlot
+{
+    /**
+     * @param PageRenderer $pageRenderer
+     */
+    public function getPageRenderer(PageRenderer $pageRenderer)
+    {
+        $rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
+        $rsaEncryptionEncoder->enableRsaEncryption(true);
+    }
 }

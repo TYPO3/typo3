@@ -19,19 +19,19 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Custom preset is a fallback if no other preset fits
  */
-class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface {
-
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'GFX/image_processing' => 0,
-		'GFX/im' => 0,
-		'GFX/im_path' => '',
-		'GFX/im_path_lzw' => '',
-		'GFX/im_version_5' => '',
-		'GFX/im_v5effects' => 0,
-		'GFX/im_mask_temp_ext_gif' => 0,
-		'GFX/colorspace' => '',
-	);
+class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface
+{
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'GFX/image_processing' => 0,
+        'GFX/im' => 0,
+        'GFX/im_path' => '',
+        'GFX/im_path_lzw' => '',
+        'GFX/im_version_5' => '',
+        'GFX/im_v5effects' => 0,
+        'GFX/im_mask_temp_ext_gif' => 0,
+        'GFX/colorspace' => '',
+    );
 }

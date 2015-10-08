@@ -32,43 +32,44 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  *
  * @api
  */
-class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'a';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
+    /**
+     * Initialize arguments
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
+        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
+        $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
+        $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
+    }
 
-	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
-		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
-		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
-	}
+    /**
+     * @param string $uri the URI that will be put in the href attribute of the rendered link tag
+     * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
+     * @return string Rendered link
+     * @api
+     */
+    public function render($uri, $defaultScheme = 'http')
+    {
+        $scheme = parse_url($uri, PHP_URL_SCHEME);
+        if ($scheme === null && $defaultScheme !== '') {
+            $uri = $defaultScheme . '://' . $uri;
+        }
+        $this->tag->addAttribute('href', $uri);
+        $this->tag->setContent($this->renderChildren());
+        $this->tag->forceClosingTag(true);
 
-	/**
-	 * @param string $uri the URI that will be put in the href attribute of the rendered link tag
-	 * @param string $defaultScheme scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already
-	 * @return string Rendered link
-	 * @api
-	 */
-	public function render($uri, $defaultScheme = 'http') {
-		$scheme = parse_url($uri, PHP_URL_SCHEME);
-		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = $defaultScheme . '://' . $uri;
-		}
-		$this->tag->addAttribute('href', $uri);
-		$this->tag->setContent($this->renderChildren());
-		$this->tag->forceClosingTag(TRUE);
-
-		return $this->tag->render();
-	}
-
+        return $this->tag->render();
+    }
 }

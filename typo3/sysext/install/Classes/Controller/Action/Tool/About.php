@@ -19,15 +19,15 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * About page
  */
-class About extends Action\AbstractAction {
-
-	/**
-	 * Executes the tool
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		return $this->view->render();
-	}
-
+class About extends Action\AbstractAction
+{
+    /**
+     * Executes the tool
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        return $this->view->render();
+    }
 }

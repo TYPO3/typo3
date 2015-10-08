@@ -20,63 +20,62 @@ use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
 /**
  * Interface for link handlers displayed in the LinkBrowser
  */
-interface LinkHandlerInterface {
+interface LinkHandlerInterface
+{
+    /**
+     * @return array
+     */
+    public function getLinkAttributes();
 
-	/**
-	 * @return array
-	 */
-	public function getLinkAttributes();
+    /**
+     * Initialize the handler
+     *
+     * @param LinkBrowserController $linkBrowser
+     * @param string $identifier
+     * @param array $configuration Page TSconfig
+     *
+     * @return void
+     */
+    public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration);
 
-	/**
-	 * Initialize the handler
-	 *
-	 * @param LinkBrowserController $linkBrowser
-	 * @param string $identifier
-	 * @param array $configuration Page TSconfig
-	 *
-	 * @return void
-	 */
-	public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration);
+    /**
+     * Checks if this is the handler for the given link
+     *
+     * The handler may store this information locally for later usage.
+     *
+     * @param array $linkParts Link parts as returned from TypoLinkCodecService
+     *
+     * @return bool
+     */
+    public function canHandleLink(array $linkParts);
 
-	/**
-	 * Checks if this is the handler for the given link
-	 *
-	 * The handler may store this information locally for later usage.
-	 *
-	 * @param array $linkParts Link parts as returned from TypoLinkCodecService
-	 *
-	 * @return bool
-	 */
-	public function canHandleLink(array $linkParts);
+    /**
+     * Format the current link for HTML output
+     *
+     * @return string
+     */
+    public function formatCurrentUrl();
 
-	/**
-	 * Format the current link for HTML output
-	 *
-	 * @return string
-	 */
-	public function formatCurrentUrl();
+    /**
+     * Render the link handler
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return string
+     */
+    public function render(ServerRequestInterface $request);
 
-	/**
-	 * Render the link handler
-	 *
-	 * @param ServerRequestInterface $request
-	 *
-	 * @return string
-	 */
-	public function render(ServerRequestInterface $request);
+    /**
+     * Return TRUE if the handler supports to update a link.
+     *
+     * This is useful for file or page links, when only attributes are changed.
+     *
+     * @return bool
+     */
+    public function isUpdateSupported();
 
-	/**
-	 * Return TRUE if the handler supports to update a link.
-	 *
-	 * This is useful for file or page links, when only attributes are changed.
-	 *
-	 * @return bool
-	 */
-	public function isUpdateSupported();
-
-	/**
-	 * @return string[] Array of body-tag attributes
-	 */
-	public function getBodyTagAttributes();
-
+    /**
+     * @return string[] Array of body-tag attributes
+     */
+    public function getBodyTagAttributes();
 }

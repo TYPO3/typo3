@@ -27,144 +27,145 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Typically rendered for config [type=select, renderMode=tree
  */
-class SelectTreeElement extends AbstractFormElement {
+class SelectTreeElement extends AbstractFormElement
+{
+    /**
+     * Render tree widget
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $table = $this->data['tableName'];
+        $field = $this->data['fieldName'];
+        $row = $this->data['databaseRow'];
+        $parameterArray = $this->data['parameterArray'];
 
-	/**
-	 * Render tree widget
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$table = $this->data['tableName'];
-		$field = $this->data['fieldName'];
-		$row = $this->data['databaseRow'];
-		$parameterArray = $this->data['parameterArray'];
+        // Field configuration from TCA:
+        $config = $parameterArray['fieldConf']['config'];
 
-		// Field configuration from TCA:
-		$config = $parameterArray['fieldConf']['config'];
+        $possibleSelectboxItems = $config['items'];
 
-		$possibleSelectboxItems = $config['items'];
+        $selectedNodes = $parameterArray['itemFormElValue'];
 
-		$selectedNodes = $parameterArray['itemFormElValue'];
+        $selectedNodesForApi = array();
+        foreach ($selectedNodes as $selectedNode) {
+            // @todo: this is ugly - the "old" pipe based value|label syntax is re-created here at the moment
+            foreach ($possibleSelectboxItems as $possibleSelectboxItem) {
+                if ((string)$possibleSelectboxItem[1] === (string)$selectedNode) {
+                    $selectedNodesForApi[] = $selectedNode . '|' . rawurlencode($possibleSelectboxItem[0]);
+                }
+            }
+        }
 
-		$selectedNodesForApi = array();
-		foreach ($selectedNodes as $selectedNode) {
-			// @todo: this is ugly - the "old" pipe based value|label syntax is re-created here at the moment
-			foreach ($possibleSelectboxItems as $possibleSelectboxItem) {
-				if ((string)$possibleSelectboxItem[1] === (string)$selectedNode) {
-					$selectedNodesForApi[] = $selectedNode . '|' . rawurlencode($possibleSelectboxItem[0]);
-				}
-			}
-		}
+        $allowedUids = array();
+        foreach ($possibleSelectboxItems as $item) {
+            if ((int)$item[1] > 0) {
+                $allowedUids[] = $item[1];
+            }
+        }
+        $treeDataProvider = TreeDataProviderFactory::getDataProvider($config, $table, $field, $row);
+        $treeDataProvider->setSelectedList(implode(',', $selectedNodes));
+        $treeDataProvider->setItemWhiteList($allowedUids);
+        $treeDataProvider->initializeTreeData();
+        $treeRenderer = GeneralUtility::makeInstance(ExtJsArrayTreeRenderer::class);
+        $tree = GeneralUtility::makeInstance(TableConfigurationTree::class);
+        $tree->setDataProvider($treeDataProvider);
+        $tree->setNodeRenderer($treeRenderer);
+        $treeData = $tree->render();
+        $itemArray = array();
 
-		$allowedUids = array();
-		foreach ($possibleSelectboxItems as $item) {
-			if ((int)$item[1] > 0) {
-				$allowedUids[] = $item[1];
-			}
-		}
-		$treeDataProvider = TreeDataProviderFactory::getDataProvider($config, $table, $field, $row);
-		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
-		$treeDataProvider->setItemWhiteList($allowedUids);
-		$treeDataProvider->initializeTreeData();
-		$treeRenderer = GeneralUtility::makeInstance(ExtJsArrayTreeRenderer::class);
-		$tree = GeneralUtility::makeInstance(TableConfigurationTree::class);
-		$tree->setDataProvider($treeDataProvider);
-		$tree->setNodeRenderer($treeRenderer);
-		$treeData = $tree->render();
-		$itemArray = array();
+        /**
+         * @todo: Small bug here: In the past, this was the "not processed list" of default items, but now it is
+         * @todo: a full list of elements. This needs to be fixed later, so "additional" default items are shown again.
+        if (is_array($config['items'])) {
+            foreach ($config['items'] as $additionalItem) {
+                if ($additionalItem[1] !== '--div--') {
+                    $item = new \stdClass();
+                    $item->uid = $additionalItem[1];
+                    $item->text = $this->getLanguageService()->sL($additionalItem[0]);
+                    $item->selectable = TRUE;
+                    $item->leaf = TRUE;
+                    $item->checked = in_array($additionalItem[1], $selectedNodes);
+                    if (file_exists(PATH_typo3 . $additionalItem[3])) {
+                        $item->icon = $additionalItem[3];
+                    } elseif (trim($additionalItem[3]) !== '') {
+                        $item->iconCls = IconUtility::getSpriteIconClasses($additionalItem[3]);
+                    }
+                    $itemArray[] = $item;
+                }
+            }
+        }
+        */
 
-		/**
-		 * @todo: Small bug here: In the past, this was the "not processed list" of default items, but now it is
-		 * @todo: a full list of elements. This needs to be fixed later, so "additional" default items are shown again.
-		if (is_array($config['items'])) {
-			foreach ($config['items'] as $additionalItem) {
-				if ($additionalItem[1] !== '--div--') {
-					$item = new \stdClass();
-					$item->uid = $additionalItem[1];
-					$item->text = $this->getLanguageService()->sL($additionalItem[0]);
-					$item->selectable = TRUE;
-					$item->leaf = TRUE;
-					$item->checked = in_array($additionalItem[1], $selectedNodes);
-					if (file_exists(PATH_typo3 . $additionalItem[3])) {
-						$item->icon = $additionalItem[3];
-					} elseif (trim($additionalItem[3]) !== '') {
-						$item->iconCls = IconUtility::getSpriteIconClasses($additionalItem[3]);
-					}
-					$itemArray[] = $item;
-				}
-			}
-		}
-		*/
-
-		$itemArray[] = $treeData;
-		$id = md5($parameterArray['itemFormElName']);
-		if (isset($config['size']) && (int)$config['size'] > 0) {
-			$height = (int)$config['size'] * 20;
-		} else {
-			$height = 280;
-		}
-		$autoSizeMax = NULL;
-		if (isset($config['autoSizeMax']) && (int)$config['autoSizeMax'] > 0) {
-			$autoSizeMax = (int)$config['autoSizeMax'] * 20;
-		}
-		$header = FALSE;
-		$expanded = FALSE;
-		$width = 280;
-		$appearance = $config['treeConfig']['appearance'];
-		if (is_array($appearance)) {
-			$header = (bool)$appearance['showHeader'];
-			$expanded = (bool)$appearance['expandAll'];
-			if (isset($appearance['width'])) {
-				$width = (int)$appearance['width'];
-			}
-		}
-		$onChange = '';
-		if ($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) {
-			$onChange = $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
-		}
-		// Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-		// This is used for eg. "type" fields and others configured with "requestUpdate"
-		if (
-			!empty($GLOBALS['TCA'][$table]['ctrl']['type'])
-			&& $field === $GLOBALS['TCA'][$table]['ctrl']['type']
-			|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
-			&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
-		) {
-			if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-				$onChange = 'top.TYPO3.Modal.confirm(TBE_EDITOR.labels.refreshRequired.title, TBE_EDITOR.labels.refreshRequired.content).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
-			} else {
-				$onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
-			}
-		}
-		$html = '
+        $itemArray[] = $treeData;
+        $id = md5($parameterArray['itemFormElName']);
+        if (isset($config['size']) && (int)$config['size'] > 0) {
+            $height = (int)$config['size'] * 20;
+        } else {
+            $height = 280;
+        }
+        $autoSizeMax = null;
+        if (isset($config['autoSizeMax']) && (int)$config['autoSizeMax'] > 0) {
+            $autoSizeMax = (int)$config['autoSizeMax'] * 20;
+        }
+        $header = false;
+        $expanded = false;
+        $width = 280;
+        $appearance = $config['treeConfig']['appearance'];
+        if (is_array($appearance)) {
+            $header = (bool)$appearance['showHeader'];
+            $expanded = (bool)$appearance['expandAll'];
+            if (isset($appearance['width'])) {
+                $width = (int)$appearance['width'];
+            }
+        }
+        $onChange = '';
+        if ($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) {
+            $onChange = $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+        }
+        // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
+        // This is used for eg. "type" fields and others configured with "requestUpdate"
+        if (
+            !empty($GLOBALS['TCA'][$table]['ctrl']['type'])
+            && $field === $GLOBALS['TCA'][$table]['ctrl']['type']
+            || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
+            && GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
+        ) {
+            if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
+                $onChange = 'top.TYPO3.Modal.confirm(TBE_EDITOR.labels.refreshRequired.title, TBE_EDITOR.labels.refreshRequired.content).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
+            } else {
+                $onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
+            }
+        }
+        $html = '
 			<div class="typo3-tceforms-tree">
 				<input class="treeRecord" type="hidden" '
-					.  $this->getValidationDataAsDataAttribute($config)
-					. ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
-					. ' data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
-					. ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars(implode(',', $selectedNodesForApi)) . '" />
+                    .  $this->getValidationDataAsDataAttribute($config)
+                    . ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
+                    . ' data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
+                    . ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars(implode(',', $selectedNodesForApi)) . '" />
 			</div>
 			<div id="tree_' . $id . '">
 
 			</div>';
 
-		// Wizards:
-		if (empty($config['readOnly'])) {
-			$html = $this->renderWizards(
-				array($html),
-				$config['wizards'],
-				$table,
-				$row,
-				$field,
-				$parameterArray,
-				$parameterArray['itemFormElName'],
-				BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
-			);
-		}
-		$resultArray = $this->initializeResultArray();
-		$resultArray['extJSCODE'] .= LF .
-			'Ext.onReady(function() {
+        // Wizards:
+        if (empty($config['readOnly'])) {
+            $html = $this->renderWizards(
+                array($html),
+                $config['wizards'],
+                $table,
+                $row,
+                $field,
+                $parameterArray,
+                $parameterArray['itemFormElName'],
+                BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+            );
+        }
+        $resultArray = $this->initializeResultArray();
+        $resultArray['extJSCODE'] .= LF .
+            'Ext.onReady(function() {
 			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . json_encode($itemArray) . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
 				id: "' . $id . '",
@@ -214,23 +215,24 @@ class SelectTreeElement extends AbstractFormElement {
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
 				disabled: ' . ($config['readOnly'] ? 'true' : 'false') . '
 			});' . LF .
-			($autoSizeMax
-				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
-				: 'tree' . $id . '.height = ' . $height . ';'
-			) . LF .
-			'window.setTimeout(function() {
+            ($autoSizeMax
+                ? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
+                : 'tree' . $id . '.height = ' . $height . ';'
+            ) . LF .
+            'window.setTimeout(function() {
 				tree' . $id . '.render("tree_' . $id . '");
 			}, 200);
 		});';
-		$resultArray['html'] = $html;
+        $resultArray['html'] = $html;
 
-		return $resultArray;
-	}
+        return $resultArray;
+    }
 
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Request Type" exception
  */
-class InvalidRequestTypeException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidRequestTypeException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

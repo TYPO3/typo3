@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 /**
  * This is an enumeration without a default value so it must be called with a value
  */
-class MissingDefaultEnumeration extends \TYPO3\CMS\Core\Type\Enumeration {
-	const FOO = 1;
+class MissingDefaultEnumeration extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const FOO = 1;
 }

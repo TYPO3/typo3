@@ -17,97 +17,99 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 /**
  * Test case
  */
-class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class BackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
+    {
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array(), '', false);
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
+        $dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
+        $dataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array(), array(), '', false);
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
+        $columnMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, array(), array(), '', false);
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $storageBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface::class);
+        /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $domainObject = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
 
-	/**
-	 * @test
-	 */
-	public function insertRelationInRelationtableSetsMmMatchFieldsInRow() {
-		/* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array(), '', FALSE);
-		/* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
-		$dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
-		/* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
-		$dataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array(), array(), '', FALSE);
-		/* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
-		$columnMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, array(), array(), '', FALSE);
-		/* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$storageBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface::class);
-		/* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$domainObject = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
+        $mmMatchFields = array(
+            'identifier' => 'myTable:myField',
+        );
 
-		$mmMatchFields = array(
-			'identifier' => 'myTable:myField',
-		);
+        $expectedRow = array(
+            'identifier' => 'myTable:myField',
+            '' => 0
+        );
 
-		$expectedRow = array(
-			'identifier' => 'myTable:myField',
-			'' => 0
-		);
+        $columnMap
+            ->expects($this->once())
+            ->method('getRelationTableMatchFields')
+            ->will($this->returnValue($mmMatchFields));
+        $columnMap
+            ->expects($this->any())
+            ->method('getChildSortByFieldName')
+            ->will($this->returnValue(''));
+        $dataMap
+            ->expects($this->any())
+            ->method('getColumnMap')
+            ->will($this->returnValue($columnMap));
+        $dataMapper
+            ->expects($this->any())
+            ->method('getDataMap')
+            ->will($this->returnValue($dataMap));
+        $storageBackend
+            ->expects($this->once())
+            ->method('addRow')
+            ->with(null, $expectedRow, true);
 
-		$columnMap
-			->expects($this->once())
-			->method('getRelationTableMatchFields')
-			->will($this->returnValue($mmMatchFields));
-		$columnMap
-			->expects($this->any())
-			->method('getChildSortByFieldName')
-			->will($this->returnValue(''));
-		$dataMap
-			->expects($this->any())
-			->method('getColumnMap')
-			->will($this->returnValue($columnMap));
-		$dataMapper
-			->expects($this->any())
-			->method('getDataMap')
-			->will($this->returnValue($dataMap));
-		$storageBackend
-			->expects($this->once())
-			->method('addRow')
-			->with(NULL, $expectedRow, TRUE);
+        $fixture->_set('dataMapper', $dataMapper);
+        $fixture->_set('storageBackend', $storageBackend);
+        $fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
+    }
 
-		$fixture->_set('dataMapper', $dataMapper);
-		$fixture->_set('storageBackend', $storageBackend);
-		$fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
-	}
+    /**
+     * @test
+     */
+    public function getIdentifierByObjectReturnsIdentifierForNonlazyObject()
+    {
+        $fakeUuid = 'fakeUuid';
+        $configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', false);
+        $object = new \stdClass();
 
-	/**
-	 * @test
-	 */
-	public function getIdentifierByObjectReturnsIdentifierForNonlazyObject() {
-		$fakeUuid = 'fakeUuid';
-		$configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-		$session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', FALSE);
-		$object = new \stdClass();
+        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-		$session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
+        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
+        $backend->_set('session', $session);
 
-		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-		$backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
-		$backend->_set('session', $session);
+        $this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
+    }
 
-		$this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
-	}
+    /**
+     * @test
+     */
+    public function getIdentifierByObjectReturnsIdentifierForLazyObject()
+    {
+        $fakeUuid = 'fakeUuid';
+        $configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $parentObject = new \stdClass();
+        $proxy = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, array('_loadRealInstance'), array($parentObject, 'y', 'z'), '', false);
+        $session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', false);
+        $object = new \stdClass();
 
-	/**
-	 * @test
-	 */
-	public function getIdentifierByObjectReturnsIdentifierForLazyObject() {
-		$fakeUuid = 'fakeUuid';
-		$configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-		$parentObject = new \stdClass();
-		$proxy = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, array('_loadRealInstance'), array($parentObject, 'y', 'z'), '', FALSE);
-		$session = $this->getMock('stdClass', array('getIdentifierByObject'), array(), '', FALSE);
-		$object = new \stdClass();
+        $proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));
+        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
-		$proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));
-		$session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
+        $backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
+        $backend->_set('session', $session);
 
-		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend $backend */
-		$backend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($configurationManager));
-		$backend->_set('session', $session);
-
-		$this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
-	}
-
+        $this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
+    }
 }

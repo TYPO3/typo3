@@ -19,39 +19,39 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * @api
  */
-interface ResponseInterface {
+interface ResponseInterface
+{
+    /**
+     * Overrides and sets the content of the response
+     *
+     * @param string $content The response content
+     * @return void
+     * @api
+     */
+    public function setContent($content);
 
-	/**
-	 * Overrides and sets the content of the response
-	 *
-	 * @param string $content The response content
-	 * @return void
-	 * @api
-	 */
-	public function setContent($content);
+    /**
+     * Appends content to the already existing content.
+     *
+     * @param string $content More response content
+     * @return void
+     * @api
+     */
+    public function appendContent($content);
 
-	/**
-	 * Appends content to the already existing content.
-	 *
-	 * @param string $content More response content
-	 * @return void
-	 * @api
-	 */
-	public function appendContent($content);
+    /**
+     * Returns the response content without sending it.
+     *
+     * @return string The response content
+     * @api
+     */
+    public function getContent();
 
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 * @api
-	 */
-	public function getContent();
-
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 * @api
-	 */
-	public function shutdown();
+    /**
+     * Returns the response content without sending it.
+     *
+     * @return string The response content
+     * @api
+     */
+    public function shutdown();
 }

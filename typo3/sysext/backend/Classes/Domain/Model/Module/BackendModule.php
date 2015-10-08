@@ -17,253 +17,274 @@ namespace TYPO3\CMS\Backend\Domain\Model\Module;
 /**
  * Model for menu entries
  */
-class BackendModule {
+class BackendModule
+{
+    /**
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * @var string
+     */
+    protected $icon = '';
 
-	/**
-	 * @var string
-	 */
-	protected $icon = '';
+    /**
+     * @var string
+     */
+    protected $link = '';
 
-	/**
-	 * @var string
-	 */
-	protected $link = '';
+    /**
+     * @var string
+     */
+    protected $onClick = '';
 
-	/**
-	 * @var string
-	 */
-	protected $onClick = '';
+    /**
+     * @var string
+     */
+    protected $description = '';
 
-	/**
-	 * @var string
-	 */
-	protected $description = '';
+    /**
+     * @var string
+     */
+    protected $navigationComponentId = '';
 
-	/**
-	 * @var string
-	 */
-	protected $navigationComponentId = '';
+    /**
+     * @var string
+     */
+    protected $navigationFrameScript = '';
 
-	/**
-	 * @var string
-	 */
-	protected $navigationFrameScript = '';
+    /**
+     * @var string
+     */
+    protected $navigationFrameScriptParameters = '';
 
-	/**
-	 * @var string
-	 */
-	protected $navigationFrameScriptParameters = '';
+    /**
+     * @var \SplObjectStorage
+     */
+    protected $children;
 
-	/**
-	 * @var \SplObjectStorage
-	 */
-	protected $children;
+    /**
+     * construct
+     */
+    public function __construct()
+    {
+        $this->children = new \SplObjectStorage();
+    }
 
-	/**
-	 * construct
-	 */
-	public function __construct() {
-		$this->children = new \SplObjectStorage();
-	}
+    /**
+     * Set children
+     *
+     * @param \SplObjectStorage $children
+     * @return void
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
 
-	/**
-	 * Set children
-	 *
-	 * @param \SplObjectStorage $children
-	 * @return void
-	 */
-	public function setChildren($children) {
-		$this->children = $children;
-	}
+    /**
+     * Get children
+     *
+     * @return \SplObjectStorage
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
 
-	/**
-	 * Get children
-	 *
-	 * @return \SplObjectStorage
-	 */
-	public function getChildren() {
-		return $this->children;
-	}
+    /**
+     * Add Child
+     *
+     * @param \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child
+     * @return void
+     */
+    public function addChild(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child)
+    {
+        $this->children->attach($child);
+    }
 
-	/**
-	 * Add Child
-	 *
-	 * @param \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child
-	 * @return void
-	 */
-	public function addChild(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child) {
-		$this->children->attach($child);
-	}
+    /**
+     * Set icon
+     *
+     * @param string $icon
+     * @return void
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+    }
 
-	/**
-	 * Set icon
-	 *
-	 * @param string $icon
-	 * @return void
-	 */
-	public function setIcon($icon) {
-		$this->icon = $icon;
-	}
+    /**
+     * Get icon
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
 
-	/**
-	 * Get icon
-	 *
-	 * @return string
-	 */
-	public function getIcon() {
-		return $this->icon;
-	}
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Set name
-	 *
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Get name
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * Set title
-	 *
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * Get Title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Get Title
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Set Link
+     *
+     * @param string $link
+     * @return void
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
 
-	/**
-	 * Set Link
-	 *
-	 * @param string $link
-	 * @return void
-	 */
-	public function setLink($link) {
-		$this->link = $link;
-	}
+    /**
+     * Get Link
+     *
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
 
-	/**
-	 * Get Link
-	 *
-	 * @return string
-	 */
-	public function getLink() {
-		return $this->link;
-	}
+    /**
+     * Set Description
+     *
+     * @param string $description
+     * @return void
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
 
-	/**
-	 * Set Description
-	 *
-	 * @param string $description
-	 * @return void
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
-	}
+    /**
+     * Get Description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * Get Description
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * Set Navigation Component Id
+     *
+     * @param string $navigationComponentId
+     * @return void
+     */
+    public function setNavigationComponentId($navigationComponentId)
+    {
+        $this->navigationComponentId = $navigationComponentId;
+    }
 
-	/**
-	 * Set Navigation Component Id
-	 *
-	 * @param string $navigationComponentId
-	 * @return void
-	 */
-	public function setNavigationComponentId($navigationComponentId) {
-		$this->navigationComponentId = $navigationComponentId;
-	}
+    /**
+     * Get Navigation Component Id
+     *
+     * @return string
+     */
+    public function getNavigationComponentId()
+    {
+        return $this->navigationComponentId;
+    }
 
-	/**
-	 * Get Navigation Component Id
-	 *
-	 * @return string
-	 */
-	public function getNavigationComponentId() {
-		return $this->navigationComponentId;
-	}
+    /**
+     * @param string $navigationFrameScript
+     */
+    public function setNavigationFrameScript($navigationFrameScript)
+    {
+        $this->navigationFrameScript = $navigationFrameScript;
+    }
 
-	/**
-	 * @param string $navigationFrameScript
-	 */
-	public function setNavigationFrameScript($navigationFrameScript) {
-		$this->navigationFrameScript = $navigationFrameScript;
-	}
+    /**
+     * @return string
+     */
+    public function getNavigationFrameScript()
+    {
+        return $this->navigationFrameScript;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getNavigationFrameScript() {
-		return $this->navigationFrameScript;
-	}
+    /**
+     * @param string $navigationFrameScriptParameters
+     */
+    public function setNavigationFrameScriptParameters($navigationFrameScriptParameters)
+    {
+        $this->navigationFrameScriptParameters = $navigationFrameScriptParameters;
+    }
 
-	/**
-	 * @param string $navigationFrameScriptParameters
-	 */
-	public function setNavigationFrameScriptParameters($navigationFrameScriptParameters) {
-		$this->navigationFrameScriptParameters = $navigationFrameScriptParameters;
-	}
+    /**
+     * @return string
+     */
+    public function getNavigationFrameScriptParameters()
+    {
+        return $this->navigationFrameScriptParameters;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getNavigationFrameScriptParameters() {
-		return $this->navigationFrameScriptParameters;
-	}
+    /**
+     * Set onClick
+     *
+     * @param string $onClick
+     * @return void
+     */
+    public function setOnClick($onClick)
+    {
+        $this->onClick = $onClick;
+    }
 
-	/**
-	 * Set onClick
-	 *
-	 * @param string $onClick
-	 * @return void
-	 */
-	public function setOnClick($onClick) {
-		$this->onClick = $onClick;
-	}
-
-	/**
-	 * Get onClick
-	 *
-	 * @return string
-	 */
-	public function getOnClick() {
-		return $this->onClick;
-	}
-
+    /**
+     * Get onClick
+     *
+     * @return string
+     */
+    public function getOnClick()
+    {
+        return $this->onClick;
+    }
 }

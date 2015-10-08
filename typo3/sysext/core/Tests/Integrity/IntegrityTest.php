@@ -22,23 +22,23 @@ namespace TYPO3\CMS\Core\Tests\Integrity;
  * should fail if some other test before destroys the environment with
  * invalid mocking or backups.
  */
-class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * This test fails if some test before called
-	 * \TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances() without a proper
-	 * backup via \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances()
-	 * and a reconstitution via \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances().
-	 *
-	 * The test for CacheManager should never fail since this object is
-	 * already instantiated during bootstrap and must always be there.
-	 *
-	 * @test
-	 */
-	public function standardSingletonIsRegistered() {
-		$registeredSingletons = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->assertArrayHasKey(\TYPO3\CMS\Core\Cache\CacheManager::class, $registeredSingletons);
-		$this->assertTrue($registeredSingletons[\TYPO3\CMS\Core\Cache\CacheManager::class] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
-	}
-
+class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * This test fails if some test before called
+     * \TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances() without a proper
+     * backup via \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances()
+     * and a reconstitution via \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances().
+     *
+     * The test for CacheManager should never fail since this object is
+     * already instantiated during bootstrap and must always be there.
+     *
+     * @test
+     */
+    public function standardSingletonIsRegistered()
+    {
+        $registeredSingletons = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+        $this->assertArrayHasKey(\TYPO3\CMS\Core\Cache\CacheManager::class, $registeredSingletons);
+        $this->assertTrue($registeredSingletons[\TYPO3\CMS\Core\Cache\CacheManager::class] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
+    }
 }

@@ -11,8 +11,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
@@ -43,82 +41,84 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface, CompilableInterface {
+class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface, CompilableInterface
+{
+    /**
+     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+     * @var array
+     */
+    private $childNodes = array();
 
-	/**
-	 * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
-	 * @var array
-	 */
-	private $childNodes = array();
+    /**
+     * @var mixed
+     */
+    protected $backupSwitchExpression = null;
 
-	/**
-	 * @var mixed
-	 */
-	protected $backupSwitchExpression = NULL;
+    /**
+     * @var bool
+     */
+    protected $backupBreakState = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $backupBreakState = FALSE;
+    /**
+     * Setter for ChildNodes - as defined in ChildNodeAccessInterface
+     *
+     * @param array $childNodes Child nodes of this syntax tree node
+     * @return void
+     */
+    public function setChildNodes(array $childNodes)
+    {
+        $this->childNodes = $childNodes;
+    }
 
-	/**
-	 * Setter for ChildNodes - as defined in ChildNodeAccessInterface
-	 *
-	 * @param array $childNodes Child nodes of this syntax tree node
-	 * @return void
-	 */
-	public function setChildNodes(array $childNodes) {
-		$this->childNodes = $childNodes;
-	}
+    /**
+     * @param mixed $expression
+     * @return string the rendered string
+     * @api
+     */
+    public function render($expression)
+    {
+        return static::renderStatic(
+            array(
+                'expression' => $expression
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param mixed $expression
-	 * @return string the rendered string
-	 * @api
-	 */
-	public function render($expression) {
-		return static::renderStatic(
-			array(
-				'expression' => $expression
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Default implementation for CompilableInterface. See CompilableInterface
+     * for a detailed description of this method.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
+     * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
 
-	/**
-	 * Default implementation for CompilableInterface. See CompilableInterface
-	 * for a detailed description of this method.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return mixed
-	 * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+        $stackValue = array(
+            'expression' => $arguments['expression'],
+            'break' => false
+        );
 
-		$stackValue = array(
-			'expression' => $arguments['expression'],
-			'break' => FALSE
-		);
+        if ($viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
+            $stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+        } else {
+            $stateStack = array();
+        }
+        $stateStack[] = $stackValue;
+        $viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
 
-		if ($viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
-			$stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
-		} else {
-			$stateStack = array();
-		}
-		$stateStack[] = $stackValue;
-		$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
+        $result = $renderChildrenClosure();
 
-		$result = $renderChildrenClosure();
+        $stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+        array_pop($stateStack);
+        $viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
 
-		$stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
-		array_pop($stateStack);
-		$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

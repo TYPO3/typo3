@@ -1,2 +1,2 @@
 <?php
-	throw new \RuntimeException('Unit test', 1359900487);
+    throw new \RuntimeException('Unit test', 1359900487);

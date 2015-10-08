@@ -11,7 +11,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
@@ -48,35 +47,36 @@ use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
  *
  * @api
  */
-class CommentViewHelper extends AbstractViewHelper implements CompilableInterface {
+class CommentViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Comments out the tag content
+     *
+     * @return string
+     * @api
+     */
+    public function render()
+    {
+        return '';
+    }
 
-	/**
-	 * Comments out the tag content
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function render() {
-		return '';
-	}
-
-	/**
-	 * The inner contents of a comment should not be rendered.
-	 *
-	 * @param string $argumentsVariableName
-	 * @param string $renderChildrenClosureVariableName
-	 * @param string $initializationPhpCode
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
-	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
-	 * @return string
-	 */
-	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, AbstractNode $syntaxTreeNode, TemplateCompiler $templateCompiler) {
-		return '\'\'';
-	}
-
+    /**
+     * The inner contents of a comment should not be rendered.
+     *
+     * @param string $argumentsVariableName
+     * @param string $renderChildrenClosureVariableName
+     * @param string $initializationPhpCode
+     * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+     * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
+     * @return string
+     */
+    public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, AbstractNode $syntaxTreeNode, TemplateCompiler $templateCompiler)
+    {
+        return '\'\'';
+    }
 }

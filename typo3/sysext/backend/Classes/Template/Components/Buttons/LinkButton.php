@@ -32,90 +32,95 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */
-class LinkButton extends AbstractButton implements ButtonInterface {
+class LinkButton extends AbstractButton implements ButtonInterface
+{
+    /**
+     * HREF attribute of the link
+     *
+     * @var string
+     */
+    protected $href = '';
 
-	/**
-	 * HREF attribute of the link
-	 *
-	 * @var string
-	 */
-	protected $href = '';
+    /**
+     * Get href
+     *
+     * @return string
+     */
+    public function getHref()
+    {
+        return $this->href;
+    }
 
-	/**
-	 * Get href
-	 *
-	 * @return string
-	 */
-	public function getHref() {
-		return $this->href;
-	}
+    /**
+     * Set href
+     *
+     * @param string $href HREF attribute
+     *
+     * @return LinkButton
+     */
+    public function setHref($href)
+    {
+        $this->href = $href;
+        return $this;
+    }
 
-	/**
-	 * Set href
-	 *
-	 * @param string $href HREF attribute
-	 *
-	 * @return LinkButton
-	 */
-	public function setHref($href) {
-		$this->href = $href;
-		return $this;
-	}
+    /**
+     * Validates the current button
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        if (
+            trim($this->getHref()) !== ''
+            && trim($this->getTitle()) !== ''
+            && $this->getType() === LinkButton::class
+            && $this->getIcon() !== null
+        ) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Validates the current button
-	 *
-	 * @return bool
-	 */
-	public function isValid() {
-		if (
-			trim($this->getHref()) !== ''
-			&& trim($this->getTitle()) !== ''
-			&& $this->getType() === LinkButton::class
-			&& $this->getIcon() !== NULL
-		) {
-			return TRUE;
-		}
-		return FALSE;
-	}
+    /**
+     * Renders the markup for the button
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $attributes = array(
+            'href' => $this->getHref(),
+            'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+            'title' => $this->getTitle()
+        );
+        $labelText = '';
+        if ($this->showLabelText) {
+            $labelText = ' ' . $this->title;
+        }
+        foreach ($this->dataAttributes as $attributeName => $attributeValue) {
+            $attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
+        }
+        if ($this->onClick !== '') {
+            $attributes['onclick'] = $this->onClick;
+        }
+        $attributesString = '';
+        foreach ($attributes as $key => $value) {
+            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+        }
 
-	/**
-	 * Renders the markup for the button
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$attributes = array(
-			'href' => $this->getHref(),
-			'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
-			'title' => $this->getTitle()
-		);
-		$labelText = '';
-		if ($this->showLabelText) {
-			$labelText = ' ' . $this->title;
-		}
-		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
-			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
-		}
-		if ($this->onClick !== '') {
-			$attributes['onclick'] = $this->onClick;
-		}
-		$attributesString = '';
-		foreach ($attributes as $key => $value) {
-			$attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-		}
+        return '<a ' . $attributesString . '>'
+            . $this->getIcon()->render() . htmlspecialchars($labelText)
+        . '</a>';
+    }
 
-		return '<a ' . $attributesString . '>'
-			. $this->getIcon()->render() . htmlspecialchars($labelText)
-		. '</a>';
-	}
-
-	/**
-	 * Magic method so Fluid can access a button via {button}
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
-	}
+    /**
+     * Magic method so Fluid can access a button via {button}
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

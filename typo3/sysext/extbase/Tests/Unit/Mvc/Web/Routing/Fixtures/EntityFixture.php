@@ -18,7 +18,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Fixture overwriting uid
  */
-class EntityFixture extends AbstractEntity {
-	public $name;
-	public $uid;
+class EntityFixture extends AbstractEntity
+{
+    public $name;
+    public $uid;
 }

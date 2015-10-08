@@ -19,75 +19,83 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class GeneralUtilityFixture
  */
-class GeneralUtilityFixture extends GeneralUtility {
-	const DEPRECATION_LOG_PATH = 'typo3temp/test_deprecation/test.log';
+class GeneralUtilityFixture extends GeneralUtility
+{
+    const DEPRECATION_LOG_PATH = 'typo3temp/test_deprecation/test.log';
 
-	/**
-	 * @var int
-	 */
-	static public $isAllowedHostHeaderValueCallCount = 0;
+    /**
+     * @var int
+     */
+    public static $isAllowedHostHeaderValueCallCount = 0;
 
-	/**
-	 * Tracks number of calls done to this method
-	 *
-	 * @param string $hostHeaderValue Host name without port
-	 * @return bool
-	 */
-	static public function isAllowedHostHeaderValue($hostHeaderValue) {
-		self::$isAllowedHostHeaderValueCallCount++;
-		return parent::isAllowedHostHeaderValue($hostHeaderValue);
-	}
+    /**
+     * Tracks number of calls done to this method
+     *
+     * @param string $hostHeaderValue Host name without port
+     * @return bool
+     */
+    public static function isAllowedHostHeaderValue($hostHeaderValue)
+    {
+        self::$isAllowedHostHeaderValueCallCount++;
+        return parent::isAllowedHostHeaderValue($hostHeaderValue);
+    }
 
-	/**
-	 * @param bool $allowHostHeaderValue
-	 */
-	static public function setAllowHostHeaderValue($allowHostHeaderValue) {
-		static::$allowHostHeaderValue = $allowHostHeaderValue;
-	}
+    /**
+     * @param bool $allowHostHeaderValue
+     */
+    public static function setAllowHostHeaderValue($allowHostHeaderValue)
+    {
+        static::$allowHostHeaderValue = $allowHostHeaderValue;
+    }
 
-	/**
-	 * For testing we must not generally allow HTTP Host headers
-	 *
-	 * @return bool
-	 */
-	static protected function isInternalRequestType() {
-		return FALSE;
-	}
+    /**
+     * For testing we must not generally allow HTTP Host headers
+     *
+     * @return bool
+     */
+    protected static function isInternalRequestType()
+    {
+        return false;
+    }
 
-	/**
-	 * Parses HTTP headers and returns the content of the "Location" header
-	 * or the empty string if no such header found.
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	static public function getRedirectUrlFromHttpHeaders($content) {
-		return parent::getRedirectUrlFromHttpHeaders($content);
-	}
+    /**
+     * Parses HTTP headers and returns the content of the "Location" header
+     * or the empty string if no such header found.
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function getRedirectUrlFromHttpHeaders($content)
+    {
+        return parent::getRedirectUrlFromHttpHeaders($content);
+    }
 
-	/**
-	 * Strips HTTP headers from the content.
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	static public function stripHttpHeaders($content) {
-		return parent::stripHttpHeaders($content);
-	}
+    /**
+     * Strips HTTP headers from the content.
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function stripHttpHeaders($content)
+    {
+        return parent::stripHttpHeaders($content);
+    }
 
-	/**
-	 * Gets the absolute path to the deprecation log file.
-	 *
-	 * @return string Absolute path to the deprecation log file
-	 */
-	static public function getDeprecationLogFileName() {
-		return PATH_site . static::DEPRECATION_LOG_PATH;
-	}
+    /**
+     * Gets the absolute path to the deprecation log file.
+     *
+     * @return string Absolute path to the deprecation log file
+     */
+    public static function getDeprecationLogFileName()
+    {
+        return PATH_site . static::DEPRECATION_LOG_PATH;
+    }
 
-	/**
-	 * Resets the internal computed class name cache.
-	 */
-	static public function resetFinalClassNameCache() {
-		static::$finalClassNameCache = array();
-	}
+    /**
+     * Resets the internal computed class name cache.
+     */
+    public static function resetFinalClassNameCache()
+    {
+        static::$finalClassNameCache = array();
+    }
 }

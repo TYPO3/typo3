@@ -16,232 +16,239 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+{
+    /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
+     */
+    protected $blogRepository;
 
-	/**
-	 * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
-	 */
-	protected $blogRepository;
+    /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository
+     */
+    protected $postRepository;
 
-	/**
-	 * @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository
-	 */
-	protected $postRepository;
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array('extbase', 'fluid');
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-	 */
-	protected $objectManager;
+    /**
+     * Sets up this test suite.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Sets up this test suite.
-	 */
-	protected function setUp() {
-		parent::setUp();
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
 
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
+        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+    }
 
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
-		$this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+    /**
+     * @test
+     */
+    public function inConditionWorksWithArrayOfObjects()
+    {
+        $blog1 = $this->blogRepository->findByUid(1);
+        $blog2 = $this->blogRepository->findByUid(2);
 
-	}
+        $inQuery = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithArrayOfObjects() {
-		$blog1 = $this->blogRepository->findByUid(1);
-		$blog2 = $this->blogRepository->findByUid(2);
+        $inQuery->matching(
+            $inQuery->in('blog', array($blog1, $blog2))
+        );
 
-		$inQuery = $this->postRepository->createQuery();
+        $this->assertSame(11, $inQuery->count());
+    }
 
-		$inQuery->matching(
-			$inQuery->in('blog', array($blog1, $blog2))
-		);
+    /**
+     * @test
+     */
+    public function inConditionWorksWithArrayOfObjectsOnSecondCall()
+    {
+        $blog1 = $this->blogRepository->findByUid(1);
+        $blog2 = $this->blogRepository->findByUid(2);
 
-		$this->assertSame(11, $inQuery->count());
-	}
+        $inQuery = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithArrayOfObjectsOnSecondCall() {
-		$blog1 = $this->blogRepository->findByUid(1);
-		$blog2 = $this->blogRepository->findByUid(2);
+        $inQuery->matching(
+            $inQuery->in('blog', array($blog1, $blog2))
+        );
 
-		$inQuery = $this->postRepository->createQuery();
+        $this->assertSame(11, $inQuery->count());
 
-		$inQuery->matching(
-			$inQuery->in('blog', array($blog1, $blog2))
-		);
+        $newInQuery = $this->postRepository->createQuery();
 
-		$this->assertSame(11, $inQuery->count());
+        $newInQuery->matching(
+            $newInQuery->in('blog', array($blog1))
+        );
 
-		$newInQuery = $this->postRepository->createQuery();
+        $this->assertSame(10, $newInQuery->count());
+    }
 
-		$newInQuery->matching(
-			$newInQuery->in('blog', array($blog1))
-		);
+    /**
+     * @test
+     */
+    public function inConditionWorksWithObjectStorage()
+    {
+        $blog1 = $this->blogRepository->findByUid(1);
+        $blog2 = $this->blogRepository->findByUid(2);
 
-		$this->assertSame(10, $newInQuery->count());
-	}
+        $objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+        $objectStorage->attach($blog1);
+        $objectStorage->attach($blog2);
 
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithObjectStorage() {
-		$blog1 = $this->blogRepository->findByUid(1);
-		$blog2 = $this->blogRepository->findByUid(2);
+        $inQuery = $this->postRepository->createQuery();
 
-		$objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
-		$objectStorage->attach($blog1);
-		$objectStorage->attach($blog2);
+        $inQuery->matching(
+            $inQuery->in('blog', $objectStorage)
+        );
 
-		$inQuery = $this->postRepository->createQuery();
+        $this->assertSame(11, $inQuery->count());
+    }
 
-		$inQuery->matching(
-			$inQuery->in('blog', $objectStorage)
-		);
+    /**
+     * @test
+     */
+    public function inConditionWorksWithObjectStorageOnSecondCall()
+    {
+        $blog1 = $this->blogRepository->findByUid(1);
+        $blog2 = $this->blogRepository->findByUid(2);
 
-		$this->assertSame(11, $inQuery->count());
-	}
+        $objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+        $objectStorage->attach($blog1);
+        $objectStorage->attach($blog2);
 
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithObjectStorageOnSecondCall() {
-		$blog1 = $this->blogRepository->findByUid(1);
-		$blog2 = $this->blogRepository->findByUid(2);
+        $inQuery = $this->postRepository->createQuery();
 
-		$objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
-		$objectStorage->attach($blog1);
-		$objectStorage->attach($blog2);
+        $inQuery->matching(
+            $inQuery->in('blog', $objectStorage)
+        );
 
-		$inQuery = $this->postRepository->createQuery();
+        $this->assertSame(11, $inQuery->count());
 
-		$inQuery->matching(
-			$inQuery->in('blog', $objectStorage)
-		);
+        $newObjectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+        $newObjectStorage->attach($blog1);
 
-		$this->assertSame(11, $inQuery->count());
+        $newInQuery = $this->postRepository->createQuery();
 
-		$newObjectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
-		$newObjectStorage->attach($blog1);
+        $newInQuery->matching(
+            $newInQuery->in('blog', $newObjectStorage)
+        );
 
-		$newInQuery = $this->postRepository->createQuery();
+        $this->assertSame(10, $newInQuery->count());
+    }
 
-		$newInQuery->matching(
-			$newInQuery->in('blog', $newObjectStorage)
-		);
+    /**
+     * @test
+     */
+    public function inConditionWorksWithQueryResult()
+    {
+        $query = $this->blogRepository->createQuery();
+        $query->matching($query->in('uid', array(1, 2)));
+        $queryResult = $query->execute();
 
-		$this->assertSame(10, $newInQuery->count());
-	}
+        $inQuery = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithQueryResult() {
-		$query = $this->blogRepository->createQuery();
-		$query->matching($query->in('uid', array(1,2)));
-		$queryResult = $query->execute();
+        $inQuery->matching(
+            $inQuery->in('blog', $queryResult)
+        );
 
-		$inQuery = $this->postRepository->createQuery();
-
-		$inQuery->matching(
-			$inQuery->in('blog', $queryResult)
-		);
-
-		$this->assertSame(11, $inQuery->count());
-	}
-
-
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithQueryResultOnSecondCall() {
-		$query = $this->blogRepository->createQuery();
-		$query->matching($query->in('uid', array(1,2)));
-		$queryResult = $query->execute();
-
-		$inQuery = $this->postRepository->createQuery();
-
-		$inQuery->matching(
-			$inQuery->in('blog', $queryResult)
-		);
-
-		$this->assertSame(11, $inQuery->count());
-
-		$newInQuery = $this->postRepository->createQuery();
-
-		$newInQuery->matching(
-			$newInQuery->in('blog', $queryResult)
-		);
-
-		$this->assertSame(11, $newInQuery->count());
-	}
-
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithLazyObjectStorage() {
-		$blog = $this->blogRepository->findByUid(1);
-
-		$this->assertInstanceOf(
-			\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
-			$blog->getPosts()
-		);
-
-		$inQuery = $this->postRepository->createQuery();
-
-		$inQuery->matching(
-			$inQuery->in('uid', $blog->getPosts())
-		);
-
-		$this->assertSame(10, $inQuery->count());
-	}
-
-	/**
-	 * @test
-	 */
-	public function inConditionWorksWithLazyObjectStorageOnSecondCall() {
-		$blog = $this->blogRepository->findByUid(1);
-
-		$this->assertInstanceOf(
-			\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
-			$blog->getPosts()
-		);
-
-		$inQuery = $this->postRepository->createQuery();
-
-		$inQuery->matching(
-			$inQuery->in('uid', $blog->getPosts())
-		);
-
-		$this->assertSame(10, $inQuery->count());
+        $this->assertSame(11, $inQuery->count());
+    }
 
 
-		$newInQuery = $this->postRepository->createQuery();
+    /**
+     * @test
+     */
+    public function inConditionWorksWithQueryResultOnSecondCall()
+    {
+        $query = $this->blogRepository->createQuery();
+        $query->matching($query->in('uid', array(1, 2)));
+        $queryResult = $query->execute();
 
-		$newInQuery->matching(
-			$newInQuery->in('uid', $blog->getPosts())
-		);
+        $inQuery = $this->postRepository->createQuery();
 
-		$this->assertSame(10, $newInQuery->count());
-	}
+        $inQuery->matching(
+            $inQuery->in('blog', $queryResult)
+        );
 
+        $this->assertSame(11, $inQuery->count());
+
+        $newInQuery = $this->postRepository->createQuery();
+
+        $newInQuery->matching(
+            $newInQuery->in('blog', $queryResult)
+        );
+
+        $this->assertSame(11, $newInQuery->count());
+    }
+
+    /**
+     * @test
+     */
+    public function inConditionWorksWithLazyObjectStorage()
+    {
+        $blog = $this->blogRepository->findByUid(1);
+
+        $this->assertInstanceOf(
+            \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
+            $blog->getPosts()
+        );
+
+        $inQuery = $this->postRepository->createQuery();
+
+        $inQuery->matching(
+            $inQuery->in('uid', $blog->getPosts())
+        );
+
+        $this->assertSame(10, $inQuery->count());
+    }
+
+    /**
+     * @test
+     */
+    public function inConditionWorksWithLazyObjectStorageOnSecondCall()
+    {
+        $blog = $this->blogRepository->findByUid(1);
+
+        $this->assertInstanceOf(
+            \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
+            $blog->getPosts()
+        );
+
+        $inQuery = $this->postRepository->createQuery();
+
+        $inQuery->matching(
+            $inQuery->in('uid', $blog->getPosts())
+        );
+
+        $this->assertSame(10, $inQuery->count());
+
+
+        $newInQuery = $this->postRepository->createQuery();
+
+        $newInQuery->matching(
+            $newInQuery->in('uid', $blog->getPosts())
+        );
+
+        $this->assertSame(10, $newInQuery->count());
+    }
 }

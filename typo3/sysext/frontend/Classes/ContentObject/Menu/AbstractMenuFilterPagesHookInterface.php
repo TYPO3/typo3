@@ -17,17 +17,16 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 /**
  * interface for classes which hook into AbstractMenuContentObject
  */
-interface AbstractMenuFilterPagesHookInterface {
-
-	/**
-	 * Checks if a page is OK to include in the final menu item array.
-	 *
-	 * @param array $data Array of menu items
-	 * @param array $banUidArray Array of page uids which are to be excluded
-	 * @param bool $spacer If set, then the page is a spacer.
-	 * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj The menu object
-	 * @return bool Returns TRUE if the page can be safely included.
-	 */
-	public function processFilter(array &$data, array $banUidArray, $spacer, AbstractMenuContentObject $obj);
-
+interface AbstractMenuFilterPagesHookInterface
+{
+    /**
+     * Checks if a page is OK to include in the final menu item array.
+     *
+     * @param array $data Array of menu items
+     * @param array $banUidArray Array of page uids which are to be excluded
+     * @param bool $spacer If set, then the page is a spacer.
+     * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj The menu object
+     * @return bool Returns TRUE if the page can be safely included.
+     */
+    public function processFilter(array &$data, array $banUidArray, $spacer, AbstractMenuContentObject $obj);
 }

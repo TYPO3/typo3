@@ -24,57 +24,58 @@ use TYPO3\CMS\Lang\LanguageService;
  * list of specific fields. Access rights are checked here and globalOption array
  * is prepared for further processing of single fields by PaletteAndSingleContainer.
  */
-class ListOfFieldsContainer extends AbstractContainer {
+class ListOfFieldsContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $table = $this->data['tableName'];
+        $fieldListToRender = $this->data['fieldListToRender'];
+        $recordTypeValue = $this->data['recordTypeValue'];
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$table = $this->data['tableName'];
-		$fieldListToRender = $this->data['fieldListToRender'];
-		$recordTypeValue = $this->data['recordTypeValue'];
+        // Load the description content for the table if requested
+        if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+            $languageService = $this->getLanguageService();
+            $languageService->loadSingleTableDescription($table);
+        }
 
-		// Load the description content for the table if requested
-		if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
-			$languageService = $this->getLanguageService();
-			$languageService->loadSingleTableDescription($table);
-		}
+        $fieldListToRender = array_unique(GeneralUtility::trimExplode(',', $fieldListToRender, true));
 
-		$fieldListToRender = array_unique(GeneralUtility::trimExplode(',', $fieldListToRender, TRUE));
+        $fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+        $fieldsByShowitem = GeneralUtility::trimExplode(',', $fieldsByShowitem, true);
 
-		$fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
-		$fieldsByShowitem = GeneralUtility::trimExplode(',', $fieldsByShowitem, TRUE);
+        $finalFieldsList = array();
+        foreach ($fieldListToRender as $fieldName) {
+            $found = false;
+            foreach ($fieldsByShowitem as $fieldByShowitem) {
+                $fieldByShowitemArray = $this->explodeSingleFieldShowItemConfiguration($fieldByShowitem);
+                if ($fieldByShowitemArray['fieldName'] === $fieldName) {
+                    $found = true;
+                    $finalFieldsList[] = implode(';', $fieldByShowitemArray);
+                    break;
+                }
+            }
+            if (!$found) {
+                // @todo: Field is shown even if it is not in type showitem list? Will be shown if field is in a palette.
+                $finalFieldsList[] = $fieldName;
+            }
+        }
 
-		$finalFieldsList = array();
-		foreach ($fieldListToRender as $fieldName) {
-			$found = FALSE;
-			foreach ($fieldsByShowitem as $fieldByShowitem) {
-				$fieldByShowitemArray = $this->explodeSingleFieldShowItemConfiguration($fieldByShowitem);
-				if ($fieldByShowitemArray['fieldName'] === $fieldName) {
-					$found = TRUE;
-					$finalFieldsList[] = implode(';', $fieldByShowitemArray);
-					break;
-				}
-			}
-			if (!$found) {
-				// @todo: Field is shown even if it is not in type showitem list? Will be shown if field is in a palette.
-				$finalFieldsList[] = $fieldName;
-			}
-		}
+        $options = $this->data;
+        $options['fieldsArray'] = $finalFieldsList;
+        $options['renderType'] = 'paletteAndSingleContainer';
+        return $this->nodeFactory->create($options)->render();
+    }
 
-		$options = $this->data;
-		$options['fieldsArray'] = $finalFieldsList;
-		$options['renderType'] = 'paletteAndSingleContainer';
-		return $this->nodeFactory->create($options)->render();
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

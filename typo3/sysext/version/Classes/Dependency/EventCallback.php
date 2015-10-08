@@ -17,47 +17,48 @@ namespace TYPO3\CMS\Version\Dependency;
 /**
  * Object to hold information on a callback to a defined object and method.
  */
-class EventCallback {
+class EventCallback
+{
+    /**
+     * @var object
+     */
+    protected $object;
 
-	/**
-	 * @var object
-	 */
-	protected $object;
+    /**
+     * @var string
+     */
+    protected $method;
 
-	/**
-	 * @var string
-	 */
-	protected $method;
+    /**
+     * @var array
+     */
+    protected $targetArguments;
 
-	/**
-	 * @var array
-	 */
-	protected $targetArguments;
+    /**
+     * Creates the objects.
+     *
+     * @param object $object
+     * @param string $method
+     * @param array $targetArguments (optional)
+     */
+    public function __construct($object, $method, array $targetArguments = array())
+    {
+        $this->object = $object;
+        $this->method = $method;
+        $this->targetArguments = $targetArguments;
+        $this->targetArguments['target'] = $object;
+    }
 
-	/**
-	 * Creates the objects.
-	 *
-	 * @param object $object
-	 * @param string $method
-	 * @param array $targetArguments (optional)
-	 */
-	public function __construct($object, $method, array $targetArguments = array()) {
-		$this->object = $object;
-		$this->method = $method;
-		$this->targetArguments = $targetArguments;
-		$this->targetArguments['target'] = $object;
-	}
-
-	/**
-	 * Executes the callback.
-	 *
-	 * @param array $callerArguments
-	 * @param object $caller
-	 * @param string $eventName
-	 * @return mixed
-	 */
-	public function execute(array $callerArguments = array(), $caller, $eventName) {
-		return call_user_func_array(array($this->object, $this->method), array($callerArguments, $this->targetArguments, $caller, $eventName));
-	}
-
+    /**
+     * Executes the callback.
+     *
+     * @param array $callerArguments
+     * @param object $caller
+     * @param string $eventName
+     * @return mixed
+     */
+    public function execute(array $callerArguments = array(), $caller, $eventName)
+    {
+        return call_user_func_array(array($this->object, $this->method), array($callerArguments, $this->targetArguments, $caller, $eventName));
+    }
 }

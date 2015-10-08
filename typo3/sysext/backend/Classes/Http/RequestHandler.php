@@ -40,118 +40,124 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   - route
  *   - token
  */
-class RequestHandler implements RequestHandlerInterface {
+class RequestHandler implements RequestHandlerInterface
+{
+    /**
+     * Instance of the current TYPO3 bootstrap
+     * @var Bootstrap
+     */
+    protected $bootstrap;
 
-	/**
-	 * Instance of the current TYPO3 bootstrap
-	 * @var Bootstrap
-	 */
-	protected $bootstrap;
+    /**
+     * Constructor handing over the bootstrap and the original request
+     *
+     * @param Bootstrap $bootstrap
+     */
+    public function __construct(Bootstrap $bootstrap)
+    {
+        $this->bootstrap = $bootstrap;
+    }
 
-	/**
-	 * Constructor handing over the bootstrap and the original request
-	 *
-	 * @param Bootstrap $bootstrap
-	 */
-	public function __construct(Bootstrap $bootstrap) {
-		$this->bootstrap = $bootstrap;
-	}
+    /**
+     * Handles any backend request
+     *
+     * @param ServerRequestInterface $request
+     * @return NULL|ResponseInterface
+     */
+    public function handleRequest(ServerRequestInterface $request)
+    {
+        // enable dispatching via Request/Response logic only for typo3/index.php
+        // This fallback will be removed in TYPO3 CMS 8, as only index.php will be allowed
+        $path = substr($request->getUri()->getPath(), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
+        $routingEnabled = ($path === TYPO3_mainDir . 'index.php' || $path === TYPO3_mainDir);
+        $proceedIfNoUserIsLoggedIn = false;
 
-	/**
-	 * Handles any backend request
-	 *
-	 * @param ServerRequestInterface $request
-	 * @return NULL|ResponseInterface
-	 */
-	public function handleRequest(ServerRequestInterface $request) {
-		// enable dispatching via Request/Response logic only for typo3/index.php
-		// This fallback will be removed in TYPO3 CMS 8, as only index.php will be allowed
-		$path = substr($request->getUri()->getPath(), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
-		$routingEnabled = ($path === TYPO3_mainDir . 'index.php' || $path === TYPO3_mainDir);
-		$proceedIfNoUserIsLoggedIn = FALSE;
+        if ($routingEnabled) {
+            $pathToRoute = (string)$request->getQueryParams()['route'];
+            // Allow the login page to be displayed if routing is not used and on index.php
+            if (empty($pathToRoute)) {
+                $pathToRoute = '/login';
+            }
+            $request = $request->withAttribute('routePath', $pathToRoute);
 
-		if ($routingEnabled) {
-			$pathToRoute = (string)$request->getQueryParams()['route'];
-			// Allow the login page to be displayed if routing is not used and on index.php
-			if (empty($pathToRoute)) {
-				$pathToRoute = '/login';
-			}
-			$request = $request->withAttribute('routePath', $pathToRoute);
+            // Evaluate the constant for skipping the BE user check for the bootstrap
+            // should be handled differently in the future by checking the Bootstrap directly
+            if ($pathToRoute === '/login') {
+                $proceedIfNoUserIsLoggedIn = true;
+            }
+        }
 
-			// Evaluate the constant for skipping the BE user check for the bootstrap
-			// should be handled differently in the future by checking the Bootstrap directly
-			if ($pathToRoute === '/login') {
-				$proceedIfNoUserIsLoggedIn = TRUE;
-			}
-		}
+        $this->boot($proceedIfNoUserIsLoggedIn);
 
-		$this->boot($proceedIfNoUserIsLoggedIn);
+        // Check if the router has the available route and dispatch.
+        if ($routingEnabled) {
+            return $this->dispatch($request);
+        }
 
-		// Check if the router has the available route and dispatch.
-		if ($routingEnabled) {
-			return $this->dispatch($request);
-		}
+        // No route found, so the system proceeds in called entrypoint as fallback.
+        return null;
+    }
 
-		// No route found, so the system proceeds in called entrypoint as fallback.
-		return NULL;
-	}
+    /**
+     * Does the main work for setting up the backend environment for any Backend request
+     *
+     * @param bool $proceedIfNoUserIsLoggedIn option to allow to render the request even if no user is logged in
+     * @return void
+     */
+    protected function boot($proceedIfNoUserIsLoggedIn)
+    {
+        $this->bootstrap
+            ->checkLockedBackendAndRedirectOrDie()
+            ->checkBackendIpOrDie()
+            ->checkSslBackendAndRedirectIfNeeded()
+            ->initializeBackendRouter()
+            ->loadExtensionTables(true)
+            ->initializeSpriteManager()
+            ->initializeBackendUser()
+            ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
+            ->initializeLanguageObject()
+            ->initializeBackendTemplate()
+            ->endOutputBufferingAndCleanPreviousOutput()
+            ->initializeOutputCompression()
+            ->sendHttpHeaders();
+    }
 
-	/**
-	 * Does the main work for setting up the backend environment for any Backend request
-	 *
-	 * @param bool $proceedIfNoUserIsLoggedIn option to allow to render the request even if no user is logged in
-	 * @return void
-	 */
-	protected function boot($proceedIfNoUserIsLoggedIn) {
-		$this->bootstrap
-			->checkLockedBackendAndRedirectOrDie()
-			->checkBackendIpOrDie()
-			->checkSslBackendAndRedirectIfNeeded()
-			->initializeBackendRouter()
-			->loadExtensionTables(TRUE)
-			->initializeSpriteManager()
-			->initializeBackendUser()
-			->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
-			->initializeLanguageObject()
-			->initializeBackendTemplate()
-			->endOutputBufferingAndCleanPreviousOutput()
-			->initializeOutputCompression()
-			->sendHttpHeaders();
-	}
+    /**
+     * This request handler can handle any backend request (but not CLI).
+     *
+     * @param ServerRequestInterface $request
+     * @return bool If the request is not a CLI script, TRUE otherwise FALSE
+     */
+    public function canHandleRequest(ServerRequestInterface $request)
+    {
+        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI));
+    }
 
-	/**
-	 * This request handler can handle any backend request (but not CLI).
-	 *
-	 * @param ServerRequestInterface $request
-	 * @return bool If the request is not a CLI script, TRUE otherwise FALSE
-	 */
-	public function canHandleRequest(ServerRequestInterface $request) {
-		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI));
-	}
+    /**
+     * Returns the priority - how eager the handler is to actually handle the
+     * request.
+     *
+     * @return int The priority of the request handler.
+     */
+    public function getPriority()
+    {
+        return 50;
+    }
 
-	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request.
-	 *
-	 * @return int The priority of the request handler.
-	 */
-	public function getPriority() {
-		return 50;
-	}
-
-	/**
-	 * Dispatch the request to the appropriate controller through the Backend Dispatcher which resolves the routing
-	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface
-	 * @throws RouteNotFoundException when no route is registered
-	 * @throws \InvalidArgumentException when a route is found but the target of the route cannot be called
-	 */
-	protected function dispatch($request) {
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
-		/** @var RouteDispatcher $dispatcher */
-		$dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
-		return $dispatcher->dispatch($request, $response);
-	}
+    /**
+     * Dispatch the request to the appropriate controller through the Backend Dispatcher which resolves the routing
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws RouteNotFoundException when no route is registered
+     * @throws \InvalidArgumentException when a route is found but the target of the route cannot be called
+     */
+    protected function dispatch($request)
+    {
+        /** @var Response $response */
+        $response = GeneralUtility::makeInstance(Response::class);
+        /** @var RouteDispatcher $dispatcher */
+        $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
+        return $dispatcher->dispatch($request, $response);
+    }
 }

@@ -17,39 +17,41 @@ namespace TYPO3\CMS\Documentation\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class DocumentFormatTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DocumentFormatTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
-	}
+    /**
+     * @test
+     */
+    public function setFormatForStringSetsFormat()
+    {
+        $this->subject->setFormat('Conceived at T3DD13');
 
-	/**
-	 * @test
-	 */
-	public function setFormatForStringSetsFormat() {
-		$this->subject->setFormat('Conceived at T3DD13');
+        $this->assertSame(
+            'Conceived at T3DD13',
+            $this->subject->getFormat()
+        );
+    }
 
-		$this->assertSame(
-			'Conceived at T3DD13',
-			$this->subject->getFormat()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setPathForStringSetsPath()
+    {
+        $this->subject->setPath('Conceived at T3DD13');
 
-	/**
-	 * @test
-	 */
-	public function setPathForStringSetsPath() {
-		$this->subject->setPath('Conceived at T3DD13');
-
-		$this->assertSame(
-			'Conceived at T3DD13',
-			$this->subject->getPath()
-		);
-	}
-
+        $this->assertSame(
+            'Conceived at T3DD13',
+            $this->subject->getPath()
+        );
+    }
 }

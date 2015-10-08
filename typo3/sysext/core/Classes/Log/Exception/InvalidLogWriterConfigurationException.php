@@ -17,5 +17,6 @@ namespace TYPO3\CMS\Core\Log\Exception;
 /**
  * An exception when something is wrong with the configuration for a LogWriter
  */
-class InvalidLogWriterConfigurationException extends \TYPO3\CMS\Core\Log\Exception {
+class InvalidLogWriterConfigurationException extends \TYPO3\CMS\Core\Log\Exception
+{
 }

@@ -20,30 +20,30 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Tests for EditDocumentController
  */
-class EditDocumentControllerTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function parseAdditionalGetParametersCreatesCorrectParameterArray() {
-		$typoScript = [
-			'tx_myext.' => [
-				'controller' => 'test',
-				'action' => 'run'
-			],
-			'magic' => 'yes'
-		];
-		$expectedParameters = [
-			'tx_myext' => [
-				'controller' => 'test',
-				'action' => 'run'
-			],
-			'magic' => 'yes'
-		];
-		$result = [];
-		$mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', FALSE);
-		$mock->_callRef('parseAdditionalGetParameters', $result, $typoScript);
-		$this->assertSame($expectedParameters, $result);
-	}
-
+class EditDocumentControllerTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function parseAdditionalGetParametersCreatesCorrectParameterArray()
+    {
+        $typoScript = [
+            'tx_myext.' => [
+                'controller' => 'test',
+                'action' => 'run'
+            ],
+            'magic' => 'yes'
+        ];
+        $expectedParameters = [
+            'tx_myext' => [
+                'controller' => 'test',
+                'action' => 'run'
+            ],
+            'magic' => 'yes'
+        ];
+        $result = [];
+        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
+        $mock->_callRef('parseAdditionalGetParameters', $result, $typoScript);
+        $this->assertSame($expectedParameters, $result);
+    }
 }

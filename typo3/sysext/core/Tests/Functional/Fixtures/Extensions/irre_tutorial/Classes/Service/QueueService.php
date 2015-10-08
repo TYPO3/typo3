@@ -17,69 +17,75 @@ namespace OliverHader\IrreTutorial\Service;
 /**
  * ContentController
  */
-class QueueService implements \TYPO3\CMS\Core\SingletonInterface {
+class QueueService implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array
+     */
+    protected $calls;
 
-	/**
-	 * @var array
-	 */
-	protected $calls;
+    /**
+     * @var array
+     */
+    protected $values = array();
 
-	/**
-	 * @var array
-	 */
-	protected $values = array();
+    /**
+     * @var bool
+     */
+    protected $active = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $active = FALSE;
+    /**
+     * @param array $calls
+     */
+    public function set(array $calls)
+    {
+        $this->calls = $calls;
+        $this->active = true;
+    }
 
-	/**
-	 * @param array $calls
-	 */
-	public function set(array $calls) {
-		$this->calls = $calls;
-		$this->active = TRUE;
-	}
+    /**
+     * @return array
+     */
+    public function get()
+    {
+        return $this->calls;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function get() {
-		return $this->calls;
-	}
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isActive() {
-		return $this->active;
-	}
+    public function setActive($active = true)
+    {
+        $this->active = (bool)$active;
+    }
 
-	public function setActive($active = TRUE) {
-		$this->active = (bool)$active;
-	}
+    /**
+     * @return NULL|array
+     */
+    public function shift()
+    {
+        return array_shift($this->calls);
+    }
 
-	/**
-	 * @return NULL|array
-	 */
-	public function shift() {
-		return array_shift($this->calls);
-	}
+    /**
+     * @param string $identifier
+     * @param mixed $value
+     */
+    public function addValue($identifier, $value)
+    {
+        $this->values[$identifier] = $value;
+    }
 
-	/**
-	 * @param string $identifier
-	 * @param mixed $value
-	 */
-	public function addValue($identifier, $value) {
-		$this->values[$identifier] = $value;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getValues() {
-		return $this->values;
-	}
-
+    /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
 }

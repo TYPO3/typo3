@@ -21,23 +21,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\FileLockStrategy
  */
-class FileLockStrategyTest extends UnitTestCase {
+class FileLockStrategyTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function constructorCreatesLockDirectoryIfNotExisting()
+    {
+        GeneralUtility::rmdir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER, true);
+        new FileLockStrategy('999999999');
+        $this->assertTrue(is_dir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER));
+    }
 
-	/**
-	 * @test
-	 */
-	public function constructorCreatesLockDirectoryIfNotExisting() {
-		GeneralUtility::rmdir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER, TRUE);
-		new FileLockStrategy('999999999');
-		$this->assertTrue(is_dir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER));
-	}
-
-	/**
-	 * @test
-	 */
-	public function constructorSetsFilePathToExpectedValue() {
-		$lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
-		$this->assertSame(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER  . 'flock_' . md5('999999999'), $lock->_get('filePath'));
-	}
-
+    /**
+     * @test
+     */
+    public function constructorSetsFilePathToExpectedValue()
+    {
+        $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
+        $this->assertSame(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER  . 'flock_' . md5('999999999'), $lock->_get('filePath'));
+    }
 }

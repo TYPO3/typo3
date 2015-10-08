@@ -17,20 +17,19 @@ namespace TYPO3\CMS\Rsaauth\Storage;
 /**
  * This class contains the abstract storage for the RSA private keys
  */
-abstract class AbstractStorage {
+abstract class AbstractStorage
+{
+    /**
+     * Retrieves the key from the storage
+     *
+     * @return string The key or NULL
+     */
+    abstract public function get();
 
-	/**
-	 * Retrieves the key from the storage
-	 *
-	 * @return string The key or NULL
-	 */
-	abstract public function get();
-
-	/**
-	 * Stores the key in the storage
-	 *
-	 * @param string $key The key
-	 */
-	abstract public function put($key);
-
+    /**
+     * Stores the key in the storage
+     *
+     * @param string $key The key
+     */
+    abstract public function put($key);
 }

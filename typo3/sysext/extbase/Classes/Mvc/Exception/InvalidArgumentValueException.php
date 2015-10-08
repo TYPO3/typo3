@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Argument Value" exception
  */
-class InvalidArgumentValueException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidArgumentValueException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

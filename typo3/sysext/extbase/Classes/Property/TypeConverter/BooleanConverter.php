@@ -25,35 +25,35 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
+class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('boolean', 'string');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('boolean', 'string');
+    /**
+     * @var string
+     */
+    protected $targetType = 'boolean';
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = 'boolean';
+    /**
+     * @var int
+     */
+    protected $priority = 1;
 
-	/**
-	 * @var int
-	 */
-	protected $priority = 1;
-
-	/**
-	 * Actually convert from $source to $targetType
-	 *
-	 * @param string $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return bool
-	 * @api
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		return (bool)$source;
-	}
-
+    /**
+     * Actually convert from $source to $targetType
+     *
+     * @param string $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+     * @return bool
+     * @api
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    {
+        return (bool)$source;
+    }
 }

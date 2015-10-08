@@ -22,30 +22,31 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 /**
  * DateTime viewhelper
  */
-class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface {
+class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render the given timestamp as date & time
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            array(),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render the given timestamp as date & time
-	 *
-	 * @return string
-	 */
-	public function render() {
-		return static::renderStatic(
-			array(),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return htmlspecialchars(BackendUtility::datetime($renderChildrenClosure()));
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return htmlspecialchars(BackendUtility::datetime($renderChildrenClosure()));
+    }
 }

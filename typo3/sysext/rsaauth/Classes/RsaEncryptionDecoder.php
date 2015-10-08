@@ -19,108 +19,113 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * This class decodes rsa protected data
  */
-class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface {
+class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var Backend\AbstractBackend
+     */
+    protected $backend = null;
 
-	/**
-	 * @var Backend\AbstractBackend
-	 */
-	protected $backend = NULL;
+    /**
+     * @var Storage\AbstractStorage
+     */
+    protected $storage = null;
 
-	/**
-	 * @var Storage\AbstractStorage
-	 */
-	protected $storage = NULL;
+    /**
+     * @var string
+     */
+    protected $key = null;
 
-	/**
-	 * @var string
-	 */
-	protected $key = NULL;
+    /**
+     * @param string|array $data
+     * @return string|array
+     */
+    public function decrypt($data)
+    {
+        if ($this->getKey() === '' || !$this->isAvailable()) {
+            return $data;
+        }
 
-	/**
-	 * @param string|array $data
-	 * @return string|array
-	 */
-	public function decrypt($data) {
-		if ($this->getKey() === '' || !$this->isAvailable()) {
-			return $data;
-		}
+        $decryptedData = is_array($data) ? $data : array($data);
+        $decryptedData = $this->decryptDataArray($decryptedData);
+        $this->getStorage()->put(null);
 
-		$decryptedData = is_array($data) ? $data : array($data);
-		$decryptedData = $this->decryptDataArray($decryptedData);
-		$this->getStorage()->put(NULL);
+        return is_array($data) ? $decryptedData : $decryptedData[0];
+    }
 
-		return is_array($data) ? $decryptedData : $decryptedData[0];
-	}
+    /**
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return $this->getBackend() instanceof Backend\AbstractBackend;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isAvailable() {
-		return $this->getBackend() instanceof Backend\AbstractBackend;
-	}
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function decryptDataArray(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+            if (is_array($value)) {
+                $data[$key] = $this->decryptDataArray($value);
+                continue;
+            }
 
-	/**
-	 * @param array $data
-	 * @return array
-	 */
-	protected function decryptDataArray(array $data) {
-		foreach ($data as $key => $value) {
-			if (empty($value)) {
-				continue;
-			}
-			if (is_array($value)) {
-				$data[$key] = $this->decryptDataArray($value);
-				continue;
-			}
+            if (!StringUtility::beginsWith($value, 'rsa:')) {
+                continue;
+            }
 
-			if (!StringUtility::beginsWith($value, 'rsa:')) {
-				continue;
-			}
+            $decryptedValue = $this->getBackend()->decrypt($this->getKey(), substr($value, 4));
+            if ($decryptedValue !== null) {
+                $data[$key] = $decryptedValue;
+            }
+        }
 
-			$decryptedValue = $this->getBackend()->decrypt($this->getKey(), substr($value, 4));
-			if ($decryptedValue !== NULL) {
-				$data[$key] = $decryptedValue;
-			}
-		}
+        return $data;
+    }
 
-		return $data;
-	}
+    /**
+     * @return string
+     */
+    protected function getKey()
+    {
+        if ($this->key === null) {
+            $this->key = $this->getStorage()->get();
 
-	/**
-	 * @return string
-	 */
-	protected function getKey() {
-		if ($this->key === NULL) {
-			$this->key = $this->getStorage()->get();
+            if ($this->key === null) {
+                $this->key = '';
+            }
+        }
 
-			if ($this->key === NULL) {
-				$this->key = '';
-			}
-		}
+        return $this->key;
+    }
 
-		return $this->key;
-	}
+    /**
+     * @return Backend\AbstractBackend|NULL
+     */
+    protected function getBackend()
+    {
+        if ($this->backend === null) {
+            $this->backend = Backend\BackendFactory::getBackend();
+        }
 
-	/**
-	 * @return Backend\AbstractBackend|NULL
-	 */
-	protected function getBackend() {
-		if ($this->backend === NULL) {
-			$this->backend = Backend\BackendFactory::getBackend();
-		}
+        return $this->backend;
+    }
 
-		return $this->backend;
-	}
+    /**
+     * @return Storage\AbstractStorage
+     */
+    protected function getStorage()
+    {
+        if ($this->storage === null) {
+            $this->storage = Storage\StorageFactory::getStorage();
+        }
 
-	/**
-	 * @return Storage\AbstractStorage
-	 */
-	protected function getStorage() {
-		if ($this->storage === NULL) {
-			$this->storage = Storage\StorageFactory::getStorage();
-		}
-
-		return $this->storage;
-	}
-
+        return $this->storage;
+    }
 }

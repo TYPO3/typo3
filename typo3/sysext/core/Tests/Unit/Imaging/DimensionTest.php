@@ -19,47 +19,50 @@ use TYPO3\CMS\Core\Imaging\Icon;
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Dimension
  */
-class DimensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DimensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Core\Imaging\Dimension
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Imaging\Dimension
-	 */
-	protected $subject = NULL;
+    /**
+     * @var int
+     */
+    protected $width = 32;
 
-	/**
-	 * @var int
-	 */
-	protected $width = 32;
+    /**
+     * @var int
+     */
+    protected $height = 32;
 
-	/**
-	 * @var int
-	 */
-	protected $height = 32;
+    /**
+     * Set up
+     *
+     * @return void
+     */
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Core\Imaging\Dimension(Icon::SIZE_DEFAULT);
+    }
 
-	/**
-	 * Set up
-	 *
-	 * @return void
-	 */
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Core\Imaging\Dimension(Icon::SIZE_DEFAULT);
-	}
+    /**
+     * @test
+     */
+    public function getWidthReturnsValidInteger()
+    {
+        $value = $this->subject->getWidth();
+        $this->assertEquals($this->width, $value);
+        $this->assertInternalType('int', $value);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getWidthReturnsValidInteger() {
-		$value = $this->subject->getWidth();
-		$this->assertEquals($this->width, $value);
-		$this->assertInternalType('int', $value);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getHeightReturnsValidInteger() {
-		$value = $this->subject->getHeight();
-		$this->assertEquals($this->height, $value);
-		$this->assertInternalType('int', $value);
-	}
+    /**
+     * @test
+     */
+    public function getHeightReturnsValidInteger()
+    {
+        $value = $this->subject->getHeight();
+        $this->assertEquals($this->height, $value);
+        $this->assertInternalType('int', $value);
+    }
 }

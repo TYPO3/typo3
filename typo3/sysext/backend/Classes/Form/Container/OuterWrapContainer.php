@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,117 +30,119 @@ use TYPO3\CMS\Lang\LanguageService;
  * It either calls a FullRecordContainer or ListOfFieldsContainer to render
  * a full record or only some fields from a full record.
  */
-class OuterWrapContainer extends AbstractContainer {
+class OuterWrapContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUserAuthentication();
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$languageService = $this->getLanguageService();
-		$backendUser = $this->getBackendUserAuthentication();
+        $table = $this->data['tableName'];
+        $row = $this->data['databaseRow'];
 
-		$table = $this->data['tableName'];
-		$row = $this->data['databaseRow'];
+        $options = $this->data;
+        if (empty($this->data['fieldListToRender'])) {
+            $options['renderType'] = 'fullRecordContainer';
+        } else {
+            $options['renderType'] = 'listOfFieldsContainer';
+        }
+        $result = $this->nodeFactory->create($options)->render();
 
-		$options = $this->data;
-		if (empty($this->data['fieldListToRender'])) {
-			$options['renderType'] = 'fullRecordContainer';
-		} else {
-			$options['renderType'] = 'listOfFieldsContainer';
-		}
-		$result = $this->nodeFactory->create($options)->render();
+        $childHtml = $result['html'];
 
-		$childHtml = $result['html'];
+        $recordPath = '';
+        // @todo: what is this >= 0 check for? wsol cases?!
+        if ($this->data['effectivePid'] >= 0) {
+            $permissionsClause = $backendUser->getPagePermsClause(1);
+            $recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
+        }
 
-		$recordPath = '';
-		// @todo: what is this >= 0 check for? wsol cases?!
-		if ($this->data['effectivePid'] >= 0) {
-			$permissionsClause = $backendUser->getPagePermsClause(1);
-			$recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
-		}
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $icon = '<span title="' . htmlspecialchars($recordPath) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
 
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = '<span title="' . htmlspecialchars($recordPath) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        // @todo: Could this be done in a more clever way? Does it work at all?
+        $tableTitle = $languageService->sL($this->data['processedTca']['ctrl']['title']);
 
-		// @todo: Could this be done in a more clever way? Does it work at all?
-		$tableTitle = $languageService->sL($this->data['processedTca']['ctrl']['title']);
+        if ($this->data['command'] === 'new') {
+            $newOrUid = ' <span class="typo3-TCEforms-newToken">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', true) . '</span>';
 
-		if ($this->data['command'] === 'new') {
-			$newOrUid = ' <span class="typo3-TCEforms-newToken">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . '</span>';
+            // @todo: There is quite some stuff do to for WS overlays ...
+            $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $this->data['effectivePid'], 'title');
+            $pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, true, false);
+            if ($table === 'pages') {
+                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', true);
+                $pageTitle = sprintf($label, $tableTitle);
+            } else {
+                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', true);
+                if ($this->data['effectivePid'] === 0) {
+                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', true);
+                }
+                $pageTitle = sprintf($label, $tableTitle, $pageTitle);
+            }
+        } else {
+            // DocumentTemplate is needed for wrapClickMenuOnIcon(), the method has no state, simply use fresh instance
+            /** @var DocumentTemplate $documentTemplate */
+            $documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
+            $icon = $documentTemplate->wrapClickMenuOnIcon($icon, $table, $row['uid'], 1, '', '+copy,info,edit,view');
 
-			// @todo: There is quite some stuff do to for WS overlays ...
-			$workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $this->data['effectivePid'], 'title');
-			$pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, TRUE, FALSE);
-			if ($table === 'pages') {
-				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
-				$pageTitle = sprintf($label, $tableTitle);
-			} else {
-				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
-				if ($this->data['effectivePid'] === 0) {
-					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
-				}
-				$pageTitle = sprintf($label, $tableTitle, $pageTitle);
-			}
-		} else {
-			// DocumentTemplate is needed for wrapClickMenuOnIcon(), the method has no state, simply use fresh instance
-			/** @var DocumentTemplate $documentTemplate */
-			$documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
-			$icon = $documentTemplate->wrapClickMenuOnIcon($icon, $table, $row['uid'], 1, '', '+copy,info,edit,view');
+            $newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
-			$newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
+            // @todo: getRecordTitlePrep applies an htmlspecialchars here
+            $recordLabel = BackendUtility::getRecordTitlePrep($this->data['recordTitle']);
+            if ($table === 'pages') {
+                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', true);
+                $pageTitle = sprintf($label, $tableTitle, $recordLabel);
+            } else {
+                $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', true);
+                $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid'], 'uid,title');
+                $pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, true, false);
+                if (empty($recordLabel)) {
+                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', true);
+                }
+                if ($this->data['effectivePid'] === 0) {
+                    $label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', true);
+                }
+                if (!empty($recordLabel)) {
+                    // Use record title and prepend an edit label.
+                    $pageTitle = sprintf($label, $tableTitle, $recordLabel, $pageTitle);
+                } else {
+                    // Leave out the record title since it is not set.
+                    $pageTitle = sprintf($label, $tableTitle, $pageTitle);
+                }
+            }
+        }
 
-			// @todo: getRecordTitlePrep applies an htmlspecialchars here
-			$recordLabel = BackendUtility::getRecordTitlePrep($this->data['recordTitle']);
-			if ($table === 'pages') {
-				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
-				$pageTitle = sprintf($label, $tableTitle, $recordLabel);
-			} else {
-				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
-				$workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid'], 'uid,title');
-				$pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, TRUE, FALSE);
-				if (empty($recordLabel)) {
-					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
-				}
-				if ($this->data['effectivePid'] === 0) {
-					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
-				}
-				if (!empty($recordLabel)) {
-					// Use record title and prepend an edit label.
-					$pageTitle = sprintf($label, $tableTitle, $recordLabel, $pageTitle);
-				} else {
-					// Leave out the record title since it is not set.
-					$pageTitle = sprintf($label, $tableTitle, $pageTitle);
-				}
-			}
-		}
+        $html = array();
+        $html[] = '<h1>' . $pageTitle . '</h1>';
+        $html[] = '<div class="typo3-TCEforms">';
+        $html[] =    $childHtml;
+        $html[] =    '<div class="help-block text-right">';
+        $html[] =        $icon . ' <strong>' . htmlspecialchars($tableTitle) . '</strong>' . ' ' . $newOrUid;
+        $html[] =    '</div>';
+        $html[] = '</div>';
 
-		$html = array();
-		$html[] = '<h1>' . $pageTitle . '</h1>';
-		$html[] = '<div class="typo3-TCEforms">';
-		$html[] = 	$childHtml;
-		$html[] = 	'<div class="help-block text-right">';
-		$html[] = 		$icon . ' <strong>' . htmlspecialchars($tableTitle) . '</strong>' . ' ' . $newOrUid;
-		$html[] = 	'</div>';
-		$html[] = '</div>';
+        $result['html'] = implode(LF, $html);
+        return $result;
+    }
 
-		$result['html'] = implode(LF, $html);
-		return $result;
-	}
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

@@ -19,34 +19,34 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Image feature detects imagemagick / graphicsmagick versions
  */
-class ImageFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface {
+class ImageFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+{
+    /**
+     * @var string Name of feature
+     */
+    protected $name = 'Image';
 
-	/**
-	 * @var string Name of feature
-	 */
-	protected $name = 'Image';
+    /**
+     * @var array List of preset classes
+     */
+    protected $presetRegistry = array(
+        \TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset::class,
+        \TYPO3\CMS\Install\Configuration\Image\ImageMagick6Preset::class,
+        \TYPO3\CMS\Install\Configuration\Image\CustomPreset::class,
+    );
 
-	/**
-	 * @var array List of preset classes
-	 */
-	protected $presetRegistry = array(
-		\TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset::class,
-		\TYPO3\CMS\Install\Configuration\Image\ImageMagick6Preset::class,
-		\TYPO3\CMS\Install\Configuration\Image\CustomPreset::class,
-	);
-
-	/**
-	 * Image feature can be feeded with an additional path to search for executables,
-	 * this getter returns the given input string (for Fluid)
-	 *
-	 * @return string
-	 */
-	public function getAdditionalSearchPath() {
-		$additionalPath = '';
-		if (isset($this->postValues['additionalSearchPath']) && $this->postValues['additionalSearchPath'] !== '') {
-			$additionalPath = $this->postValues['additionalSearchPath'];
-		}
-		return $additionalPath;
-	}
-
+    /**
+     * Image feature can be feeded with an additional path to search for executables,
+     * this getter returns the given input string (for Fluid)
+     *
+     * @return string
+     */
+    public function getAdditionalSearchPath()
+    {
+        $additionalPath = '';
+        if (isset($this->postValues['additionalSearchPath']) && $this->postValues['additionalSearchPath'] !== '') {
+            $additionalPath = $this->postValues['additionalSearchPath'];
+        }
+        return $additionalPath;
+    }
 }

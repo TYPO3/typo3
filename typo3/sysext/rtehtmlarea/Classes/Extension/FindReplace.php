@@ -19,38 +19,38 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * Find Replace plugin for htmlArea RTE
  */
-class FindReplace extends RteHtmlAreaApi {
+class FindReplace extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'FindReplace';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'FindReplace';
+    /**
+     * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'findreplace';
 
-	/**
-	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'findreplace';
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'findreplace' => 'FindReplace'
+    );
 
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'findreplace' => 'FindReplace'
-	);
-
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration() {
-		return '';
-	}
-
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins
+     */
+    public function buildJavascriptConfiguration()
+    {
+        return '';
+    }
 }

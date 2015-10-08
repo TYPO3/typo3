@@ -21,61 +21,65 @@ use TYPO3\CMS\Form\Domain\Model\ValidationElement;
 /**
  * Extension to the default Extbase Controller Context.
  */
-class ControllerContext extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext {
+class ControllerContext extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+{
+    /**
+     * Extends a given default ControllerContext.
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @return ControllerContext
+     */
+    public static function extend(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $source)
+    {
+        $controllerContext = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ControllerContext::class);
+        $propertyNames = ObjectAccess::getGettableProperties($source);
+        foreach ($propertyNames as $propertyName => $propertyValue) {
+            ObjectAccess::setProperty($controllerContext, $propertyName, $propertyValue);
+        }
+        return $controllerContext;
+    }
 
-	/**
-	 * Extends a given default ControllerContext.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-	 * @return ControllerContext
-	 */
-	static public function extend(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $source) {
-		$controllerContext = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ControllerContext::class);
-		$propertyNames = ObjectAccess::getGettableProperties($source);
-		foreach ($propertyNames as $propertyName => $propertyValue) {
-			ObjectAccess::setProperty($controllerContext, $propertyName, $propertyValue);
-		}
-		return $controllerContext;
-	}
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
 
-	/**
-	 * @var Configuration
-	 */
-	protected $configuration;
+    /**
+     * @var ValidationElement
+     */
+    protected $validationElement;
 
-	/**
-	 * @var ValidationElement
-	 */
-	protected $validationElement;
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 
-	/**
-	 * @return Configuration
-	 */
-	public function getConfiguration() {
-		return $this->configuration;
-	}
+    /**
+     * @param Configuration $configuration
+     * @return ControllerContext
+     */
+    public function setConfiguration(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+        return $this;
+    }
 
-	/**
-	 * @param Configuration $configuration
-	 * @return ControllerContext
-	 */
-	public function setConfiguration(Configuration $configuration) {
-		$this->configuration = $configuration;
-		return $this;
-	}
+    /**
+     * @return ValidationElement
+     */
+    public function getValidationElement()
+    {
+        return $this->validationElement;
+    }
 
-	/**
-	 * @return ValidationElement
-	 */
-	public function getValidationElement() {
-		return $this->validationElement;
-	}
-
-	/**
-	 * @param ValidationElement $validationElement
-	 */
-	public function setValidationElement(ValidationElement $validationElement) {
-		$this->validationElement = $validationElement;
-	}
-
+    /**
+     * @param ValidationElement $validationElement
+     */
+    public function setValidationElement(ValidationElement $validationElement)
+    {
+        $this->validationElement = $validationElement;
+    }
 }

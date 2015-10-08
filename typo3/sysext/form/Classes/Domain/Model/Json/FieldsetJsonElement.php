@@ -17,64 +17,65 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON fieldset
  */
-class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonElement {
+class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonElement
+{
+    /**
+     * The ExtJS xtype of the element
+     *
+     * @var string
+     */
+    public $xtype = 'typo3-form-wizard-elements-basic-fieldset';
 
-	/**
-	 * The ExtJS xtype of the element
-	 *
-	 * @var string
-	 */
-	public $xtype = 'typo3-form-wizard-elements-basic-fieldset';
+    /**
+     * The configuration array for the xtype
+     *
+     * @var array
+     */
+    public $configuration = array(
+        'attributes' => array(),
+        'legend' => array(
+            'value' => ''
+        )
+    );
 
-	/**
-	 * The configuration array for the xtype
-	 *
-	 * @var array
-	 */
-	public $configuration = array(
-		'attributes' => array(),
-		'legend' => array(
-			'value' => ''
-		)
-	);
+    /**
+     * Allowed attributes for this object
+     *
+     * @var array
+     */
+    protected $allowedAttributes = array(
+        'class',
+        'dir',
+        'id',
+        'lang',
+        'style'
+    );
 
-	/**
-	 * Allowed attributes for this object
-	 *
-	 * @var array
-	 */
-	protected $allowedAttributes = array(
-		'class',
-		'dir',
-		'id',
-		'lang',
-		'style'
-	);
+    /**
+     * Set all the parameters for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
+     */
+    public function setParameters(array $parameters)
+    {
+        parent::setParameters($parameters);
+        $this->setLegend($parameters);
+    }
 
-	/**
-	 * Set all the parameters for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
-	 */
-	public function setParameters(array $parameters) {
-		parent::setParameters($parameters);
-		$this->setLegend($parameters);
-	}
-
-	/**
-	 * Set the legend for the element
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 */
-	protected function setLegend(array $parameters) {
-		if (isset($parameters['legend']) && !isset($parameters['legend.'])) {
-			$this->configuration['legend']['value'] = $parameters['legend'];
-		} elseif (!isset($parameters['legend']) && isset($parameters['legend.'])) {
-			$this->configuration['legend']['value'] = $parameters['legend.']['value'];
-		}
-	}
-
+    /**
+     * Set the legend for the element
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setLegend(array $parameters)
+    {
+        if (isset($parameters['legend']) && !isset($parameters['legend.'])) {
+            $this->configuration['legend']['value'] = $parameters['legend'];
+        } elseif (!isset($parameters['legend']) && isset($parameters['legend.'])) {
+            $this->configuration['legend']['value'] = $parameters['legend.']['value'];
+        }
+    }
 }

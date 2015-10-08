@@ -52,42 +52,43 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class PrintfViewHelper extends AbstractViewHelper implements CompilableInterface {
+class PrintfViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Format the arguments with the given printf format string.
+     *
+     * @param array $arguments The arguments for vsprintf
+     * @param string $value string to format
+     * @return string The formatted value
+     * @api
+     */
+    public function render(array $arguments, $value = null)
+    {
+        return static::renderStatic(
+            array(
+                'arguments' => $arguments,
+                'value' => $value
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Format the arguments with the given printf format string.
-	 *
-	 * @param array $arguments The arguments for vsprintf
-	 * @param string $value string to format
-	 * @return string The formatted value
-	 * @api
-	 */
-	public function render(array $arguments, $value = NULL) {
-		return static::renderStatic(
-			array(
-				'arguments' => $arguments,
-				'value' => $value
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Applies vsprintf() on the specified value.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        if ($value === null) {
+            $value = $renderChildrenClosure();
+        }
 
-	/**
-	 * Applies vsprintf() on the specified value.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		if ($value === NULL) {
-			$value = $renderChildrenClosure();
-		}
-
-		return vsprintf($value, $arguments['arguments']);
-	}
-
+        return vsprintf($value, $arguments['arguments']);
+    }
 }

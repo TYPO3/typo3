@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
 /**
  * A No Such Option exception
  */
-class NoSuchOptionException extends \TYPO3\CMS\Extbase\Configuration\Exception {
-
+class NoSuchOptionException extends \TYPO3\CMS\Extbase\Configuration\Exception
+{
 }

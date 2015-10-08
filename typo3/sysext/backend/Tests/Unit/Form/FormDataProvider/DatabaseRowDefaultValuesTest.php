@@ -20,120 +20,125 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 /**
  * Test case
  */
-class DatabaseRowDefaultValuesTest extends UnitTestCase {
+class DatabaseRowDefaultValuesTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseRowDefaultValues
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseRowDefaultValues
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new DatabaseRowDefaultValues();
+    }
 
-	protected function setUp() {
-		$this->subject = new DatabaseRowDefaultValues();
-	}
+    /**
+     * @test
+     */
+    public function addDataKeepsExistingValue()
+    {
+        $input = [
+            'databaseRow' => [
+                'aDefinedField' => 'aValue',
+            ],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aDefinedField' => [],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataKeepsExistingValue() {
-		$input = [
-			'databaseRow' => [
-				'aDefinedField' => 'aValue',
-			],
-			'vanillaTableTca' => [
-				'columns' => [
-					'aDefinedField' => [],
-				],
-			],
-		];
-		$expected = $input;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataKeepsExistingNullValueWithEvalNull()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => null,
+            ],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'eval' => 'null',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataKeepsExistingNullValueWithEvalNull() {
-		$input = [
-			'databaseRow' => [
-				'aField' => NULL,
-			],
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'eval' => 'null',
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsNullValueWithDefaultNullForNewRecord()
+    {
+        $input = [
+            'databaseRow' => [],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'eval' => 'null',
+                            'default' => null,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = null;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsNullValueWithDefaultNullForNewRecord() {
-		$input = [
-			'databaseRow' => [],
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'eval' => 'null',
-							'default' => NULL,
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['databaseRow']['aField'] = NULL;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsDefaultValueIfEvalNullIsSet()
+    {
+        $input = [
+            'databaseRow' => [],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'eval' => 'null',
+                            'default' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = 'foo';
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsDefaultValueIfEvalNullIsSet() {
-		$input = [
-			'databaseRow' => [],
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'eval' => 'null',
-							'default' => 'foo',
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['databaseRow']['aField'] = 'foo';
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsDefaultValueIsSet() {
-		$input = [
-			'databaseRow' => [],
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'default' => 'foo',
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['databaseRow']['aField'] = 'foo';
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsDefaultValueIsSet()
+    {
+        $input = [
+            'databaseRow' => [],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'default' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = 'foo';
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

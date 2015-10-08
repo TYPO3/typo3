@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * "Object already registered" Exception
  */
-class ObjectAlreadyRegisteredException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class ObjectAlreadyRegisteredException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

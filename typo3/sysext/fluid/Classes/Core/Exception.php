@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Fluid\Core;
  *
  * @api
  */
-class Exception extends \TYPO3\CMS\Fluid\Exception {
-
+class Exception extends \TYPO3\CMS\Fluid\Exception
+{
 }

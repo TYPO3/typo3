@@ -20,57 +20,60 @@ use TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator;
 /**
  * Testcase for SaltedPasswordsUtility
  */
-class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var Evaluator
+     */
+    protected $subject;
 
-	/**
-	 * @var Evaluator
-	 */
-	protected $subject;
+    /**
+     * Set up the a test
+     */
+    protected function setUp()
+    {
+        $this->subject = $this->getMock(Evaluator::class, array('dummy'));
 
-	/**
-	 * Set up the a test
-	 */
-	protected function setUp() {
-		$this->subject = $this->getMock(Evaluator::class, array('dummy'));
+        // Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] = 'rsa';
+    }
 
-		// Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE
-		unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] = 'rsa';
-	}
+    /**
+     * @test
+     */
+    public function passwordIsTurnedIntoSaltedString()
+    {
+        $isSet = null;
+        $originalPassword = 'password';
+        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $this->assertTrue($isSet);
+        $this->assertNotEquals($originalPassword, $saltedPassword);
+        $this->assertTrue(GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($saltedPassword, 0, 3)));
+    }
 
-	/**
-	 * @test
-	 */
-	public function passwordIsTurnedIntoSaltedString() {
-		$isSet = NULL;
-		$originalPassword = 'password';
-		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
-		$this->assertTrue($isSet);
-		$this->assertNotEquals($originalPassword, $saltedPassword);
-		$this->assertTrue(GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($saltedPassword, 0, 3)));
-	}
+    /**
+     * @test
+     */
+    public function md5HashIsUpdatedToTemporarySaltedString()
+    {
+        $isSet = null;
+        $originalPassword = '5f4dcc3b5aa765d61d8327deb882cf99';
+        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $this->assertTrue($isSet);
+        $this->assertNotEquals($originalPassword, $saltedPassword);
+        $this->assertTrue(GeneralUtility::isFirstPartOfStr($saltedPassword, 'M$'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function md5HashIsUpdatedToTemporarySaltedString() {
-		$isSet = NULL;
-		$originalPassword = '5f4dcc3b5aa765d61d8327deb882cf99';
-		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
-		$this->assertTrue($isSet);
-		$this->assertNotEquals($originalPassword, $saltedPassword);
-		$this->assertTrue(GeneralUtility::isFirstPartOfStr($saltedPassword, 'M$'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function temporarySaltedStringIsNotTouched() {
-		$isSet = NULL;
-		$originalPassword = 'M$P$CibIRipvLfaPlaaeH8ifu9g21BrPjp.';
-		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
-		$this->assertSame(NULL, $isSet);
-		$this->assertSame($originalPassword, $saltedPassword);
-	}
-
+    /**
+     * @test
+     */
+    public function temporarySaltedStringIsNotTouched()
+    {
+        $isSet = null;
+        $originalPassword = 'M$P$CibIRipvLfaPlaaeH8ifu9g21BrPjp.';
+        $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $this->assertSame(null, $isSet);
+        $this->assertSame($originalPassword, $saltedPassword);
+    }
 }

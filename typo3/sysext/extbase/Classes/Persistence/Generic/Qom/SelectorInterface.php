@@ -25,20 +25,20 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the node has a mixin node type that is nodeType, or
  * the node has a mixin node type that is a subtype of nodeType.
  */
-interface SelectorInterface extends SourceInterface {
+interface SelectorInterface extends SourceInterface
+{
+    /**
+     * Gets the name of the required node type.
+     *
+     * @return string the node type name; non-null
+     */
+    public function getNodeTypeName();
 
-	/**
-	 * Gets the name of the required node type.
-	 *
-	 * @return string the node type name; non-null
-	 */
-	public function getNodeTypeName();
-
-	/**
-	 * Gets the selector name.
-	 * A selector's name can be used elsewhere in the query to identify the selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelectorName();
+    /**
+     * Gets the selector name.
+     * A selector's name can be used elsewhere in the query to identify the selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelectorName();
 }

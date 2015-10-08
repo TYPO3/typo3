@@ -17,18 +17,18 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /**
  * Generation of TCEform elements of where the type is unknown
  */
-class UnknownElement extends AbstractFormElement {
-
-	/**
-	 * Handler for unknown types.
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$type = $this->data['parameterArray']['fieldConf']['config']['type'];
-		$resultArray = $this->initializeResultArray();
-		$resultArray['html'] = 'Unknown type: ' . $type . '<br />';
-		return $resultArray;
-	}
-
+class UnknownElement extends AbstractFormElement
+{
+    /**
+     * Handler for unknown types.
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $type = $this->data['parameterArray']['fieldConf']['config']['type'];
+        $resultArray = $this->initializeResultArray();
+        $resultArray['html'] = 'Unknown type: ' . $type . '<br />';
+        return $resultArray;
+    }
 }

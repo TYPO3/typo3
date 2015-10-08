@@ -19,35 +19,38 @@ use TYPO3\CMS\Rsaauth\Backend\PhpBackend;
 /**
  * Test case.
  */
-class PhpBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
-	/**
-	 * @var PhpBackend
-	 */
-	protected $subject = NULL;
+class PhpBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var PhpBackend
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		$this->subject = new PhpBackend();
-	}
+    protected function setUp()
+    {
+        $this->subject = new PhpBackend();
+    }
 
-	/**
-	 * @test
-	 */
-	public function createNewKeyPairCreatesReadyKeyPair() {
-		$keyPair = $this->subject->createNewKeyPair();
-		$this->assertNotNull($keyPair, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
-		$this->assertTrue($keyPair->isReady());
-	}
+    /**
+     * @test
+     */
+    public function createNewKeyPairCreatesReadyKeyPair()
+    {
+        $keyPair = $this->subject->createNewKeyPair();
+        $this->assertNotNull($keyPair, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
+        $this->assertTrue($keyPair->isReady());
+    }
 
-	/**
-	 * @test
-	 */
-	public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance() {
-		$keyPair1 = $this->subject->createNewKeyPair();
-		$this->assertNotNull($keyPair1, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
-		$this->assertSame(
-			$keyPair1,
-			$this->subject->createNewKeyPair()
-		);
-	}
-
+    /**
+     * @test
+     */
+    public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance()
+    {
+        $keyPair1 = $this->subject->createNewKeyPair();
+        $this->assertNotNull($keyPair1, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
+        $this->assertSame(
+            $keyPair1,
+            $this->subject->createNewKeyPair()
+        );
+    }
 }

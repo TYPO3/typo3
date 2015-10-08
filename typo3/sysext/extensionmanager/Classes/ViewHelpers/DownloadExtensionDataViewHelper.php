@@ -22,38 +22,38 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * view helper for displaying a download extension data link
  * @internal
  */
-class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
+class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'a';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
+    /**
+     * Renders an install link
+     *
+     * @param array $extension
+     * @return string the rendered a tag
+     */
+    public function render($extension)
+    {
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-	/**
-	 * Renders an install link
-	 *
-	 * @param array $extension
-	 * @return string the rendered a tag
-	 */
-	public function render($extension) {
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
-		$filePrefix = PATH_site . $extension['siteRelPath'];
-		if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
-			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-		}
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uriBuilder->reset();
-		$uri = $uriBuilder->uriFor('downloadExtensionData', array(
-			'extension' => $extension['key']
-		), 'Action');
-		$this->tag->addAttribute('href', $uri);
-		$cssClass = 'downloadExtensionData btn btn-default';
-		$this->tag->addAttribute('class', $cssClass);
-		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadsql', 'extensionmanager'));
-		$this->tag->setContent($iconFactory->getIcon('actions-system-extension-sqldump', Icon::SIZE_SMALL)->render());
-		return $this->tag->render();
-	}
-
+        $filePrefix = PATH_site . $extension['siteRelPath'];
+        if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
+            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+        }
+        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder->reset();
+        $uri = $uriBuilder->uriFor('downloadExtensionData', array(
+            'extension' => $extension['key']
+        ), 'Action');
+        $this->tag->addAttribute('href', $uri);
+        $cssClass = 'downloadExtensionData btn btn-default';
+        $this->tag->addAttribute('class', $cssClass);
+        $this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadsql', 'extensionmanager'));
+        $this->tag->setContent($iconFactory->getIcon('actions-system-extension-sqldump', Icon::SIZE_SMALL)->render());
+        return $this->tag->render();
+    }
 }

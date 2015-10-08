@@ -19,43 +19,43 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * DefaultInline plugin for htmlArea RTE
  */
-class DefaultInline extends RteHtmlAreaApi {
+class DefaultInline extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'DefaultInline';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'DefaultInline';
+    /**
+     * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'bold,italic,strikethrough,subscript,superscript,underline';
 
-	/**
-	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'bold,italic,strikethrough,subscript,superscript,underline';
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'bold' => 'Bold',
+        'italic' => 'Italic',
+        'underline' => 'Underline',
+        'strikethrough' => 'StrikeThrough',
+        'superscript' => 'Superscript',
+        'subscript' => 'Subscript'
+    );
 
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'bold' => 'Bold',
-		'italic' => 'Italic',
-		'underline' => 'Underline',
-		'strikethrough' => 'StrikeThrough',
-		'superscript' => 'Superscript',
-		'subscript' => 'Subscript'
-	);
-
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration() {
-		return '';
-	}
-
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins
+     */
+    public function buildJavascriptConfiguration()
+    {
+        return '';
+    }
 }

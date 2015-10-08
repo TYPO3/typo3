@@ -20,20 +20,20 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
-interface ObjectMonitoringInterface {
+interface ObjectMonitoringInterface
+{
+    /**
+     * Register an object's clean state, e.g. after it has been reconstituted
+     * from the database
+     *
+     * @return void
+     */
+    public function _memorizeCleanState();
 
-	/**
-	 * Register an object's clean state, e.g. after it has been reconstituted
-	 * from the database
-	 *
-	 * @return void
-	 */
-	public function _memorizeCleanState();
-
-	/**
-	 * Returns TRUE if the properties were modified after reconstitution
-	 *
-	 * @return bool
-	 */
-	public function _isDirty();
+    /**
+     * Returns TRUE if the properties were modified after reconstitution
+     *
+     * @return bool
+     */
+    public function _isDirty();
 }

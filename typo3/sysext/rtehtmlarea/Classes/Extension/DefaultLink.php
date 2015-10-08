@@ -19,39 +19,39 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * Default Link extension for htmlArea RTE
  */
-class DefaultLink extends RteHtmlAreaApi {
+class DefaultLink extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'DefaultLink';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'DefaultLink';
+    /**
+     * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'link, unlink';
 
-	/**
-	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'link, unlink';
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'link' => 'CreateLink',
+        'unlink' => 'UnLink'
+    );
 
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'link' => 'CreateLink',
-		'unlink' => 'UnLink'
-	);
-
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration() {
-		return '';
-	}
-
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins
+     */
+    public function buildJavascriptConfiguration()
+    {
+        return '';
+    }
 }

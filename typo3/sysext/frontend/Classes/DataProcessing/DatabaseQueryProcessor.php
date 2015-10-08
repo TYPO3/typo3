@@ -43,63 +43,65 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  *
  * where "as" means the variable to be containing the result-set from the DB query.
  */
-class DatabaseQueryProcessor implements DataProcessorInterface {
+class DatabaseQueryProcessor implements DataProcessorInterface
+{
+    /**
+     * @var ContentDataProcessor
+     */
+    protected $contentDataProcessor;
 
-	/**
-	 * @var ContentDataProcessor
-	 */
-	protected $contentDataProcessor;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
-	}
+    /**
+     * Fetches records from the database as an array
+     *
+     * @param ContentObjectRenderer $cObj The data of the content element or page
+     * @param array $contentObjectConfiguration The configuration of Content Object
+     * @param array $processorConfiguration The configuration of this processor
+     * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
+     *
+     * @return array the processed data as key/value store
+     */
+    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
+    {
+        if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
+            return $processedData;
+        }
 
-	/**
-	 * Fetches records from the database as an array
-	 *
-	 * @param ContentObjectRenderer $cObj The data of the content element or page
-	 * @param array $contentObjectConfiguration The configuration of Content Object
-	 * @param array $processorConfiguration The configuration of this processor
-	 * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
-	 *
-	 * @return array the processed data as key/value store
-	 */
-	public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData) {
-		if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
-			return $processedData;
-		}
+        // the table to query, if none given, exit
+        $tableName = $cObj->stdWrapValue('table', $processorConfiguration);
+        if (empty($tableName)) {
+            return $processedData;
+        }
+        if (isset($processorConfiguration['table.'])) {
+            unset($processorConfiguration['table.']);
+        }
+        if (isset($processorConfiguration['table'])) {
+            unset($processorConfiguration['table']);
+        }
 
-		// the table to query, if none given, exit
-		$tableName = $cObj->stdWrapValue('table', $processorConfiguration);
-		if (empty($tableName)) {
-			return $processedData;
-		}
-		if (isset($processorConfiguration['table.'])) {
-			unset($processorConfiguration['table.']);
-		}
-		if (isset($processorConfiguration['table'])) {
-			unset($processorConfiguration['table']);
-		}
+        // The variable to be used within the result
+        $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'records');
 
-		// The variable to be used within the result
-		$targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'records');
+        // Execute a SQL statement to fetch the records
+        $records = $cObj->getRecords($tableName, $processorConfiguration);
+        $processedRecordVariables = array();
+        foreach ($records as $key => $record) {
+            /** @var ContentObjectRenderer $recordContentObjectRenderer */
+            $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $recordContentObjectRenderer->start($record, $tableName);
+            $processedRecordVariables[$key] = array('data' => $record);
+            $processedRecordVariables[$key] = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
+        }
 
-		// Execute a SQL statement to fetch the records
-		$records = $cObj->getRecords($tableName, $processorConfiguration);
-		$processedRecordVariables = array();
-		foreach ($records as $key => $record) {
-			/** @var ContentObjectRenderer $recordContentObjectRenderer */
-			$recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-			$recordContentObjectRenderer->start($record, $tableName);
-			$processedRecordVariables[$key] = array('data' => $record);
-			$processedRecordVariables[$key] = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
-		}
+        $processedData[$targetVariableName] = $processedRecordVariables;
 
-		$processedData[$targetVariableName] = $processedRecordVariables;
-
-		return $processedData;
-	}
+        return $processedData;
+    }
 }

@@ -17,93 +17,95 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+{
+    /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
+     */
+    protected $blogRepository;
 
-	/**
-	 * @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository
-	 */
-	protected $blogRepository;
+    /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository
+     */
+    protected $postRepository;
 
-	/**
-	 * @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository
-	 */
-	protected $postRepository;
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array('extbase', 'fluid');
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-	 */
-	protected $objectManager;
+    /**
+     * Sets up this test suite.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Sets up this test suite.
-	 */
-	protected function setUp() {
-		parent::setUp();
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
 
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
+        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+    }
 
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
-		$this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+    /**
+     * @test
+     */
+    public function equalsNullIsResolvedCorrectly()
+    {
+        $query = $this->postRepository->createQuery();
 
-	}
+        $query->matching(
+            $query->equals('title', null)
+        );
 
-	/**
-	 * @test
-	 */
-	public function equalsNullIsResolvedCorrectly() {
-		$query = $this->postRepository->createQuery();
+        $this->assertSame(0, $query->count());
+    }
 
-		$query->matching(
-			$query->equals('title', NULL)
-		);
+    /**
+     * @test
+     */
+    public function equalsCorrectlyHandlesCaseSensivity()
+    {
+        $query = $this->postRepository->createQuery();
 
-		$this->assertSame(0, $query->count());
-	}
+        $query->matching(
+            $query->equals('title', 'PoSt1', false)
+        );
 
-	/**
-	 * @test
-	 */
-	public function equalsCorrectlyHandlesCaseSensivity() {
-		$query = $this->postRepository->createQuery();
+        $this->assertSame(2, $query->count());
+    }
 
-		$query->matching(
-			$query->equals('title', 'PoSt1', FALSE)
-		);
+    /**
+     * @test
+     */
+    public function betweenSetsBoundariesCorrectly()
+    {
+        $query = $this->postRepository->createQuery();
+        $query->setOrderings(array('uid' => QueryInterface::ORDER_ASCENDING));
 
-		$this->assertSame(2, $query->count());
-	}
+        $query->matching(
+            $query->between('uid', 3, 5)
+        );
 
-	/**
-	 * @test
-	 */
-	public function betweenSetsBoundariesCorrectly() {
-		$query = $this->postRepository->createQuery();
-		$query->setOrderings(array('uid' => QueryInterface::ORDER_ASCENDING));
-
-		$query->matching(
-			$query->between('uid', 3, 5)
-		);
-
-		$result = array_map(
-			function($row) { return $row['uid']; },
-			$query->execute(TRUE)
-		);
-		$this->assertEquals(array(3,4,5), $result);
-	}
-
+        $result = array_map(
+            function ($row) { return $row['uid']; },
+            $query->execute(true)
+        );
+        $this->assertEquals(array(3, 4, 5), $result);
+    }
 }

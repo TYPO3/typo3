@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Unsupported Method" exception
  */
-class UnsupportedMethodException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class UnsupportedMethodException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

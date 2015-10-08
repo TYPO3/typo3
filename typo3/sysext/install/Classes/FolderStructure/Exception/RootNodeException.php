@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install\FolderStructure\Exception;
 /**
  * A root node exception
  */
-class RootNodeException extends \TYPO3\CMS\Install\FolderStructure\Exception {
-
+class RootNodeException extends \TYPO3\CMS\Install\FolderStructure\Exception
+{
 }

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Module;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -27,47 +26,49 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Experimental for now
  */
-class AbstractModule {
+class AbstractModule
+{
+    /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
 
-	/**
-	 * ModuleTemplate object
-	 *
-	 * @var ModuleTemplate
-	 */
-	protected $moduleTemplate;
+    /**
+     * Constructor Method
+     */
+    public function __construct()
+    {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    }
 
-	/**
-	 * Constructor Method
-	 */
-	public function __construct() {
-		$this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-	}
+    /**
+     * PSR Request Object
+     *
+     * @var ServerRequestInterface
+     */
+    protected $request;
 
-	/**
-	 * PSR Request Object
-	 *
-	 * @var ServerRequestInterface
-	 */
-	protected $request;
-
-	/**
-	 * Central Request Dispatcher
-	 *
-	 * @param ServerRequestInterface $request PSR7 Request Object
-	 * @param ResponseInterface $response PSR7 Response Object
-	 *
-	 * @return ResponseInterface
-	 *
-	 * @throws \InvalidArgumentException In case an action is not callable
-	 */
-	public function processRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		$methodName = $request->getQueryParams()['action'] ?: 'index';
-		if (!is_callable([$this, $methodName])) {
-			throw new \InvalidArgumentException(
-				'The method "' . $methodName . '" is not callable within "' . get_class($this) . '".',
-				1442736343
-			);
-		}
-		return $this->{$methodName}($request, $response);
-	}
+    /**
+     * Central Request Dispatcher
+     *
+     * @param ServerRequestInterface $request PSR7 Request Object
+     * @param ResponseInterface $response PSR7 Response Object
+     *
+     * @return ResponseInterface
+     *
+     * @throws \InvalidArgumentException In case an action is not callable
+     */
+    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $methodName = $request->getQueryParams()['action'] ?: 'index';
+        if (!is_callable([$this, $methodName])) {
+            throw new \InvalidArgumentException(
+                'The method "' . $methodName . '" is not callable within "' . get_class($this) . '".',
+                1442736343
+            );
+        }
+        return $this->{$methodName}($request, $response);
+    }
 }

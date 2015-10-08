@@ -24,129 +24,135 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class DatabaseEditRowTest extends UnitTestCase {
+class DatabaseEditRowTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseEditRow
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseEditRow
-	 */
-	protected $subject;
+    /**
+     * @var DatabaseConnection | ObjectProphecy
+     */
+    protected $dbProphecy;
 
-	/**
-	 * @var DatabaseConnection | ObjectProphecy
-	 */
-	protected $dbProphecy;
+    protected function setUp()
+    {
+        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 
-	protected function setUp() {
-		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+        $this->subject = new DatabaseEditRow();
+    }
 
-		$this->subject = new DatabaseEditRow();
-	}
+    /**
+     * @test
+     */
+    public function addDataRetrievesRecordInformationFromDatabase()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $resultRow = [
+            'uid' => 10,
+            'pid' => 123
+        ];
+        $this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
+        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn([]);
 
-	/**
-	 * @test
-	 */
-	public function addDataRetrievesRecordInformationFromDatabase() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 10,
-		];
-		$resultRow = [
-			'uid' => 10,
-			'pid' => 123
-		];
-		$this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
-		$this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn([]);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame($resultRow, $result['databaseRow']);
+    }
 
-		$this->assertSame($resultRow, $result['databaseRow']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRetrievedRowHasNoPid()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $resultRow = [
+            'uid' => 10,
+        ];
+        $this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfRetrievedRowHasNoPid() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 10,
-		];
-		$resultRow = [
-			'uid' => 10,
-		];
-		$this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437663061);
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437663061);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfGivenUidIsNotPositive()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => -10,
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfGivenUidIsNotPositive() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => -10,
-		];
+        $this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437656456);
 
-		$this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437656456);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfNoRecordForEditingCouldBeRetrievedFromDatabase()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfNoRecordForEditingCouldBeRetrievedFromDatabase() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 10,
-		];
+        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1437655862);
 
-		$this->setExpectedException(\RuntimeException::class, $this->anything(), 1437655862);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfDatabaseFetchingReturnsFalse()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
+        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(false);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfDatabaseFetchingReturnsFalse() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 10,
-		];
-		$this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
-		$this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(FALSE);
+        $this->setExpectedException(DatabaseRecordException::class, $this->anything(), 1437656081);
 
-		$this->setExpectedException(DatabaseRecordException::class, $this->anything(), 1437656081);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfDatabaseFetchingReturnsInvalidRowResultData()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
+        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn('invalid result data');
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfDatabaseFetchingReturnsInvalidRowResultData() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 10,
-		];
-		$this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
-		$this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn('invalid result data');
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437656323);
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437656323);
-
-		$this->subject->addData($input);
-	}
-
+        $this->subject->addData($input);
+    }
 }

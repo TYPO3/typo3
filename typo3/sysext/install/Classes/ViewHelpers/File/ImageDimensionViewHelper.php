@@ -18,7 +18,6 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-
 /**
  * Get width or height from image file
  *
@@ -33,54 +32,55 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @internal
  */
-class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableInterface {
+class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Get width / height from image file
+     *
+     * @param string $dimension Either width or height
+     * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
+     * @return int width or height
+     */
+    public function render($dimension = 'width')
+    {
+        return static::renderStatic(
+            array(
+                'dimension' => $dimension,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Get width / height from image file
-	 *
-	 * @param string $dimension Either width or height
-	 * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
-	 * @return int width or height
-	 */
-	public function render($dimension = 'width') {
-		return static::renderStatic(
-			array(
-				'dimension' => $dimension,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$dimension = $arguments['dimension'];
-		if ($dimension !== 'width' && $dimension !== 'height') {
-			throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
-				'Dimension must be either \'width\' or \'height\'',
-				1369563247
-			);
-		}
-		$absolutePathToFile = $renderChildrenClosure();
-		if (!is_file($absolutePathToFile)) {
-			throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
-				'File not found',
-				1369563248
-			);
-		}
-		$actualDimension = getimagesize($absolutePathToFile);
-		if ($dimension === 'width') {
-			$size = $actualDimension[0];
-		} else {
-			$size = $actualDimension[1];
-		}
-		return $size;
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $dimension = $arguments['dimension'];
+        if ($dimension !== 'width' && $dimension !== 'height') {
+            throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
+                'Dimension must be either \'width\' or \'height\'',
+                1369563247
+            );
+        }
+        $absolutePathToFile = $renderChildrenClosure();
+        if (!is_file($absolutePathToFile)) {
+            throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
+                'File not found',
+                1369563248
+            );
+        }
+        $actualDimension = getimagesize($absolutePathToFile);
+        if ($dimension === 'width') {
+            $size = $actualDimension[0];
+        } else {
+            $size = $actualDimension[1];
+        }
+        return $size;
+    }
 }

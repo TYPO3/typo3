@@ -17,76 +17,79 @@ namespace TYPO3\CMS\Install\Configuration;
 /**
  * Abstract custom preset class implements common preset code
  */
-abstract class AbstractCustomPreset extends AbstractPreset {
+abstract class AbstractCustomPreset extends AbstractPreset
+{
+    /**
+     * @var string Name of preset, always set to "Custom"
+     */
+    protected $name = 'Custom';
 
-	/**
-	 * @var string Name of preset, always set to "Custom"
-	 */
-	protected $name = 'Custom';
+    /**
+     * @var bool TRUE if custom preset is active
+     */
+    protected $isActive = false;
 
-	/**
-	 * @var bool TRUE if custom preset is active
-	 */
-	protected $isActive = FALSE;
+    /**
+     * @var int Priority of custom prefix is usually the lowest
+     */
+    protected $priority = 10;
 
-	/**
-	 * @var int Priority of custom prefix is usually the lowest
-	 */
-	protected $priority = 10;
+    /**
+     * Whether custom preset is active is set by feature
+     *
+     * @return bool TRUE if custom preset is active
+     */
+    public function isActive()
+    {
+        return $this->isActive;
+    }
 
-	/**
-	 * Whether custom preset is active is set by feature
-	 *
-	 * @return bool TRUE if custom preset is active
-	 */
-	public function isActive() {
-		return $this->isActive;
-	}
+    /**
+     * Mark preset as active.
+     * The custom features do not know by itself if they are
+     * active or not since the configuration options may overlay
+     * with other presets.
+     * Marking the custom preset as active is therefor taken care
+     * off by the feature itself if no other preset is active.
+     *
+     * @return void
+     */
+    public function setActive()
+    {
+        $this->isActive = true;
+    }
 
-	/**
-	 * Mark preset as active.
-	 * The custom features do not know by itself if they are
-	 * active or not since the configuration options may overlay
-	 * with other presets.
-	 * Marking the custom preset as active is therefor taken care
-	 * off by the feature itself if no other preset is active.
-	 *
-	 * @return void
-	 */
-	public function setActive() {
-		$this->isActive = TRUE;
-	}
+    /**
+     * Custom configuration is always available
+     *
+     * @return bool TRUE
+     */
+    public function isAvailable()
+    {
+        return true;
+    }
 
-	/**
-	 * Custom configuration is always available
-	 *
-	 * @return bool TRUE
-	 */
-	public function isAvailable() {
-		return TRUE;
-	}
-
-	/**
-	 * Get configuration values is used in fluid to show configuration options.
-	 * They are fetched from LocalConfiguration / DefaultConfiguration and
-	 * merged with given $postValues.
-	 *
-	 * @return array Configuration values needed to activate prefix
-	 */
-	public function getConfigurationValues() {
-		$configurationValues = array();
-		foreach ($this->configurationValues as $configurationKey => $configurationValue) {
-			if (isset($this->postValues['enable'])
-				&& $this->postValues['enable'] === $this->name
-				&& isset($this->postValues[$this->name][$configurationKey])
-			) {
-				$currentValue = $this->postValues[$this->name][$configurationKey];
-			} else {
-				$currentValue = $this->configurationManager->getConfigurationValueByPath($configurationKey);
-			}
-			$configurationValues[$configurationKey] = $currentValue;
-		}
-		return $configurationValues;
-	}
-
+    /**
+     * Get configuration values is used in fluid to show configuration options.
+     * They are fetched from LocalConfiguration / DefaultConfiguration and
+     * merged with given $postValues.
+     *
+     * @return array Configuration values needed to activate prefix
+     */
+    public function getConfigurationValues()
+    {
+        $configurationValues = array();
+        foreach ($this->configurationValues as $configurationKey => $configurationValue) {
+            if (isset($this->postValues['enable'])
+                && $this->postValues['enable'] === $this->name
+                && isset($this->postValues[$this->name][$configurationKey])
+            ) {
+                $currentValue = $this->postValues[$this->name][$configurationKey];
+            } else {
+                $currentValue = $this->configurationManager->getConfigurationValueByPath($configurationKey);
+            }
+            $configurationValues[$configurationKey] = $currentValue;
+        }
+        return $configurationValues;
+    }
 }

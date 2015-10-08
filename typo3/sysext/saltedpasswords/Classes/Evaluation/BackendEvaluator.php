@@ -18,13 +18,13 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  * Class implementing salted evaluation methods for BE users.
  * @since 2009-06-14
  */
-class BackendEvaluator extends Evaluator {
-
-	/**
-	 * Class constructor.
-	 */
-	public function __construct() {
-		$this->mode = 'BE';
-	}
-
+class BackendEvaluator extends Evaluator
+{
+    /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->mode = 'BE';
+    }
 }

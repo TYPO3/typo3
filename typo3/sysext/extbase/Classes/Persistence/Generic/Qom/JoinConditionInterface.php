@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Filters the set of node-tuples formed from a join.
  */
-interface JoinConditionInterface {
-
-	/**
-	 * Gets the name of the first selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelector1Name();
+interface JoinConditionInterface
+{
+    /**
+     * Gets the name of the first selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelector1Name();
 }

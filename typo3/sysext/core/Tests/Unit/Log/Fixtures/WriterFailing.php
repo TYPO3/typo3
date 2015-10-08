@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 /**
  * A log writer that always fails to write (for testing purposes ;-))
  */
-class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
-
-	/**
-	 * Try to write the log entry - but throw an exception in our case
-	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
-	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface|void
-	 * @throws \RuntimeException
-	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		throw new \RuntimeException('t3lib_log_writer_Failing failed');
-	}
-
+class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface
+{
+    /**
+     * Try to write the log entry - but throw an exception in our case
+     *
+     * @param \TYPO3\CMS\Core\Log\LogRecord $record
+     * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface|void
+     * @throws \RuntimeException
+     */
+    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
+    {
+        throw new \RuntimeException('t3lib_log_writer_Failing failed');
+    }
 }

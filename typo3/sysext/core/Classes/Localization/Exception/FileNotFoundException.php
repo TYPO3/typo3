@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Localization\Exception;
 /**
  * File not found exception
  */
-class FileNotFoundException extends \RuntimeException {
-
+class FileNotFoundException extends \RuntimeException
+{
 }

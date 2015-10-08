@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Integer filter
  */
-class IntegerFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Cast to integer
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		return (int)((string)$value);
-	}
-
+class IntegerFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Cast to integer
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        return (int)((string)$value);
+    }
 }

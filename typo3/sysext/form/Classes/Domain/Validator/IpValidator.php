@@ -14,33 +14,33 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class IpValidator extends AbstractValidator {
+class IpValidator extends AbstractValidator
+{
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_ip';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_ip';
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		if (!preg_match('/\\b(([01]?\\d?\\d|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d?\\d|2[0-4]\\d|25[0-5])\\b/', $value)) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1441999896
-			);
-		}
-	}
-
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if (!preg_match('/\\b(([01]?\\d?\\d|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d?\\d|2[0-4]\\d|25[0-5])\\b/', $value)) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1441999896
+            );
+        }
+    }
 }

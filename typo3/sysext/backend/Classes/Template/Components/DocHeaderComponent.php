@@ -19,107 +19,114 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * DocHeader component class
  */
-class DocHeaderComponent {
+class DocHeaderComponent
+{
+    /**
+     * MenuRegistry Object
+     *
+     * @var MenuRegistry
+     */
+    protected $menuRegistry;
 
-	/**
-	 * MenuRegistry Object
-	 *
-	 * @var MenuRegistry
-	 */
-	protected $menuRegistry;
+    /**
+     * Meta information
+     *
+     * @var MetaInformation
+     */
+    protected $metaInformation;
 
-	/**
-	 * Meta information
-	 *
-	 * @var MetaInformation
-	 */
-	protected $metaInformation;
+    /**
+     * Registry Container for Buttons
+     *
+     * @var ButtonBar
+     */
+    protected $buttonBar;
 
-	/**
-	 * Registry Container for Buttons
-	 *
-	 * @var ButtonBar
-	 */
-	protected $buttonBar;
+    /**
+     * @var bool
+     */
+    protected $enabled = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $enabled = TRUE;
+    /**
+     * Sets up buttonBar and MenuRegistry
+     */
+    public function __construct()
+    {
+        $this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
+        $this->menuRegistry = GeneralUtility::makeInstance(MenuRegistry::class);
+        $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
+    }
 
-	/**
-	 * Sets up buttonBar and MenuRegistry
-	 */
-	public function __construct() {
-		$this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
-		$this->menuRegistry = GeneralUtility::makeInstance(MenuRegistry::class);
-		$this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
-	}
+    /**
+     * Set page information
+     *
+     * @param array $metaInformation Record array
+     *
+     * @return void
+     */
+    public function setMetaInformation(array $metaInformation)
+    {
+        $this->metaInformation->setRecordArray($metaInformation);
+    }
 
-	/**
-	 * Set page information
-	 *
-	 * @param array $metaInformation Record array
-	 *
-	 * @return void
-	 */
-	public function setMetaInformation(array $metaInformation) {
-		$this->metaInformation->setRecordArray($metaInformation);
-	}
+    /**
+     * Get moduleMenuRegistry
+     *
+     * @return MenuRegistry
+     */
+    public function getMenuRegistry()
+    {
+        return $this->menuRegistry;
+    }
 
-	/**
-	 * Get moduleMenuRegistry
-	 *
-	 * @return MenuRegistry
-	 */
-	public function getMenuRegistry() {
-		return $this->menuRegistry;
-	}
+    /**
+     * Get ButtonBar
+     *
+     * @return ButtonBar
+     */
+    public function getButtonBar()
+    {
+        return $this->buttonBar;
+    }
 
-	/**
-	 * Get ButtonBar
-	 *
-	 * @return ButtonBar
-	 */
-	public function getButtonBar() {
-		return $this->buttonBar;
-	}
+    /**
+     * Determines whether this components is enabled.
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
 
-	/**
-	 * Determines whether this components is enabled.
-	 *
-	 * @return bool
-	 */
-	public function isEnabled() {
-		return $this->enabled;
-	}
+    /**
+     * Sets the enabled property to TRUE.
+     */
+    public function enable()
+    {
+        $this->enabled = true;
+    }
 
-	/**
-	 * Sets the enabled property to TRUE.
-	 */
-	public function enable() {
-		$this->enabled = TRUE;
-	}
+    /**
+     * Sets the enabled property to FALSE (disabled).
+     */
+    public function disable()
+    {
+        $this->enabled = false;
+    }
 
-	/**
-	 * Sets the enabled property to FALSE (disabled).
-	 */
-	public function disable() {
-		$this->enabled = FALSE;
-	}
-
-	/**
-	 * Returns the abstract content of the docHeader as an array
-	 *
-	 * @return array
-	 */
-	public function docHeaderContent() {
-		return [
-			'enabled' => $this->isEnabled(),
-			'buttons' => $this->buttonBar->getButtons(),
-			'menus' => $this->menuRegistry->getMenus(),
-			'metaInformation' => $this->metaInformation
-		];
-	}
-
+    /**
+     * Returns the abstract content of the docHeader as an array
+     *
+     * @return array
+     */
+    public function docHeaderContent()
+    {
+        return [
+            'enabled' => $this->isEnabled(),
+            'buttons' => $this->buttonBar->getButtons(),
+            'menus' => $this->menuRegistry->getMenus(),
+            'metaInformation' => $this->metaInformation
+        ];
+    }
 }

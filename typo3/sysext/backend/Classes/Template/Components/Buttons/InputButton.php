@@ -33,116 +33,123 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->setTitle('Save');
  * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */
-class InputButton extends AbstractButton implements ButtonInterface {
+class InputButton extends AbstractButton implements ButtonInterface
+{
+    /**
+     * Name Attribute of the button
+     *
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * Name Attribute of the button
-	 *
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * Value attribute of the button
+     *
+     * @var string
+     */
+    protected $value = '';
 
-	/**
-	 * Value attribute of the button
-	 *
-	 * @var string
-	 */
-	protected $value = '';
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Get name
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Set name
+     *
+     * @param string $name Name attribute
+     *
+     * @return InputButton
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-	/**
-	 * Set name
-	 *
-	 * @param string $name Name attribute
-	 *
-	 * @return InputButton
-	 */
-	public function setName($name) {
-		$this->name = $name;
-		return $this;
-	}
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * Get value
-	 *
-	 * @return string
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+    /**
+     * Set value
+     *
+     * @param string $value Value attribute
+     *
+     * @return InputButton
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
 
-	/**
-	 * Set value
-	 *
-	 * @param string $value Value attribute
-	 *
-	 * @return InputButton
-	 */
-	public function setValue($value) {
-		$this->value = $value;
-		return $this;
-	}
+    /**
+     * Validates the current button
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        if (
+            trim($this->getName()) !== ''
+            && trim($this->getValue()) !== ''
+            && trim($this->getTitle()) !== ''
+            && $this->getType() === InputButton::class
+            && $this->getIcon() !== null
+        ) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Validates the current button
-	 *
-	 * @return bool
-	 */
-	public function isValid() {
-		if (
-			trim($this->getName()) !== ''
-			&& trim($this->getValue()) !== ''
-			&& trim($this->getTitle()) !== ''
-			&& $this->getType() === InputButton::class
-			&& $this->getIcon() !== NULL
-		) {
-			return TRUE;
-		}
-		return FALSE;
-	}
+    /**
+     * Renders the markup of the button
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $attributes = array(
+            'name' => $this->getName(),
+            'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+            'value' => $this->getValue(),
+            'title' => $this->getTitle()
+        );
+        $labelText = '';
+        if ($this->showLabelText) {
+            $labelText = ' ' . $this->title;
+        }
+        foreach ($this->dataAttributes as $attributeName => $attributeValue) {
+            $attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
+        }
+        $attributesString = '';
+        foreach ($attributes as $key => $value) {
+            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+        }
+        return '<button' . $attributesString . '">'
+            . $this->getIcon()->render() . htmlspecialchars($labelText)
+        . '</button>';
+    }
 
-	/**
-	 * Renders the markup of the button
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$attributes = array(
-			'name' => $this->getName(),
-			'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
-			'value' => $this->getValue(),
-			'title' => $this->getTitle()
-		);
-		$labelText = '';
-		if ($this->showLabelText) {
-			$labelText = ' ' . $this->title;
-		}
-		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
-			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
-		}
-		$attributesString = '';
-		foreach ($attributes as $key => $value) {
-			$attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-		}
-		return '<button' . $attributesString . '">'
-			. $this->getIcon()->render() . htmlspecialchars($labelText)
-		. '</button>';
-	}
-
-	/**
-	 * Magic method so Fluid can access a button via {button}
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
-	}
+    /**
+     * Magic method so Fluid can access a button via {button}
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

@@ -26,61 +26,64 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class TcaFlexFetchTest extends UnitTestCase {
+class TcaFlexFetchTest extends UnitTestCase
+{
+    /**
+     * @var TcaFlexFetch
+     */
+    protected $subject;
 
-	/**
-	 * @var TcaFlexFetch
-	 */
-	protected $subject;
+    /**
+     * @var BackendUserAuthentication|ObjectProphecy
+     */
+    protected $backendUserProphecy;
 
-	/**
-	 * @var BackendUserAuthentication|ObjectProphecy
-	 */
-	protected $backendUserProphecy;
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = array();
 
-	/**
-	 * @var array A backup of registered singleton instances
-	 */
-	protected $singletonInstances = array();
+    protected function setUp()
+    {
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
 
-	protected function setUp() {
-		$this->singletonInstances = GeneralUtility::getSingletonInstances();
+        // Suppress cache foo in xml helpers of GeneralUtility
+        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
 
-		// Suppress cache foo in xml helpers of GeneralUtility
-		/** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
-		$cacheManagerProphecy = $this->prophesize(CacheManager::class);
-		GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-		$cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-		$cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
+        $this->subject = new TcaFlexFetch();
+    }
 
-		$this->subject = new TcaFlexFetch();
-	}
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
+    }
 
-	protected function tearDown() {
-		GeneralUtility::purgeInstances();
-		GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		parent::tearDown();
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsParsedDataStructureArray() {
-		$input = [
-			'systemLanguageRows' => [],
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'default' => '
+    /**
+     * @test
+     */
+    public function addDataSetsParsedDataStructureArray()
+    {
+        $input = [
+            'systemLanguageRows' => [],
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                    'meta' => [],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'default' => '
 									<T3DataStructure>
 										<ROOT>
 											<type>array</type>
@@ -97,53 +100,54 @@ class TcaFlexFetchTest extends UnitTestCase {
 										</ROOT>
 									</T3DataStructure>
 								',
-							],
-						],
-					],
-				],
-			],
-		];
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'ROOT' => [
-				'type' => 'array',
-				'el' => [
-					'aFlexField' => [
-						'TCEforms' => [
-							'label' => 'aFlexFieldLabel',
-							'config' => [
-								'type' => 'input',
-							],
-						],
-					],
-				],
-			],
-			'meta' => [],
-		];
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['ds'] = [
+            'ROOT' => [
+                'type' => 'array',
+                'el' => [
+                    'aFlexField' => [
+                        'TCEforms' => [
+                            'label' => 'aFlexFieldLabel',
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'meta' => [],
+        ];
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsParsedDataStructureArrayWithSheets() {
-		$input = [
-			'systemLanguageRows' => [],
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'default' => '
+    /**
+     * @test
+     */
+    public function addDataSetsParsedDataStructureArrayWithSheets()
+    {
+        $input = [
+            'systemLanguageRows' => [],
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                    'meta' => [],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'default' => '
 									<T3DataStructure>
 										<sheets>
 											<sDEF>
@@ -167,101 +171,102 @@ class TcaFlexFetchTest extends UnitTestCase {
 										</sheets>
 									</T3DataStructure>
 								',
-							],
-						],
-					],
-				],
-			],
-		];
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'sheets' => [
-				'sDEF' => [
-					'ROOT' => [
-						'type' => 'array',
-						'el' => [
-							'aFlexField' => [
-								'TCEforms' => [
-									'label' => 'aFlexFieldLabel',
-									'config' => [
-										'type' => 'input',
-									],
-								],
-							],
-						],
-						'TCEforms' => [
-							'sheetTitle' => 'aTitle',
-						],
-					],
-				],
-			],
-			'meta' => [],
-		];
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['ds'] = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'el' => [
+                            'aFlexField' => [
+                                'TCEforms' => [
+                                    'label' => 'aFlexFieldLabel',
+                                    'config' => [
+                                        'type' => 'input',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'TCEforms' => [
+                            'sheetTitle' => 'aTitle',
+                        ],
+                    ],
+                ],
+            ],
+            'meta' => [],
+        ];
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfDataStructureCanNotBeParsed() {
-		$input = [
-			'systemLanguageRows' => [],
-			'databaseRow' => [],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => ''
-						],
-					],
-				],
-			],
-		];
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfDataStructureCanNotBeParsed()
+    {
+        $input = [
+            'systemLanguageRows' => [],
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => ''
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1440506893);
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1440506893);
 
-		$this->subject->addData($input);
-	}
+        $this->subject->addData($input);
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataInitializesDatabaseRowValueIfNoDataStringIsGiven() {
-		$input = [
-			'databaseRow' => [],
-			'systemLanguageRows' => [],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'default' => '
+    /**
+     * @test
+     */
+    public function addDataInitializesDatabaseRowValueIfNoDataStringIsGiven()
+    {
+        $input = [
+            'databaseRow' => [],
+            'systemLanguageRows' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'default' => '
 									<T3DataStructure>
 										<ROOT></ROOT>
 									</T3DataStructure>
 								',
-							],
-						],
-					],
-				],
-			],
-		];
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'ROOT' => '',
-			'meta' => [],
-		];
-		$expected['databaseRow']['aField'] = [
-			'data' => [],
-			'meta' => []
-		];
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['ds'] = [
+            'ROOT' => '',
+            'meta' => [],
+        ];
+        $expected['databaseRow']['aField'] = [
+            'data' => [],
+            'meta' => []
+        ];
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 }

@@ -22,48 +22,47 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * View helper for configure extension link
  * @internal
  */
-class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
+class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'a';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
+    /**
+     * Renders a configure extension link if the extension has configuration options
+     *
+     * @param array $extension Extension configuration array with extension information
+     * @param bool $forceConfiguration If TRUE the content is only returned if a link could be generated
+     * @param bool $showDescription If TRUE the extension description is also shown in the title attribute
+     * @return string the rendered tag or child nodes content
+     */
+    public function render($extension, $forceConfiguration = true, $showDescription = false)
+    {
+        $content = (string)$this->renderChildren();
+        if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . 'ext_conf_template.txt')) {
+            $uriBuilder = $this->controllerContext->getUriBuilder();
+            $action = 'showConfigurationForm';
+            $uri = $uriBuilder->reset()->uriFor(
+                $action,
+                array('extension' => array('key' => $extension['key'])),
+                'Configuration'
+            );
+            if ($showDescription) {
+                $title = $extension['description'] . PHP_EOL .
+                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.clickToConfigure', 'extensionmanager');
+            } else {
+                $title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.configure', 'extensionmanager');
+            }
+            $this->tag->addAttribute('href', $uri);
+            $this->tag->addAttribute('title', $title);
+            $this->tag->setContent($content);
+            $content = $this->tag->render();
+        } elseif ($forceConfiguration) {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $content = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+        }
 
-	/**
-	 * Renders a configure extension link if the extension has configuration options
-	 *
-	 * @param array $extension Extension configuration array with extension information
-	 * @param bool $forceConfiguration If TRUE the content is only returned if a link could be generated
-	 * @param bool $showDescription If TRUE the extension description is also shown in the title attribute
-	 * @return string the rendered tag or child nodes content
-	 */
-	public function render($extension, $forceConfiguration = TRUE, $showDescription = FALSE) {
-		$content = (string)$this->renderChildren();
-		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . 'ext_conf_template.txt')) {
-			$uriBuilder = $this->controllerContext->getUriBuilder();
-			$action = 'showConfigurationForm';
-			$uri = $uriBuilder->reset()->uriFor(
-				$action,
-				array('extension' => array('key' => $extension['key'])),
-				'Configuration'
-			);
-			if ($showDescription) {
-				$title = $extension['description'] . PHP_EOL .
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.clickToConfigure', 'extensionmanager');
-
-			} else {
-				$title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.configure', 'extensionmanager');
-			}
-			$this->tag->addAttribute('href', $uri);
-			$this->tag->addAttribute('title', $title);
-			$this->tag->setContent($content);
-			$content = $this->tag->render();
-		} elseif ($forceConfiguration) {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$content = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-		}
-
-		return $content;
-	}
-
+        return $content;
+    }
 }

@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
  */
-class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 * @expectedException \RuntimeException
-	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
-	 * @return void
-	 */
-	public function missingTableNameArgumentForObjectCategoryCollection() {
-		new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
-	}
-
+class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
+     * @return void
+     */
+    public function missingTableNameArgumentForObjectCategoryCollection()
+    {
+        new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
+    }
 }

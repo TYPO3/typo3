@@ -17,11 +17,10 @@ namespace TYPO3\CMS\Install\Status;
 /**
  * Alert level status
  */
-class AlertStatus extends AbstractStatus implements StatusInterface {
-
-	/**
-	 * @var string The severity
-	 */
-	protected $severity = 'alert';
-
+class AlertStatus extends AbstractStatus implements StatusInterface
+{
+    /**
+     * @var string The severity
+     */
+    protected $severity = 'alert';
 }

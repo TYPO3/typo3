@@ -17,45 +17,48 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  */
-class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter
-	 */
-	protected $subject = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter();
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter();
-	}
+    /**
+     * @test
+     */
+    public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString()
+    {
+        $input = 'My name contains äøüößØœ';
+        // This is default, but let's be explicit:
+        $this->subject->setAllowWhiteSpace(true);
+        $this->assertSame($input, $this->subject->filter($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->subject->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->subject->filter($input));
-	}
+    /**
+     * @test
+     */
+    public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces()
+    {
+        $input = 'My name contains äøüößØœ';
+        $expected = 'MynamecontainsäøüößØœ';
+        $this->subject->setAllowWhiteSpace(false);
+        $this->assertSame($expected, $this->subject->filter($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->subject->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->subject->filter($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function filterAllowsNumericCharacters() {
-		$this->assertSame('foo23bar', $this->subject->filter('foo23bar'));
-	}
-
+    /**
+     * @test
+     */
+    public function filterAllowsNumericCharacters()
+    {
+        $this->assertSame('foo23bar', $this->subject->filter('foo23bar'));
+    }
 }

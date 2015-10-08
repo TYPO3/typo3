@@ -17,71 +17,75 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 /**
  * Testing collection of backend layouts.
  */
-class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class BackendLayoutCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     * @expectedException \UnexpectedValueException
+     */
+    public function invalidIdentifierIsRecognizedOnCreation()
+    {
+        $identifier = $this->getUniqueId('identifier__');
+        new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function invalidIdentifierIsRecognizedOnCreation() {
-		$identifier = $this->getUniqueId('identifier__');
-		new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-	}
+    /**
+     * @test
+     */
+    public function objectIsCreated()
+    {
+        $identifier = $this->getUniqueId('identifier');
+        $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
 
-	/**
-	 * @test
-	 */
-	public function objectIsCreated() {
-		$identifier = $this->getUniqueId('identifier');
-		$backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
+        $this->assertEquals($identifier, $backendLayoutCollection->getIdentifier());
+    }
 
-		$this->assertEquals($identifier, $backendLayoutCollection->getIdentifier());
-	}
+    /**
+     * @test
+     * @expectedException \UnexpectedValueException
+     */
+    public function invalidBackendLayoutIsRecognizedOnAdding()
+    {
+        $identifier = $this->getUniqueId('identifier');
+        $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
+        $backendLayoutIdentifier = $this->getUniqueId('identifier__');
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
 
-	/**
-	 * @test
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function invalidBackendLayoutIsRecognizedOnAdding() {
-		$identifier = $this->getUniqueId('identifier');
-		$backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-		$backendLayoutIdentifier = $this->getUniqueId('identifier__');
-		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $backendLayoutCollection->add($backendLayoutMock);
+    }
 
-		$backendLayoutCollection->add($backendLayoutMock);
-	}
+    /**
+     * @test
+     * @expectedException \LogicException
+     */
+    public function duplicateBackendLayoutIsRecognizedOnAdding()
+    {
+        $identifier = $this->getUniqueId('identifier');
+        $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
+        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $firstBackendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $firstBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $secondBackendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $secondBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
 
-	/**
-	 * @test
-	 * @expectedException \LogicException
-	 */
-	public function duplicateBackendLayoutIsRecognizedOnAdding() {
-		$identifier = $this->getUniqueId('identifier');
-		$backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-		$backendLayoutIdentifier = $this->getUniqueId('identifier');
-		$firstBackendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$firstBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
-		$secondBackendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$secondBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $backendLayoutCollection->add($firstBackendLayoutMock);
+        $backendLayoutCollection->add($secondBackendLayoutMock);
+    }
 
-		$backendLayoutCollection->add($firstBackendLayoutMock);
-		$backendLayoutCollection->add($secondBackendLayoutMock);
-	}
+    /**
+     * @test
+     */
+    public function backendLayoutCanBeFetched()
+    {
+        $identifier = $this->getUniqueId('identifier');
+        $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
+        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
 
-	/**
-	 * @test
-	 */
-	public function backendLayoutCanBeFetched() {
-		$identifier = $this->getUniqueId('identifier');
-		$backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-		$backendLayoutIdentifier = $this->getUniqueId('identifier');
-		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $backendLayoutCollection->add($backendLayoutMock);
 
-		$backendLayoutCollection->add($backendLayoutMock);
-
-		$this->assertEquals($backendLayoutMock, $backendLayoutCollection->get($backendLayoutIdentifier));
-	}
-
+        $this->assertEquals($backendLayoutMock, $backendLayoutCollection->get($backendLayoutIdentifier));
+    }
 }

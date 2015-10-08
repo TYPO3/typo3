@@ -17,34 +17,34 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * Exception for Error 503 - Service Unavailable
  */
-class ServiceUnavailableException extends AbstractServerErrorException {
+class ServiceUnavailableException extends AbstractServerErrorException
+{
+    /**
+     * @var array HTTP Status Header lines
+     */
+    protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_503);
 
-	/**
-	 * @var array HTTP Status Header lines
-	 */
-	protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_503);
+    /**
+     * @var string Title of the message
+     */
+    protected $title = 'Service Unavailable (503)';
 
-	/**
-	 * @var string Title of the message
-	 */
-	protected $title = 'Service Unavailable (503)';
+    /**
+     * @var string Error Message
+     */
+    protected $message = 'This page is currently not available.';
 
-	/**
-	 * @var string Error Message
-	 */
-	protected $message = 'This page is currently not available.';
-
-	/**
-	 * Constructor for this Status Exception
-	 *
-	 * @param string $message Error Message
-	 * @param int $code Exception Code
-	 */
-	public function __construct($message = NULL, $code = 0) {
-		if (!empty($message)) {
-			$this->message = $message;
-		}
-		parent::__construct($this->statusHeaders, $this->message, $this->title, $code);
-	}
-
+    /**
+     * Constructor for this Status Exception
+     *
+     * @param string $message Error Message
+     * @param int $code Exception Code
+     */
+    public function __construct($message = null, $code = 0)
+    {
+        if (!empty($message)) {
+            $this->message = $message;
+        }
+        parent::__construct($this->statusHeaders, $this->message, $this->title, $code);
+    }
 }

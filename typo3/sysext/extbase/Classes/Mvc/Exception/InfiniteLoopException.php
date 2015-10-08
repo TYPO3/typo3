@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Infinite Loop" exception
  */
-class InfiniteLoopException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InfiniteLoopException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

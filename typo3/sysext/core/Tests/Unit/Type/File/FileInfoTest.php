@@ -19,15 +19,15 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class FileInfoTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function classFileInfoCanBeInstantiated() {
-		$className = 'TYPO3\CMS\Core\Type\File\FileInfo';
-		$classInstance = new \TYPO3\CMS\Core\Type\File\FileInfo('FooFileName');
-		$this->assertInstanceOf($className, $classInstance);
-	}
-
+class FileInfoTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function classFileInfoCanBeInstantiated()
+    {
+        $className = 'TYPO3\CMS\Core\Type\File\FileInfo';
+        $classInstance = new \TYPO3\CMS\Core\Type\File\FileInfo('FooFileName');
+        $this->assertInstanceOf($className, $classInstance);
+    }
 }

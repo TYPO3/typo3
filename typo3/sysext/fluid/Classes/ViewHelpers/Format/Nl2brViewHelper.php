@@ -37,40 +37,41 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class Nl2brViewHelper extends AbstractViewHelper implements CompilableInterface {
+class Nl2brViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Replaces newline characters by HTML line breaks.
+     *
+     * @param string $value string to format
+     * @return string the altered string.
+     * @api
+     */
+    public function render($value = null)
+    {
+        return static::renderStatic(
+            array(
+                'value' => $value
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Replaces newline characters by HTML line breaks.
-	 *
-	 * @param string $value string to format
-	 * @return string the altered string.
-	 * @api
-	 */
-	public function render($value = NULL) {
-		return static::renderStatic(
-			array(
-				'value' => $value
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Applies nl2br() on the specified value.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        if ($value === null) {
+            $value = $renderChildrenClosure();
+        }
 
-	/**
-	 * Applies nl2br() on the specified value.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		if ($value === NULL) {
-			$value = $renderChildrenClosure();
-		}
-
-		return nl2br($value);
-	}
-
+        return nl2br($value);
+    }
 }

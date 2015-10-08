@@ -35,80 +35,80 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Subpage 1 of page with uid = 2
  * </output>
  */
-class DirectoryViewHelper extends AbstractViewHelper {
+class DirectoryViewHelper extends AbstractViewHelper
+{
+    use MenuViewHelperTrait;
 
-	use MenuViewHelperTrait;
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('as', 'string', 'Name of template variable which will contain selected pages', true);
+        $this->registerArgument('levelAs', 'string', 'Name of template variable which will contain current level', false, null);
+        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, array());
+        $this->registerArgument('entryLevel', 'integer', 'The entry level', false, null);
+        $this->registerArgument('maximumLevel', 'integer', 'Maximum level for rendering of nested menus', false, 10);
+        $this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', false, false);
+        $this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', false, false);
+    }
 
-	/**
-	 * Initialize ViewHelper arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Name of template variable which will contain selected pages', TRUE);
-		$this->registerArgument('levelAs', 'string', 'Name of template variable which will contain current level', FALSE, NULL);
-		$this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', FALSE, array());
-		$this->registerArgument('entryLevel', 'integer', 'The entry level', FALSE, NULL);
-		$this->registerArgument('maximumLevel', 'integer', 'Maximum level for rendering of nested menus', FALSE, 10);
-		$this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', FALSE, FALSE);
-		$this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', FALSE, FALSE);
-	}
+    /**
+     * Render the view helper
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        $as = $this->arguments['as'];
+        $pageUids = (array)$this->arguments['pageUids'];
+        $entryLevel = $this->arguments['entryLevel'];
+        $levelAs = $this->arguments['levelAs'];
+        $maximumLevel = $this->arguments['maximumLevel'];
+        $includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
+        $includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
 
-	/**
-	 * Render the view helper
-	 *
-	 * @return string
-	 */
-	public function render() {
+        $pageUids = $this->getPageUids($pageUids, $entryLevel);
+        $pages = $typoScriptFrontendController->sys_page->getMenu(
+            $pageUids,
+            '*',
+            'sorting',
+            $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator)
+        );
 
-		$typoScriptFrontendController = $this->getTypoScriptFrontendController();
-		$as = $this->arguments['as'];
-		$pageUids = (array)$this->arguments['pageUids'];
-		$entryLevel = $this->arguments['entryLevel'];
-		$levelAs = $this->arguments['levelAs'];
-		$maximumLevel = $this->arguments['maximumLevel'];
-		$includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
-		$includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
+        $output = '';
 
-		$pageUids = $this->getPageUids($pageUids, $entryLevel);
-		$pages = $typoScriptFrontendController->sys_page->getMenu(
-			$pageUids,
-			'*',
-			'sorting',
-			$this->getPageConstraints($includeNotInMenu, $includeMenuSeparator)
-		);
+        if (!empty($pages)) {
+            if (!$typoScriptFrontendController->register['ceMenuLevel_directory']) {
+                $typoScriptFrontendController->register['ceMenuLevel_directory'] = 1;
+                $typoScriptFrontendController->register['ceMenuMaximumLevel_directory'] = $maximumLevel;
+            } else {
+                $typoScriptFrontendController->register['ceMenuLevel_directory']++;
+            }
 
-		$output = '';
+            if ($typoScriptFrontendController->register['ceMenuLevel_directory'] > $typoScriptFrontendController->register['ceMenuMaximumLevel_directory']) {
+                return '';
+            }
 
-		if (!empty($pages)) {
+            $variables = array(
+                $as => $pages
+            );
+            if (!empty($levelAs)) {
+                $variables[$levelAs] = $typoScriptFrontendController->register['ceMenuLevel'];
+            }
+            $output = $this->renderChildrenWithVariables($variables);
 
-			if (!$typoScriptFrontendController->register['ceMenuLevel_directory']) {
-				$typoScriptFrontendController->register['ceMenuLevel_directory'] = 1;
-				$typoScriptFrontendController->register['ceMenuMaximumLevel_directory'] = $maximumLevel;
-			} else {
-				$typoScriptFrontendController->register['ceMenuLevel_directory']++;
-			}
+            $typoScriptFrontendController->register['ceMenuLevel_directory']--;
 
-			if ($typoScriptFrontendController->register['ceMenuLevel_directory'] > $typoScriptFrontendController->register['ceMenuMaximumLevel_directory']) {
-				return '';
-			}
+            if ($typoScriptFrontendController->register['ceMenuLevel_directory'] === 0) {
+                unset($typoScriptFrontendController->register['ceMenuLevel_directory']);
+                unset($typoScriptFrontendController->register['ceMenuMaximumLevel_directory']);
+            }
+        }
 
-			$variables = array(
-				$as => $pages
-			);
-			if (!empty($levelAs)) {
-				$variables[$levelAs] = $typoScriptFrontendController->register['ceMenuLevel'];
-			}
-			$output = $this->renderChildrenWithVariables($variables);
-
-			$typoScriptFrontendController->register['ceMenuLevel_directory']--;
-
-			if ($typoScriptFrontendController->register['ceMenuLevel_directory'] === 0) {
-				unset($typoScriptFrontendController->register['ceMenuLevel_directory']);
-				unset($typoScriptFrontendController->register['ceMenuMaximumLevel_directory']);
-			}
-		}
-
-		return $output;
-	}
+        return $output;
+    }
 }

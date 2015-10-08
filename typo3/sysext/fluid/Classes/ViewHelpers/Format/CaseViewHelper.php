@@ -62,99 +62,100 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * @api
  */
-class CaseViewHelper extends AbstractViewHelper implements CompilableInterface {
+class CaseViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Directs the input string being converted to "lowercase"
+     */
+    const CASE_LOWER = 'lower';
 
-	/**
-	 * Directs the input string being converted to "lowercase"
-	 */
-	const CASE_LOWER = 'lower';
+    /**
+     * Directs the input string being converted to "UPPERCASE"
+     */
+    const CASE_UPPER = 'upper';
 
-	/**
-	 * Directs the input string being converted to "UPPERCASE"
-	 */
-	const CASE_UPPER = 'upper';
+    /**
+     * Directs the input string being converted to "Capital case"
+     */
+    const CASE_CAPITAL = 'capital';
 
-	/**
-	 * Directs the input string being converted to "Capital case"
-	 */
-	const CASE_CAPITAL = 'capital';
+    /**
+     * Directs the input string being converted to "unCapital case"
+     */
+    const CASE_UNCAPITAL = 'uncapital';
 
-	/**
-	 * Directs the input string being converted to "unCapital case"
-	 */
-	const CASE_UNCAPITAL = 'uncapital';
+    /**
+     * Directs the input string being converted to "Capital Case For Each Word"
+     */
+    const CASE_CAPITAL_WORDS = 'capitalWords';
 
-	/**
-	 * Directs the input string being converted to "Capital Case For Each Word"
-	 */
-	const CASE_CAPITAL_WORDS = 'capitalWords';
+    /**
+     * @var NULL|CharsetConverter
+     */
+    protected static $charsetConverter = null;
 
-	/**
-	 * @var NULL|CharsetConverter
-	 */
-	static protected $charsetConverter = NULL;
+    /**
+     * Changes the case of the input string
+     *
+     * @param string $value The input value. If not given, the evaluated child nodes will be used
+     * @param string $mode The case to apply, must be one of this' CASE_* constants. Defaults to uppercase application
+     * @return string the altered string.
+     * @api
+     */
+    public function render($value = null, $mode = self::CASE_UPPER)
+    {
+        return static::renderStatic(
+            array(
+                'value' => $value,
+                'mode' => $mode,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Changes the case of the input string
-	 *
-	 * @param string $value The input value. If not given, the evaluated child nodes will be used
-	 * @param string $mode The case to apply, must be one of this' CASE_* constants. Defaults to uppercase application
-	 * @return string the altered string.
-	 * @api
-	 */
-	public function render($value = NULL, $mode = self::CASE_UPPER) {
-		return static::renderStatic(
-			array(
-				'value' => $value,
-				'mode' => $mode,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Changes the case of the input string
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     * @throws InvalidVariableException
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        $mode = $arguments['mode'];
 
-	/**
-	 * Changes the case of the input string
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 * @throws InvalidVariableException
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		$mode = $arguments['mode'];
+        if ($value === null) {
+            $value = $renderChildrenClosure();
+        }
 
-		if ($value === NULL) {
-			$value = $renderChildrenClosure();
-		}
+        if (is_null(static::$charsetConverter)) {
+            static::$charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+        }
+        $charsetConverter = static::$charsetConverter;
 
-		if (is_null(static::$charsetConverter)) {
-			static::$charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-		}
-		$charsetConverter = static::$charsetConverter;
+        switch ($mode) {
+            case self::CASE_LOWER:
+                $output = $charsetConverter->conv_case('utf-8', $value, 'toLower');
+                break;
+            case self::CASE_UPPER:
+                $output = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
+                break;
+            case self::CASE_CAPITAL:
+                $output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toUpper'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
+                break;
+            case self::CASE_UNCAPITAL:
+                $output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toLower'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
+                break;
+            case self::CASE_CAPITAL_WORDS:
+                // @todo: Implement method once there is a proper solution with using the CharsetConverter
+            default:
+                throw new InvalidVariableException('The case mode "' . $mode . '" supplied to Fluid\'s format.case ViewHelper is not supported.', 1358349150);
+        }
 
-		switch ($mode) {
-			case self::CASE_LOWER:
-				$output = $charsetConverter->conv_case('utf-8', $value, 'toLower');
-				break;
-			case self::CASE_UPPER:
-				$output = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
-				break;
-			case self::CASE_CAPITAL:
-				$output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toUpper'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
-				break;
-			case self::CASE_UNCAPITAL:
-				$output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toLower'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
-				break;
-			case self::CASE_CAPITAL_WORDS:
-				// @todo: Implement method once there is a proper solution with using the CharsetConverter
-			default:
-				throw new InvalidVariableException('The case mode "' . $mode . '" supplied to Fluid\'s format.case ViewHelper is not supported.', 1358349150);
-		}
-
-		return $output;
-	}
-
+        return $output;
+    }
 }

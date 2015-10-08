@@ -60,43 +60,45 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
  *
  * @api
  */
-class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+{
+    /**
+     * Initializes the "role" argument.
+     * Renders <f:then> child if the current logged in BE user belongs to the specified role (aka usergroup)
+     * otherwise renders <f:else> child.
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
+    }
 
-	/**
-	 * Initializes the "role" argument.
-	 * Renders <f:then> child if the current logged in BE user belongs to the specified role (aka usergroup)
-	 * otherwise renders <f:else> child.
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
-	}
-
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		$role = $arguments['role'];
-		if (!is_array($GLOBALS['BE_USER']->userGroups)) {
-			return FALSE;
-		}
-		if (is_numeric($role)) {
-			foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
-				if ((int)$userGroup['uid'] === (int)$role) {
-					return TRUE;
-				}
-			}
-		} else {
-			foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
-				if ($userGroup['title'] === $role) {
-					return TRUE;
-				}
-			}
-		}
-		return FALSE;
-	}
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $role = $arguments['role'];
+        if (!is_array($GLOBALS['BE_USER']->userGroups)) {
+            return false;
+        }
+        if (is_numeric($role)) {
+            foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
+                if ((int)$userGroup['uid'] === (int)$role) {
+                    return true;
+                }
+            }
+        } else {
+            foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
+                if ($userGroup['title'] === $role) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

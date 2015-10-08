@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
  *
  * @api
  */
-class ClassAlreadyLoadedException extends \TYPO3\CMS\Core\Cache\Exception {
-
-
+class ClassAlreadyLoadedException extends \TYPO3\CMS\Core\Cache\Exception
+{
 }

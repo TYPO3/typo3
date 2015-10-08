@@ -19,195 +19,208 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  *
  * This file is a backport from FLOW3
  */
-class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @expectedException \InvalidArgumentException
+     * @test
+     */
+    public function setChecksIfTheIdentifierIsValid()
+    {
+        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', false);
+        $cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(false));
+        $cache->set('foo', 'bar');
+    }
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @test
-	 */
-	public function setChecksIfTheIdentifierIsValid() {
-		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('isValidEntryIdentifier'), array(), '', FALSE);
-		$cache->expects($this->once())->method('isValidEntryIdentifier')->with('foo')->will($this->returnValue(FALSE));
-		$cache->set('foo', 'bar');
-	}
+    /**
+     * @test
+     */
+    public function setPassesSerializedStringToBackend()
+    {
+        $theString = 'Just some value';
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)));
 
-	/**
-	 * @test
-	 */
-	public function setPassesSerializedStringToBackend() {
-		$theString = 'Just some value';
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->set('VariableCacheTest', $theString);
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->set('VariableCacheTest', $theString);
-	}
+    /**
+     * @test
+     */
+    public function setPassesSerializedArrayToBackend()
+    {
+        $theArray = array('Just some value', 'and another one.');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theArray)));
 
-	/**
-	 * @test
-	 */
-	public function setPassesSerializedArrayToBackend() {
-		$theArray = array('Just some value', 'and another one.');
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theArray)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->set('VariableCacheTest', $theArray);
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->set('VariableCacheTest', $theArray);
-	}
+    /**
+     * @test
+     */
+    public function setPassesLifetimeToBackend()
+    {
+        $theString = 'Just some value';
+        $theLifetime = 1234;
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo(array()), $this->equalTo($theLifetime));
 
-	/**
-	 * @test
-	 */
-	public function setPassesLifetimeToBackend() {
-		$theString = 'Just some value';
-		$theLifetime = 1234;
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo(array()), $this->equalTo($theLifetime));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->set('VariableCacheTest', $theString, array(), $theLifetime);
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->set('VariableCacheTest', $theString, array(), $theLifetime);
-	}
+    /**
+     * @test
+     */
+    public function setUsesIgBinarySerializeIfAvailable()
+    {
+        if (!extension_loaded('igbinary')) {
+            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+        }
 
-	/**
-	 * @test
-	 */
-	public function setUsesIgBinarySerializeIfAvailable() {
-		if (!extension_loaded('igbinary')) {
-			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-		}
+        $theString = 'Just some value';
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
 
-		$theString = 'Just some value';
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->initializeObject();
+        $cache->set('VariableCacheTest', $theString);
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->initializeObject();
-		$cache->set('VariableCacheTest', $theString);
-	}
+    /**
+     * @test
+     */
+    public function getFetchesStringValueFromBackend()
+    {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('get')->will($this->returnValue(serialize('Just some value')));
 
-	/**
-	 * @test
-	 */
-	public function getFetchesStringValueFromBackend() {
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize('Just some value')));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertEquals('Just some value', $cache->get('VariableCacheTest'), 'The returned value was not the expected string.');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertEquals('Just some value', $cache->get('VariableCacheTest'), 'The returned value was not the expected string.');
-	}
+    /**
+     * @test
+     */
+    public function getFetchesArrayValueFromBackend()
+    {
+        $theArray = array('Just some value', 'and another one.');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('get')->will($this->returnValue(serialize($theArray)));
 
-	/**
-	 * @test
-	 */
-	public function getFetchesArrayValueFromBackend() {
-		$theArray = array('Just some value', 'and another one.');
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize($theArray)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
-	}
+    /**
+     * @test
+     */
+    public function getFetchesFalseBooleanValueFromBackend()
+    {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('get')->will($this->returnValue(serialize(false)));
 
-	/**
-	 * @test
-	 */
-	public function getFetchesFalseBooleanValueFromBackend() {
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize(FALSE)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
-	}
+    /**
+     * @test
+     */
+    public function getUsesIgBinaryIfAvailable()
+    {
+        if (!extension_loaded('igbinary')) {
+            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+        }
 
-	/**
-	 * @test
-	 */
-	public function getUsesIgBinaryIfAvailable() {
-		if (!extension_loaded('igbinary')) {
-			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-		}
+        $theArray = array('Just some value', 'and another one.');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
 
-		$theArray = array('Just some value', 'and another one.');
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->initializeObject();
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->initializeObject();
+        $this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
+    }
 
-		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
-	}
+    /**
+     * @test
+     */
+    public function hasReturnsResultFromBackend()
+    {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
+        $backend->expects($this->once())->method('has')->with($this->equalTo('VariableCacheTest'))->will($this->returnValue(true));
 
-	/**
-	 * @test
-	 */
-	public function hasReturnsResultFromBackend() {
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
-		$backend->expects($this->once())->method('has')->with($this->equalTo('VariableCacheTest'))->will($this->returnValue(TRUE));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertTrue($cache->has('VariableCacheTest'), 'has() did not return TRUE.');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertTrue($cache->has('VariableCacheTest'), 'has() did not return TRUE.');
-	}
+    /**
+     * @test
+     */
+    public function removeCallsBackend()
+    {
+        $cacheIdentifier = 'someCacheIdentifier';
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
 
-	/**
-	 * @test
-	 */
-	public function removeCallsBackend() {
-		$cacheIdentifier = 'someCacheIdentifier';
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
+        $backend->expects($this->once())->method('remove')->with($this->equalTo($cacheIdentifier))->will($this->returnValue(true));
 
-		$backend->expects($this->once())->method('remove')->with($this->equalTo($cacheIdentifier))->will($this->returnValue(TRUE));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertTrue($cache->remove($cacheIdentifier), 'remove() did not return TRUE');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertTrue($cache->remove($cacheIdentifier), 'remove() did not return TRUE');
-	}
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function getByTagRejectsInvalidTags()
+    {
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, array(), array(), '', false);
+        $backend->expects($this->never())->method('getByTag');
 
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 */
-	public function getByTagRejectsInvalidTags() {
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, array(), array(), '', FALSE);
-		$backend->expects($this->never())->method('getByTag');
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->getByTag('SomeInvalid\Tag');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->getByTag('SomeInvalid\Tag');
-	}
+    /**
+     * @test
+     */
+    public function getByTagCallsBackend()
+    {
+        $tag = 'sometag';
+        $identifiers = array('one', 'two');
+        $entries = array('one value', 'two value');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
 
-	/**
-	 * @test
-	 */
-	public function getByTagCallsBackend() {
-		$tag = 'sometag';
-		$identifiers = array('one', 'two');
-		$entries = array('one value', 'two value');
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
+        $backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
+        $backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(serialize('one value'), serialize('two value')));
 
-		$backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
-		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(serialize('one value'), serialize('two value')));
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
+    }
 
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
-	}
+    /**
+     * @test
+     */
+    public function getByTagUsesIgBinaryIfAvailable()
+    {
+        if (!extension_loaded('igbinary')) {
+            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
+        }
 
-	/**
-	 * @test
-	 */
-	public function getByTagUsesIgBinaryIfAvailable() {
-		if (!extension_loaded('igbinary')) {
-			$this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-		}
+        $tag = 'sometag';
+        $identifiers = array('one', 'two');
+        $entries = array('one value', 'two value');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
 
-		$tag = 'sometag';
-		$identifiers = array('one', 'two');
-		$entries = array('one value', 'two value');
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
+        $backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
+        $backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
 
-		$backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
-		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
-
-		$cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-		$cache->initializeObject();
-		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
-	}
-
+        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
+        $cache->initializeObject();
+        $this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
+    }
 }

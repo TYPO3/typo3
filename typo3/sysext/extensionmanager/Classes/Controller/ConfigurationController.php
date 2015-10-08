@@ -20,124 +20,130 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 /**
  * Controller for configuration related actions.
  */
-class ConfigurationController extends AbstractController {
+class ConfigurationController extends AbstractController
+{
+    /**
+     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
+     */
+    protected $configurationItemRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
-	 */
-	protected $configurationItemRepository;
+    /**
+     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     */
+    protected $extensionRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 */
-	protected $extensionRepository;
+    /**
+     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository
+     */
+    public function injectConfigurationItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository)
+    {
+        $this->configurationItemRepository = $configurationItemRepository;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository
-	 */
-	public function injectConfigurationItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository) {
-		$this->configurationItemRepository = $configurationItemRepository;
-	}
+    /**
+     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+     */
+    public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
+    {
+        $this->extensionRepository = $extensionRepository;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
-	 */
-	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
-		$this->extensionRepository = $extensionRepository;
-	}
+    /**
+     * Show the extension configuration form. The whole form field handling is done
+     * in the corresponding view helper
+     *
+     * @param array $extension Extension information, must contain at least the key
+     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @return void
+     */
+    public function showConfigurationFormAction(array $extension)
+    {
+        if (!isset($extension['key'])) {
+            throw new ExtensionManagerException('Extension key not found.', 1359206803);
+        }
+        $extKey = $extension['key'];
+        $configuration = $this->configurationItemRepository->findByExtensionKey($extKey);
+        if ($configuration) {
+            $this->view
+                ->assign('configuration', $configuration)
+                ->assign('extension', $extension);
+        } else {
+            /** @var Extension $extension */
+            $extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extKey);
+            // Extension has no configuration and is a distribution
+            if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
+                $this->redirect('welcome', 'Distribution', null, array('extension' => $extension->getUid()));
+            }
+            throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.');
+        }
+    }
 
-	/**
-	 * Show the extension configuration form. The whole form field handling is done
-	 * in the corresponding view helper
-	 *
-	 * @param array $extension Extension information, must contain at least the key
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return void
-	 */
-	public function showConfigurationFormAction(array $extension) {
-		if (!isset($extension['key'])) {
-			throw new ExtensionManagerException('Extension key not found.', 1359206803);
-		}
-		$extKey = $extension['key'];
-		$configuration = $this->configurationItemRepository->findByExtensionKey($extKey);
-		if ($configuration) {
-			$this->view
-				->assign('configuration', $configuration)
-				->assign('extension', $extension);
-		} else {
-			/** @var Extension $extension */
-			$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extKey);
-			// Extension has no configuration and is a distribution
-			if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
-				$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
-			}
-			throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.');
-		}
-	}
+    /**
+     * Save configuration and redirects back to form
+     * or to the welcome page of a distribution
+     *
+     * @param array $config The new extension configuration
+     * @param string $extensionKey The extension key
+     * @return void
+     */
+    public function saveAction(array $config, $extensionKey)
+    {
+        $this->saveConfiguration($config, $extensionKey);
+        /** @var Extension $extension */
+        $extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
+        // Different handling for distribution installation
+        if ($extension instanceof Extension &&
+            $extension->getCategory() === Extension::DISTRIBUTION_CATEGORY
+        ) {
+            $this->redirect('welcome', 'Distribution', null, array('extension' => $extension->getUid()));
+        } else {
+            $this->redirect('showConfigurationForm', null, null, array('extension' => array('key' => $extensionKey)));
+        }
+    }
 
-	/**
-	 * Save configuration and redirects back to form
-	 * or to the welcome page of a distribution
-	 *
-	 * @param array $config The new extension configuration
-	 * @param string $extensionKey The extension key
-	 * @return void
-	 */
-	public function saveAction(array $config, $extensionKey) {
-		$this->saveConfiguration($config, $extensionKey);
-		/** @var Extension $extension */
-		$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
-		// Different handling for distribution installation
-		if ($extension instanceof Extension &&
-			$extension->getCategory() === Extension::DISTRIBUTION_CATEGORY
-		) {
-			$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
-		} else {
-			$this->redirect('showConfigurationForm', NULL, NULL, array('extension' => array('key' => $extensionKey)));
-		}
-	}
-
-	/**
-	 * Saves new configuration and redirects back to list
-	 *
-	 * @param array $config
-	 * @param string $extensionKey
-	 * @return void
-	 */
-	public function saveAndCloseAction(array $config, $extensionKey) {
-		$this->saveConfiguration($config, $extensionKey);
-		$this->redirect('index', 'List');
-	}
+    /**
+     * Saves new configuration and redirects back to list
+     *
+     * @param array $config
+     * @param string $extensionKey
+     * @return void
+     */
+    public function saveAndCloseAction(array $config, $extensionKey)
+    {
+        $this->saveConfiguration($config, $extensionKey);
+        $this->redirect('index', 'List');
+    }
 
 
-	/**
-	 * Emits a signal after the configuration file was written
-	 *
-	 * @param string $extensionKey
-	 * @param array $newConfiguration
-	 * @return void
-	 */
-	protected function emitAfterExtensionConfigurationWriteSignal($extensionKey, array $newConfiguration) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($extensionKey, $newConfiguration, $this));
-	}
+    /**
+     * Emits a signal after the configuration file was written
+     *
+     * @param string $extensionKey
+     * @param array $newConfiguration
+     * @return void
+     */
+    protected function emitAfterExtensionConfigurationWriteSignal($extensionKey, array $newConfiguration)
+    {
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($extensionKey, $newConfiguration, $this));
+    }
 
-	/**
-	 * Merge and save new configuration
-	 *
-	 * @param array $config
-	 * @param $extensionKey
-	 * @return void
-	 */
-	protected function saveConfiguration(array $config, $extensionKey) {
-		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
-		$newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
-		$configurationUtility->writeConfiguration(
-			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
-			$extensionKey
-		);
-		$this->emitAfterExtensionConfigurationWriteSignal($extensionKey, $newConfiguration);
-	}
-
+    /**
+     * Merge and save new configuration
+     *
+     * @param array $config
+     * @param $extensionKey
+     * @return void
+     */
+    protected function saveConfiguration(array $config, $extensionKey)
+    {
+        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+        $configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
+        $newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
+        $configurationUtility->writeConfiguration(
+            $configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
+            $extensionKey
+        );
+        $this->emitAfterExtensionConfigurationWriteSignal($extensionKey, $newConfiguration);
+    }
 }

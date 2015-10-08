@@ -24,45 +24,49 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Test case
  */
-class StringConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class StringConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     */
+    protected $converter;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
-	 */
-	protected $converter;
+    protected function setUp()
+    {
+        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter();
+    }
 
-	protected function setUp() {
-		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter();
-	}
+    /**
+     * @test
+     */
+    public function checkMetadata()
+    {
+        $this->assertEquals(array('string', 'integer'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
+    }
 
-	/**
-	 * @test
-	 */
-	public function checkMetadata() {
-		$this->assertEquals(array('string', 'integer'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-		$this->assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
-		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
-	}
+    /**
+     * @test
+     */
+    public function convertFromShouldReturnSourceString()
+    {
+        $this->assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromShouldReturnSourceString() {
-		$this->assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
-	}
+    /**
+     * @test
+     */
+    public function canConvertFromShouldReturnTrue()
+    {
+        $this->assertTrue($this->converter->canConvertFrom('myString', 'string'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function canConvertFromShouldReturnTrue() {
-		$this->assertTrue($this->converter->canConvertFrom('myString', 'string'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
-		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
-	}
-
+    /**
+     * @test
+     */
+    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
+    {
+        $this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+    }
 }

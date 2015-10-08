@@ -31,269 +31,278 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
  */
-class FileController {
+class FileController
+{
+    /**
+     * Array of file-operations.
+     *
+     * @var array
+     */
+    protected $file;
 
-	/**
-	 * Array of file-operations.
-	 *
-	 * @var array
-	 */
-	protected $file;
+    /**
+     * Clipboard operations array
+     *
+     * @var array
+     */
+    protected $CB;
 
-	/**
-	 * Clipboard operations array
-	 *
-	 * @var array
-	 */
-	protected $CB;
+    /**
+     * Defines behaviour when uploading files with names that already exist; possible values are
+     * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     *
+     * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
+     */
+    protected $overwriteExistingFiles;
 
-	/**
-	 * Defines behaviour when uploading files with names that already exist; possible values are
-	 * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
-	 *
-	 * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
-	 */
-	protected $overwriteExistingFiles;
+    /**
+     * VeriCode - a hash of server specific value and other things which
+     * identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
+     *
+     * @var string
+     */
+    protected $vC;
 
-	/**
-	 * VeriCode - a hash of server specific value and other things which
-	 * identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
-	 *
-	 * @var string
-	 */
-	protected $vC;
+    /**
+     * The page where the user should be redirected after everything is done
+     *
+     * @var string
+     */
+    protected $redirect;
 
-	/**
-	 * The page where the user should be redirected after everything is done
-	 *
-	 * @var string
-	 */
-	protected $redirect;
+    /**
+     * Internal, dynamic:
+     * File processor object
+     *
+     * @var ExtendedFileUtility
+     */
+    protected $fileProcessor;
 
-	/**
-	 * Internal, dynamic:
-	 * File processor object
-	 *
-	 * @var ExtendedFileUtility
-	 */
-	protected $fileProcessor;
+    /**
+     * The result array from the file processor
+     *
+     * @var array
+     */
+    protected $fileData;
 
-	/**
-	 * The result array from the file processor
-	 *
-	 * @var array
-	 */
-	protected $fileData;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $GLOBALS['SOBE'] = $this;
+        $this->init();
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$GLOBALS['SOBE'] = $this;
-		$this->init();
-	}
+    /**
+     * Registering incoming data
+     *
+     * @return void
+     */
+    protected function init()
+    {
+        // Set the GPvars from outside
+        $this->file = GeneralUtility::_GP('file');
+        $this->CB = GeneralUtility::_GP('CB');
+        $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
+        $this->vC = GeneralUtility::_GP('vC');
+        $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
+        $this->initClipboard();
+        $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
+    }
 
-	/**
-	 * Registering incoming data
-	 *
-	 * @return void
-	 */
-	protected function init() {
-		// Set the GPvars from outside
-		$this->file = GeneralUtility::_GP('file');
-		$this->CB = GeneralUtility::_GP('CB');
-		$this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
-		$this->vC = GeneralUtility::_GP('vC');
-		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
-		$this->initClipboard();
-		$this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-	}
+    /**
+     * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
+     *
+     * @return void
+     */
+    public function initClipboard()
+    {
+        if (is_array($this->CB)) {
+            $clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+            $clipObj->initializeClipboard();
+            if ($this->CB['paste']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
+            }
+            if ($this->CB['delete']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->file = $clipObj->makeDeleteCmdArray_file($this->file);
+            }
+        }
+    }
 
-	/**
-	 * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
-	 *
-	 * @return void
-	 */
-	public function initClipboard() {
-		if (is_array($this->CB)) {
-			$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
-			$clipObj->initializeClipboard();
-			if ($this->CB['paste']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
-			}
-			if ($this->CB['delete']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->file = $clipObj->makeDeleteCmdArray_file($this->file);
-			}
-		}
-	}
+    /**
+     * Performing the file admin action:
+     * Initializes the objects, setting permissions, sending data to object.
+     *
+     * @return void
+     */
+    public function main()
+    {
+        // Initializing:
+        $this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+        $this->fileProcessor->setActionPermissions();
+        $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
+        // Checking referrer / executing:
+        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+        if ($httpHost !== $refInfo['host'] && $this->vC !== $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            $this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+        } else {
+            $this->fileProcessor->start($this->file);
+            $this->fileData = $this->fileProcessor->processData();
+        }
+    }
 
-	/**
-	 * Performing the file admin action:
-	 * Initializes the objects, setting permissions, sending data to object.
-	 *
-	 * @return void
-	 */
-	public function main() {
-		// Initializing:
-		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-		$this->fileProcessor->setActionPermissions();
-		$this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
-		// Checking referrer / executing:
-		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost !== $refInfo['host'] && $this->vC !== $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
-		} else {
-			$this->fileProcessor->start($this->file);
-			$this->fileData = $this->fileProcessor->processData();
-		}
-	}
+    /**
+     * Redirecting the user after the processing has been done.
+     * Might also display error messages directly, if any.
+     *
+     * @return void
+     */
+    public function finish()
+    {
+        // Push errors to flash message queue, if there are any
+        $this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
+        BackendUtility::setUpdateSignal('updateFolderTree');
+        if ($this->redirect) {
+            \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
+        }
+    }
 
-	/**
-	 * Redirecting the user after the processing has been done.
-	 * Might also display error messages directly, if any.
-	 *
-	 * @return void
-	 */
-	public function finish() {
-		// Push errors to flash message queue, if there are any
-		$this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
-		BackendUtility::setUpdateSignal('updateFolderTree');
-		if ($this->redirect) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
-		}
-	}
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->main();
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
-	 *
-	 * @param ServerRequestInterface $request the current request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface the response with the content
-	 */
-	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->main();
+        // Push errors to flash message queue, if there are any
+        $this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
+        BackendUtility::setUpdateSignal('updateFolderTree');
 
-		// Push errors to flash message queue, if there are any
-		$this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
-		BackendUtility::setUpdateSignal('updateFolderTree');
+        if ($this->redirect) {
+            return $response
+                    ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
+                    ->withStatus(303);
+        } else {
+            // empty response
+            return $response;
+        }
+    }
 
-		if ($this->redirect) {
-			return $response
-					->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
-					->withStatus(303);
-		} else {
-			// empty response
-			return $response;
-		}
-	}
+    /**
+     * Handles the actual process from within the ajaxExec function
+     * therefore, it does exactly the same as the real typo3/tce_file.php
+     * but without calling the "finish" method, thus makes it simpler to deal with the
+     * actual return value
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->main();
+        $errors = $this->fileProcessor->getErrorMessages();
+        if (!empty($errors)) {
+            $response->getBody()->write(implode(',', $errors));
+            $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+        } else {
+            $flatResult = array();
+            foreach ($this->fileData as $action => $results) {
+                foreach ($results as $result) {
+                    if (is_array($result)) {
+                        foreach ($result as $subResult) {
+                            $flatResult[$action][] = $this->flattenResultDataValue($subResult);
+                        }
+                    } else {
+                        $flatResult[$action][] = $this->flattenResultDataValue($result);
+                    }
+                }
+            }
+            $content = ['result' => $flatResult];
+            if ($this->redirect) {
+                $content['redirect'] = $this->redirect;
+            }
+            $response->getBody()->write(json_encode($content));
+        }
+        return $response;
+    }
 
-	/**
-	 * Handles the actual process from within the ajaxExec function
-	 * therefore, it does exactly the same as the real typo3/tce_file.php
-	 * but without calling the "finish" method, thus makes it simpler to deal with the
-	 * actual return value
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->main();
-		$errors = $this->fileProcessor->getErrorMessages();
-		if (!empty($errors)) {
-			$response->getBody()->write(implode(',', $errors));
-			$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-		} else {
-			$flatResult = array();
-			foreach ($this->fileData as $action => $results) {
-				foreach ($results as $result) {
-					if (is_array($result)) {
-						foreach ($result as $subResult) {
-							$flatResult[$action][] = $this->flattenResultDataValue($subResult);
-						}
-					} else {
-						$flatResult[$action][] = $this->flattenResultDataValue($result);
-					}
-				}
-			}
-			$content = ['result' => $flatResult];
-			if ($this->redirect) {
-				$content['redirect'] = $this->redirect;
-			}
-			$response->getBody()->write(json_encode($content));
-		}
-		return $response;
-	}
+    /**
+     * Ajax entry point to check if a file exists in a folder
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function fileExistsInFolderAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $fileName = isset($request->getParsedBody()['fileName']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['fileName'];
+        $fileTarget = isset($request->getParsedBody()['fileTarget']) ? $request->getParsedBody()['fileTarget'] : $request->getQueryParams()['fileTarget'];
 
-	/**
-	 * Ajax entry point to check if a file exists in a folder
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function fileExistsInFolderAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$fileName = isset($request->getParsedBody()['fileName']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['fileName'];
-		$fileTarget = isset($request->getParsedBody()['fileTarget']) ? $request->getParsedBody()['fileTarget'] : $request->getQueryParams()['fileTarget'];
+        /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
+        $fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        /** @var Folder $fileTargetObject */
+        $fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
+        $processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
 
-		/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
-		/** @var Folder $fileTargetObject */
-		$fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
-		$processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
+        $result = false;
+        if ($fileTargetObject->hasFile($processedFileName)) {
+            $result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
+        }
+        $response->getBody()->write(json_encode($result));
+        return $response;
+    }
 
-		$result = FALSE;
-		if ($fileTargetObject->hasFile($processedFileName)) {
-			$result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
-		}
-		$response->getBody()->write(json_encode($result));
-		return $response;
-	}
+    /**
+     * Flatten result value from FileProcessor
+     *
+     * The value can be a File, Folder or boolean
+     *
+     * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
+     * @return bool|string|array
+     */
+    protected function flattenResultDataValue($result)
+    {
+        if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+            $thumbUrl = '';
+            if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
+                $processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+                if ($processedFile) {
+                    $thumbUrl = $processedFile->getPublicUrl(true);
+                }
+            }
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $result = array_merge(
+                $result->toArray(),
+                array(
+                    'date' => BackendUtility::date($result->getModificationTime()),
+                    'icon' => $iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
+                    'thumbUrl' => $thumbUrl
+                )
+            );
+        } elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
+            $result = $result->getIdentifier();
+        }
 
-	/**
-	 * Flatten result value from FileProcessor
-	 *
-	 * The value can be a File, Folder or boolean
-	 *
-	 * @param bool|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $result
-	 * @return bool|string|array
-	 */
-	protected function flattenResultDataValue($result) {
-		if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
-			$thumbUrl = '';
-			if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
-				$processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
-				if ($processedFile) {
-					$thumbUrl = $processedFile->getPublicUrl(TRUE);
-				}
-			}
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$result = array_merge(
-				$result->toArray(),
-				array (
-					'date' => BackendUtility::date($result->getModificationTime()),
-					'icon' => $iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
-					'thumbUrl' => $thumbUrl
-				)
-			);
-		} elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
-			$result = $result->getIdentifier();
-		}
+        return $result;
+    }
 
-		return $result;
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

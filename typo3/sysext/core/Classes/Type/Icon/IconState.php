@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Core\Type\Icon;
 /**
  * A class providing constants for icon states
  */
-class IconState extends \TYPO3\CMS\Core\Type\Enumeration {
+class IconState extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const __default = self::STATE_DEFAULT;
 
-	const __default = self::STATE_DEFAULT;
+    /**
+     * @var string the default state identifier
+     */
+    const STATE_DEFAULT = 'default';
 
-	/**
-	 * @var string the default state identifier
-	 */
-	const STATE_DEFAULT = 'default';
-
-	/**
-	 * @var string the disabled state identifier
-	 */
-	const STATE_DISABLED = 'disabled';
+    /**
+     * @var string the disabled state identifier
+     */
+    const STATE_DISABLED = 'disabled';
 }

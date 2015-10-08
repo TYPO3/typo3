@@ -22,18 +22,18 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  *
  * @see \TYPO3\CMS\Install\Service\ClearCacheService
  */
-class ClearCache extends AbstractAjaxAction {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		/** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
-		$clearCacheService = $this->objectManager->get(\TYPO3\CMS\Install\Service\ClearCacheService::class);
-		$clearCacheService->clearAll();
-		return 'OK';
-	}
-
+class ClearCache extends AbstractAjaxAction
+{
+    /**
+     * Executes the action
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        /** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
+        $clearCacheService = $this->objectManager->get(\TYPO3\CMS\Install\Service\ClearCacheService::class);
+        $clearCacheService->clearAll();
+        return 'OK';
+    }
 }

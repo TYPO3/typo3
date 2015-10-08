@@ -38,46 +38,46 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class NumberViewHelper extends AbstractViewHelper implements CompilableInterface {
+class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Format the numeric value as a number with grouped thousands, decimal point and
+     * precision.
+     *
+     * @param int $decimals The number of digits after the decimal point
+     * @param string $decimalSeparator The decimal point character
+     * @param string $thousandsSeparator The character for grouping the thousand digits
+     *
+     * @return string The formatted number
+     * @api
+     */
+    public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',')
+    {
+        return static::renderStatic(
+            array(
+                'decimals' => $decimals,
+                'decimalSeparator' => $decimalSeparator,
+                'thousandsSeparator' => $thousandsSeparator,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Format the numeric value as a number with grouped thousands, decimal point and
-	 * precision.
-	 *
-	 * @param int $decimals The number of digits after the decimal point
-	 * @param string $decimalSeparator The decimal point character
-	 * @param string $thousandsSeparator The character for grouping the thousand digits
-	 *
-	 * @return string The formatted number
-	 * @api
-	 */
-	public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',') {
-		return static::renderStatic(
-			array(
-				'decimals' => $decimals,
-				'decimalSeparator' => $decimalSeparator,
-				'thousandsSeparator' => $thousandsSeparator,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $decimals = $arguments['decimals'];
+        $decimalSeparator = $arguments['decimalSeparator'];
+        $thousandsSeparator = $arguments['thousandsSeparator'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-
-		$decimals = $arguments['decimals'];
-		$decimalSeparator = $arguments['decimalSeparator'];
-		$thousandsSeparator = $arguments['thousandsSeparator'];
-
-		$stringToFormat = $renderChildrenClosure();
-		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
-	}
-
+        $stringToFormat = $renderChildrenClosure();
+        return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+    }
 }

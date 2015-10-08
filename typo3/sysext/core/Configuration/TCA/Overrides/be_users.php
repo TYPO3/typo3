@@ -8,5 +8,5 @@ $languageItems = $locales->getLanguages();
 unset($languageItems['default']);
 asort($languageItems);
 foreach ($languageItems as $locale => $name) {
-	$GLOBALS['TCA']['be_users']['columns']['lang']['config']['items'][] = array($name, $locale);
+    $GLOBALS['TCA']['be_users']['columns']['lang']['config']['items'][] = array($name, $locale);
 }

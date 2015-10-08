@@ -19,18 +19,18 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  *
  * @api
  */
-class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-
-	/**
-	 * Initializes the repository.
-	 *
-	 * @return void
-	 */
-	public function initializeObject() {
-		/** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-		$querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-		$querySettings->setRespectStoragePage(FALSE);
-		$this->setDefaultQuerySettings($querySettings);
-	}
-
+class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+    /**
+     * Initializes the repository.
+     *
+     * @return void
+     */
+    public function initializeObject()
+    {
+        /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings->setRespectStoragePage(false);
+        $this->setDefaultQuerySettings($querySettings);
+    }
 }

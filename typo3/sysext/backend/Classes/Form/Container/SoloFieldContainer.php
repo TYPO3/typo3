@@ -26,50 +26,51 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * @todo: It should be possible to merge this container to ListOfFieldsContainer
  */
-class SoloFieldContainer extends AbstractContainer {
+class SoloFieldContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $table = $this->data['tableName'];
+        $fieldToRender = $this->data['singleFieldToRender'];
+        $recordTypeValue = $this->data['recordTypeValue'];
+        $resultArray = $this->initializeResultArray();
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$table = $this->data['tableName'];
-		$fieldToRender = $this->data['singleFieldToRender'];
-		$recordTypeValue = $this->data['recordTypeValue'];
-		$resultArray = $this->initializeResultArray();
+        // Load the description content for the table if requested
+        if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+            $languageService = $this->getLanguageService();
+            $languageService->loadSingleTableDescription($table);
+        }
 
-		// Load the description content for the table if requested
-		if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
-			$languageService = $this->getLanguageService();
-			$languageService->loadSingleTableDescription($table);
-		}
+        $itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+        $fields = GeneralUtility::trimExplode(',', $itemList, true);
+        foreach ($fields as $fieldString) {
+            $fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
+            $fieldName = $fieldConfiguration['fieldName'];
+            if ((string)$fieldName === (string)$fieldToRender) {
+                // Field is in showitem configuration
+                // @todo: This field is not rendered if it is "hidden" in a palette!
+                if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
+                    $options = $this->data;
+                    $options['fieldName'] = $fieldName;
+                    $options['renderType'] = 'singleFieldContainer';
+                    $resultArray = $this->nodeFactory->create($options)->render();
+                }
+            }
+        }
 
-		$itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
-		$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
-		foreach ($fields as $fieldString) {
-			$fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
-			$fieldName = $fieldConfiguration['fieldName'];
-			if ((string)$fieldName === (string)$fieldToRender) {
-				// Field is in showitem configuration
-				// @todo: This field is not rendered if it is "hidden" in a palette!
-				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
-					$options = $this->data;
-					$options['fieldName'] = $fieldName;
-					$options['renderType'] = 'singleFieldContainer';
-					$resultArray = $this->nodeFactory->create($options)->render();
-				}
-			}
-		}
+        return $resultArray;
+    }
 
-		return $resultArray;
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

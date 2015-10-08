@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * A generic Persistence exception
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
-
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 }

@@ -19,28 +19,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This class contains functions for generating and validating jump URLs
  */
-class JumpUrlUtility {
+class JumpUrlUtility
+{
+    /**
+     * Calculates the hash for the given jump URL
+     *
+     * @param string $jumpUrl The target URL
+     * @return string The calculated hash
+     */
+    public static function calculateHash($jumpUrl)
+    {
+        return GeneralUtility::hmac($jumpUrl, 'jumpurl');
+    }
 
-	/**
-	 * Calculates the hash for the given jump URL
-	 *
-	 * @param string $jumpUrl The target URL
-	 * @return string The calculated hash
-	 */
-	public static function calculateHash($jumpUrl) {
-		return GeneralUtility::hmac($jumpUrl, 'jumpurl');
-	}
-
-	/**
-	 * Calculates the hash for the given jump URL secure data.
-	 *
-	 * @param string $jumpUrl The URL to the file
-	 * @param string $locationData Information about the record that rendered the jump URL, format is [pid]:[table]:[uid]
-	 * @param string $mimeType Mime type of the file or an empty string
-	 * @return string The calculated hash
-	 */
-	public static function calculateHashSecure($jumpUrl, $locationData, $mimeType) {
-		$data = array((string)$jumpUrl, (string)$locationData, (string)$mimeType);
-		return GeneralUtility::hmac(serialize($data));
-	}
+    /**
+     * Calculates the hash for the given jump URL secure data.
+     *
+     * @param string $jumpUrl The URL to the file
+     * @param string $locationData Information about the record that rendered the jump URL, format is [pid]:[table]:[uid]
+     * @param string $mimeType Mime type of the file or an empty string
+     * @return string The calculated hash
+     */
+    public static function calculateHashSecure($jumpUrl, $locationData, $mimeType)
+    {
+        $data = array((string)$jumpUrl, (string)$locationData, (string)$mimeType);
+        return GeneralUtility::hmac(serialize($data));
+    }
 }

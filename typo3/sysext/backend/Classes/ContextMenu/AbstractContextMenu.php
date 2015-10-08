@@ -17,36 +17,37 @@ namespace TYPO3\CMS\Backend\ContextMenu;
 /**
  * Abstract Context Menu
  */
-abstract class AbstractContextMenu {
+abstract class AbstractContextMenu
+{
+    /**
+     * Data Provider
+     *
+     * @var \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider
+     */
+    protected $dataProvider = null;
 
-	/**
-	 * Data Provider
-	 *
-	 * @var \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider
-	 */
-	protected $dataProvider = NULL;
+    /**
+     * @param \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider $dataProvider
+     * @return void
+     */
+    public function setDataProvider(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider $dataProvider)
+    {
+        $this->dataProvider = $dataProvider;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider $dataProvider
-	 * @return void
-	 */
-	public function setDataProvider(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
+    /**
+     * @return \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider
+     */
+    public function getDataProvider()
+    {
+        return $this->dataProvider;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * Returns the actions for the given node information
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-	 * @return array
-	 */
-	abstract public function getActionsForNode(\TYPO3\CMS\Backend\Tree\TreeNode $node);
-
+    /**
+     * Returns the actions for the given node information
+     *
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @return array
+     */
+    abstract public function getActionsForNode(\TYPO3\CMS\Backend\Tree\TreeNode $node);
 }

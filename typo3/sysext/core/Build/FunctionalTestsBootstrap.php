@@ -21,117 +21,125 @@ use TYPO3\CMS\Core\Tests\BaseTestCase;
  * before instantiating the test suites, it must also be included
  * with phpunit parameter --bootstrap if executing single test case classes.
  */
-class FunctionalTestsBootstrap {
-	/**
-	 * Bootstraps the system for unit tests.
-	 *
-	 * @return void
-	 */
-	public function bootstrapSystem() {
-		$this->enableDisplayErrors()
-			->loadClassFiles()
-			->defineOriginalRootPath()
-			->createNecessaryDirectoriesInDocumentRoot();
-	}
+class FunctionalTestsBootstrap
+{
+    /**
+     * Bootstraps the system for unit tests.
+     *
+     * @return void
+     */
+    public function bootstrapSystem()
+    {
+        $this->enableDisplayErrors()
+            ->loadClassFiles()
+            ->defineOriginalRootPath()
+            ->createNecessaryDirectoriesInDocumentRoot();
+    }
 
-	/**
-	 * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
-	 *
-	 * @return FunctionalTestsBootstrap fluent interface
-	 */
-	protected function enableDisplayErrors() {
-		@ini_set('display_errors', 1);
-		return $this;
-	}
+    /**
+     * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
+     *
+     * @return FunctionalTestsBootstrap fluent interface
+     */
+    protected function enableDisplayErrors()
+    {
+        @ini_set('display_errors', 1);
+        return $this;
+    }
 
-	/**
-	 * Requires classes the functional test classes extend from or use for further bootstrap.
-	 * Only files required for "new TestCaseClass" are required here and a general exception
-	 * that is thrown by setUp() code.
-	 *
-	 * @return FunctionalTestsBootstrap fluent interface
-	 */
-	protected function loadClassFiles() {
-		if (!class_exists('PHPUnit_Framework_TestCase')) {
-			die('PHPUnit wasn\'t found. Please check your settings and command.');
-		}
-		if (!class_exists(BaseTestCase::class)) {
-			// PHPUnit is invoked globally, so we need to include the project autoload file
-			require_once __DIR__ . '/../../../../vendor/autoload.php';
-		}
+    /**
+     * Requires classes the functional test classes extend from or use for further bootstrap.
+     * Only files required for "new TestCaseClass" are required here and a general exception
+     * that is thrown by setUp() code.
+     *
+     * @return FunctionalTestsBootstrap fluent interface
+     */
+    protected function loadClassFiles()
+    {
+        if (!class_exists('PHPUnit_Framework_TestCase')) {
+            die('PHPUnit wasn\'t found. Please check your settings and command.');
+        }
+        if (!class_exists(BaseTestCase::class)) {
+            // PHPUnit is invoked globally, so we need to include the project autoload file
+            require_once __DIR__ . '/../../../../vendor/autoload.php';
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root.
-	 *
-	 * If ORIGINAL_ROOT already is defined, this method is a no-op.
-	 *
-	 * @return FunctionalTestsBootstrap fluent interface
-	 */
-	protected function defineOriginalRootPath() {
-		if (!defined('ORIGINAL_ROOT')) {
-			/** @var string */
-			define('ORIGINAL_ROOT', $this->getWebRoot());
-		}
+    /**
+     * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root.
+     *
+     * If ORIGINAL_ROOT already is defined, this method is a no-op.
+     *
+     * @return FunctionalTestsBootstrap fluent interface
+     */
+    protected function defineOriginalRootPath()
+    {
+        if (!defined('ORIGINAL_ROOT')) {
+            /** @var string */
+            define('ORIGINAL_ROOT', $this->getWebRoot());
+        }
 
-		if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
-			die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
-		}
+        if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
+            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Creates the following directories in the TYPO3 core:
-	 * - typo3temp
-	 *
-	 * @return FunctionalTestsBootstrap fluent interface
-	 */
-	protected function createNecessaryDirectoriesInDocumentRoot() {
-		$this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
+    /**
+     * Creates the following directories in the TYPO3 core:
+     * - typo3temp
+     *
+     * @return FunctionalTestsBootstrap fluent interface
+     */
+    protected function createNecessaryDirectoriesInDocumentRoot()
+    {
+        $this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Creates the directory $directory (recursively if required).
-	 *
-	 * If $directory already exists, this method is a no-op.
-	 *
-	 * @param string $directory absolute path of the directory to be created
-	 * @return void
-	 * @throws \RuntimeException
-	 */
-	protected function createDirectory($directory) {
-		if (is_dir($directory)) {
-			return;
-		}
-		@mkdir($directory, 0777, TRUE);
-		clearstatcache();
-		if (!is_dir($directory)) {
-			throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
-		}
-	}
+    /**
+     * Creates the directory $directory (recursively if required).
+     *
+     * If $directory already exists, this method is a no-op.
+     *
+     * @param string $directory absolute path of the directory to be created
+     * @return void
+     * @throws \RuntimeException
+     */
+    protected function createDirectory($directory)
+    {
+        if (is_dir($directory)) {
+            return;
+        }
+        @mkdir($directory, 0777, true);
+        clearstatcache();
+        if (!is_dir($directory)) {
+            throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
+        }
+    }
 
-	/**
-	 * Returns the absolute path the TYPO3 document root.
-	 *
-	 * @return string the TYPO3 document root using Unix path separators
-	 */
-	protected function getWebRoot() {
-		if (getenv('TYPO3_PATH_WEB')) {
-			$webRoot = getenv('TYPO3_PATH_WEB');
-		} else {
-			$webRoot = getcwd();
-		}
-		return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
-	}
+    /**
+     * Returns the absolute path the TYPO3 document root.
+     *
+     * @return string the TYPO3 document root using Unix path separators
+     */
+    protected function getWebRoot()
+    {
+        if (getenv('TYPO3_PATH_WEB')) {
+            $webRoot = getenv('TYPO3_PATH_WEB');
+        } else {
+            $webRoot = getcwd();
+        }
+        return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
+    }
 }
 
 if (PHP_SAPI !== 'cli') {
-	die('This script supports command line usage only. Please check your command.');
+    die('This script supports command line usage only. Please check your command.');
 }
 $bootstrap = new FunctionalTestsBootstrap();
 $bootstrap->bootstrapSystem();

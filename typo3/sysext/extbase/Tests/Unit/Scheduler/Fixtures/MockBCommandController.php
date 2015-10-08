@@ -17,12 +17,12 @@ namespace Acme\Mypkg\Command;
 /**
  * MockBCommandController Fixture
  */
-class MockBCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
-
-	/**
-	 * funcBCommand
-	 */
-	public function funcBCommand() {
-	}
-
+class MockBCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
+    /**
+     * funcBCommand
+     */
+    public function funcBCommand()
+    {
+    }
 }

@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if version validation against official version matrix fails
  */
-class CoreVersionServiceException extends \TYPO3\CMS\Install\Service\Exception {
-
+class CoreVersionServiceException extends \TYPO3\CMS\Install\Service\Exception
+{
 }

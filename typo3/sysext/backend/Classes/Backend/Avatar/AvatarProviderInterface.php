@@ -17,15 +17,14 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
 /**
  * Class AvatarProviderInterface
  */
-interface AvatarProviderInterface {
-
-	/**
-	 * Get Image
-	 *
-	 * @param array $backendUser be_users record
-	 * @param int $size
-	 * @return Image|NULL
-	 */
-	public function getImage(array $backendUser, $size);
-
+interface AvatarProviderInterface
+{
+    /**
+     * Get Image
+     *
+     * @param array $backendUser be_users record
+     * @param int $size
+     * @return Image|NULL
+     */
+    public function getImage(array $backendUser, $size);
 }

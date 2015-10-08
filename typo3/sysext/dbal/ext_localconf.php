@@ -6,8 +6,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\RecordList\D
 
 // Register caches if not already done in localconf.php or a previously loaded extension.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'] = array(
-		'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
-		'groups' => array()
-	);
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'] = array(
+        'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
+        'groups' => array()
+    );
 }

@@ -19,27 +19,27 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 /**
  * Determine the final TCA type value
  */
-class DatabaseRecordOverrideValues implements FormDataProviderInterface {
+class DatabaseRecordOverrideValues implements FormDataProviderInterface
+{
+    /**
+     * Add override values to the databaseRow fields. As those values are not meant to
+     * be overwritten by the user, the TCA of the field is set to type hidden.
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        foreach ($result['overrideValues'] as $fieldName => $fieldValue) {
+            if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
+                $result['databaseRow'][$fieldName] = $fieldValue;
+                $result['vanillaTableTca']['columns'][$fieldName]['config'] = array(
+                    'type' => 'hidden',
+                    'renderType' => 'hidden',
+                );
+            }
+        }
 
-	/**
-	 * Add override values to the databaseRow fields. As those values are not meant to
-	 * be overwritten by the user, the TCA of the field is set to type hidden.
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		foreach ($result['overrideValues'] as $fieldName => $fieldValue) {
-			if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
-				$result['databaseRow'][$fieldName] = $fieldValue;
-				$result['vanillaTableTca']['columns'][$fieldName]['config'] = array(
-					'type' => 'hidden',
-					'renderType' => 'hidden',
-				);
-			}
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

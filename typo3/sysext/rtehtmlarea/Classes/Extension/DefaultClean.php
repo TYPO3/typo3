@@ -20,69 +20,71 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * Default Clean extension for htmlArea RTE
  */
-class DefaultClean extends RteHtmlAreaApi {
+class DefaultClean extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'DefaultClean';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'DefaultClean';
+    /**
+     * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'cleanword';
 
-	/**
-	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'cleanword';
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'cleanword' => 'CleanWord'
+    );
 
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'cleanword' => 'CleanWord'
-	);
+    /**
+     * Returns TRUE if the plugin is available and correctly initialized
+     *
+     * @param array $configuration Configuration array given from calling object down to the single plugins
+     * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+     */
+    public function main(array $configuration)
+    {
+        return parent::main($configuration)
+            && $this->configuration['thisConfig']['enableWordClean']
+            && !is_array($this->configuration['thisConfig']['enableWordClean.']['HTMLparser.']);
+    }
 
-	/**
-	 * Returns TRUE if the plugin is available and correctly initialized
-	 *
-	 * @param array $configuration Configuration array given from calling object down to the single plugins
-	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
-	 */
-	public function main(array $configuration) {
-		return parent::main($configuration)
-			&& $this->configuration['thisConfig']['enableWordClean']
-			&& !is_array($this->configuration['thisConfig']['enableWordClean.']['HTMLparser.']);
-	}
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
+     */
+    public function buildJavascriptConfiguration()
+    {
+        $jsArray = array();
+        $button = 'cleanword';
+        if (in_array($button, $this->toolbar)) {
+            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+                $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
+            }
+            $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = {"hotKey" : "' . ($this->configuration['thisConfig']['enableWordClean.']['hotKey'] ? $this->configuration['thisConfig']['enableWordClean.']['hotKey'] : '0') . '"};';
+        }
+        return implode(LF, $jsArray);
+    }
 
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
-	 */
-	public function buildJavascriptConfiguration() {
-		$jsArray = array();
-		$button = 'cleanword';
-		if (in_array($button, $this->toolbar)) {
-			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
-				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
-			}
-			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = {"hotKey" : "' . ($this->configuration['thisConfig']['enableWordClean.']['hotKey'] ? $this->configuration['thisConfig']['enableWordClean.']['hotKey'] : '0') . '"};';
-		}
-		return implode(LF, $jsArray);
-	}
-
-	/**
-	 * Return an updated array of toolbar enabled buttons
-	 * Force inclusion of hidden button cleanword
-	 *
-	 * @param array $show: array of toolbar elements that will be enabled, unless modified here
-	 * @return array toolbar button array, possibly updated
-	 */
-	public function applyToolbarConstraints($show) {
-		return array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->pluginButtons)));
-	}
-
+    /**
+     * Return an updated array of toolbar enabled buttons
+     * Force inclusion of hidden button cleanword
+     *
+     * @param array $show: array of toolbar elements that will be enabled, unless modified here
+     * @return array toolbar button array, possibly updated
+     */
+    public function applyToolbarConstraints($show)
+    {
+        return array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->pluginButtons)));
+    }
 }

@@ -80,80 +80,81 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
+class DateViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Render the supplied DateTime object as a formatted date.
+     *
+     * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
+     * @param string $format Format String which is taken to format the Date/Time
+     * @param mixed $base A base time (a DateTime object or a string) used if $date is a relative date specification. Defaults to current time.
+     *
+     * @return string Formatted date
+     * @throws Exception
+     * @api
+     */
+    public function render($date = null, $format = '', $base = null)
+    {
+        return static::renderStatic(
+            array(
+                'date' => $date,
+                'format' => $format,
+                'base' => $base
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render the supplied DateTime object as a formatted date.
-	 *
-	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
-	 * @param string $format Format String which is taken to format the Date/Time
-	 * @param mixed $base A base time (a DateTime object or a string) used if $date is a relative date specification. Defaults to current time.
-	 *
-	 * @return string Formatted date
-	 * @throws Exception
-	 * @api
-	 */
-	public function render($date = NULL, $format = '', $base = NULL) {
-		return static::renderStatic(
-			array(
-				'date' => $date,
-				'format' => $format,
-				'base' => $base
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     * @throws Exception
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $date = $arguments['date'];
+        $format = $arguments['format'];
+        $base = $arguments['base'] === null ? time() : $arguments['base'];
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$date = $arguments['date'];
-		$format = $arguments['format'];
-		$base = $arguments['base'] === NULL ? time() : $arguments['base'];
+        if ($format === '') {
+            $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
+        }
 
-		if ($format === '') {
-			$format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
-		}
+        if ($date === null) {
+            $date = $renderChildrenClosure();
+            if ($date === null) {
+                return '';
+            }
+        }
 
-		if ($date === NULL) {
-			$date = $renderChildrenClosure();
-			if ($date === NULL) {
-				return '';
-			}
-		}
+        if ($date === '') {
+            $date = 'now';
+        }
 
-		if ($date === '') {
-			$date = 'now';
-		}
+        if (!$date instanceof \DateTime) {
+            try {
+                $base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
+                $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
+                $date = new \DateTime('@' . $dateTimestamp);
+                $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            } catch (\Exception $exception) {
+                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
+            }
+        }
 
-		if (!$date instanceof \DateTime) {
-			try {
-				$base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
-				$dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
-				$date = new \DateTime('@' . $dateTimestamp);
-				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-			} catch (\Exception $exception) {
-				throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
-			}
-		}
-
-		if (strpos($format, '%') !== FALSE) {
-			return strftime($format, $date->format('U'));
-		} else {
-			return $date->format($format);
-		}
-	}
-
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $date->format('U'));
+        } else {
+            return $date->format($format);
+        }
+    }
 }

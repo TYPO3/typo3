@@ -23,66 +23,66 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * providers from resolving stuff of fields that are not shown later.
  * Especially effective for fal related tables.
  */
-class TcaTypesRemoveUnusedColumns implements FormDataProviderInterface {
+class TcaTypesRemoveUnusedColumns implements FormDataProviderInterface
+{
+    /**
+     * Remove unused column fields to speed up further processing.
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $recordTypeValue = $result['recordTypeValue'];
+        if (empty($result['processedTca']['types'][$recordTypeValue]['showitem'])
+            || !is_string($result['processedTca']['types'][$recordTypeValue]['showitem'])
+            || empty($result['processedTca']['columns'])
+            || !is_array($result['processedTca']['columns'])
+        ) {
+            return $result;
+        }
 
-	/**
-	 * Remove unused column fields to speed up further processing.
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$recordTypeValue = $result['recordTypeValue'];
-		if (empty($result['processedTca']['types'][$recordTypeValue]['showitem'])
-			|| !is_string($result['processedTca']['types'][$recordTypeValue]['showitem'])
-			|| empty($result['processedTca']['columns'])
-			|| !is_array($result['processedTca']['columns'])
-		) {
-			return $result;
-		}
+        $showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
+        $showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, true);
 
-		$showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
-		$showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, TRUE);
+        // Do not remove fields that are used for record title calculation
+        $shownColumnFields = empty($result['processedTca']['ctrl']['label']) ? [] : [$result['processedTca']['ctrl']['label']];
+        if (!empty($result['processedTca']['ctrl']['label_alt'])) {
+            $shownColumnFields = array_merge(
+                $shownColumnFields,
+                GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['label_alt'], true)
+            );
+        }
 
-		// Do not remove fields that are used for record title calculation
-		$shownColumnFields = empty($result['processedTca']['ctrl']['label']) ? [] : [$result['processedTca']['ctrl']['label']];
-		if (!empty($result['processedTca']['ctrl']['label_alt'])) {
-			$shownColumnFields = array_merge(
-				$shownColumnFields,
-				GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['label_alt'], TRUE)
-			);
-		}
+        foreach ($showItemFieldArray as $fieldConfigurationString) {
+            $fieldConfigurationArray = GeneralUtility::trimExplode(';', $fieldConfigurationString);
+            $fieldName = $fieldConfigurationArray[0];
+            if ($fieldName === '--div--') {
+                continue;
+            }
+            if ($fieldName === '--palette--') {
+                if (isset($fieldConfigurationArray[2])) {
+                    $paletteName = $fieldConfigurationArray[2];
+                    if (!empty($result['processedTca']['palettes'][$paletteName]['showitem'])) {
+                        $paletteFields = GeneralUtility::trimExplode(',', $result['processedTca']['palettes'][$paletteName]['showitem'], true);
+                        foreach ($paletteFields as $paletteFieldConfiguration) {
+                            $paletteFieldConfigurationArray = GeneralUtility::trimExplode(';', $paletteFieldConfiguration);
+                            $shownColumnFields[] = $paletteFieldConfigurationArray[0];
+                        }
+                    }
+                }
+            } else {
+                $shownColumnFields[] = $fieldName;
+            }
+        }
+        array_unique($shownColumnFields);
+        $columns = array_keys($result['processedTca']['columns']);
+        foreach ($columns as $column) {
+            if (!in_array($column, $shownColumnFields)) {
+                unset($result['processedTca']['columns'][$column]);
+            }
+        }
 
-		foreach ($showItemFieldArray as $fieldConfigurationString) {
-			$fieldConfigurationArray = GeneralUtility::trimExplode(';', $fieldConfigurationString);
-			$fieldName = $fieldConfigurationArray[0];
-			if ($fieldName === '--div--') {
-				continue;
-			}
-			if ($fieldName === '--palette--') {
-				if (isset($fieldConfigurationArray[2])) {
-					$paletteName = $fieldConfigurationArray[2];
-					if (!empty($result['processedTca']['palettes'][$paletteName]['showitem'])) {
-						$paletteFields = GeneralUtility::trimExplode(',', $result['processedTca']['palettes'][$paletteName]['showitem'], TRUE);
-						foreach ($paletteFields as $paletteFieldConfiguration) {
-							$paletteFieldConfigurationArray = GeneralUtility::trimExplode(';', $paletteFieldConfiguration);
-							$shownColumnFields[] = $paletteFieldConfigurationArray[0];
-						}
-					}
-				}
-			} else {
-				$shownColumnFields[] = $fieldName;
-			}
-		}
-		array_unique($shownColumnFields);
-		$columns = array_keys($result['processedTca']['columns']);
-		foreach ($columns as $column) {
-			if (!in_array($column, $shownColumnFields)) {
-				unset($result['processedTca']['columns'][$column]);
-			}
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

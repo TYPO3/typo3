@@ -19,19 +19,19 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Context feature sets development / production settings
  */
-class ContextFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface {
+class ContextFeature extends Configuration\AbstractFeature implements Configuration\FeatureInterface
+{
+    /**
+     * @var string Name of feature
+     */
+    protected $name = 'Context';
 
-	/**
-	 * @var string Name of feature
-	 */
-	protected $name = 'Context';
-
-	/**
-	 * @var array List of preset classes
-	 */
-	protected $presetRegistry = array(
-		\TYPO3\CMS\Install\Configuration\Context\LivePreset::class,
-		\TYPO3\CMS\Install\Configuration\Context\DebugPreset::class,
-		\TYPO3\CMS\Install\Configuration\Context\CustomPreset::class,
-	);
+    /**
+     * @var array List of preset classes
+     */
+    protected $presetRegistry = array(
+        \TYPO3\CMS\Install\Configuration\Context\LivePreset::class,
+        \TYPO3\CMS\Install\Configuration\Context\DebugPreset::class,
+        \TYPO3\CMS\Install\Configuration\Context\CustomPreset::class,
+    );
 }

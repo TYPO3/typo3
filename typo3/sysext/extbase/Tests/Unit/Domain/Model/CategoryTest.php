@@ -17,76 +17,84 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class CategoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CategoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Model\Category
+     */
+    protected $fixture = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\Category
-	 */
-	protected $fixture = NULL;
+    protected function setUp()
+    {
+        $this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\Category();
+    }
 
-	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\Category();
-	}
+    /**
+     * @test
+     */
+    public function getTitleInitiallyReturnsEmptyString()
+    {
+        $this->assertSame('', $this->fixture->getTitle());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function setTitleSetsTitle()
+    {
+        $this->fixture->setTitle('foo bar');
+        $this->assertSame('foo bar', $this->fixture->getTitle());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTitleSetsTitle() {
-		$this->fixture->setTitle('foo bar');
-		$this->assertSame('foo bar', $this->fixture->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function getDescriptionInitiallyReturnsEmptyString()
+    {
+        $this->assertSame('', $this->fixture->getDescription());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDescriptionInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getDescription());
-	}
+    /**
+     * @test
+     */
+    public function setDescriptionSetsDescription()
+    {
+        $this->fixture->setDescription('foo bar');
+        $this->assertSame('foo bar', $this->fixture->getDescription());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDescriptionSetsDescription() {
-		$this->fixture->setDescription('foo bar');
-		$this->assertSame('foo bar', $this->fixture->getDescription());
-	}
+    /**
+     * @test
+     */
+    public function getIconInitiallyReturnsEmptyString()
+    {
+        $this->assertSame('', $this->fixture->getIcon());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getIconInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getIcon());
-	}
+    /**
+     * @test
+     */
+    public function setIconSetsIcon()
+    {
+        $this->fixture->setIcon('icon.png');
+        $this->assertSame('icon.png', $this->fixture->getIcon());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setIconSetsIcon() {
-		$this->fixture->setIcon('icon.png');
-		$this->assertSame('icon.png', $this->fixture->getIcon());
-	}
+    /**
+     * @test
+     */
+    public function getParentInitiallyReturnsNull()
+    {
+        $this->assertNull($this->fixture->getParent());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getParentInitiallyReturnsNull() {
-		$this->assertNull($this->fixture->getParent());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setParentSetsParent() {
-		$parent = new \TYPO3\CMS\Extbase\Domain\Model\Category();
-		$this->fixture->setParent($parent);
-		$this->assertSame($parent, $this->fixture->getParent());
-	}
-
+    /**
+     * @test
+     */
+    public function setParentSetsParent()
+    {
+        $parent = new \TYPO3\CMS\Extbase\Domain\Model\Category();
+        $this->fixture->setParent($parent);
+        $this->assertSame($parent, $this->fixture->getParent());
+    }
 }

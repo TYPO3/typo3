@@ -17,57 +17,60 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
 /**
  * Test case
  */
-class RegExpValidatorTest extends AbstractValidatorTest {
+class RegExpValidatorTest extends AbstractValidatorTest
+{
+    /**
+     * @var string
+     */
+    protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\RegExpValidator::class;
 
-	/**
-	 * @var string
-	 */
-	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\RegExpValidator::class;
+    /**
+     * @return array
+     */
+    public function validDataProvider()
+    {
+        return array(
+            '/^a/ matches a' => array(array('/^a/', 'a')),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function validDataProvider() {
-		return array(
-			'/^a/ matches a' => array(array('/^a/', 'a')),
-		);
-	}
+    /**
+     * @return array
+     */
+    public function invalidDataProvider()
+    {
+        return array(
+            '/[^\d]/ matches 8' => array(array('/[^\d]/', 8)),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function invalidDataProvider() {
-		return array(
-			'/[^\d]/ matches 8' => array(array('/[^\d]/', 8)),
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validDataProvider
+     */
+    public function validateForValidInputHasEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options['expression'] = $input[0];
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider validDataProvider
-	 */
-	public function validateForValidInputHasEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$options['expression'] = $input[0];
-		$subject = $this->createSubject($options);
+        $this->assertEmpty(
+            $subject->validate($input[1])->getErrors()
+        );
+    }
 
-		$this->assertEmpty(
-			$subject->validate($input[1])->getErrors()
-		);
-	}
+    /**
+     * @test
+     * @dataProvider invalidDataProvider
+     */
+    public function validateForInvalidInputHasNotEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options['expression'] = $input[0];
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider invalidDataProvider
-	 */
-	public function validateForInvalidInputHasNotEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$options['expression'] = $input[0];
-		$subject = $this->createSubject($options);
-
-		$this->assertNotEmpty(
-			$subject->validate($input[1])->getErrors()
-		);
-	}
-
+        $this->assertNotEmpty(
+            $subject->validate($input[1])->getErrors()
+        );
+    }
 }

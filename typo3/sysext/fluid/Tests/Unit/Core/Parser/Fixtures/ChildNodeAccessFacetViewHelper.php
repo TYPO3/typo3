@@ -14,6 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures;
 /**
  * Test fixture for the child node access facet.
  */
-abstract class ChildNodeAccessFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
-
+abstract class ChildNodeAccessFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface
+{
 }

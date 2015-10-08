@@ -28,66 +28,70 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Test case
  */
-class CropViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CropViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper
-	 */
-	protected $viewHelper;
+    /**
+     * @var ContentObjectRenderer
+     */
+    protected $mockContentObject;
 
-	/**
-	 * @var ContentObjectRenderer
-	 */
-	protected $mockContentObject;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->mockContentObject = $this->getMock(ContentObjectRenderer::class, array(), array(), '', false);
+        $this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper::class, array('renderChildren'));
 
-	protected function setUp() {
-		parent::setUp();
-		$this->mockContentObject = $this->getMock(ContentObjectRenderer::class, array(), array(), '', FALSE);
-		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper::class, array('renderChildren'));
+        $renderingContext = $this->getMock(RenderingContext::class);
+        $this->viewHelper->setRenderingContext($renderingContext);
+        $this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Some Content'));
+    }
 
-		$renderingContext = $this->getMock(RenderingContext::class);
-		$this->viewHelper->setRenderingContext($renderingContext);
-		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Some Content'));
-	}
+    /**
+     * @test
+     */
+    public function viewHelperCallsCropHtmlByDefault()
+    {
+        $this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|...|1')->will($this->returnValue('Cropped Content'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
+        $actualResult = $this->viewHelper->render(123);
+        $this->assertEquals('Cropped Content', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function viewHelperCallsCropHtmlByDefault() {
-		$this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|...|1')->will($this->returnValue('Cropped Content'));
-		GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
-		$actualResult = $this->viewHelper->render(123);
-		$this->assertEquals('Cropped Content', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function viewHelperCallsCropHtmlByDefault2()
+    {
+        $this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '-321|custom suffix|1')->will($this->returnValue('Cropped Content'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
+        $actualResult = $this->viewHelper->render(-321, 'custom suffix');
+        $this->assertEquals('Cropped Content', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function viewHelperCallsCropHtmlByDefault2() {
-		$this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '-321|custom suffix|1')->will($this->returnValue('Cropped Content'));
-		GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
-		$actualResult = $this->viewHelper->render(-321, 'custom suffix');
-		$this->assertEquals('Cropped Content', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function respectWordBoundariesCanBeDisabled()
+    {
+        $this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|...|')->will($this->returnValue('Cropped Content'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
+        $actualResult = $this->viewHelper->render(123, '...', false);
+        $this->assertEquals('Cropped Content', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function respectWordBoundariesCanBeDisabled() {
-		$this->mockContentObject->expects($this->once())->method('cropHTML')->with('Some Content', '123|...|')->will($this->returnValue('Cropped Content'));
-		GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
-		$actualResult = $this->viewHelper->render(123, '...', FALSE);
-		$this->assertEquals('Cropped Content', $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function respectHtmlCanBeDisabled() {
-		$this->mockContentObject->expects($this->once())->method('crop')->with('Some Content', '123|...|1')->will($this->returnValue('Cropped Content'));
-		GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
-		$actualResult = $this->viewHelper->render(123, '...', TRUE, FALSE);
-		$this->assertEquals('Cropped Content', $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function respectHtmlCanBeDisabled()
+    {
+        $this->mockContentObject->expects($this->once())->method('crop')->with('Some Content', '123|...|1')->will($this->returnValue('Cropped Content'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
+        $actualResult = $this->viewHelper->render(123, '...', true, false);
+        $this->assertEquals('Cropped Content', $actualResult);
+    }
 }

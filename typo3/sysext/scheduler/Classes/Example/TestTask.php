@@ -17,72 +17,73 @@ namespace TYPO3\CMS\Scheduler\Example;
 /**
  * Provides testing procedures
  */
-class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
+    /**
+     * An email address to be used during the process
+     *
+     * @var string $email
+     */
+    public $email;
 
-	/**
-	 * An email address to be used during the process
-	 *
-	 * @var string $email
-	 */
-	public $email;
+    /**
+     * Function executed from the Scheduler.
+     * Sends an email
+     *
+     * @return bool
+     */
+    public function execute()
+    {
+        $success = false;
+        if (!empty($this->email)) {
+            // If an email address is defined, send a message to it
+            // NOTE: the TYPO3_DLOG constant is not used in this case, as this is a test task
+            // and debugging is its main purpose anyway
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email . '"', 'scheduler', 0);
+            // Get execution information
+            $exec = $this->getExecution();
+            // Get call method
+            if (basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+                $calledBy = 'CLI module dispatcher';
+                $site = '-';
+            } else {
+                $calledBy = 'TYPO3 backend';
+                $site = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            }
+            $start = $exec->getStart();
+            $end = $exec->getEnd();
+            $interval = $exec->getInterval();
+            $multiple = $exec->getMultiple();
+            $cronCmd = $exec->getCronCmd();
+            $mailBody = 'SCHEDULER TEST-TASK' . LF . '- - - - - - - - - - - - - - - -' . LF . 'UID: ' . $this->taskUid . LF . 'Sitename: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . LF . 'Site: ' . $site . LF . 'Called by: ' . $calledBy . LF . 'tstamp: ' . date('Y-m-d H:i:s') . ' [' . time() . ']' . LF . 'maxLifetime: ' . $this->scheduler->extConf['maxLifetime'] . LF . 'start: ' . date('Y-m-d H:i:s', $start) . ' [' . $start . ']' . LF . 'end: ' . (empty($end) ? '-' : date('Y-m-d H:i:s', $end) . ' [' . $end . ']') . LF . 'interval: ' . $interval . LF . 'multiple: ' . ($multiple ? 'yes' : 'no') . LF . 'cronCmd: ' . ($cronCmd ? $cronCmd : 'not used');
+            // Prepare mailer and send the mail
+            try {
+                /** @var $mailer \TYPO3\CMS\Core\Mail\MailMessage */
+                $mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+                $mailer->setFrom(array($this->email => 'SCHEDULER TEST-TASK'));
+                $mailer->setReplyTo(array($this->email => 'SCHEDULER TEST-TASK'));
+                $mailer->setSubject('SCHEDULER TEST-TASK');
+                $mailer->setBody($mailBody);
+                $mailer->setTo($this->email);
+                $mailsSend = $mailer->send();
+                $success = $mailsSend > 0;
+            } catch (\Exception $e) {
+                throw new \TYPO3\CMS\Core\Exception($e->getMessage());
+            }
+        } else {
+            // No email defined, just log the task
+            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: No email address given', 'scheduler', 2);
+        }
+        return $success;
+    }
 
-	/**
-	 * Function executed from the Scheduler.
-	 * Sends an email
-	 *
-	 * @return bool
-	 */
-	public function execute() {
-		$success = FALSE;
-		if (!empty($this->email)) {
-			// If an email address is defined, send a message to it
-			// NOTE: the TYPO3_DLOG constant is not used in this case, as this is a test task
-			// and debugging is its main purpose anyway
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email . '"', 'scheduler', 0);
-			// Get execution information
-			$exec = $this->getExecution();
-			// Get call method
-			if (basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
-				$calledBy = 'CLI module dispatcher';
-				$site = '-';
-			} else {
-				$calledBy = 'TYPO3 backend';
-				$site = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-			}
-			$start = $exec->getStart();
-			$end = $exec->getEnd();
-			$interval = $exec->getInterval();
-			$multiple = $exec->getMultiple();
-			$cronCmd = $exec->getCronCmd();
-			$mailBody = 'SCHEDULER TEST-TASK' . LF . '- - - - - - - - - - - - - - - -' . LF . 'UID: ' . $this->taskUid . LF . 'Sitename: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . LF . 'Site: ' . $site . LF . 'Called by: ' . $calledBy . LF . 'tstamp: ' . date('Y-m-d H:i:s') . ' [' . time() . ']' . LF . 'maxLifetime: ' . $this->scheduler->extConf['maxLifetime'] . LF . 'start: ' . date('Y-m-d H:i:s', $start) . ' [' . $start . ']' . LF . 'end: ' . (empty($end) ? '-' : date('Y-m-d H:i:s', $end) . ' [' . $end . ']') . LF . 'interval: ' . $interval . LF . 'multiple: ' . ($multiple ? 'yes' : 'no') . LF . 'cronCmd: ' . ($cronCmd ? $cronCmd : 'not used');
-			// Prepare mailer and send the mail
-			try {
-				/** @var $mailer \TYPO3\CMS\Core\Mail\MailMessage */
-				$mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-				$mailer->setFrom(array($this->email => 'SCHEDULER TEST-TASK'));
-				$mailer->setReplyTo(array($this->email => 'SCHEDULER TEST-TASK'));
-				$mailer->setSubject('SCHEDULER TEST-TASK');
-				$mailer->setBody($mailBody);
-				$mailer->setTo($this->email);
-				$mailsSend = $mailer->send();
-				$success = $mailsSend > 0;
-			} catch (\Exception $e) {
-				throw new \TYPO3\CMS\Core\Exception($e->getMessage());
-			}
-		} else {
-			// No email defined, just log the task
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: No email address given', 'scheduler', 2);
-		}
-		return $success;
-	}
-
-	/**
-	 * This method returns the destination mail address as additional information
-	 *
-	 * @return string Information to display
-	 */
-	public function getAdditionalInformation() {
-		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email') . ': ' . $this->email;
-	}
-
+    /**
+     * This method returns the destination mail address as additional information
+     *
+     * @return string Information to display
+     */
+    public function getAdditionalInformation()
+    {
+        return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email') . ': ' . $this->email;
+    }
 }

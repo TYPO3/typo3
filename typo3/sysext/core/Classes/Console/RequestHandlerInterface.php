@@ -21,34 +21,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @api
  */
-interface RequestHandlerInterface {
+interface RequestHandlerInterface
+{
+    /**
+     * Handles a CLI request
+     *
+     * @param InputInterface $input
+     * @return NULL|OutputInterface
+     * @api
+     */
+    public function handleRequest(InputInterface $input);
 
-	/**
-	 * Handles a CLI request
-	 *
-	 * @param InputInterface $input
-	 * @return NULL|OutputInterface
-	 * @api
-	 */
-	public function handleRequest(InputInterface $input);
+    /**
+     * Checks if the request handler can handle the given request.
+     *
+     * @param InputInterface $input
+     * @return bool TRUE if it can handle the request, otherwise FALSE
+     * @api
+     */
+    public function canHandleRequest(InputInterface $input);
 
-	/**
-	 * Checks if the request handler can handle the given request.
-	 *
-	 * @param InputInterface $input
-	 * @return bool TRUE if it can handle the request, otherwise FALSE
-	 * @api
-	 */
-	public function canHandleRequest(InputInterface $input);
-
-	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request. An integer > 0 means "I want to handle this request" where
-	 * "100" is default. "0" means "I am a fallback solution".
-	 *
-	 * @return int The priority of the request handler
-	 * @api
-	 */
-	public function getPriority();
-
+    /**
+     * Returns the priority - how eager the handler is to actually handle the
+     * request. An integer > 0 means "I want to handle this request" where
+     * "100" is default. "0" means "I am a fallback solution".
+     *
+     * @return int The priority of the request handler
+     * @api
+     */
+    public function getPriority();
 }

@@ -26,97 +26,96 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
  *
  * The aspect define category mount points according to BE User permissions.
  */
-class CategoryPermissionsAspect {
+class CategoryPermissionsAspect
+{
+    /**
+     * @var string
+     */
+    protected $categoryTableName = 'sys_category';
 
-	/**
-	 * @var string
-	 */
-	protected $categoryTableName = 'sys_category';
+    /**
+     * @var BackendUserAuthentication
+     */
+    protected $backendUserAuthentication;
 
-	/**
-	 * @var BackendUserAuthentication
-	 */
-	protected $backendUserAuthentication;
+    /**
+     * @param BackendUserAuthentication|null $backendUserAuthentication
+     */
+    public function __construct($backendUserAuthentication = null)
+    {
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * @param BackendUserAuthentication|null $backendUserAuthentication
-	 */
-	public function __construct($backendUserAuthentication = NULL) {
-		$this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
-	}
+    /**
+     * The slot for the signal in DatabaseTreeDataProvider.
+     *
+     * @param DatabaseTreeDataProvider $dataProvider
+     * @param TreeNode $treeData
+     * @return void
+     */
+    public function addUserPermissionsToCategoryTreeData(DatabaseTreeDataProvider $dataProvider, $treeData)
+    {
+        if (!$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
 
-	/**
-	 * The slot for the signal in DatabaseTreeDataProvider.
-	 *
-	 * @param DatabaseTreeDataProvider $dataProvider
-	 * @param TreeNode $treeData
-	 * @return void
-	 */
-	public function addUserPermissionsToCategoryTreeData(DatabaseTreeDataProvider $dataProvider, $treeData) {
+            // Get User permissions related to category
+            $categoryMountPoints = $this->backendUserAuthentication->getCategoryMountPoints();
 
-		if (!$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
+            // Backup child nodes to be processed.
+            $treeNodeCollection = $treeData->getChildNodes();
 
-			// Get User permissions related to category
-			$categoryMountPoints = $this->backendUserAuthentication->getCategoryMountPoints();
+            if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
 
-			// Backup child nodes to be processed.
-			$treeNodeCollection = $treeData->getChildNodes();
+                // First, remove all child nodes which must be analysed to be considered as "secure".
+                // The nodes were backed up in variable $treeNodeCollection beforehand.
+                $treeData->removeChildNodes();
 
-			if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
+                // Create an empty tree node collection to receive the secured nodes.
+                /** @var TreeNodeCollection $securedTreeNodeCollection */
+                $securedTreeNodeCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
 
-				// First, remove all child nodes which must be analysed to be considered as "secure".
-				// The nodes were backed up in variable $treeNodeCollection beforehand.
-				$treeData->removeChildNodes();
+                foreach ($categoryMountPoints as $categoryMountPoint) {
+                    $treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
+                    if (!is_null($treeNode)) {
+                        $securedTreeNodeCollection->append($treeNode);
+                    }
+                }
 
-				// Create an empty tree node collection to receive the secured nodes.
-				/** @var TreeNodeCollection $securedTreeNodeCollection */
-				$securedTreeNodeCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
+                // Reset child nodes.
+                $treeData->setChildNodes($securedTreeNodeCollection);
+            }
+        }
+    }
 
-				foreach ($categoryMountPoints as $categoryMountPoint) {
+    /**
+     * Recursively look up for a category mount point within a tree.
+     *
+     * @param int $categoryMountPoint
+     * @param TreeNodeCollection $treeNodeCollection
+     * @return NULL|TreeNode
+     */
+    protected function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection)
+    {
+        $result = null;
 
-					$treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
-					if (!is_null($treeNode)) {
-						$securedTreeNodeCollection->append($treeNode);
-					}
-				}
+        // If any User permission, recursively traverse the tree and set tree part as mount point
+        foreach ($treeNodeCollection as $treeNode) {
 
-				// Reset child nodes.
-				$treeData->setChildNodes($securedTreeNodeCollection);
-			}
-		}
-	}
+            /** @var \TYPO3\CMS\Backend\Tree\TreeNode $treeNode */
+            if ((int)$treeNode->getId() === $categoryMountPoint) {
+                $result = $treeNode;
+                break;
+            }
 
-	/**
-	 * Recursively look up for a category mount point within a tree.
-	 *
-	 * @param int $categoryMountPoint
-	 * @param TreeNodeCollection $treeNodeCollection
-	 * @return NULL|TreeNode
-	 */
-	protected function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection) {
+            if ($treeNode->hasChildNodes()) {
 
-		$result = NULL;
-
-		// If any User permission, recursively traverse the tree and set tree part as mount point
-		foreach ($treeNodeCollection as $treeNode) {
-
-			/** @var \TYPO3\CMS\Backend\Tree\TreeNode $treeNode */
-			if ((int)$treeNode->getId() === $categoryMountPoint) {
-				$result = $treeNode;
-				break;
-			}
-
-			if ($treeNode->hasChildNodes()) {
-
-				/** @var TreeNode $node */
-				$node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
-				if (! is_null($node)) {
-					$result = $node;
-					break;
-				}
-			}
-		}
-		return $result;
-	}
-
+                /** @var TreeNode $node */
+                $node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
+                if (! is_null($node)) {
+                    $result = $node;
+                    break;
+                }
+            }
+        }
+        return $result;
+    }
 }

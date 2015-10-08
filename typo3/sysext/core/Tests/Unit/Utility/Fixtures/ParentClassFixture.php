@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 /**
  * Fixture for a base class
  */
-class ParentClassFixture {
-
+class ParentClassFixture
+{
 }

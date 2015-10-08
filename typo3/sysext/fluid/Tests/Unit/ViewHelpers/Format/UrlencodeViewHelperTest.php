@@ -17,72 +17,78 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper;
 /**
  * Test case
  */
-class UrlencodeViewHelperTest extends UnitTestCase {
+class UrlencodeViewHelperTest extends UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        $this->viewHelper = $this->getMock(UrlencodeViewHelper::class, array('renderChildren'));
 
-	protected function setUp() {
-		$this->viewHelper = $this->getMock(UrlencodeViewHelper::class, array('renderChildren'));
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->getMock(RenderingContext::class);
+        $this->viewHelper->setRenderingContext($renderingContext);
+    }
 
-		/** @var RenderingContext $renderingContext */
-		$renderingContext = $this->getMock(RenderingContext::class);
-		$this->viewHelper->setRenderingContext($renderingContext);
-	}
+    /**
+     * @test
+     */
+    public function viewHelperDeactivatesEscapingInterceptor()
+    {
+        $this->assertFalse($this->viewHelper->isEscapingInterceptorEnabled());
+    }
 
-	/**
-	 * @test
-	 */
-	public function viewHelperDeactivatesEscapingInterceptor() {
-		$this->assertFalse($this->viewHelper->isEscapingInterceptorEnabled());
-	}
+    /**
+     * @test
+     */
+    public function renderUsesValueAsSourceIfSpecified()
+    {
+        $this->viewHelper->expects($this->never())->method('renderChildren');
+        $actualResult = $this->viewHelper->render('Source');
+        $this->assertEquals('Source', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderUsesValueAsSourceIfSpecified() {
-		$this->viewHelper->expects($this->never())->method('renderChildren');
-		$actualResult = $this->viewHelper->render('Source');
-		$this->assertEquals('Source', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderUsesChildnodesAsSourceIfSpecified()
+    {
+        $this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Source'));
+        $actualResult = $this->viewHelper->render();
+        $this->assertEquals('Source', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderUsesChildnodesAsSourceIfSpecified() {
-		$this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Source'));
-		$actualResult = $this->viewHelper->render();
-		$this->assertEquals('Source', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters()
+    {
+        $source = 'StringWithoutSpecialCharacters';
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertSame($source, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters() {
-		$source = 'StringWithoutSpecialCharacters';
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertSame($source, $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderEncodesString()
+    {
+        $source = 'Foo @+%/ "';
+        $expectedResult = 'Foo%20%40%2B%25%2F%20%22';
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderEncodesString() {
-		$source = 'Foo @+%/ "';
-		$expectedResult = 'Foo%20%40%2B%25%2F%20%22';
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsUnmodifiedSourceIfItIsNoString() {
-		$source = new \stdClass();
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertSame($source, $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function renderReturnsUnmodifiedSourceIfItIsNoString()
+    {
+        $source = new \stdClass();
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertSame($source, $actualResult);
+    }
 }

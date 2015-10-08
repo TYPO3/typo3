@@ -15,26 +15,26 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
-	/**
-	 * Freezes this cache backend.
-	 *
-	 * All data in a frozen backend remains unchanged and methods which try to add
-	 * or modify data result in an exception thrown. Possible expiry times of
-	 * individual cache entries are ignored.
-	 *
-	 * On the positive side, a frozen cache backend is much faster on read access.
-	 * A frozen backend can only be thawn by calling the flush() method.
-	 *
-	 * @return void
-	 */
-	public function freeze();
+interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+{
+    /**
+     * Freezes this cache backend.
+     *
+     * All data in a frozen backend remains unchanged and methods which try to add
+     * or modify data result in an exception thrown. Possible expiry times of
+     * individual cache entries are ignored.
+     *
+     * On the positive side, a frozen cache backend is much faster on read access.
+     * A frozen backend can only be thawn by calling the flush() method.
+     *
+     * @return void
+     */
+    public function freeze();
 
-	/**
-	 * Tells if this backend is frozen.
-	 *
-	 * @return bool
-	 */
-	public function isFrozen();
-
+    /**
+     * Tells if this backend is frozen.
+     *
+     * @return bool
+     */
+    public function isFrozen();
 }

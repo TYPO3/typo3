@@ -19,51 +19,51 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class NotEmptyValidator extends AbstractValidator {
+class NotEmptyValidator extends AbstractValidator
+{
+    /**
+     * This validator always needs to be executed even if the given value is empty.
+     * See AbstractValidator::validate()
+     *
+     * @var bool
+     */
+    protected $acceptsEmptyValues = false;
 
-	/**
-	 * This validator always needs to be executed even if the given value is empty.
-	 * See AbstractValidator::validate()
-	 *
-	 * @var bool
-	 */
-	protected $acceptsEmptyValues = FALSE;
-
-	/**
-	 * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 */
-	public function isValid($value) {
-		if ($value === NULL) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.notempty.null',
-					'extbase'
-				), 1221560910);
-		}
-		if ($value === '') {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.notempty.empty',
-					'extbase'
-				), 1221560718);
-		}
-		if (is_array($value) && empty($value)) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.notempty.empty',
-					'extbase'
-				), 1347992400);
-		}
-		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.notempty.empty',
-					'extbase'
-				), 1347992453);
-		}
-	}
-
+    /**
+     * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if ($value === null) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.notempty.null',
+                    'extbase'
+                ), 1221560910);
+        }
+        if ($value === '') {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.notempty.empty',
+                    'extbase'
+                ), 1221560718);
+        }
+        if (is_array($value) && empty($value)) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.notempty.empty',
+                    'extbase'
+                ), 1347992400);
+        }
+        if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.notempty.empty',
+                    'extbase'
+                ), 1347992453);
+        }
+    }
 }

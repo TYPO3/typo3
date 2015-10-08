@@ -17,17 +17,16 @@ namespace TYPO3\CMS\Workspaces;
 /**
  * Interface for (additional) columns.
  */
-interface ColumnDataProviderInterface {
+interface ColumnDataProviderInterface
+{
+    /**
+     * @return array
+     */
+    public function getDefinition();
 
-	/**
-	 * @return array
-	 */
-	public function getDefinition();
-
-	/**
-	 * @param Domain\Model\CombinedRecord $combinedRecord
-	 * @return string|integer|array
-	 */
-	public function getData(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $combinedRecord);
-
+    /**
+     * @param Domain\Model\CombinedRecord $combinedRecord
+     * @return string|integer|array
+     */
+    public function getData(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $combinedRecord);
 }

@@ -20,33 +20,33 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Fetch existing database row on edit
  */
-class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormDataProviderInterface {
+class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
+{
+    /**
+     * Fetch existing record from database
+     *
+     * @param array $result
+     * @return array
+     * @throws \UnexpectedValueException
+     */
+    public function addData(array $result)
+    {
+        if ($result['command'] !== 'edit') {
+            return $result;
+        }
 
-	/**
-	 * Fetch existing record from database
-	 *
-	 * @param array $result
-	 * @return array
-	 * @throws \UnexpectedValueException
-	 */
-	public function addData(array $result) {
-		if ($result['command'] !== 'edit') {
-			return $result;
-		}
+        $databaseRow = $this->getRecordFromDatabase($result['tableName'], $result['vanillaUid']);
+        if (!array_key_exists('pid', $databaseRow)) {
+            throw new \UnexpectedValueException(
+                'Parent record does not have a pid field',
+                1437663061
+            );
+        }
+        // Warning: By reference! In case the record is in a workspace, the -1 in pid will be
+        // changed to the real pid of the life record here.
+        BackendUtility::fixVersioningPid($result['tableName'], $databaseRow);
+        $result['databaseRow'] = $databaseRow;
 
-		$databaseRow = $this->getRecordFromDatabase($result['tableName'], $result['vanillaUid']);
-		if (!array_key_exists('pid', $databaseRow)) {
-			throw new \UnexpectedValueException(
-				'Parent record does not have a pid field',
-				1437663061
-			);
-		}
-		// Warning: By reference! In case the record is in a workspace, the -1 in pid will be
-		// changed to the real pid of the life record here.
-		BackendUtility::fixVersioningPid($result['tableName'], $databaseRow);
-		$result['databaseRow'] = $databaseRow;
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

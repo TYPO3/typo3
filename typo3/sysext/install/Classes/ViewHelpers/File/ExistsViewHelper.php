@@ -33,39 +33,40 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @internal
  */
-class ExistsViewHelper extends AbstractViewHelper implements CompilableInterface {
+class ExistsViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Check if given file is a regular file
+     *
+     * @param string $file Absolute path
+     * @return bool
+     */
+    public function render($file)
+    {
+        return static::renderStatic(
+            array(
+                'file' => $file,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Check if given file is a regular file
-	 *
-	 * @param string $file Absolute path
-	 * @return bool
-	 */
-	public function render($file) {
-		return static::renderStatic(
-			array(
-				'file' => $file,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return bool
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $file = $arguments['file'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return bool
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$file = $arguments['file'];
-
-		$result = FALSE;
-		if (file_exists($file) && is_file($file)) {
-			$result = TRUE;
-		}
-		return $result;
-	}
-
+        $result = false;
+        if (file_exists($file) && is_file($file)) {
+            $result = true;
+        }
+        return $result;
+    }
 }

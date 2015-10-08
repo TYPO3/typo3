@@ -2,19 +2,19 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
-		'name' => \TYPO3\CMS\Impexp\Clickmenu::class
-	);
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['TYPO3\\CMS\\Impexp\\Task\\ImportExportTask'] = array(
-		'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.alttitle',
-		'description' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.description',
-		'icon' => 'EXT:impexp/Resources/Public/Images/export.gif'
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
-	// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/Resources/Private/Language/locallang_csh.xml'][] = 'EXT:impexp/Resources/Private/Language/locallang_csh_45.xlf';
-	// Special context menu actions for the import/export module
-	$importExportActions = '
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
+        'name' => \TYPO3\CMS\Impexp\Clickmenu::class
+    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['TYPO3\\CMS\\Impexp\\Task\\ImportExportTask'] = array(
+        'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.alttitle',
+        'description' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.description',
+        'icon' => 'EXT:impexp/Resources/Public/Images/export.gif'
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
+    // CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/Resources/Private/Language/locallang_csh.xml'][] = 'EXT:impexp/Resources/Private/Language/locallang_csh_45.xlf';
+    // Special context menu actions for the import/export module
+    $importExportActions = '
 		9000 = DIVIDER
 
 		9100 = ITEM
@@ -33,8 +33,8 @@ if (TYPO3_MODE === 'BE') {
 			callbackAction = importT3d
 		}
 	';
-	// Context menu user default configuration
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
+    // Context menu user default configuration
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
 		options.contextMenu.table {
 			virtual_root.items {
 				' . $importExportActions . '

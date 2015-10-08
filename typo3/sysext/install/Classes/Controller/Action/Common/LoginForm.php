@@ -19,16 +19,16 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Show login form
  */
-class LoginForm extends Action\AbstractAction {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		$this->view->assign('messages', $this->messages);
-		return $this->view->render();
-	}
-
+class LoginForm extends Action\AbstractAction
+{
+    /**
+     * Executes the action
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->view->assign('messages', $this->messages);
+        return $this->view->render();
+    }
 }

@@ -17,21 +17,21 @@ namespace TYPO3\CMS\Backend\ContextMenu;
 /**
  * Context Menu Action Collection
  */
-class ContextMenuActionCollection extends \ArrayObject {
-
-	/**
-	 * Returns the collection in an array representation for e.g. serialization
-	 *
-	 * @return array
-	 */
-	public function toArray() {
-		$iterator = $this->getIterator();
-		$arrayRepresentation = array();
-		while ($iterator->valid()) {
-			$arrayRepresentation[] = $iterator->current()->toArray();
-			$iterator->next();
-		}
-		return $arrayRepresentation;
-	}
-
+class ContextMenuActionCollection extends \ArrayObject
+{
+    /**
+     * Returns the collection in an array representation for e.g. serialization
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $iterator = $this->getIterator();
+        $arrayRepresentation = array();
+        while ($iterator->valid()) {
+            $arrayRepresentation[] = $iterator->current()->toArray();
+            $iterator->next();
+        }
+        return $arrayRepresentation;
+    }
 }

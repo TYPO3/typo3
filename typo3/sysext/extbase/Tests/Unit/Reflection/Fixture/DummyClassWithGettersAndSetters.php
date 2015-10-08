@@ -19,118 +19,130 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class DummyClassWithGettersAndSetters {
+class DummyClassWithGettersAndSetters
+{
+    protected $property;
 
-	protected $property;
+    protected $anotherProperty;
 
-	protected $anotherProperty;
+    protected $property2;
 
-	protected $property2;
+    protected $booleanProperty = true;
 
-	protected $booleanProperty = TRUE;
+    protected $protectedProperty;
 
-	protected $protectedProperty;
+    protected $unexposedProperty = 'unexposed';
 
-	protected $unexposedProperty = 'unexposed';
+    public $publicProperty;
 
-	public $publicProperty;
+    public $publicProperty2 = 42;
 
-	public $publicProperty2 = 42;
+    protected $anotherBooleanProperty = true;
 
-	protected $anotherBooleanProperty = TRUE;
+    /**
+     * @param mixed $property
+     */
+    public function setProperty($property)
+    {
+        $this->property = $property;
+    }
 
-	/**
-	 * @param mixed $property
-	 */
-	public function setProperty($property) {
-		$this->property = $property;
-	}
+    /**
+     * @return mixed
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getProperty() {
-		return $this->property;
-	}
+    /**
+     * @param mixed $anotherProperty
+     */
+    public function setAnotherProperty($anotherProperty)
+    {
+        $this->anotherProperty = $anotherProperty;
+    }
 
-	/**
-	 * @param mixed $anotherProperty
-	 */
-	public function setAnotherProperty($anotherProperty) {
-		$this->anotherProperty = $anotherProperty;
-	}
+    /**
+     * @return mixed
+     */
+    public function getAnotherProperty()
+    {
+        return $this->anotherProperty;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getAnotherProperty() {
-		return $this->anotherProperty;
-	}
+    /**
+     * @return mixed
+     */
+    public function getProperty2()
+    {
+        return $this->property2;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getProperty2() {
-		return $this->property2;
-	}
+    /**
+     * @param mixed $property2
+     */
+    public function setProperty2($property2)
+    {
+        $this->property2 = $property2;
+    }
 
-	/**
-	 * @param mixed $property2
-	 */
-	public function setProperty2($property2) {
-		$this->property2 = $property2;
-	}
+    /**
+     * @return string
+     */
+    protected function getProtectedProperty()
+    {
+        return '42';
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getProtectedProperty() {
-		return '42';
-	}
+    /**
+     * @param mixed $value
+     */
+    protected function setProtectedProperty($value)
+    {
+        $this->protectedProperty = $value;
+    }
 
-	/**
-	 * @param mixed $value
-	 */
-	protected function setProtectedProperty($value) {
-		$this->protectedProperty = $value;
-	}
+    /**
+     * @return bool
+     */
+    public function isBooleanProperty()
+    {
+        return $this->booleanProperty;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isBooleanProperty() {
-		return $this->booleanProperty;
-	}
+    /**
+     * @return string
+     */
+    protected function getPrivateProperty()
+    {
+        return '21';
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getPrivateProperty() {
-		return '21';
-	}
+    /**
+     * @param mixed $value
+     */
+    public function setWriteOnlyMagicProperty($value)
+    {
+    }
 
-	/**
-	 * @param mixed $value
-	 */
-	public function setWriteOnlyMagicProperty($value) {
-	}
+    /**
+     * sets the AnotherBooleanProperty
+     *
+     * @param bool $anotherBooleanProperty
+     *
+     * @return void
+     */
+    public function setAnotherBooleanProperty($anotherBooleanProperty)
+    {
+        $this->anotherBooleanProperty = $anotherBooleanProperty;
+    }
 
-	/**
-	 * sets the AnotherBooleanProperty
-	 *
-	 * @param bool $anotherBooleanProperty
-	 *
-	 * @return void
-	 */
-	public function setAnotherBooleanProperty($anotherBooleanProperty) {
-		$this->anotherBooleanProperty = $anotherBooleanProperty;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function hasAnotherBooleanProperty() {
-		return $this->anotherBooleanProperty;
-	}
-
+    /**
+     * @return bool
+     */
+    public function hasAnotherBooleanProperty()
+    {
+        return $this->anotherBooleanProperty;
+    }
 }

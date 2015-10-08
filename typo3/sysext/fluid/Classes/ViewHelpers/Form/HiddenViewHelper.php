@@ -28,39 +28,40 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
+class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'input';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
+    /**
+     * Initialize the arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+    }
 
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerUniversalTagAttributes();
-	}
+    /**
+     * Renders the hidden field.
+     *
+     * @return string
+     * @api
+     */
+    public function render()
+    {
+        $name = $this->getName();
+        $this->registerFieldNameForFormTokenGeneration($name);
 
-	/**
-	 * Renders the hidden field.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function render() {
-		$name = $this->getName();
-		$this->registerFieldNameForFormTokenGeneration($name);
+        $this->tag->addAttribute('type', 'hidden');
+        $this->tag->addAttribute('name', $name);
+        $this->tag->addAttribute('value', $this->getValueAttribute());
 
-		$this->tag->addAttribute('type', 'hidden');
-		$this->tag->addAttribute('name', $name);
-		$this->tag->addAttribute('value', $this->getValueAttribute());
-
-		return $this->tag->render();
-	}
-
+        return $this->tag->render();
+    }
 }

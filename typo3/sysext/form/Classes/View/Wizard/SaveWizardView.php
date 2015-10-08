@@ -17,49 +17,50 @@ namespace TYPO3\CMS\Form\View\Wizard;
 /**
  * The form wizard save view
  */
-class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
+class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
+{
+    /**
+     * The main render method
+     *
+     * Gathers all content and echos it to the screen
+     *
+     * @return void
+     */
+    public function render()
+    {
+        $success = false;
+        // Check if the referenced record is available
+        $this->recordIsAvailable = $this->repository->hasRecord();
+        if ($this->recordIsAvailable) {
+            // Save the data
+            $success = $this->repository->save();
+        }
+        $this->headerOutput($success);
+    }
 
-	/**
-	 * The main render method
-	 *
-	 * Gathers all content and echos it to the screen
-	 *
-	 * @return void
-	 */
-	public function render() {
-		$success = FALSE;
-		// Check if the referenced record is available
-		$this->recordIsAvailable = $this->repository->hasRecord();
-		if ($this->recordIsAvailable) {
-			// Save the data
-			$success = $this->repository->save();
-		}
-		$this->headerOutput($success);
-	}
-
-	/**
-	 * Construct the response header
-	 *
-	 * @param string $success JSON string
-	 * @return void
-	 */
-	protected function headerOutput($success) {
-		if (!$success) {
-			header('HTTP/1.1 500 Internal Server Error');
-			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_failed', FALSE));
-		} else {
-			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_saved', FALSE));
-		}
-		$json = json_encode($jsonArray);
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Pragma: no-cache');
-		header('Content-Length: ' . strlen($json));
-		header('Content-Type: application/json; charset=utf-8');
-		header('Content-Transfer-Encoding: 8bit');
-		echo $json;
-		die;
-	}
-
+    /**
+     * Construct the response header
+     *
+     * @param string $success JSON string
+     * @return void
+     */
+    protected function headerOutput($success)
+    {
+        if (!$success) {
+            header('HTTP/1.1 500 Internal Server Error');
+            $jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_failed', false));
+        } else {
+            $jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_saved', false));
+        }
+        $json = json_encode($jsonArray);
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . strlen($json));
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Transfer-Encoding: 8bit');
+        echo $json;
+        die;
+    }
 }

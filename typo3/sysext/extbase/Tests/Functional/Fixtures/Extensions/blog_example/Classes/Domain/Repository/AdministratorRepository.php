@@ -17,6 +17,6 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
 /**
  * A repository for administrators
  */
-class AdministratorRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
-
+class AdministratorRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+{
 }

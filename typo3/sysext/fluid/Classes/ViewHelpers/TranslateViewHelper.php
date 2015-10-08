@@ -71,85 +71,87 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * value of id "key1" in the current website language
  * </output>
  */
-class TranslateViewHelper extends AbstractViewHelper implements CompilableInterface {
+class TranslateViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render translation
+     *
+     * @param string $key Translation Key
+     * @param string $id Translation Key compatible to TYPO3 Flow
+     * @param string $default If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default
+     * @param bool $htmlEscape TRUE if the result should be htmlescaped. This won't have an effect for the default value
+     * @param array $arguments Arguments to be replaced in the resulting string
+     * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
+     * @return string The translated key or tag body if key doesn't exist
+     */
+    public function render($key = null, $id = null, $default = null, $htmlEscape = null, array $arguments = null, $extensionName = null)
+    {
+        return static::renderStatic(
+            array(
+                'key' => $key,
+                'id' => $id,
+                'default' => $default,
+                'htmlEscape' => $htmlEscape,
+                'arguments' => $arguments,
+                'extensionName' => $extensionName,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render translation
-	 *
-	 * @param string $key Translation Key
-	 * @param string $id Translation Key compatible to TYPO3 Flow
-	 * @param string $default If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default
-	 * @param bool $htmlEscape TRUE if the result should be htmlescaped. This won't have an effect for the default value
-	 * @param array $arguments Arguments to be replaced in the resulting string
-	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
-	 * @return string The translated key or tag body if key doesn't exist
-	 */
-	public function render($key = NULL, $id = NULL, $default = NULL, $htmlEscape = NULL, array $arguments = NULL, $extensionName = NULL) {
-		return static::renderStatic(
-			array(
-				'key' => $key,
-				'id' => $id,
-				'default' => $default,
-				'htmlEscape' => $htmlEscape,
-				'arguments' => $arguments,
-				'extensionName' => $extensionName,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Return array element by key.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @throws InvalidVariableException
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $key = $arguments['key'];
+        $id = $arguments['id'];
+        $default = $arguments['default'];
+        $htmlEscape = $arguments['htmlEscape'];
+        $extensionName = $arguments['extensionName'];
+        $arguments = $arguments['arguments'];
 
-	/**
-	 * Return array element by key.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @throws InvalidVariableException
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$key = $arguments['key'];
-		$id = $arguments['id'];
-		$default = $arguments['default'];
-		$htmlEscape = $arguments['htmlEscape'];
-		$extensionName = $arguments['extensionName'];
-		$arguments = $arguments['arguments'];
+        // Wrapper including a compatibility layer for TYPO3 Flow Translation
+        if ($id === null) {
+            $id = $key;
+        }
 
-		// Wrapper including a compatibility layer for TYPO3 Flow Translation
-		if ($id === NULL) {
-			$id = $key;
-		}
+        if ((string)$id === '') {
+            throw new InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);
+        }
 
-		if ((string)$id === '') {
-			throw new InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);
-		}
+        $request = $renderingContext->getControllerContext()->getRequest();
+        $extensionName = $extensionName === null ? $request->getControllerExtensionName() : $extensionName;
+        $value = static::translate($id, $extensionName, $arguments);
+        if ($value === null) {
+            $value = $default !== null ? $default : $renderChildrenClosure();
+            if (!empty($arguments)) {
+                $value = vsprintf($value, $arguments);
+            }
+        } elseif ($htmlEscape) {
+            $value = htmlspecialchars($value);
+        }
+        return $value;
+    }
 
-		$request = $renderingContext->getControllerContext()->getRequest();
-		$extensionName = $extensionName === NULL ? $request->getControllerExtensionName() : $extensionName;
-		$value = static::translate($id, $extensionName, $arguments);
-		if ($value === NULL) {
-			$value = $default !== NULL ? $default : $renderChildrenClosure();
-			if (!empty($arguments)) {
-				$value = vsprintf($value, $arguments);
-			}
-		} elseif ($htmlEscape) {
-			$value = htmlspecialchars($value);
-		}
-		return $value;
-	}
-
-	/**
-	 * Wrapper call to static LocalizationUtility
-	 *
-	 * @param string $id Translation Key compatible to TYPO3 Flow
-	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
-	 * @param array $arguments Arguments to be replaced in the resulting string
-	 *
-	 * @return NULL|string
-	 */
-	static protected function translate($id, $extensionName, $arguments) {
-		return LocalizationUtility::translate($id, $extensionName, $arguments);
-	}
-
+    /**
+     * Wrapper call to static LocalizationUtility
+     *
+     * @param string $id Translation Key compatible to TYPO3 Flow
+     * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
+     * @param array $arguments Arguments to be replaced in the resulting string
+     *
+     * @return NULL|string
+     */
+    protected static function translate($id, $extensionName, $arguments)
+    {
+        return LocalizationUtility::translate($id, $extensionName, $arguments);
+    }
 }

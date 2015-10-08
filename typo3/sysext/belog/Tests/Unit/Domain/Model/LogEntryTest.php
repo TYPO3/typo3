@@ -18,55 +18,60 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
  * Test case
  *
  */
-class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry
-	 */
-	protected $subject = NULL;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
-	}
+    /**
+     * @test
+     */
+    public function getLogDataInitiallyReturnsEmptyArray()
+    {
+        $this->assertSame(array(), $this->subject->getLogData());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLogDataInitiallyReturnsEmptyArray() {
-		$this->assertSame(array(), $this->subject->getLogData());
-	}
+    /**
+     * @test
+     */
+    public function getLogDataForEmptyStringLogDataReturnsEmptyArray()
+    {
+        $this->subject->setLogData('');
+        $this->assertSame(array(), $this->subject->getLogData());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLogDataForEmptyStringLogDataReturnsEmptyArray() {
-		$this->subject->setLogData('');
-		$this->assertSame(array(), $this->subject->getLogData());
-	}
+    /**
+     * @test
+     */
+    public function getLogDataForGarbageStringLogDataReturnsEmptyArray()
+    {
+        $this->subject->setLogData('foo bar');
+        $this->assertSame(array(), $this->subject->getLogData());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLogDataForGarbageStringLogDataReturnsEmptyArray() {
-		$this->subject->setLogData('foo bar');
-		$this->assertSame(array(), $this->subject->getLogData());
-	}
+    /**
+     * @test
+     */
+    public function getLogDataForSerializedArrayReturnsThatArray()
+    {
+        $logData = array('foo', 'bar');
+        $this->subject->setLogData(serialize($logData));
+        $this->assertSame($logData, $this->subject->getLogData());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLogDataForSerializedArrayReturnsThatArray() {
-		$logData = array('foo', 'bar');
-		$this->subject->setLogData(serialize($logData));
-		$this->assertSame($logData, $this->subject->getLogData());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getLogDataForSerializedObjectReturnsEmptyArray() {
-		$this->subject->setLogData(new \stdClass());
-		$this->assertSame(array(), $this->subject->getLogData());
-	}
-
+    /**
+     * @test
+     */
+    public function getLogDataForSerializedObjectReturnsEmptyArray()
+    {
+        $this->subject->setLogData(new \stdClass());
+        $this->assertSame(array(), $this->subject->getLogData());
+    }
 }

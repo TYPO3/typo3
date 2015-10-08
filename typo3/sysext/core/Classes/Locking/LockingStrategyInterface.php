@@ -21,68 +21,67 @@ use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 /**
  * Interface for locking methods
  */
-interface LockingStrategyInterface {
+interface LockingStrategyInterface
+{
+    /**
+     * Exclusive locks can be acquired
+     */
+    const LOCK_CAPABILITY_EXCLUSIVE = 1;
 
-	/**
-	 * Exclusive locks can be acquired
-	 */
-	const LOCK_CAPABILITY_EXCLUSIVE = 1;
+    /**
+     * Shared locks can be acquired
+     */
+    const LOCK_CAPABILITY_SHARED = 2;
 
-	/**
-	 * Shared locks can be acquired
-	 */
-	const LOCK_CAPABILITY_SHARED = 2;
+    /**
+     * Do not block when acquiring the lock
+     */
+    const LOCK_CAPABILITY_NOBLOCK = 4;
 
-	/**
-	 * Do not block when acquiring the lock
-	 */
-	const LOCK_CAPABILITY_NOBLOCK = 4;
+    /**
+     * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR
+     */
+    public static function getCapabilities();
 
-	/**
-	 * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR
-	 */
-	static public function getCapabilities();
+    /**
+     * @return int Returns a priority for the method. 0 to 100, 100 is highest
+     */
+    public static function getPriority();
 
-	/**
-	 * @return int Returns a priority for the method. 0 to 100, 100 is highest
-	 */
-	static public function getPriority();
+    /**
+     * @param string $subject ID to identify this lock in the system
+     * @throws LockCreateException if the lock could not be created
+     */
+    public function __construct($subject);
 
-	/**
-	 * @param string $subject ID to identify this lock in the system
-	 * @throws LockCreateException if the lock could not be created
-	 */
-	public function __construct($subject);
+    /**
+     * Try to acquire a lock
+     *
+     * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or LOCK_CAPABILITY_SHARED
+     * @return bool Returns TRUE if the lock was acquired successfully
+     * @throws LockAcquireException if the lock could not be acquired
+     * @throws LockAcquireWouldBlockException if the acquire would have blocked and NOBLOCK was set
+     */
+    public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE);
 
-	/**
-	 * Try to acquire a lock
-	 *
-	 * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or LOCK_CAPABILITY_SHARED
-	 * @return bool Returns TRUE if the lock was acquired successfully
-	 * @throws LockAcquireException if the lock could not be acquired
-	 * @throws LockAcquireWouldBlockException if the acquire would have blocked and NOBLOCK was set
-	 */
-	public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE);
+    /**
+     * Release the lock
+     *
+     * @return bool Returns TRUE on success or FALSE on failure
+     */
+    public function release();
 
-	/**
-	 * Release the lock
-	 *
-	 * @return bool Returns TRUE on success or FALSE on failure
-	 */
-	public function release();
+    /**
+     * Destroys the resource associated with the lock
+     *
+     * @return void
+     */
+    public function destroy();
 
-	/**
-	 * Destroys the resource associated with the lock
-	 *
-	 * @return void
-	 */
-	public function destroy();
-
-	/**
-	 * Get status of this lock
-	 *
-	 * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
-	 */
-	public function isAcquired();
-
+    /**
+     * Get status of this lock
+     *
+     * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
+     */
+    public function isAcquired();
 }

@@ -22,6 +22,6 @@ namespace TYPO3\CMS\Core\Collection;
  * common and generic way, while the class manages the storage
  * in an appropriate way itself
  */
-interface CollectionInterface extends \Iterator, \Serializable, \Countable {
-
+interface CollectionInterface extends \Iterator, \Serializable, \Countable
+{
 }

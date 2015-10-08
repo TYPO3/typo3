@@ -16,12 +16,12 @@
 /**
  * MockCCommandController Fixture
  */
-class Tx_Extbase_Command_MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
-
-	/**
-	 * funcCCommand
-	 */
-	public function funcCCommand() {
-	}
-
+class Tx_Extbase_Command_MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
+    /**
+     * funcCCommand
+     */
+    public function funcCCommand()
+    {
+    }
 }

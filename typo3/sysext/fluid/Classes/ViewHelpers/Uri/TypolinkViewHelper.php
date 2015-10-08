@@ -46,72 +46,74 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  * </output>
  *
  */
-class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterface {
+class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render
+     *
+     * @param string $parameter stdWrap.typolink style parameter string
+     * @param string $additionalParams
+     *
+     * @return string
+     */
+    public function render($parameter, $additionalParams = '')
+    {
+        return static::renderStatic(
+            array(
+                'parameter' => $parameter,
+                'additionalParams' => $additionalParams
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render
-	 *
-	 * @param string $parameter stdWrap.typolink style parameter string
-	 * @param string $additionalParams
-	 *
-	 * @return string
-	 */
-	public function render($parameter, $additionalParams = '') {
-		return static::renderStatic(
-			array(
-				'parameter' => $parameter,
-				'additionalParams' => $additionalParams
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $parameter = $arguments['parameter'];
+        $additionalParams = $arguments['additionalParams'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$parameter = $arguments['parameter'];
-		$additionalParams = $arguments['additionalParams'];
+        $content = '';
+        if ($parameter) {
+            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $content = $contentObject->typoLink_URL(
+                array(
+                    'parameter' => self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams),
+                )
+            );
+        }
 
-		$content = '';
-		if ($parameter) {
-			$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-			$content = $contentObject->typoLink_URL(
-				array(
-					'parameter' => self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams),
-				)
-			);
-		}
+        return $content;
+    }
 
-		return $content;
-	}
+    /**
+     * Transforms ViewHelper arguments to typo3link.parameters.typoscript option as array.
+     *
+     * @param string $parameter Example: 19 _blank - "testtitle with whitespace" &X=y
+     * @param string $additionalParameters
+     *
+     * @return string The final TypoLink string
+     */
+    protected static function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '')
+    {
+        $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+        $typolinkConfiguration = $typoLinkCodec->decode($parameter);
+        if (empty($typolinkConfiguration)) {
+            return $typolinkConfiguration;
+        }
 
-	/**
-	 * Transforms ViewHelper arguments to typo3link.parameters.typoscript option as array.
-	 *
-	 * @param string $parameter Example: 19 _blank - "testtitle with whitespace" &X=y
-	 * @param string $additionalParameters
-	 *
-	 * @return string The final TypoLink string
-	 */
-	static protected function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '') {
-		$typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-		$typolinkConfiguration = $typoLinkCodec->decode($parameter);
-		if (empty($typolinkConfiguration)) {
-			return $typolinkConfiguration;
-		}
+        // Combine additionalParams
+        if ($additionalParameters) {
+            $typolinkConfiguration['additionalParams'] .= $additionalParameters;
+        }
 
-		// Combine additionalParams
-		if ($additionalParameters) {
-			$typolinkConfiguration['additionalParams'] .= $additionalParameters;
-		}
-
-		return $typoLinkCodec->encode($typolinkConfiguration);
-	}
-
+        return $typoLinkCodec->encode($typolinkConfiguration);
+    }
 }

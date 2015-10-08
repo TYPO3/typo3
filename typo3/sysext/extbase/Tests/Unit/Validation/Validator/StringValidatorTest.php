@@ -26,42 +26,45 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
+class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+{
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\StringValidator::class;
 
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\StringValidator::class;
+    public function setup()
+    {
+        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+    }
 
-	public function setup() {
-		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
-	}
+    /**
+     * @test
+     */
+    public function stringValidatorShouldValidateString()
+    {
+        $this->assertFalse($this->validator->validate('Hello World')->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function stringValidatorShouldValidateString() {
-		$this->assertFalse($this->validator->validate('Hello World')->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function stringValidatorShouldReturnErrorIfNumberIsGiven()
+    {
+        $this->assertTrue($this->validator->validate(42)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function stringValidatorShouldReturnErrorIfNumberIsGiven() {
-		$this->assertTrue($this->validator->validate(42)->hasErrors());
-	}
-
-	/**
-	 * @test
-	 */
-	public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven() {
-		$className = $this->getUniqueId('TestClass');
-		eval('
+    /**
+     * @test
+     */
+    public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven()
+    {
+        $className = $this->getUniqueId('TestClass');
+        eval('
 			class ' . $className . ' {
 				public function __toString() {
 					return "ASDF";
 				}
 			}
 		');
-		$object = new $className();
-		$this->assertTrue($this->validator->validate($object)->hasErrors());
-	}
-
+        $object = new $className();
+        $this->assertTrue($this->validator->validate($object)->hasErrors());
+    }
 }

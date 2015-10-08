@@ -49,54 +49,55 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  * CSH button as known from the TYPO3 backend with some custom settings.
  * </output>
  */
-class CshViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
+class CshViewHelper extends AbstractBackendViewHelper implements CompilableInterface
+{
+    /**
+     * Render context sensitive help (CSH) for the given table
+     *
+     * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used
+     * @param string $field Field name (CSH locallang main key)
+     * @param bool $iconOnly Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     * @param string $styleAttributes Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     * @return string the rendered CSH icon
+     */
+    public function render($table = null, $field = '', $iconOnly = false, $styleAttributes = '')
+    {
+        if ($iconOnly) {
+            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                'The option iconOnly has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
+            );
+        }
+        if ($styleAttributes) {
+            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                'The option styleAttributes has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
+            );
+        }
+        return static::renderStatic(
+            array(
+                'table' => $table,
+                'field' => $field,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render context sensitive help (CSH) for the given table
-	 *
-	 * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used
-	 * @param string $field Field name (CSH locallang main key)
-	 * @param bool $iconOnly Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 * @param string $styleAttributes Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 * @return string the rendered CSH icon
-	 */
-	public function render($table = NULL, $field = '', $iconOnly = FALSE, $styleAttributes = '') {
-		if ($iconOnly) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-				'The option iconOnly has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
-			);
-		}
-		if ($styleAttributes) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-				'The option styleAttributes has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
-			);
-		}
-		return static::renderStatic(
-			array(
-				'table' => $table,
-				'field' => $field,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $table = $arguments['table'];
+        $field = $arguments['field'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$table = $arguments['table'];
-		$field = $arguments['field'];
-
-		if ($table === NULL) {
-			$currentRequest = $renderingContext->getControllerContext()->getRequest();
-			$moduleName = $currentRequest->getPluginName();
-			$table = '_MOD_' . $moduleName;
-		}
-		return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
-	}
-
+        if ($table === null) {
+            $currentRequest = $renderingContext->getControllerContext()->getRequest();
+            $moduleName = $currentRequest->getPluginName();
+            $table = '_MOD_' . $moduleName;
+        }
+        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
+    }
 }

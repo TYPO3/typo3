@@ -14,53 +14,55 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class GreaterThanValidator extends AbstractValidator {
+class GreaterThanValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'element' => array('', 'The name of the element', 'string', true),
+        'errorMessage' => array('', 'The error message', 'array', true),
+        'minimum' => array('', 'The minimum value', 'integer', true),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'element' => array('', 'The name of the element', 'string', TRUE),
-		'errorMessage' => array('', 'The error message', 'array', TRUE),
-		'minimum' => array('', 'The minimum value', 'integer', TRUE),
-	);
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_greaterthan';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_greaterthan';
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if ((int)$value <= (int)$this->options['minimum']) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1442002213
+            );
+        }
+    }
 
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		if ((int)$value <= (int)$this->options['minimum']) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1442002213
-			);
-		}
-	}
-
-	/**
-	 * Substitute makers in the message text
-	 * Overrides the abstract
-	 *
-	 * @param string $message Message text with markers
-	 * @return string Message text with substituted markers
-	 */
-	public function substituteMarkers($message) {
-		$message = str_replace('%minimum', $this->options['minimum'], $message);
-		return $message;
-	}
+    /**
+     * Substitute makers in the message text
+     * Overrides the abstract
+     *
+     * @param string $message Message text with markers
+     * @return string Message text with substituted markers
+     */
+    public function substituteMarkers($message)
+    {
+        $message = str_replace('%minimum', $this->options['minimum'], $message);
+        return $message;
+    }
 }

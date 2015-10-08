@@ -18,37 +18,38 @@ namespace TYPO3\CMS\Core\Resource;
  * ResourceInterface
  *
  */
-interface ResourceInterface {
-	/**
-	 * Returns the identifier of this file
-	 *
-	 * @return string
-	 */
-	public function getIdentifier();
+interface ResourceInterface
+{
+    /**
+     * Returns the identifier of this file
+     *
+     * @return string
+     */
+    public function getIdentifier();
 
-	/**
-	 * Returns the name of this file
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Returns the name of this file
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Get the storage this file is located in
-	 *
-	 * @return ResourceStorage
-	 */
-	public function getStorage();
+    /**
+     * Get the storage this file is located in
+     *
+     * @return ResourceStorage
+     */
+    public function getStorage();
 
-	/**
-	 * Get hashed identifier
-	 *
-	 * @return string
-	 */
-	public function getHashedIdentifier();
+    /**
+     * Get hashed identifier
+     *
+     * @return string
+     */
+    public function getHashedIdentifier();
 
-	/**
-	 * @return FolderInterface
-	 */
-	public function getParentFolder();
+    /**
+     * @return FolderInterface
+     */
+    public function getParentFolder();
 }

@@ -17,24 +17,24 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 /**
  * Controller for configuration related actions.
  */
-class UpdateScriptController extends AbstractController {
+class UpdateScriptController extends AbstractController
+{
+    /**
+     * Show the content of the update script (if any).
+     *
+     * @param string $extensionKey Extension key
+     * @return void
+     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     */
+    public function showAction($extensionKey)
+    {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Request for update script', 'extensionmanager', 0, $extensionKey);
 
-	/**
-	 * Show the content of the update script (if any).
-	 *
-	 * @param string $extensionKey Extension key
-	 * @return void
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 */
-	public function showAction($extensionKey) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Request for update script', 'extensionmanager', 0, $extensionKey);
-
-		/** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
-		$updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
-		$updateScriptResult = $updateScriptUtility->executeUpdateIfNeeded($extensionKey);
-		$this->view
-			->assign('updateScriptResult', $updateScriptResult)
-			->assign('extensionKey', $extensionKey);
-	}
-
+        /** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
+        $updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
+        $updateScriptResult = $updateScriptUtility->executeUpdateIfNeeded($extensionKey);
+        $this->view
+            ->assign('updateScriptResult', $updateScriptResult)
+            ->assign('extensionKey', $extensionKey);
+    }
 }

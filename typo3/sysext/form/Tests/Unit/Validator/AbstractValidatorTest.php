@@ -19,24 +19,24 @@ use TYPO3\CMS\Form\Domain\Validator\AbstractValidator;
 /**
  * Test case
  */
-abstract class AbstractValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+abstract class AbstractValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Must be filled with subject class name
+     * in specific test implementation.
+     *
+     * @var string
+     */
+    protected $subjectClassName = null;
 
-	/**
-	 * Must be filled with subject class name
-	 * in specific test implementation.
-	 *
-	 * @var string
-	 */
-	protected $subjectClassName = NULL;
-
-	/**
-	 * @param array $options
-	 * @return AbstractValidator|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected function createSubject(array $options) {
-		$subject = $this->getAccessibleMock($this->subjectClassName, array('renderMessage'), array($options));
-		$subject->method('renderMessage')->will($this->returnValue('error'));
-		return $subject;
-	}
-
+    /**
+     * @param array $options
+     * @return AbstractValidator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createSubject(array $options)
+    {
+        $subject = $this->getAccessibleMock($this->subjectClassName, array('renderMessage'), array($options));
+        $subject->method('renderMessage')->will($this->returnValue('error'));
+        return $subject;
+    }
 }

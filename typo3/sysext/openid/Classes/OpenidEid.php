@@ -21,30 +21,30 @@ use TYPO3\CMS\Frontend\Utility\EidUtility;
 /**
  * This class is the OpenID return script for the TYPO3 Frontend.
  */
-class OpenidEid {
+class OpenidEid
+{
+    /**
+     * Processes eID request.
+     *
+     * @return void
+     */
+    public function main()
+    {
+        // Due to the nature of OpenID (redrections, etc) we need to force user
+        // session fetching if there is no session around. This ensures that
+        // our service is called even if there is no login data in the request.
+        // Inside the service we will process OpenID response and authenticate
+        // the user.
+        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = true;
+        // Initialize Frontend user
+        EidUtility::initFeUser();
+        // Redirect to the original location in any case (authenticated or not)
+        @ob_end_clean();
 
-	/**
-	 * Processes eID request.
-	 *
-	 * @return void
-	 */
-	public function main() {
-		// Due to the nature of OpenID (redrections, etc) we need to force user
-		// session fetching if there is no session around. This ensures that
-		// our service is called even if there is no login data in the request.
-		// Inside the service we will process OpenID response and authenticate
-		// the user.
-		$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = TRUE;
-		// Initialize Frontend user
-		EidUtility::initFeUser();
-		// Redirect to the original location in any case (authenticated or not)
-		@ob_end_clean();
-
-		$location = GeneralUtility::_GP('tx_openid_location');
-		$signature = GeneralUtility::hmac($location, 'openid');
-		if ($signature === GeneralUtility::_GP('tx_openid_location_signature')) {
-			HttpUtility::redirect($location, HttpUtility::HTTP_STATUS_303);
-		}
-	}
-
+        $location = GeneralUtility::_GP('tx_openid_location');
+        $signature = GeneralUtility::hmac($location, 'openid');
+        if ($signature === GeneralUtility::_GP('tx_openid_location_signature')) {
+            HttpUtility::redirect($location, HttpUtility::HTTP_STATUS_303);
+        }
+    }
 }

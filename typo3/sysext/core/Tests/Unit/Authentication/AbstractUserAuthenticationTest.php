@@ -18,21 +18,21 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * Testcase for class \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
  *
  */
-class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven()
+    {
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('cleanIntList'));
+        $GLOBALS['TYPO3_DB']->expects($this->never())->method('cleanIntList');
 
-	/**
-	 * @test
-	 */
-	public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('cleanIntList'));
-		$GLOBALS['TYPO3_DB']->expects($this->never())->method('cleanIntList');
-
-		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
-		$mock = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, array('dummy'));
-		$mock->checkPid = TRUE;
-		$mock->checkPid_value = NULL;
-		$result = $mock->getAuthInfoArray();
-		$this->assertEquals('', $result['db_user']['checkPidList']);
-	}
-
+        /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
+        $mock = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, array('dummy'));
+        $mock->checkPid = true;
+        $mock->checkPid_value = null;
+        $result = $mock->getAuthInfoArray();
+        $this->assertEquals('', $result['db_user']['checkPidList']);
+    }
 }

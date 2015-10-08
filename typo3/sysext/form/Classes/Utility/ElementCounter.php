@@ -14,21 +14,21 @@ namespace TYPO3\CMS\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface {
+class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var integer
+     */
+    protected $elementCounter = 0;
 
-	/**
-	 * @var integer
-	 */
-	protected $elementCounter = 0;
-
-	/**
-	 * Raise the element counter by one
-	 *
-	 * @return integer
-	 */
-	public function getElementId() {
-		$this->elementCounter++;
-		return $this->elementCounter;
-	}
-
+    /**
+     * Raise the element counter by one
+     *
+     * @return integer
+     */
+    public function getElementId()
+    {
+        $this->elementCounter++;
+        return $this->elementCounter;
+    }
 }

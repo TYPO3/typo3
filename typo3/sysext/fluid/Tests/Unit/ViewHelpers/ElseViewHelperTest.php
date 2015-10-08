@@ -16,26 +16,27 @@ use TYPO3\CMS\Fluid\ViewHelpers\ElseViewHelper;
 /**
  * Test case
  */
-class ElseViewHelperTest extends ViewHelperBaseTestcase {
+class ElseViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var ElseViewHelper|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $subject;
 
-	/**
-	 * @var ElseViewHelper|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->subject = $this->getMock(ElseViewHelper::class, array('renderChildren'));
+        $this->injectDependenciesIntoViewHelper($this->subject);
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->subject = $this->getMock(ElseViewHelper::class, array('renderChildren'));
-		$this->injectDependenciesIntoViewHelper($this->subject);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderRendersChildren() {
-		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		$actualResult = $this->subject->render();
-		$this->assertEquals('foo', $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function renderRendersChildren()
+    {
+        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
+        $actualResult = $this->subject->render();
+        $this->assertEquals('foo', $actualResult);
+    }
 }

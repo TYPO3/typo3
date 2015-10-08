@@ -48,47 +48,48 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * localized selectbox
  * <output>
  */
-class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
+class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'select';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'select';
+    /**
+     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+     *
+     * @var array
+     */
+    protected $childNodes = array();
 
-	/**
-	 * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
-	 *
-	 * @var array
-	 */
-	protected $childNodes = array();
+    /**
+     * Setter for ChildNodes - as defined in ChildNodeAccessInterface
+     *
+     * @param array $childNodes Child nodes of this syntax tree node
+     * @return void
+     * @api
+     */
+    public function setChildNodes(array $childNodes)
+    {
+        $this->childNodes = $childNodes;
+    }
 
-	/**
-	 * Setter for ChildNodes - as defined in ChildNodeAccessInterface
-	 *
-	 * @param array $childNodes Child nodes of this syntax tree node
-	 * @return void
-	 * @api
-	 */
-	public function setChildNodes(array $childNodes) {
-		$this->childNodes = $childNodes;
-	}
-
-	/**
-	 * Render FunctionMenu
-	 *
-	 * @param string $defaultController
-	 * @return string
-	 */
-	public function render($defaultController = NULL) {
-		$this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
-		$options = '';
-		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
-				$options .= $childNode->evaluate($this->renderingContext);
-			}
-		}
-		$this->tag->setContent($options);
-		return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
-	}
-
+    /**
+     * Render FunctionMenu
+     *
+     * @param string $defaultController
+     * @return string
+     */
+    public function render($defaultController = null)
+    {
+        $this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
+        $options = '';
+        foreach ($this->childNodes as $childNode) {
+            if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
+                $options .= $childNode->evaluate($this->renderingContext);
+            }
+        }
+        $this->tag->setContent($options);
+        return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
+    }
 }

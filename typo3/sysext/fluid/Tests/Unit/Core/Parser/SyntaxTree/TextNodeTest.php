@@ -14,23 +14,24 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
 /**
  * Test case
  */
-class TextNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TextNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function renderReturnsSameStringAsGivenInConstructor()
+    {
+        $string = 'I can work quite effectively in a train!';
+        $node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode($string);
+        $this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsSameStringAsGivenInConstructor() {
-		$string = 'I can work quite effectively in a train!';
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode($string);
-		$this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
-	}
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
-	 */
-	public function constructorThrowsExceptionIfNoStringGiven() {
-		new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(123);
-	}
-
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
+     */
+    public function constructorThrowsExceptionIfNoStringGiven()
+    {
+        new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(123);
+    }
 }

@@ -19,74 +19,78 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 /**
  * Enable fields test
  */
-class EnableFieldsTest extends AbstractDataHandlerActionTestCase {
+class EnableFieldsTest extends AbstractDataHandlerActionTestCase
+{
+    const TABLE_Blog = 'tx_blogexample_domain_model_blog';
 
-	const TABLE_Blog = 'tx_blogexample_domain_model_blog';
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array('sv', 'extbase', 'fluid');
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array('sv', 'extbase', 'fluid');
+    /**
+     * Sets up this test suite.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Sets up this test suite.
-	 */
-	protected function setUp() {
-		parent::setUp();
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs-with-fe_groups.xml');
 
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs-with-fe_groups.xml');
+        $this->setUpFrontendRootPage(1, array('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.ts'));
+    }
 
-		$this->setUpFrontendRootPage(1, array('typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.ts'));
-	}
+    /**
+     * @test
+     */
+    public function protectedRecordsNotFoundIfNoUserLoggedIn()
+    {
+        $responseSections = $this->getFrontendResponse(1)->getResponseSections('Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function protectedRecordsNotFoundIfNoUserLoggedIn() {
-		$responseSections = $this->getFrontendResponse(1)->getResponseSections('Extbase:list()');
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
-	}
+    /**
+     * @test
+     */
+    public function onlyReturnProtectedRecordsForTheFirstUserGroup()
+    {
+        $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 1)->getResponseSections('Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function onlyReturnProtectedRecordsForTheFirstUserGroup() {
-		$responseSections = $this->getFrontendResponse(1, 0, 0, 0, TRUE, 1)->getResponseSections('Extbase:list()');
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
-	}
+    /**
+     * @test
+     */
+    public function onlyReturnProtectedRecordsForTheSecondUserGroup()
+    {
+        $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 2)->getResponseSections('Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function onlyReturnProtectedRecordsForTheSecondUserGroup() {
-		$responseSections = $this->getFrontendResponse(1, 0, 0, 0, TRUE, 2)->getResponseSections('Extbase:list()');
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
-	}
+    /**
+     * @test
+     */
+    public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned()
+    {
+        // first request to fill the query cache
+        $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 1)->getResponseSections('Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
 
-	/**
-	 * @test
-	 */
-	public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned() {
-		// first request to fill the query cache
-		$responseSections = $this->getFrontendResponse(1, 0, 0, 0, TRUE, 1)->getResponseSections('Extbase:list()');
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
-
-		// second request with other frontenduser
-		$responseSections = $this->getFrontendResponse(1, 0, 0, 0, TRUE, 2)->getResponseSections('Extbase:list()');
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
-	}
-
+        // second request with other frontenduser
+        $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 2)->getResponseSections('Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
+    }
 }

@@ -23,76 +23,81 @@ namespace TYPO3\CMS\Install\Controller;
  * This is a classic extbase module that does not interfere with the other code
  * within the install tool.
  */
-class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
+    /**
+     * @var \TYPO3\CMS\Install\Service\EnableFileService
+     */
+    protected $enableFileService;
 
-	/**
-	 * @var \TYPO3\CMS\Install\Service\EnableFileService
-	 */
-	protected $enableFileService;
+    /**
+     * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
+     */
+    protected $formProtection;
 
-	/**
-	 * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
-	 */
-	protected $formProtection;
+    /**
+     * @param \TYPO3\CMS\Install\Service\EnableFileService $enableFileService
+     */
+    public function injectEnableFileService(\TYPO3\CMS\Install\Service\EnableFileService $enableFileService)
+    {
+        $this->enableFileService = $enableFileService;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Install\Service\EnableFileService $enableFileService
-	 */
-	public function injectEnableFileService(\TYPO3\CMS\Install\Service\EnableFileService $enableFileService) {
-		$this->enableFileService = $enableFileService;
-	}
+    /**
+     * Set formprotection property
+     */
+    public function initializeAction()
+    {
+        $this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+    }
 
-	/**
-	 * Set formprotection property
-	 */
-	public function initializeAction() {
-		$this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-	}
+    /**
+     * Index action shows install tool / step installer or redirect to action to enable install tool
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        if ($this->enableFileService->checkInstallToolEnableFile()) {
+            $this->redirect('sysext/install/Start/Install.php?install[context]=backend');
+        } else {
+            $this->forward('showEnableInstallToolButton');
+        }
+    }
 
-	/**
-	 * Index action shows install tool / step installer or redirect to action to enable install tool
-	 *
-	 * @return void
-	 */
-	public function indexAction() {
-		if ($this->enableFileService->checkInstallToolEnableFile()) {
-			$this->redirect('sysext/install/Start/Install.php?install[context]=backend');
-		} else {
-			$this->forward('showEnableInstallToolButton');
-		}
-	}
+    /**
+     * Show enable install tool
+     *
+     * @return void
+     */
+    public function showEnableInstallToolButtonAction()
+    {
+        $token = $this->formProtection->generateToken('installTool');
+        $this->view->assign('installToolEnableToken', $token);
+    }
 
-	/**
-	 * Show enable install tool
-	 *
-	 * @return void
-	 */
-	public function showEnableInstallToolButtonAction() {
-		$token = $this->formProtection->generateToken('installTool');
-		$this->view->assign('installToolEnableToken', $token);
-	}
+    /**
+     * Enable the install tool
+     *
+     * @param string $installToolEnableToken
+     * @throws \RuntimeException
+     */
+    public function enableInstallToolAction($installToolEnableToken)
+    {
+        if (!$this->formProtection->validateToken($installToolEnableToken, 'installTool')) {
+            throw new \RuntimeException('Given form token was not valid', 1369161225);
+        }
+        $this->enableFileService->createInstallToolEnableFile();
+        $this->forward('index');
+    }
 
-	/**
-	 * Enable the install tool
-	 *
-	 * @param string $installToolEnableToken
-	 * @throws \RuntimeException
-	 */
-	public function enableInstallToolAction($installToolEnableToken) {
-		if (!$this->formProtection->validateToken($installToolEnableToken, 'installTool')) {
-			throw new \RuntimeException('Given form token was not valid', 1369161225);
-		}
-		$this->enableFileService->createInstallToolEnableFile();
-		$this->forward('index');
-	}
-
-	/**
-	 * Redirect to specified URI
-	 *
-	 * @param string $uri
-	 */
-	protected function redirect($uri) {
-		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($uri);
-	}
-
+    /**
+     * Redirect to specified URI
+     *
+     * @param string $uri
+     */
+    protected function redirect($uri)
+    {
+        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($uri);
+    }
 }

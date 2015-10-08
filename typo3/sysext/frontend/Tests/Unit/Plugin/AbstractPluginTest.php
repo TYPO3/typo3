@@ -19,119 +19,121 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 /**
  * Testcase for TYPO3\CMS\Frontend\Plugin\AbstractPlugin
  */
-class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+     */
+    protected $abstractPlugin;
 
-	/**
-	 * @var \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
-	 */
-	protected $abstractPlugin;
+    /**
+     * @var array
+     */
+    protected $defaultPiVars;
 
-	/**
-	 * @var array
-	 */
-	protected $defaultPiVars;
+    /**
+     * Sets up this testcase
+     */
+    protected function setUp()
+    {
+        parent::setUp();
 
-	/**
-	 * Sets up this testcase
-	 */
-	protected function setUp() {
-		parent::setUp();
+        // Allow objects until 100 levels deep when executing the stdWrap
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->cObjectDepthCounter = 100;
 
-		// Allow objects until 100 levels deep when executing the stdWrap
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
+        $this->abstractPlugin = new \TYPO3\CMS\Frontend\Plugin\AbstractPlugin();
+        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer->setContentObjectClassMap(array(
+            'TEXT' => TextContentObject::class,
+        ));
+        $this->abstractPlugin->cObj = $contentObjectRenderer;
+        $this->defaultPiVars = $this->abstractPlugin->piVars;
+    }
 
-		$this->abstractPlugin = new \TYPO3\CMS\Frontend\Plugin\AbstractPlugin();
-		$contentObjectRenderer = new ContentObjectRenderer();
-		$contentObjectRenderer->setContentObjectClassMap(array(
-			'TEXT' => TextContentObject::class,
-		));
-		$this->abstractPlugin->cObj = $contentObjectRenderer;
-		$this->defaultPiVars = $this->abstractPlugin->piVars;
-	}
+    /**
+     * Data provider for piSetPiVarDefaultsStdWrap
+     *
+     * @return array input-array with configuration and stdWrap, expected output-array in piVars
+     */
+    public function piSetPiVarDefaultsStdWrapProvider()
+    {
+        return array(
+            'stdWrap on conf, non-recursive, stdWrap 1 level deep' => array(
+                array(
+                    'abc' => 'DEF',
+                    'abc.' => array(
+                        'stdWrap.' => array(
+                            'wrap' => 'test | test'
+                        ),
+                    ),
+                ),
+                array(
+                    'abc' => 'testDEFtest',
+                    'pointer' => '',
+                    'mode' => '',
+                    'sword' => '',
+                    'sort' => '',
+                ),
+            ),
+            'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => array(
+                array(
+                    'xyz.' => array(
+                        'stdWrap.' => array(
+                            'cObject' => 'TEXT',
+                            'cObject.' => array(
+                                'data' => 'date:U',
+                                'strftime' => '%Y',
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'xyz' => date('Y'),
+                    'pointer' => '',
+                    'mode' => '',
+                    'sword' => '',
+                    'sort' => '',
+                ),
+            ),
+            'stdWrap on conf, recursive' => array(
+                array(
+                    'abc.' => array(
+                        'def' => 'DEF',
+                        'def.' => array(
+                            'ghi' => '123',
+                            'stdWrap.' => array(
+                                'wrap' => 'test | test'
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'abc.' => array(
+                        'def' => 'testDEFtest',
+                        'def.' => array(
+                            'ghi' => '123',
+                        ),
+                    ),
+                    'pointer' => '',
+                    'mode' => '',
+                    'sword' => '',
+                    'sort' => '',
+                ),
+            ),
+        );
+    }
 
-	/**
-	 * Data provider for piSetPiVarDefaultsStdWrap
-	 *
-	 * @return array input-array with configuration and stdWrap, expected output-array in piVars
-	 */
-	public function piSetPiVarDefaultsStdWrapProvider() {
-		return array(
-			'stdWrap on conf, non-recursive, stdWrap 1 level deep' => array(
-				array(
-					'abc' => 'DEF',
-					'abc.' => array(
-						'stdWrap.' => array(
-							'wrap' => 'test | test'
-						),
-					),
-				),
-				array(
-					'abc' => 'testDEFtest',
-					'pointer' => '',
-					'mode' => '',
-					'sword' => '',
-					'sort' => '',
-				),
-			),
-			'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => array(
-				array(
-					'xyz.' => array(
-						'stdWrap.' => array(
-							'cObject' => 'TEXT',
-							'cObject.' => array(
-								'data' => 'date:U',
-								'strftime' => '%Y',
-							),
-						),
-					),
-				),
-				array(
-					'xyz' => date('Y'),
-					'pointer' => '',
-					'mode' => '',
-					'sword' => '',
-					'sort' => '',
-				),
-			),
-			'stdWrap on conf, recursive' => array(
-				array(
-					'abc.' => array(
-						'def' => 'DEF',
-						'def.' => array(
-							'ghi' => '123',
-							'stdWrap.' => array(
-								'wrap' => 'test | test'
-							),
-						),
-					),
-				),
-				array(
-					'abc.' => array(
-						'def' => 'testDEFtest',
-						'def.' => array(
-							'ghi' => '123',
-						),
-					),
-					'pointer' => '',
-					'mode' => '',
-					'sword' => '',
-					'sort' => '',
-				),
-			),
-		);
-	}
+    /**
+     * @test
+     * @dataProvider piSetPiVarDefaultsStdWrapProvider
+     */
+    public function piSetPiVarDefaultsStdWrap($input, $expected)
+    {
+        $this->abstractPlugin->piVars = $this->defaultPiVars;
 
-	/**
-	 * @test
-	 * @dataProvider piSetPiVarDefaultsStdWrapProvider
-	 */
-	public function piSetPiVarDefaultsStdWrap($input, $expected) {
-		$this->abstractPlugin->piVars = $this->defaultPiVars;
-
-		$this->abstractPlugin->conf['_DEFAULT_PI_VARS.'] = $input;
-		$this->abstractPlugin->pi_setPiVarDefaults();
-		$this->assertEquals($expected, $this->abstractPlugin->piVars);
-	}
-
+        $this->abstractPlugin->conf['_DEFAULT_PI_VARS.'] = $input;
+        $this->abstractPlugin->pi_setPiVarDefaults();
+        $this->assertEquals($expected, $this->abstractPlugin->piVars);
+    }
 }

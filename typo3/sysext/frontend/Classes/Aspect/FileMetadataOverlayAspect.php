@@ -24,33 +24,34 @@ namespace TYPO3\CMS\Frontend\Aspect;
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
  */
-class FileMetadataOverlayAspect {
+class FileMetadataOverlayAspect
+{
+    /**
+     * Do translation and workspace overlay
+     *
+     * @param \ArrayObject $data
+     * @return void
+     */
+    public function languageAndWorkspaceOverlay(\ArrayObject $data)
+    {
+        $overlaidMetaData = $data->getArrayCopy();
+        $this->getTsfe()->sys_page->versionOL('sys_file_metadata', $overlaidMetaData);
+        $overlaidMetaData = $this->getTsfe()->sys_page->getRecordOverlay(
+            'sys_file_metadata',
+            $overlaidMetaData,
+            $this->getTsfe()->sys_language_content,
+            $this->getTsfe()->sys_language_contentOL
+        );
+        if ($overlaidMetaData !== null) {
+            $data->exchangeArray($overlaidMetaData);
+        }
+    }
 
-	/**
-	 * Do translation and workspace overlay
-	 *
-	 * @param \ArrayObject $data
-	 * @return void
-	 */
-	public function languageAndWorkspaceOverlay(\ArrayObject $data) {
-		$overlaidMetaData = $data->getArrayCopy();
-		$this->getTsfe()->sys_page->versionOL('sys_file_metadata', $overlaidMetaData);
-		$overlaidMetaData = $this->getTsfe()->sys_page->getRecordOverlay(
-			'sys_file_metadata',
-			$overlaidMetaData,
-			$this->getTsfe()->sys_language_content,
-			$this->getTsfe()->sys_language_contentOL
-		);
-		if ($overlaidMetaData !== NULL) {
-			$data->exchangeArray($overlaidMetaData);
-		}
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getTsfe() {
-		return $GLOBALS['TSFE'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTsfe()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }

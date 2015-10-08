@@ -25,49 +25,50 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
  * @internal
  */
-class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface{
+class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
+     *
+     * @param string $parameters Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
+     * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
+     *
+     * @return string URL to tce_db.php + parameters
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
+     */
+    public function render($parameters, $redirectUrl = '')
+    {
+        return static::renderStatic(
+            array(
+                'parameters' => $parameters,
+                'redirectUrl' => $redirectUrl
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
-	 *
-	 * @param string $parameters Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-	 * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
-	 *
-	 * @return string URL to tce_db.php + parameters
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
-	 */
-	public function render($parameters, $redirectUrl = '') {
-		return static::renderStatic(
-			array(
-				'parameters' => $parameters,
-				'redirectUrl' => $redirectUrl
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		/** @var BackendUserAuthentication $beUser */
-		$beUser = $GLOBALS['BE_USER'];
-		$urlParameters = [
-			'vC' => $beUser->veriCode(),
-			'prErr' => 1,
-			'uPT' => 1,
-			'redirect' => $arguments['redirectUrl'] ?: GeneralUtility::getIndpEnv('REQUEST_URI')
-		];
-		if (isset($arguments['parameters'])) {
-			$parametersArray = GeneralUtility::explodeUrl2Array($arguments['parameters']);
-			$urlParameters += $parametersArray;
-		}
-		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters));
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        /** @var BackendUserAuthentication $beUser */
+        $beUser = $GLOBALS['BE_USER'];
+        $urlParameters = [
+            'vC' => $beUser->veriCode(),
+            'prErr' => 1,
+            'uPT' => 1,
+            'redirect' => $arguments['redirectUrl'] ?: GeneralUtility::getIndpEnv('REQUEST_URI')
+        ];
+        if (isset($arguments['parameters'])) {
+            $parametersArray = GeneralUtility::explodeUrl2Array($arguments['parameters']);
+            $urlParameters += $parametersArray;
+        }
+        return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters));
+    }
 }

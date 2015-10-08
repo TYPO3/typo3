@@ -21,116 +21,119 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  *
  * It contains methods for downloading and uploading extensions and related code
  */
-class TerUtility {
+class TerUtility
+{
+    /**
+     * @var string
+     */
+    public $wsdlUrl;
 
-	/**
-	 * @var string
-	 */
-	public $wsdlUrl;
+    /**
+     * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+     */
+    protected $configurationUtility;
 
-	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 */
-	protected $configurationUtility;
+    /**
+     * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+     */
+    public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility)
+    {
+        $this->configurationUtility = $configurationUtility;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
-	 */
-	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
-		$this->configurationUtility = $configurationUtility;
-	}
+    /**
+     * Fetches an extension from the given mirror
+     *
+     * @param string $extensionKey Extension Key
+     * @param string $version Version to install
+     * @param string $expectedMd5 Expected MD5 hash of extension file
+     * @param string $mirrorUrl URL of mirror to use
+     * @throws ExtensionManagerException
+     * @return array T3X data
+     */
+    public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl)
+    {
+        if (!empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])) {
+            throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
+        }
+        $extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
+        $mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
+        $t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl, 0, array(TYPO3_user_agent));
+        $md5 = md5($t3x);
+        if ($t3x === false) {
+            throw new ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);
+        }
+        if ($md5 === $expectedMd5) {
+            // Fetch and return:
+            $extensionData = $this->decodeExchangeData($t3x);
+        } else {
+            throw new ExtensionManagerException('Error: MD5 hash of downloaded file not as expected: ' . $md5 . ' != ' . $expectedMd5, 1334426098);
+        }
+        return $extensionData;
+    }
 
-	/**
-	 * Fetches an extension from the given mirror
-	 *
-	 * @param string $extensionKey Extension Key
-	 * @param string $version Version to install
-	 * @param string $expectedMd5 Expected MD5 hash of extension file
-	 * @param string $mirrorUrl URL of mirror to use
-	 * @throws ExtensionManagerException
-	 * @return array T3X data
-	 */
-	public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl) {
-		if (!empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])) {
-			throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
-		}
-		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
-		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
-		$t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl, 0, array(TYPO3_user_agent));
-		$md5 = md5($t3x);
-		if ($t3x === FALSE) {
-			throw new ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);
-		}
-		if ($md5 === $expectedMd5) {
-			// Fetch and return:
-			$extensionData = $this->decodeExchangeData($t3x);
-		} else {
-			throw new ExtensionManagerException('Error: MD5 hash of downloaded file not as expected: ' . $md5 . ' != ' . $expectedMd5, 1334426098);
-		}
-		return $extensionData;
-	}
+    /**
+     * Decode server data
+     * This is information like the extension list, extension
+     * information etc., return data after uploads (new em_conf)
+     * On success, returns an array with data array and stats
+     * array as key 0 and 1.
+     *
+     * @param string $externalData Data stream from remove server
+     * @throws ExtensionManagerException
+     * @return array $externalData
+     * @see fetchServerData(), processRepositoryReturnData()
+     */
+    public function decodeServerData($externalData)
+    {
+        $parts = explode(':', $externalData, 4);
+        $dat = base64_decode($parts[2]);
+        gzuncompress($dat);
+        // compare hashes ignoring any leading whitespace. See bug #0000365.
+        if (ltrim($parts[0]) == md5($dat)) {
+            if ($parts[1] == 'gzcompress') {
+                if (function_exists('gzuncompress')) {
+                    $dat = gzuncompress($dat);
+                } else {
+                    throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzuncompress() function is not available!', 1342859463);
+                }
+            }
+            $listArr = unserialize($dat);
+            if (!is_array($listArr)) {
+                throw new ExtensionManagerException('Error: Unserialized information was not an array - strange!', 1342859489);
+            }
+        } else {
+            throw new ExtensionManagerException('Error: MD5 hashes in T3X data did not match!', 1342859505);
+        }
+        return $listArr;
+    }
 
-	/**
-	 * Decode server data
-	 * This is information like the extension list, extension
-	 * information etc., return data after uploads (new em_conf)
-	 * On success, returns an array with data array and stats
-	 * array as key 0 and 1.
-	 *
-	 * @param string $externalData Data stream from remove server
-	 * @throws ExtensionManagerException
-	 * @return array $externalData
-	 * @see fetchServerData(), processRepositoryReturnData()
-	 */
-	public function decodeServerData($externalData) {
-		$parts = explode(':', $externalData, 4);
-		$dat = base64_decode($parts[2]);
-		gzuncompress($dat);
-		// compare hashes ignoring any leading whitespace. See bug #0000365.
-		if (ltrim($parts[0]) == md5($dat)) {
-			if ($parts[1] == 'gzcompress') {
-				if (function_exists('gzuncompress')) {
-					$dat = gzuncompress($dat);
-				} else {
-					throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzuncompress() function is not available!', 1342859463);
-				}
-			}
-			$listArr = unserialize($dat);
-			if (!is_array($listArr)) {
-				throw new ExtensionManagerException('Error: Unserialized information was not an array - strange!', 1342859489);
-			}
-		} else {
-			throw new ExtensionManagerException('Error: MD5 hashes in T3X data did not match!', 1342859505);
-		}
-		return $listArr;
-	}
-
-	/**
-	 * Decodes extension upload array.
-	 * This kind of data is when an extension is uploaded to TER
-	 *
-	 * @param string $stream Data stream
-	 * @throws ExtensionManagerException
-	 * @return array Array with result on success, otherwise an error string.
-	 */
-	public function decodeExchangeData($stream) {
-		$parts = explode(':', $stream, 3);
-		if ($parts[1] == 'gzcompress') {
-			if (function_exists('gzuncompress')) {
-				$parts[2] = gzuncompress($parts[2]);
-			} else {
-				throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() ' . 'functions are not available!', 1344761814);
-			}
-		}
-		if (md5($parts[2]) === $parts[0]) {
-			$output = unserialize($parts[2]);
-			if (!is_array($output)) {
-				throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
-			}
-		} else {
-			throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the ' . 'browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
-		}
-		return $output;
-	}
-
+    /**
+     * Decodes extension upload array.
+     * This kind of data is when an extension is uploaded to TER
+     *
+     * @param string $stream Data stream
+     * @throws ExtensionManagerException
+     * @return array Array with result on success, otherwise an error string.
+     */
+    public function decodeExchangeData($stream)
+    {
+        $parts = explode(':', $stream, 3);
+        if ($parts[1] == 'gzcompress') {
+            if (function_exists('gzuncompress')) {
+                $parts[2] = gzuncompress($parts[2]);
+            } else {
+                throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() ' . 'functions are not available!', 1344761814);
+            }
+        }
+        if (md5($parts[2]) === $parts[0]) {
+            $output = unserialize($parts[2]);
+            if (!is_array($output)) {
+                throw new ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);
+            }
+        } else {
+            throw new ExtensionManagerException('Error: MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the ' . 'browser and thereby corrupted!? (Always select "All" filetype when saving extensions)', 1344761991);
+        }
+        return $output;
+    }
 }

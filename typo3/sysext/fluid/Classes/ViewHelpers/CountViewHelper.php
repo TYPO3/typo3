@@ -37,46 +37,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class CountViewHelper extends AbstractViewHelper implements CompilableInterface {
+class CountViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Counts the items of a given property.
+     *
+     * @param array $subject The array or \Countable to be counted
+     * @return int The number of elements
+     * @throws Exception
+     * @api
+     */
+    public function render($subject = null)
+    {
+        return static::renderStatic(
+            array('subject' => $subject),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Counts the items of a given property.
-	 *
-	 * @param array $subject The array or \Countable to be counted
-	 * @return int The number of elements
-	 * @throws Exception
-	 * @api
-	 */
-	public function render($subject = NULL) {
-		return static::renderStatic(
-			array('subject' => $subject),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return int
-	 * @throws Exception
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$subject = $arguments['subject'];
-		if ($subject === NULL) {
-			$subject = $renderChildrenClosure();
-		}
-		if (is_object($subject) && !$subject instanceof \Countable) {
-			throw new Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
-		}
-		return count($subject);
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return int
+     * @throws Exception
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $subject = $arguments['subject'];
+        if ($subject === null) {
+            $subject = $renderChildrenClosure();
+        }
+        if (is_object($subject) && !$subject instanceof \Countable) {
+            throw new Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
+        }
+        return count($subject);
+    }
 }

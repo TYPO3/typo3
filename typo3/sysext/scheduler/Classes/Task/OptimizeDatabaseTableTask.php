@@ -21,50 +21,52 @@ namespace TYPO3\CMS\Scheduler\Task;
  * to reduce storage space and improve I/O efficiency when accessing the table. The
  * exact changes made to each table depend on the storage engine used by that table.
  */
-class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class OptimizeDatabaseTableTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
+    /**
+     * Database tables that should be cleaned up,
+     * set by additional field provider.
+     *
+     * @var array Selected tables to optimize
+     */
+    public $selectedTables = array();
 
-	/**
-	 * Database tables that should be cleaned up,
-	 * set by additional field provider.
-	 *
-	 * @var array Selected tables to optimize
-	 */
-	public $selectedTables = array();
+    /**
+     * Execute table optimization, called by scheduler.
+     *
+     * @return bool
+     */
+    public function execute()
+    {
+        foreach ($this->selectedTables as $tableName) {
+            $result = $this->getDatabaseConnection()->admin_query('OPTIMIZE TABLE ' . $tableName . ';');
+            if ($result === false) {
+                throw new \RuntimeException(
+                    \TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
+                    $this->getDatabaseConnection()->sql_error(),
+                    1441390263
+                );
+            }
+        }
 
-	/**
-	 * Execute table optimization, called by scheduler.
-	 *
-	 * @return bool
-	 */
-	public function execute() {
-		foreach ($this->selectedTables as $tableName) {
-			$result = $this->getDatabaseConnection()->admin_query('OPTIMIZE TABLE ' . $tableName . ';');
-			if ($result === FALSE) {
-				throw new \RuntimeException(
-					\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
-					$this->getDatabaseConnection()->sql_error(),
-					1441390263
-				);
-			}
-		}
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Output the selected tables
+     *
+     * @return string
+     */
+    public function getAdditionalInformation()
+    {
+        return implode(', ', $this->selectedTables);
+    }
 
-	/**
-	 * Output the selected tables
-	 *
-	 * @return string
-	 */
-	public function getAdditionalInformation() {
-		return implode(', ', $this->selectedTables);
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

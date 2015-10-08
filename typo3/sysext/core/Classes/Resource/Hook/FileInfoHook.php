@@ -20,73 +20,74 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 /**
  * Utility class to render TCEforms information about a sys_file record
  */
-class FileInfoHook {
+class FileInfoHook
+{
+    /**
+     * User function for sys_file (element)
+     *
+     * @param array $propertyArray the array with additional configuration options.
+     * @return string The HTML code for the TCEform field
+     */
+    public function renderFileInfo(array $propertyArray)
+    {
+        $fileRecord = $propertyArray['row'];
+        $fileObject = null;
+        if ($fileRecord['uid'] > 0) {
+            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileRecord['uid']);
+        }
+        return $this->renderFileInformationContent($fileObject);
+    }
 
-	/**
-	 * User function for sys_file (element)
-	 *
-	 * @param array $propertyArray the array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
-	 */
-	public function renderFileInfo(array $propertyArray) {
-		$fileRecord = $propertyArray['row'];
-		$fileObject = NULL;
-		if ($fileRecord['uid'] > 0) {
-			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileRecord['uid']);
+    /**
+     * User function for sys_file_meta (element)
+     *
+     * @param array $propertyArray the array with additional configuration options.
+     * @return string The HTML code for the TCEform field
+     */
+    public function renderFileMetadataInfo(array $propertyArray)
+    {
+        $fileMetadataRecord = $propertyArray['row'];
+        $fileObject = null;
+        if ($fileMetadataRecord['file'] > 0) {
+            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file']);
+        }
 
-		}
-		return $this->renderFileInformationContent($fileObject);
-	}
-
-	/**
-	 * User function for sys_file_meta (element)
-	 *
-	 * @param array $propertyArray the array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
-	 */
-	public function renderFileMetadataInfo(array $propertyArray) {
-		$fileMetadataRecord = $propertyArray['row'];
-		$fileObject = NULL;
-		if ($fileMetadataRecord['file'] > 0) {
-			$fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file']);
-		}
-
-		return $this->renderFileInformationContent($fileObject);
-	}
+        return $this->renderFileInformationContent($fileObject);
+    }
 
 
-	/**
-	 * Renders a HTML Block with file information
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $file
-	 * @return string
-	 */
-	protected function renderFileInformationContent(\TYPO3\CMS\Core\Resource\File $file = NULL) {
-		if ($file !== NULL) {
-			$processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
-			$previewImage = $processedFile->getPublicUrl(TRUE);
-			$content = '';
-			if ($file->isMissing()) {
-				$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($file);
-				$content .= $flashMessage->render();
-			}
-			if ($previewImage) {
-				$content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
-							'width="' . $processedFile->getProperty('width') . '" ' .
-							'height="' . $processedFile->getProperty('height') . '" ' .
-							'alt="" class="t3-tceforms-sysfile-imagepreview" />';
-			}
-			$content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
-			$content .= ' (' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
-			$content .= BackendUtility::getProcessedValue('sys_file', 'type', $file->getType()) . ' (' . $file->getMimeType() . ')<br />';
-			$content .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', TRUE) . ': ';
-			$content .= htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '<br />';
-			$content .= '<br />';
-		} else {
-			$content = '<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord', TRUE) . '</h2>';
-		}
+    /**
+     * Renders a HTML Block with file information
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @return string
+     */
+    protected function renderFileInformationContent(\TYPO3\CMS\Core\Resource\File $file = null)
+    {
+        if ($file !== null) {
+            $processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 150, 'height' => 150));
+            $previewImage = $processedFile->getPublicUrl(true);
+            $content = '';
+            if ($file->isMissing()) {
+                $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($file);
+                $content .= $flashMessage->render();
+            }
+            if ($previewImage) {
+                $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
+                            'width="' . $processedFile->getProperty('width') . '" ' .
+                            'height="' . $processedFile->getProperty('height') . '" ' .
+                            'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+            }
+            $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
+            $content .= ' (' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
+            $content .= BackendUtility::getProcessedValue('sys_file', 'type', $file->getType()) . ' (' . $file->getMimeType() . ')<br />';
+            $content .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', true) . ': ';
+            $content .= htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '<br />';
+            $content .= '<br />';
+        } else {
+            $content = '<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord', true) . '</h2>';
+        }
 
-		return $content;
-	}
-
+        return $content;
+    }
 }

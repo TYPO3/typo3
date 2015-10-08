@@ -17,34 +17,34 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Contains LOAD_REGISTER class object.
  */
-class LoadRegisterContentObject extends AbstractContentObject {
-
-	/**
-	 * Rendering the cObject, LOAD_REGISTER
-	 * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Empty string (the cObject only sets internal data!)
-	 */
-	public function render($conf = array()) {
-		array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
-		if (is_array($conf)) {
-			$isExecuted = array();
-			foreach ($conf as $theKey => $theValue) {
-				$register = rtrim($theKey, '.');
-				if (!$isExecuted[$register]) {
-					$registerProperties = $register . '.';
-					if (isset($conf[$register]) && isset($conf[$registerProperties])) {
-						$theValue = $this->cObj->stdWrap($conf[$register], $conf[$registerProperties]);
-					} elseif (isset($conf[$registerProperties])) {
-						$theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
-					}
-					$GLOBALS['TSFE']->register[$register] = $theValue;
-					$isExecuted[$register] = TRUE;
-				}
-			}
-		}
-		return '';
-	}
-
+class LoadRegisterContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, LOAD_REGISTER
+     * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Empty string (the cObject only sets internal data!)
+     */
+    public function render($conf = array())
+    {
+        array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
+        if (is_array($conf)) {
+            $isExecuted = array();
+            foreach ($conf as $theKey => $theValue) {
+                $register = rtrim($theKey, '.');
+                if (!$isExecuted[$register]) {
+                    $registerProperties = $register . '.';
+                    if (isset($conf[$register]) && isset($conf[$registerProperties])) {
+                        $theValue = $this->cObj->stdWrap($conf[$register], $conf[$registerProperties]);
+                    } elseif (isset($conf[$registerProperties])) {
+                        $theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
+                    }
+                    $GLOBALS['TSFE']->register[$register] = $theValue;
+                    $isExecuted[$register] = true;
+                }
+            }
+        }
+        return '';
+    }
 }

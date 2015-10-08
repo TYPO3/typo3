@@ -21,6 +21,6 @@ namespace TYPO3\CMS\Extbase\Security;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
-
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 }

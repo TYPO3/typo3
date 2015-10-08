@@ -17,19 +17,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Update version matrix from get.typo3.org
  */
-class CoreUpdateUpdateVersionMatrix extends AbstractCoreUpdate {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return array Rendered content
-	 */
-	protected function executeAction() {
-		$this->view->assignMultiple(array(
-				'success' => $this->coreUpdateService->updateVersionMatrix(),
-				'status' => $this->coreUpdateService->getMessages(),
-			));
-		return $this->view->render();
-	}
-
+class CoreUpdateUpdateVersionMatrix extends AbstractCoreUpdate
+{
+    /**
+     * Executes the action
+     *
+     * @return array Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->view->assignMultiple(array(
+                'success' => $this->coreUpdateService->updateVersionMatrix(),
+                'status' => $this->coreUpdateService->getMessages(),
+            ));
+        return $this->view->render();
+    }
 }

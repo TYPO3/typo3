@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Fixtures;
 /**
  * Admin panel hook without interface
  */
-class AdminPanelHookWithoutInterfaceFixture {
-
+class AdminPanelHookWithoutInterfaceFixture
+{
 }

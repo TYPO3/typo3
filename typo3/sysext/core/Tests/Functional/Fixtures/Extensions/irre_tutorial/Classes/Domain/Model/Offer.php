@@ -17,54 +17,58 @@ namespace OliverHader\IrreTutorial\Domain\Model;
 /**
  * Offer
  */
-class Offer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Offer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * @lazy
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
+     */
+    protected $prices = null;
 
-	/**
-	 * @lazy
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
-	 */
-	protected $prices = NULL;
+    /**
+     * Initializes this object.
+     */
+    public function __construct()
+    {
+        $this->prices = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
 
-	/**
-	 * Initializes this object.
-	 */
-	public function __construct() {
-		$this->prices = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
+    /**
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * @return string $title
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
+     */
+    public function getPrices()
+    {
+        return $this->prices;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
-	 */
-	public function getPrices() {
-		return $this->prices;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer> $prices
-	 * @return void
-	 */
-	public function setPrices(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices) {
-		$this->prices = $prices;
-	}
-
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer> $prices
+     * @return void
+     */
+    public function setPrices(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices)
+    {
+        $this->prices = $prices;
+    }
 }

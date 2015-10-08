@@ -19,86 +19,88 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 /**
  * The post processor
  */
-class PostProcessor extends AbstractPostProcessor {
+class PostProcessor extends AbstractPostProcessor
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager;
+    /**
+     * @var array
+     */
+    protected $postProcessorTypoScript;
 
-	/**
-	 * @var array
-	 */
-	protected $postProcessorTypoScript;
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Model\Element $form
+     */
+    protected $form;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Element $form
-	 */
-	protected $form;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @return void
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+    /**
+     * Constructor
+     *
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $form
+     * @param array $postProcessorTypoScript Post processor TypoScript settings
+     */
+    public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $postProcessorTypoScript)
+    {
+        $this->form = $form;
+        $this->postProcessorTypoScript = $postProcessorTypoScript;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
-	 * @param array $postProcessorTypoScript Post processor TypoScript settings
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $postProcessorTypoScript) {
-		$this->form = $form;
-		$this->postProcessorTypoScript = $postProcessorTypoScript;
-	}
+    /**
+     * The main method called by the controller
+     *
+     * Iterates over the configured post processors and calls them with their
+     * own settings
+     *
+     * @return string HTML messages from the called processors
+     */
+    public function process()
+    {
+        $html = '';
 
-	/**
-	 * The main method called by the controller
-	 *
-	 * Iterates over the configured post processors and calls them with their
-	 * own settings
-	 *
-	 * @return string HTML messages from the called processors
-	 */
-	public function process() {
-		$html = '';
+        if (is_array($this->postProcessorTypoScript)) {
+            $keys = TemplateService::sortedKeyList($this->postProcessorTypoScript);
 
-		if (is_array($this->postProcessorTypoScript)) {
-			$keys = TemplateService::sortedKeyList($this->postProcessorTypoScript);
+            foreach ($keys as $key) {
+                if (!(int)$key || strpos($key, '.') !== false) {
+                    continue;
+                }
+                $className = false;
+                $processorName = $this->postProcessorTypoScript[$key];
+                $processorArguments = array();
+                if (isset($this->postProcessorTypoScript[$key . '.'])) {
+                    $processorArguments = $this->postProcessorTypoScript[$key . '.'];
+                }
 
-			foreach ($keys as $key) {
-				if (!(int)$key || strpos($key, '.') !== FALSE) {
-					continue;
-				}
-				$className = FALSE;
-				$processorName = $this->postProcessorTypoScript[$key];
-				$processorArguments = array();
-				if (isset($this->postProcessorTypoScript[$key . '.'])) {
-					$processorArguments = $this->postProcessorTypoScript[$key . '.'];
-				}
+                if (class_exists($processorName, true)) {
+                    $className = $processorName;
+                } else {
+                    $classNameExpanded = 'TYPO3\\CMS\\Form\\PostProcess\\' . ucfirst(strtolower($processorName)) . 'PostProcessor';
+                    if (class_exists($classNameExpanded, true)) {
+                        $className = $classNameExpanded;
+                    }
+                }
+                if ($className !== false) {
+                    $processor = $this->objectManager->get($className, $this->form, $processorArguments);
+                    if ($processor instanceof PostProcessorInterface) {
+                        $processor->setControllerContext($this->controllerContext);
+                        $html .= $processor->process();
+                    }
+                }
+            }
+        }
 
-				if (class_exists($processorName, TRUE)) {
-					$className = $processorName;
-				} else {
-					$classNameExpanded = 'TYPO3\\CMS\\Form\\PostProcess\\' . ucfirst(strtolower($processorName)) . 'PostProcessor';
-					if (class_exists($classNameExpanded, TRUE)) {
-						$className = $classNameExpanded;
-					}
-				}
-				if ($className !== FALSE) {
-					$processor = $this->objectManager->get($className, $this->form, $processorArguments);
-					if ($processor instanceof PostProcessorInterface) {
-						$processor->setControllerContext($this->controllerContext);
-						$html .= $processor->process();
-					}
-				}
-			}
-		}
-
-		return $html;
-	}
-
+        return $html;
+    }
 }

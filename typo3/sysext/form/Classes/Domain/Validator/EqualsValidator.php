@@ -14,54 +14,56 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class EqualsValidator extends AbstractValidator {
+class EqualsValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'element' => array('', 'The name of the element', 'string', true),
+        'errorMessage' => array('', 'The error message', 'array', true),
+        'field' => array('', 'The field to be compared', 'string', true),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'element' => array('', 'The name of the element', 'string', TRUE),
-		'errorMessage' => array('', 'The error message', 'array', TRUE),
-		'field' => array('', 'The field to be compared', 'string', TRUE),
-	);
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_equals';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_equals';
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        $comparisonValue = $this->rawArgument[$this->options['field']];
+        if ($value !== $comparisonValue) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1442005826
+            );
+        }
+    }
 
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		$comparisonValue = $this->rawArgument[$this->options['field']];
-		if ($value !== $comparisonValue) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1442005826
-			);
-		}
-	}
-
-	/**
-	 * Substitute makers in the message text
-	 * Overrides the abstract
-	 *
-	 * @param string $message Message text with markers
-	 * @return string Message text with substituted markers
-	 */
-	public function substituteMarkers($message) {
-		$message = str_replace('%field', $this->options['field'], $message);
-		return $message;
-	}
+    /**
+     * Substitute makers in the message text
+     * Overrides the abstract
+     *
+     * @param string $message Message text with markers
+     * @return string Message text with substituted markers
+     */
+    public function substituteMarkers($message)
+    {
+        $message = str_replace('%field', $this->options['field'], $message);
+        return $message;
+    }
 }

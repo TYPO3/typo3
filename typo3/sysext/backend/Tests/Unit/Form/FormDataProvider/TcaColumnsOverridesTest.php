@@ -20,71 +20,73 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides;
 /**
  * Test case
  */
-class TcaColumnsOverridesTest extends UnitTestCase {
+class TcaColumnsOverridesTest extends UnitTestCase
+{
+    /**
+     * @var TcaColumnsOverrides
+     */
+    protected $subject;
 
-	/**
-	 * @var TcaColumnsOverrides
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new TcaColumnsOverrides();
+    }
 
-	protected function setUp() {
-		$this->subject = new TcaColumnsOverrides();
-	}
+    /**
+     * @test
+     */
+    public function addDataRemovesGivenColumnsOverrides()
+    {
+        $input = [
+            'recordTypeValue' => 'foo',
+            'processedTca' => [
+                'columns' => [],
+                'types' => [
+                    'foo' => [
+                        'showitem' => [],
+                        'columnsOverrides' => [],
+                    ],
+                ],
+            ],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataRemovesGivenColumnsOverrides() {
-		$input = [
-			'recordTypeValue' => 'foo',
-			'processedTca' => [
-				'columns' => [],
-				'types' => [
-					'foo' => [
-						'showitem' => [],
-						'columnsOverrides' => [],
-					],
-				],
-			],
-		];
+        $expected = $input;
+        unset($expected['processedTca']['types']['foo']['columnsOverrides']);
 
-		$expected = $input;
-		unset($expected['processedTca']['types']['foo']['columnsOverrides']);
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataMergesColumnsOverridesIntoColumns()
+    {
+        $input = [
+            'recordTypeValue' => 'foo',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'aConfig' => 'aValue',
+                        'anotherConfig' => 'anotherValue',
+                    ],
+                ],
+                'types' => [
+                    'foo' => [
+                        'showitem' => [],
+                        'columnsOverrides' => [
+                            'aField' => [
+                                'aConfig' => 'aDifferentValue',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataMergesColumnsOverridesIntoColumns() {
-		$input = [
-			'recordTypeValue' => 'foo',
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'aConfig' => 'aValue',
-						'anotherConfig' => 'anotherValue',
-					],
-				],
-				'types' => [
-					'foo' => [
-						'showitem' => [],
-						'columnsOverrides' => [
-							'aField' => [
-								'aConfig' => 'aDifferentValue',
-							],
-						],
-					],
-				],
-			],
-		];
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['aConfig'] = 'aDifferentValue';
+        unset($expected['processedTca']['types']['foo']['columnsOverrides']);
 
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['aConfig'] = 'aDifferentValue';
-		unset($expected['processedTca']['types']['foo']['columnsOverrides']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 }

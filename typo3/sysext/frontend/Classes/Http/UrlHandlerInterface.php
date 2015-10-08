@@ -20,27 +20,27 @@ namespace TYPO3\CMS\Frontend\Http;
  *
  * It can be used to do custom URL processing during a Frontend request.
  */
-interface UrlHandlerInterface {
+interface UrlHandlerInterface
+{
+    /**
+     * Return TRUE if this hook handles the current URL.
+     * Warning! If TRUE is returned content rendering will be disabled!
+     * This method will be called in the constructor of the TypoScriptFrontendController
+     *
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::__construct()
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
+     * @return bool
+     */
+    public function canHandleCurrentUrl();
 
-	/**
-	 * Return TRUE if this hook handles the current URL.
-	 * Warning! If TRUE is returned content rendering will be disabled!
-	 * This method will be called in the constructor of the TypoScriptFrontendController
-	 *
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::__construct()
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
-	 * @return bool
-	 */
-	public function canHandleCurrentUrl();
-
-	/**
-	 * Custom processing of the current URL.
-	 *
-	 * If canHandle() has returned TRUE this method needs to take care of redirecting the user or generating custom output.
-	 * This hook will be called BEFORE the user is redirected to an external URL configured in the page properties.
-	 *
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::redirectToExternalUrl()
-	 * @return void
-	 */
-	public function handle();
+    /**
+     * Custom processing of the current URL.
+     *
+     * If canHandle() has returned TRUE this method needs to take care of redirecting the user or generating custom output.
+     * This hook will be called BEFORE the user is redirected to an external URL configured in the page properties.
+     *
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::redirectToExternalUrl()
+     * @return void
+     */
+    public function handle();
 }

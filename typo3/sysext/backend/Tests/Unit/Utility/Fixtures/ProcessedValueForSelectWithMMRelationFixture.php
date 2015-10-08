@@ -17,17 +17,18 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 /**
  * Disable getRecordWSOL and getRecordTitle dependency by returning stable results
  */
-class ProcessedValueForSelectWithMMRelationFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility {
-
-	/**
-	 * Get record title
-	 *
-	 * @param string $table
-	 * @param array $row
-	 *
-	 * @return string
-	 */
-	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
-		return $row['title'];
-	}
+class ProcessedValueForSelectWithMMRelationFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+{
+    /**
+     * Get record title
+     *
+     * @param string $table
+     * @param array $row
+     *
+     * @return string
+     */
+    public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
+    {
+        return $row['title'];
+    }
 }

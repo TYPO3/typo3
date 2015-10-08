@@ -24,42 +24,43 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class TimeSinceLastUpdateViewHelper extends AbstractViewHelper implements CompilableInterface {
+class TimeSinceLastUpdateViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render method
+     *
+     * @param \DateTime $lastUpdateTime The date of the last update.
+     * @return string
+     */
+    public function render($lastUpdateTime)
+    {
+        return static::renderStatic(
+            array(
+                'lastUpdateTime' => $lastUpdateTime,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render method
-	 *
-	 * @param \DateTime $lastUpdateTime The date of the last update.
-	 * @return string
-	 */
-	public function render($lastUpdateTime) {
-		return static::renderStatic(
-			array(
-				'lastUpdateTime' => $lastUpdateTime,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$lastUpdateTime = $arguments['lastUpdateTime'];
-		if (NULL === $lastUpdateTime) {
-			return $GLOBALS['LANG']->sL(
-				'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never'
-			);
-		}
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
-			time() - $lastUpdateTime->format('U'),
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
-		);
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $lastUpdateTime = $arguments['lastUpdateTime'];
+        if (null === $lastUpdateTime) {
+            return $GLOBALS['LANG']->sL(
+                'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never'
+            );
+        }
+        return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
+            time() - $lastUpdateTime->format('U'),
+            $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+        );
+    }
 }

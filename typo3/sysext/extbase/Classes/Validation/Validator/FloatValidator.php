@@ -19,27 +19,27 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class FloatValidator extends AbstractValidator {
+class FloatValidator extends AbstractValidator
+{
+    /**
+     * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     * @api
+     */
+    public function isValid($value)
+    {
+        if (is_float($value)) {
+            return;
+        }
 
-	/**
-	 * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 * @api
-	 */
-	public function isValid($value) {
-		if (is_float($value)) {
-			return;
-		}
-
-		if (!is_string($value) || strpos($value, '.') === FALSE || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
-			$this->addError(
-				$this->translateErrorMessage(
-				'validator.float.notvalid',
-				'extbase'
-				), 1221560288);
-		}
-	}
-
+        if (!is_string($value) || strpos($value, '.') === false || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
+            $this->addError(
+                $this->translateErrorMessage(
+                'validator.float.notvalid',
+                'extbase'
+                ), 1221560288);
+        }
+    }
 }

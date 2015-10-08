@@ -17,48 +17,48 @@ namespace TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView;
 /**
  * Contains a preview rendering for the page module of CType="image"
  */
-class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
+class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of the content element "image".
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionalities
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     * @return void
+     */
+    public function preProcess(
+        \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+        &$drawItem,
+        &$headerContent,
+        &$itemContent,
+        array &$row
+    ) {
+        if ($row['CType'] === 'image') {
+            if ($row['image']) {
+                $itemContent .= $parentObject->linkEditContent($parentObject->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row);
 
-	/**
-	 * Preprocesses the preview rendering of the content element "image".
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionalities
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 * @return void
-	 */
-	public function preProcess(
-		\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
-		&$drawItem,
-		&$headerContent,
-		&$itemContent,
-		array &$row
-	) {
-		if ($row['CType'] === 'image') {
-			if ($row['image']) {
-				$itemContent .= $parentObject->linkEditContent($parentObject->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row);
+                $fileReferences = \TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences('tt_content', 'image', $row);
 
-				$fileReferences = \TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences('tt_content', 'image', $row);
+                if (!empty($fileReferences)) {
+                    $linkedContent = '';
 
-				if (!empty($fileReferences)) {
-					$linkedContent = '';
+                    foreach ($fileReferences as $fileReference) {
+                        $description = $fileReference->getDescription();
+                        if ($description !== null && $description !== '') {
+                            $linkedContent .= htmlspecialchars($description) . '<br />';
+                        }
+                    }
 
-					foreach ($fileReferences as $fileReference) {
-						$description = $fileReference->getDescription();
-						if ($description !== NULL && $description !== '') {
-							$linkedContent .= htmlspecialchars($description) . '<br />';
-						}
-					}
+                    $itemContent .= $parentObject->linkEditContent($linkedContent, $row);
 
-					$itemContent .= $parentObject->linkEditContent($linkedContent, $row);
+                    unset($linkedContent);
+                }
+            }
 
-					unset($linkedContent);
-				}
-			}
-
-			$drawItem = FALSE;
-		}
-	}
+            $drawItem = false;
+        }
+    }
 }

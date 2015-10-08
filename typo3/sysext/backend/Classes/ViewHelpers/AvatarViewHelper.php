@@ -23,45 +23,46 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Get avatar for backend user
  */
-class AvatarViewHelper extends AbstractViewHelper implements CompilableInterface {
+class AvatarViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Resolve user avatar from backend user id.
+     *
+     * @param int $backendUser Uid of the user
+     * @param int $size width and height of the image
+     * @param bool $showIcon show the record icon
+     * @return string html image tag
+     */
+    public function render($backendUser = 0, $size = 32, $showIcon = false)
+    {
+        return static::renderStatic(
+            array(
+                'backendUser' => $backendUser,
+                'size' => $size,
+                'showIcon' => $showIcon
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Resolve user avatar from backend user id.
-	 *
-	 * @param int $backendUser Uid of the user
-	 * @param int $size width and height of the image
-	 * @param bool $showIcon show the record icon
-	 * @return string html image tag
-	 */
-	public function render($backendUser = 0, $size = 32, $showIcon = FALSE) {
-		return static::renderStatic(
-			array(
-				'backendUser' => $backendUser,
-				'size' => $size,
-				'showIcon' => $showIcon
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Resolve user avatar from backend user id.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if ($arguments['backendUser'] > 0) {
-			$backendUser = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . (int)$arguments['backendUser']);
-		} else {
-			$backendUser = $GLOBALS['BE_USER']->user;
-		}
-		/** @var Avatar $avatar */
-		$avatar = GeneralUtility::makeInstance(Avatar::class);
-		return $avatar->render($backendUser, $arguments['size'], $arguments['showIcon']);
-	}
-
+    /**
+     * Resolve user avatar from backend user id.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if ($arguments['backendUser'] > 0) {
+            $backendUser = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . (int)$arguments['backendUser']);
+        } else {
+            $backendUser = $GLOBALS['BE_USER']->user;
+        }
+        /** @var Avatar $avatar */
+        $avatar = GeneralUtility::makeInstance(Avatar::class);
+        return $avatar->render($backendUser, $arguments['size'], $arguments['showIcon']);
+    }
 }

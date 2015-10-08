@@ -19,49 +19,49 @@ use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 /**
  * Test case
  */
-class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+{
+    protected $coreExtensionsToLoad = array('fluid');
 
-	protected $coreExtensionsToLoad = array('fluid');
+    /**
+     * @test
+     */
+    public function renderWorksWithNestedFluidtemplate()
+    {
+        /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $GLOBALS['TSFE'] = $tsfe;
 
-	/**
-	 * @test
-	 */
-	public function renderWorksWithNestedFluidtemplate() {
-		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
-		$GLOBALS['TSFE'] = $tsfe;
+        $configuration = array(
+            '10' => 'FLUIDTEMPLATE',
+            '10.' => array(
+                'template' => 'TEXT',
+                'template.' => array(
+                    'value' => 'A{anotherFluidTemplate}C'
+                ),
+                'variables.' => array(
+                    'anotherFluidTemplate' => 'FLUIDTEMPLATE',
+                    'anotherFluidTemplate.' => array(
+                        'template' => 'TEXT',
+                        'template.' => array(
+                            'value' => 'B',
+                        ),
+                    ),
+                ),
+            ),
+        );
+        $expectedResult = 'ABC';
 
-		$configuration = array(
-			'10' => 'FLUIDTEMPLATE',
-			'10.' => array(
-				'template' => 'TEXT',
-				'template.' => array(
-					'value' => 'A{anotherFluidTemplate}C'
-				),
-				'variables.' => array(
-					'anotherFluidTemplate' => 'FLUIDTEMPLATE',
-					'anotherFluidTemplate.' => array(
-						'template' => 'TEXT',
-						'template.' => array(
-							'value' => 'B',
-						),
-					),
-				),
-			),
-		);
-		$expectedResult = 'ABC';
+        $contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+        $contentObjectRenderer->setContentObjectClassMap(array(
+            'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
+            'TEXT' => TextContentObject::class,
+        ));
+        $fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject(
+            $contentObjectRenderer
+        );
+        $result = $fluidTemplateContentObject->render($configuration);
 
-		$contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-		$contentObjectRenderer->setContentObjectClassMap(array(
-			'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
-			'TEXT' => TextContentObject::class,
-		));
-		$fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject(
-			$contentObjectRenderer
-		);
-		$result = $fluidTemplateContentObject->render($configuration);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
+        $this->assertEquals($expectedResult, $result);
+    }
 }

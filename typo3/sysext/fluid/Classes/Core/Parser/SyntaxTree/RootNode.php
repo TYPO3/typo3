@@ -14,16 +14,16 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
 /**
  * Root node of every syntax tree.
  */
-class RootNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
-
-	/**
-	 * Evaluate the root node, by evaluating the subtree.
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return mixed Evaluated subtree
-	 */
-	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-		return $this->evaluateChildNodes($renderingContext);
-	}
-
+class RootNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+{
+    /**
+     * Evaluate the root node, by evaluating the subtree.
+     *
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return mixed Evaluated subtree
+     */
+    public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+        return $this->evaluateChildNodes($renderingContext);
+    }
 }

@@ -17,89 +17,94 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend;
 /**
  * Model of frontend response
  */
-class Response {
+class Response
+{
+    const STATUS_Success = 'success';
+    const STATUS_Failure = 'failure';
 
-	const STATUS_Success = 'success';
-	const STATUS_Failure = 'failure';
+    /**
+     * @var string
+     */
+    protected $status;
 
-	/**
-	 * @var string
-	 */
-	protected $status;
+    /**
+     * @var NULL|string|array
+     */
+    protected $content;
 
-	/**
-	 * @var NULL|string|array
-	 */
-	protected $content;
+    /**
+     * @var string
+     */
+    protected $error;
 
-	/**
-	 * @var string
-	 */
-	protected $error;
+    /**
+     * @var ResponseContent
+     */
+    protected $responseSection;
 
-	/**
-	 * @var ResponseContent
-	 */
-	protected $responseSection;
+    /**
+     * @param string $status
+     * @param string $content
+     * @param string $error
+     */
+    public function __construct($status, $content, $error)
+    {
+        $this->status = $status;
+        $this->content = $content;
+        $this->error = $error;
+    }
 
-	/**
-	 * @param string $status
-	 * @param string $content
-	 * @param string $error
-	 */
-	public function __construct($status, $content, $error) {
-		$this->status = $status;
-		$this->content = $content;
-		$this->error = $error;
-	}
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
+    /**
+     * @return array|NULL|string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	/**
-	 * @return array|NULL|string
-	 */
-	public function getContent() {
-		return $this->content;
-	}
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getError() {
-		return $this->error;
-	}
+    /**
+     * @return ResponseContent
+     */
+    public function getResponseContent()
+    {
+        if (!isset($this->responseContent)) {
+            $this->responseContent = new ResponseContent($this);
+        }
+        return $this->responseContent;
+    }
 
-	/**
-	 * @return ResponseContent
-	 */
-	public function getResponseContent() {
-		if (!isset($this->responseContent)) {
-			$this->responseContent = new ResponseContent($this);
-		}
-		return $this->responseContent;
-	}
+    /**
+     * @return NULL|array|ResponseSection[]
+     */
+    public function getResponseSections()
+    {
+        $sectionIdentifiers = func_get_args();
 
-	/**
-	 * @return NULL|array|ResponseSection[]
-	 */
-	public function getResponseSections() {
-		$sectionIdentifiers = func_get_args();
+        if (empty($sectionIdentifiers)) {
+            $sectionIdentifiers = array('Default');
+        }
 
-		if (empty($sectionIdentifiers)) {
-			$sectionIdentifiers = array('Default');
-		}
+        $sections = array();
+        foreach ($sectionIdentifiers as $sectionIdentifier) {
+            $sections[] = $this->getResponseContent()->getSection($sectionIdentifier);
+        }
 
-		$sections = array();
-		foreach ($sectionIdentifiers as $sectionIdentifier) {
-			$sections[] = $this->getResponseContent()->getSection($sectionIdentifier);
-		}
-
-		return $sections;
-	}
-
+        return $sections;
+    }
 }

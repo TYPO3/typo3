@@ -17,58 +17,60 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 /**
  * Test case
  */
-class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Utility\DebuggerUtility
+     */
+    protected $debugger;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Utility\DebuggerUtility
-	 */
-	protected $debugger;
+    protected function setUp()
+    {
+        $this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, array('dummy'));
+    }
 
-	protected function setUp() {
-		$this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, array('dummy'));
-	}
+    /**
+     * @test
+     */
+    public function debuggerRewindsInstancesOfIterator()
+    {
+        /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
+        $objectStorage = $this->getMock(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, array('dummy'));
+        for ($i = 0; $i < 5; $i++) {
+            $obj = new \StdClass();
+            $obj->property = $i;
+            $objectStorage->attach($obj);
+        }
+        $this->debugger->var_dump($objectStorage, null, 8, true, false, true);
+        $this->assertTrue($objectStorage->valid());
+    }
 
-	/**
-	 * @test
-	 */
-	public function debuggerRewindsInstancesOfIterator() {
-		/** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
-		$objectStorage = $this->getMock(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, array('dummy'));
-		for ($i = 0; $i < 5; $i++) {
-			$obj = new \StdClass();
-			$obj->property = $i;
-			$objectStorage->attach($obj);
-		}
-		$this->debugger->var_dump($objectStorage, NULL, 8, TRUE, FALSE, TRUE);
-		$this->assertTrue($objectStorage->valid());
-	}
+    /**
+     * @test
+     */
+    public function debuggerDoesNotRewindInstanceOfArrayAccess()
+    {
+        $parameters = array();
+        for ($i = 0; $i < 5; $i++) {
+            $argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('argument_' . $i, 'integer');
+            $parameters[$i] = $argument;
+        }
 
-	/**
-	 * @test
-	 */
-	public function debuggerDoesNotRewindInstanceOfArrayAccess() {
+        /** @var $arguments \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments */
+        $arguments = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\Arguments::class, array('dummy'), array('arguments' => $parameters));
 
-		$parameters = array();
-		for ($i = 0; $i < 5; $i++) {
-			$argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('argument_' . $i, 'integer');
-			$parameters[$i] = $argument;
-		}
+        $arguments->expects($this->never())->method('rewind');
+        $this->debugger->var_dump($arguments, null, 8, true, false, true);
+    }
 
-		/** @var $arguments \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments */
-		$arguments = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\Arguments::class, array('dummy'), array('arguments' => $parameters));
-
-		$arguments->expects($this->never())->method('rewind');
-		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);
-	}
-
-	/**
-	 * @test
-	 */
-	public function varDumpShowsPropertiesOfStdClassObjects() {
-		$testObject = new \stdClass();
-		$testObject->foo = 'bar';
-		$result = $this->debugger->var_dump($testObject, NULL, 8, TRUE, FALSE, TRUE);
-		$this->assertRegExp('/foo.*bar/', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function varDumpShowsPropertiesOfStdClassObjects()
+    {
+        $testObject = new \stdClass();
+        $testObject->foo = 'bar';
+        $result = $this->debugger->var_dump($testObject, null, 8, true, false, true);
+        $this->assertRegExp('/foo.*bar/', $result);
+    }
 }

@@ -17,64 +17,68 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection.
  */
-class SortedTreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class SortedTreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    protected function createTestCollection()
+    {
+        $nodeCollection = new \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection();
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
+        $nodeCollection->append($node);
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 15));
+        $nodeCollection->append($node);
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
+        $nodeCollection->append($node);
+        return $nodeCollection;
+    }
 
-	protected function createTestCollection() {
-		$nodeCollection = new \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection();
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
-		$nodeCollection->append($node);
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 15));
-		$nodeCollection->append($node);
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
-		$nodeCollection->append($node);
-		return $nodeCollection;
-	}
+    protected function createTestCollectionWithTwoNodes()
+    {
+        $nodeCollection = new \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection();
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
+        $nodeCollection->append($node);
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
+        $nodeCollection->append($node);
+        return $nodeCollection;
+    }
 
-	protected function createTestCollectionWithTwoNodes() {
-		$nodeCollection = new \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection();
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
-		$nodeCollection->append($node);
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
-		$nodeCollection->append($node);
-		return $nodeCollection;
-	}
+    /**
+     * @test
+     */
+    public function appendsSorted()
+    {
+        $nodeCollection = $this->createTestCollection();
+        $expected = array(3, 5, 15);
+        $ids = array();
+        foreach ($nodeCollection as $node) {
+            $ids[] = $node->getId();
+        }
+        $this->assertSame($expected, $ids);
+    }
 
-	/**
-	 * @test
-	 */
-	public function appendsSorted() {
-		$nodeCollection = $this->createTestCollection();
-		$expected = array(3, 5, 15);
-		$ids = array();
-		foreach ($nodeCollection as $node) {
-			$ids[] = $node->getId();
-		}
-		$this->assertSame($expected, $ids);
-	}
+    /**
+     * @test
+     */
+    public function collectionContainsNode()
+    {
+        $nodeCollection = $this->createTestCollection();
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
+        $this->assertTrue($nodeCollection->contains($node));
+    }
 
-	/**
-	 * @test
-	 */
-	public function collectionContainsNode() {
-		$nodeCollection = $this->createTestCollection();
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 5));
-		$this->assertTrue($nodeCollection->contains($node));
-	}
-
-	/**
-	 * @test
-	 */
-	public function searchDataWithBinarySearch() {
-		$nodeCollection = $this->createTestCollection();
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 15));
-		$this->assertTrue($nodeCollection->contains($node));
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 99));
-		$this->assertFalse($nodeCollection->contains($node));
-		$nodeCollection = $this->createTestCollectionWithTwoNodes();
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
-		$this->assertTrue($nodeCollection->contains($node));
-		$node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 99));
-		$this->assertFalse($nodeCollection->contains($node));
-	}
-
+    /**
+     * @test
+     */
+    public function searchDataWithBinarySearch()
+    {
+        $nodeCollection = $this->createTestCollection();
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 15));
+        $this->assertTrue($nodeCollection->contains($node));
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 99));
+        $this->assertFalse($nodeCollection->contains($node));
+        $nodeCollection = $this->createTestCollectionWithTwoNodes();
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 3));
+        $this->assertTrue($nodeCollection->contains($node));
+        $node = new \TYPO3\CMS\Backend\Tree\TreeNode(array('id' => 99));
+        $this->assertFalse($nodeCollection->contains($node));
+    }
 }

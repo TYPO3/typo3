@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  *
  * @api
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
-
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 }

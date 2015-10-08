@@ -22,30 +22,31 @@ use TYPO3\CMS\Rtehtmlarea\SelectImage;
 /**
  * Script class for the Element Browser window to select images in RTE
  */
-class SelectImageController extends ElementBrowserController {
+class SelectImageController extends ElementBrowserController
+{
+    /**
+     * Initialize controller
+     */
+    protected function init()
+    {
+        parent::init();
 
-	/**
-	 * Initialize controller
-	 */
-	protected function init() {
-		parent::init();
+        $lang = $this->getLanguageService();
+        $lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
+        $lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
 
-		$lang = $this->getLanguageService();
-		$lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
-		$lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
+        $this->mode = 'rte';
+    }
 
-		$this->mode = 'rte';
-	}
-
-	/**
-	 * Get instance of ElementBrowser
-	 *
-	 * This method shall be overwritten in subclasses
-	 *
-	 * @return ElementBrowser
-	 */
-	protected function getElementBrowserInstance() {
-		return GeneralUtility::makeInstance(SelectImage::class);
-	}
-
+    /**
+     * Get instance of ElementBrowser
+     *
+     * This method shall be overwritten in subclasses
+     *
+     * @return ElementBrowser
+     */
+    protected function getElementBrowserInstance()
+    {
+        return GeneralUtility::makeInstance(SelectImage::class);
+    }
 }

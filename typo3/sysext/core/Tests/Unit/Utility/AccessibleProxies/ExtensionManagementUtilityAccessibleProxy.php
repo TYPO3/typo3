@@ -20,52 +20,64 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * Accessible proxy with protected methods made public
  */
-class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtility {
+class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtility
+{
+    public static function setCacheManager(CacheManager $cacheManager = null)
+    {
+        static::$cacheManager = $cacheManager;
+    }
 
-	static public function setCacheManager(CacheManager $cacheManager = NULL) {
-		static::$cacheManager = $cacheManager;
-	}
+    public static function getPackageManager()
+    {
+        return static::$packageManager;
+    }
 
-	static public function getPackageManager() {
-		return static::$packageManager;
-	}
+    public static function getExtLocalconfCacheIdentifier()
+    {
+        return parent::getExtLocalconfCacheIdentifier();
+    }
 
-	static public function getExtLocalconfCacheIdentifier() {
-		return parent::getExtLocalconfCacheIdentifier();
-	}
+    public static function loadSingleExtLocalconfFiles()
+    {
+        parent::loadSingleExtLocalconfFiles();
+    }
 
-	static public function loadSingleExtLocalconfFiles() {
-		parent::loadSingleExtLocalconfFiles();
-	}
+    public static function getBaseTcaCacheIdentifier()
+    {
+        return parent::getBaseTcaCacheIdentifier();
+    }
 
-	static public function getBaseTcaCacheIdentifier() {
-		return parent::getBaseTcaCacheIdentifier();
-	}
+    public static function resetExtTablesWasReadFromCacheOnceBoolean()
+    {
+        self::$extTablesWasReadFromCacheOnce = false;
+    }
 
-	static public function resetExtTablesWasReadFromCacheOnceBoolean() {
-		self::$extTablesWasReadFromCacheOnce = FALSE;
-	}
+    public static function createExtLocalconfCacheEntry()
+    {
+        parent::createExtLocalconfCacheEntry();
+    }
 
-	static public function createExtLocalconfCacheEntry() {
-		parent::createExtLocalconfCacheEntry();
-	}
+    public static function createExtTablesCacheEntry()
+    {
+        parent::createExtTablesCacheEntry();
+    }
 
-	static public function createExtTablesCacheEntry() {
-		parent::createExtTablesCacheEntry();
-	}
+    public static function getExtTablesCacheIdentifier()
+    {
+        return parent::getExtTablesCacheIdentifier();
+    }
 
-	static public function getExtTablesCacheIdentifier() {
-		return parent::getExtTablesCacheIdentifier();
-	}
+    public static function buildBaseTcaFromSingleFiles()
+    {
+        $GLOBALS['TCA'] = array();
+    }
 
-	static public function buildBaseTcaFromSingleFiles() {
-		$GLOBALS['TCA'] = array();
-	}
+    public static function emitTcaIsBeingBuiltSignal(array $tca)
+    {
+    }
 
-	static public function emitTcaIsBeingBuiltSignal(array $tca) {
-	}
-
-	static public function removeDuplicatesForInsertion($insertionList, $list = '') {
-		return parent::removeDuplicatesForInsertion($insertionList, $list);
-	}
+    public static function removeDuplicatesForInsertion($insertionList, $list = '')
+    {
+        return parent::removeDuplicatesForInsertion($insertionList, $list);
+    }
 }

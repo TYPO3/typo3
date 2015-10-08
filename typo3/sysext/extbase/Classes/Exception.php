@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase;
 /**
  * A generic Extbase exception
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

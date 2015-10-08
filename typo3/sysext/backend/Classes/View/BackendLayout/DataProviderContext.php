@@ -17,111 +17,120 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 /**
  * Context that is forwarded to backend layout data providers.
  */
-class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface {
+class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var int
+     */
+    protected $pageId;
 
-	/**
-	 * @var int
-	 */
-	protected $pageId;
+    /**
+     * @var string
+     */
+    protected $tableName;
 
-	/**
-	 * @var string
-	 */
-	protected $tableName;
+    /**
+     * @var string
+     */
+    protected $fieldName;
 
-	/**
-	 * @var string
-	 */
-	protected $fieldName;
+    /**
+     * @var array
+     */
+    protected $data;
 
-	/**
-	 * @var array
-	 */
-	protected $data;
+    /**
+     * @var array
+     */
+    protected $pageTsConfig;
 
-	/**
-	 * @var array
-	 */
-	protected $pageTsConfig;
+    /**
+     * @return int
+     */
+    public function getPageId()
+    {
+        return $this->pageId;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getPageId() {
-		return $this->pageId;
-	}
+    /**
+     * @param int $pageId
+     * @return DataProviderContext
+     */
+    public function setPageId($pageId)
+    {
+        $this->pageId = $pageId;
+        return $this;
+    }
 
-	/**
-	 * @param int $pageId
-	 * @return DataProviderContext
-	 */
-	public function setPageId($pageId) {
-		$this->pageId = $pageId;
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTableName() {
-		return $this->tableName;
-	}
+    /**
+     * @param string $tableName
+     * @return DataProviderContext
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+        return $this;
+    }
 
-	/**
-	 * @param string $tableName
-	 * @return DataProviderContext
-	 */
-	public function setTableName($tableName) {
-		$this->tableName = $tableName;
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getFieldName()
+    {
+        return $this->fieldName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getFieldName() {
-		return $this->fieldName;
-	}
+    /**
+     * @param string $fieldName
+     * @return DataProviderContext
+     */
+    public function setFieldName($fieldName)
+    {
+        $this->fieldName = $fieldName;
+        return $this;
+    }
 
-	/**
-	 * @param string $fieldName
-	 * @return DataProviderContext
-	 */
-	public function setFieldName($fieldName) {
-		$this->fieldName = $fieldName;
-		return $this;
-	}
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getData() {
-		return $this->data;
-	}
+    /**
+     * @param array $data
+     * @return DataProviderContext
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+        return $this;
+    }
 
-	/**
-	 * @param array $data
-	 * @return DataProviderContext
-	 */
-	public function setData(array $data) {
-		$this->data = $data;
-		return $this;
-	}
+    /**
+     * @return array
+     */
+    public function getPageTsConfig()
+    {
+        return $this->pageTsConfig;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getPageTsConfig() {
-		return $this->pageTsConfig;
-	}
-
-	/**
-	 * @param array $pageTsConfig
-	 * @return DataProviderContext
-	 */
-	public function setPageTsConfig(array $pageTsConfig) {
-		$this->pageTsConfig = $pageTsConfig;
-		return $this;
-	}
-
+    /**
+     * @param array $pageTsConfig
+     * @return DataProviderContext
+     */
+    public function setPageTsConfig(array $pageTsConfig)
+    {
+        $this->pageTsConfig = $pageTsConfig;
+        return $this;
+    }
 }

@@ -24,92 +24,97 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 /**
  * Test case
  */
-class ImageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ImageScriptServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var ImageService
+     */
+    protected $subject;
 
-	/**
-	 * @var ImageService
-	 */
-	protected $subject;
+    /**
+     * @var EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $environmentService;
 
-	/**
-	 * @var EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $environmentService;
+    /**
+     * Initialize ImageService and environment service mock
+     */
+    protected function setUp()
+    {
+        $this->subject = new ImageService();
+        $this->environmentService = $this->getMock(EnvironmentService::class);
+        $this->inject($this->subject, 'environmentService', $this->environmentService);
+        GeneralUtility::flushInternalRuntimeCaches();
+        $_SERVER['HTTP_HOST'] = 'foo.bar';
+    }
 
-	/**
-	 * Initialize ImageService and environment service mock
-	 */
-	protected function setUp() {
-		$this->subject = new ImageService();
-		$this->environmentService = $this->getMock(EnvironmentService::class);
-		$this->inject($this->subject, 'environmentService', $this->environmentService);
-		GeneralUtility::flushInternalRuntimeCaches();
-		$_SERVER['HTTP_HOST'] = 'foo.bar';
-	}
+    /**
+     * @test
+     */
+    public function fileIsUnwrappedFromReferenceForProcessing()
+    {
+        $reference = $this->getAccessibleMock(FileReference::class, array(), array(), '', false);
+        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file->expects($this->once())->method('process')->willReturn($this->getMock(ProcessedFile::class, array(), array(), '', false));
+        $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
+        $reference->_set('file', $file);
 
-	/**
-	 * @test
-	 */
-	public function fileIsUnwrappedFromReferenceForProcessing() {
-		$reference = $this->getAccessibleMock(FileReference::class, array(), array(), '', FALSE);
-		$file = $this->getMock(File::class, array(), array(), '', FALSE);
-		$file->expects($this->once())->method('process')->willReturn($this->getMock(ProcessedFile::class, array(), array(), '', FALSE));
-		$reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
-		$reference->_set('file', $file);
+        $this->subject->applyProcessingInstructions($reference, array());
+    }
 
-		$this->subject->applyProcessingInstructions($reference, array());
-	}
+    /**
+     * @return array
+     */
+    public function prefixIsCorrectlyAppliedToGetImageUriDataProvider()
+    {
+        return array(
+            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
+            'scheme relative' => array('//foo.bar/img.jpg', '//foo.bar/img.jpg'),
+            'without scheme' => array('foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function prefixIsCorrectlyAppliedToGetImageUriDataProvider() {
-		return array(
-			'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-			'scheme relative' => array('//foo.bar/img.jpg', '//foo.bar/img.jpg'),
-			'without scheme' => array('foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'),
-		);
-	}
+    /**
+     * @test
+     * @dataProvider prefixIsCorrectlyAppliedToGetImageUriDataProvider
+     */
+    public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected)
+    {
+        $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-	/**
-	 * @test
-	 * @dataProvider prefixIsCorrectlyAppliedToGetImageUriDataProvider
-	 */
-	public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected) {
-		$this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(TRUE);
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->absRefPrefix = '/prefix/';
+        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
-		$file = $this->getMock(File::class, array(), array(), '', FALSE);
-		$file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
+        $this->assertSame($expected, $this->subject->getImageUri($file));
+    }
 
-		$this->assertSame($expected, $this->subject->getImageUri($file));
-	}
+    /**
+     * @return array
+     */
+    public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider()
+    {
+        return array(
+            'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
+            'scheme relative' => array('//foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
+            'without scheme' => array('foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider() {
-		return array(
-			'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-			'scheme relative' => array('//foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
-			'without scheme' => array('foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'),
-		);
-	}
+    /**
+     * @test
+     * @dataProvider prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider
+     */
+    public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected)
+    {
+        $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
-	/**
-	 * @test
-	 * @dataProvider prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider
-	 */
-	public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected) {
-		$this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(TRUE);
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->absRefPrefix = '/prefix/';
+        $file = $this->getMock(File::class, array(), array(), '', false);
+        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
-		$file = $this->getMock(File::class, array(), array(), '', FALSE);
-		$file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
-
-		$this->assertSame($expected, $this->subject->getImageUri($file, TRUE));
-	}
-
+        $this->assertSame($expected, $this->subject->getImageUri($file, true));
+    }
 }

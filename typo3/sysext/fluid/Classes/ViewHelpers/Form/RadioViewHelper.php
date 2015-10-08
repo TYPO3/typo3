@@ -44,68 +44,69 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
+class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'input';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
+    /**
+     * Initialize the arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerTagAttribute(
+            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+        );
+        $this->registerArgument(
+            'errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error'
+        );
+        $this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', true);
+        $this->registerUniversalTagAttributes();
+    }
 
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute(
-			'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
-		);
-		$this->registerArgument(
-			'errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error'
-		);
-		$this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', TRUE);
-		$this->registerUniversalTagAttributes();
-	}
+    /**
+     * Renders the checkbox.
+     *
+     * @param bool $checked Specifies that the input element should be preselected
+     * @return string
+     * @api
+     */
+    public function render($checked = null)
+    {
+        $this->tag->addAttribute('type', 'radio');
 
-	/**
-	 * Renders the checkbox.
-	 *
-	 * @param bool $checked Specifies that the input element should be preselected
-	 * @return string
-	 * @api
-	 */
-	public function render($checked = NULL) {
-		$this->tag->addAttribute('type', 'radio');
+        $nameAttribute = $this->getName();
+        $valueAttribute = $this->getValueAttribute();
 
-		$nameAttribute = $this->getName();
-		$valueAttribute = $this->getValueAttribute();
+        $propertyValue = null;
+        if ($this->hasMappingErrorOccurred()) {
+            $propertyValue = $this->getLastSubmittedFormData();
+        }
+        if ($checked === null && $propertyValue === null) {
+            $propertyValue = $this->getPropertyValue();
+        }
 
-		$propertyValue = NULL;
-		if ($this->hasMappingErrorOccurred()) {
-			$propertyValue = $this->getLastSubmittedFormData();
-		}
-		if ($checked === NULL && $propertyValue === NULL) {
-			$propertyValue = $this->getPropertyValue();
-		}
+        if ($propertyValue !== null) {
 
-		if ($propertyValue !== NULL) {
+            // no type-safe comparison by intention
+            $checked = $propertyValue == $valueAttribute;
+        }
 
-			// no type-safe comparison by intention
-			$checked = $propertyValue == $valueAttribute;
-		}
+        $this->registerFieldNameForFormTokenGeneration($nameAttribute);
+        $this->tag->addAttribute('name', $nameAttribute);
+        $this->tag->addAttribute('value', $valueAttribute);
+        if ($checked === true) {
+            $this->tag->addAttribute('checked', 'checked');
+        }
 
-		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
-		$this->tag->addAttribute('name', $nameAttribute);
-		$this->tag->addAttribute('value', $valueAttribute);
-		if ($checked === TRUE) {
-			$this->tag->addAttribute('checked', 'checked');
-		}
+        $this->setErrorClassAttribute();
 
-		$this->setErrorClassAttribute();
-
-		return $this->tag->render();
-	}
-
+        return $this->tag->render();
+    }
 }

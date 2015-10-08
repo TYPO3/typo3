@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Locking\Exception;
 /**
  * An exception indicating a lock creation error
  */
-class LockCreateException extends \TYPO3\CMS\Core\Locking\Exception {
-
-
+class LockCreateException extends \TYPO3\CMS\Core\Locking\Exception
+{
 }

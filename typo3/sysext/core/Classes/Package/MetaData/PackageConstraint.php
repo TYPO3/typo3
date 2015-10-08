@@ -18,46 +18,49 @@ namespace TYPO3\CMS\Core\Package\MetaData;
  * Package constraint meta model
  * Adapted from FLOW for TYPO3 CMS
  */
-class PackageConstraint {
+class PackageConstraint
+{
+    /**
+     * One of depends, conflicts or suggests
+     * @var string
+     */
+    protected $constraintType;
 
-	/**
-	 * One of depends, conflicts or suggests
-	 * @var string
-	 */
-	protected $constraintType;
+    /**
+     * The constraint name or value
+     * @var string
+     */
+    protected $value;
 
-	/**
-	 * The constraint name or value
-	 * @var string
-	 */
-	protected $value;
+    /**
+     * Meta data constraint constructor
+     *
+     * @param string $constraintType
+     * @param string $value
+     * @param string $minVersion
+     * @param string $maxVersion
+     */
+    public function __construct($constraintType, $value, $minVersion = null, $maxVersion = null)
+    {
+        $this->constraintType = $constraintType;
+        $this->value = $value;
+        $this->minVersion = $minVersion;
+        $this->maxVersion = $maxVersion;
+    }
 
-	/**
-	 * Meta data constraint constructor
-	 *
-	 * @param string $constraintType
-	 * @param string $value
-	 * @param string $minVersion
-	 * @param string $maxVersion
-	 */
-	public function __construct($constraintType, $value, $minVersion = NULL, $maxVersion = NULL) {
-		$this->constraintType = $constraintType;
-		$this->value = $value;
-		$this->minVersion = $minVersion;
-		$this->maxVersion = $maxVersion;
-	}
+    /**
+     * @return string The constraint name or value
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * @return string The constraint name or value
-	 */
-	public function getValue() {
-		return $this->value;
-	}
-
-	/**
-	 * @return string The constraint type (depends, conflicts, suggests)
-	 */
-	public function getConstraintType() {
-		return $this->constraintType;
-	}
+    /**
+     * @return string The constraint type (depends, conflicts, suggests)
+     */
+    public function getConstraintType()
+    {
+        return $this->constraintType;
+    }
 }

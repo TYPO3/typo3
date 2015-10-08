@@ -22,82 +22,86 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Utility class for phpinfo()
  * @internal
  */
-class PhpInfoViewHelper extends AbstractViewHelper implements CompilableInterface {
+class PhpInfoViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+     * can decode the text's entities.
+     *
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
-	 * can decode the text's entities.
-	 *
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Render PHP info
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            array(),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render PHP info
-	 *
-	 * @return string
-	 */
-	public function render() {
-		return static::renderStatic(
-			array(),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return self::removeAllHtmlOutsideBody(
+            self::changeHtmlToHtml5(
+                self::getPhpInfo()
+            )
+        );
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return self::removeAllHtmlOutsideBody(
-			self::changeHtmlToHtml5(
-				self::getPhpInfo()
-			)
-		);
-	}
+    /**
+     * Get information about PHP's configuration
+     *
+     * @return string HTML page with the configuration options
+     */
+    protected static function getPhpInfo()
+    {
+        ob_start();
+        phpinfo();
 
-	/**
-	 * Get information about PHP's configuration
-	 *
-	 * @return string HTML page with the configuration options
-	 */
-	static protected function getPhpInfo() {
-		ob_start();
-		phpinfo();
+        return ob_get_clean();
+    }
 
-		return ob_get_clean();
-	}
+    /**
+     * Remove all HTML outside the body tag from HTML string
+     *
+     * @param string $html Complete HTML markup for page
+     * @return string Content of the body tag
+     */
+    protected static function removeAllHtmlOutsideBody($html)
+    {
+        // Delete anything outside of the body tag and the body tag itself
+        $html = preg_replace('/^.*?<body.*?>/is', '', $html);
+        $html = preg_replace('/<\/body>.*?$/is', '', $html);
 
-	/**
-	 * Remove all HTML outside the body tag from HTML string
-	 *
-	 * @param string $html Complete HTML markup for page
-	 * @return string Content of the body tag
-	 */
-	static protected function removeAllHtmlOutsideBody($html) {
-		// Delete anything outside of the body tag and the body tag itself
-		$html = preg_replace('/^.*?<body.*?>/is', '', $html);
-		$html = preg_replace('/<\/body>.*?$/is', '', $html);
+        return $html;
+    }
 
-		return $html;
-	}
+    /**
+     * Change HTML markup to HTML5
+     *
+     * @param string $html HTML markup to be cleaned
+     * @return string
+     */
+    protected static function changeHtmlToHtml5($html)
+    {
+        // Delete obsolete attributes
+        $html = preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
 
-	/**
-	 * Change HTML markup to HTML5
-	 *
-	 * @param string $html HTML markup to be cleaned
-	 * @return string
-	 */
-	static protected function changeHtmlToHtml5($html) {
-		// Delete obsolete attributes
-		$html = preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
-
-		// Replace font tag with span
-		return str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
-	}
-
+        // Replace font tag with span
+        return str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
+    }
 }

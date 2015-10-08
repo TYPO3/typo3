@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * General purpose AJAX controller action helper methods and bootstrap
  */
-abstract class AbstractAjaxAction extends \TYPO3\CMS\Install\Controller\Action\AbstractAction {
-
-	/**
-	 * Handles the action
-	 *
-	 * @return string Rendered content
-	 */
-	public function handle() {
-		$this->initializeHandle();
-		return json_encode($this->executeAction());
-	}
-
+abstract class AbstractAjaxAction extends \TYPO3\CMS\Install\Controller\Action\AbstractAction
+{
+    /**
+     * Handles the action
+     *
+     * @return string Rendered content
+     */
+    public function handle()
+    {
+        $this->initializeHandle();
+        return json_encode($this->executeAction());
+    }
 }

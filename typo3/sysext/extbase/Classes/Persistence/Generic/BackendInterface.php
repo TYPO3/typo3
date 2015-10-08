@@ -17,92 +17,92 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A persistence backend interface
  */
-interface BackendInterface {
+interface BackendInterface
+{
+    /**
+     * Set a PersistenceManager instance.
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+     * @return void
+     */
+    public function setPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager);
 
-	/**
-	 * Set a PersistenceManager instance.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-	 * @return void
-	 */
-	public function setPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager);
+    /**
+     * Sets the aggregate root objects
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
+     * @return void
+     */
+    public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
 
-	/**
-	 * Sets the aggregate root objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
-	 * @return void
-	 */
-	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
+    /**
+     * Sets the deleted entities
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
+     * @return void
+     * @api
+     */
+    public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
 
-	/**
-	 * Sets the deleted entities
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-	 * @return void
-	 * @api
-	 */
-	public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
+    /**
+     * Sets the changed objects
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
+     * @return void
+     */
+    public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
 
-	/**
-	 * Sets the changed objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-	 * @return void
-	 */
-	public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
+    /**
+     * Commits the current persistence session
+     *
+     * @return void
+     */
+    public function commit();
 
-	/**
-	 * Commits the current persistence session
-	 *
-	 * @return void
-	 */
-	public function commit();
+    // @todo refactor towards being closer to the Flow backend interface again
 
-	// @todo refactor towards being closer to the Flow backend interface again
+    /**
+     * Returns the (internal) identifier for the object, if it is known to the
+     * backend. Otherwise NULL is returned.
+     *
+     * @param object $object
+     * @return string|NULL The identifier for the object if it is known, or NULL
+     */
+    public function getIdentifierByObject($object);
 
-	/**
-	 * Returns the (internal) identifier for the object, if it is known to the
-	 * backend. Otherwise NULL is returned.
-	 *
-	 * @param object $object
-	 * @return string|NULL The identifier for the object if it is known, or NULL
-	 */
-	public function getIdentifierByObject($object);
+    /**
+     * Returns the object with the (internal) identifier, if it is known to the
+     * backend. Otherwise NULL is returned.
+     *
+     * @param string $identifier
+     * @param string $className
+     * @return object|NULL The object for the identifier if it is known, or NULL
+     */
+    public function getObjectByIdentifier($identifier, $className);
 
-	/**
-	 * Returns the object with the (internal) identifier, if it is known to the
-	 * backend. Otherwise NULL is returned.
-	 *
-	 * @param string $identifier
-	 * @param string $className
-	 * @return object|NULL The object for the identifier if it is known, or NULL
-	 */
-	public function getObjectByIdentifier($identifier, $className);
+    /**
+     * Checks if the given object has ever been persisted.
+     *
+     * @param object $object The object to check
+     * @return bool TRUE if the object is new, FALSE if the object exists in the repository
+     */
+    public function isNewObject($object);
 
-	/**
-	 * Checks if the given object has ever been persisted.
-	 *
-	 * @param object $object The object to check
-	 * @return bool TRUE if the object is new, FALSE if the object exists in the repository
-	 */
-	public function isNewObject($object);
+    /**
+     * Returns the number of records matching the query.
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @return int
+     * @api
+     */
+    public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
-	/**
-	 * Returns the number of records matching the query.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @return int
-	 * @api
-	 */
-	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
-
-	/**
-	 * Returns the object data matching the $query.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @return array
-	 * @api
-	 */
-	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
+    /**
+     * Returns the object data matching the $query.
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @return array
+     * @api
+     */
+    public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 }

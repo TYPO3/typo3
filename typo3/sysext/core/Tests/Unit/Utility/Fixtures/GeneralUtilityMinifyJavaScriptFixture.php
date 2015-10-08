@@ -19,19 +19,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Fixture for javascript minification logging
  */
-class GeneralUtilityMinifyJavaScriptFixture extends GeneralUtility {
-
-	/**
-	 * Logs message to the development log.
-	 *
-	 * @param string $errorMessage Message (in english).
-	 * @throws \UnexpectedValueException
-	 * @throws \RuntimeException
-	 */
-	static public function devLog($errorMessage, $extKey, $severity = 0, $dataVar = FALSE) {
-		if ($errorMessage !== 'Error minifying java script: foo') {
-			throw new \UnexpectedValueException('broken');
-		}
-		throw new \RuntimeException();
-	}
+class GeneralUtilityMinifyJavaScriptFixture extends GeneralUtility
+{
+    /**
+     * Logs message to the development log.
+     *
+     * @param string $errorMessage Message (in english).
+     * @throws \UnexpectedValueException
+     * @throws \RuntimeException
+     */
+    public static function devLog($errorMessage, $extKey, $severity = 0, $dataVar = false)
+    {
+        if ($errorMessage !== 'Error minifying java script: foo') {
+            throw new \UnexpectedValueException('broken');
+        }
+        throw new \RuntimeException();
+    }
 }

@@ -26,6 +26,6 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class FormatNotSupportedException extends \TYPO3\CMS\Extbase\Property\Exception {
-
+class FormatNotSupportedException extends \TYPO3\CMS\Extbase\Property\Exception
+{
 }

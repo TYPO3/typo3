@@ -19,13 +19,14 @@ use TYPO3\CMS\Core\Mail\MboxTransport;
 /**
  * Fixture fake transport
  */
-class FakeTransportFixture extends MboxTransport {
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $settings
-	 */
-	public function __construct($settings) {
-	}
+class FakeTransportFixture extends MboxTransport
+{
+    /**
+     * Constructor
+     *
+     * @param string $settings
+     */
+    public function __construct($settings)
+    {
+    }
 }

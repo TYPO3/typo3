@@ -17,18 +17,17 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Interface for classes which hook into getSourceCollection for additional processing
  */
-interface ContentObjectOneSourceCollectionHookInterface {
-
-	/**
-	 * Renders One Source Collection
-	 *
-	 * @param array $sourceRenderConfiguration Array with TypoScript Properties for the imgResource
-	 * @param array $sourceConfiguration
-	 * @param string $oneSourceCollection already prerendered SourceCollection
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
-	 * @internal param array $configuration Array with the Source Configuration
-	 * @return string HTML Content for oneSourceCollection
-	 */
-	public function getOneSourceCollection(array $sourceRenderConfiguration, array $sourceConfiguration, $oneSourceCollection, ContentObjectRenderer &$parentObject);
-
+interface ContentObjectOneSourceCollectionHookInterface
+{
+    /**
+     * Renders One Source Collection
+     *
+     * @param array $sourceRenderConfiguration Array with TypoScript Properties for the imgResource
+     * @param array $sourceConfiguration
+     * @param string $oneSourceCollection already prerendered SourceCollection
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
+     * @internal param array $configuration Array with the Source Configuration
+     * @return string HTML Content for oneSourceCollection
+     */
+    public function getOneSourceCollection(array $sourceRenderConfiguration, array $sourceConfiguration, $oneSourceCollection, ContentObjectRenderer &$parentObject);
 }

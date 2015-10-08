@@ -18,6 +18,6 @@ namespace TYPO3\CMS\Core\Package\Exception;
  * "Unknown Package" Exception
  * Adapted from FLOW for TYPO3 CMS
  */
-class UnknownPackageException extends \TYPO3\CMS\Core\Package\Exception {
-
+class UnknownPackageException extends \TYPO3\CMS\Core\Package\Exception
+{
 }

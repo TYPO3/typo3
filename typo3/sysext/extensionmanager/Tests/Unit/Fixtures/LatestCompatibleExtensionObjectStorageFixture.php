@@ -17,18 +17,18 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures;
 /**
  * Latest compatible extension object storage fixture
  */
-class LatestCompatibleExtensionObjectStorageFixture {
+class LatestCompatibleExtensionObjectStorageFixture
+{
+    /**
+     * @var array
+     */
+    public $extensions = array();
 
-	/**
-	 * @var array
-	 */
-	public $extensions = array();
-
-	/**
-	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
-	 */
-	public function getFirst() {
-		return $this->extensions[0];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     */
+    public function getFirst()
+    {
+        return $this->extensions[0];
+    }
 }

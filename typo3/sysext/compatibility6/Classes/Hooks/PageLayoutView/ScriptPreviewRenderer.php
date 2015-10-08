@@ -22,49 +22,50 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Contains a preview rendering for the page module of CType="script"
  */
-class ScriptPreviewRenderer implements PageLayoutViewDrawItemHookInterface {
+class ScriptPreviewRenderer implements PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of a content element of type "script"
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionality
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     *
+     * @return void
+     */
+    public function preProcess(
+        PageLayoutView &$parentObject,
+        &$drawItem,
+        &$headerContent,
+        &$itemContent,
+        array &$row
+    ) {
+        if ($row['CType'] === 'script') {
+            $itemContent .= $this->getLanguageService()->sL(
+                BackendUtility::getItemLabel('tt_content', 'select_key'),
+                true
+            ) . ' ' . $row['select_key'] . '<br />';
+            $itemContent .= '<br />' . $parentObject->linkEditContent(
+                $parentObject->renderText($row['bodytext']),
+                $row
+            ) . '<br />';
+            $itemContent .= '<br />' . $parentObject->linkEditContent(
+                $parentObject->renderText($row['imagecaption']),
+                $row
+            ) . '<br />';
 
-	/**
-	 * Preprocesses the preview rendering of a content element of type "script"
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionality
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 *
-	 * @return void
-	 */
-	public function preProcess(
-		PageLayoutView &$parentObject,
-		&$drawItem,
-		&$headerContent,
-		&$itemContent,
-		array &$row
-	) {
-		if ($row['CType'] === 'script') {
-			$itemContent .= $this->getLanguageService()->sL(
-				BackendUtility::getItemLabel('tt_content', 'select_key'),
-				TRUE
-			) . ' ' . $row['select_key'] . '<br />';
-			$itemContent .= '<br />' . $parentObject->linkEditContent(
-				$parentObject->renderText($row['bodytext']),
-				$row
-			) . '<br />';
-			$itemContent .= '<br />' . $parentObject->linkEditContent(
-				$parentObject->renderText($row['imagecaption']),
-				$row
-			) . '<br />';
+            $drawItem = false;
+        }
+    }
 
-			$drawItem = FALSE;
-		}
-	}
-
-	/**
-	 * Returns the language service
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * Returns the language service
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

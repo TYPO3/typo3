@@ -18,45 +18,47 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Determines the relative order of two rows in the result set by evaluating operand for
  * each.
  */
-class Ordering implements OrderingInterface {
+class Ordering implements OrderingInterface
+{
+    /**
+     * @var DynamicOperandInterface
+     */
+    protected $operand;
 
-	/**
-	 * @var DynamicOperandInterface
-	 */
-	protected $operand;
+    /**
+     * @var string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     */
+    protected $order;
 
-	/**
-	 * @var string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-	 */
-	protected $order;
+    /**
+     * Constructs the Ordering instance
+     *
+     * @param DynamicOperandInterface $operand The operand; non-null
+     * @param string $order One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     */
+    public function __construct(DynamicOperandInterface $operand, $order = \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING)
+    {
+        $this->operand = $operand;
+        $this->order = $order;
+    }
 
-	/**
-	 * Constructs the Ordering instance
-	 *
-	 * @param DynamicOperandInterface $operand The operand; non-null
-	 * @param string $order One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-	 */
-	public function __construct(DynamicOperandInterface $operand, $order = \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING) {
-		$this->operand = $operand;
-		$this->order = $order;
-	}
+    /**
+     * The operand by which to order.
+     *
+     * @return DynamicOperandInterface the operand; non-null
+     */
+    public function getOperand()
+    {
+        return $this->operand;
+    }
 
-	/**
-	 * The operand by which to order.
-	 *
-	 * @return DynamicOperandInterface the operand; non-null
-	 */
-	public function getOperand() {
-		return $this->operand;
-	}
-
-	/**
-	 * Gets the order.
-	 *
-	 * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-	 */
-	public function getOrder() {
-		return $this->order;
-	}
-
+    /**
+     * Gets the order.
+     *
+     * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 }

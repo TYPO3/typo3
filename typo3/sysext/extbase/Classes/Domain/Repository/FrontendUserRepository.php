@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  *
  * @api
  */
-class FrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-
+class FrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 }

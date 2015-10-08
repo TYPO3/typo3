@@ -19,65 +19,69 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * @api
  */
-class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
+class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+{
+    /**
+     * @var string The response content
+     */
+    protected $content = null;
 
-	/**
-	 * @var string The response content
-	 */
-	protected $content = NULL;
+    /**
+     * Overrides and sets the content of the response
+     *
+     * @param string $content The response content
+     * @return void
+     * @api
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
 
-	/**
-	 * Overrides and sets the content of the response
-	 *
-	 * @param string $content The response content
-	 * @return void
-	 * @api
-	 */
-	public function setContent($content) {
-		$this->content = $content;
-	}
+    /**
+     * Appends content to the already existing content.
+     *
+     * @param string $content More response content
+     * @return void
+     * @api
+     */
+    public function appendContent($content)
+    {
+        $this->content .= $content;
+    }
 
-	/**
-	 * Appends content to the already existing content.
-	 *
-	 * @param string $content More response content
-	 * @return void
-	 * @api
-	 */
-	public function appendContent($content) {
-		$this->content .= $content;
-	}
+    /**
+     * Returns the response content without sending it.
+     *
+     * @return string The response content
+     * @api
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 * @api
-	 */
-	public function getContent() {
-		return $this->content;
-	}
+    /**
+     * Fetches the content, returns and clears it.
+     *
+     * @return string
+     * @api
+     */
+    public function shutdown()
+    {
+        $content = $this->getContent();
+        $this->setContent('');
+        return $content;
+    }
 
-	/**
-	 * Fetches the content, returns and clears it.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function shutdown() {
-		$content = $this->getContent();
-		$this->setContent('');
-		return $content;
-	}
-
-	/**
-	 * Returns the content of the response.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function __toString() {
-		return $this->getContent();
-	}
-
+    /**
+     * Returns the content of the response.
+     *
+     * @return string
+     * @api
+     */
+    public function __toString()
+    {
+        return $this->getContent();
+    }
 }

@@ -17,22 +17,23 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
 /**
  * Testcase for SaltedPasswordsUtility
  */
-class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function doesReturnExtConfReturnDefaultSettingsIfNoExtensionConfigurationIsFound()
+    {
+        $this->assertEquals(\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConfDefaults(), \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConf('TEST_MODE'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function doesReturnExtConfReturnDefaultSettingsIfNoExtensionConfigurationIsFound() {
-		$this->assertEquals(\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConfDefaults(), \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConf('TEST_MODE'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function doesReturnExtConfReturnMergedSettingsIfExtensionConfigurationIsFound() {
-		$setting = array('setting' => 1);
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'] = serialize(array('TEST_MODE.' => $setting));
-		$this->assertEquals(array_merge(\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConfDefaults(), $setting), \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConf('TEST_MODE'));
-	}
-
+    /**
+     * @test
+     */
+    public function doesReturnExtConfReturnMergedSettingsIfExtensionConfigurationIsFound()
+    {
+        $setting = array('setting' => 1);
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'] = serialize(array('TEST_MODE.' => $setting));
+        $this->assertEquals(array_merge(\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConfDefaults(), $setting), \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::returnExtConf('TEST_MODE'));
+    }
 }

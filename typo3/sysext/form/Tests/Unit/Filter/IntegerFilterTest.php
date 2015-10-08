@@ -17,38 +17,40 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  */
-class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Filter\IntegerFilter
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Filter\IntegerFilter
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Form\Domain\Filter\IntegerFilter();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\IntegerFilter();
-	}
+    public function dataProvider()
+    {
+        return array(
+            '"1" -> 1' => array('1', 1),
+            '1 -> 1' => array(1, 1),
+            '1.1 -> 1' => array(1.1, 1),
+            '1+E42 -> 1' => array(1+E42, 1),
+            'a -> 0' => array(a, 0),
+            'a42 -> 0' => array('a42', 0),
+            '-100.00 -> -100' => array(-100.00, -100),
+        );
+    }
 
-	public function dataProvider() {
-		return array(
-			'"1" -> 1' => array('1', 1),
-			'1 -> 1' => array(1, 1),
-			'1.1 -> 1' => array(1.1, 1),
-			'1+E42 -> 1' => array(1+E42, 1),
-			'a -> 0' => array(a, 0),
-			'a42 -> 0' => array('a42', 0),
-			'-100.00 -> -100' => array(-100.00, -100),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider dataProvider
-	 */
-	public function filterForVariousInputReturnsInputCastedToInteger($input, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->subject->filter($input)
-		);
-	}
-
+    /**
+     * @test
+     * @dataProvider dataProvider
+     */
+    public function filterForVariousInputReturnsInputCastedToInteger($input, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->subject->filter($input)
+        );
+    }
 }

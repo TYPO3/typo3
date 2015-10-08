@@ -20,46 +20,49 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Handles the redirection for external URL pages.
  */
-class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInterface {
+class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInterface
+{
+    /**
+     * @var string
+     */
+    protected $externalUrl = '';
 
-	/**
-	 * @var string
-	 */
-	protected $externalUrl = '';
+    /**
+     * Checks if external URLs are enabled and if the current page points to an external URL.
+     *
+     * @return bool
+     */
+    public function canHandleCurrentUrl()
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
 
-	/**
-	 * Checks if external URLs are enabled and if the current page points to an external URL.
-	 *
-	 * @return bool
-	 */
-	public function canHandleCurrentUrl() {
-		$tsfe = $this->getTypoScriptFrontendController();
+        if (!empty($tsfe->config['config']['disablePageExternalUrl'])) {
+            return false;
+        }
 
-		if (!empty($tsfe->config['config']['disablePageExternalUrl'])) {
-			return FALSE;
-		}
+        $this->externalUrl = $tsfe->sys_page->getExtURL($tsfe->page);
+        if (empty($this->externalUrl)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-		$this->externalUrl = $tsfe->sys_page->getExtURL($tsfe->page);
-		if (empty($this->externalUrl)) {
-			return FALSE;
-		} else {
-			return TRUE;
-		}
-	}
+    /**
+     * Redirects the user to the detected external URL.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        HttpUtility::redirect($this->externalUrl, HttpUtility::HTTP_STATUS_303);
+    }
 
-	/**
-	 * Redirects the user to the detected external URL.
-	 *
-	 * @return void
-	 */
-	public function handle() {
-		HttpUtility::redirect($this->externalUrl, HttpUtility::HTTP_STATUS_303);
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getTypoScriptFrontendController() {
-		return $GLOBALS['TSFE'];
-	}
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }

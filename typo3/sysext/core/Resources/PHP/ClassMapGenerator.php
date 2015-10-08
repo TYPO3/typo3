@@ -59,7 +59,7 @@ class ClassMapGenerator
                 $path = Finder::create()->files()->followLinks()->name('/\.(php|inc|hh)$/')->in($path);
             } else {
                 throw new \RuntimeException(
-                    'Could not scan for classes inside "'.$path.
+                    'Could not scan for classes inside "' . $path .
                     '" which does not appear to be a file nor a folder'
                 );
             }
@@ -88,10 +88,10 @@ class ClassMapGenerator
 
                 if (!isset($map[$class])) {
                     $map[$class] = $filePath;
-                } elseif ($io && $map[$class] !== $filePath && !preg_match('{/(test|fixture|example)s?/}i', strtr($map[$class].' '.$filePath, '\\', '/'))) {
+                } elseif ($io && $map[$class] !== $filePath && !preg_match('{/(test|fixture|example)s?/}i', strtr($map[$class] . ' ' . $filePath, '\\', '/'))) {
                     $io->writeError(
-                        '<warning>Warning: Ambiguous class resolution, "'.$class.'"'.
-                        ' was found in both "'.$map[$class].'" and "'.$filePath.'", the first will be used.</warning>'
+                        '<warning>Warning: Ambiguous class resolution, "' . $class . '"' .
+                        ' was found in both "' . $map[$class] . '" and "' . $filePath . '", the first will be used.</warning>'
                     );
                 }
             }
@@ -125,11 +125,11 @@ class ClassMapGenerator
                 }
             }
         } catch (\Exception $e) {
-            throw new \RuntimeException('Could not scan for classes inside '.$path.": \n".$e->getMessage(), 0, $e);
+            throw new \RuntimeException('Could not scan for classes inside ' . $path . ": \n" . $e->getMessage(), 0, $e);
         }
 
         // return early if there is no chance of matching anything in this file
-        if (!preg_match('{\b(?:class|interface'.$extraTypes.')\s}i', $contents)) {
+        if (!preg_match('{\b(?:class|interface' . $extraTypes . ')\s}i', $contents)) {
             return array();
         }
 
@@ -154,7 +154,7 @@ class ClassMapGenerator
 
         preg_match_all('{
             (?:
-                 \b(?<![\$:>])(?P<type>class|interface'.$extraTypes.') \s+ (?P<name>[a-zA-Z_\x7f-\xff:][a-zA-Z0-9_\x7f-\xff:\-]*)
+                 \b(?<![\$:>])(?P<type>class|interface' . $extraTypes . ') \s+ (?P<name>[a-zA-Z_\x7f-\xff:][a-zA-Z0-9_\x7f-\xff:\-]*)
                | \b(?<![\$:>])(?P<ns>namespace) (?P<nsname>\s+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(?:\s*\\\\\s*[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*)? \s*[\{;]
             )
         }ix', $contents, $matches);
@@ -169,7 +169,7 @@ class ClassMapGenerator
                 $name = $matches['name'][$i];
                 if ($name[0] === ':') {
                     // This is an XHP class, https://github.com/facebook/xhp
-                    $name = 'xhp'.substr(str_replace(array('-', ':'), array('_', '__'), $name), 1);
+                    $name = 'xhp' . substr(str_replace(array('-', ':'), array('_', '__'), $name), 1);
                 } elseif ($matches['type'][$i] === 'enum') {
                     // In Hack, something like:
                     //   enum Foo: int { HERP = '123'; }

@@ -38,45 +38,46 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * [A HTML view of the var_dump]
  * </output>
  */
-class DebugViewHelper extends AbstractViewHelper implements CompilableInterface {
+class DebugViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
+     *
+     * @param string $title optional custom title for the debug output
+     * @param int $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.
+     * @param bool $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
+     * @param bool $ansiColors If TRUE, ANSI color codes is added to the plaintext output, if FALSE (default) the plaintext debug output not colored.
+     * @param bool $inline if TRUE, the dump is rendered at the position of the <f:debug> tag. If FALSE (default), the dump is displayed at the top of the page.
+     * @param array $blacklistedClassNames An array of class names (RegEx) to be filtered. Default is an array of some common class names.
+     * @param array $blacklistedPropertyNames An array of property names and/or array keys (RegEx) to be filtered. Default is an array of some common property names.
+     * @return string
+     */
+    public function render($title = null, $maxDepth = 8, $plainText = false, $ansiColors = false, $inline = false, $blacklistedClassNames = null, $blacklistedPropertyNames = null)
+    {
+        return static::renderStatic(
+            array(
+                'title' => $title,
+                'maxDepth' => $maxDepth,
+                'plainText' => $plainText,
+                'ansiColors' => $ansiColors,
+                'inline' => $inline,
+                'blacklistedClassNames' => $blacklistedClassNames,
+                'blacklistedPropertyNames' => $blacklistedPropertyNames
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
-	 *
-	 * @param string $title optional custom title for the debug output
-	 * @param int $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.
-	 * @param bool $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
-	 * @param bool $ansiColors If TRUE, ANSI color codes is added to the plaintext output, if FALSE (default) the plaintext debug output not colored.
-	 * @param bool $inline if TRUE, the dump is rendered at the position of the <f:debug> tag. If FALSE (default), the dump is displayed at the top of the page.
-	 * @param array $blacklistedClassNames An array of class names (RegEx) to be filtered. Default is an array of some common class names.
-	 * @param array $blacklistedPropertyNames An array of property names and/or array keys (RegEx) to be filtered. Default is an array of some common property names.
-	 * @return string
-	 */
-	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
-		return static::renderStatic(
-			array(
-				'title' => $title,
-				'maxDepth' => $maxDepth,
-				'plainText' => $plainText,
-				'ansiColors' => $ansiColors,
-				'inline' => $inline,
-				'blacklistedClassNames' => $blacklistedClassNames,
-				'blacklistedPropertyNames' => $blacklistedPropertyNames
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return DebuggerUtility::var_dump($renderChildrenClosure(), $arguments['title'], $arguments['maxDepth'], (bool)$arguments['plainText'], (bool)$arguments['ansiColors'], (bool)$arguments['inline'], $arguments['blacklistedClassNames'], $arguments['blacklistedPropertyNames']);
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return DebuggerUtility::var_dump($renderChildrenClosure(), $arguments['title'], $arguments['maxDepth'], (bool)$arguments['plainText'], (bool)$arguments['ansiColors'], (bool)$arguments['inline'], $arguments['blacklistedClassNames'], $arguments['blacklistedPropertyNames']);
+    }
 }

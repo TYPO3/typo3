@@ -19,16 +19,15 @@ use TYPO3\CMS\Core\Resource\File;
 /**
  * Interface for hooks to fetch the public URL of files
  */
-interface ContentObjectGetPublicUrlForFileHookInterface {
-
-	/**
-	 * Post-processes a public URL.
-	 *
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent The current content object (context)
-	 * @param array $configuration TypoScript configuration
-	 * @param File $file The file object to be used
-	 * @param string $pubicUrl Reference to the public URL
-	 */
-	public function postProcess(ContentObjectRenderer $parent, array $configuration, File $file, &$pubicUrl);
-
+interface ContentObjectGetPublicUrlForFileHookInterface
+{
+    /**
+     * Post-processes a public URL.
+     *
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent The current content object (context)
+     * @param array $configuration TypoScript configuration
+     * @param File $file The file object to be used
+     * @param string $pubicUrl Reference to the public URL
+     */
+    public function postProcess(ContentObjectRenderer $parent, array $configuration, File $file, &$pubicUrl);
 }

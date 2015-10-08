@@ -17,16 +17,15 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 /**
  * Parser interface.
  */
-interface LocalizationParserInterface {
-
-	/**
-	 * Returns parsed representation of XML file.
-	 *
-	 * @param string $sourcePath Source file path
-	 * @param string $languageKey Language key
-	 * @param string $charset Charset
-	 * @return array
-	 */
-	public function getParsedData($sourcePath, $languageKey, $charset = '');
-
+interface LocalizationParserInterface
+{
+    /**
+     * Returns parsed representation of XML file.
+     *
+     * @param string $sourcePath Source file path
+     * @param string $languageKey Language key
+     * @param string $charset Charset
+     * @return array
+     */
+    public function getParsedData($sourcePath, $languageKey, $charset = '');
 }

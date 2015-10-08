@@ -20,65 +20,66 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * field language_isocode, if they have used the now deprecated
  * static_lang_isocode
  */
-class LanguageIsoCodeUpdate extends AbstractUpdate {
+class LanguageIsoCodeUpdate extends AbstractUpdate
+{
+    /**
+     * @var string
+     */
+    protected $title = 'Update sys_language records to use new ISO 639-1 letter-code field';
 
-	/**
-	 * @var string
-	 */
-	protected $title = 'Update sys_language records to use new ISO 639-1 letter-code field';
+    /**
+     * Checks if an update is needed
+     *
+     * @param string &$description The description for the update
+     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     */
+    public function checkForUpdate(&$description)
+    {
+        if ($this->isWizardDone() || !ExtensionManagementUtility::isLoaded('static_info_tables')) {
+            return false;
+        }
 
-	/**
-	 * Checks if an update is needed
-	 *
-	 * @param string &$description The description for the update
-	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
-	 */
-	public function checkForUpdate(&$description) {
-		if ($this->isWizardDone() || !ExtensionManagementUtility::isLoaded('static_info_tables')) {
-			return FALSE;
-		}
+        $emptyValue = $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
+        $migratableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
+        if ($migratableLanguageRecords === 0) {
+            return false;
+        }
 
-		$emptyValue = $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
-		$migratableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
-		if ($migratableLanguageRecords === 0) {
-			return FALSE;
-		}
+        $description = 'The sys_language records have a new iso code field which removes the dependency of the TYPO3 CMS Core to the extension "static_info_tables". This upgrade wizard migrates the data of the existing "static_lang_isocode" field to the new DB field.';
 
-		$description = 'The sys_language records have a new iso code field which removes the dependency of the TYPO3 CMS Core to the extension "static_info_tables". This upgrade wizard migrates the data of the existing "static_lang_isocode" field to the new DB field.';
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Performs the database update if the old field "static_lang_isocode"
+     * is in use and populates the new field "language_isocode" with the
+     * data of the old relation.
+     *
+     * @param array &$databaseQueries Queries done in this update
+     * @param mixed &$customMessages Custom messages
+     * @return bool
+     */
+    public function performUpdate(array &$databaseQueries, &$customMessages)
+    {
+        $emptyValue =  $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
+        $migrateableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,static_lang_isocode', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
+        if (!empty($migrateableLanguageRecords)) {
+            foreach ($migrateableLanguageRecords as $languageRecord) {
+                $staticLanguageRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'static_languages', 'uid=' . (int)$languageRecord['static_lang_isocode']);
+                if (!empty($staticLanguageRecord['lg_iso_2'])) {
+                    $this->getDatabaseConnection()->exec_UPDATEquery(
+                        'sys_language',
+                        'uid=' . (int)$languageRecord['uid'],
+                        array(
+                            'language_isocode' => strtolower($staticLanguageRecord['lg_iso_2'])
+                        )
+                    );
+                    $databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
+                }
+            }
+        }
 
-	/**
-	 * Performs the database update if the old field "static_lang_isocode"
-	 * is in use and populates the new field "language_isocode" with the
-	 * data of the old relation.
-	 *
-	 * @param array &$databaseQueries Queries done in this update
-	 * @param mixed &$customMessages Custom messages
-	 * @return bool
-	 */
-	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$emptyValue =  $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
-		$migrateableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,static_lang_isocode', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
-		if (!empty($migrateableLanguageRecords)) {
-			foreach ($migrateableLanguageRecords as $languageRecord) {
-				$staticLanguageRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'static_languages', 'uid=' . (int)$languageRecord['static_lang_isocode']);
-				if (!empty($staticLanguageRecord['lg_iso_2'])) {
-					$this->getDatabaseConnection()->exec_UPDATEquery(
-						'sys_language',
-						'uid=' . (int)$languageRecord['uid'],
-						array(
-							'language_isocode' => strtolower($staticLanguageRecord['lg_iso_2'])
-						)
-					);
-					$databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
-				}
-			}
-		}
-
-		$this->markWizardAsDone();
-		return TRUE;
-	}
-
+        $this->markWizardAsDone();
+        return true;
+    }
 }

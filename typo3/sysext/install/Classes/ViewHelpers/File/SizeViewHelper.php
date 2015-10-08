@@ -33,47 +33,48 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @internal
  */
-class SizeViewHelper extends AbstractViewHelper implements CompilableInterface {
+class SizeViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Get size from file
+     *
+     * @param bool $format If true, file size will be formatted
+     * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
+     * @return int File size
+     */
+    public function render($format = true)
+    {
+        return static::renderStatic(
+            array(
+                'format' => $format,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Get size from file
-	 *
-	 * @param bool $format If true, file size will be formatted
-	 * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
-	 * @return int File size
-	 */
-	public function render($format = TRUE) {
-		return static::renderStatic(
-			array(
-				'format' => $format,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $format = $arguments['format'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$format = $arguments['format'];
-
-		$absolutePathToFile = $renderChildrenClosure();
-		if (!is_file($absolutePathToFile)) {
-			throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
-				'File not found',
-				1369563246
-			);
-		}
-		$size = filesize($absolutePathToFile);
-		if ($format) {
-			$size = GeneralUtility::formatSize($size);
-		}
-		return $size;
-	}
-
+        $absolutePathToFile = $renderChildrenClosure();
+        if (!is_file($absolutePathToFile)) {
+            throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
+                'File not found',
+                1369563246
+            );
+        }
+        $size = filesize($absolutePathToFile);
+        if ($format) {
+            $size = GeneralUtility::formatSize($size);
+        }
+        return $size;
+    }
 }

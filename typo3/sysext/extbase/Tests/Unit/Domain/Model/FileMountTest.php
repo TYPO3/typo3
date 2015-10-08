@@ -17,71 +17,78 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount
-	 */
-	protected $subject = NULL;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
-	}
+    /**
+     * @test
+     */
+    public function getTitleInitiallyReturnsEmptyString()
+    {
+        $this->assertSame('', $this->subject->getTitle());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->subject->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function setTitleSetsTitle()
+    {
+        $title = 'foobar mount';
+        $this->subject->setTitle($title);
+        $this->assertSame($title, $this->subject->getTitle());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTitleSetsTitle() {
-		$title = 'foobar mount';
-		$this->subject->setTitle($title);
-		$this->assertSame($title, $this->subject->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function setDescriptionSetsDescription()
+    {
+        $description = 'This is the foobar mount, used for foo and bar';
+        $this->subject->setDescription($description);
+        $this->assertSame($description, $this->subject->getDescription());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDescriptionSetsDescription() {
-		$description = 'This is the foobar mount, used for foo and bar';
-		$this->subject->setDescription($description);
-		$this->assertSame($description, $this->subject->getDescription());
-	}
+    /**
+     * @test
+     */
+    public function getPathInitiallyReturnsEmptyString()
+    {
+        $this->assertSame('', $this->subject->getPath());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getPathInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->subject->getPath());
-	}
+    /**
+     * @test
+     */
+    public function setPathSetsPath()
+    {
+        $path = 'foo/bar/';
+        $this->subject->setPath($path);
+        $this->assertSame($path, $this->subject->getPath());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setPathSetsPath() {
-		$path = 'foo/bar/';
-		$this->subject->setPath($path);
-		$this->assertSame($path, $this->subject->getPath());
-	}
+    /**
+     * @test
+     */
+    public function getIsAbsolutePathInitiallyReturnsFalse()
+    {
+        $this->assertFalse($this->subject->getIsAbsolutePath());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getIsAbsolutePathInitiallyReturnsFalse() {
-		$this->assertFalse($this->subject->getIsAbsolutePath());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setIsAbsolutePathCanSetBaseIsAbsolutePathToTrue() {
-		$this->subject->setIsAbsolutePath(TRUE);
-		$this->assertTrue($this->subject->getIsAbsolutePath());
-	}
-
+    /**
+     * @test
+     */
+    public function setIsAbsolutePathCanSetBaseIsAbsolutePathToTrue()
+    {
+        $this->subject->setIsAbsolutePath(true);
+        $this->assertTrue($this->subject->getIsAbsolutePath());
+    }
 }

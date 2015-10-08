@@ -22,209 +22,220 @@ use TYPO3\CMS\Form\Utility\FormUtility;
 /**
  * Parse and hole all the validation rules
  */
-class ValidationBuilder {
+class ValidationBuilder
+{
+    /**
+     * @param Configuration $configuration
+     * @return ValidationBuilder
+     */
+    public static function create(Configuration $configuration)
+    {
+        /** @var ValidationBuilder $validationBuilder */
+        $validationBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ValidationBuilder::class);
+        $validationBuilder->setConfiguration($configuration);
+        return $validationBuilder;
+    }
 
-	/**
-	 * @param Configuration $configuration
-	 * @return ValidationBuilder
-	 */
-	static public function create(Configuration $configuration) {
-		/** @var ValidationBuilder $validationBuilder */
-		$validationBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ValidationBuilder::class);
-		$validationBuilder->setConfiguration($configuration);
-		return $validationBuilder;
-	}
+    /**
+     * @var array|array[]
+     */
+    protected $rules = array();
 
-	/**
-	 * @var array|array[]
-	 */
-	protected $rules = array();
+    /**
+     * @var string
+     */
+    protected $formPrefix = '';
 
-	/**
-	 * @var string
-	 */
-	protected $formPrefix = '';
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager;
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository
+     */
+    protected $typoScriptRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository
-	 */
-	protected $typoScriptRepository;
+    /**
+     * @var FormUtility
+     */
+    protected $formUtility;
 
-	/**
-	 * @var FormUtility
-	 */
-	protected $formUtility;
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
 
-	/**
-	 * @var Configuration
-	 */
-	protected $configuration;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @return void
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+    /**
+     * @param \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository
+     * @return void
+     */
+    public function injectTypoScriptRepository(\TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository)
+    {
+        $this->typoScriptRepository = $typoScriptRepository;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository
-	 * @return void
-	 */
-	public function injectTypoScriptRepository(\TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository) {
-		$this->typoScriptRepository = $typoScriptRepository;
-	}
+    /**
+     * @param Configuration $configuration
+     */
+    public function setConfiguration(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
-	/**
-	 * @param Configuration $configuration
-	 */
-	public function setConfiguration(Configuration $configuration) {
-		$this->configuration = $configuration;
-	}
+    /**
+     * @param FormUtility $formUtility
+     */
+    public function setFormUtility(FormUtility $formUtility)
+    {
+        $this->formUtility = $formUtility;
+    }
 
-	/**
-	 * @param FormUtility $formUtility
-	 */
-	public function setFormUtility(FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
+    /**
+     * Build validation rules from typoscript.
+     * The old breakOnError property are no longer supported
+     *
+     * @param array $rawArgument
+     * @return void
+     */
+    public function buildRules(array $rawArgument = array())
+    {
+        $userConfiguredFormTyposcript = $this->configuration->getTypoScript();
+        $rulesTyposcript = isset($userConfiguredFormTyposcript['rules.']) ? $userConfiguredFormTyposcript['rules.'] : null;
+        $this->rules[$this->configuration->getPrefix()] = array();
+        if (is_array($rulesTyposcript)) {
+            $keys = TemplateService::sortedKeyList($rulesTyposcript);
+            foreach ($keys as $key) {
+                $ruleName = $rulesTyposcript[$key];
+                $validatorClassName = $this->typoScriptRepository->getRegisteredClassName($ruleName, 'registeredValidators');
+                if ($validatorClassName === null) {
+                    throw new \RuntimeException('Class "' . $validatorClassName . '" not registered via typoscript.');
+                }
+                if (
+                    (int)$key
+                    && strpos($key, '.') === false
+                ) {
+                    $ruleArguments = $rulesTyposcript[$key . '.'];
+                    $fieldName = $this->formUtility->sanitizeNameAttribute($ruleArguments['element']);
+                        // remove unsupported validator options
+                    $validatorOptions = $ruleArguments;
+                    $validatorOptions['errorMessage'] = array($ruleArguments['error.'], $ruleArguments['error']);
+                    $keysToRemove = array_flip(array(
+                        'breakOnError',
+                        'message',
+                        'message.',
+                        'error',
+                        'error.',
+                        'showMessage',
+                    ));
+                    $validatorOptions = array_diff_key($validatorOptions, $keysToRemove);
 
-	/**
-	 * Build validation rules from typoscript.
-	 * The old breakOnError property are no longer supported
-	 *
-	 * @param array $rawArgument
-	 * @return void
-	 */
-	public function buildRules(array $rawArgument = array()) {
-		$userConfiguredFormTyposcript = $this->configuration->getTypoScript();
-		$rulesTyposcript = isset($userConfiguredFormTyposcript['rules.']) ? $userConfiguredFormTyposcript['rules.'] : NULL;
-		$this->rules[$this->configuration->getPrefix()] = array();
-		if (is_array($rulesTyposcript)) {
-			$keys = TemplateService::sortedKeyList($rulesTyposcript);
-			foreach ($keys as $key) {
-				$ruleName = $rulesTyposcript[$key];
-				$validatorClassName = $this->typoScriptRepository->getRegisteredClassName($ruleName, 'registeredValidators');
-				if ($validatorClassName === NULL) {
-					throw new \RuntimeException('Class "' . $validatorClassName . '" not registered via typoscript.');
-				}
-				if (
-					(int)$key
-					&& strpos($key, '.') === FALSE
-				) {
-					$ruleArguments = $rulesTyposcript[$key . '.'];
-					$fieldName = $this->formUtility->sanitizeNameAttribute($ruleArguments['element']);
-						// remove unsupported validator options
-					$validatorOptions = $ruleArguments;
-					$validatorOptions['errorMessage'] = array($ruleArguments['error.'], $ruleArguments['error']);
-					$keysToRemove = array_flip(array(
-						'breakOnError',
-						'message',
-						'message.',
-						'error',
-						'error.',
-						'showMessage',
-					));
-					$validatorOptions = array_diff_key($validatorOptions, $keysToRemove);
+                    // Instantiate the validator to check if all required options are assigned
+                    // and to use the validator message rendering function to pre-render the mandatory message
+                    /** @var AbstractValidator $validator */
+                    $validator = $this->objectManager->get($validatorClassName, $validatorOptions);
 
-					// Instantiate the validator to check if all required options are assigned
-					// and to use the validator message rendering function to pre-render the mandatory message
-					/** @var AbstractValidator $validator */
-					$validator = $this->objectManager->get($validatorClassName, $validatorOptions);
+                    if ($validator instanceof AbstractValidator) {
+                        $validator->setRawArgument($rawArgument);
+                        $validator->setFormUtility($this->formUtility);
+                        $mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
 
-					if ($validator instanceof AbstractValidator) {
-						$validator->setRawArgument($rawArgument);
-						$validator->setFormUtility($this->formUtility);
-						$mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
+                        $this->rules[$this->configuration->getPrefix()][$fieldName][] = array(
+                            'validator' => $validator,
+                            'validatorName' => $validatorClassName,
+                            'validatorOptions' => $validatorOptions,
+                            'mandatoryMessage' => $mandatoryMessage
+                        );
+                    } else {
+                        throw new \RuntimeException('Class "' . $validatorClassName . '" could not be loaded.');
+                    }
+                }
+            }
+        }
+    }
 
-						$this->rules[$this->configuration->getPrefix()][$fieldName][] = array(
-							'validator' => $validator,
-							'validatorName' => $validatorClassName,
-							'validatorOptions' => $validatorOptions,
-							'mandatoryMessage' => $mandatoryMessage
-						);
-					} else {
-						throw new \RuntimeException('Class "' . $validatorClassName . '" could not be loaded.');
-					}
-				}
-			}
-		}
-	}
+    /**
+     * Set all validation rules
+     *
+     * @param array $rules
+     * @return void
+     */
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules[$this->configuration->getPrefix()];
+    }
 
-	/**
-	 * Set all validation rules
-	 *
-	 * @param array $rules
-	 * @return void
-	 */
-	public function setRules(array $rules) {
-		$this->rules = $rules[$this->configuration->getPrefix()];
-	}
+    /**
+     * Get all validation rules
+     *
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->rules[$this->configuration->getPrefix()];
+    }
 
-	/**
-	 * Get all validation rules
-	 *
-	 * @return array
-	 */
-	public function getRules() {
-		return $this->rules[$this->configuration->getPrefix()];
-	}
+    /**
+     * Set a validation rule
+     *
+     * @param string $key
+     * @param array $rule
+     * @return void
+     */
+    public function setRulesByElementName($key = '', array $rule = array())
+    {
+        $this->rules[$this->configuration->getPrefix()][$key] = $rule;
+    }
 
-	/**
-	 * Set a validation rule
-	 *
-	 * @param string $key
-	 * @param array $rule
-	 * @return void
-	 */
-	public function setRulesByElementName($key = '', array $rule = array()) {
-		$this->rules[$this->configuration->getPrefix()][$key] = $rule;
-	}
+    /**
+     * Get a validation rule by key
+     *
+     * @param string $key
+     * @return NULL|array
+     */
+    public function getRulesByElementName($key = '')
+    {
+        if (isset($this->rules[$this->configuration->getPrefix()][$key])) {
+            return $this->rules[$this->configuration->getPrefix()][$key];
+        }
+        return null;
+    }
 
-	/**
-	 * Get a validation rule by key
-	 *
- 	 * @param string $key
-	 * @return NULL|array
-	 */
-	public function getRulesByElementName($key = '') {
-		if (isset($this->rules[$this->configuration->getPrefix()][$key])) {
-			return $this->rules[$this->configuration->getPrefix()][$key];
-		}
-		return NULL;
-	}
+    /**
+     * Remove a validation rule by key
+     *
+     * @param string $key
+     * @return void
+     */
+    public function removeRule($key = '')
+    {
+        unset($this->rules[$this->configuration->getPrefix()][$key]);
+    }
 
-	/**
-	 * Remove a validation rule by key
-	 *
- 	 * @param string $key
-	 * @return void
-	 */
-	public function removeRule($key = '') {
-		unset($this->rules[$this->configuration->getPrefix()][$key]);
-	}
-
-	/**
-	 * Get all mandatory validation messages for a element
-	 *
- 	 * @param string $key
-	 * @return array
-	 */
-	public function getMandatoryValidationMessagesByElementName($key = '') {
-		$mandatoryMessages = array();
-		if ($this->getRulesByElementName($key)) {
-			$rules = $this->getRulesByElementName($key);
-			foreach ($rules as $rule) {
-				$mandatoryMessages[] = $rule['mandatoryMessage'];
-			}
-		}
-		return $mandatoryMessages;
-	}
-
+    /**
+     * Get all mandatory validation messages for a element
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getMandatoryValidationMessagesByElementName($key = '')
+    {
+        $mandatoryMessages = array();
+        if ($this->getRulesByElementName($key)) {
+            $rules = $this->getRulesByElementName($key);
+            foreach ($rules as $rule) {
+                $mandatoryMessages[] = $rule['mandatoryMessage'];
+            }
+        }
+        return $mandatoryMessages;
+    }
 }

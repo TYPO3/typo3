@@ -17,11 +17,10 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 /**
  * IconUtility fixture
  */
-class IconUtilityFixture extends \TYPO3\CMS\Backend\Utility\IconUtility {
-
-	/**
-	 * @var array
-	 */
-	static protected $spriteIconCache = array();
-
+class IconUtilityFixture extends \TYPO3\CMS\Backend\Utility\IconUtility
+{
+    /**
+     * @var array
+     */
+    protected static $spriteIconCache = array();
 }

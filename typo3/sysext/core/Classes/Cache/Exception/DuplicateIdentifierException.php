@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
  *
  * @api
  */
-class DuplicateIdentifierException extends \TYPO3\CMS\Core\Cache\Exception {
-
-
+class DuplicateIdentifierException extends \TYPO3\CMS\Core\Cache\Exception
+{
 }

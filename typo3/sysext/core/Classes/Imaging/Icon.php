@@ -21,216 +21,232 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Icon object, holds all information for one icon, identified by the "identifier" property.
  * Is available to render itself as string.
  */
-class Icon {
+class Icon
+{
+    /**
+     * @var string the small size
+     */
+    const SIZE_SMALL = 'small'; // 16
 
-	/**
-	 * @var string the small size
-	 */
-	const SIZE_SMALL = 'small'; // 16
+    /**
+     * @var string the default size
+     */
+    const SIZE_DEFAULT = 'default'; // 32
 
-	/**
-	 * @var string the default size
-	 */
-	const SIZE_DEFAULT = 'default'; // 32
+    /**
+     * @var string the large size
+     */
+    const SIZE_LARGE = 'large'; // 48
 
-	/**
-	 * @var string the large size
-	 */
-	const SIZE_LARGE = 'large'; // 48
+    /**
+     * @internal
+     * @var string the overlay size, which depends on icon size
+     */
+    const SIZE_OVERLAY = 'overlay';
 
-	/**
-	 * @internal
-	 * @var string the overlay size, which depends on icon size
-	 */
-	const SIZE_OVERLAY = 'overlay';
+    /**
+     * The identifier which the PHP code that calls the IconFactory hands over
+     *
+     * @var string
+     */
+    protected $identifier;
 
-	/**
-	 * The identifier which the PHP code that calls the IconFactory hands over
-	 *
-	 * @var string
-	 */
-	protected $identifier;
+    /**
+     * The identifier for a possible overlay icon
+     *
+     * @var Icon
+     */
+    protected $overlayIcon = null;
 
-	/**
-	 * The identifier for a possible overlay icon
-	 *
-	 * @var Icon
-	 */
-	protected $overlayIcon = NULL;
+    /**
+     * Contains the size string ("large", "small" or "default")
+     *
+     * @var string
+     */
+    protected $size = '';
 
-	/**
-	 * Contains the size string ("large", "small" or "default")
-	 *
-	 * @var string
-	 */
-	protected $size = '';
+    /**
+     * Flag to indicate if the icon has a spinning animation
+     *
+     * @var bool
+     */
+    protected $spinning = false;
 
-	/**
-	 * Flag to indicate if the icon has a spinning animation
-	 *
-	 * @var bool
-	 */
-	protected $spinning = FALSE;
+    /**
+     * Contains the state information
+     *
+     * @var IconState
+     */
+    protected $state;
 
-	/**
-	 * Contains the state information
-	 *
-	 * @var IconState
-	 */
-	protected $state;
+    /**
+     * @var Dimension
+     */
+    protected $dimension;
 
-	/**
-	 * @var Dimension
-	 */
-	protected $dimension;
+    /**
+     * @var string
+     */
+    protected $markup;
 
-	/**
-	 * @var string
-	 */
-	protected $markup;
+    /**
+     * @internal this method is used for internal processing, to get the prepared and final markup use render()
+     * @return string
+     */
+    public function getMarkup()
+    {
+        return $this->markup;
+    }
 
-	/**
-	 * @internal this method is used for internal processing, to get the prepared and final markup use render()
-	 * @return string
-	 */
-	public function getMarkup() {
-		return $this->markup;
-	}
+    /**
+     * @param string $markup
+     */
+    public function setMarkup($markup)
+    {
+        $this->markup = $markup;
+    }
 
-	/**
-	 * @param string $markup
-	 */
-	public function setMarkup($markup) {
-		$this->markup = $markup;
-	}
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getIdentifier() {
-		return $this->identifier;
-	}
+    /**
+     * @param string $identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
 
-	/**
-	 * @param string $identifier
-	 */
-	public function setIdentifier($identifier) {
-		$this->identifier = $identifier;
-	}
+    /**
+     * @return Icon
+     */
+    public function getOverlayIcon()
+    {
+        return $this->overlayIcon;
+    }
 
-	/**
-	 * @return Icon
-	 */
-	public function getOverlayIcon() {
-		return $this->overlayIcon;
-	}
+    /**
+     * @param Icon $overlayIcon
+     */
+    public function setOverlayIcon($overlayIcon)
+    {
+        $this->overlayIcon = $overlayIcon;
+    }
 
-	/**
-	 * @param Icon $overlayIcon
-	 */
-	public function setOverlayIcon($overlayIcon) {
-		$this->overlayIcon = $overlayIcon;
-	}
+    /**
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSize() {
-		return $this->size;
-	}
+    /**
+     * Sets the size and creates the new dimension
+     *
+     * @param string $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+        $this->dimension = GeneralUtility::makeInstance(Dimension::class, $size);
+    }
 
-	/**
-	 * Sets the size and creates the new dimension
-	 *
-	 * @param string $size
-	 */
-	public function setSize($size) {
-		$this->size = $size;
-		$this->dimension = GeneralUtility::makeInstance(Dimension::class, $size);
-	}
+    /**
+     * @return bool
+     */
+    public function isSpinning()
+    {
+        return $this->spinning;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isSpinning() {
-		return $this->spinning;
-	}
+    /**
+     * @param bool $spinning
+     */
+    public function setSpinning($spinning)
+    {
+        $this->spinning = $spinning;
+    }
 
-	/**
-	 * @param bool $spinning
-	 */
-	public function setSpinning($spinning) {
-		$this->spinning = $spinning;
-	}
+    /**
+     * @return IconState
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 
-	/**
-	 * @return IconState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+    /**
+     * Sets the state of the icon
+     *
+     * @param IconState $state
+     */
+    public function setState(IconState $state)
+    {
+        $this->state = $state;
+    }
 
-	/**
-	 * Sets the state of the icon
-	 *
-	 * @param IconState $state
-	 */
-	public function setState(IconState $state) {
-		$this->state = $state;
-	}
+    /**
+     * @return Dimension
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
 
-	/**
-	 * @return Dimension
-	 */
-	public function getDimension() {
-		return $this->dimension;
-	}
+    /**
+     * Render the icon as HTML code
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $overlayIconMarkup = '';
+        if ($this->overlayIcon !== null) {
+            $overlayIconMarkup = '<span class="icon-overlay icon-' . htmlspecialchars($this->overlayIcon->getIdentifier()) . '">' . $this->overlayIcon->getMarkup() . '</span>';
+        }
+        return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon());
+    }
 
-	/**
-	 * Render the icon as HTML code
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$overlayIconMarkup = '';
-		if ($this->overlayIcon !== NULL) {
-			$overlayIconMarkup = '<span class="icon-overlay icon-' . htmlspecialchars($this->overlayIcon->getIdentifier()) . '">' . $this->overlayIcon->getMarkup() . '</span>';
-		}
-		return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon());
-	}
+    /**
+     * Render the icon as HTML code
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 
-	/**
-	 * Render the icon as HTML code
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
-	}
+    /**
+     * Wrap icon markup in unified HTML code
+     *
+     * @return string
+     */
+    protected function wrappedIcon()
+    {
+        $classes = array();
+        $classes[] = 'icon';
+        $classes[] = 'icon-size-' . $this->size;
+        $classes[] = 'icon-state-' . htmlspecialchars((string)$this->state);
+        $classes[] = 'icon-' . $this->getIdentifier();
+        if ($this->isSpinning()) {
+            $classes[] = 'icon-spin';
+        }
 
-	/**
-	 * Wrap icon markup in unified HTML code
-	 *
-	 * @return string
-	 */
-	protected function wrappedIcon() {
-		$classes = array();
-		$classes[] = 'icon';
-		$classes[] = 'icon-size-' . $this->size;
-		$classes[] = 'icon-state-' . htmlspecialchars((string)$this->state);
-		$classes[] = 'icon-' . $this->getIdentifier();
-		if ($this->isSpinning()) {
-			$classes[] = 'icon-spin';
-		}
+        $markup = array();
+        $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '">';
+        $markup[] = '	<span class="icon-markup">';
+        $markup[] = $this->getMarkup();
+        $markup[] = '	</span>';
+        $markup[] = '	{overlayMarkup}';
+        $markup[] = '</span>';
 
-		$markup = array();
-		$markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '">';
-		$markup[] = '	<span class="icon-markup">';
-		$markup[] = $this->getMarkup();
-		$markup[] = '	</span>';
-		$markup[] = '	{overlayMarkup}';
-		$markup[] = '</span>';
-
-		return implode(LF, $markup);
-	}
+        return implode(LF, $markup);
+    }
 }

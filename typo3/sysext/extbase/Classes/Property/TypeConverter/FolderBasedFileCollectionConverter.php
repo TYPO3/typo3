@@ -19,29 +19,29 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('integer');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('integer');
+    /**
+     * @var string
+     */
+    protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection::class;
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection::class;
+    /**
+     * @var string
+     */
+    protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::class;
 
-	/**
-	 * @var string
-	 */
-	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::class;
-
-	/**
-	 * @param int $source
-	 * @return \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection
-	 */
-	protected function getObject($source) {
-		return $this->fileFactory->getCollectionObject($source);
-	}
-
+    /**
+     * @param int $source
+     * @return \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection
+     */
+    protected function getObject($source)
+    {
+        return $this->fileFactory->getCollectionObject($source);
+    }
 }

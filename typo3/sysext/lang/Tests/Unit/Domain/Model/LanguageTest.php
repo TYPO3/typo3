@@ -17,126 +17,135 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 /**
  * Testcase for Language
  */
-class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Lang\Domain\Model\Language
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Lang\Domain\Model\Language
-	 */
-	protected $subject = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language();
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language();
-	}
+    /**
+     * @test
+     */
+    public function getLocaleInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getLocale()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLocaleInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->subject->getLocale()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getLocaleInitiallyReturnsGivenLocaleFromConstruct()
+    {
+        $locale = 'nl';
+        $this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language($locale);
 
-	/**
-	 * @test
-	 */
-	public function getLocaleInitiallyReturnsGivenLocaleFromConstruct() {
-		$locale = 'nl';
-		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language($locale);
+        $this->assertSame(
+            $locale,
+            $this->subject->getLocale()
+        );
+    }
 
-		$this->assertSame(
-			$locale,
-			$this->subject->getLocale()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setLocaleSetsLocale()
+    {
+        $locale = 'nl';
+        $this->subject->setLocale($locale);
 
-	/**
-	 * @test
-	 */
-	public function setLocaleSetsLocale() {
-		$locale = 'nl';
-		$this->subject->setLocale($locale);
+        $this->assertSame(
+            $locale,
+            $this->subject->getLocale()
+        );
+    }
 
-		$this->assertSame(
-			$locale,
-			$this->subject->getLocale()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getLanguageInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getLabel()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLanguageInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->subject->getLabel()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getLanguageInitiallyReturnsGivenLanguageFromConstruct()
+    {
+        $language = 'nl';
+        $this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', $language);
 
-	/**
-	 * @test
-	 */
-	public function getLanguageInitiallyReturnsGivenLanguageFromConstruct() {
-		$language = 'nl';
-		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', $language);
+        $this->assertSame(
+            $language,
+            $this->subject->getLabel()
+        );
+    }
 
-		$this->assertSame(
-			$language,
-			$this->subject->getLabel()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setLanguageSetsLanguage()
+    {
+        $language = 'nl';
+        $this->subject->setLabel($language);
 
-	/**
-	 * @test
-	 */
-	public function setLanguageSetsLanguage() {
-		$language = 'nl';
-		$this->subject->setLabel($language);
+        $this->assertSame(
+            $language,
+            $this->subject->getLabel()
+        );
+    }
 
-		$this->assertSame(
-			$language,
-			$this->subject->getLabel()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getSelectedInitiallyReturnsFalse()
+    {
+        $this->assertSame(
+            false,
+            $this->subject->getSelected()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getSelectedInitiallyReturnsFalse() {
-		$this->assertSame(
-			FALSE,
-			$this->subject->getSelected()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getSelectedInitiallyReturnsGivenSelectedFromConstruct()
+    {
+        $selected = false;
+        $this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', '', false);
 
-	/**
-	 * @test
-	 */
-	public function getSelectedInitiallyReturnsGivenSelectedFromConstruct() {
-		$selected = FALSE;
-		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', '', FALSE);
+        $this->assertSame(
+            $selected,
+            $this->subject->getSelected()
+        );
+    }
 
-		$this->assertSame(
-			$selected,
-			$this->subject->getSelected()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setSelectedSetsSelected()
+    {
+        $selected = true;
+        $this->subject->setSelected($selected);
 
-	/**
-	 * @test
-	 */
-	public function setSelectedSetsSelected() {
-		$selected = TRUE;
-		$this->subject->setSelected($selected);
-
-		$this->assertSame(
-			$selected,
-			$this->subject->getSelected()
-		);
-	}
-
+        $this->assertSame(
+            $selected,
+            $this->subject->getSelected()
+        );
+    }
 }

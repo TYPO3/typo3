@@ -17,8 +17,7 @@ namespace TYPO3\CMS\Core\Resource;
 /**
  * An interface containing constants for the resource factory
  */
-interface ResourceFactoryInterface {
-
-	const SIGNAL_PostProcessStorage = 'postProcessStorage';
-
+interface ResourceFactoryInterface
+{
+    const SIGNAL_PostProcessStorage = 'postProcessStorage';
 }

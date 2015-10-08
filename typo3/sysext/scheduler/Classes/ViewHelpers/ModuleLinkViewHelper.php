@@ -23,44 +23,45 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Create internal link within backend app
  * @internal
  */
-class ModuleLinkViewHelper extends AbstractViewHelper implements CompilableInterface {
+class ModuleLinkViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render module link with command and arguments
+     *
+     * @param string $controller The "controller" of scheduler. Possible values are "scheduler", "check", "info"
+     * @param string $action The action to be called within each controller
+     * @param array $arguments Arguments for the action
+     * @return string
+     */
+    public function render($controller, $action, array $arguments = array())
+    {
+        return static::renderStatic(
+            array(
+                'controller' => $controller,
+                'action' => $action,
+                'arguments' => $arguments,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render module link with command and arguments
-	 *
-	 * @param string $controller The "controller" of scheduler. Possible values are "scheduler", "check", "info"
-	 * @param string $action The action to be called within each controller
-	 * @param array $arguments Arguments for the action
-	 * @return string
-	 */
-	public function render($controller, $action, array $arguments = array()) {
-		return static::renderStatic(
-			array(
-				'controller' => $controller,
-				'action' => $action,
-				'arguments' => $arguments,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $moduleArguments = array();
+        $moduleArguments['SET']['function'] = $arguments['controller'];
+        $moduleArguments['CMD'] = $arguments['action'];
+        if (!empty($arguments['arguments'])) {
+            $moduleArguments['tx_scheduler'] = $arguments['arguments'];
+        }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$moduleArguments = array();
-		$moduleArguments['SET']['function'] = $arguments['controller'];
-		$moduleArguments['CMD'] = $arguments['action'];
-		if (!empty($arguments['arguments'])) {
-			$moduleArguments['tx_scheduler'] = $arguments['arguments'];
-		}
-
-		return BackendUtility::getModuleUrl('system_txschedulerM1', $moduleArguments);
-	}
-
+        return BackendUtility::getModuleUrl('system_txschedulerM1', $moduleArguments);
+    }
 }

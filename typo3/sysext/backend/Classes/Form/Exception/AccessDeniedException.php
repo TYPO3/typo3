@@ -21,6 +21,6 @@ use TYPO3\CMS\Backend\Form\Exception;
  * This indicated a recoverable error that should be changed to a user message.
  * This abstract exception is extended by more fine grained exceptions.
  */
-abstract class AccessDeniedException extends Exception {
-
+abstract class AccessDeniedException extends Exception
+{
 }

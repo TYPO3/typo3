@@ -17,5 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
 /**
  * An "Illegal Relation Type" exception
  */
-class IllegalRelationTypeException extends \TYPO3\CMS\Extbase\Persistence\Exception {
+class IllegalRelationTypeException extends \TYPO3\CMS\Extbase\Persistence\Exception
+{
 }

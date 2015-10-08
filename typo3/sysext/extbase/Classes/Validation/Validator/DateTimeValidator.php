@@ -19,28 +19,28 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class DateTimeValidator extends AbstractValidator {
-
-	/**
-	 * Checks if the given value is a valid DateTime object. If this is not
-	 * the case, the function adds an error.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 */
-	public function isValid($value) {
-		$this->result->clear();
-		if ($value instanceof \DateTime) {
-			return;
-		}
-		$this->addError(
-			$this->translateErrorMessage(
-				'validator.datetime.notvalid',
-				'extbase',
-				array(
-					gettype($value)
-				)
-			), 1238087674, array(gettype($value)));
-	}
-
+class DateTimeValidator extends AbstractValidator
+{
+    /**
+     * Checks if the given value is a valid DateTime object. If this is not
+     * the case, the function adds an error.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     */
+    public function isValid($value)
+    {
+        $this->result->clear();
+        if ($value instanceof \DateTime) {
+            return;
+        }
+        $this->addError(
+            $this->translateErrorMessage(
+                'validator.datetime.notvalid',
+                'extbase',
+                array(
+                    gettype($value)
+                )
+            ), 1238087674, array(gettype($value)));
+    }
 }

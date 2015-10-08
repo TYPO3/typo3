@@ -24,70 +24,74 @@ use TYPO3\CMS\Install\Updates\TableFlexFormToTtContentFieldsUpdate as UpdateWiza
 /**
  * Test Class for TableFlexFormToTtContentFieldsUpdateTest
  */
-class TableFlexFormToTtContentFieldsUpdateTest extends BaseTestCase {
+class TableFlexFormToTtContentFieldsUpdateTest extends BaseTestCase
+{
+    /**
+     * @var ObjectProphecy
+     */
+    protected $packageManagerProphecy;
 
-	/**
-	 * @var ObjectProphecy
-	 */
-	protected $packageManagerProphecy;
+    /**
+     * @var ObjectProphecy
+     */
+    protected $dbProphecy;
 
-	/**
-	 * @var ObjectProphecy
-	 */
-	protected $dbProphecy;
+    /**
+     * @var ObjectProphecy
+     */
+    protected $updateWizard;
 
-	/**
-	 * @var ObjectProphecy
-	 */
-	protected $updateWizard;
+    protected function setUp()
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
+        $this->packageManagerProphecy = $this->prophesize(\TYPO3\CMS\Core\Package\PackageManager::class);
+        $this->dbProphecy = $this->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+        $this->updateWizard = new UpdateWizard();
+        ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());
+    }
 
-	protected function setUp() {
-		unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
-		$this->packageManagerProphecy = $this->prophesize(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$this->dbProphecy = $this->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-		$this->updateWizard = new UpdateWizard();
-		ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());
-	}
+    protected function tearDown()
+    {
+        ExtensionManagementUtility::setPackageManager(new PackageManager());
+    }
 
-	protected function tearDown() {
-		ExtensionManagementUtility::setPackageManager(new PackageManager());
-	}
+    /**
+     * @test
+     * @return void
+     */
+    public function updateWizardDoesNotRunIfCssStyledContentIsInstalled_withoutExistingFlexFormContent()
+    {
+        $this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(true);
+        $this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(0);
 
-	/**
-	 * @test
-	 * @return void
-	 */
-	public function updateWizardDoesNotRunIfCssStyledContentIsInstalled_withoutExistingFlexFormContent() {
+        $description = '';
+        $this->assertFalse($this->updateWizard->checkForUpdate($description));
+    }
 
-		$this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(TRUE);
-		$this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(0);
+    /**
+     * @test
+     * @return void
+     */
+    public function updateWizardDoesNotRunIfCssStyledContentIsInstalled_withExistingFlexFormContent()
+    {
+        $this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(true);
+        $this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(1);
 
-		$description = '';
-		$this->assertFalse($this->updateWizard->checkForUpdate($description));
-	}
+        $description = '';
+        $this->assertFalse($this->updateWizard->checkForUpdate($description));
+    }
 
-	/**
-	 * @test
-	 * @return void
-	 */
-	public function updateWizardDoesNotRunIfCssStyledContentIsInstalled_withExistingFlexFormContent() {
-		$this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(TRUE);
-		$this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(1);
+    /**
+     * @test
+     * @return void
+     */
+    public function updateWizardDoesRunIfCssStyledContentIsNotInstalledAndExistingFlexFormContent()
+    {
+        $this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(false);
+        $this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(1);
 
-		$description = '';
-		$this->assertFalse($this->updateWizard->checkForUpdate($description));
-	}
-
-	/**
-	 * @test
-	 * @return void
-	 */
-	public function updateWizardDoesRunIfCssStyledContentIsNotInstalledAndExistingFlexFormContent() {
-		$this->packageManagerProphecy->isPackageActive('css_styled_content')->willReturn(FALSE);
-		$this->dbProphecy->exec_SELECTcountRows(Argument::cetera())->willReturn(1);
-
-		$description = '';
-		$this->assertTrue($this->updateWizard->checkForUpdate($description));
-	}
+        $description = '';
+        $this->assertTrue($this->updateWizard->checkForUpdate($description));
+    }
 }

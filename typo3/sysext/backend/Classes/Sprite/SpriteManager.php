@@ -24,148 +24,154 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * A configurable handler class does the business task.
  */
-class SpriteManager {
+class SpriteManager
+{
+    /**
+     * @var string Directory for cached sprite informations
+     */
+    public static $tempPath = 'typo3temp/sprites/';
 
-	/**
-	 * @var string Directory for cached sprite informations
-	 */
-	static public $tempPath = 'typo3temp/sprites/';
+    /**
+     * Is sprite manager initialized
+     */
+    protected static $isInitialized = false;
 
-	/**
-	 * Is sprite manager initialized
-	 */
-	static protected $isInitialized = FALSE;
+    /**
+     * Initialize sprite manager.
+     * Loads registered sprite configuration from cache, or
+     * rebuilds new cache before registration.
+     *
+     * @return void
+     */
+    public static function initialize()
+    {
+        if (!static::isInitialized()) {
+            $cacheIdentifier = static::getCacheIdentifier();
+            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+            $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+            if ($codeCache->has($cacheIdentifier)) {
+                $codeCache->requireOnce($cacheIdentifier);
+            } else {
+                static::buildSpriteDataAndCreateCacheEntry();
+            }
+            self::$isInitialized = true;
+        }
+    }
 
-	/**
-	 * Initialize sprite manager.
-	 * Loads registered sprite configuration from cache, or
-	 * rebuilds new cache before registration.
-	 *
-	 * @return void
-	 */
-	static public function initialize() {
-		if (!static::isInitialized()) {
-			$cacheIdentifier = static::getCacheIdentifier();
-			/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
-			if ($codeCache->has($cacheIdentifier)) {
-				$codeCache->requireOnce($cacheIdentifier);
-			} else {
-				static::buildSpriteDataAndCreateCacheEntry();
-			}
-			self::$isInitialized = TRUE;
-		}
-	}
+    /**
+     * Whether the sprite manager is initialized.
+     *
+     * @return bool TRUE if sprite manager is initialized
+     */
+    public static function isInitialized()
+    {
+        return self::$isInitialized;
+    }
 
-	/**
-	 * Whether the sprite manager is initialized.
-	 *
-	 * @return bool TRUE if sprite manager is initialized
-	 */
-	static public function isInitialized() {
-		return self::$isInitialized;
-	}
+    /**
+     * Set up sprite icon data and create cache entry calling the registered generator.
+     *
+     * Stuff the compiled $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
+     * global into php code cache.
+     *
+     * @throws \RuntimeException
+     * @return void
+     */
+    protected static function buildSpriteDataAndCreateCacheEntry()
+    {
+        $handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
+        /** @var $handler \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface */
+        $handler = GeneralUtility::makeInstance($handlerClass);
+        // Throw exception if handler class does not implement required interface
+        if (!$handler instanceof \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface) {
+            throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement ' . \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface::class, 1294586333);
+        }
+        // Create temp directory if missing
+        if (!is_dir((PATH_site . self::$tempPath))) {
+            GeneralUtility::mkdir(PATH_site . self::$tempPath);
+        }
+        // Generate CSS and TCA files, build icon set register
+        $handler->generate();
+        // Get all icons registered from skins, merge with core icon list
+        $availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
+        if (isset($GLOBALS['TBE_STYLES']['skins']) && is_array($GLOBALS['TBE_STYLES']['skins'])) {
+            foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
+                $availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
+            }
+        }
+        // Merge icon names provided by the skin, with
+        // registered "complete sprites" and the handler class
+        $iconNames = array_merge($availableSkinIcons, (array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
+        $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $iconNames;
 
-	/**
-	 * Set up sprite icon data and create cache entry calling the registered generator.
-	 *
-	 * Stuff the compiled $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
-	 * global into php code cache.
-	 *
-	 * @throws \RuntimeException
-	 * @return void
-	 */
-	static protected function buildSpriteDataAndCreateCacheEntry() {
-		$handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
-		/** @var $handler \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface */
-		$handler = GeneralUtility::makeInstance($handlerClass);
-		// Throw exception if handler class does not implement required interface
-		if (!$handler instanceof \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface) {
-			throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement ' . \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface::class, 1294586333);
-		}
-		// Create temp directory if missing
-		if (!is_dir((PATH_site . self::$tempPath))) {
-			GeneralUtility::mkdir(PATH_site . self::$tempPath);
-		}
-		// Generate CSS and TCA files, build icon set register
-		$handler->generate();
-		// Get all icons registered from skins, merge with core icon list
-		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
-		if (isset($GLOBALS['TBE_STYLES']['skins']) && is_array($GLOBALS['TBE_STYLES']['skins'])) {
-			foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
-				$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
-			}
-		}
-		// Merge icon names provided by the skin, with
-		// registered "complete sprites" and the handler class
-		$iconNames = array_merge($availableSkinIcons, (array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
-		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $iconNames;
+        $cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = ';
+        $cacheFileContent .= var_export($iconNames, true) . ';';
+        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
+    }
 
-		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = ';
-		$cacheFileContent .= var_export($iconNames, TRUE) . ';';
-		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
-	}
+    /**
+     * Get cache identifier for $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
+     *
+     * @return string
+     */
+    protected static function getCacheIdentifier()
+    {
+        return 'sprites_' . sha1((TYPO3_version . PATH_site . 'spriteManagement'));
+    }
 
-	/**
-	 * Get cache identifier for $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
-	 *
-	 * @return string
-	 */
-	static protected function getCacheIdentifier() {
-		return 'sprites_' . sha1((TYPO3_version . PATH_site . 'spriteManagement'));
-	}
+    /**
+     * API for extensions to register own sprites.
+     *
+     * Get an array of icon names and the styleSheetFile with defined sprite icons.
+     * The stylesheet filename should contain the extension name to be unique.
+     *
+     * Naming conventions:
+     * - IconName: extensions-$extKey-$iconName
+     * - CSS class for loading the sprite: t3-icon-extensions-$extKey
+     * - CSS class for single icons: t3-icon-$extKey-$iconName
+     *
+     * @param array $icons Icon names
+     * @param string $styleSheetFile Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
+     * @return void
+     */
+    public static function addIconSprite(array $icons, $styleSheetFile = '')
+    {
+        $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $icons);
+        if ($styleSheetFile !== '') {
+            $GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
+        }
+    }
 
-	/**
-	 * API for extensions to register own sprites.
-	 *
-	 * Get an array of icon names and the styleSheetFile with defined sprite icons.
-	 * The stylesheet filename should contain the extension name to be unique.
-	 *
-	 * Naming conventions:
-	 * - IconName: extensions-$extKey-$iconName
-	 * - CSS class for loading the sprite: t3-icon-extensions-$extKey
-	 * - CSS class for single icons: t3-icon-$extKey-$iconName
-	 *
-	 * @param array $icons Icon names
-	 * @param string $styleSheetFile Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
-	 * @return void
-	 */
-	static public function addIconSprite(array $icons, $styleSheetFile = '') {
-		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $icons);
-		if ($styleSheetFile !== '') {
-			$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
-		}
-	}
+    /**
+     * API for extensions to register new sprite images which can be used with
+     * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-$extKey-iconName');
+     *
+     * @param array $icons Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
+     * @param string $extKey Extension key
+     * @return void
+     */
+    public static function addSingleIcons(array $icons, $extKey = '')
+    {
+        foreach ($icons as $iconName => $iconFile) {
+            $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extKey . '-' . $iconName] = $iconFile;
+        }
+    }
 
-	/**
-	 * API for extensions to register new sprite images which can be used with
-	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-$extKey-iconName');
-	 *
-	 * @param array $icons Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
-	 * @param string $extKey Extension key
-	 * @return void
-	 */
-	static public function addSingleIcons(array $icons, $extKey = '') {
-		foreach ($icons as $iconName => $iconFile) {
-			$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extKey . '-' . $iconName] = $iconFile;
-		}
-	}
-
-	/**
-	 * API to register new type icons for tables which use "typeicon_classes"
-	 * Can be used to provide icons for "modules" in pages table
-	 *
-	 * @param string $table Table name to which the type icon should be added
-	 * @param string $type Type column name of the table
-	 * @param string $iconFile Icon filename, relative to PATH_typo3
-	 * @return void
-	 */
-	static public function addTcaTypeIcon($table, $type, $iconFile) {
-		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
-		if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
-			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
-		}
-	}
-
+    /**
+     * API to register new type icons for tables which use "typeicon_classes"
+     * Can be used to provide icons for "modules" in pages table
+     *
+     * @param string $table Table name to which the type icon should be added
+     * @param string $type Type column name of the table
+     * @param string $iconFile Icon filename, relative to PATH_typo3
+     * @return void
+     */
+    public static function addTcaTypeIcon($table, $type, $iconFile)
+    {
+        $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
+        if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+            $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
+        }
+    }
 }

@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 /**
  * Test case
  */
-class DefaultFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function getStructureReturnsInstanceOfStructureFacadeInterface() {
-		$object = new \TYPO3\CMS\Install\FolderStructure\DefaultFactory();
-		$this->assertInstanceOf(\TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface::class, $object->getStructure());
-	}
-
+class DefaultFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function getStructureReturnsInstanceOfStructureFacadeInterface()
+    {
+        $object = new \TYPO3\CMS\Install\FolderStructure\DefaultFactory();
+        $this->assertInstanceOf(\TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface::class, $object->getStructure());
+    }
 }

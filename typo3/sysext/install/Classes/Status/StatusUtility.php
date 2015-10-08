@@ -18,50 +18,51 @@ namespace TYPO3\CMS\Install\Status;
  * Utility methods to handle status objects. Provides some helper
  * methods to filter, sort and render status objects.
  */
-class StatusUtility {
+class StatusUtility
+{
+    /**
+     * Order status objects by severity
+     *
+     * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects Status objects in random order
+     * @return array With sub arrays by severity
+     * @throws Exception
+     */
+    public function sortBySeverity(array $statusObjects = array())
+    {
+        $orderedStatus = array(
+            'alert' => $this->filterBySeverity($statusObjects, 'alert'),
+            'error' => $this->filterBySeverity($statusObjects, 'error'),
+            'warning' => $this->filterBySeverity($statusObjects, 'warning'),
+            'ok' => $this->filterBySeverity($statusObjects, 'ok'),
+            'information' => $this->filterBySeverity($statusObjects, 'information'),
+            'notice' => $this->filterBySeverity($statusObjects, 'notice'),
+        );
+        return $orderedStatus;
+    }
 
-	/**
-	 * Order status objects by severity
-	 *
-	 * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects Status objects in random order
-	 * @return array With sub arrays by severity
-	 * @throws Exception
-	 */
-	public function sortBySeverity(array $statusObjects = array()) {
-		$orderedStatus = array(
-			'alert' => $this->filterBySeverity($statusObjects, 'alert'),
-			'error' => $this->filterBySeverity($statusObjects, 'error'),
-			'warning' => $this->filterBySeverity($statusObjects, 'warning'),
-			'ok' => $this->filterBySeverity($statusObjects, 'ok'),
-			'information' => $this->filterBySeverity($statusObjects, 'information'),
-			'notice' => $this->filterBySeverity($statusObjects, 'notice'),
-		);
-		return $orderedStatus;
-	}
-
-	/**
-	 * Filter a list of status objects by severity
-	 *
-	 * @param array $statusObjects Given list of status objects
-	 * @param string $severity Severity identifier
-	 * @throws Exception
-	 * @return array List of status objects with given severity
-	 */
-	public function filterBySeverity(array $statusObjects = array(), $severity = 'ok') {
-		$filteredObjects = array();
-		/** @var $status StatusInterface */
-		foreach ($statusObjects as $status) {
-			if (!$status instanceof StatusInterface) {
-				throw new Exception(
-					'Object must implement StatusInterface',
-					1366919442
-				);
-			}
-			if ($status->getSeverity() === $severity) {
-				$filteredObjects[] = $status;
-			}
-		}
-		return $filteredObjects;
-	}
-
+    /**
+     * Filter a list of status objects by severity
+     *
+     * @param array $statusObjects Given list of status objects
+     * @param string $severity Severity identifier
+     * @throws Exception
+     * @return array List of status objects with given severity
+     */
+    public function filterBySeverity(array $statusObjects = array(), $severity = 'ok')
+    {
+        $filteredObjects = array();
+        /** @var $status StatusInterface */
+        foreach ($statusObjects as $status) {
+            if (!$status instanceof StatusInterface) {
+                throw new Exception(
+                    'Object must implement StatusInterface',
+                    1366919442
+                );
+            }
+            if ($status->getSeverity() === $severity) {
+                $filteredObjects[] = $status;
+            }
+        }
+        return $filteredObjects;
+    }
 }

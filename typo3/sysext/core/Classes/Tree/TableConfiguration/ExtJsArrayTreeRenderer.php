@@ -17,39 +17,40 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 /**
  * Renders a tca tree array for ExtJS
  */
-class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonTreeRenderer {
+class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonTreeRenderer
+{
+    /**
+     * Gets the node array. If the TCA configuration has defined items,
+     * they are added to rootlevel on top of the tree
+     *
+     * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode|DatabaseTreeNode $node
+     * @return array
+     */
+    protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
+    {
+        $nodeArray = parent::getNodeArray($node);
+        $nodeArray = array_merge($nodeArray, array(
+            'expanded' => $node->getExpanded(),
+            'expandable' => $node->hasChildNodes(),
+            'checked' => $node->getSelected()
+        ));
+        if (!$node->getSelectable()) {
+            unset($nodeArray['checked']);
+        }
+        return $nodeArray;
+    }
 
-	/**
-	 * Gets the node array. If the TCA configuration has defined items,
-	 * they are added to rootlevel on top of the tree
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode|DatabaseTreeNode $node
-	 * @return array
-	 */
-	protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node) {
-		$nodeArray = parent::getNodeArray($node);
-		$nodeArray = array_merge($nodeArray, array(
-			'expanded' => $node->getExpanded(),
-			'expandable' => $node->hasChildNodes(),
-			'checked' => $node->getSelected()
-		));
-		if (!$node->getSelectable()) {
-			unset($nodeArray['checked']);
-		}
-		return $nodeArray;
-	}
-
-	/**
-	 * Renders a node collection recursive or just a single instance
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
-	 * @param bool $recursive
-	 * @return array
-	 */
-	public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE) {
-		$this->recursionLevel = 0;
-		$children = $this->renderNode($tree->getRoot(), $recursive);
-		return $children;
-	}
-
+    /**
+     * Renders a node collection recursive or just a single instance
+     *
+     * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
+     * @param bool $recursive
+     * @return array
+     */
+    public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true)
+    {
+        $this->recursionLevel = 0;
+        $children = $this->renderNode($tree->getRoot(), $recursive);
+        return $children;
+    }
 }

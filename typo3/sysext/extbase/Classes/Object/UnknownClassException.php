@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * "Unknown Class" Exception
  */
-class UnknownClassException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class UnknownClassException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

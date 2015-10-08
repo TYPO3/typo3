@@ -14,33 +14,33 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class UriValidator extends AbstractValidator {
+class UriValidator extends AbstractValidator
+{
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_uri';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_uri';
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		if (!preg_match('/^(?#Protocol)(?:(?:ht|f)tp(?:s?)\\:\\/\\/|~\\/|\\/)?(?#Username:Password)(?:\\w+:\\w+@)?(?#Subdomains)(?:(?:[-\\w]+\\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\\d]{1,5})?(?#Directories)(?:(?:(?:\\/(?:[-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?(?#Query)(?:(?:\\?(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)(?:&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*(?#Anchor)(?:#(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?$/', $value)) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1441997233
-			);
-		}
-	}
-
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if (!preg_match('/^(?#Protocol)(?:(?:ht|f)tp(?:s?)\\:\\/\\/|~\\/|\\/)?(?#Username:Password)(?:\\w+:\\w+@)?(?#Subdomains)(?:(?:[-\\w]+\\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\\d]{1,5})?(?#Directories)(?:(?:(?:\\/(?:[-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?(?#Query)(?:(?:\\?(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)(?:&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*(?#Anchor)(?:#(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?$/', $value)) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1441997233
+            );
+        }
+    }
 }

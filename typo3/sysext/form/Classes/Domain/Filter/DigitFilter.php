@@ -17,18 +17,18 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Digit filter
  */
-class DigitFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Return filtered value
-	 * Remove all but digits
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		$pattern = '/[^0-9]/';
-		return preg_replace($pattern, '', (string)$value);
-	}
-
+class DigitFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Return filtered value
+     * Remove all but digits
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        $pattern = '/[^0-9]/';
+        return preg_replace($pattern, '', (string)$value);
+    }
 }

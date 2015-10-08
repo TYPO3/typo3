@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Frontend;
 /**
  * A generic frontend exception
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

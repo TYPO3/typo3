@@ -22,93 +22,97 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 /**
  * Test case
  */
-class TreeDataProviderFactoryTest extends UnitTestCase {
+class TreeDataProviderFactoryTest extends UnitTestCase
+{
+    /**
+     * @var TreeDataProviderFactory
+     */
+    protected $subject;
 
-	/**
-	 * @var TreeDataProviderFactory
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new TreeDataProviderFactory();
+        $GLOBALS['TCA'] = array();
+        $GLOBALS['TCA']['foo'] = array();
+        $GLOBALS['TCA']['foo']['ctrl'] = array();
+        $GLOBALS['TCA']['foo']['ctrl']['label'] = 'labelFoo';
+        $GLOBALS['TCA']['foo']['columns'] = array();
+    }
 
-	protected function setUp() {
-		$this->subject = new TreeDataProviderFactory();
-		$GLOBALS['TCA'] = array();
-		$GLOBALS['TCA']['foo'] = array();
-		$GLOBALS['TCA']['foo']['ctrl'] = array();
-		$GLOBALS['TCA']['foo']['ctrl']['label'] = 'labelFoo';
-		$GLOBALS['TCA']['foo']['columns'] = array();
-	}
+    /**
+     * @return array
+     */
+    public function invalidConfigurationDataProvider()
+    {
+        return array(
+            'Empty Configuration' => array(array()),
+            'File Configuration' => array(array(
+                'internal_type' => 'file',
+                'treeConfig' => array(),
+            )),
+            'Unknown Type' => array(array(
+                'internal_type' => 'foo',
+                'treeConfig' => array(),
+            )),
+            'No foreign table' => array(array(
+                'internal_type' => 'db',
+                'treeConfig' => array(),
+            )),
+            'No tree configuration' => array(array(
+                'internal_type' => 'db',
+                'foreign_table' => 'foo',
+            )),
+            'Tree configuration not array' => array(array(
+                'internal_type' => 'db',
+                'foreign_table' => 'foo',
+                'treeConfig' => 'bar',
+            )),
+            'Tree configuration missing childer and parent field' => array(array(
+                'internal_type' => 'db',
+                'foreign_table' => 'foo',
+                'treeConfig' => array(),
+            )),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function invalidConfigurationDataProvider() {
-		return array(
-			'Empty Configuration' => array(array()),
-			'File Configuration' => array(array(
-				'internal_type' => 'file',
-				'treeConfig' => array(),
-			)),
-			'Unknown Type' => array(array(
-				'internal_type' => 'foo',
-				'treeConfig' => array(),
-			)),
-			'No foreign table' => array(array(
-				'internal_type' => 'db',
-				'treeConfig' => array(),
-			)),
-			'No tree configuration' => array(array(
-				'internal_type' => 'db',
-				'foreign_table' => 'foo',
-			)),
-			'Tree configuration not array' => array(array(
-				'internal_type' => 'db',
-				'foreign_table' => 'foo',
-				'treeConfig' => 'bar',
-			)),
-			'Tree configuration missing childer and parent field' => array(array(
-				'internal_type' => 'db',
-				'foreign_table' => 'foo',
-				'treeConfig' => array(),
-			)),
-		);
-	}
+    /**
+     * @param array $tcaConfiguration
+     * @test
+     * @dataProvider invalidConfigurationDataProvider
+     * @expectedException \InvalidArgumentException
+     */
+    public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration)
+    {
+        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+    }
 
-	/**
-	 * @param array $tcaConfiguration
-	 * @test
-	 * @dataProvider invalidConfigurationDataProvider
-	 * @expectedException \InvalidArgumentException
-	 */
-	public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration) {
-		$this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
-	}
+    /**
+     * @test
+     */
+    public function configuredDataProviderClassIsInstantiated()
+    {
+        $dataProviderMockClassName = TreeDataProviderFixture::class;
 
-	/**
-	 * @test
-	 */
-	public function configuredDataProviderClassIsInstantiated() {
-		$dataProviderMockClassName = TreeDataProviderFixture::class;
+        $tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
+        $dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
 
-		$tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
-		$dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+        $this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
+    }
 
-		$this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
-	}
+    /**
+     * @test
+     */
+    public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor()
+    {
+        $dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;
 
-	/**
-	 * @test
-	 */
-	public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor() {
-		$dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;
-
-		$tcaConfiguration = [
-			'treeConfig' => [
-				'dataProvider' => $dataProviderMockClassName,
-			],
-			'internal_type' => 'foo',
-		];
-		$this->setExpectedException(\RuntimeException::class, $this->anything(), 1438875249);
-		$this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
-	}
-
+        $tcaConfiguration = [
+            'treeConfig' => [
+                'dataProvider' => $dataProviderMockClassName,
+            ],
+            'internal_type' => 'foo',
+        ];
+        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1438875249);
+        $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+    }
 }

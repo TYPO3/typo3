@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 /**
  * Fixture for a second replacement class for the original class
  */
-class OtherReplacementClassFixture extends ReplacementClassFixture {
-
+class OtherReplacementClassFixture extends ReplacementClassFixture
+{
 }

@@ -19,37 +19,36 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * Block Style extension for htmlArea RTE
  */
-class BlockStyle extends RteHtmlAreaApi {
+class BlockStyle extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'BlockStyle';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'BlockStyle';
+    /**
+     * The comma-separated list of button names that the extension id adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'blockstyle';
 
-	/**
-	 * The comma-separated list of button names that the extension id adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'blockstyle';
+    /**
+     * The comma-separated list of label names that the extension id adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginLabels = 'blockstylelabel';
 
-	/**
-	 * The comma-separated list of label names that the extension id adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginLabels = 'blockstylelabel';
-
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'blockstylelabel' => 'I[Block style label]',
-		'blockstyle' => 'BlockStyle'
-	);
-
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'blockstylelabel' => 'I[Block style label]',
+        'blockstyle' => 'BlockStyle'
+    );
 }

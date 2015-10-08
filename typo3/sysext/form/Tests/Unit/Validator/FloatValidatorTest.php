@@ -17,58 +17,61 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
 /**
  * Test case
  */
-class FloatValidatorTest extends AbstractValidatorTest {
+class FloatValidatorTest extends AbstractValidatorTest
+{
+    /**
+     * @var string
+     */
+    protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\FloatValidator::class;
 
-	/**
-	 * @var string
-	 */
-	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\FloatValidator::class;
+    /**
+     * @var string
+     */
+    protected $currentLocale;
 
-	/**
-	 * @var string
-	 */
-	protected $currentLocale;
+    /**
+     * Sets up this test case.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->currentLocale = setlocale(LC_NUMERIC, null);
+    }
 
-	/**
-	 * Sets up this test case.
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->currentLocale = setlocale(LC_NUMERIC, NULL);
-	}
+    /**
+     * Tears down this test case.
+     */
+    protected function tearDown()
+    {
+        parent::tearDown();
+        setlocale(LC_NUMERIC, $this->currentLocale);
+    }
 
-	/**
-	 * Tears down this test case.
-	 */
-	protected function tearDown() {
-		parent::tearDown();
-		setlocale(LC_NUMERIC, $this->currentLocale);
-	}
+    /**
+     * @return array
+     */
+    public function validFloatProvider()
+    {
+        return array(
+            '12.1 for en_US locale' => array(array('12.1', 'en_US')),
+            // @todo de_DE disabled currently, works locally but not on travis-ci.org
+            // '12,1 for de_DE locale' => array(array('12,1', 'de_DE')),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function validFloatProvider() {
-		return array(
-			'12.1 for en_US locale' => array(array('12.1', 'en_US')),
-			// @todo de_DE disabled currently, works locally but not on travis-ci.org
-			// '12,1 for de_DE locale' => array(array('12,1', 'de_DE')),
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validFloatProvider
+     */
+    public function validateForValidInputHasEmptyErrorResult($input)
+    {
+        setlocale(LC_NUMERIC, $input[1]);
 
-	/**
-	 * @test
-	 * @dataProvider validFloatProvider
-	 */
-	public function validateForValidInputHasEmptyErrorResult($input) {
-		setlocale(LC_NUMERIC, $input[1]);
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $subject = $this->createSubject($options);
 
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$subject = $this->createSubject($options);
-
-		$this->assertEmpty(
-			$subject->validate($input[0])->getErrors()
-		);
-	}
-
+        $this->assertEmpty(
+            $subject->validate($input[0])->getErrors()
+        );
+    }
 }

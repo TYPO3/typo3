@@ -24,61 +24,66 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 /**
  * Test case
  */
-class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
+     */
+    protected $widgetContext;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
-	 */
-	protected $widgetContext;
+    /**
 
-	/**
+     */
+    protected function setUp()
+    {
+        $this->widgetContext = new \TYPO3\CMS\Fluid\Core\Widget\WidgetContext();
+    }
 
-	 */
-	protected function setUp() {
-		$this->widgetContext = new \TYPO3\CMS\Fluid\Core\Widget\WidgetContext();
-	}
+    /**
+     * @test
+     */
+    public function widgetIdentifierCanBeReadAgain()
+    {
+        $this->widgetContext->setWidgetIdentifier('myWidgetIdentifier');
+        $this->assertEquals('myWidgetIdentifier', $this->widgetContext->getWidgetIdentifier());
+    }
 
-	/**
-	 * @test
-	 */
-	public function widgetIdentifierCanBeReadAgain() {
-		$this->widgetContext->setWidgetIdentifier('myWidgetIdentifier');
-		$this->assertEquals('myWidgetIdentifier', $this->widgetContext->getWidgetIdentifier());
-	}
+    /**
+     * @test
+     */
+    public function ajaxWidgetIdentifierCanBeReadAgain()
+    {
+        $this->widgetContext->setAjaxWidgetIdentifier(42);
+        $this->assertEquals(42, $this->widgetContext->getAjaxWidgetIdentifier());
+    }
 
-	/**
-	 * @test
-	 */
-	public function ajaxWidgetIdentifierCanBeReadAgain() {
-		$this->widgetContext->setAjaxWidgetIdentifier(42);
-		$this->assertEquals(42, $this->widgetContext->getAjaxWidgetIdentifier());
-	}
+    /**
+     * @test
+     */
+    public function widgetConfigurationCanBeReadAgain()
+    {
+        $this->widgetContext->setWidgetConfiguration(array('key' => 'value'));
+        $this->assertEquals(array('key' => 'value'), $this->widgetContext->getWidgetConfiguration());
+    }
 
-	/**
-	 * @test
-	 */
-	public function widgetConfigurationCanBeReadAgain() {
-		$this->widgetContext->setWidgetConfiguration(array('key' => 'value'));
-		$this->assertEquals(array('key' => 'value'), $this->widgetContext->getWidgetConfiguration());
-	}
+    /**
+     * @test
+     */
+    public function controllerObjectNameCanBeReadAgain()
+    {
+        $this->widgetContext->setControllerObjectName('Tx_Fluid_Object_Name');
+        $this->assertEquals('Tx_Fluid_Object_Name', $this->widgetContext->getControllerObjectName());
+    }
 
-	/**
-	 * @test
-	 */
-	public function controllerObjectNameCanBeReadAgain() {
-		$this->widgetContext->setControllerObjectName('Tx_Fluid_Object_Name');
-		$this->assertEquals('Tx_Fluid_Object_Name', $this->widgetContext->getControllerObjectName());
-	}
-
-	/**
-	 * @test
-	 */
-	public function viewHelperChildNodesCanBeReadAgain() {
-		$viewHelperChildNodes = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class);
-		$renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class);
-		$this->widgetContext->setViewHelperChildNodes($viewHelperChildNodes, $renderingContext);
-		$this->assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
-		$this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
-	}
-
+    /**
+     * @test
+     */
+    public function viewHelperChildNodesCanBeReadAgain()
+    {
+        $viewHelperChildNodes = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class);
+        $this->widgetContext->setViewHelperChildNodes($viewHelperChildNodes, $renderingContext);
+        $this->assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
+        $this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
+    }
 }

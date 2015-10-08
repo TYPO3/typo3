@@ -22,62 +22,64 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class DefaultAvatarProvider
  */
-class DefaultAvatarProvider implements AvatarProviderInterface {
+class DefaultAvatarProvider implements AvatarProviderInterface
+{
+    /**
+     * Get Image
+     *
+     * @param array $backendUser be_users record
+     * @param int $size
+     * @return Image|NULL
+     */
+    public function getImage(array $backendUser, $size)
+    {
+        $fileUid = $this->getAvatarFileUid($backendUser['uid']);
 
-	/**
-	 * Get Image
-	 *
-	 * @param array $backendUser be_users record
-	 * @param int $size
-	 * @return Image|NULL
-	 */
-	public function getImage(array $backendUser, $size) {
-		$fileUid = $this->getAvatarFileUid($backendUser['uid']);
+        // Get file object
+        try {
+            $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+            $processedImage = $file->process(
+                ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                array('width' => $size . 'c', 'height' => $size . 'c')
+            );
 
-		// Get file object
-		try {
-			$file = ResourceFactory::getInstance()->getFileObject($fileUid);
-			$processedImage = $file->process(
-				ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-				array('width' => $size . 'c', 'height' => $size . 'c')
-			);
+            $image = GeneralUtility::makeInstance(
+                Image::class,
+                $processedImage->getPublicUrl(),
+                $processedImage->getProperty('width'),
+                $processedImage->getProperty('height')
+            );
+        } catch (FileDoesNotExistException $e) {
+            // No image found
+            $image = null;
+        }
 
-			$image = GeneralUtility::makeInstance(
-				Image::class,
-				$processedImage->getPublicUrl(),
-				$processedImage->getProperty('width'),
-				$processedImage->getProperty('height')
-			);
+        return $image;
+    }
 
-		} catch (FileDoesNotExistException $e) {
-			// No image found
-			$image = NULL;
-		}
+    /**
+     * Get Avatar fileUid
+     *
+     * @param int $beUserId
+     * @return int
+     */
+    protected function getAvatarFileUid($beUserId)
+    {
+        $file = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+            'uid_local',
+            'sys_file_reference',
+            'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
+            'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId .
+            BackendUtility::BEenableFields('sys_file_reference') . BackendUtility::deleteClause('sys_file_reference')
+        );
+        return $file ? $file['uid_local'] : 0;
+    }
 
-		return $image;
-	}
-
-	/**
-	 * Get Avatar fileUid
-	 *
-	 * @param int $beUserId
-	 * @return int
-	 */
-	protected function getAvatarFileUid($beUserId) {
-		$file = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-			'uid_local',
-			'sys_file_reference',
-			'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
-			'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId .
-			BackendUtility::BEenableFields('sys_file_reference') . BackendUtility::deleteClause('sys_file_reference')
-		);
-		return $file ? $file['uid_local'] : 0;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

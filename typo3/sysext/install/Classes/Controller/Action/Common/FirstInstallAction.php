@@ -19,15 +19,15 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class FirstInstallAction extends Action\AbstractAction {
-
-	/**
-	 * Handle this action
-	 *
-	 * @return string content
-	 */
-	public function executeAction() {
-		return $this->view->render();
-	}
-
+class FirstInstallAction extends Action\AbstractAction
+{
+    /**
+     * Handle this action
+     *
+     * @return string content
+     */
+    public function executeAction()
+    {
+        return $this->view->render();
+    }
 }

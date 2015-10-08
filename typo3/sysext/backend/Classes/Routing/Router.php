@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Implementation of a class for adding routes, collecting throughout the Bootstrap
@@ -31,60 +28,64 @@ use TYPO3\CMS\Core\Package\PackageManager;
  *
  * The architecture is inspired by the Symfony Routing Component.
  */
-class Router implements \TYPO3\CMS\Core\SingletonInterface {
+class Router implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * All routes used in the Backend
+     *
+     * @var Route[]
+     */
+    protected $routes = array();
 
-	/**
-	 * All routes used in the Backend
-	 *
-	 * @var Route[]
-	 */
-	protected $routes = array();
+    /**
+     * Adds a new route with the identifiers
+     *
+     * @param string $routeIdentifier
+     * @param Route $route
+     */
+    public function addRoute($routeIdentifier, $route)
+    {
+        $this->routes[$routeIdentifier] = $route;
+    }
 
-	/**
-	 * Adds a new route with the identifiers
-	 *
-	 * @param string $routeIdentifier
-	 * @param Route $route
-	 */
-	public function addRoute($routeIdentifier, $route) {
-		$this->routes[$routeIdentifier] = $route;
-	}
+    /**
+     * Fetch all registered routes, only use in UriBuilder
+     *
+     * @return Route[]
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
 
-	/**
-	 * Fetch all registered routes, only use in UriBuilder
-	 *
-	 * @return Route[]
-	 */
-	public function getRoutes() {
-		return $this->routes;
-	}
+    /**
+     * Tries to match a URL path with a set of routes.
+     *
+     * @param string $pathInfo The path info to be parsed
+     * @return Route the first Route object found
+     * @throws ResourceNotFoundException If the resource could not be found
+     */
+    public function match($pathInfo)
+    {
+        foreach ($this->routes as $routeIdentifier => $route) {
+            // This check is done in a simple way as there are no parameters yet (get parameters only)
+            if ($route->getPath() === $pathInfo) {
+                // Store the name of the Route in the _identifier option so the token can be checked against that
+                $route->setOption('_identifier', $routeIdentifier);
+                return $route;
+            }
+        }
+        throw new ResourceNotFoundException('The requested resource "' . $pathInfo . '" was not found.', 1425389240);
+    }
 
-	/**
-	 * Tries to match a URL path with a set of routes.
-	 *
-	 * @param string $pathInfo The path info to be parsed
-	 * @return Route the first Route object found
-	 * @throws ResourceNotFoundException If the resource could not be found
-	 */
-	public function match($pathInfo) {
-		foreach ($this->routes as $routeIdentifier => $route) {
-			// This check is done in a simple way as there are no parameters yet (get parameters only)
-			if ($route->getPath() === $pathInfo) {
-				// Store the name of the Route in the _identifier option so the token can be checked against that
-				$route->setOption('_identifier', $routeIdentifier);
-				return $route;
-			}
-		}
-		throw new ResourceNotFoundException('The requested resource "' . $pathInfo . '" was not found.', 1425389240);
-	}
-
-	/**
-	 * Tries to match a URI against the registered routes
-	 *
-	 * @param ServerRequestInterface $request
-	 * @return Route the first Route object found
-	 */
-	public function matchRequest(ServerRequestInterface $request) {
-		return $this->match($request->getAttribute('routePath'));
-	}
+    /**
+     * Tries to match a URI against the registered routes
+     *
+     * @param ServerRequestInterface $request
+     * @return Route the first Route object found
+     */
+    public function matchRequest(ServerRequestInterface $request)
+    {
+        return $this->match($request->getAttribute('routePath'));
+    }
 }

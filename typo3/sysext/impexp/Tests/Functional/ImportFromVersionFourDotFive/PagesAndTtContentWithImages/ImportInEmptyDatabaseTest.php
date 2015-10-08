@@ -17,23 +17,22 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportFromVersionFourDotFive\PagesAn
 /**
  * Functional test for the ImportExport
  */
-class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
+class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
+{
+    protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/PagesAndTtContentWithImages/DataSet/Assertion/';
 
-	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/PagesAndTtContentWithImages/DataSet/Assertion/';
+    /**
+     * @test
+     */
+    public function importPagesAndRelatedTtContentWithImages()
+    {
+        $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-images.xml', 1);
+        $this->import->importData(0);
 
-	/**
-	 * @test
-	 */
-	public function importPagesAndRelatedTtContentWithImages() {
-		$this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-images.xml', 1);
-		$this->import->importData(0);
+        $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImages');
 
-		$this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImages');
-
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image2.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image3.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/_imported/fileadmin/user_upload/typo3_image5.jpg');
-
-	}
-
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image2.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image3.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/_imported/fileadmin/user_upload/typo3_image5.jpg');
+    }
 }

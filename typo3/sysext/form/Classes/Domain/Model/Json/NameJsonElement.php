@@ -17,81 +17,82 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON name
  */
-class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement {
+class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement
+{
+    /**
+     * The ExtJS xtype of the element
+     *
+     * @var string
+     */
+    public $xtype = 'typo3-form-wizard-elements-predefined-name';
 
-	/**
-	 * The ExtJS xtype of the element
-	 *
-	 * @var string
-	 */
-	public $xtype = 'typo3-form-wizard-elements-predefined-name';
+    /**
+     * The configuration array for the xtype
+     *
+     * @var array
+     */
+    public $configuration = array(
+        'attributes' => array(),
+        'legend' => array(
+            'value' => ''
+        ),
+        'various' => array(
+            'prefix' => false,
+            'suffix' => false,
+            'middleName' => false
+        )
+    );
 
-	/**
-	 * The configuration array for the xtype
-	 *
-	 * @var array
-	 */
-	public $configuration = array(
-		'attributes' => array(),
-		'legend' => array(
-			'value' => ''
-		),
-		'various' => array(
-			'prefix' => FALSE,
-			'suffix' => FALSE,
-			'middleName' => FALSE
-		)
-	);
+    /**
+     * Allowed attributes for this object
+     *
+     * @var array
+     */
+    protected $allowedAttributes = array(
+        'class',
+        'dir',
+        'id',
+        'lang',
+        'style'
+    );
 
-	/**
-	 * Allowed attributes for this object
-	 *
-	 * @var array
-	 */
-	protected $allowedAttributes = array(
-		'class',
-		'dir',
-		'id',
-		'lang',
-		'style'
-	);
+    /**
+     * Set all the parameters for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
+     */
+    public function setParameters(array $parameters)
+    {
+        parent::setParameters($parameters);
+        $this->setVarious($parameters);
+    }
 
-	/**
-	 * Set all the parameters for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
-	 */
-	public function setParameters(array $parameters) {
-		parent::setParameters($parameters);
-		$this->setVarious($parameters);
-	}
-
-	/**
-	 * Set the various properties for the element
-	 *
-	 * For this element this is the prefix, suffix and middleName if they will
-	 * be shown in the form
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 */
-	protected function setVarious(array $parameters) {
-		if (is_array($parameters)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
-			foreach ($keys as $key) {
-				$class = $parameters[$key];
-				if ((int)$key && strpos($key, '.') === FALSE) {
-					if (isset($parameters[$key . '.'])) {
-						$childElementArguments = $parameters[$key . '.'];
-						if (in_array($childElementArguments['name'], array('prefix', 'suffix', 'middleName'))) {
-							$this->configuration['various'][$childElementArguments['name']] = TRUE;
-						}
-					}
-				}
-			}
-		}
-	}
-
+    /**
+     * Set the various properties for the element
+     *
+     * For this element this is the prefix, suffix and middleName if they will
+     * be shown in the form
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setVarious(array $parameters)
+    {
+        if (is_array($parameters)) {
+            $keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
+            foreach ($keys as $key) {
+                $class = $parameters[$key];
+                if ((int)$key && strpos($key, '.') === false) {
+                    if (isset($parameters[$key . '.'])) {
+                        $childElementArguments = $parameters[$key . '.'];
+                        if (in_array($childElementArguments['name'], array('prefix', 'suffix', 'middleName'))) {
+                            $this->configuration['various'][$childElementArguments['name']] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

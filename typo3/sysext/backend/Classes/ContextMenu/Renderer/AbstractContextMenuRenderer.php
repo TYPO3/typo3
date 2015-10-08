@@ -17,33 +17,32 @@ namespace TYPO3\CMS\Backend\ContextMenu\Renderer;
 /**
  * Abstract Context Menu Renderer
  */
-abstract class AbstractContextMenuRenderer {
+abstract class AbstractContextMenuRenderer
+{
+    /**
+     * Renders an action recursive or just a single one
+     *
+     * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderAction(\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action, $recursive = false);
 
-	/**
-	 * Renders an action recursive or just a single one
-	 *
-	 * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderAction(\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action, $recursive = FALSE);
+    /**
+     * Renders an action collection recursive or just a single one
+     *
+     * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderActionCollection(\TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection, $recursive = false);
 
-	/**
-	 * Renders an action collection recursive or just a single one
-	 *
-	 * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderActionCollection(\TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection, $recursive = FALSE);
-
-	/**
-	 * Renders a context menu recursive or just a single one
-	 *
-	 * @param \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderContextMenu(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu, $recursive = FALSE);
-
+    /**
+     * Renders a context menu recursive or just a single one
+     *
+     * @param \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderContextMenu(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu, $recursive = false);
 }

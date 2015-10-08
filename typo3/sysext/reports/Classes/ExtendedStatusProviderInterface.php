@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Reports;
 /**
  * Interface for classes which provide a status report entry.
  */
-interface ExtendedStatusProviderInterface {
-
-	/**
-	 * Returns the detailed status of an extension or (sub)system
-	 *
-	 * @return \TYPO3\CMS\Reports\Status[]
-	 */
-	public function getDetailedStatus();
-
+interface ExtendedStatusProviderInterface
+{
+    /**
+     * Returns the detailed status of an extension or (sub)system
+     *
+     * @return \TYPO3\CMS\Reports\Status[]
+     */
+    public function getDetailedStatus();
 }

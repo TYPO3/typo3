@@ -20,12 +20,11 @@ namespace TYPO3\CMS\Backend\Tree;
  */
 interface EditableNodeLabelInterface
 {
-	/**
-	 * Sets the new label
-	 *
-	 * @param string $label
-	 * @return void
-	 */
-	public function setLabel($label);
-
+    /**
+     * Sets the new label
+     *
+     * @param string $label
+     * @return void
+     */
+    public function setLabel($label);
 }

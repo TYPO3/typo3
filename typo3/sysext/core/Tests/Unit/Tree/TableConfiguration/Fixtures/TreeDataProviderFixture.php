@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures;
 /**
  * Fixture configured data provider
  */
-class TreeDataProviderFixture {
-
-	/**
-	 * @param array $configuration
-	 */
-	public function __construct($configuration) {
-	}
-
+class TreeDataProviderFixture
+{
+    /**
+     * @param array $configuration
+     */
+    public function __construct($configuration)
+    {
+    }
 }

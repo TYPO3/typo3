@@ -22,59 +22,58 @@ namespace TYPO3\CMS\Core\Collection;
  * common and generic way, while the class manages the storage
  * in an appropriate way itself
  */
-interface PersistableCollectionInterface {
+interface PersistableCollectionInterface
+{
+    /**
+     * Get the identifier of the collection
+     *
+     * For database stored collections, this will be an integer,
+     * session stored, registry stored or other collections might
+     * use a string as well
+     *
+     * @return int|string
+     */
+    public function getIdentifier();
 
-	/**
-	 * Get the identifier of the collection
-	 *
-	 * For database stored collections, this will be an integer,
-	 * session stored, registry stored or other collections might
-	 * use a string as well
-	 *
-	 * @return int|string
-	 */
-	public function getIdentifier();
+    /**
+     * Sets the identifier of the collection
+     *
+     * @param int|string $id
+     * @return void
+     */
+    public function setIdentifier($id);
 
-	/**
-	 * Sets the identifier of the collection
-	 *
-	 * @param int|string $id
-	 * @return void
-	 */
-	public function setIdentifier($id);
+    /**
+     * Loads the collections with the given id from persistence
+     *
+     * For memory reasons, per default only f.e. title, database-table,
+     * identifier (what ever static data is defined) is loaded.
+     * Entries can be load on first access.
+     *
+     * @param int|string $id
+     * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
+     * @return \TYPO3\CMS\Core\Collection\CollectionInterface
+     */
+    public static function load($id, $fillItems = false);
 
-	/**
-	 * Loads the collections with the given id from persistence
-	 *
-	 * For memory reasons, per default only f.e. title, database-table,
-	 * identifier (what ever static data is defined) is loaded.
-	 * Entries can be load on first access.
-	 *
-	 * @param int|string $id
-	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
-	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
-	 */
-	static public function load($id, $fillItems = FALSE);
+    /**
+     * Persists current collection state to underlying storage
+     *
+     * @return void
+     */
+    public function persist();
 
-	/**
-	 * Persists current collection state to underlying storage
-	 *
-	 * @return void
-	 */
-	public function persist();
-
-	/**
-	 * Populates the content-entries of the storage
-	 *
-	 * Queries the underlying storage for entries of the collection
-	 * and adds them to the collection data.
-	 *
-	 * If the content entries of the storage had not been loaded on creation
-	 * ($fillItems = false) this function is to be used for loading the contents
-	 * afterwards.
-	 *
-	 * @return void
-	 */
-	public function loadContents();
-
+    /**
+     * Populates the content-entries of the storage
+     *
+     * Queries the underlying storage for entries of the collection
+     * and adds them to the collection data.
+     *
+     * If the content entries of the storage had not been loaded on creation
+     * ($fillItems = false) this function is to be used for loading the contents
+     * afterwards.
+     *
+     * @return void
+     */
+    public function loadContents();
 }

@@ -26,38 +26,39 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
+class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'requiredOption' => array(0, 'Some value', 'integer', true),
+        'demoOption' => array(PHP_INT_MAX, 'Some value', 'integer'),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'requiredOption' => array(0, 'Some value', 'integer', TRUE),
-		'demoOption' => array(PHP_INT_MAX, 'Some value', 'integer'),
-	);
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to Result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	protected function isValid($value) {
-		// dummy
-	}
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to Result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    protected function isValid($value)
+    {
+        // dummy
+    }
 
 
-	/**
-	 * Checks if the given value is valid according to the validator, and returns
-	 * the Error Messages object which occurred.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @api
-	 */
-	public function validate($value) {
-		return new \TYPO3\CMS\Extbase\Error\Result();
-	}
-
+    /**
+     * Checks if the given value is valid according to the validator, and returns
+     * the Error Messages object which occurred.
+     *
+     * @param mixed $value The value that should be validated
+     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @api
+     */
+    public function validate($value)
+    {
+        return new \TYPO3\CMS\Extbase\Error\Result();
+    }
 }

@@ -19,38 +19,37 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 interface CollectionProcessorInterface
 {
-	/**
-	 * Post process the subelement collection of a specific node
-	 *
-	 * @abstract
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-	 * @param int $mountPoint
-	 * @param int $level
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-	 * @return void
-	 */
-	public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
+    /**
+     * Post process the subelement collection of a specific node
+     *
+     * @abstract
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param int $mountPoint
+     * @param int $level
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
+     * @return void
+     */
+    public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
 
-	/**
-	 * Post process the subelement collection of a specific node-filter combination
-	 *
-	 * @abstract
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-	 * @param string $searchFilter
-	 * @param int $mountPoint
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-	 * @return void
-	 */
-	public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
+    /**
+     * Post process the subelement collection of a specific node-filter combination
+     *
+     * @abstract
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @param string $searchFilter
+     * @param int $mountPoint
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
+     * @return void
+     */
+    public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
 
-	/**
-	 * Post process the collection of tree mounts
-	 *
-	 * @abstract
-	 * @param string $searchFilter
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-	 * @return void
-	 */
-	public function postProcessGetTreeMounts($searchFilter, $nodeCollection);
-
+    /**
+     * Post process the collection of tree mounts
+     *
+     * @abstract
+     * @param string $searchFilter
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
+     * @return void
+     */
+    public function postProcessGetTreeMounts($searchFilter, $nodeCollection);
 }

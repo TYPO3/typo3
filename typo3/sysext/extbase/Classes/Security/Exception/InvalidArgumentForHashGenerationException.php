@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Security\Exception;
 /**
  * An "InvalidArgumentForHashGeneration" exception
  */
-class InvalidArgumentForHashGenerationException extends \TYPO3\CMS\Extbase\Security\Exception {
-
+class InvalidArgumentForHashGenerationException extends \TYPO3\CMS\Extbase\Security\Exception
+{
 }

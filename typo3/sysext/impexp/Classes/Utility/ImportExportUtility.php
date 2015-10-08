@@ -21,73 +21,75 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Can be used for API access for simple importing of files
  *
  */
-class ImportExportUtility {
+class ImportExportUtility
+{
+    /**
+     * Import a T3D file directly
+     *
+     * @param string $file The full absolute path to the file
+     * @param int $pid The pid under which the t3d file should be imported
+     * @throws \ErrorException
+     * @throws \InvalidArgumentException
+     * @return int
+     */
+    public function importT3DFile($file, $pid)
+    {
+        if (!is_string($file)) {
+            throw new \InvalidArgumentException('Input parameter $file has to be of type string', 1377625645);
+        }
+        if (!is_int($pid)) {
+            throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
+        }
+        /** @var $import \TYPO3\CMS\Impexp\ImportExport */
+        $import = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+        $import->init(0, 'import');
 
-	/**
-	 * Import a T3D file directly
-	 *
-	 * @param string $file The full absolute path to the file
-	 * @param int $pid The pid under which the t3d file should be imported
-	 * @throws \ErrorException
-	 * @throws \InvalidArgumentException
-	 * @return int
-	 */
-	public function importT3DFile($file, $pid) {
-		if (!is_string($file)) {
-			throw new \InvalidArgumentException('Input parameter $file has to be of type string', 1377625645);
-		}
-		if (!is_int($pid)) {
-			throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
-		}
-		/** @var $import \TYPO3\CMS\Impexp\ImportExport */
-		$import = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
-		$import->init(0, 'import');
+        $this->emitAfterImportExportInitialisationSignal($import);
 
-		$this->emitAfterImportExportInitialisationSignal($import);
+        $importResponse = 0;
+        if ($file && @is_file($file)) {
+            if ($import->loadFile($file, 1)) {
+                // Import to root page:
+                $import->importData($pid);
+                // Get id of first created page:
+                $newPages = $import->import_mapId['pages'];
+                $importResponse = (int)reset($newPages);
+            }
+        }
 
-		$importResponse = 0;
-		if ($file && @is_file($file)) {
-			if ($import->loadFile($file, 1)) {
-				// Import to root page:
-				$import->importData($pid);
-				// Get id of first created page:
-				$newPages = $import->import_mapId['pages'];
-				$importResponse = (int)reset($newPages);
-			}
-		}
+        // Check for errors during the import process:
+        $errors = $import->printErrorLog();
+        if ($errors !== '') {
+            /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+            $logger->warning($errors);
 
-		// Check for errors during the import process:
-		$errors = $import->printErrorLog();
-		if ($errors !== '') {
-			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
-			$logger->warning($errors);
+            if (!$importResponse) {
+                throw new \ErrorException('No page records imported', 1377625537);
+            }
+        }
+        return $importResponse;
+    }
 
-			if (!$importResponse) {
-				throw new \ErrorException('No page records imported', 1377625537);
-			}
-		}
-		return $importResponse;
-	}
+    /**
+     * Get the SignalSlot dispatcher
+     *
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected function getSignalSlotDispatcher()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+    }
 
-	/**
-	 * Get the SignalSlot dispatcher
-	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected function getSignalSlotDispatcher() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-	}
-
-	/**
-	 * Emits a signal after initialization
-	 *
-	 * @param \TYPO3\CMS\Impexp\ImportExport $import
-	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-	 */
-	protected function emitAfterImportExportInitialisationSignal(\TYPO3\CMS\Impexp\ImportExport $import) {
-		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
-	}
-
+    /**
+     * Emits a signal after initialization
+     *
+     * @param \TYPO3\CMS\Impexp\ImportExport $import
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     */
+    protected function emitAfterImportExportInitialisationSignal(\TYPO3\CMS\Impexp\ImportExport $import)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
+    }
 }

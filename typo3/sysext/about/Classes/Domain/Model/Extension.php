@@ -19,82 +19,89 @@ namespace TYPO3\CMS\About\Domain\Model;
  *
  * @entity
  */
-class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $author = '';
 
-	/**
-	 * @var string
-	 */
-	protected $author = '';
+    /**
+     * @var string
+     */
+    protected $authorEmail = '';
 
-	/**
-	 * @var string
-	 */
-	protected $authorEmail = '';
+    /**
+     * @var string
+     */
+    protected $key = '';
 
-	/**
-	 * @var string
-	 */
-	protected $key = '';
+    /**
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
 
-	/**
-	 * @param string $author
-	 */
-	public function setAuthor($author) {
-		$this->author = $author;
-	}
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getAuthor() {
-		return $this->author;
-	}
+    /**
+     * @param string $authorEmail
+     */
+    public function setAuthorEmail($authorEmail)
+    {
+        $this->authorEmail = $authorEmail;
+    }
 
-	/**
-	 * @param string $authorEmail
-	 */
-	public function setAuthorEmail($authorEmail) {
-		$this->authorEmail = $authorEmail;
-	}
+    /**
+     * @return string
+     */
+    public function getAuthorEmail()
+    {
+        return $this->authorEmail;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getAuthorEmail() {
-		return $this->authorEmail;
-	}
+    /**
+     * @param string $key
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+    }
 
-	/**
-	 * @param string $key
-	 */
-	public function setKey($key) {
-		$this->key = $key;
-	}
+    /**
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getKey() {
-		return $this->key;
-	}
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * @param string $title
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

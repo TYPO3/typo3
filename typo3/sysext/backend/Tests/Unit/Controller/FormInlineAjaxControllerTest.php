@@ -20,43 +20,46 @@ use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 /**
  * Test case
  */
-class FormInlineAjaxControllerTest extends UnitTestCase {
+class FormInlineAjaxControllerTest extends UnitTestCase
+{
+    /**
+     * Checks if the given file type may be uploaded without *ANY* limit to file types being given
+     *
+     * @test
+     */
+    public function checkInlineFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue()
+    {
+        $selectorData = array();
+        $fileData['extension'] = 'png';
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
+        $this->assertTrue($mayUploadFile);
+    }
 
-	/**
-	 * Checks if the given file type may be uploaded without *ANY* limit to file types being given
-	 *
-	 * @test
-	 */
-	public function checkInlineFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue(){
-		$selectorData = array();
-		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', FALSE);
-		$mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertTrue($mayUploadFile);
-	}
+    /**
+     * Checks if the given file type may be uploaded and the given file type is *NOT* in the list of allowed files
+     *
+     * @test
+     */
+    public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse()
+    {
+        $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
+        $fileData['extension'] = 'php';
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
+        $this->assertFalse($mayUploadFile);
+    }
 
-	/**
-	 * Checks if the given file type may be uploaded and the given file type is *NOT* in the list of allowed files
-	 *
-	 * @test
-	 */
-	public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse(){
-		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-		$fileData['extension'] = 'php';
-		$mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', FALSE);
-		$mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertFalse($mayUploadFile);
-	}
-
-	/**
-	 * Checks if the given file type may be uploaded and the given file type *is* in the list of allowed files
-	 * @test
-	 */
-	public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue(){
-		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', FALSE);
-		$mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertTrue($mayUploadFile);
-	}
+    /**
+     * Checks if the given file type may be uploaded and the given file type *is* in the list of allowed files
+     * @test
+     */
+    public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue()
+    {
+        $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
+        $fileData['extension'] = 'png';
+        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, array('dummy'), array(), '', false);
+        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
+        $this->assertTrue($mayUploadFile);
+    }
 }

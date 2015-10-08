@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "InvalidRelationConfigurationException" exception
  */
-class InvalidRelationConfigurationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class InvalidRelationConfigurationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

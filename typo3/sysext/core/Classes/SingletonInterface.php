@@ -18,6 +18,6 @@ namespace TYPO3\CMS\Core;
  * "empty" interface for singletons (marker interface pattern)
  * @see \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()
  */
-interface SingletonInterface {
-
+interface SingletonInterface
+{
 }

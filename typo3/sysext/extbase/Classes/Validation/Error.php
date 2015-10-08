@@ -18,15 +18,15 @@ namespace TYPO3\CMS\Extbase\Validation;
  * This object holds a validation error.
  *
  */
-class Error extends \TYPO3\CMS\Extbase\Error\Error {
+class Error extends \TYPO3\CMS\Extbase\Error\Error
+{
+    /**
+     * @var string
+     */
+    protected $message = 'Unknown validation error';
 
-	/**
-	 * @var string
-	 */
-	protected $message = 'Unknown validation error';
-
-	/**
-	 * @var string
-	 */
-	protected $code = 1201447005;
+    /**
+     * @var string
+     */
+    protected $code = 1201447005;
 }

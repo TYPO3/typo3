@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Lang\Exception;
 /**
  * An exception when something is wrong within the language
  */
-class Language extends \TYPO3\CMS\Core\Exception {
-
+class Language extends \TYPO3\CMS\Core\Exception
+{
 }

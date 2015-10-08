@@ -14,41 +14,44 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
 /**
  * Test case
  */
-class NumericNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class NumericNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function renderReturnsProperIntegerGivenInConstructor()
+    {
+        $string = '1';
+        $node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($string);
+        $this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), 1, 'The rendered value of a numeric node does not match the string given in the constructor.');
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsProperIntegerGivenInConstructor() {
-		$string = '1';
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($string);
-		$this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), 1, 'The rendered value of a numeric node does not match the string given in the constructor.');
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsProperFloatGivenInConstructor()
+    {
+        $string = '1.1';
+        $node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($string);
+        $this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), 1.1, 'The rendered value of a numeric node does not match the string given in the constructor.');
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsProperFloatGivenInConstructor() {
-		$string = '1.1';
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($string);
-		$this->assertEquals($node->evaluate($this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class)), 1.1, 'The rendered value of a numeric node does not match the string given in the constructor.');
-	}
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
+     */
+    public function constructorThrowsExceptionIfNoNumericGiven()
+    {
+        new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode('foo');
+    }
 
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
-	 */
-	public function constructorThrowsExceptionIfNoNumericGiven() {
-		new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode('foo');
-	}
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
-	 */
-	public function addChildNodeThrowsException() {
-		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode('1');
-		$node->addChildNode(clone $node);
-	}
-
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
+     */
+    public function addChildNodeThrowsException()
+    {
+        $node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode('1');
+        $node->addChildNode(clone $node);
+    }
 }

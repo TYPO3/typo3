@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Backend\Toolbar;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\Toolbar\ClearCacheToolbarItem and manipulate CacheMenuItems array
  */
-interface ClearCacheActionsHookInterface {
-	/**
-	 * Modifies CacheMenuItems array
-	 *
-	 * @param array $cacheActions Array of CacheMenuItems
-	 * @param array $optionValues Array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
-	 * @return
-	 */
-	public function manipulateCacheActions(&$cacheActions, &$optionValues);
-
+interface ClearCacheActionsHookInterface
+{
+    /**
+     * Modifies CacheMenuItems array
+     *
+     * @param array $cacheActions Array of CacheMenuItems
+     * @param array $optionValues Array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
+     * @return
+     */
+    public function manipulateCacheActions(&$cacheActions, &$optionValues);
 }

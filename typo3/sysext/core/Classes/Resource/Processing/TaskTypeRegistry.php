@@ -17,46 +17,48 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 /**
  * The registry for task types.
  */
-class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface {
+class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array
+     */
+    protected $registeredTaskTypes = array();
 
-	/**
-	 * @var array
-	 */
-	protected $registeredTaskTypes = array();
+    /**
+     * Register task types from configuration
+     */
+    public function __construct()
+    {
+        $this->registeredTaskTypes = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processingTaskTypes'];
+    }
 
-	/**
-	 * Register task types from configuration
-	 */
-	public function __construct() {
-		$this->registeredTaskTypes = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processingTaskTypes'];
-	}
+    /**
+     * Returns the class that implements the given task type.
+     *
+     * @param string $taskType
+     * @return string
+     */
+    protected function getClassForTaskType($taskType)
+    {
+        return isset($this->registeredTaskTypes[$taskType]) ? $this->registeredTaskTypes[$taskType] : null;
+    }
 
-	/**
-	 * Returns the class that implements the given task type.
-	 *
-	 * @param string $taskType
-	 * @return string
-	 */
-	protected function getClassForTaskType($taskType) {
-		return isset($this->registeredTaskTypes[$taskType]) ? $this->registeredTaskTypes[$taskType] : NULL;
-	}
+    /**
+     * @param string $taskType
+     * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
+     * @param array $processingConfiguration
+     * @return TaskInterface
+     * @throws \RuntimeException
+     */
+    public function getTaskForType($taskType, \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, array $processingConfiguration)
+    {
+        $taskClass = $this->getClassForTaskType($taskType);
+        if ($taskClass === null) {
+            throw new \RuntimeException('Unknown processing task "' . $taskType . '"');
+        }
 
-	/**
-	 * @param string $taskType
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param array $processingConfiguration
-	 * @return TaskInterface
-	 * @throws \RuntimeException
-	 */
-	public function getTaskForType($taskType, \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, array $processingConfiguration) {
-		$taskClass = $this->getClassForTaskType($taskType);
-		if ($taskClass === NULL) {
-			throw new \RuntimeException('Unknown processing task "' . $taskType . '"');
-		}
-
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass,
-			$processedFile, $processingConfiguration
-		);
-	}
-
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass,
+            $processedFile, $processingConfiguration
+        );
+    }
 }

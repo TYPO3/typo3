@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Title filter
  */
-class TitleCaseFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Convert alphabetic characters to title case
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		$lower = $this->convertCase($value, 'toLower');
-		return ucwords($lower);
-	}
-
+class TitleCaseFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Convert alphabetic characters to title case
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        $lower = $this->convertCase($value, 'toLower');
+        return ucwords($lower);
+    }
 }

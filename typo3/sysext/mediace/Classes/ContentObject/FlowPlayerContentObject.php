@@ -21,469 +21,470 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Contains FlowPlayer class object.
  */
-class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject
+{
+    /**
+     * File extension to mime type
+     *
+     * @var array
+     */
+    public $mimeTypes = array(
+        'aif' => array(
+            'audio' => 'audio/aiff'
+        ),
+        'au' => array(
+            'audio' => 'audio/x-au'
+        ),
+        'asf' => array(
+            'video' => 'video/x-ms-asf'
+        ),
+        'avi' => array(
+            'audio' => 'video/x-msvideo'
+        ),
+        'class' => array(
+            'audio' => 'application/java',
+            'video' => 'application/java'
+        ),
+        'dcr' => array(
+            'video' => 'application/x-director'
+        ),
+        'flac' => array(
+            'audio' => 'audio/flac'
+        ),
+        'flv' => array(
+            'video' => 'video/x-flv'
+        ),
+        'm4a' => array(
+            'audio' => 'audio/mp4a-latm'
+        ),
+        'm4v' => array(
+            'video' => 'video/x-m4v'
+        ),
+        'mov' => array(
+            'video' => 'video/quicktime'
+        ),
+        'mp3' => array(
+            'audio' => 'audio/mpeg'
+        ),
+        'mp4' => array(
+            'video' => 'video/mp4'
+        ),
+        'oga' => array(
+            'audio' => 'audio/ogg'
+        ),
+        'ogg' => array(
+            'audio' => 'audio/ogg',
+            'video' => 'video/ogg'
+        ),
+        'ogv' => array(
+            'video' => 'video/ogg'
+        ),
+        'qt' => array(
+            'video' => 'video/quicktime'
+        ),
+        'swa' => array(
+            'audio' => 'application/x-director'
+        ),
+        'swf' => array(
+            'audio' => 'application/x-shockwave-flash',
+            'video' => 'application/x-shockwave-flash'
+        ),
+        'wav' => array(
+            'audio' => 'audio/wave'
+        ),
+        'webm' => array(
+            'audio' => 'audio/webm',
+            'video' => 'video/webm'
+        ),
+        'wmv' => array(
+            'audio' => 'audio/x-ms-wmv'
+        )
+    );
 
-	/**
-	 * File extension to mime type
-	 *
-	 * @var array
-	 */
-	public $mimeTypes = array(
-		'aif' => array(
-			'audio' => 'audio/aiff'
-		),
-		'au' => array(
-			'audio' => 'audio/x-au'
-		),
-		'asf' => array(
-			'video' => 'video/x-ms-asf'
-		),
-		'avi' => array(
-			'audio' => 'video/x-msvideo'
-		),
-		'class' => array(
-			'audio' => 'application/java',
-			'video' => 'application/java'
-		),
-		'dcr' => array(
-			'video' => 'application/x-director'
-		),
-		'flac' => array(
-			'audio' => 'audio/flac'
-		),
-		'flv' => array(
-			'video' => 'video/x-flv'
-		),
-		'm4a' => array(
-			'audio' => 'audio/mp4a-latm'
-		),
-		'm4v' => array(
-			'video' => 'video/x-m4v'
-		),
-		'mov' => array(
-			'video' => 'video/quicktime'
-		),
-		'mp3' => array(
-			'audio' => 'audio/mpeg'
-		),
-		'mp4' => array(
-			'video' => 'video/mp4'
-		),
-		'oga' => array(
-			'audio' => 'audio/ogg'
-		),
-		'ogg' => array(
-			'audio' => 'audio/ogg',
-			'video' => 'video/ogg'
-		),
-		'ogv' => array(
-			'video' => 'video/ogg'
-		),
-		'qt' => array(
-			'video' => 'video/quicktime'
-		),
-		'swa' => array(
-			'audio' => 'application/x-director'
-		),
-		'swf' => array(
-			'audio' => 'application/x-shockwave-flash',
-			'video' => 'application/x-shockwave-flash'
-		),
-		'wav' => array(
-			'audio' => 'audio/wave'
-		),
-		'webm' => array(
-			'audio' => 'audio/webm',
-			'video' => 'video/webm'
-		),
-		'wmv' => array(
-			'audio' => 'audio/x-ms-wmv'
-		)
-	);
+    /**
+     * VideoJS options
+     *
+     * @var array
+     */
+    public $videoJsOptions = array(
+        // Use the browser's controls (iPhone)
+        'useBuiltInControls',
+        // Display control bar below video vs. in front of
+        'controlsBelow',
+        // Make controls visible when page loads
+        'controlsAtStart',
+        // Hide controls when not over the video
+        'controlsHiding',
+        // Will be overridden by localStorage volume if available
+        'defaultVolume',
+        // Players and order to use them
+        'playerFallbackOrder'
+    );
 
-	/**
-	 * VideoJS options
-	 *
-	 * @var array
-	 */
-	public $videoJsOptions = array(
-		// Use the browser's controls (iPhone)
-		'useBuiltInControls',
-		// Display control bar below video vs. in front of
-		'controlsBelow',
-		// Make controls visible when page loads
-		'controlsAtStart',
-		// Hide controls when not over the video
-		'controlsHiding',
-		// Will be overridden by localStorage volume if available
-		'defaultVolume',
-		// Players and order to use them
-		'playerFallbackOrder'
-	);
+    /**
+     * html5 tag attributes
+     *
+     * @var array
+     */
+    public $html5TagAttributes = array(
+        'autoPlay',
+        'controls',
+        'loop',
+        'preload'
+    );
 
-	/**
-	 * html5 tag attributes
-	 *
-	 * @var array
-	 */
-	public $html5TagAttributes = array(
-		'autoPlay',
-		'controls',
-		'loop',
-		'preload'
-	);
+    /**
+     * Flowplayer captions plugin configuration
+     *
+     * @var array
+     */
+    public $flowplayerCaptionsConfig = array(
+        'plugins' => array(
+            // The captions plugin
+            'captions' => array(
+                'url' => 'plugins/flowplayer.captions-3.2.10.swf',
+                // Pointer to a content plugin (see below)
+                'captionTarget' => 'content'
+            ),
+            // Configure a content plugin so that it looks good for showing captions
+            'content' => array(
+                'url' => 'plugins/flowplayer.content-3.2.9.swf',
+                'bottom' => 5,
+                'height' => 40,
+                'backgroundColor' => 'transparent',
+                'backgroundGradient' => 'none',
+                'border' => 0,
+                'textDecoration' => 'outline',
+                'style' => array(
+                    'body' => array(
+                        'fontSize' => 14,
+                        'fontFamily' => 'Arial',
+                        'textAlign' => 'center',
+                        'color' => '#ffffff'
+                    )
+                )
+            )
+        )
+    );
 
-	/**
-	 * Flowplayer captions plugin configuration
-	 *
-	 * @var array
-	 */
-	public $flowplayerCaptionsConfig = array(
-		'plugins' => array(
-			// The captions plugin
-			'captions' => array(
-				'url' => 'plugins/flowplayer.captions-3.2.10.swf',
-				// Pointer to a content plugin (see below)
-				'captionTarget' => 'content'
-			),
-			// Configure a content plugin so that it looks good for showing captions
-			'content' => array(
-				'url' => 'plugins/flowplayer.content-3.2.9.swf',
-				'bottom' => 5,
-				'height' => 40,
-				'backgroundColor' => 'transparent',
-				'backgroundGradient' => 'none',
-				'border' => 0,
-				'textDecoration' => 'outline',
-				'style' => array(
-					'body' => array(
-						'fontSize' => 14,
-						'fontFamily' => 'Arial',
-						'textAlign' => 'center',
-						'color' => '#ffffff'
-					)
-				)
-			)
-		)
-	);
+    /**
+     * Flowplayer audio configuration
+     *
+     * @var array
+     */
+    public $flowplayerAudioConfig = array(
+        'provider' => 'audio',
+        'plugins' => array(
+            'audio' => array(
+                'url' => 'plugins/flowplayer.audio-3.2.11.swf'
+            ),
+            'controls' => array(
+                'autoHide' => false,
+                'fullscreen' => false
+            )
+        )
+    );
 
-	/**
-	 * Flowplayer audio configuration
-	 *
-	 * @var array
-	 */
-	public $flowplayerAudioConfig = array(
-		'provider' => 'audio',
-		'plugins' => array(
-			'audio' => array(
-				'url' => 'plugins/flowplayer.audio-3.2.11.swf'
-			),
-			'controls' => array(
-				'autoHide' => FALSE,
-				'fullscreen' => FALSE
-			)
-		)
-	);
+    /**
+     * Flowplayer configuration for the audio description
+     *
+     * @var array
+     */
+    public $flowplayerAudioDescriptionConfig = array(
+        // The controls plugin
+        'plugins' => array(
+            'controls' => null
+        )
+    );
 
-	/**
-	 * Flowplayer configuration for the audio description
-	 *
-	 * @var array
-	 */
-	public $flowplayerAudioDescriptionConfig = array(
-		// The controls plugin
-		'plugins' => array(
-			'controls' => NULL
-		)
-	);
-
-	/**
-	 * Rendering the cObject, SWFOBJECT
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 */
-	public function render($conf = array()) {
-		$params = ($prefix = '');
-		if ($GLOBALS['TSFE']->baseUrl) {
-			$prefix = $GLOBALS['TSFE']->baseUrl;
-		}
-		if ($GLOBALS['TSFE']->absRefPrefix) {
-			$prefix = $GLOBALS['TSFE']->absRefPrefix;
-		}
-		// Initialize content
-		$replaceElementIdString = StringUtility::getUniqueId('mmswf');
-		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
-		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
-		$content = str_replace('###ID###', $replaceElementIdString, $layout);
-		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
-		$typeConf = $conf[$type . '.'];
-		// Add Flowplayer js-file
-		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
-		// Add Flowpayer css for express install
-		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
-		// Add videoJS js-file
-		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
-		// Add videoJS css-file
-		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/video-js.css'));
-		// Add extended videoJS control bar
-		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.js'));
-		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.css'));
-		// Build Flash configuration
-		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
-		if (!$player) {
-			$player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.18.swf');
-		} elseif (strpos($player, 'EXT:') === 0) {
-			$player = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($player);
-		}
-		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
-		if (!$installUrl) {
-			$installUrl = $prefix . $this->getPathToLibrary('flowplayer/expressinstall.swf');
-		} elseif (strpos($installUrl, 'EXT:') === 0) {
-			$installUrl = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($installUrl);
-		}
-		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
-		if (!$flashVersion) {
-			$flashVersion = array(9, 115);
-		}
-		$flashConfiguration = array(
-			// Flowplayer component
-			'src' => $player,
-			// Express install url
-			'expressInstall' => $installUrl,
-			// Require at least this Flash version
-			'version' => $flashVersion,
-			// Older versions will see a message
-			'onFail' => '###ONFAIL###'
-		);
-		$flashDownloadUrl = 'http://www.adobe.com/go/getflashplayer';
-		$onFail = 'function()  {
+    /**
+     * Rendering the cObject, SWFOBJECT
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Output
+     */
+    public function render($conf = array())
+    {
+        $params = ($prefix = '');
+        if ($GLOBALS['TSFE']->baseUrl) {
+            $prefix = $GLOBALS['TSFE']->baseUrl;
+        }
+        if ($GLOBALS['TSFE']->absRefPrefix) {
+            $prefix = $GLOBALS['TSFE']->absRefPrefix;
+        }
+        // Initialize content
+        $replaceElementIdString = StringUtility::getUniqueId('mmswf');
+        $GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
+        $layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
+        $content = str_replace('###ID###', $replaceElementIdString, $layout);
+        $type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
+        $typeConf = $conf[$type . '.'];
+        // Add Flowplayer js-file
+        $this->getPageRenderer()->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
+        // Add Flowpayer css for express install
+        $this->getPageRenderer()->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
+        // Add videoJS js-file
+        $this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
+        // Add videoJS css-file
+        $this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/video-js.css'));
+        // Add extended videoJS control bar
+        $this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.js'));
+        $this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.css'));
+        // Build Flash configuration
+        $player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
+        if (!$player) {
+            $player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.18.swf');
+        } elseif (strpos($player, 'EXT:') === 0) {
+            $player = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($player);
+        }
+        $installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
+        if (!$installUrl) {
+            $installUrl = $prefix . $this->getPathToLibrary('flowplayer/expressinstall.swf');
+        } elseif (strpos($installUrl, 'EXT:') === 0) {
+            $installUrl = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($installUrl);
+        }
+        $flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
+        if (!$flashVersion) {
+            $flashVersion = array(9, 115);
+        }
+        $flashConfiguration = array(
+            // Flowplayer component
+            'src' => $player,
+            // Express install url
+            'expressInstall' => $installUrl,
+            // Require at least this Flash version
+            'version' => $flashVersion,
+            // Older versions will see a message
+            'onFail' => '###ONFAIL###'
+        );
+        $flashDownloadUrl = 'http://www.adobe.com/go/getflashplayer';
+        $onFail = 'function()  {
 			if (!(flashembed.getVersion()[0] > 0)) {
 				var message = "<p>" + "' . $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.needFlashPlugin') . '" + "</p>" + "<p>" + "<a href=\\"' . $flashDownloadUrl . '\\">' . $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.downloadFlash') . '</a>" + "</p>";
 				document.getElementById("' . $replaceElementIdString . '_flash_install_info").innerHTML = "<div class=\\"message\\">" + message + "</div>";
 			}
 		}';
-		$flashConfiguration = json_encode($flashConfiguration);
-		$flashConfiguration = str_replace('"###ONFAIL###"', $onFail, $flashConfiguration);
-		$filename = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
-		if ($filename) {
-			if (strpos($filename, '://') !== FALSE) {
-				$conf['flashvars.']['url'] = $filename;
-			} else {
-				if ($prefix) {
-					$conf['flashvars.']['url'] = $prefix . $filename;
-				} else {
-					$conf['flashvars.']['url'] = str_repeat('../', substr_count($player, '/')) . $filename;
-				}
-			}
-		}
-		if (is_array($conf['sources'])) {
-			foreach ($conf['sources'] as $key => $source) {
-				if (strpos($source, '://') === FALSE) {
-					$conf['sources'][$key] = $prefix . $source;
-				}
-			}
-		}
-		if (is_array($conf['audioSources'])) {
-			foreach ($conf['audioSources'] as $key => $source) {
-				if (strpos($source, '://') === FALSE) {
-					$conf['audioSources'][$key] = $prefix . $source;
-				}
-			}
-		}
-		if (isset($conf['audioFallback']) && strpos($conf['audioFallback'], '://') === FALSE) {
-			$conf['audioFallback'] = $prefix . $conf['audioFallback'];
-		}
-		if (isset($conf['caption']) && strpos($conf['caption'], '://') === FALSE) {
-			$conf['caption'] = $prefix . $conf['caption'];
-		}
-		// Write calculated values in conf for the hook
-		$conf['player'] = $player ?: $filename;
-		$conf['installUrl'] = $installUrl;
-		$conf['filename'] = $conf['flashvars.']['url'];
-		$conf['prefix'] = $prefix;
-		// merge with default parameters
-		$conf['flashvars.'] = array_merge((array)$typeConf['default.']['flashvars.'], (array)$conf['flashvars.']);
-		$conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
-		$conf['attributes.'] = array_merge((array)$typeConf['default.']['attributes.'], (array)$conf['attributes.']);
-		$conf['embedParams'] = 'flashvars, params, attributes';
-		// Hook for manipulating the conf array, it's needed for some players like flowplayer
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'] as $classRef) {
-				GeneralUtility::callUserFunction($classRef, $conf, $this);
-			}
-		}
-		// Flowplayer config
-		$flowplayerVideoConfig = array();
-		$flowplayerAudioConfig = array();
-		if (is_array($conf['flashvars.']) && is_array($typeConf['mapping.']['flashvars.'])) {
-			ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
-		} else {
-			$conf['flashvars.'] = array();
-		}
-		$conf['videoflashvars'] = $conf['flashvars.'];
-		$conf['audioflashvars'] = $conf['flashvars.'];
-		$conf['audioflashvars']['url'] = $conf['audioFallback'];
-		// Render video sources
-		$videoSources = '';
-		if (is_array($conf['sources'])) {
-			foreach ($conf['sources'] as $source) {
-				$fileinfo = GeneralUtility::split_fileref($source);
-				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-				$videoSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
-			}
-		}
-		// Render audio sources
-		$audioSources = '';
-		if (is_array($conf['audioSources'])) {
-			foreach ($conf['audioSources'] as $source) {
-				$fileinfo = GeneralUtility::split_fileref($source);
-				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-				$audioSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
-			}
-		}
-		// Configure captions
-		if ($conf['type'] === 'video' && isset($conf['caption'])) {
-			// Assemble captions track tag
-			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '" default>' . LF;
-			// Add videoJS extension for captions
-			$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
-			// Flowplayer captions
-			$conf['videoflashvars']['captionUrl'] = $conf['caption'];
-			// Flowplayer captions plugin configuration
-			$flowplayerVideoConfig = array_merge_recursive($flowplayerVideoConfig, $this->flowplayerCaptionsConfig);
-		}
-		// Configure flowplayer audio fallback
-		if (isset($conf['audioFallback'])) {
-			$flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, $this->flowplayerAudioConfig);
-		}
-		// Configure audio description
-		if ($conf['type'] == 'video') {
-			if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
-				// Add videoJS audio description toggle
-				$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
-			}
-			if (isset($conf['audioFallback'])) {
-				// Audio description flowplayer config (remove controls)
-				$flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, $this->flowplayerAudioDescriptionConfig);
-			}
-		}
-		// Assemble Flowplayer configuration
-		if (!empty($conf['videoflashvars'])) {
-			$flowplayerVideoConfig = array_merge_recursive($flowplayerVideoConfig, array('clip' => $conf['videoflashvars']));
-		}
-		$flowplayerVideoJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerVideoConfig));
-		if (!empty($conf['audioflashvars'])) {
-			$flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, array('clip' => $conf['audioflashvars']));
-		}
-		$flowplayerAudioJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerAudioConfig));
-		// Assemble param tags (required?)
-		if (is_array($conf['params.']) && is_array($typeConf['mapping.']['params.'])) {
-			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
-		}
-		$videoFlashParams = '';
-		if (is_array($conf['params.'])) {
-			foreach ($conf['params.'] as $name => $value) {
-				$videoFlashParams .= '<param name="' . $name . '" value="' . $value . '" />' . LF;
-			}
-		}
-		$audioFlashParams = $videoFlashParams;
-		// Required param tags
-		$videoFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
-		$videoFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerVideoJsonConfig . '\' />' . LF;
-		$audioFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
-		$audioFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerAudioJsonConfig . '\' />' . LF;
-		// Assemble audio/video tag attributes
-		$attributes = '';
-		if (is_array($conf['attributes.']) && is_array($typeConf['attributes.']['params.'])) {
-			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
-		}
-		foreach ($this->html5TagAttributes as $attribute) {
-			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strtolower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
-				$attributes .= strtolower($attribute) . '="' . strtolower($attribute) . '" ';
-			}
-		}
-		// Media dimensions
-		$width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
-		if (!$width) {
-			$width = $conf[$type . '.']['defaultWidth'];
-		}
-		$height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
-		if (!$height) {
-			$height = $conf[$type . '.']['defaultHeight'];
-		}
-		// Alternate content
-		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
-		// Render video
-		if ($conf['type'] === 'video') {
-			// add preview image, html5 poster attribute
-			$sourceBasePath = substr($conf['sources'][1], 0, strrpos($conf['sources'][1], '.'));
-			foreach (['.jpg', '.jpeg', '.png'] as $fileExtension) {
-				$posterFilePath = $GLOBALS['TSFE']->tmpl->getFileName($sourceBasePath . $fileExtension);
-				if (file_exists($posterFilePath)) {
-					$attributes .= ' poster="' . htmlspecialchars($posterFilePath) . '"';
-					break;
-				}
-			}
+        $flashConfiguration = json_encode($flashConfiguration);
+        $flashConfiguration = str_replace('"###ONFAIL###"', $onFail, $flashConfiguration);
+        $filename = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
+        if ($filename) {
+            if (strpos($filename, '://') !== false) {
+                $conf['flashvars.']['url'] = $filename;
+            } else {
+                if ($prefix) {
+                    $conf['flashvars.']['url'] = $prefix . $filename;
+                } else {
+                    $conf['flashvars.']['url'] = str_repeat('../', substr_count($player, '/')) . $filename;
+                }
+            }
+        }
+        if (is_array($conf['sources'])) {
+            foreach ($conf['sources'] as $key => $source) {
+                if (strpos($source, '://') === false) {
+                    $conf['sources'][$key] = $prefix . $source;
+                }
+            }
+        }
+        if (is_array($conf['audioSources'])) {
+            foreach ($conf['audioSources'] as $key => $source) {
+                if (strpos($source, '://') === false) {
+                    $conf['audioSources'][$key] = $prefix . $source;
+                }
+            }
+        }
+        if (isset($conf['audioFallback']) && strpos($conf['audioFallback'], '://') === false) {
+            $conf['audioFallback'] = $prefix . $conf['audioFallback'];
+        }
+        if (isset($conf['caption']) && strpos($conf['caption'], '://') === false) {
+            $conf['caption'] = $prefix . $conf['caption'];
+        }
+        // Write calculated values in conf for the hook
+        $conf['player'] = $player ?: $filename;
+        $conf['installUrl'] = $installUrl;
+        $conf['filename'] = $conf['flashvars.']['url'];
+        $conf['prefix'] = $prefix;
+        // merge with default parameters
+        $conf['flashvars.'] = array_merge((array)$typeConf['default.']['flashvars.'], (array)$conf['flashvars.']);
+        $conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
+        $conf['attributes.'] = array_merge((array)$typeConf['default.']['attributes.'], (array)$conf['attributes.']);
+        $conf['embedParams'] = 'flashvars, params, attributes';
+        // Hook for manipulating the conf array, it's needed for some players like flowplayer
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'] as $classRef) {
+                GeneralUtility::callUserFunction($classRef, $conf, $this);
+            }
+        }
+        // Flowplayer config
+        $flowplayerVideoConfig = array();
+        $flowplayerAudioConfig = array();
+        if (is_array($conf['flashvars.']) && is_array($typeConf['mapping.']['flashvars.'])) {
+            ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
+        } else {
+            $conf['flashvars.'] = array();
+        }
+        $conf['videoflashvars'] = $conf['flashvars.'];
+        $conf['audioflashvars'] = $conf['flashvars.'];
+        $conf['audioflashvars']['url'] = $conf['audioFallback'];
+        // Render video sources
+        $videoSources = '';
+        if (is_array($conf['sources'])) {
+            foreach ($conf['sources'] as $source) {
+                $fileinfo = GeneralUtility::split_fileref($source);
+                $mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
+                $videoSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
+            }
+        }
+        // Render audio sources
+        $audioSources = '';
+        if (is_array($conf['audioSources'])) {
+            foreach ($conf['audioSources'] as $source) {
+                $fileinfo = GeneralUtility::split_fileref($source);
+                $mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
+                $audioSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
+            }
+        }
+        // Configure captions
+        if ($conf['type'] === 'video' && isset($conf['caption'])) {
+            // Assemble captions track tag
+            $videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '" default>' . LF;
+            // Add videoJS extension for captions
+            $this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
+            // Flowplayer captions
+            $conf['videoflashvars']['captionUrl'] = $conf['caption'];
+            // Flowplayer captions plugin configuration
+            $flowplayerVideoConfig = array_merge_recursive($flowplayerVideoConfig, $this->flowplayerCaptionsConfig);
+        }
+        // Configure flowplayer audio fallback
+        if (isset($conf['audioFallback'])) {
+            $flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, $this->flowplayerAudioConfig);
+        }
+        // Configure audio description
+        if ($conf['type'] == 'video') {
+            if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
+                // Add videoJS audio description toggle
+                $this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
+            }
+            if (isset($conf['audioFallback'])) {
+                // Audio description flowplayer config (remove controls)
+                $flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, $this->flowplayerAudioDescriptionConfig);
+            }
+        }
+        // Assemble Flowplayer configuration
+        if (!empty($conf['videoflashvars'])) {
+            $flowplayerVideoConfig = array_merge_recursive($flowplayerVideoConfig, array('clip' => $conf['videoflashvars']));
+        }
+        $flowplayerVideoJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerVideoConfig));
+        if (!empty($conf['audioflashvars'])) {
+            $flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, array('clip' => $conf['audioflashvars']));
+        }
+        $flowplayerAudioJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerAudioConfig));
+        // Assemble param tags (required?)
+        if (is_array($conf['params.']) && is_array($typeConf['mapping.']['params.'])) {
+            ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+        }
+        $videoFlashParams = '';
+        if (is_array($conf['params.'])) {
+            foreach ($conf['params.'] as $name => $value) {
+                $videoFlashParams .= '<param name="' . $name . '" value="' . $value . '" />' . LF;
+            }
+        }
+        $audioFlashParams = $videoFlashParams;
+        // Required param tags
+        $videoFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
+        $videoFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerVideoJsonConfig . '\' />' . LF;
+        $audioFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
+        $audioFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerAudioJsonConfig . '\' />' . LF;
+        // Assemble audio/video tag attributes
+        $attributes = '';
+        if (is_array($conf['attributes.']) && is_array($typeConf['attributes.']['params.'])) {
+            ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
+        }
+        foreach ($this->html5TagAttributes as $attribute) {
+            if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strtolower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
+                $attributes .= strtolower($attribute) . '="' . strtolower($attribute) . '" ';
+            }
+        }
+        // Media dimensions
+        $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
+        if (!$width) {
+            $width = $conf[$type . '.']['defaultWidth'];
+        }
+        $height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
+        if (!$height) {
+            $height = $conf[$type . '.']['defaultHeight'];
+        }
+        // Alternate content
+        $alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
+        // Render video
+        if ($conf['type'] === 'video') {
+            // add preview image, html5 poster attribute
+            $sourceBasePath = substr($conf['sources'][1], 0, strrpos($conf['sources'][1], '.'));
+            foreach (['.jpg', '.jpeg', '.png'] as $fileExtension) {
+                $posterFilePath = $GLOBALS['TSFE']->tmpl->getFileName($sourceBasePath . $fileExtension);
+                if (file_exists($posterFilePath)) {
+                    $attributes .= ' poster="' . htmlspecialchars($posterFilePath) . '"';
+                    break;
+                }
+            }
 
-			if ($conf['preferFlashOverHtml5']) {
-				// Flash with video tag fallback
-				$conf['params.']['playerFallbackOrder'] = array('flash', 'html5');
-				$flashDivContent = $videoFlashParams . LF . '<video id="' . $replaceElementIdString . '_video_js" class="video-js" ' . $attributes . 'controls="controls"  mediagroup="' . $replaceElementIdString . '" width="' . $width . '" height="' . $height . '">' . LF . $videoSources . $videoCaptions . $alternativeContent . LF . '</video>' . LF;
-				$divContent = '
+            if ($conf['preferFlashOverHtml5']) {
+                // Flash with video tag fallback
+                $conf['params.']['playerFallbackOrder'] = array('flash', 'html5');
+                $flashDivContent = $videoFlashParams . LF . '<video id="' . $replaceElementIdString . '_video_js" class="video-js" ' . $attributes . 'controls="controls"  mediagroup="' . $replaceElementIdString . '" width="' . $width . '" height="' . $height . '">' . LF . $videoSources . $videoCaptions . $alternativeContent . LF . '</video>' . LF;
+                $divContent = '
 					<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF . '<noscript>' . LF . '<object id="' . $replaceElementIdString . '_vjs_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $flashDivContent . '</object>' . LF . '</noscript>' . LF;
-				$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="flashcontainer" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
-			} else {
-				// Video tag with Flash fallback
-				$conf['params.']['playerFallbackOrder'] = array('html5', 'flash');
-				$videoTagContent = $videoSources . $videoCaptions;
-				if (isset($conf['videoflashvars']['url'])) {
-					$videoTagContent .= '
+                $content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="flashcontainer" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
+            } else {
+                // Video tag with Flash fallback
+                $conf['params.']['playerFallbackOrder'] = array('html5', 'flash');
+                $videoTagContent = $videoSources . $videoCaptions;
+                if (isset($conf['videoflashvars']['url'])) {
+                    $videoTagContent .= '
 						<noscript>' . LF . '<object class="vjs-flash-fallback" id="' . $replaceElementIdString . '_vjs_flash_fallback" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $videoFlashParams . LF . $alternativeContent . LF . '</object>' . LF . '</noscript>';
-				}
-				$divContent = '
+                }
+                $divContent = '
 					<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF . '<video id="' . $replaceElementIdString . '_video_js" class="video-js" ' . $attributes . 'controls="controls" mediagroup="' . $replaceElementIdString . '" width="' . $width . '" height="' . $height . '">' . LF . $videoTagContent . '</video>';
-				$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="video-js-box" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
-			}
-		}
-		// Render audio
-		if ($conf['type'] === 'audio' || $audioSources || isset($conf['audioFallback'])) {
-			if ($conf['preferFlashOverHtml5']) {
-				// Flash with audio tag fallback
-				$flashDivContent = $audioFlashParams . LF . '<audio id="' . $replaceElementIdString . '_audio_element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . 'style="position:absolute;left:-10000px;"' : ' controls="controls"') . ' style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $audioSources . $alternativeContent . LF . '</audio>' . LF;
-				$divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<noscript>' . LF . '<object id="' . $replaceElementIdString . '_audio_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . ($conf['type'] === 'video' ? 0 : $width) . '" height="' . ($conf['type'] === 'video' ? 0 : $height) . '">' . LF . $flashDivContent . '</object>' . LF . '</noscript>' . LF;
-				$audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-flash-container" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
-			} else {
-				// Audio tag with Flash fallback
-				$audioTagContent = $audioSources;
-				if (isset($conf['audioflashvars']['url'])) {
-					$audioTagContent .= '
+                $content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="video-js-box" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
+            }
+        }
+        // Render audio
+        if ($conf['type'] === 'audio' || $audioSources || isset($conf['audioFallback'])) {
+            if ($conf['preferFlashOverHtml5']) {
+                // Flash with audio tag fallback
+                $flashDivContent = $audioFlashParams . LF . '<audio id="' . $replaceElementIdString . '_audio_element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . 'style="position:absolute;left:-10000px;"' : ' controls="controls"') . ' style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $audioSources . $alternativeContent . LF . '</audio>' . LF;
+                $divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<noscript>' . LF . '<object id="' . $replaceElementIdString . '_audio_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . ($conf['type'] === 'video' ? 0 : $width) . '" height="' . ($conf['type'] === 'video' ? 0 : $height) . '">' . LF . $flashDivContent . '</object>' . LF . '</noscript>' . LF;
+                $audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-flash-container" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
+            } else {
+                // Audio tag with Flash fallback
+                $audioTagContent = $audioSources;
+                if (isset($conf['audioflashvars']['url'])) {
+                    $audioTagContent .= '
 						<noscript>' . LF . '<object class="audio-flash-fallback" id="' . $replaceElementIdString . '_audio_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $audioFlashParams . LF . $alternativeContent . LF . '</object>' . LF . '</noscript>';
-				}
-				$divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<audio id="' . $replaceElementIdString . '_audio_element" class="audio-element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . '" style="position:absolute;left:-10000px;"' : ' controls="controls"') . '>' . LF . $audioTagContent . '</audio>' . LF . $audioSourcesEmbeddingJsScript;
-				$audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-box" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
-			}
-			if ($conf['type'] === 'audio') {
-				$content = str_replace('###SWFOBJECT###', $audioContent, $content);
-			} else {
-				$content .= LF . $audioContent;
-			}
-		}
-		// Assemble inline JS code
-		$videoJsSetup = '';
-		$flowplayerHandlers = '';
-		if ($conf['type'] === 'video') {
-			// Assemble videoJS options
-			$videoJsOptions = array();
-			foreach ($this->videoJsOptions as $videoJsOption) {
-				if (isset($conf['params.'][$videoJsOption])) {
-					$videoJsOptions[$videoJsOption] = $conf['params.'][$videoJsOption];
-				}
-			}
-			$videoJsOptions = !empty($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
-			// videoJS setup and videoJS listeners for audio description synchronisation
-			if ($audioSources || isset($conf['audioFallback'])) {
-				$videoJsSetup = '
+                }
+                $divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<audio id="' . $replaceElementIdString . '_audio_element" class="audio-element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . '" style="position:absolute;left:-10000px;"' : ' controls="controls"') . '>' . LF . $audioTagContent . '</audio>' . LF . $audioSourcesEmbeddingJsScript;
+                $audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-box" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
+            }
+            if ($conf['type'] === 'audio') {
+                $content = str_replace('###SWFOBJECT###', $audioContent, $content);
+            } else {
+                $content .= LF . $audioContent;
+            }
+        }
+        // Assemble inline JS code
+        $videoJsSetup = '';
+        $flowplayerHandlers = '';
+        if ($conf['type'] === 'video') {
+            // Assemble videoJS options
+            $videoJsOptions = array();
+            foreach ($this->videoJsOptions as $videoJsOption) {
+                if (isset($conf['params.'][$videoJsOption])) {
+                    $videoJsOptions[$videoJsOption] = $conf['params.'][$videoJsOption];
+                }
+            }
+            $videoJsOptions = !empty($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
+            // videoJS setup and videoJS listeners for audio description synchronisation
+            if ($audioSources || isset($conf['audioFallback'])) {
+                $videoJsSetup = '
 			var ' . $replaceElementIdString . '_video = VideoJS.setup("' . $replaceElementIdString . '_video_js", ' . $videoJsOptions . ');
 			var ' . $replaceElementIdString . '_video_element = document.getElementById("' . $replaceElementIdString . '_video_js");
 			var ' . $replaceElementIdString . '_audio_element = document.getElementById("' . $replaceElementIdString . '_audio_element");
@@ -494,42 +495,42 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "seeked", function () { document.getElementById("' . $replaceElementIdString . '_audio_element").currentTime = document.getElementById("' . $replaceElementIdString . '_video_js").currentTime; });
 				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "volumechange", function () { document.getElementById("' . $replaceElementIdString . '_audio_element").volume = document.getElementById("' . $replaceElementIdString . '_video_js").volume; });
 			}';
-			} else {
-				$videoJsSetup = '
+            } else {
+                $videoJsSetup = '
 			var ' . $replaceElementIdString . '_video = VideoJS.setup("' . $replaceElementIdString . '_video_js", ' . $videoJsOptions . ');
 			';
-			}
-			// Prefer Flash or fallback to Flash
-			$videoSourcesEmbedding = '';
-			// If we have a video file for Flash
-			if (isset($conf['filename'])) {
-				// If we prefer Flash
-				if ($conf['preferFlashOverHtml5']) {
-					$videoTagAssembly = '';
-					// Create "source" elements
-					if (is_array($conf['sources']) && !empty($conf['sources'])) {
-						foreach ($conf['sources'] as $source) {
-							$fileinfo = GeneralUtility::split_fileref($source);
-							$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-							$videoTagAssembly .= '
+            }
+            // Prefer Flash or fallback to Flash
+            $videoSourcesEmbedding = '';
+            // If we have a video file for Flash
+            if (isset($conf['filename'])) {
+                // If we prefer Flash
+                if ($conf['preferFlashOverHtml5']) {
+                    $videoTagAssembly = '';
+                    // Create "source" elements
+                    if (is_array($conf['sources']) && !empty($conf['sources'])) {
+                        foreach ($conf['sources'] as $source) {
+                            $fileinfo = GeneralUtility::split_fileref($source);
+                            $mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
+                            $videoTagAssembly .= '
 			' . $replaceElementIdString . '_video_js.appendChild($f.extend(document.createElement("source"), {
 				src: "' . $source . '",
 				type: "' . $mimeType . '"
 			}));';
-						}
-						// Create "track" elements
-						if (isset($conf['caption'])) {
-							// Assemble captions track tag
-							// It will take a while before the captions are loaded and parsed...
-							$videoTagAssembly .= '
+                        }
+                        // Create "track" elements
+                        if (isset($conf['caption'])) {
+                            // Assemble captions track tag
+                            // It will take a while before the captions are loaded and parsed...
+                            $videoTagAssembly .= '
 			var track  = document.createElement("track");
 			track.setAttribute("src", "' . $conf['caption'] . '");
 			track.setAttribute("id", "' . $replaceElementIdString . '_captions_track");
 			track.setAttribute("kind", "captions");
 			track.setAttribute("default", "default");
 			' . $replaceElementIdString . '_video_js.appendChild(track);';
-						}
-						$videoTagAssembly .= '
+                        }
+                        $videoTagAssembly .= '
 			$f.extend(' . $replaceElementIdString . '_video_js, {
 				id: "' . $replaceElementIdString . '_video_js",
 				className: "video-js",
@@ -541,9 +542,9 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			});
 			' . $replaceElementIdString . '_video.appendChild(' . $replaceElementIdString . '_video_js);
 			' . $replaceElementIdString . '_video.className = "video-js-box";';
-						$videoTagAssembly .= $videoJsSetup;
-					}
-					$videoSourcesEmbedding = '
+                        $videoTagAssembly .= $videoJsSetup;
+                    }
+                    $videoSourcesEmbedding = '
 		var ' . $replaceElementIdString . '_video = document.getElementById("' . $replaceElementIdString . '_video");
 		var ' . $replaceElementIdString . '_video_js = document.createElement("video");
 		if (flashembed.getVersion()[0] > 0) {
@@ -557,18 +558,18 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				// Neither Flash nor video is available: offer to install Flash
 			flashembed("' . $replaceElementIdString . '_video", ' . $flashConfiguration . ');
 		}';
-				} elseif (is_array($conf['sources'])) {
-					// HTML5 is the preferred rendering method
-					// Test whether the browser supports any of types of the provided sources
-					$supported = array();
-					foreach ($conf['sources'] as $source) {
-						$fileinfo = GeneralUtility::split_fileref($source);
-						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-						$supported[] = $replaceElementIdString . '_videoTag.canPlayType("' . $mimeType . '") != ""';
-					}
-					// Testing whether the browser supports the video tag with any of the provided source types
-					// If no support, embed flowplayer
-					$videoSourcesEmbedding = '
+                } elseif (is_array($conf['sources'])) {
+                    // HTML5 is the preferred rendering method
+                    // Test whether the browser supports any of types of the provided sources
+                    $supported = array();
+                    foreach ($conf['sources'] as $source) {
+                        $fileinfo = GeneralUtility::split_fileref($source);
+                        $mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
+                        $supported[] = $replaceElementIdString . '_videoTag.canPlayType("' . $mimeType . '") != ""';
+                    }
+                    // Testing whether the browser supports the video tag with any of the provided source types
+                    // If no support, embed flowplayer
+                    $videoSourcesEmbedding = '
 		var ' . $replaceElementIdString . '_videoTag = document.createElement(\'video\');
 		var ' . $replaceElementIdString . '_video_box = document.getElementById("' . $replaceElementIdString . '_video");
 		if (' . $replaceElementIdString . '_video_box) {
@@ -588,28 +589,28 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			} else {' . $videoJsSetup . '
 			}
 		}';
-				}
-			}
-		}
-		// Audio fallback to Flash
-		$audioSourcesEmbedding = '';
-		// If we have an audio file for Flash
-		if (isset($conf['audioFallback'])) {
-			// If we prefer Flash in
-			if ($conf['preferFlashOverHtml5']) {
-				$audioTagAssembly = '';
-				// Create "source" elements
-				if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
-					foreach ($conf['audioSources'] as $source) {
-						$fileinfo = GeneralUtility::split_fileref($source);
-						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-						$audioTagAssembly .= '
+                }
+            }
+        }
+        // Audio fallback to Flash
+        $audioSourcesEmbedding = '';
+        // If we have an audio file for Flash
+        if (isset($conf['audioFallback'])) {
+            // If we prefer Flash in
+            if ($conf['preferFlashOverHtml5']) {
+                $audioTagAssembly = '';
+                // Create "source" elements
+                if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
+                    foreach ($conf['audioSources'] as $source) {
+                        $fileinfo = GeneralUtility::split_fileref($source);
+                        $mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
+                        $audioTagAssembly .= '
 		' . $replaceElementIdString . '_audio_element.appendChild($f.extend(document.createElement("source"), {
 			src: "' . $source . '",
 			type: "' . $mimeType . '"
 		}));';
-					}
-					$audioTagAssembly .= '
+                    }
+                    $audioTagAssembly .= '
 		$f.extend(' . $replaceElementIdString . '_audio_element, {
 			id: "' . $replaceElementIdString . '_audio_element",
 			className: "audio-element",
@@ -621,8 +622,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		});
 		' . $replaceElementIdString . '_audio_box.appendChild(' . $replaceElementIdString . '_audio_element);
 		' . $replaceElementIdString . '_audio_box.className = "audio-box";';
-				}
-				$audioSourcesEmbedding = '
+                }
+                $audioSourcesEmbedding = '
 		var ' . $replaceElementIdString . '_audio_box = document.getElementById("' . $replaceElementIdString . '_audio_box");
 		var ' . $replaceElementIdString . '_audio_element = document.createElement("audio");
 		if (flashembed.getVersion()[0] > 0) {
@@ -637,18 +638,18 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				// Neither Flash nor audio is available: offer to install Flash if this is not an audio description of a video
 			' . ($conf['type'] === 'video' ? '' : 'flashembed("' . $replaceElementIdString . '_audio_box", ' . $flashConfiguration . ');') . '
 		}';
-			} elseif (is_array($conf['audioSources'])) {
-				// HTML5 is the preferred rendering method
-				// Test whether the browser supports any of types of the provided sources
-				$supported = array();
-				foreach ($conf['audioSources'] as $source) {
-					$fileinfo = GeneralUtility::split_fileref($source);
-					$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-					$supported[] = $replaceElementIdString . '_audioTag.canPlayType("' . $mimeType . '") != ""';
-				}
-				// Testing whether the browser supports the audio tag with any of the provided source types
-				// If no support, embed flowplayer
-				$audioSourcesEmbedding = '
+            } elseif (is_array($conf['audioSources'])) {
+                // HTML5 is the preferred rendering method
+                // Test whether the browser supports any of types of the provided sources
+                $supported = array();
+                foreach ($conf['audioSources'] as $source) {
+                    $fileinfo = GeneralUtility::split_fileref($source);
+                    $mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
+                    $supported[] = $replaceElementIdString . '_audioTag.canPlayType("' . $mimeType . '") != ""';
+                }
+                // Testing whether the browser supports the audio tag with any of the provided source types
+                // If no support, embed flowplayer
+                $audioSourcesEmbedding = '
 		var ' . $replaceElementIdString . '_audioTag = document.createElement(\'audio\');
 		var ' . $replaceElementIdString . '_audio_box = document.getElementById("' . $replaceElementIdString . '_audio_box");
 		if (' . $replaceElementIdString . '_audio_box) {
@@ -667,11 +668,11 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				}
 			}
 		}';
-			}
-			// Flowplayer eventHandlers for audio description synchronisation
-			$flowplayerHandlers = '';
-			if ($conf['type'] === 'video') {
-				$flowplayerHandlers = '
+            }
+            // Flowplayer eventHandlers for audio description synchronisation
+            $flowplayerHandlers = '';
+            if ($conf['type'] === 'video') {
+                $flowplayerHandlers = '
 		if (flashembed.getVersion()[0] > 0) {
 				// Flash is available
 			var videoPlayer = flowplayer("' . $replaceElementIdString . '_video");
@@ -712,27 +713,28 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				});
 			}
 		}';
-			}
-		}
-		// Wrap up inline JS code
-		$jsInlineCode = $audioSourcesEmbedding . $videoSourcesEmbedding . $flowplayerHandlers;
-		if ($jsInlineCode) {
-			$jsInlineCode = 'VideoJS.DOMReady(function(){' . $jsInlineCode . LF . '});';
-		}
-		$this->getPageRenderer()->addJsInlineCode($replaceElementIdString, $jsInlineCode);
-		if (isset($conf['stdWrap.'])) {
-			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-		}
-		return $content;
-	}
+            }
+        }
+        // Wrap up inline JS code
+        $jsInlineCode = $audioSourcesEmbedding . $videoSourcesEmbedding . $flowplayerHandlers;
+        if ($jsInlineCode) {
+            $jsInlineCode = 'VideoJS.DOMReady(function(){' . $jsInlineCode . LF . '});';
+        }
+        $this->getPageRenderer()->addJsInlineCode($replaceElementIdString, $jsInlineCode);
+        if (isset($conf['stdWrap.'])) {
+            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+        }
+        return $content;
+    }
 
-	/**
-	 * resolves the path to the extensions' Contrib directory
-	 *
-	 * @param string $fileAndFolderName the file to be located
-	 * @return string
-	 */
-	protected function getPathToLibrary($fileAndFolderName) {
-		return $GLOBALS['TSFE']->tmpl->getFileName('EXT:mediace/Resources/Contrib/' . $fileAndFolderName);
-	}
+    /**
+     * resolves the path to the extensions' Contrib directory
+     *
+     * @param string $fileAndFolderName the file to be located
+     * @return string
+     */
+    protected function getPathToLibrary($fileAndFolderName)
+    {
+        return $GLOBALS['TSFE']->tmpl->getFileName('EXT:mediace/Resources/Contrib/' . $fileAndFolderName);
+    }
 }

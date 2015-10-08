@@ -19,22 +19,22 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-interface ValidatorInterface {
+interface ValidatorInterface
+{
+    /**
+     * Checks if the given value is valid according to the validator, and returns
+     * the Error Messages object which occurred.
+     *
+     * @param mixed $value The value that should be validated
+     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @api
+     */
+    public function validate($value);
 
-	/**
-	 * Checks if the given value is valid according to the validator, and returns
-	 * the Error Messages object which occurred.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @api
-	 */
-	public function validate($value);
-
-	/**
-	 * Returns the options of this validator which can be specified in the constructor
-	 *
-	 * @return array
-	 */
-	public function getOptions();
+    /**
+     * Returns the options of this validator which can be specified in the constructor
+     *
+     * @return array
+     */
+    public function getOptions();
 }

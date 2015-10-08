@@ -17,29 +17,31 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Abstract class for filters.
  */
-abstract class AbstractFilter {
+abstract class AbstractFilter
+{
+    protected function convertCase($value, $case)
+    {
+        $frontendController = $this->getTypoScriptFrontendController();
+        return $this->getCharsetConverter()->conv_case(
+            $frontendController->renderCharset,
+            $value,
+            $case
+        );
+    }
 
-	protected function convertCase($value, $case) {
-		$frontendController = $this->getTypoScriptFrontendController();
-		return $this->getCharsetConverter()->conv_case(
-			$frontendController->renderCharset,
-			$value,
-			$case
-		);
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Charset\CharsetConverter
+     */
+    protected function getCharsetConverter()
+    {
+        return $this->getTypoScriptFrontendController()->csConvObj;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Charset\CharsetConverter
-	 */
-	protected function getCharsetConverter() {
-		return $this->getTypoScriptFrontendController()->csConvObj;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getTypoScriptFrontendController() {
-		return $GLOBALS['TSFE'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }

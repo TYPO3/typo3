@@ -19,23 +19,23 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class StringValidator extends AbstractValidator {
-
-	/**
-	 * Checks if the given value is a string.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 * @api
-	 */
-	public function isValid($value) {
-		if (!is_string($value)) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.string.notvalid',
-					'extbase'
-				), 1238108067);
-		}
-	}
-
+class StringValidator extends AbstractValidator
+{
+    /**
+     * Checks if the given value is a string.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     * @api
+     */
+    public function isValid($value)
+    {
+        if (!is_string($value)) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.string.notvalid',
+                    'extbase'
+                ), 1238108067);
+        }
+    }
 }

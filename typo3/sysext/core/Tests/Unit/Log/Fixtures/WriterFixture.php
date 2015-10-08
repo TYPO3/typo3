@@ -17,15 +17,15 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 /**
  * A writer dedicated for testing
  */
-class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter
+{
+    /**
+     * @var array
+     */
+    protected $records = array();
 
-	/**
-	 * @var array
-	 */
-	protected $records = array();
-
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		$this->records[] = $record;
-	}
-
+    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record)
+    {
+        $this->records[] = $record;
+    }
 }

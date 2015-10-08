@@ -17,61 +17,63 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 /**
  * Abstract action controller.
  */
-class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
+    const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
 
-	const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
+    /**
+     * @var array
+     */
+    protected $triggerArguments = array(
+        self::TRIGGER_RefreshModuleMenu,
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $triggerArguments = array(
-		self::TRIGGER_RefreshModuleMenu,
-	);
+    /**
+     * Resolve view and initialize the general view-variables extensionName,
+     * controllerName and actionName based on the request object
+     *
+     * @return \TYPO3\CMS\Fluid\View\TemplateView
+     */
+    protected function resolveView()
+    {
+        $view = parent::resolveView();
+        $view->assignMultiple(array(
+            'extensionName' => $this->request->getControllerExtensionName(),
+            'controllerName' => $this->request->getControllerName(),
+            'actionName' => $this->request->getControllerActionName()
+        ));
+        return $view;
+    }
 
-	/**
-	 * Resolve view and initialize the general view-variables extensionName,
-	 * controllerName and actionName based on the request object
-	 *
-	 * @return \TYPO3\CMS\Fluid\View\TemplateView
-	 */
-	protected function resolveView() {
-		$view = parent::resolveView();
-		$view->assignMultiple(array(
-			'extensionName' => $this->request->getControllerExtensionName(),
-			'controllerName' => $this->request->getControllerName(),
-			'actionName' => $this->request->getControllerActionName()
-		));
-		return $view;
-	}
+    /**
+     * Translation shortcut
+     *
+     * @param $key
+     * @param NULL|array $arguments
+     * @return NULL|string
+     */
+    protected function translate($key, $arguments = null)
+    {
+        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
+    }
 
-	/**
-	 * Translation shortcut
-	 *
-	 * @param $key
-	 * @param NULL|array $arguments
-	 * @return NULL|string
-	 */
-	protected function translate($key, $arguments = NULL) {
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
-	}
+    /**
+     * Handles trigger arguments, e.g. refreshing the module menu
+     * widget if an extension with backend modules has been enabled
+     * or disabled.
+     *
+     * @return void
+     */
+    protected function handleTriggerArguments()
+    {
+        $triggers = array();
 
-	/**
-	 * Handles trigger arguments, e.g. refreshing the module menu
-	 * widget if an extension with backend modules has been enabled
-	 * or disabled.
-	 *
-	 * @return void
-	 */
-	protected function handleTriggerArguments() {
-		$triggers = array();
+        foreach ($this->triggerArguments as $triggerArgument) {
+            if ($this->request->hasArgument($triggerArgument)) {
+                $triggers[$triggerArgument] = $this->request->getArgument($triggerArgument);
+            }
+        }
 
-		foreach ($this->triggerArguments as $triggerArgument) {
-			if ($this->request->hasArgument($triggerArgument)) {
-				$triggers[$triggerArgument] = $this->request->getArgument($triggerArgument);
-			}
-		}
-
-		$this->view->assign('triggers', $triggers);
-	}
-
+        $this->view->assign('triggers', $triggers);
+    }
 }

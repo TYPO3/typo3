@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
  * An exception to throw if a file does not exist
  *
  */
-class FileDoesNotExistException extends ResourceDoesNotExistException {
-
-
+class FileDoesNotExistException extends ResourceDoesNotExistException
+{
 }

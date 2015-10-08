@@ -18,13 +18,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional
  * initialization processing.
  */
-interface ContentObjectPostInitHookInterface {
-
-	/**
-	 * Hook for post processing the initialization of ContentObjectRenderer
-	 *
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
-	 */
-	public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject);
-
+interface ContentObjectPostInitHookInterface
+{
+    /**
+     * Hook for post processing the initialization of ContentObjectRenderer
+     *
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
+     */
+    public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject);
 }

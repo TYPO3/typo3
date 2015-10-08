@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Command" exception
  */
-class NoSuchCommandException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
-
+class NoSuchCommandException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException
+{
 }

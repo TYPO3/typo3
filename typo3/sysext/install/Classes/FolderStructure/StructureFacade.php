@@ -21,38 +21,40 @@ namespace TYPO3\CMS\Install\FolderStructure;
  *
  * @api
  */
-class StructureFacade implements StructureFacadeInterface {
+class StructureFacade implements StructureFacadeInterface
+{
+    /**
+     * @var RootNodeInterface The structure to work on
+     */
+    protected $structure;
 
-	/**
-	 * @var RootNodeInterface The structure to work on
-	 */
-	protected $structure;
+    /**
+     * Constructor sets structure to work on
+     *
+     * @param RootNodeInterface $structure
+     */
+    public function __construct(RootNodeInterface $structure)
+    {
+        $this->structure = $structure;
+    }
 
-	/**
-	 * Constructor sets structure to work on
-	 *
-	 * @param RootNodeInterface $structure
-	 */
-	public function __construct(RootNodeInterface $structure) {
-		$this->structure = $structure;
-	}
+    /**
+     * Get status of node tree
+     *
+     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     */
+    public function getStatus()
+    {
+        return $this->structure->getStatus();
+    }
 
-	/**
-	 * Get status of node tree
-	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
-	 */
-	public function getStatus() {
-		return $this->structure->getStatus();
-	}
-
-	/**
-	 * Fix structure
-	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
-	 */
-	public function fix() {
-		return $this->structure->fix();
-	}
-
+    /**
+     * Fix structure
+     *
+     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     */
+    public function fix()
+    {
+        return $this->structure->fix();
+    }
 }

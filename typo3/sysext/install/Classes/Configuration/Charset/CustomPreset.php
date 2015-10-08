@@ -19,13 +19,13 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Custom preset is a fallback if no other preset fits
  */
-class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface {
-
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'SYS/t3lib_cs_convMethod' => '',
-		'SYS/t3lib_cs_utils' => '',
-	);
+class CustomPreset extends Configuration\AbstractCustomPreset implements Configuration\CustomPresetInterface
+{
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'SYS/t3lib_cs_convMethod' => '',
+        'SYS/t3lib_cs_utils' => '',
+    );
 }

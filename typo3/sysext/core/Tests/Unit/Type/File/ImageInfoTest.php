@@ -19,15 +19,15 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class ImageInfoTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function classImageInfoCanBeInstantiated() {
-		$className = 'TYPO3\CMS\Core\Type\File\ImageInfo';
-		$classInstance = new \TYPO3\CMS\Core\Type\File\ImageInfo('FooFileName');
-		$this->assertInstanceOf($className, $classInstance);
-	}
-
+class ImageInfoTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function classImageInfoCanBeInstantiated()
+    {
+        $className = 'TYPO3\CMS\Core\Type\File\ImageInfo';
+        $classInstance = new \TYPO3\CMS\Core\Type\File\ImageInfo('FooFileName');
+        $this->assertInstanceOf($className, $classInstance);
+    }
 }

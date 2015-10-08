@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Strip new lines filter
  */
-class StripNewLinesFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Strip newlines
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		return str_replace(array(CRLF, LF, CR), ' ', (string)$value);
-	}
-
+class StripNewLinesFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Strip newlines
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        return str_replace(array(CRLF, LF, CR), ' ', (string)$value);
+    }
 }

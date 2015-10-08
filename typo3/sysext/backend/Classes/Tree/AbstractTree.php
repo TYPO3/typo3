@@ -17,57 +17,60 @@ namespace TYPO3\CMS\Backend\Tree;
 /**
  * Abstract Tree
  */
-abstract class AbstractTree {
+abstract class AbstractTree
+{
+    /**
+     * Data Provider
+     *
+     * @var \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
+     */
+    protected $dataProvider = null;
 
-	/**
-	 * Data Provider
-	 *
-	 * @var \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
-	 */
-	protected $dataProvider = NULL;
+    /**
+     * Tree Node Decorator
+     *
+     * @var \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
+     */
+    protected $nodeRenderer = null;
 
-	/**
-	 * Tree Node Decorator
-	 *
-	 * @var \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
-	 */
-	protected $nodeRenderer = NULL;
+    /**
+     * @param \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider
+     * @return void
+     */
+    public function setDataProvider(\TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider)
+    {
+        $this->dataProvider = $dataProvider;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider
-	 * @return void
-	 */
-	public function setDataProvider(\TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
+    /**
+     * @return \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
+     */
+    public function getDataProvider()
+    {
+        return $this->dataProvider;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
+    /**
+     * @param \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $dataProvider
+     * @return void
+     */
+    public function setNodeRenderer(\TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $nodeRenderer)
+    {
+        $this->nodeRenderer = $nodeRenderer;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $dataProvider
-	 * @return void
-	 */
-	public function setNodeRenderer(\TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
+    /**
+     * @return \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
+     */
+    public function getNodeRenderer()
+    {
+        return $this->nodeRenderer;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
-	 *
-	 * @return \TYPO3\CMS\Backend\Tree\TreeNode
-	 */
-	abstract public function getRoot();
-
+    /**
+     * Returns the root node
+     *
+     * @return \TYPO3\CMS\Backend\Tree\TreeNode
+     */
+    abstract public function getRoot();
 }

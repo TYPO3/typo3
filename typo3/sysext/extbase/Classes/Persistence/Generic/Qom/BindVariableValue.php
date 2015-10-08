@@ -17,39 +17,41 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Evaluates to the value of a bind variable.
  */
-class BindVariableValue implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface {
+class BindVariableValue implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface
+{
+    /**
+     * @var string
+     */
+    protected $variableName;
 
-	/**
-	 * @var string
-	 */
-	protected $variableName;
+    /**
+     * Constructs this BindVariableValue instance
+     *
+     * @param string $variableName
+     */
+    public function __construct($variableName)
+    {
+        $this->variableName = $variableName;
+    }
 
-	/**
-	 * Constructs this BindVariableValue instance
-	 *
-	 * @param string $variableName
-	 */
-	public function __construct($variableName) {
-		$this->variableName = $variableName;
-	}
+    /**
+     * Fills an array with the names of all bound variables in the operand
+     *
+     * @param array &$boundVariables
+     * @return void
+     */
+    public function collectBoundVariableNames(&$boundVariables)
+    {
+        $boundVariables[$this->variableName] = null;
+    }
 
-	/**
-	 * Fills an array with the names of all bound variables in the operand
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-		$boundVariables[$this->variableName] = NULL;
-	}
-
-	/**
-	 * Gets the name of the bind variable.
-	 *
-	 * @return string the bind variable name; non-null
-	 */
-	public function getBindVariableName() {
-		return $this->variableName;
-	}
-
+    /**
+     * Gets the name of the bind variable.
+     *
+     * @return string the bind variable name; non-null
+     */
+    public function getBindVariableName()
+    {
+        return $this->variableName;
+    }
 }

@@ -18,13 +18,13 @@ namespace TYPO3\CMS\Backend\Form;
  * Interface must be implemented by form data group classes.
  * This interface is type hinted in FormDataCompiler and is a wrapper to group single data provider.
  */
-interface FormDataGroupInterface {
-
-	/**
-	 * Compile form data
-	 *
-	 * @param array $result Initialized result array
-	 * @return array Result filled with data
-	 */
-	public function compile(array $result);
+interface FormDataGroupInterface
+{
+    /**
+     * Compile form data
+     *
+     * @param array $result Initialized result array
+     * @return array Result filled with data
+     */
+    public function compile(array $result);
 }

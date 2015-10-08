@@ -20,29 +20,29 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * On "new" command, initialize uid with an unqique uid
  */
-class DatabaseUniqueUidNewRow implements FormDataProviderInterface {
+class DatabaseUniqueUidNewRow implements FormDataProviderInterface
+{
+    /**
+     * Initialize new row with unique uid
+     *
+     * @param array $result
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function addData(array $result)
+    {
+        if ($result['command'] !== 'new') {
+            return $result;
+        }
+        // Throw exception if uid is already set
+        if (isset($result['databaseRow']['uid'])) {
+            throw new \InvalidArgumentException(
+                'uid is already set to ' . $result['databaseRow']['uid'],
+                1437991120
+            );
+        }
+        $result['databaseRow']['uid'] = StringUtility::getUniqueId('NEW');
 
-	/**
-	 * Initialize new row with unique uid
-	 *
-	 * @param array $result
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 */
-	public function addData(array $result) {
-		if ($result['command'] !== 'new') {
-			return $result;
-		}
-		// Throw exception if uid is already set
-		if (isset($result['databaseRow']['uid'])) {
-			throw new \InvalidArgumentException(
-				'uid is already set to ' . $result['databaseRow']['uid'],
-				1437991120
-			);
-		}
-		$result['databaseRow']['uid'] = StringUtility::getUniqueId('NEW');
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

@@ -17,39 +17,40 @@ namespace TYPO3\CMS\Scheduler\Task;
 /**
  * This task tries to find changes in storage and writes them back to DB
  */
-class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
+    /**
+     * Storage Uid
+     *
+     * @var int
+     */
+    public $storageUid = -1;
 
-	/**
-	 * Storage Uid
-	 *
-	 * @var int
-	 */
-	public $storageUid = -1;
+    /**
+     * Function execute from the Scheduler
+     *
+     * @return bool TRUE on successful execution, FALSE on error
+     */
+    public function execute()
+    {
+        if ((int)$this->storageUid > 0) {
+            $storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($this->storageUid);
+            $storage->setEvaluatePermissions(false);
+            $indexer = $this->getIndexer($storage);
+            $indexer->processChangesInStorages();
+            $storage->setEvaluatePermissions(true);
+        }
+        return true;
+    }
 
-	/**
-	 * Function execute from the Scheduler
-	 *
-	 * @return bool TRUE on successful execution, FALSE on error
-	 */
-	public function execute() {
-		if ((int)$this->storageUid > 0) {
-			$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($this->storageUid);
-			$storage->setEvaluatePermissions(FALSE);
-			$indexer = $this->getIndexer($storage);
-			$indexer->processChangesInStorages();
-			$storage->setEvaluatePermissions(TRUE);
-		}
-		return TRUE;
-	}
-
-	/**
-	 * Gets the indexer
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
-	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
-	 */
-	protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
-	}
-
+    /**
+     * Gets the indexer
+     *
+     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+     * @return \TYPO3\CMS\Core\Resource\Index\Indexer
+     */
+    protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage)
+    {
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
+    }
 }

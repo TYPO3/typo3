@@ -29,64 +29,66 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  * The aspect injects user permissions and mount points into the storage
  * based on user or group configuration.
  */
-class StoragePermissionsAspect {
+class StoragePermissionsAspect
+{
+    /**
+     * @var BackendUserAuthentication
+     */
+    protected $backendUserAuthentication;
 
-	/**
-	 * @var BackendUserAuthentication
-	 */
-	protected $backendUserAuthentication;
-
-	/**
-	 * @var array
-	 */
-	protected $defaultStorageZeroPermissions = array(
-		'readFolder' => TRUE,
-		'readFile' => TRUE
-	);
+    /**
+     * @var array
+     */
+    protected $defaultStorageZeroPermissions = array(
+        'readFolder' => true,
+        'readFile' => true
+    );
 
 
-	/**
-	 * @param BackendUserAuthentication|null $backendUserAuthentication
-	 */
-	public function __construct($backendUserAuthentication = NULL) {
-		$this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
-	}
+    /**
+     * @param BackendUserAuthentication|null $backendUserAuthentication
+     */
+    public function __construct($backendUserAuthentication = null)
+    {
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * The slot for the signal in ResourceFactory where storage objects are created
-	 *
-	 * @param ResourceFactory $resourceFactory
-	 * @param ResourceStorage $storage
-	 * @return void
-	 */
-	public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage) {
-		if (!$this->backendUserAuthentication->isAdmin()) {
-			$storage->setEvaluatePermissions(TRUE);
-			if ($storage->getUid() > 0) {
-				$storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));
-			} else {
-				$storage->setEvaluatePermissions(FALSE);
-			}
-			$this->addFileMountsToStorage($storage);
-		}
-	}
+    /**
+     * The slot for the signal in ResourceFactory where storage objects are created
+     *
+     * @param ResourceFactory $resourceFactory
+     * @param ResourceStorage $storage
+     * @return void
+     */
+    public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage)
+    {
+        if (!$this->backendUserAuthentication->isAdmin()) {
+            $storage->setEvaluatePermissions(true);
+            if ($storage->getUid() > 0) {
+                $storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));
+            } else {
+                $storage->setEvaluatePermissions(false);
+            }
+            $this->addFileMountsToStorage($storage);
+        }
+    }
 
-	/**
-	 * Adds file mounts from the user's file mount records
-	 *
-	 * @param ResourceStorage $storage
-	 * @return void
-	 */
-	protected function addFileMountsToStorage(ResourceStorage $storage) {
-		foreach ($this->backendUserAuthentication->getFileMountRecords() as $fileMountRow) {
-			if ((int)$fileMountRow['base'] === (int)$storage->getUid()) {
-				try {
-					$storage->addFileMount($fileMountRow['path'], $fileMountRow);
-				} catch (FolderDoesNotExistException $e) {
-					// That file mount does not seem to be valid, fail silently
-				}
-			}
-		}
-	}
-
+    /**
+     * Adds file mounts from the user's file mount records
+     *
+     * @param ResourceStorage $storage
+     * @return void
+     */
+    protected function addFileMountsToStorage(ResourceStorage $storage)
+    {
+        foreach ($this->backendUserAuthentication->getFileMountRecords() as $fileMountRow) {
+            if ((int)$fileMountRow['base'] === (int)$storage->getUid()) {
+                try {
+                    $storage->addFileMount($fileMountRow['path'], $fileMountRow);
+                } catch (FolderDoesNotExistException $e) {
+                    // That file mount does not seem to be valid, fail silently
+                }
+            }
+        }
+    }
 }

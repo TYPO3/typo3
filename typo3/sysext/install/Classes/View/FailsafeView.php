@@ -21,90 +21,95 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * and implements a renderAlertStatus message for alert conditions
  * which would also make the install tool to fail.
  */
-class FailsafeView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
+class FailsafeView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
+{
+    /**
+     * @var string
+     */
+    protected $templatePathAndFileName;
 
-	/**
-	 * @var string
-	 */
-	protected $templatePathAndFileName;
+    /**
+     * @var string
+     */
+    protected $layoutRootPath;
 
-	/**
-	 * @var string
-	 */
-	protected $layoutRootPath;
+    /**
+     * @var string
+     */
+    protected $partialRootPath;
 
-	/**
-	 * @var string
-	 */
-	protected $partialRootPath;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager = NULL;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-	}
+    /**
+     * Hand over regular rendering to standalone view,
+     * or render alert status
+     *
+     * @param bool $alert
+     * @return string
+     */
+    public function render($alert = false)
+    {
+        if ($alert) {
+            return $this->renderAlertStatus();
+        }
+        /** @var \TYPO3\CMS\Install\View\StandaloneView $realView */
+        $realView = $this->objectManager->get(\TYPO3\CMS\Install\View\StandaloneView::class);
+        $realView->assignMultiple($this->variables);
+        $realView->setTemplatePathAndFilename($this->templatePathAndFileName);
+        $realView->setLayoutRootPaths(array($this->layoutRootPath));
+        $realView->setPartialRootPaths(array($this->partialRootPath));
 
-	/**
-	 * Hand over regular rendering to standalone view,
-	 * or render alert status
-	 *
-	 * @param bool $alert
-	 * @return string
-	 */
-	public function render($alert = FALSE) {
-		if ($alert) {
-			return $this->renderAlertStatus();
-		}
-		/** @var \TYPO3\CMS\Install\View\StandaloneView $realView */
-		$realView = $this->objectManager->get(\TYPO3\CMS\Install\View\StandaloneView::class);
-		$realView->assignMultiple($this->variables);
-		$realView->setTemplatePathAndFilename($this->templatePathAndFileName);
-		$realView->setLayoutRootPaths(array($this->layoutRootPath));
-		$realView->setPartialRootPaths(array($this->partialRootPath));
+        return $realView->render();
+    }
 
-		return $realView->render();
-	}
+    /**
+     * In case an alert happens we fall back to a simple PHP template
+     *
+     * @return string
+     */
+    protected function renderAlertStatus()
+    {
+        $templatePath = preg_replace('#\.html$#', '.phtml', $this->templatePathAndFileName);
+        ob_start();
+        include $templatePath;
+        $renderedTemplate = ob_get_contents();
+        ob_end_clean();
 
-	/**
-	 * In case an alert happens we fall back to a simple PHP template
-	 *
-	 * @return string
-	 */
-	protected function renderAlertStatus() {
-		$templatePath = preg_replace('#\.html$#', '.phtml', $this->templatePathAndFileName);
-		ob_start();
-		include $templatePath;
-		$renderedTemplate = ob_get_contents();
-		ob_end_clean();
+        return $renderedTemplate;
+    }
 
-		return $renderedTemplate;
-	}
+    /**
+     * @param string $templatePathAndFileName
+     */
+    public function setTemplatePathAndFileName($templatePathAndFileName)
+    {
+        $this->templatePathAndFileName = $templatePathAndFileName;
+    }
 
-	/**
-	 * @param string $templatePathAndFileName
-	 */
-	public function setTemplatePathAndFileName($templatePathAndFileName) {
-		$this->templatePathAndFileName = $templatePathAndFileName;
-	}
+    /**
+     * @param string $layoutRootPath
+     */
+    public function setLayoutRootPath($layoutRootPath)
+    {
+        $this->layoutRootPath = $layoutRootPath;
+    }
 
-	/**
-	 * @param string $layoutRootPath
-	 */
-	public function setLayoutRootPath($layoutRootPath) {
-		$this->layoutRootPath = $layoutRootPath;
-	}
-
-	/**
-	 * @param string $partialRootPath
-	 */
-	public function setPartialRootPath($partialRootPath) {
-		$this->partialRootPath = $partialRootPath;
-	}
-
+    /**
+     * @param string $partialRootPath
+     */
+    public function setPartialRootPath($partialRootPath)
+    {
+        $this->partialRootPath = $partialRootPath;
+    }
 }

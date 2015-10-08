@@ -39,69 +39,72 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal
  */
-class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'img';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'img';
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
+    }
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', FALSE);
-	}
+    /**
+     * Resizes a given image (if required) and renders the respective img tag
+     *
+     * @param string $src
+     * @param int $width width of the image
+     * @param int $height height of the image
+     * @param string $fallbackImage an optional fallback image if the $src image cannot be loaded
+     * @return string rendered tag.
+     */
+    public function render($src, $width = null, $height = null, $fallbackImage = '')
+    {
+        $content = '';
+        $uri = $this->getImageUri($src);
 
-	/**
-	 * Resizes a given image (if required) and renders the respective img tag
-	 *
-	 * @param string $src
-	 * @param int $width width of the image
-	 * @param int $height height of the image
-	 * @param string $fallbackImage an optional fallback image if the $src image cannot be loaded
-	 * @return string rendered tag.
-	 */
-	public function render($src, $width = NULL, $height = NULL, $fallbackImage = '') {
-		$content = '';
-		$uri = $this->getImageUri($src);
+        if (empty($uri) && $fallbackImage !== '') {
+            $uri = $this->getImageUri($fallbackImage);
+        }
 
-		if (empty($uri) && $fallbackImage !== '') {
-			$uri = $this->getImageUri($fallbackImage);
-		}
+        if (!empty($uri)) {
+            if ($width) {
+                $this->tag->addAttribute('width', (int)$width);
+            }
+            if ($height) {
+                $this->tag->addAttribute('height', (int)$height);
+            }
+            $this->tag->addAttribute('src', $uri);
+            $content = $this->tag->render();
+        }
 
-		if (!empty($uri)) {
-			if ($width) {
-				$this->tag->addAttribute('width', (int)$width);
-			}
-			if ($height) {
-				$this->tag->addAttribute('height', (int)$height);
-			}
-			$this->tag->addAttribute('src', $uri);
-			$content = $this->tag->render();
-		}
+        return $content;
+    }
 
-		return $content;
-	}
-
-	/**
-	 * Get image uri
-	 *
-	 * @param string $src
-	 * @return string
-	 */
-	protected function getImageUri($src) {
-		$uri = GeneralUtility::getFileAbsFileName($src);
-		if ($uri !== '' && !file_exists($uri)) {
-			$uri = '';
-		}
-		if ($uri !== '') {
-			$uri = '../' . PathUtility::stripPathSitePrefix($uri);
-		}
-		return $uri;
-	}
+    /**
+     * Get image uri
+     *
+     * @param string $src
+     * @return string
+     */
+    protected function getImageUri($src)
+    {
+        $uri = GeneralUtility::getFileAbsFileName($src);
+        if ($uri !== '' && !file_exists($uri)) {
+            $uri = '';
+        }
+        if ($uri !== '') {
+            $uri = '../' . PathUtility::stripPathSitePrefix($uri);
+        }
+        return $uri;
+    }
 }

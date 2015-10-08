@@ -17,17 +17,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional cObjGetSingle processing
  */
-interface ContentObjectGetSingleHookInterface {
-
-	/**
-	 * Renders content objects, that are not defined in the core
-	 *
-	 * @param string $contentObjectName The content object name, eg. "TEXT" or "USER" or "IMAGE
-	 * @param array $configuration Array with TypoScript properties for the content object
-	 * @param string $TypoScriptKey Label used for the internal debug tracking
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
-	 * @return string cObject output
-	 */
-	public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, ContentObjectRenderer &$parentObject);
-
+interface ContentObjectGetSingleHookInterface
+{
+    /**
+     * Renders content objects, that are not defined in the core
+     *
+     * @param string $contentObjectName The content object name, eg. "TEXT" or "USER" or "IMAGE
+     * @param array $configuration Array with TypoScript properties for the content object
+     * @param string $TypoScriptKey Label used for the internal debug tracking
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
+     * @return string cObject output
+     */
+    public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, ContentObjectRenderer &$parentObject);
 }

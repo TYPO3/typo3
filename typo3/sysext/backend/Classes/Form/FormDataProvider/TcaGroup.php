@@ -22,66 +22,66 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Resolve databaseRow field content to the real connected rows for type=group
  */
-class TcaGroup implements FormDataProviderInterface {
+class TcaGroup implements FormDataProviderInterface
+{
+    /**
+     * Initialize new row with default values from various sources
+     *
+     * @param array $result
+     * @return array
+     * @todo: Should not implode valid values with | again, container & elements should work
+     * @todo: with the array as it was done for select items
+     * @throws \UnexpectedValueException
+     */
+    public function addData(array $result)
+    {
+        foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
+            if (empty($fieldConfig['config']['type'])
+                || $fieldConfig['config']['type'] !== 'group'
+                || empty($fieldConfig['config']['internal_type'])
+            ) {
+                continue;
+            }
 
-	/**
-	 * Initialize new row with default values from various sources
-	 *
-	 * @param array $result
-	 * @return array
-	 * @todo: Should not implode valid values with | again, container & elements should work
-	 * @todo: with the array as it was done for select items
-	 * @throws \UnexpectedValueException
-	 */
-	public function addData(array $result) {
-		foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
-			if (empty($fieldConfig['config']['type'])
-				|| $fieldConfig['config']['type'] !== 'group'
-				|| empty($fieldConfig['config']['internal_type'])
-			) {
-				continue;
-			}
+            $databaseRowFieldContent = '';
+            if (!empty($result['databaseRow'][$fieldName])) {
+                $databaseRowFieldContent = (string)$result['databaseRow'][$fieldName];
+            }
 
-			$databaseRowFieldContent = '';
-			if (!empty($result['databaseRow'][$fieldName])) {
-				$databaseRowFieldContent = (string)$result['databaseRow'][$fieldName];
-			}
+            $internalType = $fieldConfig['config']['internal_type'];
+            if ($internalType === 'file_reference' || $internalType === 'file') {
+                $files = array();
+                // Simple list of files
+                $fileList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
+                foreach ($fileList as $file) {
+                    if ($file) {
+                        $files[] = rawurlencode($file) . '|' . rawurlencode(PathUtility::basename($file));
+                    }
+                }
+                $result['databaseRow'][$fieldName] = implode(',', $files);
+            } elseif ($internalType === 'db') {
+                /** @var $relationHandler RelationHandler */
+                $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+                $relationHandler->start(
+                    $databaseRowFieldContent,
+                    $fieldConfig['config']['allowed'],
+                    $fieldConfig['config']['MM'],
+                    $result['databaseRow']['uid'],
+                    $result['tableName'],
+                    $fieldConfig['config']
+                );
+                $relationHandler->getFromDB();
+                $result['databaseRow'][$fieldName] = $relationHandler->readyForInterface();
+            } else {
+                // @todo: "folder" is a valid internal_type, too.
+                throw new \UnexpectedValueException(
+                    'TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
+                    . ' must be set to either "db", "file" or "file_reference"',
+                    1438780511
+                );
+            }
+        }
 
-			$internalType = $fieldConfig['config']['internal_type'];
-			if ($internalType === 'file_reference' || $internalType === 'file') {
-				$files = array();
-				// Simple list of files
-				$fileList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, TRUE);
-				foreach ($fileList as $file) {
-					if ($file) {
-						$files[] = rawurlencode($file) . '|' . rawurlencode(PathUtility::basename($file));
-					}
-				}
-				$result['databaseRow'][$fieldName] = implode(',', $files);
-			} elseif ($internalType === 'db') {
-				/** @var $relationHandler RelationHandler */
-				$relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-				$relationHandler->start(
-					$databaseRowFieldContent,
-					$fieldConfig['config']['allowed'],
-					$fieldConfig['config']['MM'],
-					$result['databaseRow']['uid'],
-					$result['tableName'],
-					$fieldConfig['config']
-				);
-				$relationHandler->getFromDB();
-				$result['databaseRow'][$fieldName] = $relationHandler->readyForInterface();
-			} else {
-				// @todo: "folder" is a valid internal_type, too.
-				throw new \UnexpectedValueException(
-					'TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
-					.' must be set to either "db", "file" or "file_reference"',
-					1438780511
-				);
-			}
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

@@ -24,60 +24,66 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
-class LockFactoryTest extends UnitTestCase {
+class LockFactoryTest extends UnitTestCase
+{
+    /**
+     * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected $mockFactory;
 
-	/**
-	 * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-	 */
-	protected $mockFactory;
+    /**
+     * Set up the tests
+     */
+    protected function setUp()
+    {
+        $this->mockFactory = $this->getAccessibleMock(LockFactory::class, ['dummy']);
+    }
 
-	/**
-	 * Set up the tests
-	 */
-	protected function setUp() {
-		$this->mockFactory = $this->getAccessibleMock(LockFactory::class, ['dummy']);
-	}
+    /**
+     * @test
+     */
+    public function addLockingStrategyAddsTheClassNameToTheInternalArray()
+    {
+        $this->mockFactory->addLockingStrategy(DummyLock::class);
+        $this->assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addLockingStrategyAddsTheClassNameToTheInternalArray() {
-		$this->mockFactory->addLockingStrategy(DummyLock::class);
-		$this->assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
-	}
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1425990198
+     */
+    public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented()
+    {
+        $this->mockFactory->addLockingStrategy(\stdClass::class);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1425990198
-	 */
-	public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented() {
-		$this->mockFactory->addLockingStrategy(\stdClass::class);
-	}
+    /**
+     * @test
+     */
+    public function getLockerReturnsExpectedClass()
+    {
+        $this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => true, DummyLock::class => true]);
+        $locker = $this->mockFactory->createLocker('id', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED);
+        $this->assertInstanceOf(FileLockStrategy::class, $locker);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLockerReturnsExpectedClass() {
-		$this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => TRUE, DummyLock::class => TRUE]);
-		$locker = $this->mockFactory->createLocker('id', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED);
-		$this->assertInstanceOf(FileLockStrategy::class, $locker);
-	}
+    /**
+     * @test
+     */
+    public function getLockerReturnsClassWithHighestPriority()
+    {
+        $this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => true, DummyLock::class => true]);
+        $locker = $this->mockFactory->createLocker('id');
+        $this->assertInstanceOf(DummyLock::class, $locker);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLockerReturnsClassWithHighestPriority() {
-		$this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => TRUE, DummyLock::class => TRUE]);
-		$locker = $this->mockFactory->createLocker('id');
-		$this->assertInstanceOf(DummyLock::class, $locker);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Core\Locking\Exception\LockCreateException
-	 */
-	public function getLockerThrowsExceptionIfNoMatchFound() {
-		$this->mockFactory->createLocker('id', 32);
-	}
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Core\Locking\Exception\LockCreateException
+     */
+    public function getLockerThrowsExceptionIfNoMatchFound()
+    {
+        $this->mockFactory->createLocker('id', 32);
+    }
 }

@@ -17,12 +17,13 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 /**
  * Disable getRecordWSOL and getRecordTitle dependency by returning stable results
  */
-class LabelFromItemListMergedReturnsCorrectFieldsFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility {
-
-	/**
-	 * @return array
-	 */
-	static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = FALSE) {
-		return array();
-	}
+class LabelFromItemListMergedReturnsCorrectFieldsFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+{
+    /**
+     * @return array
+     */
+    public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
+    {
+        return array();
+    }
 }

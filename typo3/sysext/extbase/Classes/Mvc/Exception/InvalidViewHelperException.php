@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "invalid ViewHelper" exception
  */
-class InvalidViewHelperException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidViewHelperException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

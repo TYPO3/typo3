@@ -25,16 +25,16 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @package TYPO3\CMS\Openid\LoginProvider
  */
-class OpenIdLoginProvider implements LoginProviderInterface {
-
-	/**
-	 * @param StandaloneView $view
-	 * @param PageRenderer $pageRenderer
-	 * @param LoginController $loginController
-	 */
-	public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController) {
-		$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:openid/Resources/Private/Templates/OpenidLogin.html'));
-		$view->assign('presetOpenId', GeneralUtility::_GP('openid_url'));
-	}
-
+class OpenIdLoginProvider implements LoginProviderInterface
+{
+    /**
+     * @param StandaloneView $view
+     * @param PageRenderer $pageRenderer
+     * @param LoginController $loginController
+     */
+    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
+    {
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:openid/Resources/Private/Templates/OpenidLogin.html'));
+        $view->assign('presetOpenId', GeneralUtility::_GP('openid_url'));
+    }
 }

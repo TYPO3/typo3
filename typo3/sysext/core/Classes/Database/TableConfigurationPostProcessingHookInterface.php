@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Core\Database;
 /**
  * interface for classes with hook for postprocessing extTables after loading
  */
-interface TableConfigurationPostProcessingHookInterface {
-
-	/**
-	 * Function which may process data created / registered by extTables
-	 * scripts (f.e. modifying TCA data of all extensions)
-	 *
-	 * @return void
-	 */
-	public function processData();
-
+interface TableConfigurationPostProcessingHookInterface
+{
+    /**
+     * Function which may process data created / registered by extTables
+     * scripts (f.e. modifying TCA data of all extensions)
+     *
+     * @return void
+     */
+    public function processData();
 }

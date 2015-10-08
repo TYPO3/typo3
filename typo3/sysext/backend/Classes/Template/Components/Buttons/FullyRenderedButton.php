@@ -29,78 +29,83 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->setHtmlSource('<span class="i-should-not-be-using-this>Foo</span>');
  * $buttonBar->addButton($myButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
  */
-class FullyRenderedButton implements ButtonInterface {
+class FullyRenderedButton implements ButtonInterface
+{
+    /**
+     * The full HTML source of the rendered button.
+     * This source will be passed through to the frontend as is,
+     * so keep htmlspecialchars() in mind
+     *
+     * @var string
+     */
+    protected $htmlSource = '';
 
-	/**
-	 * The full HTML source of the rendered button.
-	 * This source will be passed through to the frontend as is,
-	 * so keep htmlspecialchars() in mind
-	 *
-	 * @var string
-	 */
-	protected $htmlSource = '';
+    /**
+     * Gets the HTML Source of the button
+     *
+     * @return string
+     */
+    public function getHtmlSource()
+    {
+        return $this->htmlSource;
+    }
 
-	/**
-	 * Gets the HTML Source of the button
-	 *
-	 * @return string
-	 */
-	public function getHtmlSource() {
-		return $this->htmlSource;
-	}
+    /**
+     * Sets the HTML Source of the button and returns itself
+     *
+     * @param string $htmlSource HTML sourcecode of the button
+     *
+     * @return FullyRenderedButton
+     */
+    public function setHtmlSource($htmlSource)
+    {
+        $this->htmlSource = $htmlSource;
+        return $this;
+    }
 
-	/**
-	 * Sets the HTML Source of the button and returns itself
-	 *
-	 * @param string $htmlSource HTML sourcecode of the button
-	 *
-	 * @return FullyRenderedButton
-	 */
-	public function setHtmlSource($htmlSource) {
-		$this->htmlSource = $htmlSource;
-		return $this;
-	}
+    /**
+     * Gets the type of the button
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return get_class($this);
+    }
 
-	/**
-	 * Gets the type of the button
-	 *
-	 * @return string
-	 */
-	public function getType() {
-		return get_class($this);
-	}
+    /**
+     * Validator for a FullyRenderedButton
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        if (
+            trim($this->getHtmlSource()) !== ''
+            && $this->getType() === FullyRenderedButton::class
+        ) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Validator for a FullyRenderedButton
-	 *
-	 * @return bool
-	 */
-	public function isValid() {
-		if (
-			trim($this->getHtmlSource()) !== ''
-			&& $this->getType() === FullyRenderedButton::class
-		) {
-			return TRUE;
-		}
-		return FALSE;
-	}
+    /**
+     * Renders the button
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 
-	/**
-	 * Renders the button
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
-	}
-
-	/**
-	 * Renders the button
-	 *
-	 * @return string
-	 */
-	public function render() {
-		return '<span class="btn btn-sm btn-default">' . $this->getHtmlSource() . '</span>';
-	}
-
+    /**
+     * Renders the button
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return '<span class="btn btn-sm btn-default">' . $this->getHtmlSource() . '</span>';
+    }
 }

@@ -19,251 +19,266 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Command {
+class Command
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
+    /**
+     * @var string
+     */
+    protected $controllerClassName;
 
-	/**
-	 * @var string
-	 */
-	protected $controllerClassName;
+    /**
+     * @var string
+     */
+    protected $controllerCommandName;
 
-	/**
-	 * @var string
-	 */
-	protected $controllerCommandName;
+    /**
+     * @var string
+     */
+    protected $commandIdentifier;
 
-	/**
-	 * @var string
-	 */
-	protected $commandIdentifier;
+    /**
+     * @var \TYPO3\CMS\Extbase\Reflection\MethodReflection
+     */
+    protected $commandMethodReflection;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\MethodReflection
-	 */
-	protected $commandMethodReflection;
+    /**
+     * Name of the extension to which this command belongs
+     *
+     * @var string
+     */
+    protected $extensionName;
 
-	/**
-	 * Name of the extension to which this command belongs
-	 *
-	 * @var string
-	 */
-	protected $extensionName;
+    /**
+     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+     */
+    protected $reflectionService;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 */
-	protected $reflectionService;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+    /**
+     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+     */
+    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
+    {
+        $this->reflectionService = $reflectionService;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
+    /**
+     * Constructor
+     *
+     * @param string $controllerClassName Class name of the controller providing the command
+     * @param string $controllerCommandName Command name, i.e. the method name of the command, without the "Command" suffix
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($controllerClassName, $controllerCommandName)
+    {
+        $this->controllerClassName = $controllerClassName;
+        $this->controllerCommandName = $controllerCommandName;
+        $delimiter = strpos($controllerClassName, '\\') !== false ? '\\' : '_';
+        $classNameParts = explode($delimiter, $controllerClassName);
+        if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && isset($classNameParts[1]) && $classNameParts[1] === 'CMS') {
+            $classNameParts[0] .= '\\' . $classNameParts[1];
+            unset($classNameParts[1]);
+            $classNameParts = array_values($classNameParts);
+        }
+        $numberOfClassNameParts = count($classNameParts);
+        if ($numberOfClassNameParts < 3) {
+            throw new \InvalidArgumentException(
+                'Controller class names must at least consist of three parts: vendor, extension name and path.',
+                1438782187
+            );
+        }
+        if (strpos($classNameParts[$numberOfClassNameParts - 1], 'CommandController') === false) {
+            throw new \InvalidArgumentException(
+                'Invalid controller class name "' . $controllerClassName . '". Class name must end with "CommandController".',
+                1305100019
+            );
+        }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $controllerClassName Class name of the controller providing the command
-	 * @param string $controllerCommandName Command name, i.e. the method name of the command, without the "Command" suffix
-	 * @throws \InvalidArgumentException
-	 */
-	public function __construct($controllerClassName, $controllerCommandName) {
-		$this->controllerClassName = $controllerClassName;
-		$this->controllerCommandName = $controllerCommandName;
-		$delimiter = strpos($controllerClassName, '\\') !== FALSE ? '\\' : '_';
-		$classNameParts = explode($delimiter, $controllerClassName);
-		if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && isset($classNameParts[1]) && $classNameParts[1] === 'CMS') {
-			$classNameParts[0] .= '\\' . $classNameParts[1];
-			unset($classNameParts[1]);
-			$classNameParts = array_values($classNameParts);
-		}
-		$numberOfClassNameParts = count($classNameParts);
-		if ($numberOfClassNameParts < 3) {
-			throw new \InvalidArgumentException(
-				'Controller class names must at least consist of three parts: vendor, extension name and path.',
-				1438782187
-			);
-		}
-		if (strpos($classNameParts[$numberOfClassNameParts - 1], 'CommandController') === FALSE) {
-			throw new \InvalidArgumentException(
-				'Invalid controller class name "' . $controllerClassName . '". Class name must end with "CommandController".',
-				1305100019
-			);
-		}
+        $this->extensionName = $classNameParts[1];
+        $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
+        $this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[$numberOfClassNameParts - 1], 0, -17) . ':' . $controllerCommandName);
+    }
 
-		$this->extensionName = $classNameParts[1];
-		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
-		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[$numberOfClassNameParts - 1], 0, -17) . ':' . $controllerCommandName);
-	}
+    /**
+     * @return string
+     */
+    public function getControllerClassName()
+    {
+        return $this->controllerClassName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getControllerClassName() {
-		return $this->controllerClassName;
-	}
+    /**
+     * @return string
+     */
+    public function getControllerCommandName()
+    {
+        return $this->controllerCommandName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getControllerCommandName() {
-		return $this->controllerCommandName;
-	}
+    /**
+     * Returns the command identifier for this command
+     *
+     * @return string The command identifier for this command, following the pattern extensionname:controllername:commandname
+     */
+    public function getCommandIdentifier()
+    {
+        return $this->commandIdentifier;
+    }
 
-	/**
-	 * Returns the command identifier for this command
-	 *
-	 * @return string The command identifier for this command, following the pattern extensionname:controllername:commandname
-	 */
-	public function getCommandIdentifier() {
-		return $this->commandIdentifier;
-	}
+    /**
+     * Returns the name of the extension to which this command belongs
+     *
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return $this->extensionName;
+    }
 
-	/**
-	 * Returns the name of the extension to which this command belongs
-	 *
-	 * @return string
-	 */
-	public function getExtensionName() {
-		return $this->extensionName;
-	}
+    /**
+     * Returns a short description of this command
+     *
+     * @return string A short description
+     */
+    public function getShortDescription()
+    {
+        $lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
+        return !empty($lines) ? trim($lines[0]) : '<no description available>';
+    }
 
-	/**
-	 * Returns a short description of this command
-	 *
-	 * @return string A short description
-	 */
-	public function getShortDescription() {
-		$lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
-		return !empty($lines) ? trim($lines[0]) : '<no description available>';
-	}
+    /**
+     * Returns a longer description of this command
+     * This is the complete method description except for the first line which can be retrieved via getShortDescription()
+     * If The command description only consists of one line, an empty string is returned
+     *
+     * @return string A longer description of this command
+     */
+    public function getDescription()
+    {
+        $lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
+        array_shift($lines);
+        $descriptionLines = array();
+        foreach ($lines as $line) {
+            $trimmedLine = trim($line);
+            if ($descriptionLines !== array() || $trimmedLine !== '') {
+                $descriptionLines[] = $trimmedLine;
+            }
+        }
+        return implode(LF, $descriptionLines);
+    }
 
-	/**
-	 * Returns a longer description of this command
-	 * This is the complete method description except for the first line which can be retrieved via getShortDescription()
-	 * If The command description only consists of one line, an empty string is returned
-	 *
-	 * @return string A longer description of this command
-	 */
-	public function getDescription() {
-		$lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
-		array_shift($lines);
-		$descriptionLines = array();
-		foreach ($lines as $line) {
-			$trimmedLine = trim($line);
-			if ($descriptionLines !== array() || $trimmedLine !== '') {
-				$descriptionLines[] = $trimmedLine;
-			}
-		}
-		return implode(LF, $descriptionLines);
-	}
+    /**
+     * Returns TRUE if this command expects required and/or optional arguments, otherwise FALSE
+     *
+     * @return bool
+     */
+    public function hasArguments()
+    {
+        return !empty($this->getCommandMethodReflection()->getParameters());
+    }
 
-	/**
-	 * Returns TRUE if this command expects required and/or optional arguments, otherwise FALSE
-	 *
-	 * @return bool
-	 */
-	public function hasArguments() {
-		return !empty($this->getCommandMethodReflection()->getParameters());
-	}
+    /**
+     * Returns an array of \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition that contains
+     * information about required/optional arguments of this command.
+     * If the command does not expect any arguments, an empty array is returned
+     *
+     * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition>
+     */
+    public function getArgumentDefinitions()
+    {
+        if (!$this->hasArguments()) {
+            return array();
+        }
+        $commandArgumentDefinitions = array();
+        $commandMethodReflection = $this->getCommandMethodReflection();
+        $annotations = $commandMethodReflection->getTagsValues();
+        $commandParameters = $this->reflectionService->getMethodParameters($this->controllerClassName, $this->controllerCommandName . 'Command');
+        $i = 0;
+        foreach ($commandParameters as $commandParameterName => $commandParameterDefinition) {
+            $explodedAnnotation = preg_split('/\s+/', $annotations['param'][$i], 3);
+            $description = !empty($explodedAnnotation[2]) ? $explodedAnnotation[2] : '';
+            $required = $commandParameterDefinition['optional'] !== true;
+            $commandArgumentDefinitions[] = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class, $commandParameterName, $required, $description);
+            $i++;
+        }
+        return $commandArgumentDefinitions;
+    }
 
-	/**
-	 * Returns an array of \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition that contains
-	 * information about required/optional arguments of this command.
-	 * If the command does not expect any arguments, an empty array is returned
-	 *
-	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition>
-	 */
-	public function getArgumentDefinitions() {
-		if (!$this->hasArguments()) {
-			return array();
-		}
-		$commandArgumentDefinitions = array();
-		$commandMethodReflection = $this->getCommandMethodReflection();
-		$annotations = $commandMethodReflection->getTagsValues();
-		$commandParameters = $this->reflectionService->getMethodParameters($this->controllerClassName, $this->controllerCommandName . 'Command');
-		$i = 0;
-		foreach ($commandParameters as $commandParameterName => $commandParameterDefinition) {
-			$explodedAnnotation = preg_split('/\s+/', $annotations['param'][$i], 3);
-			$description = !empty($explodedAnnotation[2]) ? $explodedAnnotation[2] : '';
-			$required = $commandParameterDefinition['optional'] !== TRUE;
-			$commandArgumentDefinitions[] = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class, $commandParameterName, $required, $description);
-			$i++;
-		}
-		return $commandArgumentDefinitions;
-	}
+    /**
+     * Tells if this command is internal and thus should not be exposed through help texts, user documentation etc.
+     * Internall commands are still accessible through the regular command line interface, but should not be used
+     * by users.
+     *
+     * @return bool
+     */
+    public function isInternal()
+    {
+        return $this->getCommandMethodReflection()->isTaggedWith('internal');
+    }
 
-	/**
-	 * Tells if this command is internal and thus should not be exposed through help texts, user documentation etc.
-	 * Internall commands are still accessible through the regular command line interface, but should not be used
-	 * by users.
-	 *
-	 * @return bool
-	 */
-	public function isInternal() {
-		return $this->getCommandMethodReflection()->isTaggedWith('internal');
-	}
+    /**
+     * Tells if this command is meant to be used on CLI only.
+     *
+     * @return bool
+     */
+    public function isCliOnly()
+    {
+        return $this->getCommandMethodReflection()->isTaggedWith('cli');
+    }
 
-	/**
-	 * Tells if this command is meant to be used on CLI only.
-	 *
-	 * @return bool
-	 */
-	public function isCliOnly() {
-		return $this->getCommandMethodReflection()->isTaggedWith('cli');
-	}
+    /**
+     * Tells if this command flushes all caches and thus needs special attention in the interactive shell.
+     *
+     * Note that neither this method nor the @flushesCaches annotation is currently part of the official API.
+     *
+     * @return bool
+     */
+    public function isFlushingCaches()
+    {
+        return $this->getCommandMethodReflection()->isTaggedWith('flushesCaches');
+    }
 
-	/**
-	 * Tells if this command flushes all caches and thus needs special attention in the interactive shell.
-	 *
-	 * Note that neither this method nor the @flushesCaches annotation is currently part of the official API.
-	 *
-	 * @return bool
-	 */
-	public function isFlushingCaches() {
-		return $this->getCommandMethodReflection()->isTaggedWith('flushesCaches');
-	}
+    /**
+     * Returns an array of command identifiers which were specified in the "@see"
+     * annotation of a command method.
+     *
+     * @return array
+     */
+    public function getRelatedCommandIdentifiers()
+    {
+        $commandMethodReflection = $this->getCommandMethodReflection();
+        if (!$commandMethodReflection->isTaggedWith('see')) {
+            return array();
+        }
+        $relatedCommandIdentifiers = array();
+        foreach ($commandMethodReflection->getTagValues('see') as $tagValue) {
+            if (preg_match('/^[\\w\\d\\.]+:[\\w\\d]+:[\\w\\d]+$/', $tagValue) === 1) {
+                $relatedCommandIdentifiers[] = $tagValue;
+            }
+        }
+        return $relatedCommandIdentifiers;
+    }
 
-	/**
-	 * Returns an array of command identifiers which were specified in the "@see"
-	 * annotation of a command method.
-	 *
-	 * @return array
-	 */
-	public function getRelatedCommandIdentifiers() {
-		$commandMethodReflection = $this->getCommandMethodReflection();
-		if (!$commandMethodReflection->isTaggedWith('see')) {
-			return array();
-		}
-		$relatedCommandIdentifiers = array();
-		foreach ($commandMethodReflection->getTagValues('see') as $tagValue) {
-			if (preg_match('/^[\\w\\d\\.]+:[\\w\\d]+:[\\w\\d]+$/', $tagValue) === 1) {
-				$relatedCommandIdentifiers[] = $tagValue;
-			}
-		}
-		return $relatedCommandIdentifiers;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection
-	 */
-	protected function getCommandMethodReflection() {
-		if ($this->commandMethodReflection === NULL) {
-			$this->commandMethodReflection = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\MethodReflection::class, $this->controllerClassName, $this->controllerCommandName . 'Command');
-		}
-		return $this->commandMethodReflection;
-	}
-
+    /**
+     * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection
+     */
+    protected function getCommandMethodReflection()
+    {
+        if ($this->commandMethodReflection === null) {
+            $this->commandMethodReflection = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\MethodReflection::class, $this->controllerClassName, $this->controllerCommandName . 'Command');
+        }
+        return $this->commandMethodReflection;
+    }
 }

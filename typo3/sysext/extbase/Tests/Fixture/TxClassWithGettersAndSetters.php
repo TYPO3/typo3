@@ -23,6 +23,6 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters {
-
+class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters
+{
 }

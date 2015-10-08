@@ -18,23 +18,23 @@ namespace TYPO3\CMS\Felogin\Hooks;
  * Hook to display verbose information about the felogin plugin
  *
  */
-class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
-
-	/**
-	 * Preprocesses the preview rendering of a content element.
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionalities
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 * @return void
-	 */
-	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-		if ($row['CType'] === 'login') {
-			$drawItem = FALSE;
-			$itemContent .= $parentObject->linkEditContent('<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title', TRUE) . '</strong>', $row);
-		}
-	}
-
+class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of a content element.
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionalities
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     * @return void
+     */
+    public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row)
+    {
+        if ($row['CType'] === 'login') {
+            $drawItem = false;
+            $itemContent .= $parentObject->linkEditContent('<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title', true) . '</strong>', $row);
+        }
+    }
 }

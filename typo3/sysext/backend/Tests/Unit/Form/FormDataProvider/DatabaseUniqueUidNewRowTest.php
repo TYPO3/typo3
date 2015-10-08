@@ -20,57 +20,60 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow;
 /**
  * Test case
  */
-class DatabaseUniqueUidNewRowTest extends UnitTestCase {
+class DatabaseUniqueUidNewRowTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseUniqueUidNewRow
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseUniqueUidNewRow
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new DatabaseUniqueUidNewRow();
+    }
 
-	protected function setUp() {
-		$this->subject = new DatabaseUniqueUidNewRow();
-	}
+    /**
+     * @test
+     */
+    public function addDataReturnSameDataIfCommandIsEdit()
+    {
+        $input = [
+            'command' => 'edit',
+            'databaseRow' => [
+                'uid' => 42,
+            ],
+        ];
+        $this->assertSame($input, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataReturnSameDataIfCommandIsEdit() {
-		$input = [
-			'command' => 'edit',
-			'databaseRow' => [
-				'uid' => 42,
-			],
-		];
-		$this->assertSame($input, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfUidIsAlreadySet()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => [
+                'uid' => 42,
+            ],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfUidIsAlreadySet() {
-		$input = [
-			'command' => 'new',
-			'databaseRow' => [
-				'uid' => 42,
-			],
-		];
+        $this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437991120);
 
-		$this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437991120);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsUniqeId() {
-		$input = [
-			'command' => 'new',
-			'databaseRow' => [],
-		];
-		$result = $this->subject->addData($input);
-		$result = substr($result['databaseRow']['uid'], 0, 3);
-		$this->assertSame('NEW', $result);
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsUniqeId()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => [],
+        ];
+        $result = $this->subject->addData($input);
+        $result = substr($result['databaseRow']['uid'], 0, 3);
+        $this->assertSame('NEW', $result);
+    }
 }

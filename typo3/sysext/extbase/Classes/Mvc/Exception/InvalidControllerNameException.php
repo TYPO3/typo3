@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Controller Name" exception
  */
-class InvalidControllerNameException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidControllerNameException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

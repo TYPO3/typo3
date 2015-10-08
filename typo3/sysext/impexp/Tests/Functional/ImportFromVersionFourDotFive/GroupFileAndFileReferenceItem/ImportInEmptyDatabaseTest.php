@@ -17,38 +17,37 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportFromVersionFourDotFive\GroupFi
 /**
  * Functional test for the ImportExport
  */
-class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
+class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
+{
+    /**
+     * @var array
+     */
+    protected $additionalFoldersToCreate = array(
+        '/uploads/tx_impexpgroupfiles'
+    );
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array(
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $additionalFoldersToCreate = array(
-		'/uploads/tx_impexpgroupfiles'
-	);
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-	);
+    /**
+     * @var string
+     */
+    protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/GroupFileAndFileReferenceItem/DataSet/Assertion/';
 
-	/**
-	 * @var string
-	 */
-	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/GroupFileAndFileReferenceItem/DataSet/Assertion/';
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItem()
+    {
+        $this->import->loadFile(__DIR__ . '/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
+        $this->import->importData(0);
 
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItem() {
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
 
-		$this->import->loadFile(__DIR__ . '/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
-		$this->import->importData(0);
-
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
-
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-	}
-
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+    }
 }

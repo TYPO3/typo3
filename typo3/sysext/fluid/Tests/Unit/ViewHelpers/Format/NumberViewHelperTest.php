@@ -17,32 +17,34 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 /**
  * Test case
  */
-class NumberViewHelperTest extends UnitTestCase {
+class NumberViewHelperTest extends UnitTestCase
+{
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|NumberViewHelper
+     */
+    protected $fixture;
 
-	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|NumberViewHelper
-	 */
-	protected $fixture;
+    protected function setUp()
+    {
+        $this->fixture = $this->getMock(NumberViewHelper::class, array('renderChildren'));
+        $this->fixture->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
+        $renderingContext = $this->getMock(RenderingContext::class);
+        $this->fixture->setRenderingContext($renderingContext);
+    }
 
-	protected function setUp() {
-		$this->fixture = $this->getMock(NumberViewHelper::class, array('renderChildren'));
-		$this->fixture->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
-		$renderingContext = $this->getMock(RenderingContext::class);
-		$this->fixture->setRenderingContext($renderingContext);
-	}
+    /**
+     * @test
+     */
+    public function formatNumberDefaultsToEnglishNotationWithTwoDecimals()
+    {
+        $this->assertEquals('3,333.33', $this->fixture->render());
+    }
 
-	/**
-	 * @test
-	 */
-	public function formatNumberDefaultsToEnglishNotationWithTwoDecimals() {
-		$this->assertEquals('3,333.33', $this->fixture->render());
-	}
-
-	/**
-	 * @test
-	 */
-	public function formatNumberWithDecimalsDecimalPointAndSeparator() {
-		$this->assertEquals('3.333,333', $this->fixture->render(3, ',', '.'));
-	}
-
+    /**
+     * @test
+     */
+    public function formatNumberWithDecimalsDecimalPointAndSeparator()
+    {
+        $this->assertEquals('3.333,333', $this->fixture->render(3, ',', '.'));
+    }
 }

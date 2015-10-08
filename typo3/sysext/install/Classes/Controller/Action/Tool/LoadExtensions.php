@@ -19,20 +19,20 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class LoadExtensions extends Action\AbstractAction {
+class LoadExtensions extends Action\AbstractAction
+{
+    /**
+     * Executes the tool
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        $extensionCompatibilityTesterFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt';
+        $this->view
+            ->assign('extensionCompatibilityTesterProtocolFile', $extensionCompatibilityTesterFile)
+            ->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages());
 
-	/**
-	 * Executes the tool
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		$extensionCompatibilityTesterFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt';
-		$this->view
-			->assign('extensionCompatibilityTesterProtocolFile', $extensionCompatibilityTesterFile)
-			->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages());
-
-		return $this->view->render();
-	}
-
+        return $this->view->render();
+    }
 }

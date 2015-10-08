@@ -22,45 +22,45 @@ namespace TYPO3\CMS\Belog\Module;
  * Extbase currently provides no way to register a "TBE_MODULES_EXT" module directly,
  * therefore we need to bootstrap extbase on our own here to jump to the WebInfo controller.
  */
-class BackendLogModuleBootstrap {
+class BackendLogModuleBootstrap
+{
+    /**
+     * Dummy method, called by SCbase external object handling
+     *
+     * @return void
+     */
+    public function init()
+    {
+    }
 
-	/**
-	 * Dummy method, called by SCbase external object handling
-	 *
-	 * @return void
-	 */
-	public function init() {
+    /**
+     * Dummy method, called by SCbase external object handling
+     *
+     * @return void
+     */
+    public function checkExtObj()
+    {
+    }
 
-	}
-
-	/**
-	 * Dummy method, called by SCbase external object handling
-	 *
-	 * @return void
-	 */
-	public function checkExtObj() {
-
-	}
-
-	/**
-	 * Bootstrap extbase and jump to WebInfo controller
-	 *
-	 * @return string
-	 */
-	public function main() {
-		$configuration = array(
-			'extensionName' => 'Belog',
-			'pluginName' => 'system_BelogLog',
-			'vendorName' => 'TYPO3\\CMS',
-		);
-		// Yeah, this is ugly. But currently, there is no other direct way
-		// in extbase to force a specific controller in backend mode.
-		// Overwriting $_GET was the most simple solution here until extbase
-		// provides a clean way to solve this.
-		$_GET['tx_belog_system_beloglog']['controller'] = 'WebInfo';
-		/** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
-		$extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
-		return $extbaseBootstrap->run('', $configuration);
-	}
-
+    /**
+     * Bootstrap extbase and jump to WebInfo controller
+     *
+     * @return string
+     */
+    public function main()
+    {
+        $configuration = array(
+            'extensionName' => 'Belog',
+            'pluginName' => 'system_BelogLog',
+            'vendorName' => 'TYPO3\\CMS',
+        );
+        // Yeah, this is ugly. But currently, there is no other direct way
+        // in extbase to force a specific controller in backend mode.
+        // Overwriting $_GET was the most simple solution here until extbase
+        // provides a clean way to solve this.
+        $_GET['tx_belog_system_beloglog']['controller'] = 'WebInfo';
+        /** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
+        $extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+        return $extbaseBootstrap->run('', $configuration);
+    }
 }

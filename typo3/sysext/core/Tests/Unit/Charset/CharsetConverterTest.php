@@ -17,36 +17,38 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 /**
  * Testcase for \TYPO3\CMS\Core\Charset\CharsetConverter
  */
-class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-	 */
-	protected $subject = NULL;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Core\Charset\CharsetConverter();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Core\Charset\CharsetConverter();
-	}
+    ////////////////////////////
+    // Tests concerning substr
+    ////////////////////////////
+    /**
+     * @test
+     * @see http://forge.typo3.org/issues/22334
+     */
+    public function substrForEmptyStringAndNonZeroLengthReturnsEmptyString()
+    {
+        $this->assertSame('', $this->subject->substr('utf-8', '', 0, 42));
+    }
 
-	////////////////////////////
-	// Tests concerning substr
-	////////////////////////////
-	/**
-	 * @test
-	 * @see http://forge.typo3.org/issues/22334
-	 */
-	public function substrForEmptyStringAndNonZeroLengthReturnsEmptyString() {
-		$this->assertSame('', $this->subject->substr('utf-8', '', 0, 42));
-	}
-
-	/////////////////////////////////
-	// Tests concerning utf8_strlen
-	/////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function utf8_strlenForNonEmptyAsciiOnlyStringReturnsNumberOfCharacters() {
-		$this->assertEquals(10, $this->subject->utf8_strlen('good omens'));
-	}
-
+    /////////////////////////////////
+    // Tests concerning utf8_strlen
+    /////////////////////////////////
+    /**
+     * @test
+     */
+    public function utf8_strlenForNonEmptyAsciiOnlyStringReturnsNumberOfCharacters()
+    {
+        $this->assertEquals(10, $this->subject->utf8_strlen('good omens'));
+    }
 }

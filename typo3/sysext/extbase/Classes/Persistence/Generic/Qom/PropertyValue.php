@@ -25,45 +25,47 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * selector is not the name of a selector in the query, or
  * property is not a syntactically valid JCR name.
  */
-class PropertyValue implements PropertyValueInterface {
+class PropertyValue implements PropertyValueInterface
+{
+    /**
+     * @var string
+     */
+    protected $selectorName;
 
-	/**
-	 * @var string
-	 */
-	protected $selectorName;
+    /**
+     * @var string
+     */
+    protected $propertyName;
 
-	/**
-	 * @var string
-	 */
-	protected $propertyName;
+    /**
+     * Constructs this PropertyValue instance
+     *
+     * @param string $propertyName
+     * @param string $selectorName
+     */
+    public function __construct($propertyName, $selectorName = '')
+    {
+        $this->propertyName = $propertyName;
+        $this->selectorName = $selectorName;
+    }
 
-	/**
-	 * Constructs this PropertyValue instance
-	 *
-	 * @param string $propertyName
-	 * @param string $selectorName
-	 */
-	public function __construct($propertyName, $selectorName = '') {
-		$this->propertyName = $propertyName;
-		$this->selectorName = $selectorName;
-	}
+    /**
+     * Gets the name of the selector against which to evaluate this operand.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelectorName()
+    {
+        return $this->selectorName;
+    }
 
-	/**
-	 * Gets the name of the selector against which to evaluate this operand.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelectorName() {
-		return $this->selectorName;
-	}
-
-	/**
-	 * Gets the name of the property.
-	 *
-	 * @return string the property name; non-null
-	 */
-	public function getPropertyName() {
-		return $this->propertyName;
-	}
-
+    /**
+     * Gets the name of the property.
+     *
+     * @return string the property name; non-null
+     */
+    public function getPropertyName()
+    {
+        return $this->propertyName;
+    }
 }

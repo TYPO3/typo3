@@ -18,30 +18,32 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  * Test case for the abstract driver.
  *
  */
-class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
+class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
-	 */
-	protected $subject;
 
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->subject = $this->createDriver();
+    }
+    /**
+     * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+     */
+    protected function createDriver()
+    {
+        return $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, array(), '', false);
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->subject = $this->createDriver();
-	}
-	/**
-	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
-	 */
-	protected function createDriver() {
-		return $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, array(), '', FALSE);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured() {
-		$this->assertTrue($this->subject->isCaseSensitiveFileSystem());
-	}
-
+    /**
+     * @test
+     */
+    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured()
+    {
+        $this->assertTrue($this->subject->isCaseSensitiveFileSystem());
+    }
 }

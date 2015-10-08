@@ -19,6 +19,6 @@ use TYPO3\CMS\Backend\Form\Exception;
 /**
  * A record could not be fetched from database, maybe it vanished meanwhile.
  */
-class DatabaseRecordException extends Exception {
-
+class DatabaseRecordException extends Exception
+{
 }

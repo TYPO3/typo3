@@ -26,20 +26,20 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
+class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+{
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\RawValidator::class;
 
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\RawValidator::class;
-
-	/**
-	 * @test
-	 */
-	public function theRawValidatorAlwaysReturnsNoErrors() {
-		$rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator(array());
-		$this->assertFalse($rawValidator->validate('simple1expression')->hasErrors());
-		$this->assertFalse($rawValidator->validate('')->hasErrors());
-		$this->assertFalse($rawValidator->validate(NULL)->hasErrors());
-		$this->assertFalse($rawValidator->validate(FALSE)->hasErrors());
-		$this->assertFalse($rawValidator->validate(new \ArrayObject())->hasErrors());
-	}
-
+    /**
+     * @test
+     */
+    public function theRawValidatorAlwaysReturnsNoErrors()
+    {
+        $rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator(array());
+        $this->assertFalse($rawValidator->validate('simple1expression')->hasErrors());
+        $this->assertFalse($rawValidator->validate('')->hasErrors());
+        $this->assertFalse($rawValidator->validate(null)->hasErrors());
+        $this->assertFalse($rawValidator->validate(false)->hasErrors());
+        $this->assertFalse($rawValidator->validate(new \ArrayObject())->hasErrors());
+    }
 }

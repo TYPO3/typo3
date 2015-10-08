@@ -20,15 +20,15 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class AbstractBackendTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function theConstructorCallsSetterMethodsForAllSpecifiedOptions() {
-		// The fixture class implements methods setSomeOption() and getSomeOption()
-		$backend = new ConcreteBackendFixture('Testing', array('someOption' => 'someValue'));
-		$this->assertSame('someValue', $backend->getSomeOption());
-	}
-
+class AbstractBackendTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function theConstructorCallsSetterMethodsForAllSpecifiedOptions()
+    {
+        // The fixture class implements methods setSomeOption() and getSomeOption()
+        $backend = new ConcreteBackendFixture('Testing', array('someOption' => 'someValue'));
+        $this->assertSame('someValue', $backend->getSomeOption());
+    }
 }

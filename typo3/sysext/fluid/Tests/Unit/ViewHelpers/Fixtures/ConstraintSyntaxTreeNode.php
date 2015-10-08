@@ -14,28 +14,31 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
 /**
  * Constraint syntax tree node fixture
  */
-class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode {
-	public $callProtocol = array();
+class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+{
+    public $callProtocol = array();
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
-	 */
-	protected $variableContainer;
+    /**
+     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+     */
+    protected $variableContainer;
 
-	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
-		$this->variableContainer = $variableContainer;
-	}
+    public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer)
+    {
+        $this->variableContainer = $variableContainer;
+    }
 
-	public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-		$identifiers = $this->variableContainer->getAllIdentifiers();
-		$callElement = array();
-		foreach ($identifiers as $identifier) {
-			$callElement[$identifier] = $this->variableContainer->get($identifier);
-		}
-		$this->callProtocol[] = $callElement;
-	}
+    public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+        $identifiers = $this->variableContainer->getAllIdentifiers();
+        $callElement = array();
+        foreach ($identifiers as $identifier) {
+            $callElement[$identifier] = $this->variableContainer->get($identifier);
+        }
+        $this->callProtocol[] = $callElement;
+    }
 
-	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-	}
-
+    public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+    }
 }

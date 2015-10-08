@@ -20,6 +20,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class RepositoryException extends \RuntimeException {
-
+class RepositoryException extends \RuntimeException
+{
 }

@@ -19,35 +19,35 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  * @package TYPO3\CMS\Core
  */
-class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration {
+class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const __default = self::INPUT;
 
-	const __default = self::INPUT;
+    /**
+     * Constants reflecting the table column type
+     */
+    const INPUT = 'INPUT';
+    const TEXT = 'TEXT';
+    const CHECK = 'CHECK';
+    const RADIO = 'RADIO';
+    const SELECT = 'SELECT';
+    const GROUP = 'GROUP';
+    const NONE = 'NONE';
+    const PASSTHROUGH = 'PASSTHROUGH';
+    const USER = 'USER';
+    const FLEX = 'FLEX';
+    const INLINE = 'INLINE';
+    const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
 
-	/**
-	 * Constants reflecting the table column type
-	 */
-	const INPUT = 'INPUT';
-	const TEXT = 'TEXT';
-	const CHECK = 'CHECK';
-	const RADIO = 'RADIO';
-	const SELECT = 'SELECT';
-	const GROUP = 'GROUP';
-	const NONE = 'NONE';
-	const PASSTHROUGH = 'PASSTHROUGH';
-	const USER = 'USER';
-	const FLEX = 'FLEX';
-	const INLINE = 'INLINE';
-	const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
+    /**
+     * @param mixed $type
+     */
+    public function __construct($type = null)
+    {
+        if ($type !== null) {
+            $type = strtoupper((string)$type);
+        }
 
-	/**
-	 * @param mixed $type
-	 */
-	public function __construct($type = NULL) {
-		if ($type !== NULL) {
-			$type = strtoupper((string)$type);
-		}
-
-		parent::__construct($type);
-	}
-
+        parent::__construct($type);
+    }
 }

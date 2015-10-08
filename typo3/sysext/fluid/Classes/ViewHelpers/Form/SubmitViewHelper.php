@@ -33,41 +33,43 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
+class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'input';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
+    /**
+     * Initialize the arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerTagAttribute(
+            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+        );
+        $this->registerUniversalTagAttributes();
+    }
 
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute(
-			'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
-		);
-		$this->registerUniversalTagAttributes();
-	}
+    /**
+     * Renders the submit button.
+     *
+     * @return string
+     * @api
+     */
+    public function render()
+    {
+        $name = $this->getName();
+        $this->registerFieldNameForFormTokenGeneration($name);
 
-	/**
-	 * Renders the submit button.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function render() {
-		$name = $this->getName();
-		$this->registerFieldNameForFormTokenGeneration($name);
+        $this->tag->addAttribute('type', 'submit');
+        $this->tag->addAttribute('name', $name);
+        $this->tag->addAttribute('value', $this->getValueAttribute());
 
-		$this->tag->addAttribute('type', 'submit');
-		$this->tag->addAttribute('name', $name);
-		$this->tag->addAttribute('value', $this->getValueAttribute());
-
-		return $this->tag->render();
-	}
+        return $this->tag->render();
+    }
 }

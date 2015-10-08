@@ -49,22 +49,22 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Widget;
  *
  * @api
  */
-class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
+     * @inject
+     */
+    protected $controller;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
-	 * @inject
-	 */
-	protected $controller;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
-	 * @param string $as
-	 * @param array $configuration
-	 * @return string
-	 */
-	public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'recordsLabel' => '')) {
-		return $this->initiateSubRequest();
-	}
-
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
+     * @param string $as
+     * @param array $configuration
+     * @return string
+     */
+    public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'recordsLabel' => ''))
+    {
+        return $this->initiateSubRequest();
+    }
 }

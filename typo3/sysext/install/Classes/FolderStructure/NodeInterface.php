@@ -17,51 +17,50 @@ namespace TYPO3\CMS\Install\FolderStructure;
 /**
  * Interface for structure nodes root, link, file, ...
  */
-interface NodeInterface {
+interface NodeInterface
+{
+    /**
+     * Constructor gets structure and parent object defaulting to NULL
+     *
+     * @param array $structure Structure
+     * @param NodeInterface $parent Parent
+     */
+    public function __construct(array $structure, NodeInterface $parent = null);
 
-	/**
-	 * Constructor gets structure and parent object defaulting to NULL
-	 *
-	 * @param array $structure Structure
-	 * @param NodeInterface $parent Parent
-	 */
-	public function __construct(array $structure, NodeInterface $parent = NULL);
+    /**
+     * Get node name
+     *
+     * @return string Node name
+     */
+    public function getName();
 
-	/**
-	 * Get node name
-	 *
-	 * @return string Node name
-	 */
-	public function getName();
+    /**
+     * Get absolute path of node
+     *
+     * @return string Absolute path
+     */
+    public function getAbsolutePath();
 
-	/**
-	 * Get absolute path of node
-	 *
-	 * @return string Absolute path
-	 */
-	public function getAbsolutePath();
+    /**
+     * Get the status of the object tree, recursive for directory and root node
+     *
+     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     */
+    public function getStatus();
 
-	/**
-	 * Get the status of the object tree, recursive for directory and root node
-	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
-	 */
-	public function getStatus();
+    /**
+     * Check if node is writable - can be created and permission can be fixed
+     *
+     * @return bool TRUE if node is writable
+     */
+    public function isWritable();
 
-	/**
-	 * Check if node is writable - can be created and permission can be fixed
-	 *
-	 * @return bool TRUE if node is writable
-	 */
-	public function isWritable();
-
-	/**
-	 * Fix structure
-	 *
-	 * If there is nothing to fix, returns an empty array
-	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
-	 */
-	public function fix();
-
+    /**
+     * Fix structure
+     *
+     * If there is nothing to fix, returns an empty array
+     *
+     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     */
+    public function fix();
 }

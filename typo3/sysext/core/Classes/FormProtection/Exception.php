@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * @api
  */
-class Exception extends \UnexpectedValueException {
-
+class Exception extends \UnexpectedValueException
+{
 }

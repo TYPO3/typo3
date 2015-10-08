@@ -31,373 +31,389 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Test case
  */
-class DatabaseUserPermissionCheckTest extends UnitTestCase {
+class DatabaseUserPermissionCheckTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseUserPermissionCheck
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseUserPermissionCheck
-	 */
-	protected $subject;
+    /**
+     * @var BackendUserAuthentication | ObjectProphecy
+     */
+    protected $beUserProphecy;
 
-	/**
-	 * @var BackendUserAuthentication | ObjectProphecy
-	 */
-	protected $beUserProphecy;
+    protected function setUp()
+    {
+        $this->subject = new DatabaseUserPermissionCheck();
 
-	protected function setUp() {
-		$this->subject = new DatabaseUserPermissionCheck();
+        $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
+        $GLOBALS['BE_USER']->user['uid'] = 42;
+    }
 
-		$this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-		$GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
-		$GLOBALS['BE_USER']->user['uid'] = 42;
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUserPermissionsOnPageForAdminUser()
+    {
+        $this->beUserProphecy->isAdmin()->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUserPermissionsOnPageForAdminUser() {
-		$this->beUserProphecy->isAdmin()->willReturn(TRUE);
+        $result = $this->subject->addData(array());
 
-		$result = $this->subject->addData(array());
+        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfUserHasNoTablesModifyPermissionForGivenTable()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(false);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfUserHasNoTablesModifyPermissionForGivenTable() {
-		$input = [
-			'tableName' => 'tt_content',
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(FALSE);
+        $this->setExpectedException(AccessDeniedTableModifyException::class, $this->anything(), 1437683248);
 
-		$this->setExpectedException(AccessDeniedTableModifyException::class, $this->anything(), 1437683248);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfUserHasNoContentEditPermissionsOnPage()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::NOTHING);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfUserHasNoContentEditPermissionsOnPage() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::NOTHING);
+        $this->setExpectedException(AccessDeniedContentEditException::class, 1437679657);
 
-		$this->setExpectedException(AccessDeniedContentEditException::class, 1437679657);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataAddsUserPermissionsOnPageForContentIfUserHasCorrespondingPermissions()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::any())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataAddsUserPermissionsOnPageForContentIfUserHasCorrespondingPermissions() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::any())->willReturn(TRUE);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoPagePermissions()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 123,
+                'pid' => 321
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::NOTHING);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoPagePermissions() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'databaseRow' => [
-				'uid' => 123,
-				'pid' => 321
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::NOTHING);
+        $this->setExpectedException(AccessDeniedPageEditException::class, 1437679336);
 
-		$this->setExpectedException(AccessDeniedPageEditException::class, 1437679336);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 123,
+                'pid' => 321
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'databaseRow' => [
-				'uid' => 123,
-				'pid' => 321
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnored()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 123,
+                'pid' => 0,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnored() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'databaseRow' => [
-				'uid' => 123,
-				'pid' => 0,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
-		$GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = TRUE;
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRootNodeShouldBeEditedWithoutPermissions()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 123,
+                'pid' => 0,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfRootNodeShouldBeEditedWithoutPermissions() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'databaseRow' => [
-				'uid' => 123,
-				'pid' => 0,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $this->setExpectedException(AccessDeniedRootNodeException::class, $this->anything(), 1437679856);
 
-		$this->setExpectedException(AccessDeniedRootNodeException::class, $this->anything(), 1437679856);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfRecordEditAccessInternalsReturnsFalse()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(false);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfRecordEditAccessInternalsReturnsFalse() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(FALSE);
+        $this->setExpectedException(AccessDeniedEditInternalsException::class, $this->anything(), 1437687404);
 
-		$this->setExpectedException(AccessDeniedEditInternalsException::class, $this->anything(), 1437687404);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForNewContentRecordWithoutPermissions()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionForNewContentRecordWithoutPermissions() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
+        $this->setExpectedException(AccessDeniedContentEditException::class, $this->anything(), 1437745759);
 
-		$this->setExpectedException(AccessDeniedContentEditException::class, $this->anything(), 1437745759);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForNewPageWithoutPermissions()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionForNewPageWithoutPermissions() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::NOTHING);
+        $this->setExpectedException(AccessDeniedPageNewException::class, $this->anything(), 1437745640);
 
-		$this->setExpectedException(AccessDeniedPageNewException::class, $this->anything(), 1437745640);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfHookDeniesAccess()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfHookDeniesAccess() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'edit',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::ALL);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
+            'unitTest' => function () {
+                return false;
+            }
+        );
 
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
-			'unitTest' => function () {
-				return FALSE;
-			}
-		);
+        $this->setExpectedException(AccessDeniedHookException::class, $this->anything(), 1437689705);
 
-		$this->setExpectedException(AccessDeniedHookException::class, $this->anything(), 1437689705);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUserPermissionsOnPageForNewPageIfPageNewIsDeniedAndHookAllowsAccess()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUserPermissionsOnPageForNewPageIfPageNewIsDeniedAndHookAllowsAccess() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
+            'unitTest' => function () {
+                return true;
+            }
+        );
 
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = array(
-			'unitTest' => function () {
-				return TRUE;
-			}
-		);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUserPermissionsOnPageForNewPage()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUserPermissionsOnPageForNewPage() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUserPermissionsOnPageForNewContentRecord()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => [
+                'uid' => 123,
+                'pid' => 321,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUserPermissionsOnPageForNewContentRecord() {
-		$input = [
-			'tableName' => 'tt_content',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => [
-				'uid' => 123,
-				'pid' => 321,
-			],
-		];
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
-		$this->beUserProphecy->calcPerms($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
-		$this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(TRUE);
+        $result = $this->subject->addData($input);
 
-		$result = $this->subject->addData($input);
+        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+    }
 
-		$this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutAdminPermissions()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => null,
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutAdminPermissions() {
-		$input = [
-			'tableName' => 'pages',
-			'command' => 'new',
-			'vanillaUid' => 123,
-			'parentPageRow' => NULL,
-		];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
 
-		$this->beUserProphecy->isAdmin()->willReturn(FALSE);
-		$this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(TRUE);
+        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1437745221);
 
-		$this->setExpectedException(\RuntimeException::class, $this->anything(), 1437745221);
-
-		$this->subject->addData($input);
-	}
-
+        $this->subject->addData($input);
+    }
 }

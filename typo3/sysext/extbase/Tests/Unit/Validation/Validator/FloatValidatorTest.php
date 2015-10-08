@@ -26,66 +26,71 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
+class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+{
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator::class;
 
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator::class;
+    public function setup()
+    {
+        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+    }
 
-	public function setup() {
-		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
-	}
+    /**
+     * Data provider with valid floats
+     *
+     * @return array
+     */
+    public function validFloats()
+    {
+        return array(
+            array(1029437.234726),
+            array('123.45'),
+            array('+123.45'),
+            array('-123.45'),
+            array('123.45e3'),
+            array(123450.0)
+        );
+    }
 
-	/**
-	 * Data provider with valid floats
-	 *
-	 * @return array
-	 */
-	public function validFloats() {
-		return array(
-			array(1029437.234726),
-			array('123.45'),
-			array('+123.45'),
-			array('-123.45'),
-			array('123.45e3'),
-			array(123450.0)
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validFloats
+     * @param mixed $float
+     */
+    public function floatValidatorReturnsNoErrorsForAValidFloat($float)
+    {
+        $this->assertFalse($this->validator->validate($float)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 * @dataProvider validFloats
-	 * @param mixed $float
-	 */
-	public function floatValidatorReturnsNoErrorsForAValidFloat($float) {
-		$this->assertFalse($this->validator->validate($float)->hasErrors());
-	}
+    /**
+     * Data provider with invalid floats
+     *
+     * @return array
+     */
+    public function invalidFloats()
+    {
+        return array(
+            array(1029437),
+            array('1029437'),
+            array('not a number')
+        );
+    }
 
-	/**
-	 * Data provider with invalid floats
-	 *
-	 * @return array
-	 */
-	public function invalidFloats() {
-		return array(
-			array(1029437),
-			array('1029437'),
-			array('not a number')
-		);
-	}
+    /**
+     * @test
+     * @dataProvider invalidFloats
+     * @param mixed $float
+     */
+    public function floatValidatorReturnsErrorForAnInvalidFloat($float)
+    {
+        $this->assertTrue($this->validator->validate($float)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 * @dataProvider invalidFloats
-	 * @param mixed $float
-	 */
-	public function floatValidatorReturnsErrorForAnInvalidFloat($float) {
-		$this->assertTrue($this->validator->validate($float)->hasErrors());
-	}
-
-	/**
-	 * test
-	 */
-	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$this->assertEquals(1, count($this->validator->validate(123456)->getErrors()));
-	}
-
+    /**
+     * test
+     */
+    public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject()
+    {
+        $this->assertEquals(1, count($this->validator->validate(123456)->getErrors()));
+    }
 }

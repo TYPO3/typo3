@@ -22,69 +22,73 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Count newest exceptions for the system information menu
  */
-class SystemInformationController extends AbstractController {
+class SystemInformationController extends AbstractController
+{
+    /**
+     * Modifies the SystemInformation array
+     *
+     * @return NULL|array
+     */
+    public function appendMessage()
+    {
+        $constraint = $this->getConstraintFromBeUserData();
+        if ($constraint === null) {
+            $constraint = $this->objectManager->get(Constraint::class);
+        }
 
-	/**
-	 * Modifies the SystemInformation array
-	 *
-	 * @return NULL|array
-	 */
-	public function appendMessage() {
-		$constraint = $this->getConstraintFromBeUserData();
-		if ($constraint === NULL) {
-			$constraint = $this->objectManager->get(Constraint::class);
-		}
+        $timestamp = $constraint->getStartTimestamp();
+        $backendUser = $this->getBackendUserAuthentication();
+        if (isset($backendUser->uc['systeminformation'])) {
+            $systemInformationUc = json_decode($backendUser->uc['systeminformation'], true);
+            if (isset($systemInformationUc['system_BelogLog']['lastAccess'])) {
+                $timestamp = $systemInformationUc['system_BelogLog']['lastAccess'];
+            }
+        }
 
-		$timestamp = $constraint->getStartTimestamp();
-		$backendUser = $this->getBackendUserAuthentication();
-		if (isset($backendUser->uc['systeminformation'])) {
-			$systemInformationUc = json_decode($backendUser->uc['systeminformation'], TRUE);
-			if (isset($systemInformationUc['system_BelogLog']['lastAccess'])) {
-				$timestamp = $systemInformationUc['system_BelogLog']['lastAccess'];
-			}
-		}
+        $this->setStartAndEndTimeFromTimeSelector($constraint);
+        // we can't use the extbase repository here as the required TypoScript may not be parsed yet
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $timestamp . ' AND error IN(-1,1,2)');
 
-		$this->setStartAndEndTimeFromTimeSelector($constraint);
-		// we can't use the extbase repository here as the required TypoScript may not be parsed yet
-		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $timestamp . ' AND error IN(-1,1,2)');
+        if ($count > 0) {
+            return array(
+                array(
+                    'module' => 'system_BelogLog',
+                    'count' => $count,
+                    'status' => InformationStatus::STATUS_ERROR,
+                    'text' => sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog'))
+                )
+            );
+        }
+        return null;
+    }
 
-		if ($count > 0) {
-			return array(
-				array(
-					'module' => 'system_BelogLog',
-					'count' => $count,
-					'status' => InformationStatus::STATUS_ERROR,
-					'text' => sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog'))
-				)
-			);
-		}
-		return NULL;
-	}
+    /**
+     * Get module states (the constraint object) from user data
+     *
+     * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|NULL
+     */
+    protected function getConstraintFromBeUserData()
+    {
+        $serializedConstraint = $this->getBackendUserAuthentication()->getModuleData(ToolsController::class);
+        if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
+            return null;
+        }
+        return @unserialize($serializedConstraint);
+    }
 
-	/**
-	 * Get module states (the constraint object) from user data
-	 *
-	 * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|NULL
-	 */
-	protected function getConstraintFromBeUserData() {
-		$serializedConstraint = $this->getBackendUserAuthentication()->getModuleData(ToolsController::class);
-		if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
-			return NULL;
-		}
-		return @unserialize($serializedConstraint);
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

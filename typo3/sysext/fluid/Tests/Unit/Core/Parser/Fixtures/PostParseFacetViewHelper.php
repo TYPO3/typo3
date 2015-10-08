@@ -14,21 +14,24 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures;
 /**
  * Enter description here...
  */
-class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface {
+class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface
+{
+    public static $wasCalled = false;
 
-	static public $wasCalled = FALSE;
+    public function __construct()
+    {
+    }
 
-	public function __construct() {
-	}
+    public static function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $viewHelperNode, array $arguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer)
+    {
+        self::$wasCalled = true;
+    }
 
-	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $viewHelperNode, array $arguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
-		self::$wasCalled = TRUE;
-	}
+    public function initializeArguments()
+    {
+    }
 
-	public function initializeArguments() {
-	}
-
-	public function render() {
-	}
-
+    public function render()
+    {
+    }
 }

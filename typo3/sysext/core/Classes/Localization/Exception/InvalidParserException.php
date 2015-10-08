@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Localization\Exception;
 /**
  * Invalid Parser exception
  */
-class InvalidParserException extends \RuntimeException {
-
+class InvalidParserException extends \RuntimeException
+{
 }

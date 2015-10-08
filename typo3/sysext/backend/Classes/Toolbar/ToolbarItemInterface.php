@@ -20,61 +20,60 @@ namespace TYPO3\CMS\Backend\Toolbar;
  * @TODO: This interface is FIRST DRAFT and still WILL CHANGE
  * @see https://forge.typo3.org/issues/62928
  */
-interface ToolbarItemInterface {
+interface ToolbarItemInterface
+{
+    /**
+     * Checks whether the user has access to this toolbar item
+     * @TODO: Split into two methods a permission method and a "hasContent" or similar
+     *
+     * @return bool TRUE if user has access, FALSE if not
+     */
+    public function checkAccess();
 
-	/**
-	 * Checks whether the user has access to this toolbar item
-	 * @TODO: Split into two methods a permission method and a "hasContent" or similar
-	 *
-	 * @return bool TRUE if user has access, FALSE if not
-	 */
-	public function checkAccess();
+    /**
+     * Render "item" part of this toolbar
+     *
+     * @return string Toolbar item HTML
+     */
+    public function getItem();
 
-	/**
-	 * Render "item" part of this toolbar
-	 *
-	 * @return string Toolbar item HTML
-	 */
-	public function getItem();
+    /**
+     * TRUE if this toolbar item has a collapsible drop down
+     *
+     * @return bool
+     */
+    public function hasDropDown();
 
-	/**
-	 * TRUE if this toolbar item has a collapsible drop down
-	 *
-	 * @return bool
-	 */
-	public function hasDropDown();
+    /**
+     * Render "drop down" part of this toolbar
+     *
+     * @return string Drop down HTML
+     */
+    public function getDropDown();
 
-	/**
-	 * Render "drop down" part of this toolbar
-	 *
-	 * @return string Drop down HTML
-	 */
-	public function getDropDown();
+    /**
+     * Returns an array with additional attributes added to containing <li> tag of the item.
+     *
+     * Typical usages are additional css classes and data-* attributes, classes may be merged
+     * with other classes needed by the framework. Do NOT set an id attribute here.
+     *
+     * array(
+     *     'class' => 'my-class',
+     *     'data-foo' => '42',
+     * )
+     *
+     * @return array List item HTML attributes
+     */
+    public function getAdditionalAttributes();
 
-	/**
-	 * Returns an array with additional attributes added to containing <li> tag of the item.
-	 *
-	 * Typical usages are additional css classes and data-* attributes, classes may be merged
-	 * with other classes needed by the framework. Do NOT set an id attribute here.
-	 *
-	 * array(
-	 *     'class' => 'my-class',
-	 *     'data-foo' => '42',
-	 * )
-	 *
-	 * @return array List item HTML attributes
-	 */
-	public function getAdditionalAttributes();
-
-	/**
-	 * Returns an integer between 0 and 100 to determine
-	 * the position of this item relative to others
-	 *
-	 * By default, extensions should return 50 to be sorted between main core
-	 * items and other items that should be on the very right.
-	 *
-	 * @return int 0 .. 100
-	 */
-	public function getIndex();
-
+    /**
+     * Returns an integer between 0 and 100 to determine
+     * the position of this item relative to others
+     *
+     * By default, extensions should return 50 to be sorted between main core
+     * items and other items that should be on the very right.
+     *
+     * @return int 0 .. 100
+     */
+    public function getIndex();
 }

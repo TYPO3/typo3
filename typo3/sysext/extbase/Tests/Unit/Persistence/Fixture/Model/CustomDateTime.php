@@ -14,6 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-class CustomDateTime extends \DateTime {
-
+class CustomDateTime extends \DateTime
+{
 }

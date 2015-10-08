@@ -23,47 +23,48 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * available or installed
  * @internal
  */
-class InstallationStateCssClassViewHelper extends AbstractViewHelper implements CompilableInterface {
+class InstallationStateCssClassViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Returns string meant to be used as css class
+     * 'installed' => if an extension is installed
+     * 'available' => if an extension is available in the system
+     * '' (empty string) => if neither installed nor available
+     *
+     * @param string $needle
+     * @param array $haystack
+     * @return string the rendered a tag
+     */
+    public function render($needle, array $haystack)
+    {
+        return static::renderStatic(
+            array(
+                'needle' => $needle,
+                'haystack' => $haystack,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Returns string meant to be used as css class
-	 * 'installed' => if an extension is installed
-	 * 'available' => if an extension is available in the system
-	 * '' (empty string) => if neither installed nor available
-	 *
-	 * @param string $needle
-	 * @param array $haystack
-	 * @return string the rendered a tag
-	 */
-	public function render($needle, array $haystack) {
-		return static::renderStatic(
-			array(
-				'needle' => $needle,
-				'haystack' => $haystack,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$needle = $arguments['needle'];
-		$haystack = $arguments['haystack'];
-		if (array_key_exists($needle, $haystack)) {
-			if (isset($haystack[$needle]['installed']) && $haystack[$needle]['installed'] === TRUE) {
-				return 'installed';
-			} else {
-				return 'available';
-			}
-		}
-		return '';
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $needle = $arguments['needle'];
+        $haystack = $arguments['haystack'];
+        if (array_key_exists($needle, $haystack)) {
+            if (isset($haystack[$needle]['installed']) && $haystack[$needle]['installed'] === true) {
+                return 'installed';
+            } else {
+                return 'available';
+            }
+        }
+        return '';
+    }
 }

@@ -59,100 +59,106 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * the string "\x" matches the character "x", and
  * all other characters match themselves.
  */
-class Comparison implements ComparisonInterface {
+class Comparison implements ComparisonInterface
+{
+    /**
+     * @var PropertyValueInterface
+     */
+    protected $operand1;
 
-	/**
-	 * @var PropertyValueInterface
-	 */
-	protected $operand1;
+    /**
+     * @var int
+     */
+    protected $operator;
 
-	/**
-	 * @var int
-	 */
-	protected $operator;
+    /**
+     * @var mixed
+     */
+    protected $operand2;
 
-	/**
-	 * @var mixed
-	 */
-	protected $operand2;
+    /**
+     * @var string
+     */
+    protected $parameterIdentifier;
 
-	/**
-	 * @var string
-	 */
-	protected $parameterIdentifier;
+    /**
+     * Constructs this Comparison instance
+     *
+     * @param PropertyValueInterface $operand1
+     * @param int $operator one of QueryInterface::OPERATOR_*
+     * @param mixed $operand2
+     */
+    public function __construct(PropertyValueInterface $operand1, $operator, $operand2)
+    {
+        $this->operand1 = $operand1;
+        $this->operator = $operator;
+        $this->operand2 = $operand2;
+    }
 
-	/**
-	 * Constructs this Comparison instance
-	 *
-	 * @param PropertyValueInterface $operand1
-	 * @param int $operator one of QueryInterface::OPERATOR_*
-	 * @param mixed $operand2
-	 */
-	public function __construct(PropertyValueInterface $operand1, $operator, $operand2) {
-		$this->operand1 = $operand1;
-		$this->operator = $operator;
-		$this->operand2 = $operand2;
-	}
+    /**
+     * Gets the first operand.
+     *
+     * @return PropertyValueInterface the operand; non-null
+     */
+    public function getOperand1()
+    {
+        return $this->operand1;
+    }
 
-	/**
-	 * Gets the first operand.
-	 *
-	 * @return PropertyValueInterface the operand; non-null
-	 */
-	public function getOperand1() {
-		return $this->operand1;
-	}
+    /**
+     * Gets the operator.
+     *
+     * @return string One of QueryInterface::OPERATOR_*
+     */
+    public function getOperator()
+    {
+        $operator = $this->operator;
 
-	/**
-	 * Gets the operator.
-	 *
-	 * @return string One of QueryInterface::OPERATOR_*
-	 */
-	public function getOperator() {
-		$operator = $this->operator;
+        if ($this->getOperand2() === null) {
+            if ($operator === QueryInterface::OPERATOR_EQUAL_TO) {
+                $operator = QueryInterface::OPERATOR_EQUAL_TO_NULL;
+            } elseif ($operator === QueryInterface::OPERATOR_NOT_EQUAL_TO) {
+                $operator = QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL;
+            }
+        }
 
-		if ($this->getOperand2() === NULL) {
-			if ($operator === QueryInterface::OPERATOR_EQUAL_TO) {
-				$operator = QueryInterface::OPERATOR_EQUAL_TO_NULL;
-			} elseif ($operator === QueryInterface::OPERATOR_NOT_EQUAL_TO) {
-				$operator = QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL;
-			}
-		}
+        return $operator;
+    }
 
-		return $operator;
-	}
+    /**
+     * Gets the second operand.
+     *
+     * @return mixed the operand; non-null
+     */
+    public function getOperand2()
+    {
+        return $this->operand2;
+    }
 
-	/**
-	 * Gets the second operand.
-	 *
-	 * @return mixed the operand; non-null
-	 */
-	public function getOperand2() {
-		return $this->operand2;
-	}
+    /**
+     * @param string $parameterIdentifier
+     * @return void
+     */
+    public function setParameterIdentifier($parameterIdentifier)
+    {
+        $this->parameterIdentifier = $parameterIdentifier;
+    }
 
-	/**
-	 * @param string $parameterIdentifier
-	 * @return void
-	 */
-	public function setParameterIdentifier($parameterIdentifier) {
-		$this->parameterIdentifier = $parameterIdentifier;
-	}
+    /**
+     * @return string
+     */
+    public function getParameterIdentifier()
+    {
+        return $this->parameterIdentifier;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getParameterIdentifier() {
-		return $this->parameterIdentifier;
-	}
-
-	/**
-	 * Fills an array with the names of all bound variables in the constraints
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-	}
-
+    /**
+     * Fills an array with the names of all bound variables in the constraints
+     *
+     * @param array &$boundVariables
+     * @return void
+     */
+    public function collectBoundVariableNames(&$boundVariables)
+    {
+    }
 }

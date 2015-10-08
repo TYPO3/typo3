@@ -38,120 +38,122 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Page with the keyword "typo3"
  * </output>
  */
-class KeywordsViewHelper extends AbstractViewHelper {
+class KeywordsViewHelper extends AbstractViewHelper
+{
+    use MenuViewHelperTrait;
 
-	use MenuViewHelperTrait;
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('as', 'string', 'Name of template variable which will contain selected pages', true);
+        $this->registerArgument('entryLevel', 'integer', 'The entry level', false, 0);
+        $this->registerArgument('pageUids', 'array', 'Page UIDs of pages to fetch the keywords from', false, array());
+        $this->registerArgument('keywords', 'array', 'Keywords for which to search', false, array());
+        $this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', false, false);
+        $this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', false, false);
+        $this->registerArgument('excludeNoSearchPages', 'boolean', 'Exclude pages that are NOT marked "include in search"?', false, true);
+    }
 
-	/**
-	 * Initialize ViewHelper arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Name of template variable which will contain selected pages', TRUE);
-		$this->registerArgument('entryLevel', 'integer', 'The entry level', FALSE, 0);
-		$this->registerArgument('pageUids', 'array', 'Page UIDs of pages to fetch the keywords from', FALSE, array());
-		$this->registerArgument('keywords', 'array', 'Keywords for which to search', FALSE, array());
-		$this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', FALSE, FALSE);
-		$this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', FALSE, FALSE);
-		$this->registerArgument('excludeNoSearchPages', 'boolean', 'Exclude pages that are NOT marked "include in search"?', FALSE, TRUE);
-	}
+    /**
+     * Render the view helper
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        $as = (string)$this->arguments['as'];
+        $entryLevel = (int)$this->arguments['entryLevel'];
+        $pageUids = (array)$this->arguments['pageUids'];
+        $keywords = (array)$this->arguments['keywords'];
+        $includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
+        $includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
+        $excludeNoSearchPages = (bool)$this->arguments['excludeNoSearchPages'];
 
-	/**
-	 * Render the view helper
-	 *
-	 * @return string
-	 */
-	public function render() {
+        // If no pages have been defined, use the current page
+        if (empty($pageUids)) {
+            $pageUids = array($typoScriptFrontendController->page['uid']);
+        }
 
-		$typoScriptFrontendController = $this->getTypoScriptFrontendController();
-		$as = (string)$this->arguments['as'];
-		$entryLevel = (int)$this->arguments['entryLevel'];
-		$pageUids = (array)$this->arguments['pageUids'];
-		$keywords = (array)$this->arguments['keywords'];
-		$includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
-		$includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
-		$excludeNoSearchPages = (bool)$this->arguments['excludeNoSearchPages'];
+        // Transform the keywords list into an array
+        if (!is_array($keywords)) {
+            $unfilteredKeywords = $this->keywordsToArray($keywords);
+        } else {
+            $unfilteredKeywords = $keywords;
+        }
 
-		// If no pages have been defined, use the current page
-		if (empty($pageUids)) {
-			$pageUids = array($typoScriptFrontendController->page['uid']);
-		}
+        // Use the keywords of the page when none has been given
+        if (empty($keywords)) {
+            foreach ($pageUids as $pageUid) {
+                $page = $typoScriptFrontendController->sys_page->getPage($pageUid);
+                $unfilteredKeywords = array_merge(
+                    $unfilteredKeywords,
+                    $this->keywordsToArray($page['keywords'])
+                );
+            }
+        }
+        $filteredKeywords = array_unique($unfilteredKeywords);
 
-		// Transform the keywords list into an array
-		if (!is_array($keywords)) {
-			$unfilteredKeywords = $this->keywordsToArray($keywords);
-		} else {
-			$unfilteredKeywords = $keywords;
-		}
+        $constraints = $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator);
+        if ($excludeNoSearchPages) {
+            $constraints .= ' AND no_search = 0';
+        }
 
-		// Use the keywords of the page when none has been given
-		if (empty($keywords)) {
-			foreach ($pageUids as $pageUid) {
-				$page = $typoScriptFrontendController->sys_page->getPage($pageUid);
-				$unfilteredKeywords = array_merge(
-					$unfilteredKeywords,
-					$this->keywordsToArray($page['keywords'])
-				);
-			}
-		}
-		$filteredKeywords = array_unique($unfilteredKeywords);
+        $keywordConstraints = array();
+        if ($filteredKeywords) {
+            $db = $this->getDatabaseConnection();
+            foreach ($filteredKeywords as $keyword) {
+                $keyword = $db->fullQuoteStr('%' . $db->escapeStrForLike($keyword, 'pages') . '%', 'pages');
+                $keywordConstraints[] = 'keywords LIKE ' . $keyword;
+            }
+            $constraints .= ' AND (' . implode(' OR ', $keywordConstraints) . ')';
+        }
 
-		$constraints = $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator);
-		if ($excludeNoSearchPages) {
-			$constraints .= ' AND no_search = 0';
-		}
+        // Start point
+        if ($entryLevel < 0) {
+            $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
+        }
+        $startUid = $typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid'];
+        $treePageUids = explode(
+            ',',
+            $typoScriptFrontendController->cObj->getTreeList($startUid, 20)
+        );
 
-		$keywordConstraints = array();
-		if ($filteredKeywords) {
-			$db = $this->getDatabaseConnection();
-			foreach ($filteredKeywords as $keyword) {
-				$keyword = $db->fullQuoteStr('%' . $db->escapeStrForLike($keyword, 'pages') . '%', 'pages');
-				$keywordConstraints[] = 'keywords LIKE ' . $keyword;
-			}
-			$constraints .= ' AND (' . implode(' OR ', $keywordConstraints) . ')';
-		}
+        $pages = $typoScriptFrontendController->sys_page->getMenuForPages(
+            array_merge([$startUid], $treePageUids),
+            '*',
+            '',
+            $constraints
+        );
+        return $this->renderChildrenWithVariables(array(
+            $as => $pages
+        ));
+    }
 
-		// Start point
-		if ($entryLevel < 0) {
-			$entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
-		}
-		$startUid = $typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid'];
-		$treePageUids = explode(
-			',',
-			$typoScriptFrontendController->cObj->getTreeList($startUid, 20)
-		);
+    /**
+     * Get a clean array of keywords
+     *
+     * The list of keywords can have a separator like comma, semicolon or line feed
+     *
+     * @param string $keywords The list of keywords
+     * @return array Cleaned up list
+     */
+    protected function keywordsToArray($keywords)
+    {
+        $keywordList = preg_split('/[,;' . LF . ']/', $keywords);
 
-		$pages = $typoScriptFrontendController->sys_page->getMenuForPages(
-			array_merge([$startUid], $treePageUids),
-			'*',
-			'',
-			$constraints
-		);
-		return $this->renderChildrenWithVariables(array(
-			$as => $pages
-		));
-	}
+        return array_filter(array_map('trim', $keywordList));
+    }
 
-	/**
-	 * Get a clean array of keywords
-	 *
-	 * The list of keywords can have a separator like comma, semicolon or line feed
-	 *
-	 * @param string $keywords The list of keywords
-	 * @return array Cleaned up list
-	 */
-	protected function keywordsToArray($keywords) {
-		$keywordList = preg_split('/[,;' . LF . ']/', $keywords);
-
-		return array_filter(array_map('trim', $keywordList));
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

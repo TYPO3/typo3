@@ -17,5 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures;
 /**
  * Fixture invalid hook
  */
-class InvalidHookFixture {
+class InvalidHookFixture
+{
 }

@@ -38,51 +38,52 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class StripTagsViewHelper extends AbstractViewHelper implements CompilableInterface {
+class StripTagsViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+     * can decode the text's entities.
+     *
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
-	 * can decode the text's entities.
-	 *
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Escapes special characters with their escaped counterparts as needed using PHPs strip_tags() function.
+     *
+     * @param string $value string to format
+     * @return mixed
+     * @see http://www.php.net/manual/function.strip-tags.php
+     * @api
+     */
+    public function render($value = null)
+    {
+        return static::renderStatic(
+            array(
+                'value' => $value
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Escapes special characters with their escaped counterparts as needed using PHPs strip_tags() function.
-	 *
-	 * @param string $value string to format
-	 * @return mixed
-	 * @see http://www.php.net/manual/function.strip-tags.php
-	 * @api
-	 */
-	public function render($value = NULL) {
-		return static::renderStatic(
-			array(
-				'value' => $value
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Applies strip_tags() on the specified value.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		if ($value === NULL) {
-			$value = $renderChildrenClosure();
-		}
-		if (!is_string($value)) {
-			return $value;
-		}
-		return strip_tags($value);
-	}
-
+    /**
+     * Applies strip_tags() on the specified value.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        if ($value === null) {
+            $value = $renderChildrenClosure();
+        }
+        if (!is_string($value)) {
+            return $value;
+        }
+        return strip_tags($value);
+    }
 }

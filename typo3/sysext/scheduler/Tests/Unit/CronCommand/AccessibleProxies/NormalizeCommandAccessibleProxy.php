@@ -19,45 +19,55 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 /**
  * Accessible proxy with protected methods made public.
  */
-class NormalizeCommandAccessibleProxy extends NormalizeCommand {
+class NormalizeCommandAccessibleProxy extends NormalizeCommand
+{
+    public static function convertKeywordsToCronCommand($cronCommand)
+    {
+        return parent::convertKeywordsToCronCommand($cronCommand);
+    }
 
-	static public function convertKeywordsToCronCommand($cronCommand) {
-		return parent::convertKeywordsToCronCommand($cronCommand);
-	}
+    public static function normalizeFields($cronCommand)
+    {
+        return parent::normalizeFields($cronCommand);
+    }
 
-	static public function normalizeFields($cronCommand) {
-		return parent::normalizeFields($cronCommand);
-	}
+    public static function normalizeMonthAndWeekdayField($expression, $isMonthField = true)
+    {
+        return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);
+    }
 
-	static public function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
-		return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);
-	}
+    public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59)
+    {
+        return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);
+    }
 
-	static public function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
-		return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);
-	}
+    public static function splitFields($cronCommand)
+    {
+        return parent::splitFields($cronCommand);
+    }
 
-	static public function splitFields($cronCommand) {
-		return parent::splitFields($cronCommand);
-	}
+    public static function convertRangeToListOfValues($range)
+    {
+        return parent::convertRangeToListOfValues($range);
+    }
 
-	static public function convertRangeToListOfValues($range) {
-		return parent::convertRangeToListOfValues($range);
-	}
+    public static function reduceListOfValuesByStepValue($stepExpression)
+    {
+        return parent::reduceListOfValuesByStepValue($stepExpression);
+    }
 
-	static public function reduceListOfValuesByStepValue($stepExpression) {
-		return parent::reduceListOfValuesByStepValue($stepExpression);
-	}
+    public static function normalizeMonthAndWeekday($expression, $isMonth = true)
+    {
+        return parent::normalizeMonthAndWeekday($expression, $isMonth);
+    }
 
-	static public function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
-		return parent::normalizeMonthAndWeekday($expression, $isMonth);
-	}
+    public static function normalizeMonth($month)
+    {
+        return parent::normalizeMonth($month);
+    }
 
-	static public function normalizeMonth($month) {
-		return parent::normalizeMonth($month);
-	}
-
-	static public function normalizeWeekday($weekday) {
-		return parent::normalizeWeekday($weekday);
-	}
+    public static function normalizeWeekday($weekday)
+    {
+        return parent::normalizeWeekday($weekday);
+    }
 }

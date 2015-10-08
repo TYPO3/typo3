@@ -24,16 +24,16 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 /**
  * Test case
  */
-class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException
-	 */
-	public function getThrowsExceptionIfWidgetContextIsNotFound() {
-		/** @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder */
-		$ajaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, array('dummy'), array(), '', FALSE);
-		$ajaxWidgetContextHolder->get(42);
-	}
-
+class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException
+     */
+    public function getThrowsExceptionIfWidgetContextIsNotFound()
+    {
+        /** @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder */
+        $ajaxWidgetContextHolder = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class, array('dummy'), array(), '', false);
+        $ajaxWidgetContextHolder->get(42);
+    }
 }

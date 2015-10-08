@@ -17,55 +17,56 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 /**
  * Test case
  */
-class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses() {
-		$className = $this->getUniqueId('BazFixture');
-		eval ('
+class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses()
+    {
+        $className = $this->getUniqueId('BazFixture');
+        eval('
 			namespace Foo\\Bar\\Domain\\Model;
 			class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}
 		');
-		eval ('
+        eval('
 			namespace Foo\\Bar\\Domain\\Repository;
 			class ' . $className . 'Repository {}
 		');
 
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo\\Bar\\Domain\\Model\\' . $className));
-		$objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo\\Bar\\Domain\\Model\\' . $className));
+        $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
-		/** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
-		$service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
-		$service->_set('objectManager', $objectManager);
-		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
-		$this->assertTrue($classSchema->isAggregateRoot());
-	}
+        /** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
+        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
+        $service->_set('objectManager', $objectManager);
+        $classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
+        $this->assertTrue($classSchema->isAggregateRoot());
+    }
 
-	/**
-	 * @test
-	 */
-	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNotNamespacedClasses() {
-		$className = $this->getUniqueId('BazFixture');
-		eval ('
+    /**
+     * @test
+     */
+    public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNotNamespacedClasses()
+    {
+        $className = $this->getUniqueId('BazFixture');
+        eval('
 			class Foo_Bar_Domain_Model_' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}
 		');
-		eval ('
+        eval('
 			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
 
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo_Bar_Domain_Model_' . $className));
-		$objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $mockClassSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, array('dummy'), array('Foo_Bar_Domain_Model_' . $className));
+        $objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
-		$service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
-		$service->_set('objectManager', $objectManager);
-		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
-		$this->assertTrue($classSchema->isAggregateRoot());
-	}
-
+        $service = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array('dummy'));
+        $service->_set('objectManager', $objectManager);
+        $classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
+        $this->assertTrue($classSchema->isAggregateRoot());
+    }
 }

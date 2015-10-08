@@ -17,61 +17,65 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  */
-class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Filter\TrimFilter
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Filter\TrimFilter
-	 */
-	protected $subject = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Form\Domain\Filter\TrimFilter();
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\TrimFilter();
-	}
-
-	public function stringProvider() {
-		return array(
-			'\tsome text ' => array("\tsome text ", 'some text'),
-			'some text   ' => array('some text   ', 'some text'),
-			'some text^M' => array('some text
+    public function stringProvider()
+    {
+        return array(
+            '\tsome text ' => array("\tsome text ", 'some text'),
+            'some text   ' => array('some text   ', 'some text'),
+            'some text^M' => array('some text
 ', 'some text'),
-		);
-	}
+        );
+    }
 
-	public function stringProviderForCharacterList() {
-		return array(
-			'$some text;' => array('$some text;', 'some text', '$;'),
-			'$some text ' => array('$some text ', 'some text', '$ '),
-			'^Msome text ' => array('
+    public function stringProviderForCharacterList()
+    {
+        return array(
+            '$some text;' => array('$some text;', 'some text', '$;'),
+            '$some text ' => array('$some text ', 'some text', '$ '),
+            '^Msome text ' => array('
 some text ', 'some text', '
  '),
-		);
-	}
+        );
+    }
 
-	/**
-	 * @test
-	 * @dataProvider stringProvider
-	 */
-	public function filterForStringWithWhitespaceInFrontAndEndReturnsStringWithoutThisWhitespace($input, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->subject->filter($input)
-		);
-	}
+    /**
+     * @test
+     * @dataProvider stringProvider
+     */
+    public function filterForStringWithWhitespaceInFrontAndEndReturnsStringWithoutThisWhitespace($input, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->subject->filter($input)
+        );
+    }
 
-	/**
-	 * @test
-	 * @dataProvider stringProviderForCharacterList
-	 */
-	public function filterForStringWithCharactersInCharacterListReturnsStringWithoutTheseCharacters($input, $expected, $characterList) {
-		$this->subject->setCharacterList($characterList);
+    /**
+     * @test
+     * @dataProvider stringProviderForCharacterList
+     */
+    public function filterForStringWithCharactersInCharacterListReturnsStringWithoutTheseCharacters($input, $expected, $characterList)
+    {
+        $this->subject->setCharacterList($characterList);
 
-		$this->assertSame(
-			$expected,
-			$this->subject->filter($input)
-		);
-	}
-
+        $this->assertSame(
+            $expected,
+            $this->subject->filter($input)
+        );
+    }
 }

@@ -17,48 +17,49 @@ namespace TYPO3\CMS\Core\ExtDirect;
 /**
  * Ext Direct Debug
  */
-class ExtDirectDebug {
+class ExtDirectDebug
+{
+    /**
+     * Internal debug message array
+     *
+     * @var array
+     */
+    protected $debugMessages = array();
 
-	/**
-	 * Internal debug message array
-	 *
-	 * @var array
-	 */
-	protected $debugMessages = array();
+    /**
+     * destructor
+     *
+     * Currently empty, but automatically registered and called during
+     * ExtDirect shutdown.
+     *
+     * @see http://forge.typo3.org/issues/25278
+     */
+    public function __destruct()
+    {
+    }
 
-	/**
-	 * destructor
-	 *
-	 * Currently empty, but automatically registered and called during
-	 * ExtDirect shutdown.
-	 *
-	 * @see http://forge.typo3.org/issues/25278
-	 */
-	public function __destruct() {
+    /**
+     * Adds a new message of any data type to the internal debug message array.
+     *
+     * @param mixed $message
+     * @return void
+     */
+    public function debug($message)
+    {
+        $this->debugMessages[] = $message;
+    }
 
-	}
-
-	/**
-	 * Adds a new message of any data type to the internal debug message array.
-	 *
-	 * @param mixed $message
-	 * @return void
-	 */
-	public function debug($message) {
-		$this->debugMessages[] = $message;
-	}
-
-	/**
-	 * Returns the internal debug messages as a string.
-	 *
-	 * @return string
-	 */
-	public function toString() {
-		$messagesAsString = '';
-		if (!empty($this->debugMessages)) {
-			$messagesAsString = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->debugMessages);
-		}
-		return $messagesAsString;
-	}
-
+    /**
+     * Returns the internal debug messages as a string.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        $messagesAsString = '';
+        if (!empty($this->debugMessages)) {
+            $messagesAsString = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->debugMessages);
+        }
+        return $messagesAsString;
+    }
 }

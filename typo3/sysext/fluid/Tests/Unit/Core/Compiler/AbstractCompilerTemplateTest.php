@@ -17,20 +17,21 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler;
 /**
  * Test case
  */
-class AbstractCompilerTemplateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractCompilerTemplateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function resolveDefaultEncodingWillBeSetToUtf8IfNotSet()
+    {
+        $this->assertSame('UTF-8', \TYPO3\CMS\Fluid\Core\Compiler\AbstractCompiledTemplate::resolveDefaultEncoding());
+    }
 
-	/**
-	 * @test
-	 */
-	public function resolveDefaultEncodingWillBeSetToUtf8IfNotSet() {
-		$this->assertSame('UTF-8', \TYPO3\CMS\Fluid\Core\Compiler\AbstractCompiledTemplate::resolveDefaultEncoding());
-	}
-
-	/**
-	 * @test
-	 */
-	public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned() {
-		$this->assertSame('ISO-8859-1', \TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler\Fixtures\AbstractCompiledTemplate::resolveDefaultEncoding());
-	}
-
+    /**
+     * @test
+     */
+    public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned()
+    {
+        $this->assertSame('ISO-8859-1', \TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler\Fixtures\AbstractCompiledTemplate::resolveDefaultEncoding());
+    }
 }

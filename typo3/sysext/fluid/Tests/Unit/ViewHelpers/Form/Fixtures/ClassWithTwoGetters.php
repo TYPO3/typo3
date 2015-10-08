@@ -17,19 +17,21 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 /**
  * Class ClassWithTwoGetters
  */
-class ClassWithTwoGetters {
+class ClassWithTwoGetters
+{
+    /**
+     * @return string
+     */
+    public function getSomething()
+    {
+        return 'MyString';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSomething() {
-		return 'MyString';
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getValue() {
-		return new ClassWithTwoGetters();
-	}
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return new ClassWithTwoGetters();
+    }
 }

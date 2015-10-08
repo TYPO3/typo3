@@ -44,64 +44,65 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class CurrencyViewHelper extends AbstractViewHelper implements CompilableInterface {
+class CurrencyViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @param string $currencySign (optional) The currency sign, eg $ or €.
+     * @param string $decimalSeparator (optional) The separator for the decimal point.
+     * @param string $thousandsSeparator (optional) The thousands separator.
+     * @param bool $prependCurrency (optional) Select if the curreny sign should be prepended
+     * @param bool $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
+     * @param int $decimals (optional) Set decimals places.
+     * @return string the formatted amount.
+     * @api
+     */
+    public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = false, $separateCurrency = true, $decimals = 2)
+    {
+        return static::renderStatic(
+            array(
+                'currencySign' => $currencySign,
+                'decimalSeparator' => $decimalSeparator,
+                'thousandsSeparator' => $thousandsSeparator,
+                'prependCurrency' => $prependCurrency,
+                'separateCurrency' => $separateCurrency,
+                'decimals' => $decimals
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param string $currencySign (optional) The currency sign, eg $ or €.
-	 * @param string $decimalSeparator (optional) The separator for the decimal point.
-	 * @param string $thousandsSeparator (optional) The thousands separator.
-	 * @param bool $prependCurrency (optional) Select if the curreny sign should be prepended
-	 * @param bool $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
-	 * @param int $decimals (optional) Set decimals places.
-	 * @return string the formatted amount.
-	 * @api
-	 */
-	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE, $decimals = 2) {
-		return static::renderStatic(
-			array(
-				'currencySign' => $currencySign,
-				'decimalSeparator' => $decimalSeparator,
-				'thousandsSeparator' => $thousandsSeparator,
-				'prependCurrency' => $prependCurrency,
-				'separateCurrency' => $separateCurrency,
-				'decimals' => $decimals
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $currencySign = $arguments['currencySign'];
+        $decimalSeparator = $arguments['decimalSeparator'];
+        $thousandsSeparator = $arguments['thousandsSeparator'];
+        $prependCurrency = $arguments['prependCurrency'];
+        $separateCurrency = $arguments['separateCurrency'];
+        $decimals = $arguments['decimals'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$currencySign = $arguments['currencySign'];
-		$decimalSeparator = $arguments['decimalSeparator'];
-		$thousandsSeparator = $arguments['thousandsSeparator'];
-		$prependCurrency = $arguments['prependCurrency'];
-		$separateCurrency = $arguments['separateCurrency'];
-		$decimals = $arguments['decimals'];
-
-		$floatToFormat = $renderChildrenClosure();
-		if (empty($floatToFormat)) {
-			$floatToFormat = 0.0;
-		} else {
-			$floatToFormat = floatval($floatToFormat);
-		}
-		$output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
-		if ($currencySign !== '') {
-			$currencySeparator = $separateCurrency ? ' ' : '';
-			if ($prependCurrency === TRUE) {
-				$output = $currencySign . $currencySeparator . $output;
-			} else {
-				$output = $output . $currencySeparator . $currencySign;
-			}
-		}
-		return $output;
-	}
-
+        $floatToFormat = $renderChildrenClosure();
+        if (empty($floatToFormat)) {
+            $floatToFormat = 0.0;
+        } else {
+            $floatToFormat = floatval($floatToFormat);
+        }
+        $output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+        if ($currencySign !== '') {
+            $currencySeparator = $separateCurrency ? ' ' : '';
+            if ($prependCurrency === true) {
+                $output = $currencySign . $currencySeparator . $output;
+            } else {
+                $output = $output . $currencySeparator . $currencySign;
+            }
+        }
+        return $output;
+    }
 }

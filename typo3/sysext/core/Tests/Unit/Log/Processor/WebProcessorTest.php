@@ -17,19 +17,19 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class WebProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function webProcessorAddsWebDataToLogRecord() {
-		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
-		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
-		$logRecord = $processor->processLogRecord($logRecord);
-		foreach ($environmentVariables as $key => $value) {
-			$this->assertEquals($value, $logRecord['data'][$key]);
-		}
-	}
-
+class WebProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function webProcessorAddsWebDataToLogRecord()
+    {
+        $environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
+        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
+        $logRecord = $processor->processLogRecord($logRecord);
+        foreach ($environmentVariables as $key => $value) {
+            $this->assertEquals($value, $logRecord['data'][$key]);
+        }
+    }
 }

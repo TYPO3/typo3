@@ -21,23 +21,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This class adds import export related JavaScript to the backend
  */
-class BackendControllerHook {
-	/**
-	 * Adds ImportExport-specific JavaScript
-	 *
-	 * @param array $configuration
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendController
-	 * @return void
-	 */
-	public function addJavaScript(array $configuration, \TYPO3\CMS\Backend\Controller\BackendController $backendController) {
-		$this->getPageRenderer()->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
-	}
+class BackendControllerHook
+{
+    /**
+     * Adds ImportExport-specific JavaScript
+     *
+     * @param array $configuration
+     * @param \TYPO3\CMS\Backend\Controller\BackendController $backendController
+     * @return void
+     */
+    public function addJavaScript(array $configuration, \TYPO3\CMS\Backend\Controller\BackendController $backendController)
+    {
+        $this->getPageRenderer()->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
+    }
 
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
-	}
-
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
+    }
 }

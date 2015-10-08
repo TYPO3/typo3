@@ -19,28 +19,27 @@ namespace TYPO3\CMS\Backend\Tree;
  */
 interface ComparableNodeInterface
 {
-	/**
-	 * Compare Node against another one
-	 *
-	 * Returns:
-	 * 1 if the current node is greater than the $other,
-	 * -1 if $other is greater than the current node and
-	 * 0 if the nodes are equal
-	 *
-	 * <strong>Example</strong>
-	 * <pre>
-	 * if ($this->sortValue > $other->sortValue) {
-	 * return 1;
-	 * } elseif ($this->sortValue < $other->sortValue) {
-	 * return -1;
-	 * } else {
-	 * return 0;
-	 * }
-	 * </pre>
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
-	 * @return int see description
-	 */
-	public function compareTo($other);
-
+    /**
+     * Compare Node against another one
+     *
+     * Returns:
+     * 1 if the current node is greater than the $other,
+     * -1 if $other is greater than the current node and
+     * 0 if the nodes are equal
+     *
+     * <strong>Example</strong>
+     * <pre>
+     * if ($this->sortValue > $other->sortValue) {
+     * return 1;
+     * } elseif ($this->sortValue < $other->sortValue) {
+     * return -1;
+     * } else {
+     * return 0;
+     * }
+     * </pre>
+     *
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
+     * @return int see description
+     */
+    public function compareTo($other);
 }

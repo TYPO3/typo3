@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 /**
  * Test case
  */
-class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
-	 */
-	public function constructThrowsExceptionWithInvalidConfigurationOption() {
-		$invalidConfiguration = array(
-			'foo' => 'bar'
-		);
-		$this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, array($invalidConfiguration));
-	}
-
+class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
+     */
+    public function constructThrowsExceptionWithInvalidConfigurationOption()
+    {
+        $invalidConfiguration = array(
+            'foo' => 'bar'
+        );
+        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, array($invalidConfiguration));
+    }
 }

@@ -23,45 +23,45 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Hint: Even after this class it is NOT safe no rely that *all* fields from
  * columns are set in databaseRow.
  */
-class DatabaseRowDefaultValues implements FormDataProviderInterface {
+class DatabaseRowDefaultValues implements FormDataProviderInterface
+{
+    /**
+     * Initialize new row with default values from various sources
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $databaseRow = $result['databaseRow'];
 
-	/**
-	 * Initialize new row with default values from various sources
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$databaseRow = $result['databaseRow'];
+        $newRow = $databaseRow;
+        foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
+            // Keep current value if it can be resolved to "the is something" directly
+            if (isset($databaseRow[$fieldName])) {
+                $newRow[$fieldName] = $databaseRow[$fieldName];
+                continue;
+            }
 
-		$newRow = $databaseRow;
-		foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
-			// Keep current value if it can be resolved to "the is something" directly
-			if (isset($databaseRow[$fieldName])) {
-				$newRow[$fieldName] = $databaseRow[$fieldName];
-				continue;
-			}
+            // Special handling for eval null
+            if (!empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
+                if (// Field exists and is set to NULL
+                    array_key_exists($fieldName, $databaseRow)
+                    // Default NULL is set, and this is a new record!
+                    || (array_key_exists('default', $fieldConfig['config']) && $fieldConfig['config']['default'] === null)
+                ) {
+                    $newRow[$fieldName] = null;
+                } else {
+                    $newRow[$fieldName] = (string)$fieldConfig['config']['default'];
+                }
+            } else {
+                // Fun part: This forces empty string for any field even if no default is set. Unsure if that is a good idea.
+                $newRow[$fieldName] = (string)$fieldConfig['config']['default'];
+            }
+        }
 
-			// Special handling for eval null
-			if (!empty($fieldConfig['config']['eval']) && GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
-				if (// Field exists and is set to NULL
-					array_key_exists($fieldName, $databaseRow)
-					// Default NULL is set, and this is a new record!
-					|| (array_key_exists('default', $fieldConfig['config']) && $fieldConfig['config']['default'] === NULL)
-				) {
-					$newRow[$fieldName] = NULL;
-				} else {
-					$newRow[$fieldName] = (string)$fieldConfig['config']['default'];
-				}
-			} else {
-				// Fun part: This forces empty string for any field even if no default is set. Unsure if that is a good idea.
-				$newRow[$fieldName] = (string)$fieldConfig['config']['default'];
-			}
-		}
+        $result['databaseRow'] = $newRow;
 
-		$result['databaseRow'] = $newRow;
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

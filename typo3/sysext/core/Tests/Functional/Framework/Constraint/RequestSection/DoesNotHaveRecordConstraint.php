@@ -19,38 +19,39 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseSection;
 /**
  * Model of frontend response
  */
-class DoesNotHaveRecordConstraint extends AbstractRecordConstraint {
+class DoesNotHaveRecordConstraint extends AbstractRecordConstraint
+{
+    /**
+     * @param ResponseSection $responseSection
+     * @return bool
+     */
+    protected function matchesSection(ResponseSection $responseSection)
+    {
+        $records = $responseSection->getRecords();
 
-	/**
-	 * @param ResponseSection $responseSection
-	 * @return bool
-	 */
-	protected function matchesSection(ResponseSection $responseSection) {
-		$records = $responseSection->getRecords();
+        if (empty($records) || !is_array($records)) {
+            $this->sectionFailures[$responseSection->getIdentifier()] = 'No records found.';
+            return false;
+        }
 
-		if (empty($records) || !is_array($records)) {
-			$this->sectionFailures[$responseSection->getIdentifier()] = 'No records found.';
-			return FALSE;
-		}
+        $nonMatchingValues = $this->getNonMatchingValues($records);
+        $matchingValues = array_diff($this->values, $nonMatchingValues);
 
-		$nonMatchingValues = $this->getNonMatchingValues($records);
-		$matchingValues = array_diff($this->values, $nonMatchingValues);
+        if (!empty($matchingValues)) {
+            $this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert not having values for "' . $this->table . '.' . $this->field . '": ' . implode(', ', $matchingValues);
+            return false;
+        }
 
-		if (!empty($matchingValues)) {
-			$this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert not having values for "' . $this->table . '.' . $this->field . '": ' . implode(', ', $matchingValues);
-			return FALSE;
-		}
+        return true;
+    }
 
-		return TRUE;
-	}
-
-	/**
-	 * Returns a string representation of the constraint.
-	 *
-	 * @return string
-	 */
-	public function toString() {
-		return 'response does not have record';
-	}
-
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'response does not have record';
+    }
 }

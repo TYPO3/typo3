@@ -20,90 +20,91 @@ namespace TYPO3\CMS\Core\Service;
  * http://forge.typo3.org/issues/55252
  * Supported opcaches are: OPcache >= 7.0 (PHP 5.5), WinCache, XCache >= 3.0.1
  */
-class OpcodeCacheService {
+class OpcodeCacheService
+{
+    /**
+     * Returns all supported and active opcaches
+     *
+     * @return array Array filled with supported and active opcaches
+     */
+    public function getAllActive()
+    {
+        $xcVersion = phpversion('xcache');
 
-	/**
-	 * Returns all supported and active opcaches
-	 *
-	 * @return array Array filled with supported and active opcaches
-	 */
-	public function getAllActive() {
-		$xcVersion = phpversion('xcache');
+        $supportedCaches = array(
+            // The ZendOpcache aka OPcache since PHP 5.5
+            // http://php.net/manual/de/book.opcache.php
+            'OPcache' => array(
+                'active' => extension_loaded('Zend OPcache') && ini_get('opcache.enable') === '1',
+                'version' => phpversion('Zend OPcache'),
+                'canReset' => true, // opcache_reset() ... it seems that it doesn't reset for current run.
+                // From documentation this function exists since first version (7.0.0) but from Changelog
+                // this function exists since 7.0.2
+                // http://pecl.php.net/package-changelog.php?package=ZendOpcache&release=7.0.2
+                'canInvalidate' => function_exists('opcache_invalidate'),
+                'error' => false,
+                'clearCallback' => function ($fileAbsPath) {
+                    if ($fileAbsPath !== null && function_exists('opcache_invalidate')) {
+                        opcache_invalidate($fileAbsPath);
+                    } else {
+                        opcache_reset();
+                    }
+                }
+            ),
 
-		$supportedCaches = array(
-			// The ZendOpcache aka OPcache since PHP 5.5
-			// http://php.net/manual/de/book.opcache.php
-			'OPcache' => array(
-				'active' => extension_loaded('Zend OPcache') && ini_get('opcache.enable') === '1',
-				'version' => phpversion('Zend OPcache'),
-				'canReset' => TRUE, // opcache_reset() ... it seems that it doesn't reset for current run.
-				// From documentation this function exists since first version (7.0.0) but from Changelog
-				// this function exists since 7.0.2
-				// http://pecl.php.net/package-changelog.php?package=ZendOpcache&release=7.0.2
-				'canInvalidate' => function_exists('opcache_invalidate'),
-				'error' => FALSE,
-				'clearCallback' => function ($fileAbsPath) {
-					if ($fileAbsPath !== NULL && function_exists('opcache_invalidate')) {
-						opcache_invalidate($fileAbsPath);
-					} else {
-						opcache_reset();
-					}
-				}
-			),
+            // http://www.php.net/manual/de/book.wincache.php
+            'WinCache' => array(
+                'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1',
+                'version' => phpversion('wincache'),
+                'canReset' => true,
+                'canInvalidate' => true, // wincache_refresh_if_changed()
+                'error' => false,
+                'clearCallback' => function ($fileAbsPath) {
+                    if ($fileAbsPath !== null) {
+                        wincache_refresh_if_changed(array($fileAbsPath));
+                    } else {
+                        // No argument means refreshing all.
+                        wincache_refresh_if_changed();
+                    }
+                }
+            ),
 
-			// http://www.php.net/manual/de/book.wincache.php
-			'WinCache' => array(
-				'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1',
-				'version' => phpversion('wincache'),
-				'canReset' => TRUE,
-				'canInvalidate' => TRUE, // wincache_refresh_if_changed()
-				'error' => FALSE,
-				'clearCallback' => function ($fileAbsPath) {
-					if ($fileAbsPath !== NULL) {
-						wincache_refresh_if_changed(array($fileAbsPath));
-					} else {
-						// No argument means refreshing all.
-						wincache_refresh_if_changed();
-					}
-				}
-			),
+            // http://xcache.lighttpd.net/
+            'XCache' => array(
+                'active' => extension_loaded('xcache'),
+                'version' => $xcVersion,
+                'canReset' => !ini_get('xcache.admin.enable_auth'), // xcache_clear_cache()
+                'canInvalidate' => false,
+                'error' => false,
+                'clearCallback' => function ($fileAbsPath) {
+                    if (!ini_get('xcache.admin.enable_auth')) {
+                        xcache_clear_cache(XC_TYPE_PHP);
+                    }
+                }
+            ),
+        );
 
-			// http://xcache.lighttpd.net/
-			'XCache' => array(
-				'active' => extension_loaded('xcache'),
-				'version' => $xcVersion,
-				'canReset' => !ini_get('xcache.admin.enable_auth'), // xcache_clear_cache()
-				'canInvalidate' => FALSE,
-				'error' => FALSE,
-				'clearCallback' => function ($fileAbsPath) {
-					if (!ini_get('xcache.admin.enable_auth')) {
-						xcache_clear_cache(XC_TYPE_PHP);
-					}
-				}
-			),
-		);
+        $activeCaches = array();
+        foreach ($supportedCaches as $opcodeCache => $properties) {
+            if ($properties['active']) {
+                $activeCaches[$opcodeCache] = $properties;
+            }
+        }
+        return $activeCaches;
+    }
 
-		$activeCaches = array();
-		foreach ($supportedCaches as $opcodeCache => $properties) {
-			if ($properties['active']) {
-				$activeCaches[$opcodeCache] = $properties;
-			}
-		}
-		return $activeCaches;
-	}
-
-	/**
-	 * Clears a file from an opcache, if one exists.
-	 *
-	 * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
-	 *
-	 * @return void
-	 */
-	public function clearAllActive($fileAbsPath = NULL) {
-		foreach ($this->getAllActive() as $properties) {
-			$callback = $properties['clearCallback'];
-			$callback($fileAbsPath);
-		}
-	}
-
+    /**
+     * Clears a file from an opcache, if one exists.
+     *
+     * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
+     *
+     * @return void
+     */
+    public function clearAllActive($fileAbsPath = null)
+    {
+        foreach ($this->getAllActive() as $properties) {
+            $callback = $properties['clearCallback'];
+            $callback($fileAbsPath);
+        }
+    }
 }

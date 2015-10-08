@@ -23,86 +23,88 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * the password and then pass it to the parent service ('sv'). This ensures that it
  * always works, even if other TYPO3 internals change.
  */
-class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
+class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService
+{
+    /**
+     * @var RsaEncryptionDecoder
+     */
+    protected $rsaEncryptionDecoder = null;
 
-	/**
-	 * @var RsaEncryptionDecoder
-	 */
-	protected $rsaEncryptionDecoder = NULL;
+    /**
+     * Standard extension key for the service
+     * The extension key.
+     *
+     * @var string
+     */
+    public $extKey = 'rsaauth';
 
-	/**
-	 * Standard extension key for the service
-	 * The extension key.
-	 *
-	 * @var string
-	 */
-	public $extKey = 'rsaauth';
+    /**
+     * Standard prefix id for the service
+     * Same as class name
+     *
+     * @var string
+     */
+    public $prefixId = 'tx_rsaauth_sv1';
 
-	/**
-	 * Standard prefix id for the service
-	 * Same as class name
-	 *
-	 * @var string
-	 */
-	public $prefixId = 'tx_rsaauth_sv1';
+    /**
+     * Standard relative path for the service
+     * Path to this script relative to the extension dir.
+     *
+     * @var string
+     */
+    public $scriptRelPath = 'Classes/RsaAuthService.php';
 
-	/**
-	 * Standard relative path for the service
-	 * Path to this script relative to the extension dir.
-	 *
-	 * @var string
-	 */
-	public $scriptRelPath = 'Classes/RsaAuthService.php';
+    /**
+     * Process the submitted credentials.
+     * In this case decrypt the password if it is RSA encrypted.
+     *
+     * @param array $loginData Credentials that are submitted and potentially modified by other services
+     * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
+     * @return bool
+     */
+    public function processLoginData(array &$loginData, $passwordTransmissionStrategy)
+    {
+        $isProcessed = false;
+        if ($passwordTransmissionStrategy === 'rsa') {
+            $password = $loginData['uident'];
+            if (substr($password, 0, 4) === 'rsa:') {
+                $decryptedPassword = $this->getRsaEncryptionDecoder()->decrypt($password);
+                if ($decryptedPassword !== $password) {
+                    $loginData['uident_text'] = $decryptedPassword;
+                    $isProcessed = true;
+                } else {
+                    if ($this->pObj->writeDevLog) {
+                        GeneralUtility::devLog('Process login data: Failed to RSA decrypt password', RsaAuthService::class);
+                    }
+                }
+            } else {
+                if ($this->pObj->writeDevLog) {
+                    GeneralUtility::devLog('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.', RsaAuthService::class);
+                }
+            }
+        }
+        return $isProcessed;
+    }
 
-	/**
-	 * Process the submitted credentials.
-	 * In this case decrypt the password if it is RSA encrypted.
-	 *
-	 * @param array $loginData Credentials that are submitted and potentially modified by other services
-	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return bool
-	 */
-	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
-		$isProcessed = FALSE;
-		if ($passwordTransmissionStrategy === 'rsa') {
-			$password = $loginData['uident'];
-			if (substr($password, 0, 4) === 'rsa:') {
-				$decryptedPassword = $this->getRsaEncryptionDecoder()->decrypt($password);
-				if ($decryptedPassword !== $password) {
-					$loginData['uident_text'] = $decryptedPassword;
-					$isProcessed = TRUE;
-				} else {
-					if ($this->pObj->writeDevLog) {
-						GeneralUtility::devLog('Process login data: Failed to RSA decrypt password', RsaAuthService::class);
-					}
-				}
-			} else {
-				if ($this->pObj->writeDevLog) {
-					GeneralUtility::devLog('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.', RsaAuthService::class);
-				}
-			}
-		}
-		return $isProcessed;
-	}
+    /**
+     * Initializes the service.
+     *
+     * @return bool
+     */
+    public function init()
+    {
+        return parent::init() && $this->getRsaEncryptionDecoder()->isAvailable();
+    }
 
-	/**
-	 * Initializes the service.
-	 *
-	 * @return bool
-	 */
-	public function init() {
-		return parent::init() && $this->getRsaEncryptionDecoder()->isAvailable();
-	}
+    /**
+     * @return RsaEncryptionDecoder
+     */
+    protected function getRsaEncryptionDecoder()
+    {
+        if ($this->rsaEncryptionDecoder === null) {
+            $this->rsaEncryptionDecoder = GeneralUtility::makeInstance(RsaEncryptionDecoder::class);
+        }
 
-	/**
-	 * @return RsaEncryptionDecoder
-	 */
-	protected function getRsaEncryptionDecoder() {
-		if ($this->rsaEncryptionDecoder === NULL) {
-			$this->rsaEncryptionDecoder = GeneralUtility::makeInstance(RsaEncryptionDecoder::class);
-		}
-
-		return $this->rsaEncryptionDecoder;
-	}
-
+        return $this->rsaEncryptionDecoder;
+    }
 }

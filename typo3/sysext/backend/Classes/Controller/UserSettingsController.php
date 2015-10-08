@@ -24,207 +24,219 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A wrapper class to call BE_USER->uc
  * used for AJAX and TYPO3.Storage JS object
  */
-class UserSettingsController {
+class UserSettingsController
+{
+    /**
+     * Processes all AJAX calls and returns a JSON for the data
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        // do the regular / main logic, depending on the action parameter
+        $action = isset($request->getParsedBody()['action']) ? $request->getParsedBody()['action'] : $request->getQueryParams()['action'];
+        $key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['key'];
+        $value = isset($request->getParsedBody()['value']) ? $request->getParsedBody()['value'] : $request->getQueryParams()['value'];
 
-	/**
-	 * Processes all AJAX calls and returns a JSON for the data
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		// do the regular / main logic, depending on the action parameter
-		$action = isset($request->getParsedBody()['action']) ? $request->getParsedBody()['action'] : $request->getQueryParams()['action'];
-		$key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['key'];
-		$value = isset($request->getParsedBody()['value']) ? $request->getParsedBody()['value'] : $request->getQueryParams()['value'];
+        $content = $this->process($action, $key, $value);
 
-		$content = $this->process($action, $key, $value);
+        $response->getBody()->write(json_encode($content));
+        return $response;
+    }
 
-		$response->getBody()->write(json_encode($content));
-		return $response;
-	}
+    /**
+     * Process data
+     *
+     * @param string $action
+     * @param string $key
+     * @param string $value
+     * @return mixed
+     */
+    public function process($action, $key = '', $value = '')
+    {
+        switch ($action) {
+            case 'get':
+                $content = $this->get($key);
+                break;
+            case 'getAll':
+                $content = $this->getAll();
+                break;
+            case 'set':
+                $this->set($key, $value);
+                $content = $this->getAll();
+                break;
+            case 'addToList':
+                $this->addToList($key, $value);
+                $content = $this->getAll();
+                break;
+            case 'removeFromList':
+                $this->removeFromList($key, $value);
+                $content = $this->getAll();
+                break;
+            case 'unset':
+                $this->unsetOption($key);
+                $content = $this->getAll();
+                break;
+            case 'clear':
+                $this->clear();
+                $content = array('result' => true);
+                break;
+            default:
+                $content = array('result' => false);
+        }
 
-	/**
-	 * Process data
-	 *
-	 * @param string $action
-	 * @param string $key
-	 * @param string $value
-	 * @return mixed
-	 */
-	public function process($action, $key = '', $value = '') {
-		switch ($action) {
-			case 'get':
-				$content = $this->get($key);
-				break;
-			case 'getAll':
-				$content = $this->getAll();
-				break;
-			case 'set':
-				$this->set($key, $value);
-				$content = $this->getAll();
-				break;
-			case 'addToList':
-				$this->addToList($key, $value);
-				$content = $this->getAll();
-				break;
-			case 'removeFromList':
-				$this->removeFromList($key, $value);
-				$content = $this->getAll();
-				break;
-			case 'unset':
-				$this->unsetOption($key);
-				$content = $this->getAll();
-				break;
-			case 'clear':
-				$this->clear();
-				$content = array('result' => TRUE);
-				break;
-			default:
-				$content = array('result' => FALSE);
-		}
+        return $content;
+    }
 
-		return $content;
-	}
+    /**
+     * Returns a specific user setting
+     *
+     * @param string $key Identifier, allows also dotted notation for subarrays
+     * @return mixed Value associated
+     */
+    protected function get($key)
+    {
+        return (strpos($key, '.') !== false) ? $this->getFromDottedNotation($key) : $this->getBackendUser()->uc[$key];
+    }
 
-	/**
-	 * Returns a specific user setting
-	 *
-	 * @param string $key Identifier, allows also dotted notation for subarrays
-	 * @return mixed Value associated
-	 */
-	protected function get($key) {
-		return (strpos($key, '.') !== FALSE) ? $this->getFromDottedNotation($key) : $this->getBackendUser()->uc[$key];
-	}
+    /**
+     * Get all user settings
+     *
+     * @return mixed all values, usually a multi-dimensional array
+     */
+    protected function getAll()
+    {
+        return $this->getBackendUser()->uc;
+    }
 
-	/**
-	 * Get all user settings
-	 *
-	 * @return mixed all values, usually a multi-dimensional array
-	 */
-	protected function getAll() {
-		return $this->getBackendUser()->uc;
-	}
+    /**
+     * Sets user settings by key/value pair
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function set($key, $value)
+    {
+        $beUser = $this->getBackendUser();
+        if (strpos($key, '.') !== false) {
+            $this->setFromDottedNotation($key, $value);
+        } else {
+            $beUser->uc[$key] = $value;
+        }
+        $beUser->writeUC($beUser->uc);
+    }
 
-	/**
-	 * Sets user settings by key/value pair
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return void
-	 */
-	protected function set($key, $value) {
-		$beUser = $this->getBackendUser();
-		if (strpos($key, '.') !== FALSE) {
-			$this->setFromDottedNotation($key, $value);
-		} else {
-			$beUser->uc[$key] = $value;
-		}
-		$beUser->writeUC($beUser->uc);
-	}
+    /**
+     * Adds an value to an Comma-separated list
+     * stored $key  of user settings
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function addToList($key, $value)
+    {
+        $list = $this->get($key);
+        if (!isset($list)) {
+            $list = $value;
+        } else {
+            if (!GeneralUtility::inList($list, $value)) {
+                $list .= ',' . $value;
+            }
+        }
+        $this->set($key, $list);
+    }
 
-	/**
-	 * Adds an value to an Comma-separated list
-	 * stored $key  of user settings
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return void
-	 */
-	protected function addToList($key, $value) {
-		$list = $this->get($key);
-		if (!isset($list)) {
-			$list = $value;
-		} else {
-			if (!GeneralUtility::inList($list, $value)) {
-				$list .= ',' . $value;
-			}
-		}
-		$this->set($key, $list);
-	}
+    /**
+     * Removes an value from an Comma-separated list
+     * stored $key of user settings
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function removeFromList($key, $value)
+    {
+        $list = $this->get($key);
+        if (GeneralUtility::inList($list, $value)) {
+            $list = GeneralUtility::trimExplode(',', $list, true);
+            $list = ArrayUtility::removeArrayEntryByValue($list, $value);
+            $this->set($key, implode(',', $list));
+        }
+    }
 
-	/**
-	 * Removes an value from an Comma-separated list
-	 * stored $key of user settings
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return void
-	 */
-	protected function removeFromList($key, $value) {
-		$list = $this->get($key);
-		if (GeneralUtility::inList($list, $value)) {
-			$list = GeneralUtility::trimExplode(',', $list, TRUE);
-			$list = ArrayUtility::removeArrayEntryByValue($list, $value);
-			$this->set($key, implode(',', $list));
-		}
-	}
+    /**
+     * Resets the user settings to the default
+     *
+     * @return void
+     */
+    protected function clear()
+    {
+        $this->getBackendUser()->resetUC();
+    }
 
-	/**
-	 * Resets the user settings to the default
-	 *
-	 * @return void
-	 */
-	protected function clear() {
-		$this->getBackendUser()->resetUC();
-	}
+    /**
+     * Unsets a key in user settings
+     *
+     * @param string $key
+     * @return void
+     */
+    protected function unsetOption($key)
+    {
+        $beUser = $this->getBackendUser();
+        if (isset($beUser->uc[$key])) {
+            unset($beUser->uc[$key]);
+            $beUser->writeUC($beUser->uc);
+        }
+    }
 
-	/**
-	 * Unsets a key in user settings
-	 *
-	 * @param string $key
-	 * @return void
-	 */
-	protected function unsetOption($key) {
-		$beUser = $this->getBackendUser();
-		if (isset($beUser->uc[$key])) {
-			unset($beUser->uc[$key]);
-			$beUser->writeUC($beUser->uc);
-		}
-	}
+    /**
+     * Computes the subarray from dotted notation
+     *
+     * @param $key string Dotted notation of subkeys like moduleData.module1.general.checked
+     * @return mixed value of the settings
+     */
+    protected function getFromDottedNotation($key)
+    {
+        $subkeys = GeneralUtility::trimExplode('.', $key);
+        $array = &$this->getBackendUser()->uc;
+        foreach ($subkeys as $subkey) {
+            $array = &$array[$subkey];
+        }
+        return $array;
+    }
 
-	/**
-	 * Computes the subarray from dotted notation
-	 *
-	 * @param $key string Dotted notation of subkeys like moduleData.module1.general.checked
-	 * @return mixed value of the settings
-	 */
-	protected function getFromDottedNotation($key) {
-		$subkeys = GeneralUtility::trimExplode('.', $key);
-		$array = &$this->getBackendUser()->uc;
-		foreach ($subkeys as $subkey) {
-			$array = &$array[$subkey];
-		}
-		return $array;
-	}
+    /**
+     * Sets the value of a key written in dotted notation
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function setFromDottedNotation($key, $value)
+    {
+        $subkeys = GeneralUtility::trimExplode('.', $key, true);
+        $lastKey = $subkeys[count($subkeys) - 1];
+        $array = &$this->getBackendUser()->uc;
+        foreach ($subkeys as $subkey) {
+            if ($subkey === $lastKey) {
+                $array[$subkey] = $value;
+            } else {
+                $array = &$array[$subkey];
+            }
+        }
+    }
 
-	/**
-	 * Sets the value of a key written in dotted notation
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return void
-	 */
-	protected function setFromDottedNotation($key, $value) {
-		$subkeys = GeneralUtility::trimExplode('.', $key, TRUE);
-		$lastKey = $subkeys[count($subkeys) - 1];
-		$array = &$this->getBackendUser()->uc;
-		foreach ($subkeys as $subkey) {
-			if ($subkey === $lastKey) {
-				$array[$subkey] = $value;
-			} else {
-				$array = &$array[$subkey];
-			}
-		}
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

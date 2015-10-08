@@ -17,35 +17,36 @@ namespace TYPO3\CMS\Filelist\ViewHelpers\Link;
 /**
  * Class ClickMenuOnIconViewHelper
  */
-class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'a';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerUniversalTagAttributes();
+    }
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerUniversalTagAttributes();
-	}
+    /**
+     * Renders click menu link (context sensitive menu)
+     *
+     * @param string $table
+     *
+     * @return string
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate->wrapClickMenuOnIcon()
+     */
+    public function render($table)
+    {
+        $this->tag->addAttribute('class', 't3-js-clickmenutrigger ' . $this->arguments['class']);
+        $this->tag->addAttribute('data-table', $table);
+        $this->tag->addAttribute('data-listframe', 1);
+        $this->tag->addAttribute('href', '#');
 
-	/**
-	 * Renders click menu link (context sensitive menu)
-	 *
-	 * @param string $table
-	 *
-	 * @return string
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate->wrapClickMenuOnIcon()
-	 */
-	public function render($table) {
-		$this->tag->addAttribute('class', 't3-js-clickmenutrigger ' . $this->arguments['class']);
-		$this->tag->addAttribute('data-table', $table);
-		$this->tag->addAttribute('data-listframe', 1);
-		$this->tag->addAttribute('href', '#');
-
-		return $this->tag->render();
-	}
-
+        return $this->tag->render();
+    }
 }

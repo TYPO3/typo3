@@ -25,19 +25,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * selector is not the name of a selector in the query, or
  * property is not a syntactically valid JCR name.
  */
-interface PropertyValueInterface extends DynamicOperandInterface {
+interface PropertyValueInterface extends DynamicOperandInterface
+{
+    /**
+     * Gets the name of the selector against which to evaluate this operand.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelectorName();
 
-	/**
-	 * Gets the name of the selector against which to evaluate this operand.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelectorName();
-
-	/**
-	 * Gets the name of the property.
-	 *
-	 * @return string the property name; non-null
-	 */
-	public function getPropertyName();
+    /**
+     * Gets the name of the property.
+     *
+     * @return string the property name; non-null
+     */
+    public function getPropertyName();
 }

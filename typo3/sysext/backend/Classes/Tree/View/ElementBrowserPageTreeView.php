@@ -23,173 +23,178 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
  *
  * Browsable tree, used in PagePositionMaps (move elements), the Link Wizard and the Database Browser (for which it will be extended)
  */
-class ElementBrowserPageTreeView extends BrowseTreeView {
+class ElementBrowserPageTreeView extends BrowseTreeView
+{
+    /**
+     * whether the page ID should be shown next to the title, activate through
+     * userTSconfig (options.pageTree.showPageIdWithTitle)
+     *
+     * @var bool
+     */
+    public $ext_showPageId = false;
 
-	/**
-	 * whether the page ID should be shown next to the title, activate through
-	 * userTSconfig (options.pageTree.showPageIdWithTitle)
-	 *
-	 * @var bool
-	 */
-	public $ext_showPageId = FALSE;
+    /**
+     * @var bool
+     */
+    public $ext_showNavTitle = false;
 
-	/**
-	 * @var bool
-	 */
-	public $ext_showNavTitle = FALSE;
+    /**
+     * @var bool
+     */
+    public $ext_pArrPages = true;
 
-	/**
-	 * @var bool
-	 */
-	public $ext_pArrPages = TRUE;
+    /**
+     * Back-reference to ElementBrowser class
+     *
+     * @var LinkParameterProviderInterface
+     */
+    protected $linkParameterProvider;
 
-	/**
-	 * Back-reference to ElementBrowser class
-	 *
-	 * @var LinkParameterProviderInterface
-	 */
-	protected $linkParameterProvider;
+    /**
+     * Constructor. Just calling init()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->init();
+        $this->clause = ' AND doktype <> ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
+    }
 
-	/**
-	 * Constructor. Just calling init()
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->init();
-		$this->clause = ' AND doktype <> ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
-	}
+    /**
+     * @param LinkParameterProviderInterface $linkParameterProvider
+     *
+     * @return void
+     */
+    public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider)
+    {
+        $this->linkParameterProvider = $linkParameterProvider;
+        $this->thisScript = $linkParameterProvider->getScriptUrl();
+    }
 
-	/**
-	 * @param LinkParameterProviderInterface $linkParameterProvider
-	 *
-	 * @return void
-	 */
-	public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider) {
-		$this->linkParameterProvider = $linkParameterProvider;
-		$this->thisScript = $linkParameterProvider->getScriptUrl();
-	}
+    /**
+     * Wrapping the title in a link, if applicable.
+     *
+     * @param string $title Title, (must be ready for output, that means it must be htmlspecialchars()'ed).
+     * @param array $v The record
+     * @param bool $ext_pArrPages (ignored)
+     * @return string Wrapping title string.
+     */
+    public function wrapTitle($title, $v, $ext_pArrPages = false)
+    {
+        if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
+            return '<span class="list-tree-title"><a href="#" class="t3-js-pageLink" data-id="' . (int)$v['uid'] . '">' . $title . '</a></span>';
+        } else {
+            return '<span class="list-tree-title text-muted">' . $title . '</span>';
+        }
+    }
 
-	/**
-	 * Wrapping the title in a link, if applicable.
-	 *
-	 * @param string $title Title, (must be ready for output, that means it must be htmlspecialchars()'ed).
-	 * @param array $v The record
-	 * @param bool $ext_pArrPages (ignored)
-	 * @return string Wrapping title string.
-	 */
-	public function wrapTitle($title, $v, $ext_pArrPages = FALSE) {
-		if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
-			return '<span class="list-tree-title"><a href="#" class="t3-js-pageLink" data-id="' . (int)$v['uid'] . '">' . $title . '</a></span>';
-		} else {
-			return '<span class="list-tree-title text-muted">' . $title . '</span>';
-		}
-	}
+    /**
+     * Create the page navigation tree in HTML
+     *
+     * @param array|string $treeArr Tree array
+     * @return string HTML output.
+     */
+    public function printTree($treeArr = '')
+    {
+        $titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
+        if (!is_array($treeArr)) {
+            $treeArr = $this->tree;
+        }
+        $out = '';
+        // We need to count the opened <ul>'s every time we dig into another level,
+        // so we know how many we have to close when all children are done rendering
+        $closeDepth = array();
+        foreach ($treeArr as $treeItem) {
+            $classAttr = $treeItem['row']['_CSSCLASS'];
+            if ($treeItem['isFirst']) {
+                $out .= '<ul class="list-tree">';
+            }
 
-	/**
-	 * Create the page navigation tree in HTML
-	 *
-	 * @param array|string $treeArr Tree array
-	 * @return string HTML output.
-	 */
-	public function printTree($treeArr = '') {
-		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
-		if (!is_array($treeArr)) {
-			$treeArr = $this->tree;
-		}
-		$out = '';
-		// We need to count the opened <ul>'s every time we dig into another level,
-		// so we know how many we have to close when all children are done rendering
-		$closeDepth = array();
-		foreach ($treeArr as $treeItem) {
-			$classAttr = $treeItem['row']['_CSSCLASS'];
-			if ($treeItem['isFirst']) {
-				$out .= '<ul class="list-tree">';
-			}
+            // Add CSS classes to the list item
+            if ($treeItem['hasSub']) {
+                $classAttr .= ' list-tree-control-open';
+            }
 
-			// Add CSS classes to the list item
-			if ($treeItem['hasSub']) {
-				$classAttr .= ' list-tree-control-open';
-			}
-
-			$selected = '';
-			if ($this->linkParameterProvider->isCurrentlySelectedItem(['pid' => (int)$treeItem['row']['uid']])) {
-				$selected = ' bg-success';
-				$classAttr .= ' active';
-			}
-			$urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$treeItem['row']['uid']]);
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ');';
-			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
-			$out .= '
+            $selected = '';
+            if ($this->linkParameterProvider->isCurrentlySelectedItem(['pid' => (int)$treeItem['row']['uid']])) {
+                $selected = ' bg-success';
+                $classAttr .= ' active';
+            }
+            $urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$treeItem['row']['uid']]);
+            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ');';
+            $cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
+            $out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
 					<span class="list-tree-group' . $selected . '">
 						' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . '
 					</span>
 				';
-			if (!$treeItem['hasSub']) {
-				$out .= '</li>';
-			}
+            if (!$treeItem['hasSub']) {
+                $out .= '</li>';
+            }
 
-			// We have to remember if this is the last one
-			// on level X so the last child on level X+1 closes the <ul>-tag
-			if ($treeItem['isLast']) {
-				$closeDepth[$treeItem['invertedDepth']] = 1;
-			}
-			// If this is the last one and does not have subitems, we need to close
-			// the tree as long as the upper levels have last items too
-			if ($treeItem['isLast'] && !$treeItem['hasSub']) {
-				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
-					$closeDepth[$i] = 0;
-					$out .= '</ul></li>';
-				}
-			}
+            // We have to remember if this is the last one
+            // on level X so the last child on level X+1 closes the <ul>-tag
+            if ($treeItem['isLast']) {
+                $closeDepth[$treeItem['invertedDepth']] = 1;
+            }
+            // If this is the last one and does not have subitems, we need to close
+            // the tree as long as the upper levels have last items too
+            if ($treeItem['isLast'] && !$treeItem['hasSub']) {
+                for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+                    $closeDepth[$i] = 0;
+                    $out .= '</ul></li>';
+                }
+            }
+        }
+        $out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
+        return $out;
+    }
 
-		}
-		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
-		return $out;
-	}
+    /**
+     * Returns TRUE if a doktype can be linked.
+     *
+     * @param int $doktype Doktype value to test
+     * @param int $uid uid to test.
+     * @return bool
+     */
+    public function ext_isLinkable($doktype, $uid)
+    {
+        return $uid && $doktype < PageRepository::DOKTYPE_SPACER;
+    }
 
-	/**
-	 * Returns TRUE if a doktype can be linked.
-	 *
-	 * @param int $doktype Doktype value to test
-	 * @param int $uid uid to test.
-	 * @return bool
-	 */
-	public function ext_isLinkable($doktype, $uid) {
-		return $uid && $doktype < PageRepository::DOKTYPE_SPACER;
-	}
+    /**
+     * Wrap the plus/minus icon in a link
+     *
+     * @param string $icon HTML string to wrap, probably an image tag.
+     * @param string $cmd Command for 'PM' get var
+     * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
+     * @param bool $isOpen
+     * @return string Link-wrapped input string
+     */
+    public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
+    {
+        $anchor = $bMark ? '#' . $bMark : '';
+        $name = $bMark ? ' name=' . $bMark : '';
+        $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
+        $urlParameters['PM'] = $cmd;
+        $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
+        return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed')
+            . '" href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa"></i></a>';
+    }
 
-	/**
-	 * Wrap the plus/minus icon in a link
-	 *
-	 * @param string $icon HTML string to wrap, probably an image tag.
-	 * @param string $cmd Command for 'PM' get var
-	 * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
-	 * @param bool $isOpen
-	 * @return string Link-wrapped input string
-	 */
-	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
-		$anchor = $bMark ? '#' . $bMark : '';
-		$name = $bMark ? ' name=' . $bMark : '';
-		$urlParameters = $this->linkParameterProvider->getUrlParameters([]);
-		$urlParameters['PM'] = $cmd;
-		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
-		return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed')
-			. '" href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa"></i></a>';
-	}
-
-	/**
-	 * Wrapping the image tag, $icon, for the row, $row
-	 *
-	 * @param string $icon The image tag for the icon
-	 * @param array $row The row for the current element
-	 * @return string The processed icon input value.
-	 */
-	public function wrapIcon($icon, $row) {
-		if ($this->ext_showPageId) {
-			$icon .= '[' . $row['uid'] . ']&nbsp;';
-		}
-		return $icon;
-	}
-
+    /**
+     * Wrapping the image tag, $icon, for the row, $row
+     *
+     * @param string $icon The image tag for the icon
+     * @param array $row The row for the current element
+     * @return string The processed icon input value.
+     */
+    public function wrapIcon($icon, $row)
+    {
+        if ($this->ext_showPageId) {
+            $icon .= '[' . $row['uid'] . ']&nbsp;';
+        }
+        return $icon;
+    }
 }

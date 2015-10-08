@@ -18,23 +18,24 @@ namespace TYPO3\CMS\Compatibility6\Hooks\PageLayoutView;
  * Contains a preview rendering for the page module of
  * CType="mailform"
  */
-class MailformPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
-
-	/**
-	 * Preprocesses the preview rendering of a content element of type "mailform"
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionality
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 *
-	 * @return void
-	 */
-	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-		if ($row['CType'] === 'mailform') {
-			$itemContent = $parentObject->linkEditContent($parentObject->renderText($row['bodytext']), $row) . '<br />';
-			$drawItem = FALSE;
-		}
-	}
+class MailformPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of a content element of type "mailform"
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionality
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     *
+     * @return void
+     */
+    public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row)
+    {
+        if ($row['CType'] === 'mailform') {
+            $itemContent = $parentObject->linkEditContent($parentObject->renderText($row['bodytext']), $row) . '<br />';
+            $drawItem = false;
+        }
+    }
 }

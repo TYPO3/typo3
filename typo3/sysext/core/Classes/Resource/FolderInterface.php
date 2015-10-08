@@ -19,62 +19,61 @@ namespace TYPO3\CMS\Core\Resource;
  */
 interface FolderInterface extends ResourceInterface
 {
-	/**
-	 * Roles for folders
-	 */
-	const ROLE_DEFAULT = 'default';
-	const ROLE_RECYCLER = 'recycler';
-	const ROLE_PROCESSING = 'processing';
-	const ROLE_TEMPORARY = 'temporary';
-	const ROLE_USERUPLOAD = 'userupload';
-	const ROLE_MOUNT = 'mount';
-	const ROLE_READONLY_MOUNT = 'readonly-mount';
-	const ROLE_USER_MOUNT = 'user-mount';
+    /**
+     * Roles for folders
+     */
+    const ROLE_DEFAULT = 'default';
+    const ROLE_RECYCLER = 'recycler';
+    const ROLE_PROCESSING = 'processing';
+    const ROLE_TEMPORARY = 'temporary';
+    const ROLE_USERUPLOAD = 'userupload';
+    const ROLE_MOUNT = 'mount';
+    const ROLE_READONLY_MOUNT = 'readonly-mount';
+    const ROLE_USER_MOUNT = 'user-mount';
 
-	/**
-	 * Returns a list of all subfolders
-	 *
-	 * @return Folder[]
-	 */
-	public function getSubfolders();
+    /**
+     * Returns a list of all subfolders
+     *
+     * @return Folder[]
+     */
+    public function getSubfolders();
 
-	/**
-	 * Returns the object for a subfolder of the current folder, if it exists.
-	 *
-	 * @param string $name Name of the subfolder
-	 * @return Folder
-	 */
-	public function getSubfolder($name);
+    /**
+     * Returns the object for a subfolder of the current folder, if it exists.
+     *
+     * @param string $name Name of the subfolder
+     * @return Folder
+     */
+    public function getSubfolder($name);
 
-	/**
-	 * Checks if a folder exists in this folder.
-	 *
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasFolder($name);
+    /**
+     * Checks if a folder exists in this folder.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasFolder($name);
 
-	/**
-	 * Checks if a file exists in this folder
-	 *
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasFile($name);
+    /**
+     * Checks if a file exists in this folder
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasFile($name);
 
-	/**
-	 * Renames this folder.
-	 *
-	 * @param string $newName
-	 * @return Folder
-	 */
-	public function rename($newName);
+    /**
+     * Renames this folder.
+     *
+     * @param string $newName
+     * @return Folder
+     */
+    public function rename($newName);
 
-	/**
-	 * Deletes this folder from its storage. This also means that this object becomes useless.
-	 *
-	 * @return bool TRUE if deletion succeeded
-	 */
-	public function delete();
-
+    /**
+     * Deletes this folder from its storage. This also means that this object becomes useless.
+     *
+     * @return bool TRUE if deletion succeeded
+     */
+    public function delete();
 }

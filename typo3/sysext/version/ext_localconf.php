@@ -10,8 +10,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectTo
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']['version_preview'] = \TYPO3\CMS\Version\Hook\PreviewHook::class . '->initializePreviewUser';
 
 if (TYPO3_MODE === 'BE') {
-	// add default notification options to every page
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSconfig('
+    // add default notification options to every page
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSconfig('
 	tx_version.workspaces.stageNotificationEmail.subject = LLL:EXT:version/Resources/Private/Language/locallang_emails.xlf:subject
 	tx_version.workspaces.stageNotificationEmail.message = LLL:EXT:version/Resources/Private/Language/locallang_emails.xlf:message
 	# tx_version.workspaces.stageNotificationEmail.additionalHeaders =

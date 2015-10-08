@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Belog\Controller;
 /**
  * Controller for log entry listings in Web->Info module
  */
-class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
-
-	/**
-	 * Set context to 'in page mode'
-	 *
-	 * @return void
-	 */
-	public function initializeAction() {
-		$this->isInPageContext = TRUE;
-		$this->pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		parent::initializeAction();
-	}
-
+class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController
+{
+    /**
+     * Set context to 'in page mode'
+     *
+     * @return void
+     */
+    public function initializeAction()
+    {
+        $this->isInPageContext = true;
+        $this->pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        parent::initializeAction();
+    }
 }

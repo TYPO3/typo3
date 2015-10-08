@@ -17,77 +17,81 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 /**
  * Testing collection of backend layout data providers.
  */
-class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection
+     */
+    protected $dataProviderCollection;
 
-	/**
-	 * @var \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection
-	 */
-	protected $dataProviderCollection;
+    /**
+     * Sets up this test case.
+     */
+    protected function setUp()
+    {
+        $this->dataProviderCollection = new \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection();
+    }
 
-	/**
-	 * Sets up this test case.
-	 */
-	protected function setUp() {
-		$this->dataProviderCollection = new \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection();
-	}
+    /**
+     * @test
+     * @expectedException \UnexpectedValueException
+     */
+    public function invalidIdentifierIsRecognizedOnAdding()
+    {
+        $identifier = $this->getUniqueId('identifier__');
+        $dataProviderMock = $this->getMock('stdClass');
 
-	/**
-	 * @test
-	 * @expectedException \UnexpectedValueException
-	 */
-	public function invalidIdentifierIsRecognizedOnAdding() {
-		$identifier = $this->getUniqueId('identifier__');
-		$dataProviderMock = $this->getMock('stdClass');
+        $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
+    }
 
-		$this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
-	}
+    /**
+     * @test
+     * @expectedException \LogicException
+     */
+    public function invalidInterfaceIsRecognizedOnAdding()
+    {
+        $identifier = $this->getUniqueId('identifier');
+        $dataProviderMock = $this->getMock('stdClass');
 
-	/**
-	 * @test
-	 * @expectedException \LogicException
-	 */
-	public function invalidInterfaceIsRecognizedOnAdding() {
-		$identifier = $this->getUniqueId('identifier');
-		$dataProviderMock = $this->getMock('stdClass');
+        $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
+    }
 
-		$this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
-	}
+    /**
+     * @test
+     */
+    public function defaultBackendLayoutIsFound()
+    {
+        $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-	/**
-	 * @test
-	 */
-	public function defaultBackendLayoutIsFound() {
-		$backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
-		$dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', FALSE);
-		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
-		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
+        $this->dataProviderCollection->add('default', $dataProviderMock);
+        $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier, 123);
 
-		$this->dataProviderCollection->add('default', $dataProviderMock);
-		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier, 123);
+        $this->assertNotNull($providedBackendLayout);
+        $this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
+    }
 
-		$this->assertNotNull($providedBackendLayout);
-		$this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
-	}
+    /**
+     * @test
+     */
+    public function providedBackendLayoutIsFound()
+    {
+        $dataProviderIdentifier = $this->getUniqueId('custom');
+        $backendLayoutIdentifier = $this->getUniqueId('identifier');
 
-	/**
-	 * @test
-	 */
-	public function providedBackendLayoutIsFound() {
-		$dataProviderIdentifier = $this->getUniqueId('custom');
-		$backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', false);
+        $backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', false);
+        $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
-		$dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', FALSE);
-		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
-		$backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
-		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
+        $this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);
+        $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
 
-		$this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);
-		$providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
-
-		$this->assertNotNull($providedBackendLayout);
-		$this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
-	}
-
+        $this->assertNotNull($providedBackendLayout);
+        $this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
+    }
 }

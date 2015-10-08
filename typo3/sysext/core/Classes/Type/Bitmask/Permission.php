@@ -17,40 +17,40 @@ namespace TYPO3\CMS\Core\Type\Bitmask;
 /**
  * A class providing constants for bitwise operations on page access check
  */
-class Permission extends \TYPO3\CMS\Core\Type\Enumeration {
+class Permission extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    /**
+     * @var int
+     */
+    const NOTHING = 0;
 
-	/**
-	 * @var int
-	 */
-	const NOTHING = 0;
+    /**
+     * @var int
+     */
+    const PAGE_SHOW = 1;
 
-	/**
-	 * @var int
-	 */
-	const PAGE_SHOW = 1;
+    /**
+     * @var int
+     */
+    const PAGE_EDIT = 2;
 
-	/**
-	 * @var int
-	 */
-	const PAGE_EDIT = 2;
+    /**
+     * @var int
+     */
+    const PAGE_DELETE = 4;
 
-	/**
-	 * @var int
-	 */
-	const PAGE_DELETE = 4;
+    /**
+     * @var int
+     */
+    const PAGE_NEW = 8;
 
-	/**
-	 * @var int
-	 */
-	const PAGE_NEW = 8;
+    /**
+     * @var int
+     */
+    const CONTENT_EDIT = 16;
 
-	/**
-	 * @var int
-	 */
-	const CONTENT_EDIT = 16;
-
-	/**
-	 * @var int
-	 */
-	const ALL = 31;
+    /**
+     * @var int
+     */
+    const ALL = 31;
 }

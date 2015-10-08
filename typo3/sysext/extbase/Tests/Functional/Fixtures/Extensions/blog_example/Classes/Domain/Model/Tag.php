@@ -17,38 +17,40 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
 /**
  * A blog post tag
  */
-class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject {
+class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
+{
+    /**
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * Constructs this tag
+     *
+     * @param $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Constructs this tag
-	 *
-	 * @param $name
-	 */
-	public function __construct($name) {
-		$this->name = $name;
-	}
+    /**
+     * Returns this tag's name
+     *
+     * @return string This tag's name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Returns this tag's name
-	 *
-	 * @return string This tag's name
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * Returns this tag as a formatted string
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->getName();
-	}
-
+    /**
+     * Returns this tag as a formatted string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

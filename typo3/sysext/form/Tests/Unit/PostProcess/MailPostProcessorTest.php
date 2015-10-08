@@ -17,82 +17,84 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
 /**
  * Test case
  */
-class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\PostProcess\MailPostProcessor
+     */
+    protected $mailPostProcessor;
 
-	/**
-	 * @var \TYPO3\CMS\Form\PostProcess\MailPostProcessor
-	 */
-	protected $mailPostProcessor;
+    /**
+     * Set up
+     *
+     * @return void
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->mailPostProcessor = $this->getAccessibleMock(
+            \TYPO3\CMS\Form\PostProcess\MailPostProcessor::class,
+            array('__none'),
+            array(),
+            '',
+            false
+        );
+    }
 
-	/**
-	 * Set up
-	 *
-	 * @return void
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->mailPostProcessor = $this->getAccessibleMock(
-			\TYPO3\CMS\Form\PostProcess\MailPostProcessor::class,
-			array('__none'),
-			array(),
-			'',
-			FALSE
-		);
-	}
+    /**
+     * Data provider for filterValidEmailsReturnsOnlyValidAddresses
+     *
+     * @return array input string, expected return array
+     * @TODO: Add a umlaut domain test case
+     */
+    public function filterValidEmailsProvider()
+    {
+        return array(
+            'empty string' => array(
+                '',
+                array(),
+            ),
+            'string not representing an email' => array(
+                'notAnAddress',
+                array(),
+            ),
+            'simple single valid address' => array(
+                'someone@example.com',
+                array(
+                    'someone@example.com',
+                ),
+            ),
+            'multiple valid simple addresses' => array(
+                'someone@example.com, foo@bar.com',
+                array(
+                    'someone@example.com',
+                    'foo@bar.com',
+                ),
+            ),
+            'multiple addresses with personal part' => array(
+                'Foo <foo@example.com>, <bar@example.com>, "Foo, bar" <foo.bar@example.com>',
+                array(
+                    'bar@example.com',
+                    'foo@example.com' => 'Foo',
+                    'foo.bar@example.com' => '"Foo, bar"',
+                ),
+            ),
+            'list with invalid addresses is filtered' => array(
+                'invalid, @invalid, someone@example.com',
+                array(
+                    'someone@example.com',
+                ),
+            ),
+        );
+    }
 
-	/**
-	 * Data provider for filterValidEmailsReturnsOnlyValidAddresses
-	 *
-	 * @return array input string, expected return array
-	 * @TODO: Add a umlaut domain test case
-	 */
-	public function filterValidEmailsProvider() {
-		return array(
-			'empty string' => array(
-				'',
-				array(),
-			),
-			'string not representing an email' => array(
-				'notAnAddress',
-				array(),
-			),
-			'simple single valid address' => array(
-				'someone@example.com',
-				array(
-					'someone@example.com',
-				),
-			),
-			'multiple valid simple addresses' => array(
-				'someone@example.com, foo@bar.com',
-				array(
-					'someone@example.com',
-					'foo@bar.com',
-				),
-			),
-			'multiple addresses with personal part' => array(
-				'Foo <foo@example.com>, <bar@example.com>, "Foo, bar" <foo.bar@example.com>',
-				array(
-					'bar@example.com',
-					'foo@example.com' => 'Foo',
-					'foo.bar@example.com' => '"Foo, bar"',
-				),
-			),
-			'list with invalid addresses is filtered' => array(
-				'invalid, @invalid, someone@example.com',
-				array(
-					'someone@example.com',
-				),
-			),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider filterValidEmailsProvider
-	 */
-	public function filterValidEmailsReturnsOnlyValidAddresses($input, $expected) {
-		$actualResult = $this->mailPostProcessor->_call('filterValidEmails', $input);
-		$this->assertEquals($expected, $actualResult);
-	}
-
+    /**
+     * @test
+     * @dataProvider filterValidEmailsProvider
+     */
+    public function filterValidEmailsReturnsOnlyValidAddresses($input, $expected)
+    {
+        $actualResult = $this->mailPostProcessor->_call('filterValidEmails', $input);
+        $this->assertEquals($expected, $actualResult);
+    }
 }

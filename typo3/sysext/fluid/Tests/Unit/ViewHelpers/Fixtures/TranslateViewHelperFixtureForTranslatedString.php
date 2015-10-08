@@ -19,18 +19,19 @@ use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 /**
  * Fixture class for mocking static translate function
  */
-class TranslateViewHelperFixtureForTranslatedString extends TranslateViewHelper {
-
-	/**
-	 * In original class this is wrapper call to static LocalizationUtility
-	 *
-	 * @param string $id Translation Key compatible to TYPO3 Flow
-	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
-	 * @param array $arguments Arguments to be replaced in the resulting string
-	 *
-	 * @return NULL|string
-	 */
-	static protected function translate($id, $extensionName, $arguments) {
-		return '<p>hello world</p>';
-	}
+class TranslateViewHelperFixtureForTranslatedString extends TranslateViewHelper
+{
+    /**
+     * In original class this is wrapper call to static LocalizationUtility
+     *
+     * @param string $id Translation Key compatible to TYPO3 Flow
+     * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
+     * @param array $arguments Arguments to be replaced in the resulting string
+     *
+     * @return NULL|string
+     */
+    protected static function translate($id, $extensionName, $arguments)
+    {
+        return '<p>hello world</p>';
+    }
 }

@@ -13,19 +13,19 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /**
  */
-class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
-
-	/**
-	 * @test
-	 */
-	public function renderTakesBaseUriFromControllerContext() {
-		$baseUri = 'http://typo3.org/';
-		$this->request->expects($this->any())->method('getBaseUri')->will($this->returnValue($baseUri));
-		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper();
-		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$expectedResult = '<base href="' . $baseUri . '" />';
-		$actualResult = $viewHelper->render();
-		$this->assertSame($expectedResult, $actualResult);
-	}
-
+class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+{
+    /**
+     * @test
+     */
+    public function renderTakesBaseUriFromControllerContext()
+    {
+        $baseUri = 'http://typo3.org/';
+        $this->request->expects($this->any())->method('getBaseUri')->will($this->returnValue($baseUri));
+        $viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper();
+        $this->injectDependenciesIntoViewHelper($viewHelper);
+        $expectedResult = '<base href="' . $baseUri . '" />';
+        $actualResult = $viewHelper->render();
+        $this->assertSame($expectedResult, $actualResult);
+    }
 }

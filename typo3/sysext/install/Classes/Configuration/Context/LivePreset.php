@@ -19,54 +19,55 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Live preset
  */
-class LivePreset extends Configuration\AbstractPreset {
+class LivePreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Live';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Live';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 50;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 50;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'BE/debug' => false,
+        'FE/debug' => false,
+        'SYS/devIPmask' => '',
+        'SYS/displayErrors' => 0,
+        'SYS/enableDeprecationLog' => false,
+        'SYS/sqlDebug' => 0,
+        'SYS/systemLogLevel' => 2,
+        'SYS/clearCacheSystem' => false,
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'BE/debug' => FALSE,
-		'FE/debug' => FALSE,
-		'SYS/devIPmask' => '',
-		'SYS/displayErrors' => 0,
-		'SYS/enableDeprecationLog' => FALSE,
-		'SYS/sqlDebug' => 0,
-		'SYS/systemLogLevel' => 2,
-		'SYS/clearCacheSystem' => FALSE,
-	);
+    /**
+     * Production preset is always available
+     *
+     * @return bool TRUE if mbstring PHP module is loaded
+     */
+    public function isAvailable()
+    {
+        return true;
+    }
 
-	/**
-	 * Production preset is always available
-	 *
-	 * @return bool TRUE if mbstring PHP module is loaded
-	 */
-	public function isAvailable() {
-		return TRUE;
-	}
-
-	/**
-	 * If context is set to production, priority
-	 * of this preset is raised.
-	 *
-	 * @return int Priority of preset
-	 */
-	public function getPriority() {
-		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
-		$priority = $this->priority;
-		if ($context->isProduction()) {
-			$priority = $priority + 20;
-		}
-		return $priority;
-	}
-
+    /**
+     * If context is set to production, priority
+     * of this preset is raised.
+     *
+     * @return int Priority of preset
+     */
+    public function getPriority()
+    {
+        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
+        $priority = $this->priority;
+        if ($context->isProduction()) {
+            $priority = $priority + 20;
+        }
+        return $priority;
+    }
 }

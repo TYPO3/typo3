@@ -22,35 +22,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A data provider group for database records used for input placeholder values
  */
-class TcaInputPlaceholderRecord implements FormDataGroupInterface {
+class TcaInputPlaceholderRecord implements FormDataGroupInterface
+{
+    /**
+     * Compile form data
+     *
+     * @param array $result Initialized result array
+     * @return array Result filled with data
+     * @throws \UnexpectedValueException
+     */
+    public function compile(array $result)
+    {
+        $dataProvider = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaInputPlaceholderRecord'];
+        $orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
+        $orderedDataProvider = $orderingService->orderByDependencies($dataProvider, 'before', 'depends');
 
-	/**
-	 * Compile form data
-	 *
-	 * @param array $result Initialized result array
-	 * @return array Result filled with data
-	 * @throws \UnexpectedValueException
-	 */
-	public function compile(array $result) {
-		$dataProvider = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaInputPlaceholderRecord'];
-		$orderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
-		$orderedDataProvider = $orderingService->orderByDependencies($dataProvider, 'before', 'depends');
+        foreach ($orderedDataProvider as $providerClassName => $_) {
+            /** @var FormDataProviderInterface $provider */
+            $provider = GeneralUtility::makeInstance($providerClassName);
 
-		foreach ($orderedDataProvider as $providerClassName => $_) {
-			/** @var FormDataProviderInterface $provider */
-			$provider = GeneralUtility::makeInstance($providerClassName);
+            if (!$provider instanceof FormDataProviderInterface) {
+                throw new \UnexpectedValueException(
+                    'Data provider ' . $providerClassName . ' must implement FormDataProviderInterface',
+                    1443986127
+                );
+            }
 
-			if (!$provider instanceof FormDataProviderInterface) {
-				throw new \UnexpectedValueException(
-					'Data provider ' . $providerClassName . ' must implement FormDataProviderInterface',
-					1443986127
-				);
-			}
+            $result = $provider->addData($result);
+        }
 
-			$result = $provider->addData($result);
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

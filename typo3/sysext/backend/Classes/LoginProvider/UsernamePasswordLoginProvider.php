@@ -24,27 +24,26 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class UsernamePasswordLoginProvider
  */
-class UsernamePasswordLoginProvider implements LoginProviderInterface {
+class UsernamePasswordLoginProvider implements LoginProviderInterface
+{
+    const SIGNAL_getPageRenderer = 'getPageRenderer';
 
-	const SIGNAL_getPageRenderer = 'getPageRenderer';
+    /**
+     * @param StandaloneView $view
+     * @param PageRenderer $pageRenderer
+     * @param LoginController $loginController
+     * @throws \UnexpectedValueException
+     */
+    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
+    {
+        GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class)->dispatch(__CLASS__, self::SIGNAL_getPageRenderer, array($pageRenderer));
 
-	/**
-	 * @param StandaloneView $view
-	 * @param PageRenderer $pageRenderer
-	 * @param LoginController $loginController
-	 * @throws \UnexpectedValueException
-	 */
-	public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController) {
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
 
-		GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class)->dispatch(__CLASS__, self::SIGNAL_getPageRenderer, array($pageRenderer));
-
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
-
-		$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));
-		if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-			$view->assign('presetUsername', GeneralUtility::_GP('u'));
-			$view->assign('presetPassword', GeneralUtility::_GP('p'));
-		}
-	}
-
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));
+        if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+            $view->assign('presetUsername', GeneralUtility::_GP('u'));
+            $view->assign('presetPassword', GeneralUtility::_GP('p'));
+        }
+    }
 }

@@ -18,6 +18,6 @@ namespace TYPO3\CMS\Core\Package\Exception;
  * An "Invalid Package Key" exception
  * Adapted from FLOW for TYPO3 CMS
  */
-class MissingPackageManifestException extends \TYPO3\CMS\Core\Package\Exception {
-
+class MissingPackageManifestException extends \TYPO3\CMS\Core\Package\Exception
+{
 }

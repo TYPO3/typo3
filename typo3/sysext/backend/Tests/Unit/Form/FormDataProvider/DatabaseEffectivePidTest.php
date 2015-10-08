@@ -20,77 +20,81 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid;
 /**
  * Test case
  */
-class DatabaseEffectivePidTest extends UnitTestCase {
+class DatabaseEffectivePidTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseEffectivePid
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseEffectivePid
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new DatabaseEffectivePid();
+    }
 
-	protected function setUp() {
-		$this->subject = new DatabaseEffectivePid();
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUidOfRecordIsPageIsEdited()
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'pages',
+            'databaseRow' => [
+                'uid' => 123,
+            ],
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 123;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUidOfRecordIsPageIsEdited() {
-		$input = [
-			'command' => 'edit',
-			'tableName' => 'pages',
-			'databaseRow' => [
-				'uid' => 123,
-			],
-		];
-		$expected = $input;
-		$expected['effectivePid'] = 123;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsPidOfRecordIfNoPageIsEdited()
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'pid' => 123,
+            ],
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 123;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsPidOfRecordIfNoPageIsEdited() {
-		$input = [
-			'command' => 'edit',
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'pid' => 123,
-			],
-		];
-		$expected = $input;
-		$expected['effectivePid'] = 123;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsUidOfParentPageRowIfParentPageRowExistsAndCommandIsNew()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'tt_content',
+            'parentPageRow' => [
+                'uid' => 123
+            ],
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 123;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsUidOfParentPageRowIfParentPageRowExistsAndCommandIsNew() {
-		$input = [
-			'command' => 'new',
-			'tableName' => 'tt_content',
-			'parentPageRow' => [
-				'uid' => 123
-			],
-		];
-		$expected = $input;
-		$expected['effectivePid'] = 123;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsZeroWithMissingParentPageRowAndCommandIsNew() {
-		$input = [
-			'command' => 'new',
-			'tableName' => 'pages',
-			'parentPageRow' => NULL,
-		];
-		$expected = $input;
-		$expected['effectivePid'] = 0;
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsZeroWithMissingParentPageRowAndCommandIsNew()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'pages',
+            'parentPageRow' => null,
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 0;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

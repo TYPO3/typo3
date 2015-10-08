@@ -19,51 +19,51 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class NumberRangeValidator extends AbstractValidator {
+class NumberRangeValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'minimum' => array(0, 'The minimum value to accept', 'integer'),
+        'maximum' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer')
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'minimum' => array(0, 'The minimum value to accept', 'integer'),
-		'maximum' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer')
-	);
+    /**
+     * The given value is valid if it is a number in the specified range.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     * @api
+     */
+    public function isValid($value)
+    {
+        if (!is_numeric($value)) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.numberrange.notvalid',
+                    'extbase'
+                ), 1221563685);
+            return;
+        }
 
-	/**
-	 * The given value is valid if it is a number in the specified range.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 * @api
-	 */
-	public function isValid($value) {
-		if (!is_numeric($value)) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.numberrange.notvalid',
-					'extbase'
-				), 1221563685);
-			return;
-		}
+        $minimum = $this->options['minimum'];
+        $maximum = $this->options['maximum'];
 
-		$minimum = $this->options['minimum'];
-		$maximum = $this->options['maximum'];
-
-		if ($minimum > $maximum) {
-			$x = $minimum;
-			$minimum = $maximum;
-			$maximum = $x;
-		}
-		if ($value < $minimum || $value > $maximum) {
-			$this->addError($this->translateErrorMessage(
-				'validator.numberrange.range',
-				'extbase',
-				array(
-					$minimum,
-					$maximum
-				)
-			), 1221561046, array($minimum, $maximum));
-		}
-	}
-
+        if ($minimum > $maximum) {
+            $x = $minimum;
+            $minimum = $maximum;
+            $maximum = $x;
+        }
+        if ($value < $minimum || $value > $maximum) {
+            $this->addError($this->translateErrorMessage(
+                'validator.numberrange.range',
+                'extbase',
+                array(
+                    $minimum,
+                    $maximum
+                )
+            ), 1221561046, array($minimum, $maximum));
+        }
+    }
 }

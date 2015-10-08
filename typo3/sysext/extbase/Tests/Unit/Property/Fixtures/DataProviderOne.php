@@ -17,4 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures;
 /**
  * Fixture DataProviderOne
  */
-class DataProviderOne implements DataProviderOneInterface{}
+class DataProviderOne implements DataProviderOneInterface
+{
+}

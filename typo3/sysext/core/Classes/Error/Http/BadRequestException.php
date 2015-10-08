@@ -17,34 +17,34 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * Exception for Error 400 - Bad Request
  */
-class BadRequestException extends AbstractClientErrorException {
+class BadRequestException extends AbstractClientErrorException
+{
+    /**
+     * @var array HTTP Status Header lines
+     */
+    protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_400);
 
-	/**
-	 * @var array HTTP Status Header lines
-	 */
-	protected $statusHeaders = array(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_400);
+    /**
+     * @var string Title of the message
+     */
+    protected $title = 'Bad Request (400)';
 
-	/**
-	 * @var string Title of the message
-	 */
-	protected $title = 'Bad Request (400)';
+    /**
+     * @var string Error Message
+     */
+    protected $message = 'The request cannot be fulfilled due to bad syntax.';
 
-	/**
-	 * @var string Error Message
-	 */
-	protected $message = 'The request cannot be fulfilled due to bad syntax.';
-
-	/**
-	 * Constructor for this Status Exception
-	 *
-	 * @param string $message Error Message
-	 * @param int $code Exception Code
-	 */
-	public function __construct($message = NULL, $code = 0) {
-		if (!empty($message)) {
-			$this->message = $message;
-		}
-		parent::__construct($this->statusHeaders, $this->message, $this->title, $code);
-	}
-
+    /**
+     * Constructor for this Status Exception
+     *
+     * @param string $message Error Message
+     * @param int $code Exception Code
+     */
+    public function __construct($message = null, $code = 0)
+    {
+        if (!empty($message)) {
+            $this->message = $message;
+        }
+        parent::__construct($this->statusHeaders, $this->message, $this->title, $code);
+    }
 }

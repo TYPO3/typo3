@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Extbase\Tests;
 /**
  * MockACommandController Fixture
  */
-class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
-
-	/**
-	 * funcACommand
-	 *
-	 * @param int $arg A not required argument
-	 * @return string
-	 */
-	public function funcACommand($arg = 1) {
-		return 'Foo';
-	}
-
+class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
+    /**
+     * funcACommand
+     *
+     * @param int $arg A not required argument
+     * @return string
+     */
+    public function funcACommand($arg = 1)
+    {
+        return 'Foo';
+    }
 }

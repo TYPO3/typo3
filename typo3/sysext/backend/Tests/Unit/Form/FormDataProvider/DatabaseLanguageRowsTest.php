@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows;
@@ -26,319 +25,325 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class DatabaseLanguageRowsTest extends UnitTestCase {
+class DatabaseLanguageRowsTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseLanguageRows
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseLanguageRows
-	 */
-	protected $subject;
+    /**
+     * @var DatabaseConnection | ObjectProphecy
+     */
+    protected $dbProphecy;
 
-	/**
-	 * @var DatabaseConnection | ObjectProphecy
-	 */
-	protected $dbProphecy;
+    protected function setUp()
+    {
+        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 
-	protected function setUp() {
-		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+        $this->subject = new DatabaseLanguageRows();
+    }
 
-		$this->subject = new DatabaseLanguageRows();
-	}
+    /**
+     * @test
+     */
+    public function addDataReturnsUnchangedResultIfTableProvidesNoTranslations()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'bar',
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => array(),
+                'columns' => array(),
+            ],
+        ];
+        $this->assertEquals($input, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataReturnsUnchangedResultIfTableProvidesNoTranslations() {
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'bar',
-			],
-			'vanillaTableTca' => [
-				'ctrl' => array(),
-				'columns' => array(),
-			],
-		];
-		$this->assertEquals($input, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfDefaultOfLocalizedRecordIsNotFound()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 2,
+                'l10n_parent' => 23,
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => array(
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ),
+            ],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfDefaultOfLocalizedRecordIsNotFound() {
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'localized text',
-				'sys_language_uid' => 2,
-				'l10n_parent' => 23,
-			],
-			'vanillaTableTca' => [
-				'ctrl' => array(
-					'languageField' => 'sys_language_uid',
-					'transOrigPointerField' => 'l10n_parent',
-				),
-			],
-		];
+        // Needed for BackendUtility::getRecord
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn(null);
 
-		// Needed for BackendUtility::getRecord
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn(NULL);
+        $this->setExpectedException(DatabaseDefaultLanguageException::class, $this->anything(), 1438249426);
 
-		$this->setExpectedException(DatabaseDefaultLanguageException::class, $this->anything(), 1438249426);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsDefaultLanguageRow()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 2,
+                'l10n_parent' => 23,
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => array(
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ),
+            ],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsDefaultLanguageRow() {
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'localized text',
-				'sys_language_uid' => 2,
-				'l10n_parent' => 23,
-			],
-			'vanillaTableTca' => [
-				'ctrl' => array(
-					'languageField' => 'sys_language_uid',
-					'transOrigPointerField' => 'l10n_parent',
-				),
-			],
-		];
+        $defaultLanguageRow = [
+            'uid' => 23,
+            'text' => 'default language text',
+            'sys_language_uid' => 0,
+        ];
+        // Needed for BackendUtility::getRecord
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
-		$defaultLanguageRow = [
-			'uid' => 23,
-			'text' => 'default language text',
-			'sys_language_uid' => 0,
-		];
-		// Needed for BackendUtility::getRecord
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
+        $expected = $input;
+        $expected['defaultLanguageRow'] = $defaultLanguageRow;
 
-		$expected = $input;
-		$expected['defaultLanguageRow'] = $defaultLanguageRow;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsDiffSourceFieldIfGiven()
+    {
+        $diffSource = [
+            'uid' => 42,
+            'text' => 'field content of default lang record when lang overlay was created',
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsDiffSourceFieldIfGiven() {
-		$diffSource = [
-			'uid' => 42,
-			'text' => 'field content of default lang record when lang overlay was created',
-		];
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 2,
+                'l10n_parent' => 23,
+                'l10n_diffsource' => serialize($diffSource),
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                    'transOrigDiffSourceField' => 'l10n_diffsource',
+                ],
+            ],
+            'defaultLanguageRow' => null,
+        ];
 
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'localized text',
-				'sys_language_uid' => 2,
-				'l10n_parent' => 23,
-				'l10n_diffsource' => serialize($diffSource),
-			],
-			'vanillaTableTca' => [
-				'ctrl' => [
-					'languageField' => 'sys_language_uid',
-					'transOrigPointerField' => 'l10n_parent',
-					'transOrigDiffSourceField' => 'l10n_diffsource',
-				],
-			],
-			'defaultLanguageRow' => NULL,
-		];
+        $defaultLanguageRow = [
+            'uid' => 23,
+            'text' => 'default language text',
+            'sys_language_uid' => 0,
+        ];
+        // Needed for BackendUtility::getRecord
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
-		$defaultLanguageRow = [
-			'uid' => 23,
-			'text' => 'default language text',
-			'sys_language_uid' => 0,
-		];
-		// Needed for BackendUtility::getRecord
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
+        $expected = $input;
+        $expected['defaultLanguageRow'] = $defaultLanguageRow;
+        $expected['defaultLanguageDiffRow'] = $diffSource;
 
-		$expected = $input;
-		$expected['defaultLanguageRow'] = $defaultLanguageRow;
-		$expected['defaultLanguageDiffRow'] = $diffSource;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsAdditionalLanguageRowsIfRequestedInUserTypoScript()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 2,
+                'l10n_parent' => 23,
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+            ],
+            'userTsConfig' => [
+                'options.' => [
+                    'additionalPreviewLanguages' => '3',
+                ],
+            ],
+            'systemLanguageRows' => [
+                0 => [
+                    'uid' => 0,
+                    'title' => 'Default Language',
+                    'iso' => 'DEV',
+                ],
+                3 => [
+                    'uid' => 3,
+                    'title' => 'french',
+                    'iso' => 'fr',
+                ],
+            ],
+            'defaultLanguageRow' => null,
+            'additionalLanguageRows' => [],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsAdditionalLanguageRowsIfRequestedInUserTypoScript() {
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'localized text',
-				'sys_language_uid' => 2,
-				'l10n_parent' => 23,
-			],
-			'vanillaTableTca' => [
-				'ctrl' => [
-					'languageField' => 'sys_language_uid',
-					'transOrigPointerField' => 'l10n_parent',
-				],
-			],
-			'userTsConfig' => [
-				'options.' => [
-					'additionalPreviewLanguages' => '3',
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'title' => 'Default Language',
-					'iso' => 'DEV',
-				],
-				3 => [
-					'uid' => 3,
-					'title' => 'french',
-					'iso' => 'fr',
-				],
-			],
-			'defaultLanguageRow' => NULL,
-			'additionalLanguageRows' => [],
-		];
+        $translationResult = [
+            'translations' => [
+                3 => [
+                    'uid' => 43,
+                ],
+            ],
+        ];
+        // For BackendUtility::getRecord()
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $recordWsolResult = [
+            'uid' => 43,
+            'text' => 'localized text in french',
+        ];
 
-		$translationResult = [
-			'translations' => [
-				3 => [
-					'uid' => 43,
-				],
-			],
-		];
-		// For BackendUtility::getRecord()
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$recordWsolResult = [
-			'uid' => 43,
-			'text' => 'localized text in french',
-		];
+        $defaultLanguageRow = [
+            'uid' => 23,
+            'text' => 'default language text',
+            'sys_language_uid' => 0,
+        ];
+        // Needed for BackendUtility::getRecord
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
-		$defaultLanguageRow = [
-			'uid' => 23,
-			'text' => 'default language text',
-			'sys_language_uid' => 0,
-		];
-		// Needed for BackendUtility::getRecord
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
+        /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
+        $translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
+        GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
+        $translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
 
-		/** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
-		$translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
-		GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
-		$translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
+        // This is the real check: The "additional overlay" should be fetched
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=43')->shouldBeCalled()->willReturn($recordWsolResult);
 
-		// This is the real check: The "additional overlay" should be fetched
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=43')->shouldBeCalled()->willReturn($recordWsolResult);
+        $expected = $input;
+        $expected['defaultLanguageRow'] = $defaultLanguageRow;
+        $expected['additionalLanguageRows'] = [
+            3 => [
+                'uid' => 43,
+                'text' => 'localized text in french',
+            ],
+        ];
 
-		$expected = $input;
-		$expected['defaultLanguageRow'] = $defaultLanguageRow;
-		$expected['additionalLanguageRows'] = [
-			3 => [
-				'uid' => 43,
-				'text' => 'localized text in french',
-			],
-		];
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsDoesNotAddHandledRowAsAdditionalLanguageRows()
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'databaseRow' => [
+                'uid' => 42,
+                'text' => 'localized text',
+                'sys_language_uid' => 2,
+                'l10n_parent' => 23,
+            ],
+            'vanillaTableTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+            ],
+            'userTsConfig' => [
+                'options.' => [
+                    'additionalPreviewLanguages' => '2,3',
+                ],
+            ],
+            'systemLanguageRows' => [
+                0 => [
+                    'uid' => 0,
+                    'title' => 'Default Language',
+                    'iso' => 'DEV',
+                ],
+                2 => [
+                    'uid' => 2,
+                    'title' => 'dansk',
+                    'iso' => 'dk,'
+                ],
+                3 => [
+                    'uid' => 3,
+                    'title' => 'french',
+                    'iso' => 'fr',
+                ],
+            ],
+            'defaultLanguageRow' => null,
+            'additionalLanguageRows' => [],
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsDoesNotAddHandledRowAsAdditionalLanguageRows() {
-		$input = [
-			'tableName' => 'tt_content',
-			'databaseRow' => [
-				'uid' => 42,
-				'text' => 'localized text',
-				'sys_language_uid' => 2,
-				'l10n_parent' => 23,
-			],
-			'vanillaTableTca' => [
-				'ctrl' => [
-					'languageField' => 'sys_language_uid',
-					'transOrigPointerField' => 'l10n_parent',
-				],
-			],
-			'userTsConfig' => [
-				'options.' => [
-					'additionalPreviewLanguages' => '2,3',
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'title' => 'Default Language',
-					'iso' => 'DEV',
-				],
-				2 => [
-					'uid' => 2,
-					'title' => 'dansk',
-					'iso' => 'dk,'
-				],
-				3 => [
-					'uid' => 3,
-					'title' => 'french',
-					'iso' => 'fr',
-				],
-			],
-			'defaultLanguageRow' => NULL,
-			'additionalLanguageRows' => [],
-		];
+        $translationResult = [
+            'translations' => [
+                3 => [
+                    'uid' => 43,
+                ],
+            ],
+        ];
+        // For BackendUtility::getRecord()
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $recordWsolResult = [
+            'uid' => 43,
+            'text' => 'localized text in french',
+        ];
 
-		$translationResult = [
-			'translations' => [
-				3 => [
-					'uid' => 43,
-				],
-			],
-		];
-		// For BackendUtility::getRecord()
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$recordWsolResult = [
-			'uid' => 43,
-			'text' => 'localized text in french',
-		];
+        $defaultLanguageRow = [
+            'uid' => 23,
+            'text' => 'default language text',
+            'sys_language_uid' => 0,
+        ];
+        // Needed for BackendUtility::getRecord
+        $GLOBALS['TCA']['tt_content'] = array('foo');
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
 
-		$defaultLanguageRow = [
-			'uid' => 23,
-			'text' => 'default language text',
-			'sys_language_uid' => 0,
-		];
-		// Needed for BackendUtility::getRecord
-		$GLOBALS['TCA']['tt_content'] = array('foo');
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn($defaultLanguageRow);
+        /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
+        $translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
+        GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
+        $translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
+        $translationProphecy->translationInfo('tt_content', 23, 2)->shouldNotBeCalled();
 
-		/** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
-		$translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
-		GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
-		$translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
-		$translationProphecy->translationInfo('tt_content', 23, 2)->shouldNotBeCalled();
+        // This is the real check: The "additional overlay" should be fetched
+        $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=43')->shouldBeCalled()->willReturn($recordWsolResult);
 
-		// This is the real check: The "additional overlay" should be fetched
-		$this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=43')->shouldBeCalled()->willReturn($recordWsolResult);
+        $expected = $input;
+        $expected['defaultLanguageRow'] = $defaultLanguageRow;
+        $expected['additionalLanguageRows'] = [
+            3 => [
+                'uid' => 43,
+                'text' => 'localized text in french',
+            ],
+        ];
 
-		$expected = $input;
-		$expected['defaultLanguageRow'] = $defaultLanguageRow;
-		$expected['additionalLanguageRows'] = [
-			3 => [
-				'uid' => 43,
-				'text' => 'localized text in french',
-			],
-		];
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 }

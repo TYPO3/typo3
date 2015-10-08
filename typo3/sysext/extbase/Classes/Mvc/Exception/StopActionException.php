@@ -22,6 +22,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  *
  * See the Action Controller's forward() and redirectToUri() methods for more information.
  */
-class StopActionException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class StopActionException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

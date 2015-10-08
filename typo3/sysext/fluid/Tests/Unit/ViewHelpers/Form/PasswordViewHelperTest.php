@@ -14,62 +14,65 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 /**
  * Test for the "Password" Form view helper
  */
-class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
+class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\TextboxViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\TextboxViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+        $this->arguments['name'] = '';
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
-		$this->arguments['name'] = '';
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsTagName()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName'), array(), '', false);
+        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsTagName() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName'), array(), '', FALSE);
-		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsTypeNameAndValueAttributes()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', false);
+        $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
+        $mockTagBuilder->expects($this->once())->method('render');
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsTypeNameAndValueAttributes() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
-		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
-		$mockTagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $arguments = array(
+            'name' => 'NameOfTextbox',
+            'value' => 'Current value'
+        );
+        $this->viewHelper->setArguments($arguments);
 
-		$arguments = array(
-			'name' => 'NameOfTextbox',
-			'value' => 'Current value'
-		);
-		$this->viewHelper->setArguments($arguments);
+        $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderCallsSetErrorClassAttribute() {
-		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-		$this->viewHelper->render();
-	}
-
+    /**
+     * @test
+     */
+    public function renderCallsSetErrorClassAttribute()
+    {
+        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->render();
+    }
 }

@@ -29,47 +29,48 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  *
  * @api
  */
-class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
+class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('string', 'integer', 'float', 'boolean', 'array');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('string', 'integer', 'float', 'boolean', 'array');
+    /**
+     * @var string
+     */
+    protected $targetType = \TYPO3\CMS\Core\Type\TypeInterface::class;
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = \TYPO3\CMS\Core\Type\TypeInterface::class;
+    /**
+     * @var int
+     */
+    protected $priority = 1;
 
-	/**
-	 * @var int
-	 */
-	protected $priority = 1;
+    /**
+     * @param mixed $source
+     * @param string $targetType
+     * @return bool
+     */
+    public function canConvertFrom($source, $targetType)
+    {
+        return TypeHandlingUtility::isCoreType($targetType);
+    }
 
-	/**
-	 * @param mixed $source
-	 * @param string $targetType
-	 * @return bool
-	 */
-	public function canConvertFrom($source, $targetType) {
-		return TypeHandlingUtility::isCoreType($targetType);
-	}
-
-	/**
-	 * Convert an object from $source to an Enumeration.
-	 *
-	 * @param mixed $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return object the target type
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		try {
-			return new $targetType($source);
-		} catch (InvalidValueExceptionInterface $exception) {
-			return new \TYPO3\CMS\Extbase\Error\Error($exception->getMessage(), 1381680012);
-		}
-	}
-
+    /**
+     * Convert an object from $source to an Enumeration.
+     *
+     * @param mixed $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+     * @return object the target type
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    {
+        try {
+            return new $targetType($source);
+        } catch (InvalidValueExceptionInterface $exception) {
+            return new \TYPO3\CMS\Extbase\Error\Error($exception->getMessage(), 1381680012);
+        }
+    }
 }

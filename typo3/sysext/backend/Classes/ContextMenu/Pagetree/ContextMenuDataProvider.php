@@ -19,76 +19,78 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Context Menu Data Provider for the Page Tree
  */
-class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider {
+class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider
+{
+    /**
+     * Old Context Menu Options (access mapping)
+     *
+     * Note: Only option with different namings are mapped!
+     *
+     * @var array
+     */
+    protected $legacyContextMenuMapping = array(
+        'hide' => 'disable',
+        'paste' => 'pasteInto,pasteAfter',
+        'mount_as_treeroot' => 'mountAsTreeroot'
+    );
 
-	/**
-	 * Old Context Menu Options (access mapping)
-	 *
-	 * Note: Only option with different namings are mapped!
-	 *
-	 * @var array
-	 */
-	protected $legacyContextMenuMapping = array(
-		'hide' => 'disable',
-		'paste' => 'pasteInto,pasteAfter',
-		'mount_as_treeroot' => 'mountAsTreeroot'
-	);
+    /**
+     * Fetches the items that should be disabled from the context menu
+     *
+     * @return array
+     */
+    protected function getDisableActions()
+    {
+        $tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
+        $disableItems = array();
+        if (trim($tsConfig['value']) !== '') {
+            $disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
+        }
+        $tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.pageTree.disableItems');
+        $oldDisableItems = array();
+        if (trim($tsConfig['value']) !== '') {
+            $oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
+        }
+        $additionalItems = array();
+        foreach ($oldDisableItems as $item) {
+            if (!isset($this->legacyContextMenuMapping[$item])) {
+                $additionalItems[] = $item;
+                continue;
+            }
+            if (strpos($this->legacyContextMenuMapping[$item], ',')) {
+                $actions = GeneralUtility::trimExplode(',', $this->legacyContextMenuMapping[$item]);
+                $additionalItems = array_merge($additionalItems, $actions);
+            } else {
+                $additionalItems[] = $item;
+            }
+        }
+        return array_merge($disableItems, $additionalItems);
+    }
 
-	/**
-	 * Fetches the items that should be disabled from the context menu
-	 *
-	 * @return array
-	 */
-	protected function getDisableActions() {
-		$tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
-		$disableItems = array();
-		if (trim($tsConfig['value']) !== '') {
-			$disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
-		}
-		$tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.pageTree.disableItems');
-		$oldDisableItems = array();
-		if (trim($tsConfig['value']) !== '') {
-			$oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
-		}
-		$additionalItems = array();
-		foreach ($oldDisableItems as $item) {
-			if (!isset($this->legacyContextMenuMapping[$item])) {
-				$additionalItems[] = $item;
-				continue;
-			}
-			if (strpos($this->legacyContextMenuMapping[$item], ',')) {
-				$actions = GeneralUtility::trimExplode(',', $this->legacyContextMenuMapping[$item]);
-				$additionalItems = array_merge($additionalItems, $actions);
-			} else {
-				$additionalItems[] = $item;
-			}
-		}
-		return array_merge($disableItems, $additionalItems);
-	}
+    /**
+     * Returns the actions for the node
+     *
+     * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+     * @return \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection
+     */
+    public function getActionsForNode(\TYPO3\CMS\Backend\Tree\TreeNode $node)
+    {
+        $this->disableItems = $this->getDisableActions();
+        $configuration = $this->getConfiguration();
+        $contextMenuActions = array();
+        if (is_array($configuration)) {
+            $contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
+        }
+        return $contextMenuActions;
+    }
 
-	/**
-	 * Returns the actions for the node
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-	 * @return \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection
-	 */
-	public function getActionsForNode(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
-		$this->disableItems = $this->getDisableActions();
-		$configuration = $this->getConfiguration();
-		$contextMenuActions = array();
-		if (is_array($configuration)) {
-			$contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
-		}
-		return $contextMenuActions;
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

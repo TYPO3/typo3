@@ -17,63 +17,65 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 
-
 /**
  * Test cases for TextExtractorRegistry
  */
-class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
+     *
+     * @param array $createsTextExtractorInstances
+     * @return \PHPUnit_Framework_MockObject_MockObject|TextExtractorRegistry
+     */
+    protected function getTextExtractorRegistry(array $createsTextExtractorInstances = array())
+    {
+        $textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
+            ->setMethods(array('createTextExtractorInstance'))
+            ->getMock();
 
-	/**
-	 * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
-	 *
-	 * @param array $createsTextExtractorInstances
-	 * @return \PHPUnit_Framework_MockObject_MockObject|TextExtractorRegistry
-	 */
-	protected function getTextExtractorRegistry(array $createsTextExtractorInstances = array()) {
-		$textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
-			->setMethods(array('createTextExtractorInstance'))
-			->getMock();
+        if (!empty($createsTextExtractorInstances)) {
+            $textExtractorRegistry->expects($this->any())
+                ->method('createTextExtractorInstance')
+                ->will($this->returnValueMap($createsTextExtractorInstances));
+        }
 
-		if (!empty($createsTextExtractorInstances)) {
-			$textExtractorRegistry->expects($this->any())
-				->method('createTextExtractorInstance')
-				->will($this->returnValueMap($createsTextExtractorInstances));
-		}
+        return $textExtractorRegistry;
+    }
 
-		return $textExtractorRegistry;
-	}
+    /**
+     * @test
+     */
+    public function registeredTextExtractorClassCanBeRetrieved()
+    {
+        $textExtractorClass = $this->getUniqueId('myTextExtractor');
+        $textExtractorInstance = $this->getMock(TextExtractorInterface::class, array(), array(), $textExtractorClass);
 
-	/**
-	 * @test
-	 */
-	public function registeredTextExtractorClassCanBeRetrieved() {
-		$textExtractorClass = $this->getUniqueId('myTextExtractor');
-		$textExtractorInstance = $this->getMock(TextExtractorInterface::class, array(), array(), $textExtractorClass);
+        $textExtractorRegistry = $this->getTextExtractorRegistry(array(array($textExtractorClass, $textExtractorInstance)));
 
-		$textExtractorRegistry = $this->getTextExtractorRegistry(array(array($textExtractorClass, $textExtractorInstance)));
+        $textExtractorRegistry->registerTextExtractor($textExtractorClass);
+        $this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances(), '', false, false);
+    }
 
-		$textExtractorRegistry->registerTextExtractor($textExtractorClass);
-		$this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances(), '', FALSE, FALSE);
-	}
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1422906893
+     */
+    public function registerTextExtractorThrowsExceptionIfClassDoesNotExist()
+    {
+        $textExtractorRegistry = $this->getTextExtractorRegistry();
+        $textExtractorRegistry->registerTextExtractor($this->getUniqueId());
+    }
 
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1422906893
-	 */
-	public function registerTextExtractorThrowsExceptionIfClassDoesNotExist() {
-		$textExtractorRegistry = $this->getTextExtractorRegistry();
-		$textExtractorRegistry->registerTextExtractor($this->getUniqueId());
-	}
-
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1422771427
-	 */
-	public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface() {
-		$textExtractorRegistry = $this->getTextExtractorRegistry();
-		$textExtractorRegistry->registerTextExtractor(__CLASS__);
-	}
-
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1422771427
+     */
+    public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface()
+    {
+        $textExtractorRegistry = $this->getTextExtractorRegistry();
+        $textExtractorRegistry->registerTextExtractor(__CLASS__);
+    }
 }

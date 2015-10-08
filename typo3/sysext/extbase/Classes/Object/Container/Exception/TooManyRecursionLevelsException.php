@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
 /**
  * Exception thrown if cache cannot be built.
  */
-class TooManyRecursionLevelsException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class TooManyRecursionLevelsException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

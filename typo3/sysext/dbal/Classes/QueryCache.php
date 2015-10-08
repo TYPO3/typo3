@@ -17,20 +17,20 @@ namespace TYPO3\CMS\Dbal;
 /**
  * Cache engine helper for generated queries.
  */
-class QueryCache {
-
-	/**
-	 * Returns a proper cache key.
-	 *
-	 * @param mixed $config
-	 * @return void
-	 */
-	static public function getCacheKey($config) {
-		if (is_array($config)) {
-			return md5(serialize($config));
-		} else {
-			return $config;
-		}
-	}
-
+class QueryCache
+{
+    /**
+     * Returns a proper cache key.
+     *
+     * @param mixed $config
+     * @return void
+     */
+    public static function getCacheKey($config)
+    {
+        if (is_array($config)) {
+            return md5(serialize($config));
+        } else {
+            return $config;
+        }
+    }
 }

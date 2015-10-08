@@ -14,34 +14,34 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class DigitValidator extends AbstractValidator {
+class DigitValidator extends AbstractValidator
+{
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_digit';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_digit';
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		$compareValue = preg_replace('/[^0-9]/', '', (string)$value);
-		if ($compareValue !== $value) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1442000838
-			);
-		}
-	}
-
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        $compareValue = preg_replace('/[^0-9]/', '', (string)$value);
+        if ($compareValue !== $value) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1442000838
+            );
+        }
+    }
 }

@@ -27,29 +27,30 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Testcase for the email uri view helper
  */
-class EmailViewHelperTest extends ViewHelperBaseTestcase {
+class EmailViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->cObj = $this->getMock(ContentObjectRenderer::class, array(), array(), '', false);
+        $this->viewHelper = new EmailViewHelper();
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->cObj = $this->getMock(ContentObjectRenderer::class, array(), array(), '', FALSE);
-		$this->viewHelper = new EmailViewHelper();
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsFirstResultOfGetMailTo() {
-		$this->viewHelper->initialize();
-		$actualResult = $this->viewHelper->render('some@email.tld');
-		$this->assertEquals('mailto:some@email.tld', $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function renderReturnsFirstResultOfGetMailTo()
+    {
+        $this->viewHelper->initialize();
+        $actualResult = $this->viewHelper->render('some@email.tld');
+        $this->assertEquals('mailto:some@email.tld', $actualResult);
+    }
 }

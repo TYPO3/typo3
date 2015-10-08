@@ -17,76 +17,79 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Currency filter
  */
-class CurrencyFilter extends AbstractFilter implements FilterInterface {
+class CurrencyFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Separator between group of thousands
+     * Mostly dot, comma or whitespace
+     *
+     * @var string
+     */
+    protected $decimalsPoint;
 
-	/**
-	 * Separator between group of thousands
-	 * Mostly dot, comma or whitespace
-	 *
-	 * @var string
-	 */
-	protected $decimalsPoint;
+    /**
+     * Separator between group of thousands
+     * Mostly dot, comma or whitespace
+     *
+     * @var string
+     */
+    protected $thousandSeparator;
 
-	/**
-	 * Separator between group of thousands
-	 * Mostly dot, comma or whitespace
-	 *
-	 * @var string
-	 */
-	protected $thousandSeparator;
+    /**
+     * Constructor
+     *
+     * @param array $arguments Filter configuration
+     */
+    public function __construct($arguments = array())
+    {
+        $this->setDecimalsPoint($arguments['decimalPoint']);
+        $this->setThousandSeparator($arguments['thousandSeparator']);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $arguments Filter configuration
-	 */
-	public function __construct($arguments = array()) {
-		$this->setDecimalsPoint($arguments['decimalPoint']);
-		$this->setThousandSeparator($arguments['thousandSeparator']);
-	}
+    /**
+     * Set the decimal point character
+     *
+     * @param string $decimalsPoint Character used for decimal point
+     * @return void
+     */
+    public function setDecimalsPoint($decimalsPoint = '.')
+    {
+        if (empty($decimalsPoint)) {
+            $this->decimalsPoint = '.';
+        } else {
+            $this->decimalsPoint = (string)$decimalsPoint;
+        }
+    }
 
-	/**
-	 * Set the decimal point character
-	 *
-	 * @param string $decimalsPoint Character used for decimal point
-	 * @return void
-	 */
-	public function setDecimalsPoint($decimalsPoint = '.') {
-		if (empty($decimalsPoint)) {
-			$this->decimalsPoint = '.';
-		} else {
-			$this->decimalsPoint = (string)$decimalsPoint;
-		}
-	}
+    /**
+     * Set the thousand separator character
+     *
+     * @param string $thousandSeparator Character used for thousand separator
+     * @return void
+     */
+    public function setThousandSeparator($thousandSeparator = ',')
+    {
+        if (empty($thousandSeparator)) {
+            $this->thousandSeparator = ',';
+        } elseif ($thousandSeparator === 'space') {
+            $this->thousandSeparator = ' ';
+        } elseif ($thousandSeparator === 'none') {
+            $this->thousandSeparator = '';
+        } else {
+            $this->thousandSeparator = (string)$thousandSeparator;
+        }
+    }
 
-	/**
-	 * Set the thousand separator character
-	 *
-	 * @param string $thousandSeparator Character used for thousand separator
-	 * @return void
-	 */
-	public function setThousandSeparator($thousandSeparator = ',') {
-		if (empty($thousandSeparator)) {
-			$this->thousandSeparator = ',';
-		} elseif ($thousandSeparator === 'space') {
-			$this->thousandSeparator = ' ';
-		} elseif ($thousandSeparator === 'none') {
-			$this->thousandSeparator = '';
-		} else {
-			$this->thousandSeparator = (string)$thousandSeparator;
-		}
-	}
-
-	/**
-	 * Change to float with 2 decimals
-	 * Change the dot to comma if requested
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		$value = (double) ((string)$value);
-		return number_format($value, 2, $this->decimalsPoint, $this->thousandSeparator);
-	}
-
+    /**
+     * Change to float with 2 decimals
+     * Change the dot to comma if requested
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        $value = (double) ((string)$value);
+        return number_format($value, 2, $this->decimalsPoint, $this->thousandSeparator);
+    }
 }

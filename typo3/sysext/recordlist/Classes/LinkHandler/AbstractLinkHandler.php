@@ -25,109 +25,115 @@ use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
  *
  * NOTE: This class should only be used internally. Extensions must implement the LinkHandlerInterface.
  */
-abstract class AbstractLinkHandler {
+abstract class AbstractLinkHandler
+{
+    /**
+     * Available additional link attributes
+     *
+     * 'rel' only works in RTE, still we have to declare support for it.
+     *
+     * @var string[]
+     */
+    protected $linkAttributes = [ 'target', 'title', 'class', 'params', 'rel' ];
 
-	/**
-	 * Available additional link attributes
-	 *
-	 * 'rel' only works in RTE, still we have to declare support for it.
-	 *
-	 * @var string[]
-	 */
-	protected $linkAttributes = [ 'target', 'title', 'class', 'params', 'rel' ];
+    /**
+     * @var bool
+     */
+    protected $updateSupported = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $updateSupported = TRUE;
+    /**
+     * @var LinkBrowserController
+     */
+    protected $linkBrowser;
 
-	/**
-	 * @var LinkBrowserController
-	 */
-	protected $linkBrowser;
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
 
-	/**
-	 * @var IconFactory
-	 */
-	protected $iconFactory;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-	}
+    /**
+     * Initialize the handler
+     *
+     * @param LinkBrowserController $linkBrowser
+     * @param string $identifier
+     * @param array $configuration Page TSconfig
+     *
+     * @return void
+     */
+    public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration)
+    {
+        $this->linkBrowser = $linkBrowser;
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
 
-	/**
-	 * Initialize the handler
-	 *
-	 * @param LinkBrowserController $linkBrowser
-	 * @param string $identifier
-	 * @param array $configuration Page TSconfig
-	 *
-	 * @return void
-	 */
-	public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration) {
-		$this->linkBrowser = $linkBrowser;
-		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-	}
+    /**
+     * @return array
+     */
+    public function getLinkAttributes()
+    {
+        return $this->linkAttributes;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getLinkAttributes() {
-		return $this->linkAttributes;
-	}
+    /**
+     * Return TRUE if the handler supports to update a link.
+     *
+     * This is useful for e.g. file or page links, when only attributes are changed.
+     *
+     * @return bool
+     */
+    public function isUpdateSupported()
+    {
+        return $this->updateSupported;
+    }
 
-	/**
-	 * Return TRUE if the handler supports to update a link.
-	 *
-	 * This is useful for e.g. file or page links, when only attributes are changed.
-	 *
-	 * @return bool
-	 */
-	public function isUpdateSupported() {
-		return $this->updateSupported;
-	}
+    /**
+     * @return void
+     */
+    protected function setTemporaryDbMounts()
+    {
+        $backendUser = $this->getBackendUser();
 
-	/**
-	 * @return void
-	 */
-	protected function setTemporaryDbMounts() {
-		$backendUser = $this->getBackendUser();
+        // Clear temporary DB mounts
+        $tmpMount = GeneralUtility::_GET('setTempDBmount');
+        if (isset($tmpMount)) {
+            $backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
+        }
+        // Set temporary DB mounts
+        $alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
+        if ($alternativeWebmountPoint) {
+            $alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+            $backendUser->setWebmounts($alternativeWebmountPoint);
+        } else {
+            // Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+            $alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+            $appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+            if ($alternativeWebmountPoints) {
+                $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+                $this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
+            }
+        }
+    }
 
-		// Clear temporary DB mounts
-		$tmpMount = GeneralUtility::_GET('setTempDBmount');
-		if (isset($tmpMount)) {
-			$backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-		}
-		// Set temporary DB mounts
-		$alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
-		if ($alternativeWebmountPoint) {
-			$alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-			$backendUser->setWebmounts($alternativeWebmountPoint);
-		} else {
-			// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-			$alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-			$appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
-			if ($alternativeWebmountPoints) {
-				$alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-				$this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
-			}
-		}
-	}
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

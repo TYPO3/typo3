@@ -19,20 +19,19 @@ namespace TYPO3\CMS\Backend\Utility;
  *
  * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
  */
-interface IconUtilityOverrideResourceIconHookInterface {
-
-	/**
-	 * Influence the choice of icon and overlays for a ResourceIcon
-	 *
-	 * The $iconName, $options and $overlays are passed as references
-	 * in order to be modified within the hook
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
-	 * @param string $iconName
-	 * @param array $options
-	 * @param array $overlays
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function overrideResourceIcon(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, &$iconName, array &$options, array &$overlays);
-
+interface IconUtilityOverrideResourceIconHookInterface
+{
+    /**
+     * Influence the choice of icon and overlays for a ResourceIcon
+     *
+     * The $iconName, $options and $overlays are passed as references
+     * in order to be modified within the hook
+     *
+     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
+     * @param string $iconName
+     * @param array $options
+     * @param array $overlays
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     */
+    public function overrideResourceIcon(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, &$iconName, array &$options, array &$overlays);
 }

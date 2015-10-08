@@ -14,11 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Exception;
 
 /**
  * User check did not survive "recordEditAccessInternals" to edit record
  */
-class AccessDeniedEditInternalsException extends AccessDeniedException {
-
+class AccessDeniedEditInternalsException extends AccessDeniedException
+{
 }

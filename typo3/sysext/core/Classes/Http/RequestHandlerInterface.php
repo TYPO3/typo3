@@ -20,34 +20,33 @@ namespace TYPO3\CMS\Core\Http;
  *
  * @api
  */
-interface RequestHandlerInterface {
+interface RequestHandlerInterface
+{
+    /**
+     * Handles a raw request
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return NULL|\Psr\Http\Message\ResponseInterface
+     * @api
+     */
+    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);
 
-	/**
-	 * Handles a raw request
-	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return NULL|\Psr\Http\Message\ResponseInterface
-	 * @api
-	 */
-	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);
+    /**
+     * Checks if the request handler can handle the given request.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return bool TRUE if it can handle the request, otherwise FALSE
+     * @api
+     */
+    public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request);
 
-	/**
-	 * Checks if the request handler can handle the given request.
-	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return bool TRUE if it can handle the request, otherwise FALSE
-	 * @api
-	 */
-	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request);
-
-	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request. An integer > 0 means "I want to handle this request" where
-	 * "100" is default. "0" means "I am a fallback solution".
-	 *
-	 * @return int The priority of the request handler
-	 * @api
-	 */
-	public function getPriority();
-
+    /**
+     * Returns the priority - how eager the handler is to actually handle the
+     * request. An integer > 0 means "I want to handle this request" where
+     * "100" is default. "0" means "I am a fallback solution".
+     *
+     * @return int The priority of the request handler
+     * @api
+     */
+    public function getPriority();
 }

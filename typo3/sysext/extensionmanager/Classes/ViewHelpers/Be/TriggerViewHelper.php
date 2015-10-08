@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
 
 /**
@@ -32,27 +31,27 @@ use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
  *
  * @internal
  */
-class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
-
-	/**
-	 * Loads some JS inline code based on a list of triggers. This is used to reload the main
-	 * menu when modules are loaded/unloaded.
-	 *
-	 * @param array $triggers Defined triggers to be forwarded to client (e.g. refreshing backend widgets)
-	 * @return string This view helper does not return any content
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @see \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	public function render($triggers = array()) {
-		$pageRenderer = $this->getPageRenderer();
-		// Handle triggers
-		if (!empty($triggers[AbstractController::TRIGGER_RefreshModuleMenu])) {
-			$pageRenderer->addJsInlineCode(
-				AbstractController::TRIGGER_RefreshModuleMenu,
-				'if (top.TYPO3ModuleMenu.refreshMenu) { top.TYPO3ModuleMenu.refreshMenu(); }'
-			);
-		}
-		return '';
-	}
-
+class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
+    /**
+     * Loads some JS inline code based on a list of triggers. This is used to reload the main
+     * menu when modules are loaded/unloaded.
+     *
+     * @param array $triggers Defined triggers to be forwarded to client (e.g. refreshing backend widgets)
+     * @return string This view helper does not return any content
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @see \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    public function render($triggers = array())
+    {
+        $pageRenderer = $this->getPageRenderer();
+        // Handle triggers
+        if (!empty($triggers[AbstractController::TRIGGER_RefreshModuleMenu])) {
+            $pageRenderer->addJsInlineCode(
+                AbstractController::TRIGGER_RefreshModuleMenu,
+                'if (top.TYPO3ModuleMenu.refreshMenu) { top.TYPO3ModuleMenu.refreshMenu(); }'
+            );
+        }
+        return '';
+    }
 }

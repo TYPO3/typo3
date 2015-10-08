@@ -35,26 +35,27 @@ use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  *	</f:be.menus.actionMenu>
  *
  */
-class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper {
+class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'optgroup';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'optgroup';
-
-	/**
-	 * @param string $label
-	 * @return string
-	 */
-	public function render($label = '') {
-		$this->tag->addAttribute('label', $label);
-		$options = '';
-		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof ViewHelperNode && $childNode->getViewHelperClassName() === ActionMenuItemViewHelper::class) {
-				$options .= $childNode->evaluate($this->renderingContext);
-			}
-		}
-		$this->tag->setContent($options);
-		return $this->tag->render();
-	}
+    /**
+     * @param string $label
+     * @return string
+     */
+    public function render($label = '')
+    {
+        $this->tag->addAttribute('label', $label);
+        $options = '';
+        foreach ($this->childNodes as $childNode) {
+            if ($childNode instanceof ViewHelperNode && $childNode->getViewHelperClassName() === ActionMenuItemViewHelper::class) {
+                $options .= $childNode->evaluate($this->renderingContext);
+            }
+        }
+        $this->tag->setContent($options);
+        return $this->tag->render();
+    }
 }

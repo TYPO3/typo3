@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 /**
  * BackendUtility fixture
  */
-class BackendUtilityFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility {
-
-	/**
-	 * @param int $id
-	 * @param array $rootLine
-	 * @param bool $returnPartArray
-	 * @return array
-	 */
-	static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = FALSE) {
-		return [];
-	}
+class BackendUtilityFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+{
+    /**
+     * @param int $id
+     * @param array $rootLine
+     * @param bool $returnPartArray
+     * @return array
+     */
+    public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
+    {
+        return [];
+    }
 }

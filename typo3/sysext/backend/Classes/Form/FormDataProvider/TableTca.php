@@ -22,27 +22,27 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
  * @todo: This one could vanish again - if all dependencies are
  * @todo: correct it would be sufficient to work with processedTca only
  */
-class TableTca implements FormDataProviderInterface {
-
-	/**
-	 * Add TCA of table
-	 *
-	 * @param array $result
-	 * @return array
-	 * @throws \UnexpectedValueException
-	 */
-	public function addData(array $result) {
-		if (
-			!isset($GLOBALS['TCA'][$result['tableName']])
-			|| !is_array($GLOBALS['TCA'][$result['tableName']])
-		) {
-			throw new \UnexpectedValueException(
-				'TCA for table ' . $result['tableName'] . ' not found',
-				1437914223
-			);
-		}
-		$result['vanillaTableTca'] = $GLOBALS['TCA'][$result['tableName']];
-		return $result;
-	}
-
+class TableTca implements FormDataProviderInterface
+{
+    /**
+     * Add TCA of table
+     *
+     * @param array $result
+     * @return array
+     * @throws \UnexpectedValueException
+     */
+    public function addData(array $result)
+    {
+        if (
+            !isset($GLOBALS['TCA'][$result['tableName']])
+            || !is_array($GLOBALS['TCA'][$result['tableName']])
+        ) {
+            throw new \UnexpectedValueException(
+                'TCA for table ' . $result['tableName'] . ' not found',
+                1437914223
+            );
+        }
+        $result['vanillaTableTca'] = $GLOBALS['TCA'][$result['tableName']];
+        return $result;
+    }
 }

@@ -19,39 +19,39 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 /**
  * CharacterMap plugin for htmlArea RTE
  */
-class CharacterMap extends RteHtmlAreaApi {
+class CharacterMap extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'CharacterMap';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'CharacterMap';
+    /**
+     * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+     *
+     * @var string
+     */
+    protected $pluginButtons = 'insertcharacter,insertsofthyphen';
 
-	/**
-	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
-	 *
-	 * @var string
-	 */
-	protected $pluginButtons = 'insertcharacter,insertsofthyphen';
+    /**
+     * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+     *
+     * @var array
+     */
+    protected $convertToolbarForHtmlAreaArray = array(
+        'insertcharacter' => 'InsertCharacter',
+        'insertsofthyphen' => 'InsertSoftHyphen'
+    );
 
-	/**
-	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
-	 *
-	 * @var array
-	 */
-	protected $convertToolbarForHtmlAreaArray = array(
-		'insertcharacter' => 'InsertCharacter',
-		'insertsofthyphen' => 'InsertSoftHyphen'
-	);
-
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration() {
-		return '';
-	}
-
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins
+     */
+    public function buildJavascriptConfiguration()
+    {
+        return '';
+    }
 }

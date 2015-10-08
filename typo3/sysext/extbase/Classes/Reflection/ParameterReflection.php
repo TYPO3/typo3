@@ -17,29 +17,30 @@ namespace TYPO3\CMS\Extbase\Reflection;
 /**
  * Extended version of the ReflectionParameter
  */
-class ParameterReflection extends \ReflectionParameter {
+class ParameterReflection extends \ReflectionParameter
+{
+    /**
+     * Returns the declaring class
+     *
+     * @return ClassReflection The declaring class
+     */
+    public function getDeclaringClass()
+    {
+        return new ClassReflection(parent::getDeclaringClass()->getName());
+    }
 
-	/**
-	 * Returns the declaring class
-	 *
-	 * @return ClassReflection The declaring class
-	 */
-	public function getDeclaringClass() {
-		return new ClassReflection(parent::getDeclaringClass()->getName());
-	}
-
-	/**
-	 * Returns the parameter class
-	 *
-	 * @return ClassReflection The parameter class
-	 */
-	public function getClass() {
-		try {
-			$class = parent::getClass();
-		} catch (\Exception $e) {
-			return NULL;
-		}
-		return is_object($class) ? new ClassReflection($class->getName()) : NULL;
-	}
-
+    /**
+     * Returns the parameter class
+     *
+     * @return ClassReflection The parameter class
+     */
+    public function getClass()
+    {
+        try {
+            $class = parent::getClass();
+        } catch (\Exception $e) {
+            return null;
+        }
+        return is_object($class) ? new ClassReflection($class->getName()) : null;
+    }
 }

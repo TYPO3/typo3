@@ -17,5 +17,6 @@ namespace TYPO3\CMS\Belog\Controller;
 /**
  * Show log entries from table sys_log
  */
-class ToolsController extends \TYPO3\CMS\Belog\Controller\AbstractController {
+class ToolsController extends \TYPO3\CMS\Belog\Controller\AbstractController
+{
 }

@@ -17,77 +17,80 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
 
 /**
  * Link handler for external URLs
  */
-class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface {
+class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
+{
+    /**
+     * Parts of the current link
+     *
+     * @var array
+     */
+    protected $linkParts = [];
 
-	/**
-	 * Parts of the current link
-	 *
-	 * @var array
-	 */
-	protected $linkParts = [];
+    /**
+     * We don't support updates since there is no difference to simply set the link again.
+     *
+     * @var bool
+     */
+    protected $updateSupported = false;
 
-	/**
-	 * We don't support updates since there is no difference to simply set the link again.
-	 *
-	 * @var bool
-	 */
-	protected $updateSupported = FALSE;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // remove unsupported link attribute
+        unset($this->linkAttributes[array_search('params', $this->linkAttributes, true)]);
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-		// remove unsupported link attribute
-		unset($this->linkAttributes[array_search('params', $this->linkAttributes, TRUE)]);
-	}
+    /**
+     * Checks if this is the handler for the given link
+     *
+     * The handler may store this information locally for later usage.
+     *
+     * @param array $linkParts Link parts as returned from TypoLinkCodecService
+     *
+     * @return bool
+     */
+    public function canHandleLink(array $linkParts)
+    {
+        if (!$linkParts['url']) {
+            return false;
+        }
+        if (strpos($linkParts['url'], '://') === false) {
+            $linkParts['url'] = 'http://' . $linkParts['url'];
+        }
+        $this->linkParts = $linkParts;
 
-	/**
-	 * Checks if this is the handler for the given link
-	 *
-	 * The handler may store this information locally for later usage.
-	 *
-	 * @param array $linkParts Link parts as returned from TypoLinkCodecService
-	 *
-	 * @return bool
-	 */
-	public function canHandleLink(array $linkParts) {
-		if (!$linkParts['url']) {
-			return FALSE;
-		}
-		if (strpos($linkParts['url'], '://') === FALSE) {
-			$linkParts['url'] = 'http://' . $linkParts['url'];
-		}
-		$this->linkParts = $linkParts;
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Format the current link for HTML output
+     *
+     * @return string
+     */
+    public function formatCurrentUrl()
+    {
+        return $this->linkParts['url'];
+    }
 
-	/**
-	 * Format the current link for HTML output
-	 *
-	 * @return string
-	 */
-	public function formatCurrentUrl() {
-		return $this->linkParts['url'];
-	}
+    /**
+     * Render the link handler
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return string
+     */
+    public function render(ServerRequestInterface $request)
+    {
+        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
 
-	/**
-	 * Render the link handler
-	 *
-	 * @param ServerRequestInterface $request
-	 *
-	 * @return string
-	 */
-	public function render(ServerRequestInterface $request) {
-		GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
-
-		$extUrl = '
+        $extUrl = '
 				<!--
 					Enter External URL:
 				-->
@@ -97,21 +100,21 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
 								<td style="width: 96px;">URL:</td>
 								<td>
 									<input type="text" name="lurl" size="30" value="'
-										. htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : 'http://')
-										. '" /> '
-									. '<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('setLink', TRUE) . '" />
+                                        . htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : 'http://')
+                                        . '" /> '
+                                    . '<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('setLink', true) . '" />
 								</td>
 							</tr>
 						</table>
 					</form>';
-		return $extUrl;
-	}
+        return $extUrl;
+    }
 
-	/**
-	 * @return string[] Array of body-tag attributes
-	 */
-	public function getBodyTagAttributes() {
-		return [];
-	}
-
+    /**
+     * @return string[] Array of body-tag attributes
+     */
+    public function getBodyTagAttributes()
+    {
+        return [];
+    }
 }

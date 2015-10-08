@@ -20,56 +20,58 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class FormEngineUtilityTest extends UnitTestCase {
+class FormEngineUtilityTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function databaseRowCompatibilityKeepsSimpleValue()
+    {
+        $input = [
+            'uid' => 42,
+            'title' => 'aTitle',
+        ];
+        $expected = $input;
+        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function databaseRowCompatibilityKeepsSimpleValue() {
-		$input = [
-			'uid' => 42,
-			'title' => 'aTitle',
-		];
-		$expected = $input;
-		$this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
-	}
+    /**
+     * @test
+     */
+    public function databaseRowCompatibilityImplodesSimpleArray()
+    {
+        $input = [
+            'uid' => 42,
+            'simpleArray' => [
+                0 => 1,
+                1 => 2,
+            ],
+        ];
+        $expected = $input;
+        $expected['simpleArray'] = '1,2';
+        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function databaseRowCompatibilityImplodesSimpleArray() {
-		$input = [
-			'uid' => 42,
-			'simpleArray' => [
-				0 => 1,
-				1 => 2,
-			],
-		];
-		$expected = $input;
-		$expected['simpleArray'] = '1,2';
-		$this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function databaseRowCompatibilityImplodesSelectArrayWithValuesAtSecondPosition() {
-		$input = [
-			'uid' => 42,
-			'simpleArray' => [
-				0 => [
-					0 => 'aLabel',
-					1 => 'aValue',
-				],
-				1 => [
-					0 => 'anotherLabel',
-					1 => 'anotherValue',
-				],
-			],
-		];
-		$expected = $input;
-		$expected['simpleArray'] = 'aValue,anotherValue';
-		$this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
-	}
-
+    /**
+     * @test
+     */
+    public function databaseRowCompatibilityImplodesSelectArrayWithValuesAtSecondPosition()
+    {
+        $input = [
+            'uid' => 42,
+            'simpleArray' => [
+                0 => [
+                    0 => 'aLabel',
+                    1 => 'aValue',
+                ],
+                1 => [
+                    0 => 'anotherLabel',
+                    1 => 'anotherValue',
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['simpleArray'] = 'aValue,anotherValue';
+        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+    }
 }

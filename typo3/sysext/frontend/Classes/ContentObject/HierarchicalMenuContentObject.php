@@ -19,44 +19,44 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Contains HMENU class object.
  */
-class HierarchicalMenuContentObject extends AbstractContentObject {
+class HierarchicalMenuContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, HMENU
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Output
+     */
+    public function render($conf = array())
+    {
+        if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+            return '';
+        }
 
-	/**
-	 * Rendering the cObject, HMENU
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 */
-	public function render($conf = array()) {
-		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
-			return '';
-		}
-
-		$theValue = '';
-		$menuType = $conf[1];
-		try {
-			/** @var $menuObjectFactory Menu\MenuContentObjectFactory */
-			$menuObjectFactory = GeneralUtility::makeInstance(Menu\MenuContentObjectFactory::class);
-			$menu = $menuObjectFactory->getMenuObjectByType($menuType);
-			$GLOBALS['TSFE']->register['count_HMENU']++;
-			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
-			$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
-			$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = array();
-			$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'] = array();
-			$menu->parent_cObj = $this->cObj;
-			$menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
-			$menu->makeMenu();
-			$theValue .= $menu->writeMenu();
-		} catch (Menu\Exception\NoSuchMenuTypeException $e) {
-		}
-		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-		if ($wrap) {
-			$theValue = $this->cObj->wrap($theValue, $wrap);
-		}
-		if (isset($conf['stdWrap.'])) {
-			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-		}
-		return $theValue;
-	}
-
+        $theValue = '';
+        $menuType = $conf[1];
+        try {
+            /** @var $menuObjectFactory Menu\MenuContentObjectFactory */
+            $menuObjectFactory = GeneralUtility::makeInstance(Menu\MenuContentObjectFactory::class);
+            $menu = $menuObjectFactory->getMenuObjectByType($menuType);
+            $GLOBALS['TSFE']->register['count_HMENU']++;
+            $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
+            $GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
+            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = array();
+            $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'] = array();
+            $menu->parent_cObj = $this->cObj;
+            $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
+            $menu->makeMenu();
+            $theValue .= $menu->writeMenu();
+        } catch (Menu\Exception\NoSuchMenuTypeException $e) {
+        }
+        $wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+        if ($wrap) {
+            $theValue = $this->cObj->wrap($theValue, $wrap);
+        }
+        if (isset($conf['stdWrap.'])) {
+            $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+        }
+        return $theValue;
+    }
 }

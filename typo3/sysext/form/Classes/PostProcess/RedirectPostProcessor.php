@@ -17,65 +17,68 @@ namespace TYPO3\CMS\Form\PostProcess;
 /**
  * The redirect post-processor
  */
-class RedirectPostProcessor extends AbstractPostProcessor implements PostProcessorInterface {
+class RedirectPostProcessor extends AbstractPostProcessor implements PostProcessorInterface
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Model\Element
+     */
+    protected $form;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Element
-	 */
-	protected $form;
+    /**
+     * @var array
+     */
+    protected $typoScript;
 
-	/**
-	 * @var array
-	 */
-	protected $typoScript;
+    /**
+     * @var string
+     */
+    protected $destination;
 
-	/**
-	 * @var string
-	 */
-	protected $destination;
+    /**
+     * Constructor
+     *
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $form Form domain model
+     * @param array $typoScript Post processor TypoScript settings
+     */
+    public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript)
+    {
+        $this->form = $form;
+        $this->typoScript = $typoScript;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form Form domain model
-	 * @param array $typoScript Post processor TypoScript settings
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
-		$this->form = $form;
-		$this->typoScript = $typoScript;
-	}
+    /**
+     * The main method called by the post processor
+     *
+     * @return string HTML message from this processor
+     */
+    public function process()
+    {
+        $this->setDestination();
+        $this->render();
+    }
 
-	/**
-	 * The main method called by the post processor
-	 *
-	 * @return string HTML message from this processor
-	 */
-	public function process() {
-		$this->setDestination();
-		$this->render();
-	}
+    /**
+     * Sets the redirect destination
+     *
+     * @return void
+     */
+    protected function setDestination()
+    {
+        $this->destination = '';
+        if ($this->typoScript['destination']) {
+            $urlConf = array('parameter' => $this->typoScript['destination']);
+            $this->destination = $GLOBALS['TSFE']->cObj->typoLink_URL($urlConf);
+        }
+    }
 
-	/**
-	 * Sets the redirect destination
-	 *
-	 * @return void
-	 */
-	protected function setDestination() {
-		$this->destination = '';
-		if ($this->typoScript['destination']) {
-			$urlConf = array('parameter' => $this->typoScript['destination']);
-			$this->destination = $GLOBALS['TSFE']->cObj->typoLink_URL($urlConf);
-		}
-	}
-
-	/**
-	 * Redirect to a destination
-	 *
-	 * @return void
-	 */
-	protected function render() {
-		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->destination);
-		return;
-	}
-
+    /**
+     * Redirect to a destination
+     *
+     * @return void
+     */
+    protected function render()
+    {
+        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->destination);
+        return;
+    }
 }

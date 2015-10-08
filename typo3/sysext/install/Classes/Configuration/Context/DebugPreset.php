@@ -19,56 +19,57 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Debug preset
  */
-class DebugPreset extends Configuration\AbstractPreset {
+class DebugPreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Debug';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Debug';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 50;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 50;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'BE/debug' => true,
+        'FE/debug' => true,
+        'SYS/devIPmask' => '*',
+        'SYS/displayErrors' => 1,
+        'SYS/enableDeprecationLog' => 'file',
+        'SYS/sqlDebug' => 1,
+        'SYS/systemLogLevel' => 0,
+        // E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED
+        'SYS/exceptionalErrors' => 28674,
+        'SYS/clearCacheSystem' => true,
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'BE/debug' => TRUE,
-		'FE/debug' => TRUE,
-		'SYS/devIPmask' => '*',
-		'SYS/displayErrors' => 1,
-		'SYS/enableDeprecationLog' => 'file',
-		'SYS/sqlDebug' => 1,
-		'SYS/systemLogLevel' => 0,
-		// E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED
-		'SYS/exceptionalErrors' => 28674,
-		'SYS/clearCacheSystem' => TRUE,
-	);
+    /**
+     * Development preset is always available
+     *
+     * @return bool TRUE if mbstring PHP module is loaded
+     */
+    public function isAvailable()
+    {
+        return true;
+    }
 
-	/**
-	 * Development preset is always available
-	 *
-	 * @return bool TRUE if mbstring PHP module is loaded
-	 */
-	public function isAvailable() {
-		return TRUE;
-	}
-
-	/**
-	 * If context is set to development, priority
-	 * of this preset is raised.
-	 *
-	 * @return int Priority of preset
-	 */
-	public function getPriority() {
-		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
-		$priority = $this->priority;
-		if ($context->isDevelopment()) {
-			$priority = $priority + 20;
-		}
-		return $priority;
-	}
-
+    /**
+     * If context is set to development, priority
+     * of this preset is raised.
+     *
+     * @return int Priority of preset
+     */
+    public function getPriority()
+    {
+        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
+        $priority = $this->priority;
+        if ($context->isDevelopment()) {
+            $priority = $priority + 20;
+        }
+        return $priority;
+    }
 }

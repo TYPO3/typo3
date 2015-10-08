@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To be included in the query results, a tuple must satisfy the constraint.
  */
-interface ConstraintInterface {
-
-	/**
-	 * Fills an array with the names of all bound variables in the constraints
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables);
+interface ConstraintInterface
+{
+    /**
+     * Fills an array with the names of all bound variables in the constraints
+     *
+     * @param array &$boundVariables
+     * @return void
+     */
+    public function collectBoundVariableNames(&$boundVariables);
 }

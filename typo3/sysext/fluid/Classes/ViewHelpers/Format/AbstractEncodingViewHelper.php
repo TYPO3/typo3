@@ -17,22 +17,23 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * This is the base class for ViewHelpers that work with encodings.
  * Currently that are format.htmlentities, format.htmlentitiesDecode and format.htmlspecialchars
  */
-abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
+    /**
+     * @var string
+     */
+    protected static $defaultEncoding = null;
 
-	/**
-	 * @var string
-	 */
-	static protected $defaultEncoding = NULL;
-
-	/**
-	 * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.
-	 *
-	 * @return string the encoding
-	 */
-	static protected function resolveDefaultEncoding() {
-		if (self::$defaultEncoding === NULL) {
-			self::$defaultEncoding = 'UTF-8';
-		}
-		return self::$defaultEncoding;
-	}
+    /**
+     * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.
+     *
+     * @return string the encoding
+     */
+    protected static function resolveDefaultEncoding()
+    {
+        if (self::$defaultEncoding === null) {
+            self::$defaultEncoding = 'UTF-8';
+        }
+        return self::$defaultEncoding;
+    }
 }

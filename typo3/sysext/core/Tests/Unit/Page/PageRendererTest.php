@@ -21,231 +21,242 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  *
  * @see According functional test case
  */
-class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function renderMethodCallsResetInAnyCase()
+    {
+        $pageRenderer = $this->getMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
+        $pageRenderer->expects($this->exactly(3))->method('reset');
 
-	/**
-	 * @test
-	 */
-	public function renderMethodCallsResetInAnyCase() {
-		$pageRenderer = $this->getMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
-		$pageRenderer->expects($this->exactly(3))->method('reset');
+        $pageRenderer->render(PageRenderer::PART_COMPLETE);
+        $pageRenderer->render(PageRenderer::PART_HEADER);
+        $pageRenderer->render(PageRenderer::PART_FOOTER);
+    }
 
-		$pageRenderer->render(PageRenderer::PART_COMPLETE);
-		$pageRenderer->render(PageRenderer::PART_HEADER);
-		$pageRenderer->render(PageRenderer::PART_FOOTER);
-	}
+    /**
+     * @expectedException \UnexpectedValueException
+     * @test
+     */
+    public function includingNotAvailableLocalJqueryVersionThrowsException()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject->_set('availableLocalJqueryVersions', array('1.1.1'));
+        $subject->loadJquery('2.2.2');
+    }
 
-	/**
-	 * @expectedException \UnexpectedValueException
-	 * @test
-	 */
-	public function includingNotAvailableLocalJqueryVersionThrowsException() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$subject->_set('availableLocalJqueryVersions', array('1.1.1'));
-		$subject->loadJquery('2.2.2');
-	}
+    /**
+     * @expectedException \UnexpectedValueException
+     * @test
+     */
+    public function includingJqueryWithNonAlphnumericNamespaceThrowsException()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject->loadJquery(null, null, '12sd.12fsd');
+        $subject->render();
+    }
 
-	/**
-	 * @expectedException \UnexpectedValueException
-	 * @test
-	 */
-	public function includingJqueryWithNonAlphnumericNamespaceThrowsException() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$subject->loadJquery(NULL, NULL, '12sd.12fsd');
-		$subject->render();
-	}
+    /**
+     * @test
+     */
+    public function addBodyContentAddsContent()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $expectedReturnValue = 'ABCDE';
+        $subject->addBodyContent('A');
+        $subject->addBodyContent('B');
+        $subject->addBodyContent('C');
+        $subject->addBodyContent('D');
+        $subject->addBodyContent('E');
+        $out = $subject->getBodyContent();
+        $this->assertEquals($expectedReturnValue, $out);
+    }
 
-	/**
-	 * @test
-	 */
-	public function addBodyContentAddsContent() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$expectedReturnValue = 'ABCDE';
-		$subject->addBodyContent('A');
-		$subject->addBodyContent('B');
-		$subject->addBodyContent('C');
-		$subject->addBodyContent('D');
-		$subject->addBodyContent('E');
-		$out = $subject->getBodyContent();
-		$this->assertEquals($expectedReturnValue, $out);
-	}
+    /**
+     * @test
+     */
+    public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $fileReference = $this->getUniqueId('file_');
+        $selectionPrefix = $this->getUniqueId('prefix_');
+        $stripFromSelectionName = $this->getUniqueId('strip_');
+        $errorMode = 0;
 
-	/**
-	 * @test
-	 */
-	public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference = $this->getUniqueId('file_');
-		$selectionPrefix = $this->getUniqueId('prefix_');
-		$stripFromSelectionName = $this->getUniqueId('strip_');
-		$errorMode = 0;
+        $expectedInlineLanguageLabelFile = array(
+            'fileRef' => $fileReference,
+            'selectionPrefix' => $selectionPrefix,
+            'stripFromSelectionName' => $stripFromSelectionName,
+            'errorMode' => $errorMode
+        );
 
-		$expectedInlineLanguageLabelFile = array(
-			'fileRef' => $fileReference,
-			'selectionPrefix' => $selectionPrefix,
-			'stripFromSelectionName' => $stripFromSelectionName,
-			'errorMode' => $errorMode
-		);
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+        $actualResult = $subject->getInlineLanguageLabelFiles();
 
-		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
-		$actualResult = $subject->getInlineLanguageLabelFiles();
+        $this->assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
+    }
 
-		$this->assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
-	}
+    /**
+     * @test
+     */
+    public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $fileReference1 = $this->getUniqueId('file1_');
+        $selectionPrefix1 = $this->getUniqueId('prefix1_');
+        $stripFromSelectionName1 = $this->getUniqueId('strip1_');
+        $errorMode1 = 0;
+        $expectedInlineLanguageLabelFile1 = array(
+            'fileRef' => $fileReference1,
+            'selectionPrefix' => $selectionPrefix1,
+            'stripFromSelectionName' => $stripFromSelectionName1,
+            'errorMode' => $errorMode1
+        );
+        $fileReference2 = $this->getUniqueId('file2_');
+        $selectionPrefix2 = $this->getUniqueId('prefix2_');
+        $stripFromSelectionName2 = $this->getUniqueId('strip2_');
+        $errorMode2 = 0;
+        $expectedInlineLanguageLabelFile2 = array(
+            'fileRef' => $fileReference2,
+            'selectionPrefix' => $selectionPrefix2,
+            'stripFromSelectionName' => $stripFromSelectionName2,
+            'errorMode' => $errorMode2
+        );
 
-	/**
-	 * @test
-	 */
-	public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference1 = $this->getUniqueId('file1_');
-		$selectionPrefix1 = $this->getUniqueId('prefix1_');
-		$stripFromSelectionName1 = $this->getUniqueId('strip1_');
-		$errorMode1 = 0;
-		$expectedInlineLanguageLabelFile1 = array(
-			'fileRef' => $fileReference1,
-			'selectionPrefix' => $selectionPrefix1,
-			'stripFromSelectionName' => $stripFromSelectionName1,
-			'errorMode' => $errorMode1
-		);
-		$fileReference2 = $this->getUniqueId('file2_');
-		$selectionPrefix2 = $this->getUniqueId('prefix2_');
-		$stripFromSelectionName2 = $this->getUniqueId('strip2_');
-		$errorMode2 = 0;
-		$expectedInlineLanguageLabelFile2 = array(
-			'fileRef' => $fileReference2,
-			'selectionPrefix' => $selectionPrefix2,
-			'stripFromSelectionName' => $stripFromSelectionName2,
-			'errorMode' => $errorMode2
-		);
+        $subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1, $errorMode1);
+        $subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2, $errorMode2);
+        $actualResult = $subject->getInlineLanguageLabelFiles();
 
-		$subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1, $errorMode1);
-		$subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2, $errorMode2);
-		$actualResult = $subject->getInlineLanguageLabelFiles();
+        $this->assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
+        $this->assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
+    }
 
-		$this->assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
-		$this->assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
-	}
+    /**
+     * @test
+     */
+    public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $fileReference = $this->getUniqueId('file2_');
+        $selectionPrefix = $this->getUniqueId('prefix2_');
+        $stripFromSelectionName = $this->getUniqueId('strip2_');
+        $errorMode = 0;
 
-	/**
-	 * @test
-	 */
-	public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference = $this->getUniqueId('file2_');
-		$selectionPrefix = $this->getUniqueId('prefix2_');
-		$stripFromSelectionName = $this->getUniqueId('strip2_');
-		$errorMode = 0;
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+        $this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
+    }
 
-		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
-		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
-		$this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
-	}
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function includeLanguageFileForInlineThrowsExceptionIfLangIsNotSet()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject->_set('charSet', 'utf-8');
+        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+    }
 
-	/**
-	 * @test
-	 * @expectedException \RuntimeException
-	 */
-	public function includeLanguageFileForInlineThrowsExceptionIfLangIsNotSet() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$subject->_set('charSet', 'utf-8');
-		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-	}
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function includeLanguageFileForInlineThrowsExceptionIfCharSetIsNotSet()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', false);
+        $subject->_set('lang', 'default');
+        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+    }
 
-	/**
-	 * @test
-	 * @expectedException \RuntimeException
-	 */
-	public function includeLanguageFileForInlineThrowsExceptionIfCharSetIsNotSet() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$subject->_set('lang', 'default');
-		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-	}
+    /**
+     * @test
+     */
+    public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', false);
+        $subject->_set('lang', 'default');
+        $subject->_set('charSet', 'utf-8');
+        $subject->_set('inlineLanguageLabels', array());
+        $subject->method('readLLfile')->willReturn(false);
+        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+        $this->assertEquals(array(), $subject->_get('inlineLanguageLabels'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead() {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', FALSE);
-		$subject->_set('lang', 'default');
-		$subject->_set('charSet', 'utf-8');
-		$subject->_set('inlineLanguageLabels', array());
-		$subject->method('readLLfile')->willReturn(FALSE);
-		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-		$this->assertEquals(array(), $subject->_get('inlineLanguageLabels'));
-	}
+    /**
+     * @return array
+     */
+    public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider()
+    {
+        $llFileContent = array(
+            'default' => array(
+                'inline_label_first_Key' => 'first',
+                'inline_label_second_Key' => 'second',
+                'thirdKey' => 'third'
+            )
+        );
+        return array(
+            'No processing' => array(
+                $llFileContent,
+                '',
+                '',
+                $llFileContent['default']
+            ),
+            'Respect $selectionPrefix' => array(
+                $llFileContent,
+                'inline_',
+                '',
+                array(
+                    'inline_label_first_Key' => 'first',
+                    'inline_label_second_Key' => 'second'
+                )
+            ),
+            'Respect $stripFromSelectionName' => array(
+                $llFileContent,
+                '',
+                'inline_',
+                array(
+                    'label_first_Key' => 'first',
+                    'label_second_Key' => 'second',
+                    'thirdKey' => 'third'
+                )
+            ),
+            'Respect $selectionPrefix and $stripFromSelectionName' => array(
+                $llFileContent,
+                'inline_',
+                'inline_label_',
+                array(
+                    'first_Key' => 'first',
+                    'second_Key' => 'second'
+                )
+            ),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider() {
-		$llFileContent = array(
-			'default' => array(
-				'inline_label_first_Key' => 'first',
-				'inline_label_second_Key' => 'second',
-				'thirdKey' => 'third'
-			)
-		);
-		return array(
-			'No processing' => array(
-				$llFileContent,
-				'',
-				'',
-				$llFileContent['default']
-			),
-			'Respect $selectionPrefix' => array(
-				$llFileContent,
-				'inline_',
-				'',
-				array(
-					'inline_label_first_Key' => 'first',
-					'inline_label_second_Key' => 'second'
-				)
-			),
-			'Respect $stripFromSelectionName' => array(
-				$llFileContent,
-				'',
-				'inline_',
-				array(
-					'label_first_Key' => 'first',
-					'label_second_Key' => 'second',
-					'thirdKey' => 'third'
-				)
-			),
-			'Respect $selectionPrefix and $stripFromSelectionName' => array(
-				$llFileContent,
-				'inline_',
-				'inline_label_',
-				array(
-					'first_Key' => 'first',
-					'second_Key' => 'second'
-				)
-			),
-		);
-	}
-
-	/**
-	 * @dataProvider includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider
-	 * @test
-	 */
-	public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation) {
-		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', FALSE);
-		$subject->_set('lang', 'default');
-		$subject->_set('charSet', 'utf-8');
-		$subject->_set('inlineLanguageLabels', array());
-		$subject->method('readLLfile')->willReturn($llFileContent);
-		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
-		$this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
-	}
-
+    /**
+     * @dataProvider includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider
+     * @test
+     */
+    public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation)
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', false);
+        $subject->_set('lang', 'default');
+        $subject->_set('charSet', 'utf-8');
+        $subject->_set('inlineLanguageLabels', array());
+        $subject->method('readLLfile')->willReturn($llFileContent);
+        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
+        $this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
+    }
 }

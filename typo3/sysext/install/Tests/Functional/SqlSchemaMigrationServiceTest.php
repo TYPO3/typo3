@@ -17,50 +17,51 @@ namespace TYPO3\CMS\Install\Tests\Functional;
 /**
  * Functional tests for the SQL schema migration service.
  */
-class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
+     */
+    protected $sqlSchemaMigrationService;
 
-	/**
-	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
-	 */
-	protected $sqlSchemaMigrationService;
+    /**
+     * Initializes a SqlSchemaMigrationService instance.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->sqlSchemaMigrationService = new \TYPO3\CMS\Install\Service\SqlSchemaMigrationService();
+    }
 
-	/**
-	 * Initializes a SqlSchemaMigrationService instance.
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->sqlSchemaMigrationService = new \TYPO3\CMS\Install\Service\SqlSchemaMigrationService();
-	}
+    /**
+     * @test
+     */
+    public function columnAndKeyDeletionDoesNotReturnAnError()
+    {
 
-	/**
-	 * @test
-	 */
-	public function columnAndKeyDeletionDoesNotReturnAnError() {
+        // Get the current database fields.
+        $currentDatabaseSchema = $this->sqlSchemaMigrationService->getFieldDefinitions_database();
 
-		// Get the current database fields.
-		$currentDatabaseSchema = $this->sqlSchemaMigrationService->getFieldDefinitions_database();
+        // Limit our scope to the be_users table:
+        $currentDatabaseSchemaForBeUsers = array();
+        $currentDatabaseSchemaForBeUsers['be_users'] = $currentDatabaseSchema['be_users'];
+        unset($currentDatabaseSchema);
 
-		// Limit our scope to the be_users table:
-		$currentDatabaseSchemaForBeUsers = array();
-		$currentDatabaseSchemaForBeUsers['be_users'] = $currentDatabaseSchema['be_users'];
-		unset($currentDatabaseSchema);
+        // Create a key and a field that belongs to that key:
+        $expectedDatabaseSchemaForBeUsers = $currentDatabaseSchemaForBeUsers;
+        $expectedDatabaseSchemaForBeUsers['be_users']['fields']['functional_test_field_1'] = "tinyint(1) unsigned NOT NULL default '0'";
+        $expectedDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1'] = "KEY functional_test_key_1 (functional_test_field_1)";
+        $createFieldDiff = $this->sqlSchemaMigrationService->getDatabaseExtra($expectedDatabaseSchemaForBeUsers, $currentDatabaseSchemaForBeUsers);
+        $createFieldDiff = $this->sqlSchemaMigrationService->getUpdateSuggestions($createFieldDiff);
+        $this->sqlSchemaMigrationService->performUpdateQueries($createFieldDiff['add'], $createFieldDiff['add']);
 
-		// Create a key and a field that belongs to that key:
-		$expectedDatabaseSchemaForBeUsers = $currentDatabaseSchemaForBeUsers;
-		$expectedDatabaseSchemaForBeUsers['be_users']['fields']['functional_test_field_1'] = "tinyint(1) unsigned NOT NULL default '0'";
-		$expectedDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1'] = "KEY functional_test_key_1 (functional_test_field_1)";
-		$createFieldDiff = $this->sqlSchemaMigrationService->getDatabaseExtra($expectedDatabaseSchemaForBeUsers, $currentDatabaseSchemaForBeUsers);
-		$createFieldDiff = $this->sqlSchemaMigrationService->getUpdateSuggestions($createFieldDiff);
-		$this->sqlSchemaMigrationService->performUpdateQueries($createFieldDiff['add'], $createFieldDiff['add']);
-
-		// Now remove the fields again (without the renaming step).
-		unset($currentDatabaseSchemaForBeUsers['be_users']['fields']['functional_test_field_1']);
-		unset($currentDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1']);
-		$this->sqlSchemaMigrationService->setDeletedPrefixKey('');
-		$removeFieldDiff = $this->sqlSchemaMigrationService->getDatabaseExtra($expectedDatabaseSchemaForBeUsers, $currentDatabaseSchemaForBeUsers);
-		$removeFieldDiff = $this->sqlSchemaMigrationService->getUpdateSuggestions($removeFieldDiff, 'remove');
-		$result = $this->sqlSchemaMigrationService->performUpdateQueries($removeFieldDiff['drop'], $removeFieldDiff['drop']);
-		$this->assertTrue($result, 'performUpdateQueries() did not return TRUE, this means an error occurred: ' . (is_array($result) ? array_pop($result) : ''));
-	}
-
+        // Now remove the fields again (without the renaming step).
+        unset($currentDatabaseSchemaForBeUsers['be_users']['fields']['functional_test_field_1']);
+        unset($currentDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1']);
+        $this->sqlSchemaMigrationService->setDeletedPrefixKey('');
+        $removeFieldDiff = $this->sqlSchemaMigrationService->getDatabaseExtra($expectedDatabaseSchemaForBeUsers, $currentDatabaseSchemaForBeUsers);
+        $removeFieldDiff = $this->sqlSchemaMigrationService->getUpdateSuggestions($removeFieldDiff, 'remove');
+        $result = $this->sqlSchemaMigrationService->performUpdateQueries($removeFieldDiff['drop'], $removeFieldDiff['drop']);
+        $this->assertTrue($result, 'performUpdateQueries() did not return TRUE, this means an error occurred: ' . (is_array($result) ? array_pop($result) : ''));
+    }
 }

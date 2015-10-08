@@ -25,38 +25,39 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class DeleteLinkViewHelper extends AbstractViewHelper implements CompilableInterface {
+class DeleteLinkViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Create link to delete a note
+     *
+     * @param int $id uid of the note
+     * @return string link
+     */
+    public function render($id)
+    {
+        return static::renderStatic(
+            array(
+                'id' => $id
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Create link to delete a note
-	 *
-	 * @param int $id uid of the note
-	 * @return string link
-	 */
-	public function render($id) {
-		return static::renderStatic(
-			array(
-				'id' => $id
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$urlParameters = [
-			'cmd[sys_note][' . $arguments['id'] . '][delete]' => 1,
-			'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
-		];
-		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
-		return htmlspecialchars($url);
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $urlParameters = [
+            'cmd[sys_note][' . $arguments['id'] . '][delete]' => 1,
+            'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+        ];
+        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
+        return htmlspecialchars($url);
+    }
 }

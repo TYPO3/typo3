@@ -22,28 +22,28 @@ use TYPO3\CMS\Rsaauth\Storage\StorageFactory;
 /**
  * eID script "RsaPublicKeyGenerationController" to generate an rsa key
  */
-class RsaPublicKeyGenerationController {
+class RsaPublicKeyGenerationController
+{
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        /** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
+        $backend = BackendFactory::getBackend();
+        if ($backend === null) {
+            // add a HTTP 500 error code, if an error occurred
+            return $response->withStatus(500);
+        }
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function processRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		/** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
-		$backend = BackendFactory::getBackend();
-		if ($backend === NULL) {
-			// add a HTTP 500 error code, if an error occurred
-			return $response->withStatus(500);
-		}
-
-		$keyPair = $backend->createNewKeyPair();
-		$storage = StorageFactory::getStorage();
-		$storage->put($keyPair->getPrivateKey());
-		session_commit();
-		$content = $keyPair->getPublicKeyModulus() . ':' . sprintf('%x', $keyPair->getExponent()) . ':';
-		$response->getBody()->write($content);
-		return $response;
-	}
-
+        $keyPair = $backend->createNewKeyPair();
+        $storage = StorageFactory::getStorage();
+        $storage->put($keyPair->getPrivateKey());
+        session_commit();
+        $content = $keyPair->getPublicKeyModulus() . ':' . sprintf('%x', $keyPair->getExponent()) . ':';
+        $response->getBody()->write($content);
+        return $response;
+    }
 }

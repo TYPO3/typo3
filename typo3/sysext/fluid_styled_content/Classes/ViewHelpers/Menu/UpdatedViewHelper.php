@@ -35,79 +35,80 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Recently updated subpage 3
  * </output>
  */
-class UpdatedViewHelper extends AbstractViewHelper {
+class UpdatedViewHelper extends AbstractViewHelper
+{
+    use MenuViewHelperTrait;
 
-	use MenuViewHelperTrait;
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('as', 'string', 'Name of the template variable that will contain selected pages', true);
+        $this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', false, array());
+        $this->registerArgument('sortField', 'string', 'Field to sort pages; possible values: starttime, lastUpdated, tstamp, crdate', false, 'SYS_LASTCHANGED');
+        $this->registerArgument('maximumAge', 'string', 'Maximum age of pages to be included; supports mathematical expressions', false, '604800');
+        $this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', false, false);
+        $this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', false, false);
+        $this->registerArgument('excludeNoSearchPages', 'boolean', 'Exclude pages that are NOT marked "include in search"?', false, true);
+    }
 
-	/**
-	 * Initialize ViewHelper arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('as', 'string', 'Name of the template variable that will contain selected pages', TRUE);
-		$this->registerArgument('pageUids', 'array', 'Page UIDs of parent pages', FALSE, array());
-		$this->registerArgument('sortField', 'string', 'Field to sort pages; possible values: starttime, lastUpdated, tstamp, crdate', FALSE, 'SYS_LASTCHANGED');
-		$this->registerArgument('maximumAge', 'string', 'Maximum age of pages to be included; supports mathematical expressions', FALSE, '604800');
-		$this->registerArgument('includeNotInMenu', 'boolean', 'Include pages that are marked "hide in menu"?', FALSE, FALSE);
-		$this->registerArgument('includeMenuSeparator', 'boolean', 'Include pages of the type "Menu separator"?', FALSE, FALSE);
-		$this->registerArgument('excludeNoSearchPages', 'boolean', 'Exclude pages that are NOT marked "include in search"?', FALSE, TRUE);
-	}
+    /**
+     * Render the view helper
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        $as = (string)$this->arguments['as'];
+        $pageUids = (array)$this->arguments['pageUids'];
+        $sortField = $this->arguments['sortField'];
+        $maximumAge = $this->arguments['maximumAge'];
+        $includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
+        $includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
+        $excludeNoSearchPages = (bool)$this->arguments['excludeNoSearchPages'];
 
-	/**
-	 * Render the view helper
-	 *
-	 * @return string
-	 */
-	public function render() {
+        // If no pages have been defined, use the current page
+        if (empty($pageUids)) {
+            $pageUids = array($typoScriptFrontendController->page['uid']);
+        }
 
-		$typoScriptFrontendController = $this->getTypoScriptFrontendController();
-		$as = (string)$this->arguments['as'];
-		$pageUids = (array)$this->arguments['pageUids'];
-		$sortField = $this->arguments['sortField'];
-		$maximumAge = $this->arguments['maximumAge'];
-		$includeNotInMenu = (bool)$this->arguments['includeNotInMenu'];
-		$includeMenuSeparator = (bool)$this->arguments['includeMenuSeparator'];
-		$excludeNoSearchPages = (bool)$this->arguments['excludeNoSearchPages'];
+        $unfilteredPageTreeUids = array();
+        foreach ($pageUids as $pageUid) {
+            $unfilteredPageTreeUids = array_merge(
+                $unfilteredPageTreeUids,
+                explode(
+                    ',',
+                    $typoScriptFrontendController->cObj->getTreeList($pageUid, 20)
+                )
+            );
+        }
+        $pageTreeUids = array_unique($unfilteredPageTreeUids);
 
-		// If no pages have been defined, use the current page
-		if (empty($pageUids)) {
-			$pageUids = array($typoScriptFrontendController->page['uid']);
-		}
+        $constraints = $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator);
 
-		$unfilteredPageTreeUids = array();
-		foreach ($pageUids as $pageUid) {
-			$unfilteredPageTreeUids = array_merge(
-				$unfilteredPageTreeUids,
-				explode(
-					',',
-					$typoScriptFrontendController->cObj->getTreeList($pageUid, 20)
-				)
-			);
-		}
-		$pageTreeUids = array_unique($unfilteredPageTreeUids);
+        if ($excludeNoSearchPages) {
+            $constraints .= ' AND no_search = 0';
+        }
 
-		$constraints = $this->getPageConstraints($includeNotInMenu, $includeMenuSeparator);
+        if (!in_array($sortField, ['starttime', 'lastUpdated', 'tstamp', 'crdate'])) {
+            $sortField = 'SYS_LASTCHANGED';
+        }
 
-		if ($excludeNoSearchPages) {
-			$constraints .= ' AND no_search = 0';
-		}
+        $minimumTimeStamp = time() - (int)$typoScriptFrontendController->cObj->calc($maximumAge);
+        $constraints .= ' AND ' . $sortField . ' >=' . $minimumTimeStamp;
 
-		if (!in_array($sortField, ['starttime', 'lastUpdated', 'tstamp', 'crdate'])) {
-			$sortField = 'SYS_LASTCHANGED';
-		}
-
-		$minimumTimeStamp = time() - (int)$typoScriptFrontendController->cObj->calc($maximumAge);
-		$constraints .= ' AND ' . $sortField . ' >=' . $minimumTimeStamp;
-
-		$pages = $typoScriptFrontendController->sys_page->getMenuForPages(
-			$pageTreeUids,
-			'*',
-			$sortField . ' DESC',
-			$constraints
-		);
-		return $this->renderChildrenWithVariables(array(
-			$as => $pages
-		));
-	}
+        $pages = $typoScriptFrontendController->sys_page->getMenuForPages(
+            $pageTreeUids,
+            '*',
+            $sortField . ' DESC',
+            $constraints
+        );
+        return $this->renderChildrenWithVariables(array(
+            $as => $pages
+        ));
+    }
 }

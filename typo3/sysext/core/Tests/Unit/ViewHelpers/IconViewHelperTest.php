@@ -25,74 +25,78 @@ use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 /**
  * Test case
  */
-class IconViewHelperTest extends ViewHelperBaseTestcase {
+class IconViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var IconViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var IconViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(IconViewHelper::class, array('renderChildren'));
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(IconViewHelper::class, array('renderChildren'));
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderCallsIconFactoryWithDefaultSizeAndDefaultStateAndReturnsResult()
+    {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
 
-	/**
-	 * @test
-	 */
-	public function renderCallsIconFactoryWithDefaultSizeAndDefaultStateAndReturnsResult() {
-		$iconFactoryProphecy = $this->prophesize(IconFactory::class);
-		GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-		$iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
+        $iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
 
-		$iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, NULL, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-		$iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
+        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier'));
+    }
 
-		$this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier'));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsIconFactoryWithGivenSizeAndReturnsResult()
+    {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
 
-	/**
-	 * @test
-	 */
-	public function renderCallsIconFactoryWithGivenSizeAndReturnsResult() {
-		$iconFactoryProphecy = $this->prophesize(IconFactory::class);
-		GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-		$iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
+        $iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
 
-		$iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, NULL, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-		$iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
+        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE));
+    }
 
-		$this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsIconFactoryWithGivenStateAndReturnsResult()
+    {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
 
-	/**
-	 * @test
-	 */
-	public function renderCallsIconFactoryWithGivenStateAndReturnsResult() {
-		$iconFactoryProphecy = $this->prophesize(IconFactory::class);
-		GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-		$iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
+        $iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
 
-		$iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, NULL, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-		$iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
+        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED)));
+    }
 
-		$this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_SMALL, NULL, IconState::cast(IconState::STATE_DISABLED)));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsIconFactoryWithGivenOverlayAndReturnsResult()
+    {
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        $iconProphecy = $this->prophesize(Icon::class);
 
-	/**
-	 * @test
-	 */
-	public function renderCallsIconFactoryWithGivenOverlayAndReturnsResult() {
-		$iconFactoryProphecy = $this->prophesize(IconFactory::class);
-		GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
-		$iconProphecy = $this->prophesize(Icon::class);
+        $iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
+        $iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
 
-		$iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
-		$iconProphecy->render()->shouldBeCalled()->willReturn('htmlFoo');
-
-		$this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE, 'overlayString'));
-	}
-
+        $this->assertSame('htmlFoo', $this->viewHelper->render('myIdentifier', Icon::SIZE_LARGE, 'overlayString'));
+    }
 }

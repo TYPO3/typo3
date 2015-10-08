@@ -19,29 +19,29 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  * @package TYPO3\CMS\Core
  */
-class TableColumnSubType extends \TYPO3\CMS\Core\Type\Enumeration {
+class TableColumnSubType extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const __default = self::DEFAULT_TYPE;
 
-	const __default = self::DEFAULT_TYPE;
+    /**
+     * Constants reflecting the table column sub type
+     */
+    const DEFAULT_TYPE = '';
 
-	/**
-	 * Constants reflecting the table column sub type
-	 */
-	const DEFAULT_TYPE = '';
+    const DB = 'DB';
+    const FILE = 'FILE';
+    const FILE_REFERENCE = 'FILE_REFERENCE';
+    const FOLDER = 'FOLDER';
 
-	const DB = 'DB';
-	const FILE = 'FILE';
-	const FILE_REFERENCE = 'FILE_REFERENCE';
-	const FOLDER = 'FOLDER';
+    /**
+     * @param mixed $subType
+     */
+    public function __construct($subType = null)
+    {
+        if ($subType !== null) {
+            $subType = strtoupper((string)$subType);
+        }
 
-	/**
-	 * @param mixed $subType
-	 */
-	public function __construct($subType = NULL) {
-		if ($subType !== NULL) {
-			$subType = strtoupper((string)$subType);
-		}
-
-		parent::__construct($subType);
-	}
-
+        parent::__construct($subType);
+    }
 }

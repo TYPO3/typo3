@@ -19,15 +19,15 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class InstallToolPasswordNotSetAction extends Action\AbstractAction {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		return $this->view->render();
-	}
-
+class InstallToolPasswordNotSetAction extends Action\AbstractAction
+{
+    /**
+     * Executes the action
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        return $this->view->render();
+    }
 }

@@ -73,68 +73,70 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * @api
  */
-class RenderViewHelper extends AbstractViewHelper implements CompilableInterface {
+class RenderViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Renders the content.
+     *
+     * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
+     * @param string $partial Reference to a partial.
+     * @param array $arguments Arguments to pass to the partial.
+     * @param bool $optional Set to TRUE, to ignore unknown sections, so the definition of a section inside a template can be optional for a layout
+     * @return string
+     * @api
+     */
+    public function render($section = null, $partial = null, $arguments = array(), $optional = false)
+    {
+        return static::renderStatic(
+            array(
+                'section' => $section,
+                'partial' => $partial,
+                'arguments' => $arguments,
+                'optional' => $optional,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Renders the content.
-	 *
-	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
-	 * @param string $partial Reference to a partial.
-	 * @param array $arguments Arguments to pass to the partial.
-	 * @param bool $optional Set to TRUE, to ignore unknown sections, so the definition of a section inside a template can be optional for a layout
-	 * @return string
-	 * @api
-	 */
-	public function render($section = NULL, $partial = NULL, $arguments = array(), $optional = FALSE) {
-		return static::renderStatic(
-			array(
-				'section' => $section,
-				'partial' => $partial,
-				'arguments' => $arguments,
-				'optional' => $optional,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Renders the content.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $section = $arguments['section'];
+        $partial = $arguments['partial'];
+        $optional = $arguments['optional'];
+        $arguments = static::loadSettingsIntoArguments($arguments['arguments'], $renderingContext);
 
-	/**
-	 * Renders the content.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$section = $arguments['section'];
-		$partial = $arguments['partial'];
-		$optional = $arguments['optional'];
-		$arguments = static::loadSettingsIntoArguments($arguments['arguments'], $renderingContext);
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+        if ($partial !== null) {
+            return $viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
+        } elseif ($section !== null) {
+            return $viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
+        }
 
-		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
-		if ($partial !== NULL) {
-			return $viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
-		} elseif ($section !== NULL) {
-			return $viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
-		}
+        return '';
+    }
 
-		return '';
-	}
-
-	/**
-	 * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
-	 *
-	 * @param array $arguments
-	 * @param RenderingContextInterface $renderingContext
-	 * @return array
-	 */
-	static protected function loadSettingsIntoArguments($arguments, RenderingContextInterface $renderingContext) {
-		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
-		if (!isset($arguments['settings']) && $templateVariableContainer->exists('settings')) {
-			$arguments['settings'] = $templateVariableContainer->get('settings');
-		}
-		return $arguments;
-	}
-
+    /**
+     * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
+     *
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @return array
+     */
+    protected static function loadSettingsIntoArguments($arguments, RenderingContextInterface $renderingContext)
+    {
+        $templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+        if (!isset($arguments['settings']) && $templateVariableContainer->exists('settings')) {
+            $arguments['settings'] = $templateVariableContainer->get('settings');
+        }
+        return $arguments;
+    }
 }

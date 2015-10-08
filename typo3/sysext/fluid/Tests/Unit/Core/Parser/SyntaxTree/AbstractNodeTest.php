@@ -14,36 +14,38 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
 /**
  * Test case
  */
-class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    protected $renderingContext;
 
-	protected $renderingContext;
+    protected $abstractNode;
 
-	protected $abstractNode;
+    protected $childNode;
 
-	protected $childNode;
+    protected function setUp()
+    {
+        $this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array(), array(), '', false);
 
-	protected function setUp() {
-		$this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array(), array(), '', FALSE);
+        $this->abstractNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array('evaluate'));
 
-		$this->abstractNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array('evaluate'));
+        $this->childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
+        $this->abstractNode->addChildNode($this->childNode);
+    }
 
-		$this->childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class);
-		$this->abstractNode->addChildNode($this->childNode);
-	}
+    /**
+     * @test
+     */
+    public function evaluateChildNodesPassesRenderingContextToChildNodes()
+    {
+        $this->childNode->expects($this->once())->method('evaluate')->with($this->renderingContext);
+        $this->abstractNode->evaluateChildNodes($this->renderingContext);
+    }
 
-	/**
-	 * @test
-	 */
-	public function evaluateChildNodesPassesRenderingContextToChildNodes() {
-		$this->childNode->expects($this->once())->method('evaluate')->with($this->renderingContext);
-		$this->abstractNode->evaluateChildNodes($this->renderingContext);
-	}
-
-	/**
-	 * @test
-	 */
-	public function childNodeCanBeReadOutAgain() {
-		$this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
-	}
-
+    /**
+     * @test
+     */
+    public function childNodeCanBeReadOutAgain()
+    {
+        $this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
+    }
 }

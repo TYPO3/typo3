@@ -21,120 +21,121 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Ext Direct Router
  */
-class ExtDirectRouter {
+class ExtDirectRouter
+{
+    /**
+     * Dispatches the incoming calls to methods about the ExtDirect API.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function routeAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $GLOBALS['error'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class);
+        $isForm = false;
+        $isUpload = false;
+        $rawPostData = file_get_contents('php://input');
+        $postParameters = $request->getParsedBody();
+        $namespace = isset($request->getParsedBody()['namespace']) ? $request->getParsedBody()['namespace'] : $request->getQueryParams()['namespace'];
+        $extResponse = array();
+        $extRequest = null;
+        $isValidRequest = true;
+        if (!empty($postParameters['extAction'])) {
+            $isForm = true;
+            $isUpload = $postParameters['extUpload'] === 'true';
+            $extRequest = new \stdClass();
+            $extRequest->action = $postParameters['extAction'];
+            $extRequest->method = $postParameters['extMethod'];
+            $extRequest->tid = $postParameters['extTID'];
+            unset($_POST['securityToken']);
+            $extRequest->data = array($_POST + $_FILES);
+            $extRequest->data[] = $postParameters['securityToken'];
+        } elseif (!empty($rawPostData)) {
+            $extRequest = json_decode($rawPostData);
+        } else {
+            $extResponse[] = array(
+                'type' => 'exception',
+                'message' => 'Something went wrong with an ExtDirect call!',
+                'code' => 'router'
+            );
+            $isValidRequest = false;
+        }
+        if (!is_array($extRequest)) {
+            $extRequest = array($extRequest);
+        }
+        if ($isValidRequest) {
+            $validToken = false;
+            $firstCall = true;
+            foreach ($extRequest as $index => $singleRequest) {
+                $extResponse[$index] = array(
+                    'tid' => $singleRequest->tid,
+                    'action' => $singleRequest->action,
+                    'method' => $singleRequest->method
+                );
+                $token = array_pop($singleRequest->data);
+                if ($firstCall) {
+                    $firstCall = false;
+                    $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+                    $validToken = $formprotection->validateToken($token, 'extDirect');
+                }
+                try {
+                    if (!$validToken) {
+                        throw new \TYPO3\CMS\Core\FormProtection\Exception('ExtDirect: Invalid Security Token!');
+                    }
+                    $extResponse[$index]['type'] = 'rpc';
+                    $extResponse[$index]['result'] = $this->processRpc($singleRequest, $namespace);
+                    $extResponse[$index]['debug'] = $GLOBALS['error']->toString();
+                } catch (\Exception $exception) {
+                    $extResponse[$index]['type'] = 'exception';
+                    $extResponse[$index]['message'] = $exception->getMessage();
+                    $extResponse[$index]['code'] = 'router';
+                }
+            }
+        }
+        if ($isForm && $isUpload) {
+            $extResponse = json_encode($extResponse);
+            $extResponse = preg_replace('/&quot;/', '\\&quot;', $extResponse);
+            $extResponse = array(
+                '<html><body><textarea>' . $extResponse . '</textarea></body></html>'
+            );
+        } else {
+            $extResponse = json_encode($extResponse);
+        }
+        $response->getBody()->write($extResponse);
+        return $response;
+    }
 
-	/**
-	 * Dispatches the incoming calls to methods about the ExtDirect API.
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function routeAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$GLOBALS['error'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class);
-		$isForm = FALSE;
-		$isUpload = FALSE;
-		$rawPostData = file_get_contents('php://input');
-		$postParameters = $request->getParsedBody();
-		$namespace = isset($request->getParsedBody()['namespace']) ? $request->getParsedBody()['namespace'] : $request->getQueryParams()['namespace'];
-		$extResponse = array();
-		$extRequest = NULL;
-		$isValidRequest = TRUE;
-		if (!empty($postParameters['extAction'])) {
-			$isForm = TRUE;
-			$isUpload = $postParameters['extUpload'] === 'true';
-			$extRequest = new \stdClass();
-			$extRequest->action = $postParameters['extAction'];
-			$extRequest->method = $postParameters['extMethod'];
-			$extRequest->tid = $postParameters['extTID'];
-			unset($_POST['securityToken']);
-			$extRequest->data = array($_POST + $_FILES);
-			$extRequest->data[] = $postParameters['securityToken'];
-		} elseif (!empty($rawPostData)) {
-			$extRequest = json_decode($rawPostData);
-		} else {
-			$extResponse[] = array(
-				'type' => 'exception',
-				'message' => 'Something went wrong with an ExtDirect call!',
-				'code' => 'router'
-			);
-			$isValidRequest = FALSE;
-		}
-		if (!is_array($extRequest)) {
-			$extRequest = array($extRequest);
-		}
-		if ($isValidRequest) {
-			$validToken = FALSE;
-			$firstCall = TRUE;
-			foreach ($extRequest as $index => $singleRequest) {
-				$extResponse[$index] = array(
-					'tid' => $singleRequest->tid,
-					'action' => $singleRequest->action,
-					'method' => $singleRequest->method
-				);
-				$token = array_pop($singleRequest->data);
-				if ($firstCall) {
-					$firstCall = FALSE;
-					$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-					$validToken = $formprotection->validateToken($token, 'extDirect');
-				}
-				try {
-					if (!$validToken) {
-						throw new \TYPO3\CMS\Core\FormProtection\Exception('ExtDirect: Invalid Security Token!');
-					}
-					$extResponse[$index]['type'] = 'rpc';
-					$extResponse[$index]['result'] = $this->processRpc($singleRequest, $namespace);
-					$extResponse[$index]['debug'] = $GLOBALS['error']->toString();
-				} catch (\Exception $exception) {
-					$extResponse[$index]['type'] = 'exception';
-					$extResponse[$index]['message'] = $exception->getMessage();
-					$extResponse[$index]['code'] = 'router';
-				}
-			}
-		}
-		if ($isForm && $isUpload) {
-			$extResponse = json_encode($extResponse);
-			$extResponse = preg_replace('/&quot;/', '\\&quot;', $extResponse);
-			$extResponse = array(
-				'<html><body><textarea>' . $extResponse . '</textarea></body></html>'
-			);
-		} else {
-			$extResponse = json_encode($extResponse);
-		}
-		$response->getBody()->write($extResponse);
-		return $response;
-	}
-
-	/**
-	 * Processes an incoming extDirect call by executing the defined method. The configuration
-	 * array "$GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect']" is taken to find the class/method
-	 * information.
-	 *
-	 * @param \stdClass $singleRequest request object from extJS
-	 * @param string $namespace namespace like TYPO3.Backend
-	 * @return mixed return value of the called method
-	 * @throws \UnexpectedValueException if the remote method couldn't be found
-	 */
-	protected function processRpc($singleRequest, $namespace) {
-		$endpointName = $namespace . '.' . $singleRequest->action;
-		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-			throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
-		}
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-			if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {
-				throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586451);
-			}
-			$callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
-			$configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
-			if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
-				$GLOBALS['BE_USER']->modAccess(array(
-					'name' => $configuration['moduleName'],
-					'access' => $configuration['accessLevel']
-				), TRUE);
-			}
-		}
-		$endpointObject = GeneralUtility::getUserObj($callbackClass);
-		return call_user_func_array(array($endpointObject, $singleRequest->method), is_array($singleRequest->data) ? $singleRequest->data : array());
-	}
-
+    /**
+     * Processes an incoming extDirect call by executing the defined method. The configuration
+     * array "$GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect']" is taken to find the class/method
+     * information.
+     *
+     * @param \stdClass $singleRequest request object from extJS
+     * @param string $namespace namespace like TYPO3.Backend
+     * @return mixed return value of the called method
+     * @throws \UnexpectedValueException if the remote method couldn't be found
+     */
+    protected function processRpc($singleRequest, $namespace)
+    {
+        $endpointName = $namespace . '.' . $singleRequest->action;
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
+            throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
+        }
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
+            if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {
+                throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586451);
+            }
+            $callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
+            $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
+            if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
+                $GLOBALS['BE_USER']->modAccess(array(
+                    'name' => $configuration['moduleName'],
+                    'access' => $configuration['accessLevel']
+                ), true);
+            }
+        }
+        $endpointObject = GeneralUtility::getUserObj($callbackClass);
+        return call_user_func_array(array($endpointObject, $singleRequest->method), is_array($singleRequest->data) ? $singleRequest->data : array());
+    }
 }

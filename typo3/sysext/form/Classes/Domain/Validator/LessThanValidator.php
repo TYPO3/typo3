@@ -14,53 +14,55 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class LessThanValidator extends AbstractValidator {
+class LessThanValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'element' => array('', 'The name of the element', 'string', true),
+        'errorMessage' => array('', 'The error message', 'array', true),
+        'maximum' => array('', 'The maximum value', 'integer', true),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'element' => array('', 'The name of the element', 'string', TRUE),
-		'errorMessage' => array('', 'The error message', 'array', TRUE),
-		'maximum' => array('', 'The maximum value', 'integer', TRUE),
-	);
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_lessthan';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_lessthan';
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if ($value >= $this->options['maximum'] || !is_numeric($value)) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1441997981
+            );
+        }
+    }
 
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		if ($value >= $this->options['maximum'] || !is_numeric($value)) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1441997981
-			);
-		}
-	}
-
-	/**
-	 * Substitute makers in the message text
-	 * Overrides the abstract
-	 *
-	 * @param string $message Message text with markers
-	 * @return string Message text with substituted markers
-	 */
-	public function substituteMarkers($message) {
-		$message = str_replace('%maximum', $this->options['maximum'], $message);
-		return $message;
-	}
+    /**
+     * Substitute makers in the message text
+     * Overrides the abstract
+     *
+     * @param string $message Message text with markers
+     * @return string Message text with substituted markers
+     */
+    public function substituteMarkers($message)
+    {
+        $message = str_replace('%maximum', $this->options['maximum'], $message);
+        return $message;
+    }
 }

@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Core\Cache;
  *
  * @api
  */
-class Exception extends \Exception {
-
-
+class Exception extends \Exception
+{
 }

@@ -18,12 +18,13 @@ use TYPO3\CMS\Extbase\Mvc\Controller\AbstractController;
 /**
  * Fixture implements get extension name method.
  */
-class DummyController extends AbstractController {
-
-	/**
-	 * @return string
-	 */
-	public function getExtensionName() {
-		return $this->extensionName;
-	}
+class DummyController extends AbstractController
+{
+    /**
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return $this->extensionName;
+    }
 }

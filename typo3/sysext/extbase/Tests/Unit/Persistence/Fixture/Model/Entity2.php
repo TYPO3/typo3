@@ -18,28 +18,27 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model;
  * A model fixture used for testing the persistence manager
  *
  */
-class Entity2 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Entity2 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * Just a normal string
+     *
+     * @var string
+     */
+    public $someString;
 
-	/**
-	 * Just a normal string
-	 *
-	 * @var string
-	 */
-	public $someString;
+    /**
+     * @var int
+     */
+    public $someInteger;
 
-	/**
-	 * @var int
-	 */
-	public $someInteger;
+    /**
+     * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity3
+     */
+    public $someReference;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity3
-	 */
-	public $someReference;
-
-	/**
-	 * @var array
-	 */
-	public $someReferenceArray = array();
-
+    /**
+     * @var array
+     */
+    public $someReferenceArray = array();
 }

@@ -20,146 +20,151 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  */
-class TypoScriptReferenceLoader {
+class TypoScriptReferenceLoader
+{
+    /**
+     * @var \DOMDocument
+     */
+    protected $xmlDoc;
 
-	/**
-	 * @var \DOMDocument
-	 */
-	protected $xmlDoc;
+    /**
+     * Default constructor
+     */
+    public function __construct()
+    {
+        $GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
-	}
+    /**
+     * General processor for AJAX requests.
+     * Called by AjaxRequestHandler
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
 
-	/**
-	 * General processor for AJAX requests.
-	 * Called by AjaxRequestHandler
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		$parsedBody = $request->getParsedBody();
-		$queryParams = $request->getQueryParams();
+        // Load the TSref XML information:
+        $this->loadFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Resources/Private/tsref.xml');
+        $fetch = isset($parsedBody['fetch']) ? $parsedBody['fetch'] : $queryParams['fetch'];
+        $content = null;
 
-		// Load the TSref XML information:
-		$this->loadFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Resources/Private/tsref.xml');
-		$fetch = isset($parsedBody['fetch']) ? $parsedBody['fetch'] : $queryParams['fetch'];
-		$content = null;
+        switch ($fetch) {
+            case 'types':
+                $response->getBody()->write(json_encode($this->getTypes()));
+                break;
+            case 'description':
+                $typeId = isset($parsedBody['typeId']) ? $parsedBody['typeId'] : $queryParams['typeId'];
+                $parameterName = isset($parsedBody['parameterName']) ? $parsedBody['parameterName'] : $queryParams['parameterName'];
+                $response = $this->getDescription($typeId, $parameterName);
+                $response->withHeader('Content-Type', 'text/html; charset=utf8');
+                break;
+        }
+        return $response;
+    }
 
-		switch ($fetch) {
-			case 'types':
-				$response->getBody()->write(json_encode($this->getTypes()));
-				break;
-			case 'description':
-				$typeId = isset($parsedBody['typeId']) ? $parsedBody['typeId'] : $queryParams['typeId'];
-				$parameterName = isset($parsedBody['parameterName']) ? $parsedBody['parameterName'] : $queryParams['parameterName'];
-				$response = $this->getDescription($typeId, $parameterName);
-				$response->withHeader('Content-Type', 'text/html; charset=utf8');
-				break;
-		}
-		return $response;
-	}
+    /**
+     * Load XML file
+     *
+     * @param string $filepath
+     * @return void
+     */
+    protected function loadFile($filepath)
+    {
+        $this->xmlDoc = new \DOMDocument('1.0', 'utf-8');
+        $this->xmlDoc->load($filepath);
+        // @TODO: oliver@typo3.org: I guess this is not required here
+        $this->xmlDoc->saveXML();
+    }
 
-	/**
-	 * Load XML file
-	 *
-	 * @param string $filepath
-	 * @return void
-	 */
-	protected function loadFile($filepath) {
-		$this->xmlDoc = new \DOMDocument('1.0', 'utf-8');
-		$this->xmlDoc->load($filepath);
-		// @TODO: oliver@typo3.org: I guess this is not required here
-		$this->xmlDoc->saveXML();
-	}
+    /**
+     * Get types from XML
+     *
+     * @return array
+     */
+    protected function getTypes()
+    {
+        $types = $this->xmlDoc->getElementsByTagName('type');
+        $typeArr = array();
+        foreach ($types as $type) {
+            $typeId = $type->getAttribute('id');
+            $typeName = $type->getAttribute('name');
+            if (!$typeName) {
+                $typeName = $typeId;
+            }
+            $properties = $type->getElementsByTagName('property');
+            $propArr = array();
+            foreach ($properties as $property) {
+                $p = array();
+                $p['name'] = $property->getAttribute('name');
+                $p['type'] = $property->getAttribute('type');
+                $propArr[$property->getAttribute('name')] = $p;
+            }
+            $typeArr[$typeId] = array();
+            $typeArr[$typeId]['properties'] = $propArr;
+            $typeArr[$typeId]['name'] = $typeName;
+            if ($type->hasAttribute('extends')) {
+                $typeArr[$typeId]['extends'] = $type->getAttribute('extends');
+            }
+        }
+        return $typeArr;
+    }
 
-	/**
-	 * Get types from XML
-	 *
-	 * @return array
-	 */
-	protected function getTypes() {
-		$types = $this->xmlDoc->getElementsByTagName('type');
-		$typeArr = array();
-		foreach ($types as $type) {
-			$typeId = $type->getAttribute('id');
-			$typeName = $type->getAttribute('name');
-			if (!$typeName) {
-				$typeName = $typeId;
-			}
-			$properties = $type->getElementsByTagName('property');
-			$propArr = array();
-			foreach ($properties as $property) {
-				$p = array();
-				$p['name'] = $property->getAttribute('name');
-				$p['type'] = $property->getAttribute('type');
-				$propArr[$property->getAttribute('name')] = $p;
-			}
-			$typeArr[$typeId] = array();
-			$typeArr[$typeId]['properties'] = $propArr;
-			$typeArr[$typeId]['name'] = $typeName;
-			if ($type->hasAttribute('extends')) {
-				$typeArr[$typeId]['extends'] = $type->getAttribute('extends');
-			}
-		}
-		return $typeArr;
-	}
+    /**
+     * Get description
+     *
+     * @param string $typeId
+     * @param string $parameterName
+     * @return ResponseInterface
+     */
+    protected function getDescription($typeId, $parameterName = '')
+    {
+        /** @var \TYPO3\CMS\Core\Http\Response $response */
+        $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+        if (!$typeId) {
+            $response->getBody()->write($GLOBALS['LANG']->getLL('typeIDMissing'));
+            $response = $response->withStatus(500);
+            return $response;
+        }
+        // getElementById does only work with schema
+        $type = $this->getType($typeId);
+        // Retrieve propertyDescription
+        if ($parameterName) {
+            $properties = $type->getElementsByTagName('property');
+            foreach ($properties as $propery) {
+                $propName = $propery->getAttribute('name');
+                if ($propName == $parameterName) {
+                    $descriptions = $propery->getElementsByTagName('description');
+                    if ($descriptions->length) {
+                        $description = $descriptions->item(0)->textContent;
+                        $description = htmlspecialchars($description);
+                        $description = nl2br($description);
+                        $response->getBody()->write($description);
+                        break;
+                    }
+                }
+            }
+        }
+        return $response;
+    }
 
-	/**
-	 * Get description
-	 *
-	 * @param string $typeId
-	 * @param string $parameterName
-	 * @return ResponseInterface
-	 */
-	protected function getDescription($typeId, $parameterName = '') {
-		/** @var \TYPO3\CMS\Core\Http\Response $response */
-		$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
-		if (!$typeId) {
-			$response->getBody()->write($GLOBALS['LANG']->getLL('typeIDMissing'));
-			$response = $response->withStatus(500);
-			return $response;
-		}
-		// getElementById does only work with schema
-		$type = $this->getType($typeId);
-		// Retrieve propertyDescription
-		if ($parameterName) {
-			$properties = $type->getElementsByTagName('property');
-			foreach ($properties as $propery) {
-				$propName = $propery->getAttribute('name');
-				if ($propName == $parameterName) {
-					$descriptions = $propery->getElementsByTagName('description');
-					if ($descriptions->length) {
-						$description = $descriptions->item(0)->textContent;
-						$description = htmlspecialchars($description);
-						$description = nl2br($description);
-						$response->getBody()->write($description);
-						break;
-					}
-				}
-			}
-		}
-		return $response;
-	}
-
-	/**
-	 * Get type
-	 *
-	 * @param string $typeId
-	 * @return \DOMNode
-	 */
-	protected function getType($typeId) {
-		$types = $this->xmlDoc->getElementsByTagName('type');
-		foreach ($types as $type) {
-			if ($type->getAttribute('id') == $typeId) {
-				return $type;
-			}
-		}
-	}
-
+    /**
+     * Get type
+     *
+     * @param string $typeId
+     * @return \DOMNode
+     */
+    protected function getType($typeId)
+    {
+        $types = $this->xmlDoc->getElementsByTagName('type');
+        foreach ($types as $type) {
+            if ($type->getAttribute('id') == $typeId) {
+                return $type;
+            }
+        }
+    }
 }

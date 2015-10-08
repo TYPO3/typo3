@@ -17,21 +17,21 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportFromVersionFourDotFive\PagesAn
 /**
  * Functional test for the ImportExport
  */
-class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
+class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
+{
+    protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/PagesAndTtContentUploads/DataSet/Assertion/';
 
-	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/PagesAndTtContentUploads/DataSet/Assertion/';
+    /**
+     * @test
+     */
+    public function importPagesAndTtContentUploads()
+    {
+        $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-uploads.xml', 1);
+        $this->import->importData(0);
 
-	/**
-	 * @test
-	 */
-	public function importPagesAndTtContentUploads() {
-		$this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-uploads.xml', 1);
-		$this->import->importData(0);
+        $this->assertAssertionDataSet('importPagesAndTtContentUploads');
 
-		$this->assertAssertionDataSet('importPagesAndTtContentUploads');
-
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image2.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image3.jpg');
-	}
-
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image2.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/_imported/typo3_image3.jpg');
+    }
 }

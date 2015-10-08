@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 /**
  * Class EmptyClass
  */
-class EmptyClass {
-
+class EmptyClass
+{
 }

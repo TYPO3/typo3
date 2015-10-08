@@ -22,93 +22,95 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in FormEngine
  */
-class ListController extends AbstractWizardController {
+class ListController extends AbstractWizardController
+{
+    /**
+     * @var int
+     */
+    public $pid;
 
-	/**
-	 * @var int
-	 */
-	public $pid;
+    /**
+     * Wizard parameters, coming from FormEngine linking to the wizard.
+     *
+     * @var array
+     */
+    public $P;
 
-	/**
-	 * Wizard parameters, coming from FormEngine linking to the wizard.
-	 *
-	 * @var array
-	 */
-	public $P;
+    /**
+     * Table to show, if none, then all tables are listed in list module.
+     *
+     * @var string
+     */
+    public $table;
 
-	/**
-	 * Table to show, if none, then all tables are listed in list module.
-	 *
-	 * @var string
-	 */
-	public $table;
+    /**
+     * Page id to list.
+     *
+     * @var string
+     */
+    public $id;
 
-	/**
-	 * Page id to list.
-	 *
-	 * @var string
-	 */
-	public $id;
+    /**
+     * Initialization of the class, setting GPvars.
+     */
+    public function __construct()
+    {
+        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
+        $GLOBALS['SOBE'] = $this;
+        $this->P = GeneralUtility::_GP('P');
+        $this->table = GeneralUtility::_GP('table');
+        $this->id = GeneralUtility::_GP('id');
+    }
 
-	/**
-	 * Initialization of the class, setting GPvars.
-	 */
-	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
-		$GLOBALS['SOBE'] = $this;
-		$this->P = GeneralUtility::_GP('P');
-		$this->table = GeneralUtility::_GP('table');
-		$this->id = GeneralUtility::_GP('id');
-	}
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->main();
+        return $response;
+    }
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * As this controller goes only through the main() method, it is rather simple for now
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->main();
-		return $response;
-	}
-
-	/**
-	 * Main function
-	 * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
-	 *
-	 * @return void
-	 */
-	public function main() {
-		// Get this record
-		$origRow = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
-		// Get TSconfig for it.
-		$TSconfig = BackendUtility::getTCEFORM_TSconfig($this->table, is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
-		// Set [params][pid]
-		if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
-			$keyword = substr($this->P['params']['pid'], 3, -3);
-			if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
-				$this->pid = (int)$TSconfig[$this->P['field']][$keyword];
-			} else {
-				$this->pid = (int)$TSconfig['_' . $keyword];
-			}
-		} else {
-			$this->pid = (int)$this->P['params']['pid'];
-		}
-		// Make redirect:
-		// If pid is blank OR if id is set, then return...
-		if ((string)$this->id !== '') {
-			$redirectUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
-		} else {
-			// Otherwise, show the list:
-			$urlParameters = array();
-			$urlParameters['id'] = $this->pid;
-			$urlParameters['table'] = $this->P['params']['table'];
-			$urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
-			$redirectUrl = BackendUtility::getModuleUrl('web_list', $urlParameters);
-		}
-		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
-	}
-
+    /**
+     * Main function
+     * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
+     *
+     * @return void
+     */
+    public function main()
+    {
+        // Get this record
+        $origRow = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
+        // Get TSconfig for it.
+        $TSconfig = BackendUtility::getTCEFORM_TSconfig($this->table, is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
+        // Set [params][pid]
+        if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
+            $keyword = substr($this->P['params']['pid'], 3, -3);
+            if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
+                $this->pid = (int)$TSconfig[$this->P['field']][$keyword];
+            } else {
+                $this->pid = (int)$TSconfig['_' . $keyword];
+            }
+        } else {
+            $this->pid = (int)$this->P['params']['pid'];
+        }
+        // Make redirect:
+        // If pid is blank OR if id is set, then return...
+        if ((string)$this->id !== '') {
+            $redirectUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
+        } else {
+            // Otherwise, show the list:
+            $urlParameters = array();
+            $urlParameters['id'] = $this->pid;
+            $urlParameters['table'] = $this->P['params']['table'];
+            $urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $redirectUrl = BackendUtility::getModuleUrl('web_list', $urlParameters);
+        }
+        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
+    }
 }

@@ -33,66 +33,71 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * <a href="url" onclick="javascript" target="thePicture"><img src=""></a>
  * </output>
  */
-class ClickEnlargeViewHelper extends AbstractViewHelper {
+class ClickEnlargeViewHelper extends AbstractViewHelper
+{
+    /**
+     * Initialize ViewHelper arguments
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('image', '', 'The original image file', true);
+        $this->registerArgument(
+            'configuration',
+            'mixed',
+            'String, \TYPO3\CMS\Core\Resource\File or \TYPO3\CMS\Core\Resource\FileReference with link configuration',
+            true
+        );
+    }
 
-	/**
-	 * Initialize ViewHelper arguments
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('image', '', 'The original image file', TRUE);
-		$this->registerArgument(
-			'configuration',
-			'mixed',
-			'String, \TYPO3\CMS\Core\Resource\File or \TYPO3\CMS\Core\Resource\FileReference with link configuration',
-			TRUE
-		);
-	}
+    /**
+     * Render the view helper
+     *
+     * @return string
+     */
+    public function render()
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render the view helper
-	 *
-	 * @return string
-	 */
-	public function render() {
-		return self::renderStatic(
-			$this->arguments,
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $image = $arguments['image'];
+        $configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($arguments['configuration']);
+        $content = $renderChildrenClosure();
+        $configuration['enable'] = true;
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$image = $arguments['image'];
-		$configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($arguments['configuration']);
-		$content = $renderChildrenClosure();
-		$configuration['enable'] = TRUE;
+        return self::getContentObjectRenderer()->imageLinkWrap($content, $image, $configuration);
+    }
 
-		return self::getContentObjectRenderer()->imageLinkWrap($content, $image, $configuration);
-	}
+    /**
+     * @return ContentObjectRenderer
+     */
+    protected static function getContentObjectRenderer()
+    {
+        return $GLOBALS['TSFE']->cObj;
+    }
 
-	/**
-	 * @return ContentObjectRenderer
-	 */
-	static protected function getContentObjectRenderer() {
-		return $GLOBALS['TSFE']->cObj;
-	}
-
-	/**
-	 * @return TypoScriptService
-	 */
-	static protected function getTypoScriptService() {
-		static $typoScriptService;
-		if ($typoScriptService === NULL) {
-			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-		}
-		return $typoScriptService;
-	}
+    /**
+     * @return TypoScriptService
+     */
+    protected static function getTypoScriptService()
+    {
+        static $typoScriptService;
+        if ($typoScriptService === null) {
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        }
+        return $typoScriptService;
+    }
 }

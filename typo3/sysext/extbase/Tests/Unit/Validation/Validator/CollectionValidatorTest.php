@@ -24,155 +24,162 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var string
+     */
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class;
 
-	/**
-	 * @var string
-	 */
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class;
+    /**
+     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+     */
+    protected $mockValidatorResolver;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-	 */
-	protected $mockValidatorResolver;
+    /**
+     * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
+     */
+    protected $validator;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
-	 */
-	protected $validator;
+    /**
+     * @param array $options
+     * @param array $mockedMethods
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected function getValidator(array $options = array(), array $mockedMethods = array('translateErrorMessage'))
+    {
+        return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, array($options), '', true);
+    }
 
-	/**
-	 * @param array $options
-	 * @param array $mockedMethods
-	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-	 */
-	protected function getValidator(array $options = array(), array $mockedMethods = array('translateErrorMessage')) {
-		return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, array($options), '', TRUE);
-	}
+    /**
+     * @return void
+     */
+    protected function setUp()
+    {
+        $this->mockValidatorResolver = $this->getAccessibleMock(
+            \TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
+            array('createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction')
+        );
+        $this->validator = $this->getValidator();
+        $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function setUp() {
-		$this->mockValidatorResolver = $this->getAccessibleMock(
-			\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
-			array('createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction')
-		);
-		$this->validator = $this->getValidator();
-		$this->validator->_set('validatorResolver', $this->mockValidatorResolver);
-	}
+    /**
+     * @test
+     */
+    public function collectionValidatorReturnsNoErrorsForANullValue()
+    {
+        $this->assertFalse($this->validator->validate(null)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function collectionValidatorReturnsNoErrorsForANullValue() {
-		$this->assertFalse($this->validator->validate(NULL)->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function collectionValidatorFailsForAValueNotBeingACollection()
+    {
+        $this->assertTrue($this->validator->validate(new \StdClass())->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function collectionValidatorFailsForAValueNotBeingACollection() {
-		$this->assertTrue($this->validator->validate(new \StdClass())->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator()
+    {
+        $this->validator->_set('options', array('elementValidator' => 'EmailAddress'));
+        $this->mockValidatorResolver->expects($this->exactly(4))
+            ->method('createValidator')
+            ->with('EmailAddress')
+            ->will($this->returnValue($this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'))));
+        $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
+        $arrayOfEmailAddresses = array(
+            'foo@bar.de',
+            'not a valid address',
+            'dummy@typo3.org',
+            'also not valid'
+        );
 
-	/**
-	 * @test
-	 */
-	public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator() {
-		$this->validator->_set('options', array('elementValidator' => 'EmailAddress'));
-		$this->mockValidatorResolver->expects($this->exactly(4))
-			->method('createValidator')
-			->with('EmailAddress')
-			->will($this->returnValue($this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'))));
-		$this->validator->_set('validatorResolver', $this->mockValidatorResolver);
-		$arrayOfEmailAddresses = array(
-			'foo@bar.de',
-			'not a valid address',
-			'dummy@typo3.org',
-			'also not valid'
-		);
+        $result = $this->validator->validate($arrayOfEmailAddresses);
 
-		$result = $this->validator->validate($arrayOfEmailAddresses);
+        $this->assertTrue($result->hasErrors());
+        $this->assertSame(2, count($result->getFlattenedErrors()));
+    }
 
-		$this->assertTrue($result->hasErrors());
-		$this->assertSame(2, count($result->getFlattenedErrors()));
-	}
-
-	/**
-	 * @test
-	 */
-	public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping() {
-		$classNameA = $this->getUniqueId('A');
-		eval('class ' . $classNameA . '{ public $b = array(); public $integer = 5; }');
-		$classNameB = $this->getUniqueId('B');
-		eval('class ' . $classNameB . '{ public $a; public $c; public $integer = "Not an integer"; }');
-		$A = new $classNameA();
-		$B = new $classNameB();
-		$A->b = array($B);
-		$B->a = $A;
-		$B->c = array($A);
+    /**
+     * @test
+     */
+    public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping()
+    {
+        $classNameA = $this->getUniqueId('A');
+        eval('class ' . $classNameA . '{ public $b = array(); public $integer = 5; }');
+        $classNameB = $this->getUniqueId('B');
+        eval('class ' . $classNameB . '{ public $a; public $c; public $integer = "Not an integer"; }');
+        $A = new $classNameA();
+        $B = new $classNameB();
+        $A->b = array($B);
+        $B->a = $A;
+        $B->c = array($A);
 
 
-		// Create validators
-		$aValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array('translateErrorMessage'), array(array()));
-		$this->validator->_set('options', array('elementValidator' => 'Integer'));
-		$integerValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class, array('translateErrorMessage'), array(array()));
+        // Create validators
+        $aValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array('translateErrorMessage'), array(array()));
+        $this->validator->_set('options', array('elementValidator' => 'Integer'));
+        $integerValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class, array('translateErrorMessage'), array(array()));
 
-		$this->mockValidatorResolver->expects($this->any())
-			->method('createValidator')
-			->with('Integer')
-			->will($this->returnValue($integerValidator));
-		$this->mockValidatorResolver->expects($this->any())
-			->method('buildBaseValidatorConjunction')
-			->will($this->returnValue($aValidator));
+        $this->mockValidatorResolver->expects($this->any())
+            ->method('createValidator')
+            ->with('Integer')
+            ->will($this->returnValue($integerValidator));
+        $this->mockValidatorResolver->expects($this->any())
+            ->method('buildBaseValidatorConjunction')
+            ->will($this->returnValue($aValidator));
 
-			// Add validators to properties
-		$aValidator->addPropertyValidator('b', $this->validator);
-		$aValidator->addPropertyValidator('integer', $integerValidator);
+            // Add validators to properties
+        $aValidator->addPropertyValidator('b', $this->validator);
+        $aValidator->addPropertyValidator('integer', $integerValidator);
 
-		$result = $aValidator->validate($A)->getFlattenedErrors();
-		$this->assertEquals(1221560494, $result['b.0'][0]->getCode());
-	}
+        $result = $aValidator->validate($A)->getFlattenedErrors();
+        $this->assertEquals(1221560494, $result['b.0'][0]->getCode());
+    }
 
-	/**
-	 * @test
-	 */
-	public function collectionValidatorIsValidEarlyReturnsOnUnitializedLazyObjectStorages() {
-		$parentObject  = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-		$elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
-		$lazyObjectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage(
-			$parentObject,
-			'someProperty',
-			array('someNotEmptyValue')
-		);
-		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', FALSE, TRUE);
-			// only in this test case we want to mock the isValid method
-		$validator = $this->getValidator(array('elementType' => $elementType), array('isValid'));
-		$validator->expects($this->never())->method('isValid');
-		$this->mockValidatorResolver->expects($this->never())->method('createValidator');
-		$validator->validate($lazyObjectStorage);
-	}
+    /**
+     * @test
+     */
+    public function collectionValidatorIsValidEarlyReturnsOnUnitializedLazyObjectStorages()
+    {
+        $parentObject  = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
+        $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
+        $lazyObjectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage(
+            $parentObject,
+            'someProperty',
+            array('someNotEmptyValue')
+        );
+        \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', false, true);
+            // only in this test case we want to mock the isValid method
+        $validator = $this->getValidator(array('elementType' => $elementType), array('isValid'));
+        $validator->expects($this->never())->method('isValid');
+        $this->mockValidatorResolver->expects($this->never())->method('createValidator');
+        $validator->validate($lazyObjectStorage);
+    }
 
-	/**
-	 * @test
-	 */
-	public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages() {
-		$entity = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-		$elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
-		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$objectStorage->attach($entity);
-		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
+    /**
+     * @test
+     */
+    public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages()
+    {
+        $entity = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
+        $elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
+        $objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorage->attach($entity);
+        $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
 
-		$this->mockValidatorResolver->expects($this->never())->method('createValidator');
-		$this->mockValidatorResolver->expects($this->once())
-			->method('getBaseValidatorConjunction')
-			->with($elementType)
-			->will($this->returnValue($aValidator));
+        $this->mockValidatorResolver->expects($this->never())->method('createValidator');
+        $this->mockValidatorResolver->expects($this->once())
+            ->method('getBaseValidatorConjunction')
+            ->with($elementType)
+            ->will($this->returnValue($aValidator));
 
-		$this->validator->_set('options', array('elementType' => $elementType));
+        $this->validator->_set('options', array('elementType' => $elementType));
 
-		$this->validator->validate($objectStorage);
-	}
-
+        $this->validator->validate($objectStorage);
+    }
 }

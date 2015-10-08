@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Template Resource" exception
  */
-class InvalidTemplateResourceException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidTemplateResourceException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

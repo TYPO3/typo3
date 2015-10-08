@@ -25,54 +25,57 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class ClassWithGettersAndSetters {
+class ClassWithGettersAndSetters
+{
+    /**
+     * @var mixed
+     */
+    protected $property1;
 
-	/**
-	 * @var mixed
-	 */
-	protected $property1;
+    /**
+     * @var mixed
+     */
+    protected $property2;
 
-	/**
-	 * @var mixed
-	 */
-	protected $property2;
+    /**
+     * @var mixed
+     */
+    public $property3;
 
-	/**
-	 * @var mixed
-	 */
-	public $property3;
+    /**
+     * @var mixed
+     */
+    public $property4;
 
-	/**
-	 * @var mixed
-	 */
-	public $property4;
+    /**
+     * @param mixed $value
+     */
+    public function setProperty1($value)
+    {
+        $this->property1 = $value;
+    }
 
-	/**
-	 * @param mixed $value
-	 */
-	public function setProperty1($value) {
-		$this->property1 = $value;
-	}
+    /**
+     * @param mixed $value
+     */
+    public function setProperty2($value)
+    {
+        $this->property2 = $value;
+    }
 
-	/**
-	 * @param mixed $value
-	 */
-	public function setProperty2($value) {
-		$this->property2 = $value;
-	}
+    /**
+     * @return mixed
+     */
+    protected function getProperty1()
+    {
+        return $this->property1;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	protected function getProperty1() {
-		return $this->property1;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProperty2() {
-		return $this->property2;
-	}
-
+    /**
+     * @return mixed
+     */
+    public function getProperty2()
+    {
+        return $this->property2;
+    }
 }

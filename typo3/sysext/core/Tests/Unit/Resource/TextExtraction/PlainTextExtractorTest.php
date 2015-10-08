@@ -17,34 +17,34 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
 
-
 /**
  * Class PlainTextExtractorTest
  */
-class PlainTextExtractorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class PlainTextExtractorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function canExtractTextReturnsTrueForPlainTextFiles()
+    {
+        $plainTextExtractor = new PlainTextExtractor();
 
-	/**
-	 * @test
-	 */
-	public function canExtractTextReturnsTrueForPlainTextFiles() {
-		$plainTextExtractor = new PlainTextExtractor();
+        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('text/plain'));
 
-		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
-		$fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('text/plain'));
+        $this->assertTrue($plainTextExtractor->canExtractText($fileResourceMock));
+    }
 
-		$this->assertTrue($plainTextExtractor->canExtractText($fileResourceMock));
-	}
+    /**
+     * @test
+     */
+    public function canExtractTextReturnsFalseForNonPlainTextFiles()
+    {
+        $plainTextExtractor = new PlainTextExtractor();
 
-	/**
-	 * @test
-	 */
-	public function canExtractTextReturnsFalseForNonPlainTextFiles() {
-		$plainTextExtractor = new PlainTextExtractor();
+        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
 
-		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
-		$fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-
-		$this->assertFalse($plainTextExtractor->canExtractText($fileResourceMock));
-	}
-
+        $this->assertFalse($plainTextExtractor->canExtractText($fileResourceMock));
+    }
 }

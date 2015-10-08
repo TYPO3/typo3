@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -27,49 +26,50 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * DataHandler hook class to check the integrity of submitted be_groups data
  */
-class BackendUserGroupIntegrityCheck {
+class BackendUserGroupIntegrityCheck
+{
+    /**
+     * @param string $status
+     * @param string $table
+     * @param int $id
+     * @param array $fieldArray
+     * @param DataHandler $parentObject
+     */
+    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $parentObject)
+    {
+        if ($table !== 'be_groups' || $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] !== 'explicitAllow') {
+            return;
+        }
 
-	/**
-	 * @param string $status
-	 * @param string $table
-	 * @param int $id
-	 * @param array $fieldArray
-	 * @param DataHandler $parentObject
-	 */
-	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $parentObject) {
-		if ($table !== 'be_groups' || $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] !== 'explicitAllow') {
-			return;
-		}
+        $backendUserGroup = BackendUtility::getRecord($table, $id, 'explicit_allowdeny');
+        $explicitAllowDenyFields = GeneralUtility::trimExplode(',', $backendUserGroup['explicit_allowdeny']);
+        foreach ($explicitAllowDenyFields as $value) {
+            if (StringUtility::beginsWith($value, 'tt_content:list_type:')) {
+                if (!in_array('tt_content:CType:list:ALLOW', $explicitAllowDenyFields, true)) {
+                    /** @var $flashMessage FlashMessage */
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
+                        $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
+                        FlashMessage::WARNING,
+                        true
+                    );
+                    /** @var $flashMessageService FlashMessageService */
+                    $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                    /** @var $defaultFlashMessageQueue FlashMessageQueue */
+                    $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                    $defaultFlashMessageQueue->enqueue($flashMessage);
+                }
+                return;
+            }
+        }
+    }
 
-		$backendUserGroup = BackendUtility::getRecord($table, $id, 'explicit_allowdeny');
-		$explicitAllowDenyFields = GeneralUtility::trimExplode(',', $backendUserGroup['explicit_allowdeny']);
-		foreach ($explicitAllowDenyFields as $value) {
-			if (StringUtility::beginsWith($value, 'tt_content:list_type:')) {
-				if (!in_array('tt_content:CType:list:ALLOW', $explicitAllowDenyFields, TRUE)) {
-					/** @var $flashMessage FlashMessage */
-					$flashMessage = GeneralUtility::makeInstance(
-						FlashMessage::class,
-						$this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.message'),
-						$this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:error.backendUserGroupListTypeError.header'),
-						FlashMessage::WARNING,
-						TRUE
-					);
-					/** @var $flashMessageService FlashMessageService */
-					$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-					/** @var $defaultFlashMessageQueue FlashMessageQueue */
-					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-					$defaultFlashMessageQueue->enqueue($flashMessage);
-				}
-				return;
-			}
-		}
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

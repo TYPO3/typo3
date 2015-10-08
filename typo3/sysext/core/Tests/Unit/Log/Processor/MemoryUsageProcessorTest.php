@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class MemoryUsageProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord() {
-		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
-		$logRecord = $processor->processLogRecord($logRecord);
-		$this->assertArrayHasKey('memoryUsage', $logRecord['data']);
-	}
-
+class MemoryUsageProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord()
+    {
+        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+        $processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
+        $logRecord = $processor->processLogRecord($logRecord);
+        $this->assertArrayHasKey('memoryUsage', $logRecord['data']);
+    }
 }

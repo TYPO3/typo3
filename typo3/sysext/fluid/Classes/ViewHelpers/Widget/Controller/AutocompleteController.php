@@ -20,39 +20,40 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
+class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+{
+    /**
+     * @return void
+     */
+    public function indexAction()
+    {
+        $this->view->assign('id', $this->widgetConfiguration['for']);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function indexAction() {
-		$this->view->assign('id', $this->widgetConfiguration['for']);
-	}
-
-	/**
-	 * @param string $term
-	 * @return string
-	 */
-	public function autocompleteAction($term) {
-		$searchProperty = $this->widgetConfiguration['searchProperty'];
-		$query = $this->widgetConfiguration['objects']->getQuery();
-		$constraint = $query->getConstraint();
-		if ($constraint !== NULL) {
-			$query->matching($query->logicalAnd($constraint, $query->like($searchProperty, '%' . $term . '%', FALSE)));
-		} else {
-			$query->matching($query->like($searchProperty, '%' . $term . '%', FALSE));
-		}
-		$results = $query->execute();
-		$output = array();
-		foreach ($results as $singleResult) {
-			$val = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($singleResult, $searchProperty);
-			$output[] = array(
-				'id' => $val,
-				'label' => $val,
-				'value' => $val
-			);
-		}
-		return json_encode($output);
-	}
-
+    /**
+     * @param string $term
+     * @return string
+     */
+    public function autocompleteAction($term)
+    {
+        $searchProperty = $this->widgetConfiguration['searchProperty'];
+        $query = $this->widgetConfiguration['objects']->getQuery();
+        $constraint = $query->getConstraint();
+        if ($constraint !== null) {
+            $query->matching($query->logicalAnd($constraint, $query->like($searchProperty, '%' . $term . '%', false)));
+        } else {
+            $query->matching($query->like($searchProperty, '%' . $term . '%', false));
+        }
+        $results = $query->execute();
+        $output = array();
+        foreach ($results as $singleResult) {
+            $val = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($singleResult, $searchProperty);
+            $output[] = array(
+                'id' => $val,
+                'label' => $val,
+                'value' => $val
+            );
+        }
+        return json_encode($output);
+    }
 }

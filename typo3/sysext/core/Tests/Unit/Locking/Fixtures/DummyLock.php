@@ -19,61 +19,68 @@ use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 /**
  * Dummy locking
  */
-class DummyLock implements LockingStrategyInterface {
+class DummyLock implements LockingStrategyInterface
+{
+    /**
+     * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR
+     */
+    public static function getCapabilities()
+    {
+        return self::LOCK_CAPABILITY_EXCLUSIVE;
+    }
 
-	/**
-	 * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR
-	 */
-	static public function getCapabilities() {
-		return self::LOCK_CAPABILITY_EXCLUSIVE;
-	}
+    /**
+     * @return int Returns a priority for the method. 0 to 100, 100 is highest
+     */
+    public static function getPriority()
+    {
+        return 100;
+    }
 
-	/**
-	 * @return int Returns a priority for the method. 0 to 100, 100 is highest
-	 */
-	static public function getPriority() {
-		return 100;
-	}
+    /**
+     * @param string $subject ID to identify this lock in the system
+     */
+    public function __construct($subject)
+    {
+    }
 
-	/**
-	 * @param string $subject ID to identify this lock in the system
-	 */
-	public function __construct($subject) {
-	}
+    /**
+     * Try to acquire a lock
+     *
+     * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or LOCK_CAPABILITY_SHARED
+     * @return bool Returns TRUE if the lock was acquired successfully
+     */
+    public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE)
+    {
+        return false;
+    }
 
-	/**
-	 * Try to acquire a lock
-	 *
-	 * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or LOCK_CAPABILITY_SHARED
-	 * @return bool Returns TRUE if the lock was acquired successfully
-	 */
-	public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE) {
-		return FALSE;
-	}
+    /**
+     * Release the lock
+     *
+     * @return bool Returns TRUE on success or FALSE on failure
+     */
+    public function release()
+    {
+        return false;
+    }
 
-	/**
-	 * Release the lock
-	 *
-	 * @return bool Returns TRUE on success or FALSE on failure
-	 */
-	public function release() {
-		return FALSE;
-	}
+    /**
+     * Get status of this lock
+     *
+     * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
+     */
+    public function isAcquired()
+    {
+        return false;
+    }
 
-	/**
-	 * Get status of this lock
-	 *
-	 * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
-	 */
-	public function isAcquired() {
-		return FALSE;
-	}
-
-	/**
-	 * Destroys the resource associated with the lock
-	 *
-	 * @return void
-	 */
-	public function destroy() {
-	}
+    /**
+     * Destroys the resource associated with the lock
+     *
+     * @return void
+     */
+    public function destroy()
+    {
+    }
 }

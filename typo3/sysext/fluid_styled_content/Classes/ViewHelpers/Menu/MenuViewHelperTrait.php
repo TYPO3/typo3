@@ -21,93 +21,95 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Trait for Menu-ViewHelpers that require support functions for
  * working with menus that require page selection constraints.
  */
-trait MenuViewHelperTrait {
+trait MenuViewHelperTrait
+{
+    /**
+     * Get the constraints for the page based on doktype and field "nav_hide"
+     *
+     * By default the following doktypes are always ignored:
+     * - 6: Backend User Section
+     * - > 200: Folder (254)
+     *          Recycler (255)
+     *
+     * Optional are:
+     * - 199: Menu separator
+     * - nav_hide: Not in menu
+     *
+     * @param bool $includeNotInMenu Should pages which are hidden for menu's be included
+     * @param bool $includeMenuSeparator Should pages of type "Menu separator" be included
+     * @return string
+     */
+    protected function getPageConstraints($includeNotInMenu = false, $includeMenuSeparator = false)
+    {
+        $constraints = array();
 
-	/**
-	 * Get the constraints for the page based on doktype and field "nav_hide"
-	 *
-	 * By default the following doktypes are always ignored:
-	 * - 6: Backend User Section
-	 * - > 200: Folder (254)
-	 *          Recycler (255)
-	 *
-	 * Optional are:
-	 * - 199: Menu separator
-	 * - nav_hide: Not in menu
-	 *
-	 * @param bool $includeNotInMenu Should pages which are hidden for menu's be included
-	 * @param bool $includeMenuSeparator Should pages of type "Menu separator" be included
-	 * @return string
-	 */
-	protected function getPageConstraints($includeNotInMenu = FALSE, $includeMenuSeparator = FALSE) {
-		$constraints = array();
+        $constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
 
-		$constraints[] = 'doktype NOT IN (' . PageRepository::DOKTYPE_BE_USER_SECTION . ',' . PageRepository::DOKTYPE_RECYCLER . ',' . PageRepository::DOKTYPE_SYSFOLDER . ')';
+        if (!$includeNotInMenu) {
+            $constraints[] = 'nav_hide = 0';
+        }
 
-		if (!$includeNotInMenu) {
-			$constraints[] = 'nav_hide = 0';
-		}
+        if (!$includeMenuSeparator) {
+            $constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
+        }
 
-		if (!$includeMenuSeparator) {
-			$constraints[] = 'doktype != ' . PageRepository::DOKTYPE_SPACER;
-		}
+        return 'AND ' . implode(' AND ', $constraints);
+    }
 
-		return 'AND ' . implode(' AND ', $constraints);
-	}
+    /**
+     * Get a filtered list of page UIDs according to initial list
+     * of UIDs and entryLevel parameter.
+     *
+     * @param array $pageUids
+     * @param int|NULL $entryLevel
+     * @return array
+     */
+    protected function getPageUids(array $pageUids, $entryLevel = 0)
+    {
+        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
 
-	/**
-	 * Get a filtered list of page UIDs according to initial list
-	 * of UIDs and entryLevel parameter.
-	 *
-	 * @param array $pageUids
-	 * @param int|NULL $entryLevel
-	 * @return array
-	 */
-	protected function getPageUids(array $pageUids, $entryLevel = 0) {
+        // Remove empty entries from array
+        $pageUids = array_filter($pageUids);
 
-		$typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        // If no pages have been defined, use the current page
+        if (empty($pageUids)) {
+            if ($entryLevel !== null) {
+                if ($entryLevel < 0) {
+                    $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
+                }
+                $pageUids = array($typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']);
+            } else {
+                $pageUids = array($typoScriptFrontendController->id);
+            }
+        }
 
-		// Remove empty entries from array
-		$pageUids = array_filter($pageUids);
+        return $pageUids;
+    }
 
-		// If no pages have been defined, use the current page
-		if (empty($pageUids)) {
-			if ($entryLevel !== NULL) {
-				if ($entryLevel < 0) {
-					$entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
-				}
-				$pageUids = array($typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']);
-			} else {
-				$pageUids = array($typoScriptFrontendController->id);
-			}
-		}
+    /**
+     * @param array $variables
+     * @return mixed
+     */
+    protected function renderChildrenWithVariables(array $variables)
+    {
+        foreach ($variables as $name => $value) {
+            $this->templateVariableContainer->add($name, $value);
+        }
 
-		return $pageUids;
-	}
+        $output = $this->renderChildren();
 
-	/**
-	 * @param array $variables
-	 * @return mixed
-	 */
-	protected function renderChildrenWithVariables(array $variables) {
+        foreach ($variables as $name => $_) {
+            $this->templateVariableContainer->remove($name);
+        }
 
-		foreach ($variables as $name => $value) {
-			$this->templateVariableContainer->add($name, $value);
-		}
+        return $output;
+    }
 
-		$output = $this->renderChildren();
-
-		foreach ($variables as $name => $_) {
-			$this->templateVariableContainer->remove($name);
-		}
-
-		return $output;
-	}
-
-	/**
-	 * @return TypoScriptFrontendController
-	 */
-	protected function getTypoScriptFrontendController() {
-		return $GLOBALS['TSFE'];
-	}
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }

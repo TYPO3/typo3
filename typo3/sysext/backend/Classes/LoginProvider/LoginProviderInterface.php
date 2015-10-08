@@ -21,27 +21,26 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Interface for Backend Login providers
  */
-interface LoginProviderInterface {
-
-	/**
-	 * Render the login HTML
-	 *
-	 * Implement this method and set the template for your form.
-	 * This is also the right place to assign data to the view
-	 * and add necessary JavaScript resources to the page renderer.
-	 *
-	 * A good example is EXT:openid
-	 *
-	 * Example:
-	 *    $view->setTemplatePathAndFilename($pathAndFilename);
-	 *    $view->assign('foo', 'bar');
-	 *
-	 * @param StandaloneView $view
-	 * @param PageRenderer $pageRenderer
-	 * @param LoginController $loginController
-	 *
-	 * @return void
-	 */
-	public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);
-
+interface LoginProviderInterface
+{
+    /**
+     * Render the login HTML
+     *
+     * Implement this method and set the template for your form.
+     * This is also the right place to assign data to the view
+     * and add necessary JavaScript resources to the page renderer.
+     *
+     * A good example is EXT:openid
+     *
+     * Example:
+     *    $view->setTemplatePathAndFilename($pathAndFilename);
+     *    $view->assign('foo', 'bar');
+     *
+     * @param StandaloneView $view
+     * @param PageRenderer $pageRenderer
+     * @param LoginController $loginController
+     *
+     * @return void
+     */
+    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);
 }

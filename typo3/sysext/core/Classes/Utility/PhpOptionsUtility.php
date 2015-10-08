@@ -17,25 +17,26 @@ namespace TYPO3\CMS\Core\Utility;
 /**
  * Class to handle php environment specific options / functions
  */
-class PhpOptionsUtility {
+class PhpOptionsUtility
+{
+    /**
+     * Check if php session.auto_start is enabled
+     *
+     * @return bool TRUE if session.auto_start is enabled, FALSE if disabled
+     */
+    public static function isSessionAutoStartEnabled()
+    {
+        return self::getIniValueBoolean('session.auto_start');
+    }
 
-	/**
-	 * Check if php session.auto_start is enabled
-	 *
-	 * @return bool TRUE if session.auto_start is enabled, FALSE if disabled
-	 */
-	static public function isSessionAutoStartEnabled() {
-		return self::getIniValueBoolean('session.auto_start');
-	}
-
-	/**
-	 * Cast an on/off php ini value to boolean
-	 *
-	 * @param string $configOption
-	 * @return bool TRUE if the given option is enabled, FALSE if disabled
-	 */
-	static public function getIniValueBoolean($configOption) {
-		return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE));
-	}
-
+    /**
+     * Cast an on/off php ini value to boolean
+     *
+     * @param string $configOption
+     * @return bool TRUE if the given option is enabled, FALSE if disabled
+     */
+    public static function getIniValueBoolean($configOption)
+    {
+        return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE));
+    }
 }

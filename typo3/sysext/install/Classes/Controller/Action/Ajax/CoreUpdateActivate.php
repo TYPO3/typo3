@@ -17,19 +17,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Activate a downloaded core
  */
-class CoreUpdateActivate extends AbstractCoreUpdate {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return array Rendered content
-	 */
-	protected function executeAction() {
-		$this->view->assignMultiple(array(
-				'success' => $this->coreUpdateService->activateVersion($this->getVersionToHandle()),
-				'status' => $this->coreUpdateService->getMessages(),
-			));
-		return $this->view->render();
-	}
-
+class CoreUpdateActivate extends AbstractCoreUpdate
+{
+    /**
+     * Executes the action
+     *
+     * @return array Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->view->assignMultiple(array(
+                'success' => $this->coreUpdateService->activateVersion($this->getVersionToHandle()),
+                'status' => $this->coreUpdateService->getMessages(),
+            ));
+        return $this->view->render();
+    }
 }

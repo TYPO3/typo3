@@ -32,38 +32,39 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * (depending on your spamProtectEmailAddresses-settings)
  * </output>
  */
-class EmailViewHelper extends AbstractViewHelper implements CompilableInterface {
+class EmailViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @param string $email The email address to be turned into a URI
+     * @return string Rendered email link
+     */
+    public function render($email)
+    {
+        return static::renderStatic(
+            array(
+                'email' => $email
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param string $email The email address to be turned into a URI
-	 * @return string Rendered email link
-	 */
-	public function render($email) {
-		return static::renderStatic(
-			array(
-				'email' => $email
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $email = $arguments['email'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$email = $arguments['email'];
-
-		if (TYPO3_MODE === 'FE') {
-			$emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
-			return reset($emailParts);
-		} else {
-			return 'mailto:' . $email;
-		}
-	}
-
+        if (TYPO3_MODE === 'FE') {
+            $emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+            return reset($emailParts);
+        } else {
+            return 'mailto:' . $email;
+        }
+    }
 }

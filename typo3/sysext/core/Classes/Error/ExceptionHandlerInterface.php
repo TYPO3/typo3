@@ -19,35 +19,34 @@ namespace TYPO3\CMS\Core\Error;
  *
  * This file is a backport from TYPO3 Flow
  */
-interface ExceptionHandlerInterface {
+interface ExceptionHandlerInterface
+{
+    /**
+     * Constructs this exception handler - registers itself as the default exception handler.
+     */
+    public function __construct();
 
-	/**
-	 * Constructs this exception handler - registers itself as the default exception handler.
-	 */
-	public function __construct();
+    /**
+     * Handles the given exception
+     *
+     * @param \Exception $exception: The exception object
+     * @return void
+     */
+    public function handleException(\Exception $exception);
 
-	/**
-	 * Handles the given exception
-	 *
-	 * @param \Exception $exception: The exception object
-	 * @return void
-	 */
-	public function handleException(\Exception $exception);
+    /**
+     * Formats and echoes the exception as XHTML.
+     *
+     * @param \Exception $exception The exception object
+     * @return void
+     */
+    public function echoExceptionWeb(\Exception $exception);
 
-	/**
-	 * Formats and echoes the exception as XHTML.
-	 *
-	 * @param \Exception $exception The exception object
-	 * @return void
-	 */
-	public function echoExceptionWeb(\Exception $exception);
-
-	/**
-	 * Formats and echoes the exception for the command line
-	 *
-	 * @param \Exception $exception The exception object
-	 * @return void
-	 */
-	public function echoExceptionCLI(\Exception $exception);
-
+    /**
+     * Formats and echoes the exception for the command line
+     *
+     * @param \Exception $exception The exception object
+     * @return void
+     */
+    public function echoExceptionCLI(\Exception $exception);
 }

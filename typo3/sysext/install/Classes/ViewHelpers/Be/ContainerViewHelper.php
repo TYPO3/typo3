@@ -39,37 +39,37 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
  *
  * @internal
  */
-class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
+    /**
+     * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
+     *
+     * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
+     * @param array $addCssFiles Custom CSS files to be loaded
+     * @param array $addJsFiles Custom JavaScript files to be loaded
+     *
+     * @return string
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @see \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    public function render($pageTitle = '', $addCssFiles = array(), $addJsFiles = array())
+    {
+        $doc = $this->getDocInstance();
+        $pageRenderer = $this->getPageRenderer();
 
-	/**
-	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
-	 *
-	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param array $addCssFiles Custom CSS files to be loaded
-	 * @param array $addJsFiles Custom JavaScript files to be loaded
-	 *
-	 * @return string
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @see \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	public function render($pageTitle = '', $addCssFiles = array(), $addJsFiles = array()) {
-		$doc = $this->getDocInstance();
-		$pageRenderer = $this->getPageRenderer();
-
-		if (is_array($addCssFiles) && !empty($addCssFiles)) {
-			foreach ($addCssFiles as $addCssFile) {
-				$pageRenderer->addCssFile($addCssFile);
-			}
-		}
-		if (is_array($addJsFiles) && !empty($addJsFiles)) {
-			foreach ($addJsFiles as $addJsFile) {
-				$pageRenderer->addJsFile($addJsFile);
-			}
-		}
-		$output = $this->renderChildren();
-		$output = $doc->startPage($pageTitle) . $output;
-		$output .= $doc->endPage();
-		return $output;
-	}
-
+        if (is_array($addCssFiles) && !empty($addCssFiles)) {
+            foreach ($addCssFiles as $addCssFile) {
+                $pageRenderer->addCssFile($addCssFile);
+            }
+        }
+        if (is_array($addJsFiles) && !empty($addJsFiles)) {
+            foreach ($addJsFiles as $addJsFile) {
+                $pageRenderer->addJsFile($addJsFile);
+            }
+        }
+        $output = $this->renderChildren();
+        $output = $doc->startPage($pageTitle) . $output;
+        $output .= $doc->endPage();
+        return $output;
+    }
 }

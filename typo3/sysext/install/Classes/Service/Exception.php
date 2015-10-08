@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install\Service;
 /**
  * A service exception
  */
-class Exception extends \TYPO3\CMS\Install\Exception {
-
+class Exception extends \TYPO3\CMS\Install\Exception
+{
 }

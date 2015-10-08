@@ -20,28 +20,28 @@ use TYPO3\CMS\Form\PostProcess\PostProcessorInterface;
 /**
  * Post processor with form prefix fixture
  */
-class PostProcessorWithFormPrefixFixture extends AbstractPostProcessor implements PostProcessorInterface {
+class PostProcessorWithFormPrefixFixture extends AbstractPostProcessor implements PostProcessorInterface
+{
+    /**
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $form
+     * @param array $typoScript
+     */
+    public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript)
+    {
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
-	 * @param array $typoScript
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
+    /**
+     * @param \TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext
+     */
+    public function setControllerContext(\TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext)
+    {
+    }
 
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext
-	 */
-	public function setControllerContext(\TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext) {
-
-	}
-
-	/**
-	 * @return string
-	 */
-	public function process() {
-		return 'processedWithPrefix';
-	}
-
+    /**
+     * @return string
+     */
+    public function process()
+    {
+        return 'processedWithPrefix';
+    }
 }

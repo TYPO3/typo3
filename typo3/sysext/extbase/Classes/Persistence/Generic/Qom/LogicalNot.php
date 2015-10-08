@@ -19,37 +19,39 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
  */
-class LogicalNot implements NotInterface {
+class LogicalNot implements NotInterface
+{
+    /**
+     * @var ConstraintInterface
+     */
+    protected $constraint;
 
-	/**
-	 * @var ConstraintInterface
-	 */
-	protected $constraint;
+    /**
+     * @param ConstraintInterface $constraint
+     */
+    public function __construct(ConstraintInterface $constraint)
+    {
+        $this->constraint = $constraint;
+    }
 
-	/**
-	 * @param ConstraintInterface $constraint
-	 */
-	public function __construct(ConstraintInterface $constraint) {
-		$this->constraint = $constraint;
-	}
+    /**
+     * Fills an array with the names of all bound variables in the constraint
+     *
+     * @param array &$boundVariables
+     * @return void
+     */
+    public function collectBoundVariableNames(&$boundVariables)
+    {
+        $this->constraint->collectBoundVariableNames($boundVariables);
+    }
 
-	/**
-	 * Fills an array with the names of all bound variables in the constraint
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-		$this->constraint->collectBoundVariableNames($boundVariables);
-	}
-
-	/**
-	 * Gets the constraint negated by this Not constraint.
-	 *
-	 * @return ConstraintInterface the constraint; non-null
-	 */
-	public function getConstraint() {
-		return $this->constraint;
-	}
-
+    /**
+     * Gets the constraint negated by this Not constraint.
+     *
+     * @return ConstraintInterface the constraint; non-null
+     */
+    public function getConstraint()
+    {
+        return $this->constraint;
+    }
 }

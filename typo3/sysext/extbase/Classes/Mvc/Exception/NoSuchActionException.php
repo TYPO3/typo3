@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Action" exception
  */
-class NoSuchActionException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class NoSuchActionException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

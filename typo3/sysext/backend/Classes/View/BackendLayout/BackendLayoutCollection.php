@@ -17,96 +17,101 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 /**
  * Collection of backend layouts.
  */
-class BackendLayoutCollection {
+class BackendLayoutCollection
+{
+    /**
+     * @var string
+     */
+    protected $identifier;
 
-	/**
-	 * @var string
-	 */
-	protected $identifier;
+    /**
+     * @var array|BackendLayout[]
+     */
+    protected $backendLayouts = array();
 
-	/**
-	 * @var array|BackendLayout[]
-	 */
-	protected $backendLayouts = array();
+    /**
+     * @param string $identifier
+     */
+    public function __construct($identifier)
+    {
+        $this->setIdentifier($identifier);
+    }
 
-	/**
-	 * @param string $identifier
-	 */
-	public function __construct($identifier) {
-		$this->setIdentifier($identifier);
-	}
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getIdentifier() {
-		return $this->identifier;
-	}
+    /**
+     * @param string $identifier
+     * @throws \UnexpectedValueException
+     */
+    public function setIdentifier($identifier)
+    {
+        if (strpos($identifier, '__') !== false) {
+            throw new \UnexpectedValueException(
+                'Identifier "' . $identifier . '" must not contain "__"',
+                1381597631
+            );
+        }
 
-	/**
-	 * @param string $identifier
-	 * @throws \UnexpectedValueException
-	 */
-	public function setIdentifier($identifier) {
-		if (strpos($identifier, '__') !== FALSE) {
-			throw new \UnexpectedValueException(
-				'Identifier "' . $identifier . '" must not contain "__"',
-				1381597631
-			);
-		}
+        $this->identifier = $identifier;
+    }
 
-		$this->identifier = $identifier;
-	}
+    /**
+     * Adds a backend layout to this collection.
+     *
+     * @param BackendLayout $backendLayout
+     * @throws \LogicException
+     */
+    public function add(BackendLayout $backendLayout)
+    {
+        $identifier = $backendLayout->getIdentifier();
 
-	/**
-	 * Adds a backend layout to this collection.
-	 *
-	 * @param BackendLayout $backendLayout
-	 * @throws \LogicException
-	 */
-	public function add(BackendLayout $backendLayout) {
-		$identifier = $backendLayout->getIdentifier();
+        if (strpos($identifier, '__') !== false) {
+            throw new \UnexpectedValueException(
+                'BackendLayout Identifier "' . $identifier . '" must not contain "__"',
+                1381597628
+            );
+        }
 
-		if (strpos($identifier, '__') !== FALSE) {
-			throw new \UnexpectedValueException(
-				'BackendLayout Identifier "' . $identifier . '" must not contain "__"',
-				1381597628
-			);
-		}
+        if (isset($this->backendLayouts[$identifier])) {
+            throw new \LogicException(
+                'Backend Layout ' . $identifier . ' is already defined',
+                1381559376
+            );
+        }
 
-		if (isset($this->backendLayouts[$identifier])) {
-			throw new \LogicException(
-				'Backend Layout ' . $identifier . ' is already defined',
-				1381559376
-			);
-		}
+        $this->backendLayouts[$identifier] = $backendLayout;
+    }
 
-		$this->backendLayouts[$identifier] = $backendLayout;
-	}
+    /**
+     * Gets a backend layout by (regular) identifier.
+     *
+     * @param string $identifier
+     * @return NULL|BackendLayout
+     */
+    public function get($identifier)
+    {
+        $backendLayout = null;
 
-	/**
-	 * Gets a backend layout by (regular) identifier.
-	 *
-	 * @param string $identifier
-	 * @return NULL|BackendLayout
-	 */
-	public function get($identifier) {
-		$backendLayout = NULL;
+        if (isset($this->backendLayouts[$identifier])) {
+            $backendLayout = $this->backendLayouts[$identifier];
+        }
 
-		if (isset($this->backendLayouts[$identifier])) {
-			$backendLayout = $this->backendLayouts[$identifier];
-		}
+        return $backendLayout;
+    }
 
-		return $backendLayout;
-	}
-
-	/**
-	 * Gets all backend layouts in this collection.
-	 *
-	 * @return array|BackendLayout[]
-	 */
-	public function getAll() {
-		return $this->backendLayouts;
-	}
-
+    /**
+     * Gets all backend layouts in this collection.
+     *
+     * @return array|BackendLayout[]
+     */
+    public function getAll()
+    {
+        return $this->backendLayouts;
+    }
 }

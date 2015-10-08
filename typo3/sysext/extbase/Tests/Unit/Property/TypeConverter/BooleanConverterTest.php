@@ -24,48 +24,52 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Test case
  */
-class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter
+     */
+    protected $converter;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter
-	 */
-	protected $converter;
+    protected function setUp()
+    {
+        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter();
+    }
 
-	protected function setUp() {
-		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter();
-	}
+    /**
+     * @test
+     */
+    public function checkMetadata()
+    {
+        $this->assertEquals(array('boolean', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
+    }
 
-	/**
-	 * @test
-	 */
-	public function checkMetadata() {
-		$this->assertEquals(array('boolean', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-		$this->assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
-		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
-	}
+    /**
+     * @test
+     */
+    public function convertFromDoesNotModifyTheBooleanSource()
+    {
+        $source = true;
+        $this->assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromDoesNotModifyTheBooleanSource() {
-		$source = TRUE;
-		$this->assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
-	}
+    /**
+     * @test
+     */
+    public function convertFromCastsSourceStringToBoolean()
+    {
+        $source = 'true';
+        $this->assertSame(true, $this->converter->convertFrom($source, 'boolean'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function convertFromCastsSourceStringToBoolean() {
-		$source = 'true';
-		$this->assertSame(TRUE, $this->converter->convertFrom($source, 'boolean'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function convertFromCastsNumericSourceStringToBoolean() {
-		$source = '1';
-		$this->assertSame(TRUE, $this->converter->convertFrom($source, 'boolean'));
-	}
-
+    /**
+     * @test
+     */
+    public function convertFromCastsNumericSourceStringToBoolean()
+    {
+        $source = '1';
+        $this->assertSame(true, $this->converter->convertFrom($source, 'boolean'));
+    }
 }

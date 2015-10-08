@@ -17,5 +17,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
 /**
  * Exception thrown by TestCondition
  */
-class TestConditionException extends \Exception {
+class TestConditionException extends \Exception
+{
 }

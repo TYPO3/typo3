@@ -17,33 +17,33 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Performs a join between two node-tuple sources.
  */
-interface JoinInterface extends SourceInterface {
+interface JoinInterface extends SourceInterface
+{
+    /**
+     * Gets the left node-tuple source.
+     *
+     * @return SelectorInterface the left source; non-null
+     */
+    public function getLeft();
 
-	/**
-	 * Gets the left node-tuple source.
-	 *
-	 * @return SelectorInterface the left source; non-null
-	 */
-	public function getLeft();
+    /**
+     * Gets the right node-tuple source.
+     *
+     * @return SelectorInterface the right source; non-null
+     */
+    public function getRight();
 
-	/**
-	 * Gets the right node-tuple source.
-	 *
-	 * @return SelectorInterface the right source; non-null
-	 */
-	public function getRight();
+    /**
+     * Gets the join type.
+     *
+     * @return string one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
+     */
+    public function getJoinType();
 
-	/**
-	 * Gets the join type.
-	 *
-	 * @return string one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-	 */
-	public function getJoinType();
-
-	/**
-	 * Gets the join condition.
-	 *
-	 * @return JoinConditionInterface the join condition; non-null
-	 */
-	public function getJoinCondition();
+    /**
+     * Gets the join condition.
+     *
+     * @return JoinConditionInterface the join condition; non-null
+     */
+    public function getJoinCondition();
 }

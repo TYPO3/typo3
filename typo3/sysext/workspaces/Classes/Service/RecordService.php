@@ -19,67 +19,70 @@ use TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord;
 /**
  * Service for records
  */
-class RecordService implements \TYPO3\CMS\Core\SingletonInterface {
+class RecordService implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var DatabaseRecord[]
+     */
+    protected $records = array();
 
-	/**
-	 * @var DatabaseRecord[]
-	 */
-	protected $records = array();
+    /**
+     * @param string $tableName
+     * @param int $id
+     */
+    public function add($tableName, $id)
+    {
+        $databaseRecord = DatabaseRecord::create($tableName, $id);
+        if (!isset($this->records[$databaseRecord->getIdentifier()])) {
+            $this->records[$databaseRecord->getIdentifier()] = $databaseRecord;
+        }
+    }
 
-	/**
-	 * @param string $tableName
-	 * @param int $id
-	 */
-	public function add($tableName, $id) {
-		$databaseRecord = DatabaseRecord::create($tableName, $id);
-		if (!isset($this->records[$databaseRecord->getIdentifier()])) {
-			$this->records[$databaseRecord->getIdentifier()] = $databaseRecord;
-		}
-	}
+    /**
+     * @return array
+     */
+    public function getIdsPerTable()
+    {
+        $idsPerTable = array();
+        foreach ($this->records as $databaseRecord) {
+            if (!isset($idsPerTable[$databaseRecord->getTable()])) {
+                $idsPerTable[$databaseRecord->getTable()] = array();
+            }
+            $idsPerTable[$databaseRecord->getTable()][] = $databaseRecord->getUid();
+        }
+        return $idsPerTable;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getIdsPerTable() {
-		$idsPerTable = array();
-		foreach ($this->records as $databaseRecord) {
-			if (!isset($idsPerTable[$databaseRecord->getTable()])) {
-				$idsPerTable[$databaseRecord->getTable()] = array();
-			}
-			$idsPerTable[$databaseRecord->getTable()][] = $databaseRecord->getUid();
-		}
-		return $idsPerTable;
-	}
+    /**
+     * @return array
+     */
+    public function getCreateUserIds()
+    {
+        $createUserIds = array();
+        foreach ($this->getIdsPerTable() as $tableName => $ids) {
+            if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
+                continue;
+            }
+            $createUserIdFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'];
+            $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
+                $createUserIdFieldName, $tableName,
+                'uid IN (' . implode(',', $ids) . ')',
+                $createUserIdFieldName,
+                '', '',
+                $createUserIdFieldName
+            );
+            if (!empty($records)) {
+                $createUserIds = array_merge($createUserIds, array_keys($records));
+            }
+        }
+        return array_unique($createUserIds);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getCreateUserIds() {
-		$createUserIds = array();
-		foreach ($this->getIdsPerTable() as $tableName => $ids) {
-			if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
-				continue;
-			}
-			$createUserIdFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'];
-			$records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-				$createUserIdFieldName, $tableName,
-				'uid IN (' . implode(',', $ids) . ')',
-				$createUserIdFieldName,
-				'', '',
-				$createUserIdFieldName
-			);
-			if (!empty($records)) {
-				$createUserIds = array_merge($createUserIds, array_keys($records));
-			}
-		}
-		return array_unique($createUserIds);
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

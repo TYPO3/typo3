@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception {
-
+class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception
+{
 }

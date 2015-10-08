@@ -22,58 +22,62 @@ use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 /**
  * Test class for TranslateViewHelper
  */
-class TranslateViewHelperTest extends ViewHelperBaseTestcase {
+class TranslateViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var TranslateViewHelper
+     */
+    protected $subject;
 
-	/**
-	 * @var TranslateViewHelper
-	 */
-	protected $subject;
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+     * @expectedExceptionCode 1351584844
+     */
+    public function renderThrowsExceptionIfNoKeyOrIdParameterIsGiven()
+    {
+        $this->subject = GeneralUtility::makeInstance(TranslateViewHelper::class);
+        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->subject->render();
+    }
 
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-	 * @expectedExceptionCode 1351584844
-	 */
-	public function renderThrowsExceptionIfNoKeyOrIdParameterIsGiven() {
-		$this->subject = GeneralUtility::makeInstance(TranslateViewHelper::class);
-		$this->injectDependenciesIntoViewHelper($this->subject);
-		$this->subject->render();
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsStringForGivenKey()
+    {
+        $this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
+        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->assertEquals('<p>hello world</p>', $this->subject->render('foo'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsStringForGivenKey() {
-		$this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
-		$this->injectDependenciesIntoViewHelper($this->subject);
-		$this->assertEquals('<p>hello world</p>', $this->subject->render('foo'));
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsStringForGivenId()
+    {
+        $this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
+        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->assertEquals('<p>hello world</p>', $this->subject->render(null, 'bar'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsStringForGivenId() {
-		$this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
-		$this->injectDependenciesIntoViewHelper($this->subject);
-		$this->assertEquals('<p>hello world</p>', $this->subject->render(NULL, 'bar'));
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsDefaultIfNoTranslationIsFound()
+    {
+        $this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForEmptyString::class);
+        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->assertEquals('default', $this->subject->render(null, 'bar', 'default'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsDefaultIfNoTranslationIsFound() {
-		$this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForEmptyString::class);
-		$this->injectDependenciesIntoViewHelper($this->subject);
-		$this->assertEquals('default', $this->subject->render(NULL, 'bar', 'default'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function resultIsNotHtmlEscapedIfSoRequested() {
-		$this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
-		$this->injectDependenciesIntoViewHelper($this->subject);
-		$this->assertEquals('&lt;p&gt;hello world&lt;/p&gt;', $this->subject->render('foo', NULL, NULL, TRUE));
-	}
-
+    /**
+     * @test
+     */
+    public function resultIsNotHtmlEscapedIfSoRequested()
+    {
+        $this->subject = GeneralUtility::makeInstance(TranslateViewHelperFixtureForTranslatedString::class);
+        $this->injectDependenciesIntoViewHelper($this->subject);
+        $this->assertEquals('&lt;p&gt;hello world&lt;/p&gt;', $this->subject->render('foo', null, null, true));
+    }
 }

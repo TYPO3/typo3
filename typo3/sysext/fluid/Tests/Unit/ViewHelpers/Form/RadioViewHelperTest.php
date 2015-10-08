@@ -16,146 +16,153 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper;
 /**
  * Test for the "Radio" Form view helper
  */
-class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
+class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(RadioViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValueAttribute', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(RadioViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValueAttribute', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsTagNameAndDefaultAttributes()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
+    /**
+     * @test
+     */
+    public function renderSetsCheckedAttributeIfSpecified()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 
-	/**
-	 * @test
-	 */
-	public function renderSetsCheckedAttributeIfSpecified() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render(true);
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render(TRUE);
-	}
+    /**
+     * @test
+     */
+    public function renderIgnoresBoundPropertyIfCheckedIsSet()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
-	/**
-	 * @test
-	 */
-	public function renderIgnoresBoundPropertyIfCheckedIsSet() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->expects($this->never())->method('isObjectAccessorMode')->will($this->returnValue(true));
+        $this->viewHelper->expects($this->never())->method('getPropertyValue')->will($this->returnValue(true));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->expects($this->never())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
-		$this->viewHelper->expects($this->never())->method('getPropertyValue')->will($this->returnValue(TRUE));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render(true);
+        $this->viewHelper->render(false);
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render(TRUE);
-		$this->viewHelper->render(FALSE);
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
+        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(true));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
-		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(TRUE));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
+    /**
+     * @test
+     */
+    public function renderDoesNotAppendSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
-	/**
-	 * @test
-	 */
-	public function renderDoesNotAppendSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
+        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array()));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
-		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array()));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeString()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
+        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
+        $mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
+        $mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeString() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
-		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
-		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+        $this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
+        $this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(true));
+        $this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue('bar'));
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$this->viewHelper->expects($this->any())->method('getValueAttribute')->will($this->returnValue('bar'));
-		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
-		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue('bar'));
-		$this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderCallsSetErrorClassAttribute() {
-		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-		$this->viewHelper->render();
-	}
-
+    /**
+     * @test
+     */
+    public function renderCallsSetErrorClassAttribute()
+    {
+        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->render();
+    }
 }

@@ -17,19 +17,19 @@ namespace TYPO3\CMS\SysNote\Hook;
 /**
  * Hook for the list module
  */
-class RecordListHook {
-
-	/**
-	 * Add sys_notes as additional content to the footer of the list module
-	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Recordlist\RecordList $parentObject
-	 * @return string
-	 */
-	public function render(array $params = array(), \TYPO3\CMS\Recordlist\RecordList $parentObject) {
-		/** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
-		$noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
-		return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->id));
-	}
-
+class RecordListHook
+{
+    /**
+     * Add sys_notes as additional content to the footer of the list module
+     *
+     * @param array $params
+     * @param \TYPO3\CMS\Recordlist\RecordList $parentObject
+     * @return string
+     */
+    public function render(array $params = array(), \TYPO3\CMS\Recordlist\RecordList $parentObject)
+    {
+        /** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
+        $noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
+        return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->id));
+    }
 }

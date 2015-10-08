@@ -28,188 +28,197 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class ClassLoadingInformation {
+class ClassLoadingInformation
+{
+    /**
+     * Base directory storing all autoload information
+     */
+    const AUTOLOAD_INFO_DIR = 'typo3temp/autoload/';
 
-	/**
-	 * Base directory storing all autoload information
-	 */
-	const AUTOLOAD_INFO_DIR = 'typo3temp/autoload/';
+    /**
+     * Base directory storing all autoload information in testing context
+     */
+    const AUTOLOAD_INFO_DIR_TESTS = 'typo3temp/autoload-tests/';
 
-	/**
-	 * Base directory storing all autoload information in testing context
-	 */
-	const AUTOLOAD_INFO_DIR_TESTS = 'typo3temp/autoload-tests/';
+    /**
+     * Name of file that contains all classes-filename mappings
+     */
+    const AUTOLOAD_CLASSMAP_FILENAME = 'autoload_classmap.php';
 
-	/**
-	 * Name of file that contains all classes-filename mappings
-	 */
-	const AUTOLOAD_CLASSMAP_FILENAME = 'autoload_classmap.php';
+    /**
+     * Name of file that contains all PSR4 mappings, fetched from the composer.json files of extensions
+     */
+    const AUTOLOAD_PSR4_FILENAME = 'autoload_psr4.php';
 
-	/**
-	 * Name of file that contains all PSR4 mappings, fetched from the composer.json files of extensions
-	 */
-	const AUTOLOAD_PSR4_FILENAME = 'autoload_psr4.php';
+    /**
+     * Name of file that contains all class alias mappings
+     */
+    const AUTOLOAD_CLASSALIASMAP_FILENAME = 'autoload_classaliasmap.php';
 
-	/**
-	 * Name of file that contains all class alias mappings
-	 */
-	const AUTOLOAD_CLASSALIASMAP_FILENAME = 'autoload_classaliasmap.php';
+    /**
+     * Checks if the autoload_classmap.php exists and we are not in testing context.
+     * Used to see if the ClassLoadingInformationGenerator should be called.
+     *
+     * @return bool
+     */
+    public static function isClassLoadingInformationAvailable()
+    {
+        return !self::isTestingContext() && file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
+    }
 
-	/**
-	 * Checks if the autoload_classmap.php exists and we are not in testing context.
-	 * Used to see if the ClassLoadingInformationGenerator should be called.
-	 *
-	 * @return bool
-	 */
-	static public function isClassLoadingInformationAvailable() {
-		return !self::isTestingContext() && file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
-	}
+    /**
+     * Puts all information compiled by the ClassLoadingInformationGenerator to files
+     */
+    public static function dumpClassLoadingInformation()
+    {
+        self::ensureAutoloadInfoDirExists();
+        $composerClassLoader = static::getClassLoader();
+        $activeExtensionPackages = static::getActiveExtensionPackages();
 
-	/**
-	 * Puts all information compiled by the ClassLoadingInformationGenerator to files
-	 */
-	static public function dumpClassLoadingInformation() {
-		self::ensureAutoloadInfoDirExists();
-		$composerClassLoader = static::getClassLoader();
-		$activeExtensionPackages = static::getActiveExtensionPackages();
+        /** @var ClassLoadingInformationGenerator  $generator */
+        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
+        $classInfoFiles = $generator->buildAutoloadInformationFiles();
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
 
-		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
-		$classInfoFiles = $generator->buildAutoloadInformationFiles();
-		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
-		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
+        $classAliasMapFile = $generator->buildClassAliasMapFile();
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
+    }
 
-		$classAliasMapFile = $generator->buildClassAliasMapFile();
-		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
-	}
+    /**
+     * Registers the class aliases, the class maps and the PSR4 prefixes previously identified by
+     * the ClassLoadingInformationGenerator during runtime.
+     */
+    public static function registerClassLoadingInformation()
+    {
+        $composerClassLoader = static::getClassLoader();
 
-	/**
-	 * Registers the class aliases, the class maps and the PSR4 prefixes previously identified by
-	 * the ClassLoadingInformationGenerator during runtime.
-	 */
-	static public function registerClassLoadingInformation() {
-		$composerClassLoader = static::getClassLoader();
+        $dynamicClassAliasMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME;
+        if (file_exists($dynamicClassAliasMapFile)) {
+            $classAliasMap = require $dynamicClassAliasMapFile;
+            if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
+                ClassAliasMap::addAliasMap($classAliasMap);
+            }
+        }
 
-		$dynamicClassAliasMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME;
-		if (file_exists($dynamicClassAliasMapFile)) {
-			$classAliasMap = require $dynamicClassAliasMapFile;
-			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-				ClassAliasMap::addAliasMap($classAliasMap);
-			}
-		}
+        $dynamicClassMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME;
+        if (file_exists($dynamicClassMapFile)) {
+            $classMap = require $dynamicClassMapFile;
+            if (!empty($classMap) && is_array($classMap)) {
+                $composerClassLoader->addClassMap($classMap);
+            }
+        }
 
-		$dynamicClassMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME;
-		if (file_exists($dynamicClassMapFile)) {
-			$classMap = require $dynamicClassMapFile;
-			if (!empty($classMap) && is_array($classMap)) {
-				$composerClassLoader->addClassMap($classMap);
-			}
-		}
+        $dynamicPsr4File = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME;
+        if (file_exists($dynamicPsr4File)) {
+            $psr4 = require $dynamicPsr4File;
+            if (is_array($psr4)) {
+                foreach ($psr4 as $prefix => $paths) {
+                    $composerClassLoader->setPsr4($prefix, $paths);
+                }
+            }
+        }
+    }
 
-		$dynamicPsr4File = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME;
-		if (file_exists($dynamicPsr4File)) {
-			$psr4 = require $dynamicPsr4File;
-			if (is_array($psr4)) {
-				foreach ($psr4 as $prefix => $paths) {
-					$composerClassLoader->setPsr4($prefix, $paths);
-				}
-			}
-		}
-	}
+    /**
+     * Sets class loading information for a package for the current web request
+     *
+     * @param PackageInterface $package
+     * @throws \TYPO3\CMS\Core\Error\Exception
+     */
+    public static function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
+    {
+        $composerClassLoader = static::getClassLoader();
+        $activeExtensionPackages = static::getActiveExtensionPackages();
 
-	/**
-	 * Sets class loading information for a package for the current web request
-	 *
-	 * @param PackageInterface $package
-	 * @throws \TYPO3\CMS\Core\Error\Exception
-	 */
-	static public function registerTransientClassLoadingInformationForPackage(PackageInterface $package) {
-		$composerClassLoader = static::getClassLoader();
-		$activeExtensionPackages = static::getActiveExtensionPackages();
+        /** @var ClassLoadingInformationGenerator  $generator */
+        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
 
-		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
+        $classInformation = $generator->buildClassLoadingInformationForPackage($package);
+        $composerClassLoader->addClassMap($classInformation['classMap']);
+        foreach ($classInformation['psr-4'] as $prefix => $paths) {
+            $composerClassLoader->setPsr4($prefix, $paths);
+        }
+        $classAliasMap = $generator->buildClassAliasMapForPackage($package);
+        if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
+            ClassAliasMap::addAliasMap($classAliasMap);
+        }
+    }
 
-		$classInformation = $generator->buildClassLoadingInformationForPackage($package);
-		$composerClassLoader->addClassMap($classInformation['classMap']);
-		foreach ($classInformation['psr-4'] as $prefix => $paths) {
-			$composerClassLoader->setPsr4($prefix, $paths);
-		}
-		$classAliasMap = $generator->buildClassAliasMapForPackage($package);
-		if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-			ClassAliasMap::addAliasMap($classAliasMap);
-		}
-	}
+    /**
+     * @return string
+     */
+    protected static function getClassLoadingInformationDirectory()
+    {
+        if (self::isTestingContext()) {
+            return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
+        } else {
+            return PATH_site . self::AUTOLOAD_INFO_DIR;
+        }
+    }
 
-	/**
-	 * @return string
-	 */
-	static protected function getClassLoadingInformationDirectory() {
-		if (self::isTestingContext()) {
-			return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
-		} else {
-			return PATH_site . self::AUTOLOAD_INFO_DIR;
-		}
-	}
+    /**
+     * Get class name for alias
+     *
+     * @param string $alias
+     * @return mixed
+     */
+    public static function getClassNameForAlias($alias)
+    {
+        return ClassAliasMap::getClassNameForAlias($alias);
+    }
 
-	/**
-	 * Get class name for alias
-	 *
-	 * @param string $alias
-	 * @return mixed
-	 */
-	static public function getClassNameForAlias($alias) {
-		return ClassAliasMap::getClassNameForAlias($alias);
-	}
+    /**
+     * Ensures the defined path for class information files exists
+     * And clears it in case we're in testing context
+     */
+    protected static function ensureAutoloadInfoDirExists()
+    {
+        $autoloadInfoDir = self::getClassLoadingInformationDirectory();
+        if (!file_exists($autoloadInfoDir)) {
+            GeneralUtility::mkdir_deep($autoloadInfoDir);
+        }
+    }
 
-	/**
-	 * Ensures the defined path for class information files exists
-	 * And clears it in case we're in testing context
-	 */
-	static protected function ensureAutoloadInfoDirExists() {
-		$autoloadInfoDir = self::getClassLoadingInformationDirectory();
-		if (!file_exists($autoloadInfoDir)) {
-			GeneralUtility::mkdir_deep($autoloadInfoDir);
-		}
-	}
+    /**
+     * Internal method calling the bootstrap to fetch the composer class loader
+     *
+     * @return ClassLoader
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    protected static function getClassLoader()
+    {
+        return Bootstrap::getInstance()->getEarlyInstance(ClassLoader::class);
+    }
 
-	/**
-	 * Internal method calling the bootstrap to fetch the composer class loader
-	 *
-	 * @return ClassLoader
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	static protected function getClassLoader() {
-		return Bootstrap::getInstance()->getEarlyInstance(ClassLoader::class);
-	}
+    /**
+     * Internal method calling the bootstrap to get application context information
+     *
+     * @return bool
+     * @throws \TYPO3\CMS\Core\Exception
+     */
+    protected static function isTestingContext()
+    {
+        return Bootstrap::getInstance()->getApplicationContext()->isTesting();
+    }
 
-	/**
-	 * Internal method calling the bootstrap to get application context information
-	 *
-	 * @return bool
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	static protected function isTestingContext() {
-		return Bootstrap::getInstance()->getApplicationContext()->isTesting();
-	}
-
-	/**
-	 * Get all packages except the protected ones, as they are covered already
-	 *
-	 * @return PackageInterface[]
-	 */
-	static protected function getActiveExtensionPackages() {
-		$activeExtensionPackages = [];
-		/** @var PackageManager $packageManager */
-		$packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
-		foreach ($packageManager->getActivePackages() as $package) {
-			if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
-				// Skip all core packages as the class loading info is prepared for them already
-				continue;
-			}
-			$activeExtensionPackages[] = $package;
-		}
-		return $activeExtensionPackages;
-	}
-
+    /**
+     * Get all packages except the protected ones, as they are covered already
+     *
+     * @return PackageInterface[]
+     */
+    protected static function getActiveExtensionPackages()
+    {
+        $activeExtensionPackages = [];
+        /** @var PackageManager $packageManager */
+        $packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+        foreach ($packageManager->getActivePackages() as $package) {
+            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+                // Skip all core packages as the class loading info is prepared for them already
+                continue;
+            }
+            $activeExtensionPackages[] = $package;
+        }
+        return $activeExtensionPackages;
+    }
 }

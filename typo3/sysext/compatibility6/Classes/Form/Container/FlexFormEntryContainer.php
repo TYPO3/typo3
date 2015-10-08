@@ -27,68 +27,68 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This container additionally handles flex form languages on sheet level.
  */
-class FlexFormEntryContainer extends AbstractContainer {
+class FlexFormEntryContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
+        $flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
-		$flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        // Tabs or no tabs - that's the question
+        $hasTabs = false;
+        if (count($flexFormDataStructureArray['sheets']) > 1) {
+            $hasTabs = true;
+        }
 
-		// Tabs or no tabs - that's the question
-		$hasTabs = FALSE;
-		if (count($flexFormDataStructureArray['sheets']) > 1) {
-			$hasTabs = TRUE;
-		}
+        $resultArray = $this->initializeResultArray();
 
-		$resultArray = $this->initializeResultArray();
+        foreach ($flexFormDataStructureArray['meta']['languagesOnSheetLevel'] as $lKey) {
+            // Add language as header
+            if (!$flexFormDataStructureArray['meta']['langChildren'] && !$flexFormDataStructureArray['meta']['langDisable']) {
+                // Find language uid of this iso code
+                $languageUid = 0;
+                if ($lKey !== 'DEF') {
+                    foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
+                        if ($systemLanguageRow['iso'] === $lKey) {
+                            $languageUid = $systemLanguageRow['uid'];
+                            break;
+                        }
+                    }
+                }
+                $resultArray['html'] .= LF
+                    . '<strong>'
+                    . $iconFactory->getIcon($this->data['systemLanguageRows'][$languageUid]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
+                    . htmlspecialchars($this->data['systemLanguageRows'][$languageUid]['title'])
+                    . '</strong>';
+            }
 
-		foreach ($flexFormDataStructureArray['meta']['languagesOnSheetLevel'] as $lKey) {
-			// Add language as header
-			if (!$flexFormDataStructureArray['meta']['langChildren'] && !$flexFormDataStructureArray['meta']['langDisable']) {
-				// Find language uid of this iso code
-				$languageUid = 0;
-				if ($lKey !== 'DEF') {
-					foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
-						if ($systemLanguageRow['iso'] === $lKey) {
-							$languageUid = $systemLanguageRow['uid'];
-							break;
-						}
-					}
-				}
-				$resultArray['html'] .= LF
-					. '<strong>'
-					. $iconFactory->getIcon($this->data['systemLanguageRows'][$languageUid]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
-					. htmlspecialchars($this->data['systemLanguageRows'][$languageUid]['title'])
-					. '</strong>';
-			}
+            // Default language "lDEF", other options are "lUK" or whatever country code
+            $flexFormCurrentLanguage = 'l' . $lKey;
 
-			// Default language "lDEF", other options are "lUK" or whatever country code
-			$flexFormCurrentLanguage = 'l' . $lKey;
+            $options = $this->data;
+            $options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
+            $options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
+            $options['flexFormRowData'] = $flexFormRowData;
+            if (!$hasTabs) {
+                $options['renderType'] = 'flexFormNoTabsContainer';
+                $flexFormNoTabsResult = $this->nodeFactory->create($options)->render();
+                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormNoTabsResult);
+            } else {
+                $options['renderType'] = 'flexFormTabsContainer';
+                $flexFormTabsContainerResult = $this->nodeFactory->create($options)->render();
+                $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
+            }
+        }
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
 
-			$options = $this->data;
-			$options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
-			$options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
-			$options['flexFormRowData'] = $flexFormRowData;
-			if (!$hasTabs) {
-				$options['renderType'] = 'flexFormNoTabsContainer';
-				$flexFormNoTabsResult = $this->nodeFactory->create($options)->render();
-				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormNoTabsResult);
-			} else {
-				$options['renderType'] = 'flexFormTabsContainer';
-				$flexFormTabsContainerResult = $this->nodeFactory->create($options)->render();
-				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
-			}
-		}
-		$resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
-
-		return $resultArray;
-	}
-
+        return $resultArray;
+    }
 }

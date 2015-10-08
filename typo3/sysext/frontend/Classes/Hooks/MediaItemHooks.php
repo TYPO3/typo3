@@ -19,38 +19,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Adds extra fields into 'media' flexform
  */
-class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface {
+class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * Load extra render types if they exist
+     *
+     * @param array $params Existing types by reference
+     * @param array $conf Config array
+     * @return void
+     */
+    public function customMediaRenderTypes(&$params, $conf)
+    {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'] as $classRef) {
+                $hookObj = GeneralUtility::getUserObj($classRef);
+                $hookObj->customMediaRenderTypes($params, $conf);
+            }
+        }
+    }
 
-	/**
-	 * Load extra render types if they exist
-	 *
-	 * @param array $params Existing types by reference
-	 * @param array $conf Config array
-	 * @return void
-	 */
-	public function customMediaRenderTypes(&$params, $conf) {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'] as $classRef) {
-				$hookObj = GeneralUtility::getUserObj($classRef);
-				$hookObj->customMediaRenderTypes($params, $conf);
-			}
-		}
-	}
-
-	/**
-	 * Load extra predefined media params if they exist
-	 *
-	 * @param array $params Existing types by reference
-	 * @param array $conf Config array
-	 * @return void
-	 */
-	public function customMediaParams(&$params, $conf) {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'] as $classRef) {
-				$hookObj = GeneralUtility::getUserObj($classRef);
-				$hookObj->customMediaParams($params, $conf);
-			}
-		}
-	}
-
+    /**
+     * Load extra predefined media params if they exist
+     *
+     * @param array $params Existing types by reference
+     * @param array $conf Config array
+     * @return void
+     */
+    public function customMediaParams(&$params, $conf)
+    {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'] as $classRef) {
+                $hookObj = GeneralUtility::getUserObj($classRef);
+                $hookObj->customMediaParams($params, $conf);
+            }
+        }
+    }
 }

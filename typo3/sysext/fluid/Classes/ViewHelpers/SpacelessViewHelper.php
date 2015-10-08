@@ -40,22 +40,23 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * text</div></div></div>
  * </output>
  */
-class SpacelessViewHelper extends AbstractViewHelper implements CompilableInterface {
+class SpacelessViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return static::renderStatic($this->arguments, $this->renderChildrenClosure, $this->renderingContext);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function render() {
-		return static::renderStatic($this->arguments, $this->renderChildrenClosure, $this->renderingContext);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param \Closure $childClosure
-	 * @param RenderingContextInterface $renderingContext
-	 */
-	public static function renderStatic(array $arguments, \Closure $childClosure, RenderingContextInterface $renderingContext) {
-		return trim(preg_replace('/\\>\\s+\\</', '><', $childClosure()));
-	}
-
+    /**
+     * @param array $arguments
+     * @param \Closure $childClosure
+     * @param RenderingContextInterface $renderingContext
+     */
+    public static function renderStatic(array $arguments, \Closure $childClosure, RenderingContextInterface $renderingContext)
+    {
+        return trim(preg_replace('/\\>\\s+\\</', '><', $childClosure()));
+    }
 }

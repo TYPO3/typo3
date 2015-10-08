@@ -23,9 +23,9 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 /**
  * Dummy Class
  */
-class DummyClass {
-
-	public function someMethod() {
-	}
-
+class DummyClass
+{
+    public function someMethod()
+    {
+    }
 }

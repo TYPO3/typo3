@@ -25,73 +25,76 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class FlexFormSegmentTest extends UnitTestCase {
+class FlexFormSegmentTest extends UnitTestCase
+{
+    /**
+     * @var FlexFormSegment
+     */
+    protected $subject;
 
-	/**
-	 * @var FlexFormSegment
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new FlexFormSegment();
+    }
 
-	protected function setUp() {
-		$this->subject = new FlexFormSegment();
-	}
+    /**
+     * @test
+     */
+    public function compileReturnsIncomingData()
+    {
+        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
+        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
+        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-	/**
-	 * @test
-	 */
-	public function compileReturnsIncomingData() {
-		/** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
-		$orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-		GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-		$orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array();
 
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array();
+        $input = array('foo');
 
-		$input = array('foo');
+        $this->assertEquals($input, $this->subject->compile($input));
+    }
 
-		$this->assertEquals($input, $this->subject->compile($input));
-	}
+    /**
+     * @test
+     */
+    public function compileReturnsResultChangedByDataProvider()
+    {
+        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
+        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
+        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-	/**
-	 * @test
-	 */
-	public function compileReturnsResultChangedByDataProvider() {
-		/** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
-		$orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-		GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-		$orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
+        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array(
+            FormDataProviderInterface::class => array(),
+        );
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
+        $providerResult = array('foo');
+        $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
-		/** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
-		$formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array(
-			FormDataProviderInterface::class => array(),
-		);
-		GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
-		$providerResult = array('foo');
-		$formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
+        $this->assertEquals($providerResult, $this->subject->compile([]));
+    }
 
-		$this->assertEquals($providerResult, $this->subject->compile([]));
-	}
+    /**
+     * @test
+     */
+    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface()
+    {
+        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
+        $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
+        GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
+        $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-	/**
-	 * @test
-	 */
-	public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface() {
-		/** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
-		$orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
-		GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
-		$orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
+        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
+        $formDataProviderProphecy = $this->prophesize(\stdClass::class);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array(
+            \stdClass::class => array(),
+        );
+        GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
-		/** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
-		$formDataProviderProphecy = $this->prophesize(\stdClass::class);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = array(
-			\stdClass::class => array(),
-		);
-		GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437906441);
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437906441);
-
-		$this->subject->compile([]);
-	}
-
+        $this->subject->compile([]);
+    }
 }

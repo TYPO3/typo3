@@ -17,28 +17,28 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL;
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\AbstractActionTestCase {
+abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\AbstractActionTestCase
+{
+    const VALUE_WorkspaceId = 1;
 
-	const VALUE_WorkspaceId = 1;
+    /**
+     * @var string
+     */
+    protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/FAL/DataSet/';
 
-	/**
-	 * @var string
-	 */
-	protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/FAL/DataSet/';
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array(
+        'fluid',
+        'version',
+        'workspaces',
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array(
-		'fluid',
-		'version',
-		'workspaces',
-	);
-
-	protected function setUp() {
-		parent::setUp();
-		$this->importScenarioDataSet('ReferenceIndex');
-		$this->backendUser->workspace = self::VALUE_WorkspaceId;
-	}
-
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->importScenarioDataSet('ReferenceIndex');
+        $this->backendUser->workspace = self::VALUE_WorkspaceId;
+    }
 }

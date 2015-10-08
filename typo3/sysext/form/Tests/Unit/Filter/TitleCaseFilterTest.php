@@ -20,44 +20,46 @@ use TYPO3\CMS\Form\Domain\Filter\TitleCaseFilter;
 /**
  * Test case
  */
-class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var TitleCaseFilter
+     */
+    protected $subject = null;
 
-	/**
-	 * @var TitleCaseFilter
-	 */
-	protected $subject = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->subject = new TitleCaseFilter();
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->csConvObj = new CharsetConverter();
+        $GLOBALS['TSFE']->renderCharset = 'utf-8';
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->subject = new TitleCaseFilter();
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->csConvObj = new CharsetConverter();
-		$GLOBALS['TSFE']->renderCharset = 'utf-8';
-	}
+    /**
+     * @return array
+     */
+    public function stringProvider()
+    {
+        return array(
+            'some text' => array('some text', 'Some Text'),
+            'some Text' => array('some Text', 'Some Text'),
+            'Ein Maß' => array('Ein Maß', 'Ein Maß'),
+            '¿por que?' => array('¿por que?', '¿por Que?'),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function stringProvider() {
-		return array(
-			'some text' => array('some text', 'Some Text'),
-			'some Text' => array('some Text', 'Some Text'),
-			'Ein Maß' => array('Ein Maß', 'Ein Maß'),
-			'¿por que?' => array('¿por que?', '¿por Que?'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider stringProvider
-	 */
-	public function filterForStringReturnsStringWithUppercasedWords($input, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->subject->filter($input)
-		);
-	}
-
+    /**
+     * @test
+     * @dataProvider stringProvider
+     */
+    public function filterForStringReturnsStringWithUppercasedWords($input, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->subject->filter($input)
+        );
+    }
 }

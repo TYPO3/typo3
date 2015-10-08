@@ -19,178 +19,194 @@ use TYPO3\CMS\Rsaauth\Keypair;
 /**
  * Test case.
  */
-class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
-	/**
-	 * @var Keypair
-	 */
-	protected $subject = NULL;
+class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var Keypair
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		$this->subject = new Keypair();
-	}
+    protected function setUp()
+    {
+        $this->subject = new Keypair();
+    }
 
-	/**
-	 * @test
-	 */
-	public function classIsSingleton() {
-		$this->assertInstanceOf(
-			\TYPO3\CMS\Core\SingletonInterface::class,
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function classIsSingleton()
+    {
+        $this->assertInstanceOf(
+            \TYPO3\CMS\Core\SingletonInterface::class,
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getExponentInitiallyReturnsZero() {
-		$this->assertSame(
-			0,
-			$this->subject->getExponent()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getExponentInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getExponent()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setExponentSetsExponent() {
-		$this->subject->setExponent(123456);
+    /**
+     * @test
+     */
+    public function setExponentSetsExponent()
+    {
+        $this->subject->setExponent(123456);
 
-		$this->assertSame(
-			123456,
-			$this->subject->getExponent()
-		);
-	}
+        $this->assertSame(
+            123456,
+            $this->subject->getExponent()
+        );
+    }
 
-	/**
-	 * @test
-	 *
-	 * @expectedException \BadMethodCallException
-	 */
-	public function setExponentCalledTwoTimesThrowsException() {
-		$this->subject->setExponent(123456);
-		$this->subject->setExponent(123456);
-	}
+    /**
+     * @test
+     *
+     * @expectedException \BadMethodCallException
+     */
+    public function setExponentCalledTwoTimesThrowsException()
+    {
+        $this->subject->setExponent(123456);
+        $this->subject->setExponent(123456);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getPrivateKeyInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->subject->getPrivateKey()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getPrivateKeyInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getPrivateKey()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setPrivateKeySetsPrivateKey() {
-		$this->subject->setPrivateKey('foo bar');
+    /**
+     * @test
+     */
+    public function setPrivateKeySetsPrivateKey()
+    {
+        $this->subject->setPrivateKey('foo bar');
 
-		$this->assertSame(
-			'foo bar',
-			$this->subject->getPrivateKey()
-		);
-	}
+        $this->assertSame(
+            'foo bar',
+            $this->subject->getPrivateKey()
+        );
+    }
 
-	/**
-	 * @test
-	 *
-	 * @expectedException \BadMethodCallException
-	 */
-	public function setPrivateKeyCalledTwoTimesThrowsException() {
-		$this->subject->setPrivateKey('foo');
-		$this->subject->setPrivateKey('foo');
-	}
+    /**
+     * @test
+     *
+     * @expectedException \BadMethodCallException
+     */
+    public function setPrivateKeyCalledTwoTimesThrowsException()
+    {
+        $this->subject->setPrivateKey('foo');
+        $this->subject->setPrivateKey('foo');
+    }
 
-	/**
-	 * @test
-	 */
-	public function getPublicKeyModulusInitiallyReturnsZero() {
-		$this->assertSame(
-			0,
-			$this->subject->getPublicKeyModulus()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getPublicKeyModulusInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getPublicKeyModulus()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setPublicKeySetsPublicKeyModulus() {
-		$this->subject->setPublicKey(123456);
+    /**
+     * @test
+     */
+    public function setPublicKeySetsPublicKeyModulus()
+    {
+        $this->subject->setPublicKey(123456);
 
-		$this->assertSame(
-			123456,
-			$this->subject->getPublicKeyModulus()
-		);
-	}
+        $this->assertSame(
+            123456,
+            $this->subject->getPublicKeyModulus()
+        );
+    }
 
-	/**
-	 * @test
-	 *
-	 * @expectedException \BadMethodCallException
-	 */
-	public function setPublicKeyCalledTwoTimesThrowsException() {
-		$this->subject->setPublicKey(123456);
-		$this->subject->setPublicKey(123456);
-	}
+    /**
+     * @test
+     *
+     * @expectedException \BadMethodCallException
+     */
+    public function setPublicKeyCalledTwoTimesThrowsException()
+    {
+        $this->subject->setPublicKey(123456);
+        $this->subject->setPublicKey(123456);
+    }
 
-	/**
-	 * @test
-	 */
-	public function isReadyForExponentSetAndPrivateKeySetAndPublicKeyModulusSetReturnsTrue() {
-		$this->subject->setExponent(1861234);
-		$this->subject->setPrivateKey('lkjasbe');
-		$this->subject->setPublicKey(745786268712);
+    /**
+     * @test
+     */
+    public function isReadyForExponentSetAndPrivateKeySetAndPublicKeyModulusSetReturnsTrue()
+    {
+        $this->subject->setExponent(1861234);
+        $this->subject->setPrivateKey('lkjasbe');
+        $this->subject->setPublicKey(745786268712);
 
-		$this->assertTrue(
-			$this->subject->isReady()
-		);
-	}
+        $this->assertTrue(
+            $this->subject->isReady()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function isReadyForNothingSetReturnsFalse() {
-		$this->assertFalse(
-			$this->subject->isReady()
-		);
-	}
+    /**
+     * @test
+     */
+    public function isReadyForNothingSetReturnsFalse()
+    {
+        $this->assertFalse(
+            $this->subject->isReady()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function isReadyForExponentSetAndPrivateKeySetAndPublicKeyModulusMissingReturnsFalse() {
-		$this->subject->setExponent(1861234);
-		$this->subject->setPrivateKey('lkjasbe');
+    /**
+     * @test
+     */
+    public function isReadyForExponentSetAndPrivateKeySetAndPublicKeyModulusMissingReturnsFalse()
+    {
+        $this->subject->setExponent(1861234);
+        $this->subject->setPrivateKey('lkjasbe');
 
-		$this->assertFalse(
-			$this->subject->isReady()
-		);
-	}
+        $this->assertFalse(
+            $this->subject->isReady()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function isReadyForExponentSetAndPrivateMissingSetAndPublicKeyModulusSetReturnsFalse() {
-		$this->subject->setExponent(1861234);
-		$this->subject->setPublicKey(745786268712);
+    /**
+     * @test
+     */
+    public function isReadyForExponentSetAndPrivateMissingSetAndPublicKeyModulusSetReturnsFalse()
+    {
+        $this->subject->setExponent(1861234);
+        $this->subject->setPublicKey(745786268712);
 
-		$this->assertFalse(
-			$this->subject->isReady()
-		);
-	}
+        $this->assertFalse(
+            $this->subject->isReady()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function isReadyForExponentMissingAndPrivateKeySetAndPublicKeyModulusSetReturnsFalse() {
-		$this->subject->setPrivateKey('lkjasbe');
-		$this->subject->setPublicKey(745786268712);
+    /**
+     * @test
+     */
+    public function isReadyForExponentMissingAndPrivateKeySetAndPublicKeyModulusSetReturnsFalse()
+    {
+        $this->subject->setPrivateKey('lkjasbe');
+        $this->subject->setPublicKey(745786268712);
 
-		$this->assertFalse(
-			$this->subject->isReady()
-		);
-	}
-
+        $this->assertFalse(
+            $this->subject->isReady()
+        );
+    }
 }

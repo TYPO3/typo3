@@ -19,18 +19,17 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 /**
  * Fixture for TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor
  */
-class DataProcessorFixture implements DataProcessorInterface {
-
-	/**
-	 * @param ContentObjectRenderer $cObj
-	 * @param array $contentObjectConfiguration
-	 * @param array $processorConfiguration
-	 * @param array $processedData
-	 * @return array
-	 */
-	public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData) {
-		return $processorConfiguration;
-	}
-
-
+class DataProcessorFixture implements DataProcessorInterface
+{
+    /**
+     * @param ContentObjectRenderer $cObj
+     * @param array $contentObjectConfiguration
+     * @param array $processorConfiguration
+     * @param array $processedData
+     * @return array
+     */
+    public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
+    {
+        return $processorConfiguration;
+    }
 }

@@ -42,56 +42,57 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Page info icon with context menu
  * </output>
  */
-class PageInfoViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
+class PageInfoViewHelper extends AbstractBackendViewHelper implements CompilableInterface
+{
+    /**
+     * Render javascript in header
+     *
+     * @return string the rendered page info icon
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPageInfo() Note: can't call this method as it's protected!
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            array(),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render javascript in header
-	 *
-	 * @return string the rendered page info icon
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPageInfo() Note: can't call this method as it's protected!
-	 */
-	public function render() {
-		return static::renderStatic(
-			array(),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $id = GeneralUtility::_GP('id');
+        $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+        // Add icon with clickmenu, etc:
+        if ($pageRecord['uid']) {
+            // If there IS a real page
+            $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
+            /** @var IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            // Make Icon:
+            $theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$id = GeneralUtility::_GP('id');
-		$pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
-		// Add icon with clickmenu, etc:
-		if ($pageRecord['uid']) {
-			// If there IS a real page
-			$altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			/** @var IconFactory $iconFactory */
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
-			// Make Icon:
-			$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
-
-			// Setting icon with clickmenu + uid
-			$theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
-		} else {
-			/** @var IconFactory $iconFactory */
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			// On root-level of page tree
-			// Make Icon
-			$theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';
-			if ($GLOBALS['BE_USER']->user['admin']) {
-				$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', 0);
-			}
-		}
-		return $theIcon;
-	}
-
+            // Setting icon with clickmenu + uid
+            $theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
+        } else {
+            /** @var IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            // On root-level of page tree
+            // Make Icon
+            $theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';
+            if ($GLOBALS['BE_USER']->user['admin']) {
+                $theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', 0);
+            }
+        }
+        return $theIcon;
+    }
 }

@@ -19,17 +19,17 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 /**
  * Interface ExceptionHandlerInterface
  */
-interface ExceptionHandlerInterface {
-
-	/**
-	 * Handles exceptions thrown during rendering of content objects
-	 * The handler can decide whether to re-throw the exception or
-	 * return a nice error message for production context.
-	 *
-	 * @param \Exception $exception
-	 * @param AbstractContentObject $contentObject
-	 * @param array $contentObjectConfiguration
-	 * @return string
-	 */
-	public function handle(\Exception $exception, AbstractContentObject $contentObject = NULL, $contentObjectConfiguration = array());
+interface ExceptionHandlerInterface
+{
+    /**
+     * Handles exceptions thrown during rendering of content objects
+     * The handler can decide whether to re-throw the exception or
+     * return a nice error message for production context.
+     *
+     * @param \Exception $exception
+     * @param AbstractContentObject $contentObject
+     * @param array $contentObjectConfiguration
+     * @return string
+     */
+    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = array());
 }

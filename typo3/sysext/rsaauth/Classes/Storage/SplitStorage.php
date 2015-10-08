@@ -21,87 +21,89 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * This class contains a "split" storage for the data. It keeps part of the data
  * in the database, part in the session.
  */
-class SplitStorage extends AbstractStorage {
+class SplitStorage extends AbstractStorage
+{
+    /**
+     * @var DatabaseConnection;
+     */
+    protected $databaseConnection;
 
-	/**
-	 * @var DatabaseConnection;
-	 */
-	protected $databaseConnection;
+    /**
+     * Creates an instance of this class. It checks and initializes PHP
+     * sessions if necessary.
+     *
+     * @param DatabaseConnection $databaseConnection A database connection may be injected here
+     */
+    public function __construct(DatabaseConnection $databaseConnection = null)
+    {
+        if (session_id() === '') {
+            session_start();
+        }
+        $this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * Creates an instance of this class. It checks and initializes PHP
-	 * sessions if necessary.
-	 *
-	 * @param DatabaseConnection $databaseConnection A database connection may be injected here
-	 */
-	public function __construct(DatabaseConnection $databaseConnection = NULL) {
-		if (session_id() === '') {
-			session_start();
-		}
-		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * Obtains a key from the database
+     *
+     * @return string The key or NULL
+     * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::get()
+     */
+    public function get()
+    {
+        $result = null;
+        list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
+        if (MathUtility::canBeInterpretedAsInteger($keyId)) {
+            // Remove expired keys (more than 30 minutes old)
+            $this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
+            // Get our value
+            $row = $this->databaseConnection->exec_SELECTgetSingleRow('key_value', 'tx_rsaauth_keys', 'uid=' . $keyId);
+            if (is_array($row)) {
+                $result = $keyPart1 . $row['key_value'];
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * Obtains a key from the database
-	 *
-	 * @return string The key or NULL
-	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::get()
-	 */
-	public function get() {
-		$result = NULL;
-		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
-		if (MathUtility::canBeInterpretedAsInteger($keyId)) {
-			// Remove expired keys (more than 30 minutes old)
-			$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
-			// Get our value
-			$row = $this->databaseConnection->exec_SELECTgetSingleRow('key_value', 'tx_rsaauth_keys', 'uid=' . $keyId);
-			if (is_array($row)) {
-				$result = $keyPart1 . $row['key_value'];
-			}
-		}
-		return $result;
-	}
-
-	/**
-	 * Adds a key to the storage or removes existing key
-	 *
-	 * @param string $key The key
-	 * @return void
-	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
-	 */
-	public function put($key) {
-		if ($key == NULL) {
-			// Remove existing key
-			list($keyId) = $_SESSION['tx_rsaauth_key'];
-			if (MathUtility::canBeInterpretedAsInteger($keyId)) {
-				$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
-				unset($_SESSION['tx_rsaauth_key']);
-			}
-		} else {
-			// Add key
-			// Get split point. First part is always smaller than the second
-			// because it goes to the file system
-			$keyLength = strlen($key);
-			$splitPoint = rand((int)($keyLength / 10), (int)($keyLength / 2));
-			// Get key parts
-			$keyPart1 = substr($key, 0, $splitPoint);
-			$keyPart2 = substr($key, $splitPoint);
-			// Store part of the key in the database
-			//
-			// Notice: we may not use TCEmain below to insert key part into the
-			// table because TCEmain requires a valid BE user!
-			$time = $GLOBALS['EXEC_TIME'];
-			$this->databaseConnection->exec_INSERTquery('tx_rsaauth_keys', array(
-				'pid' => 0,
-				'crdate' => $time,
-				'key_value' => $keyPart2
-			));
-			$keyId = $this->databaseConnection->sql_insert_id();
-			// Store another part in session
-			$_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
-		}
-		// Remove expired keys (more than 30 minutes old)
-		$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
-	}
-
+    /**
+     * Adds a key to the storage or removes existing key
+     *
+     * @param string $key The key
+     * @return void
+     * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
+     */
+    public function put($key)
+    {
+        if ($key == null) {
+            // Remove existing key
+            list($keyId) = $_SESSION['tx_rsaauth_key'];
+            if (MathUtility::canBeInterpretedAsInteger($keyId)) {
+                $this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
+                unset($_SESSION['tx_rsaauth_key']);
+            }
+        } else {
+            // Add key
+            // Get split point. First part is always smaller than the second
+            // because it goes to the file system
+            $keyLength = strlen($key);
+            $splitPoint = rand((int)($keyLength / 10), (int)($keyLength / 2));
+            // Get key parts
+            $keyPart1 = substr($key, 0, $splitPoint);
+            $keyPart2 = substr($key, $splitPoint);
+            // Store part of the key in the database
+            //
+            // Notice: we may not use TCEmain below to insert key part into the
+            // table because TCEmain requires a valid BE user!
+            $time = $GLOBALS['EXEC_TIME'];
+            $this->databaseConnection->exec_INSERTquery('tx_rsaauth_keys', array(
+                'pid' => 0,
+                'crdate' => $time,
+                'key_value' => $keyPart2
+            ));
+            $keyId = $this->databaseConnection->sql_insert_id();
+            // Store another part in session
+            $_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
+        }
+        // Remove expired keys (more than 30 minutes old)
+        $this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
+    }
 }

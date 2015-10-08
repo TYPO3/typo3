@@ -17,20 +17,22 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 /**
  * This is a fixture subclass for \TYPO3\CMS\Core\Utility\MathUtility
  */
-class MathUtilityTestClassWithStringRepresentationFixture {
+class MathUtilityTestClassWithStringRepresentationFixture
+{
+    protected $string = '';
 
-	protected $string = '';
+    public function __toString()
+    {
+        return $this->getString();
+    }
 
-	public function __toString() {
-		return $this->getString();
-	}
+    public function setString($string)
+    {
+        $this->string = $string;
+    }
 
-	public function setString($string) {
-		$this->string = $string;
-	}
-
-	public function getString() {
-		return $this->string;
-	}
-
+    public function getString()
+    {
+        return $this->string;
+    }
 }

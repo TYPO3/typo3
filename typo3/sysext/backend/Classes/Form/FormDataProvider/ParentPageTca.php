@@ -21,19 +21,19 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
  *
  * @todo: maybe not needed?
  */
-class ParentPageTca implements FormDataProviderInterface {
-
-	/**
-	 * vanillaParentPageTca will stay NULL if record is added or edited below root node.
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		if (is_array($result['parentPageRow'])) {
-			$result['vanillaParentPageTca'] = $GLOBALS['TCA']['pages'];
-		}
-		return $result;
-	}
-
+class ParentPageTca implements FormDataProviderInterface
+{
+    /**
+     * vanillaParentPageTca will stay NULL if record is added or edited below root node.
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        if (is_array($result['parentPageRow'])) {
+            $result['vanillaParentPageTca'] = $GLOBALS['TCA']['pages'];
+        }
+        return $result;
+    }
 }

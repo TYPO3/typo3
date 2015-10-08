@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install\Service\Exception;
 /**
  * An exception thrown if the return value type of a signal is not the expected one.
  */
-class UnexpectedSignalReturnValueTypeException extends CoreVersionServiceException {
-
+class UnexpectedSignalReturnValueTypeException extends CoreVersionServiceException
+{
 }

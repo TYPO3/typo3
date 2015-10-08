@@ -19,54 +19,56 @@ use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
 /**
  * The form wizard load view
  */
-abstract class AbstractWizardView {
+abstract class AbstractWizardView
+{
+    /**
+     * Is the referenced record available
+     *
+     * @var bool TRUE if available, FALSE if not
+     */
+    protected $recordIsAvailable = false;
 
-	/**
-	 * Is the referenced record available
-	 *
-	 * @var bool TRUE if available, FALSE if not
-	 */
-	protected $recordIsAvailable = FALSE;
+    /**
+     * @var ContentRepository
+     */
+    protected $repository;
 
-	/**
-	 * @var ContentRepository
-	 */
-	protected $repository;
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * Returns an instance of LanguageService
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * Creates the object and calls the initialize() method.
+     *
+     * @param ContentRepository $repository
+     */
+    public function __construct(ContentRepository $repository)
+    {
+        $this->setRepository($repository);
+        $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
+    }
 
-	/**
-	 * Creates the object and calls the initialize() method.
-	 *
-	 * @param ContentRepository $repository
-	 */
-	public function __construct(ContentRepository $repository) {
-		$this->setRepository($repository);
-		$this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
-	}
+    /**
+     * Sets the content repository to be used.
+     *
+     * @param ContentRepository $repository
+     * @return void
+     */
+    public function setRepository(ContentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
-	/**
-	 * Sets the content repository to be used.
-	 *
-	 * @param ContentRepository $repository
-	 * @return void
-	 */
-	public function setRepository(ContentRepository $repository) {
-		$this->repository = $repository;
-	}
-
-	/**
-	 * The main render method
-	 *
-	 * @return void
-	 */
-	abstract public function render();
-
+    /**
+     * The main render method
+     *
+     * @return void
+     */
+    abstract public function render();
 }

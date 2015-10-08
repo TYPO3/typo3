@@ -20,66 +20,68 @@ use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Factory class to retrieve a locking method
  */
-class LockFactory implements SingletonInterface {
+class LockFactory implements SingletonInterface
+{
+    /**
+     * @var bool[]
+     */
+    protected $lockingStrategy = array(
+        SemaphoreLockStrategy::class => true,
+        FileLockStrategy::class => true,
+        SimpleLockStrategy::class => true
+    );
 
-	/**
-	 * @var bool[]
-	 */
-	protected $lockingStrategy = array(
-		SemaphoreLockStrategy::class => TRUE,
-		FileLockStrategy::class => TRUE,
-		SimpleLockStrategy::class => TRUE
-	);
+    /**
+     * Add a locking method
+     *
+     * @param string $className
+     * @throws \InvalidArgumentException
+     */
+    public function addLockingStrategy($className)
+    {
+        $interfaces = class_implements($className);
+        if (isset($interfaces[LockingStrategyInterface::class])) {
+            $this->lockingStrategy[$className] = true;
+        } else {
+            throw new \InvalidArgumentException('The given class name ' . $className . ' does not implement the required LockingStrategyInterface interface.', 1425990198);
+        }
+    }
 
-	/**
-	 * Add a locking method
-	 *
-	 * @param string $className
-	 * @throws \InvalidArgumentException
-	 */
-	public function addLockingStrategy($className) {
-		$interfaces = class_implements($className);
-		if (isset($interfaces[LockingStrategyInterface::class])) {
-			$this->lockingStrategy[$className] = TRUE;
-		} else {
-			throw new \InvalidArgumentException('The given class name ' . $className . ' does not implement the required LockingStrategyInterface interface.', 1425990198);
-		}
-	}
+    /**
+     * Remove a locking method
+     *
+     * @param string $className
+     */
+    public function removeLockingStrategy($className)
+    {
+        unset($this->lockingStrategy[$className]);
+    }
 
-	/**
-	 * Remove a locking method
-	 *
-	 * @param string $className
-	 */
-	public function removeLockingStrategy($className) {
-		unset($this->lockingStrategy[$className]);
-	}
+    /**
+     * Get best matching locking method
+     *
+     * @param string $id ID to identify this lock in the system
+     * @param int $capabilities LockingStrategyInterface::LOCK_CAPABILITY_* elements combined with bit-wise OR
+     * @return LockingStrategyInterface Class name for a locking method
+     * @throws LockCreateException if no locker could be created with the requested capabilities
+     */
+    public function createLocker($id, $capabilities = LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE)
+    {
+        $queue = new \SplPriorityQueue();
 
-	/**
-	 * Get best matching locking method
-	 *
-	 * @param string $id ID to identify this lock in the system
-	 * @param int $capabilities LockingStrategyInterface::LOCK_CAPABILITY_* elements combined with bit-wise OR
-	 * @return LockingStrategyInterface Class name for a locking method
-	 * @throws LockCreateException if no locker could be created with the requested capabilities
-	 */
-	public function createLocker($id, $capabilities = LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE) {
-		$queue = new \SplPriorityQueue();
-
-		/** @var LockingStrategyInterface $method */
-		foreach ($this->lockingStrategy as $method => $_) {
-			$supportedCapabilities = $capabilities & $method::getCapabilities();
-			if ($supportedCapabilities === $capabilities) {
-				$queue->insert($method, $method::getPriority());
-			}
-		}
-		if ($queue->count() > 0) {
-			$className = $queue->top();
-			// We use 'new' here on purpose!
-			// Locking might be used very early in the bootstrap process, where makeInstance() does not work
-			return new $className($id);
-		}
-		throw new LockCreateException('Could not find a matching locking method with requested capabilities.', 1425990190);
-	}
-
+        /** @var LockingStrategyInterface $method */
+        foreach ($this->lockingStrategy as $method => $_) {
+            $supportedCapabilities = $capabilities & $method::getCapabilities();
+            if ($supportedCapabilities === $capabilities) {
+                $queue->insert($method, $method::getPriority());
+            }
+        }
+        if ($queue->count() > 0) {
+            $className = $queue->top();
+            // We use 'new' here on purpose!
+            // Locking might be used very early in the bootstrap process, where makeInstance() does not work
+            return new $className($id);
+        }
+        throw new LockCreateException('Could not find a matching locking method with requested capabilities.', 1425990190);
+    }
 }

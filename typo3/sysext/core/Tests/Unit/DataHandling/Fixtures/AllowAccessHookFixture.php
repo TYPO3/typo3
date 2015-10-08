@@ -20,16 +20,17 @@ use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 /**
  * Fixture hook allow access
  */
-class AllowAccessHookFixture implements DataHandlerCheckModifyAccessListHookInterface {
-
-	/**
-	 *  Check modify access list
-	 *
-	 * @param bool &$accessAllowed
-	 * @param string $table
-	 * @param DataHandler $parent
-	 */
-	public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent) {
-		$accessAllowed = TRUE;
-	}
+class AllowAccessHookFixture implements DataHandlerCheckModifyAccessListHookInterface
+{
+    /**
+     *  Check modify access list
+     *
+     * @param bool &$accessAllowed
+     * @param string $table
+     * @param DataHandler $parent
+     */
+    public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent)
+    {
+        $accessAllowed = true;
+    }
 }

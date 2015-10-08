@@ -17,19 +17,19 @@ namespace TYPO3\CMS\SysNote\Hook;
 /**
  * Hook for the page module
  */
-class PageHook {
-
-	/**
-	 * Add sys_notes as additional content to the footer of the page module
-	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject
-	 * @return string
-	 */
-	public function render(array $params = array(), \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject) {
-		/** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
-		$noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
-		return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->id));
-	}
-
+class PageHook
+{
+    /**
+     * Add sys_notes as additional content to the footer of the page module
+     *
+     * @param array $params
+     * @param \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject
+     * @return string
+     */
+    public function render(array $params = array(), \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject)
+    {
+        /** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
+        $noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
+        return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->id));
+    }
 }

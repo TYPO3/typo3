@@ -20,26 +20,27 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 /**
  * Test case
  */
-class UserTsConfigTest extends UnitTestCase {
+class UserTsConfigTest extends UnitTestCase
+{
+    /**
+     * @var UserTsConfig
+     */
+    protected $subject;
 
-	/**
-	 * @var UserTsConfig
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new UserTsConfig();
+    }
 
-	protected function setUp() {
-		$this->subject = new UserTsConfig();
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsUserTypoScriptInResult() {
-		$expected = array('foo');
-		$GLOBALS['BE_USER'] = new \stdClass();
-		$GLOBALS['BE_USER']->userTS = $expected;
-		$result = $this->subject->addData(array());
-		$this->assertEquals($expected, $result['userTsConfig']);
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsUserTypoScriptInResult()
+    {
+        $expected = array('foo');
+        $GLOBALS['BE_USER'] = new \stdClass();
+        $GLOBALS['BE_USER']->userTS = $expected;
+        $result = $this->subject->addData(array());
+        $this->assertEquals($expected, $result['userTsConfig']);
+    }
 }

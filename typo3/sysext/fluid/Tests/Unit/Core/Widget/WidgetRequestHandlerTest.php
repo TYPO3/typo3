@@ -24,42 +24,45 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 /**
  * Test case
  */
-class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler
+     */
+    protected $widgetRequestHandler;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler
-	 */
-	protected $widgetRequestHandler;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, array('dummy'), array(), '', false);
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, array('dummy'), array(), '', FALSE);
-	}
+    /**
+     * @test
+     */
+    public function canHandleRequestReturnsTrueIfCorrectGetParameterIsSet()
+    {
+        $_GET['fluid-widget-id'] = 123;
+        $this->assertTrue($this->widgetRequestHandler->canHandleRequest());
+    }
 
-	/**
-	 * @test
-	 */
-	public function canHandleRequestReturnsTrueIfCorrectGetParameterIsSet() {
-		$_GET['fluid-widget-id'] = 123;
-		$this->assertTrue($this->widgetRequestHandler->canHandleRequest());
-	}
+    /**
+     * @test
+     */
+    public function canHandleRequestReturnsFalsefGetParameterIsNotSet()
+    {
+        $_GET['some-other-id'] = 123;
+        $this->assertFalse($this->widgetRequestHandler->canHandleRequest());
+    }
 
-	/**
-	 * @test
-	 */
-	public function canHandleRequestReturnsFalsefGetParameterIsNotSet() {
-		$_GET['some-other-id'] = 123;
-		$this->assertFalse($this->widgetRequestHandler->canHandleRequest());
-	}
-
-	/**
-	 * @test
-	 */
-	public function priorityIsHigherThanDefaultRequestHandler() {
-		$defaultWebRequestHandler = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class, array('handleRequest'), array(), '', FALSE);
-		$this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
-	}
-
+    /**
+     * @test
+     */
+    public function priorityIsHigherThanDefaultRequestHandler()
+    {
+        $defaultWebRequestHandler = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler::class, array('handleRequest'), array(), '', false);
+        $this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
+    }
 }

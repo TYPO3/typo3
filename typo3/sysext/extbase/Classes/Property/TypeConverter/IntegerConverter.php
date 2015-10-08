@@ -25,41 +25,41 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('integer', 'string');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('integer', 'string');
+    /**
+     * @var string
+     */
+    protected $targetType = 'integer';
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = 'integer';
+    /**
+     * @var int
+     */
+    protected $priority = 1;
 
-	/**
-	 * @var int
-	 */
-	protected $priority = 1;
-
-	/**
-	 * Actually convert from $source to $targetType, in fact a noop here.
-	 *
-	 * @param int|string $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return int|\TYPO3\CMS\Extbase\Error\Error
-	 * @api
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		if ($source === NULL || (string)$source === '') {
-			return NULL;
-		}
-		if (!is_numeric($source)) {
-			return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, array($source));
-		}
-		return (int)$source;
-	}
-
+    /**
+     * Actually convert from $source to $targetType, in fact a noop here.
+     *
+     * @param int|string $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+     * @return int|\TYPO3\CMS\Extbase\Error\Error
+     * @api
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    {
+        if ($source === null || (string)$source === '') {
+            return null;
+        }
+        if (!is_numeric($source)) {
+            return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, array($source));
+        }
+        return (int)$source;
+    }
 }

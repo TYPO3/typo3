@@ -22,74 +22,77 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUser
  */
-class BackendUserSessionRepository extends Repository {
+class BackendUserSessionRepository extends Repository
+{
+    /**
+     * Find all active sessions for all backend users
+     *
+     * @return array|NULL Array of rows, or NULL in case of SQL error
+     */
+    public function findAllActive()
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'ses_id AS id, ses_userid, ses_iplock AS ip, ses_tstamp AS timestamp',
+            'be_sessions',
+            '1=1'
+        );
+    }
 
-	/**
-	 * Find all active sessions for all backend users
-	 *
-	 * @return array|NULL Array of rows, or NULL in case of SQL error
-	 */
-	public function findAllActive() {
-		return $this->getDatabaseConnection()->exec_SELECTgetRows(
-			'ses_id AS id, ses_userid, ses_iplock AS ip, ses_tstamp AS timestamp',
-			'be_sessions',
-			'1=1'
-		);
-	}
+    /**
+     * Find Sessions for specific BackendUser
+     * Delivers an Array, not an ObjectStorage!
+     *
+     * @param BackendUser $backendUser
+     * @return array
+     */
+    public function findByBackendUser(BackendUser $backendUser)
+    {
+        $sessions = array();
+        $db = $this->getDatabaseConnection();
+        $res = $db->exec_SELECTquery(
+            'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
+            'be_sessions',
+            'ses_userid = ' . (int)$backendUser->getUid(),
+            '',
+            'ses_tstamp ASC'
+        );
+        while ($row = $db->sql_fetch_assoc($res)) {
+            $sessions[] = array(
+                'id' => $row['id'],
+                'ip' => $row['ip'],
+                'timestamp' => $row['timestamp']
+            );
+        }
+        $db->sql_free_result($res);
+        return $sessions;
+    }
 
-	/**
-	 * Find Sessions for specific BackendUser
-	 * Delivers an Array, not an ObjectStorage!
-	 *
-	 * @param BackendUser $backendUser
-	 * @return array
-	 */
-	public function findByBackendUser(BackendUser $backendUser) {
-		$sessions = array();
-		$db = $this->getDatabaseConnection();
-		$res = $db->exec_SELECTquery(
-			'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
-			'be_sessions',
-			'ses_userid = ' . (int)$backendUser->getUid(),
-			'',
-			'ses_tstamp ASC'
-		);
-		while ($row = $db->sql_fetch_assoc($res)) {
-			$sessions[] = array(
-				'id' => $row['id'],
-				'ip' => $row['ip'],
-				'timestamp' => $row['timestamp']
-			);
-		}
-		$db->sql_free_result($res);
-		return $sessions;
-	}
+    /**
+     * Update current session to move back to the original user.
+     *
+     * @param AbstractUserAuthentication $authentication
+     * @return void
+     */
+    public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
+    {
+        $updateData = array(
+            'ses_userid' => $authentication->user['ses_backuserid'],
+            'ses_backuserid' => 0,
+        );
+        $db = $this->getDatabaseConnection();
+        $db->exec_UPDATEquery(
+            'be_sessions',
+            'ses_id = ' . $db->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') .
+                ' AND ses_name = ' . $db->fullQuoteStr(BackendUserAuthentication::getCookieName(), 'be_sessions') .
+                ' AND ses_userid=' . (int)$GLOBALS['BE_USER']->user['uid'], $updateData
+        );
+    }
 
-	/**
-	 * Update current session to move back to the original user.
-	 *
-	 * @param AbstractUserAuthentication $authentication
-	 * @return void
-	 */
-	public function switchBackToOriginalUser(AbstractUserAuthentication $authentication) {
-		$updateData = array(
-			'ses_userid' => $authentication->user['ses_backuserid'],
-			'ses_backuserid' => 0,
-		);
-		$db = $this->getDatabaseConnection();
-		$db->exec_UPDATEquery(
-			'be_sessions',
-			'ses_id = ' . $db->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') .
-				' AND ses_name = ' . $db->fullQuoteStr(BackendUserAuthentication::getCookieName(), 'be_sessions') .
-				' AND ses_userid=' . (int)$GLOBALS['BE_USER']->user['uid'], $updateData
-		);
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

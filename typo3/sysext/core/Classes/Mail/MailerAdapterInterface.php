@@ -17,19 +17,18 @@ namespace TYPO3\CMS\Core\Mail;
 /**
  * Mailer Adapter interface
  */
-interface MailerAdapterInterface {
-
-	/**
-	 * Mail sending function
-	 *
-	 * @param string $to Mail recipient.
-	 * @param string $subject Mail subject.
-	 * @param string $messageBody Mail body.
-	 * @param array $additionalHeaders Additional mail headers.
-	 * @param array $additionalParameters Additional mailer parameters.
-	 * @param bool $fakeSending Whether to fake sending or not, used in Unit Tests.
-	 * @return bool TRUE if the mail was successfully sent, FALSE otherwise.
-	 */
-	public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL, $fakeSending = FALSE);
-
+interface MailerAdapterInterface
+{
+    /**
+     * Mail sending function
+     *
+     * @param string $to Mail recipient.
+     * @param string $subject Mail subject.
+     * @param string $messageBody Mail body.
+     * @param array $additionalHeaders Additional mail headers.
+     * @param array $additionalParameters Additional mailer parameters.
+     * @param bool $fakeSending Whether to fake sending or not, used in Unit Tests.
+     * @return bool TRUE if the mail was successfully sent, FALSE otherwise.
+     */
+    public function mail($to, $subject, $messageBody, $additionalHeaders = null, $additionalParameters = null, $fakeSending = false);
 }

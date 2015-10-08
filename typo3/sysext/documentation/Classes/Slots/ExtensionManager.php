@@ -24,62 +24,63 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
  * This slot listens to a signal in Extension Manager to add links to
  * manuals available locally.
  */
-class ExtensionManager {
+class ExtensionManager
+{
+    /**
+     * @var \TYPO3\CMS\Documentation\Domain\Model\Document[]
+     */
+    protected static $documents = null;
 
-	/**
-	 * @var \TYPO3\CMS\Documentation\Domain\Model\Document[]
-	 */
-	static protected $documents = NULL;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+    /**
+     * Processes the list of actions for a given extension and adds
+     * a link to the manual(s), if available.
+     *
+     * @param array $extension
+     * @param array $actions
+     * @return void
+     */
+    public function processActions(array $extension, array &$actions)
+    {
+        if (static::$documents === null) {
+            /** @var \TYPO3\CMS\Documentation\Controller\DocumentController $documentController */
+            $documentController = $this->objectManager->get(\TYPO3\CMS\Documentation\Controller\DocumentController::class);
+            static::$documents = $documentController->getDocuments();
+        }
 
-	/**
-	 * Processes the list of actions for a given extension and adds
-	 * a link to the manual(s), if available.
-	 *
-	 * @param array $extension
-	 * @param array $actions
-	 * @return void
-	 */
-	public function processActions(array $extension, array &$actions) {
-		if (static::$documents === NULL) {
-			/** @var \TYPO3\CMS\Documentation\Controller\DocumentController $documentController */
-			$documentController = $this->objectManager->get(\TYPO3\CMS\Documentation\Controller\DocumentController::class);
-			static::$documents = $documentController->getDocuments();
-		}
+        $extensionKey = $extension['key'];
+        $documentKey = 'typo3cms.extensions.' . $extensionKey;
 
-		$extensionKey = $extension['key'];
-		$documentKey = 'typo3cms.extensions.' . $extensionKey;
+        if (isset(static::$documents[$documentKey])) {
+            $document = static::$documents[$documentKey];
 
-		if (isset(static::$documents[$documentKey])) {
-			$document = static::$documents[$documentKey];
-
-			foreach ($document->getTranslations() as $documentTranslation) {
-				$actions[] = FormatsViewHelper::renderStatic(
-					array(
-						'documentTranslation' => $documentTranslation,
-					),
-					function() {},
-					new RenderingContext()
-				);
-			}
-		} else {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$emptyIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
-			$actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
-			$actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
-			$actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
-		}
-	}
-
+            foreach ($document->getTranslations() as $documentTranslation) {
+                $actions[] = FormatsViewHelper::renderStatic(
+                    array(
+                        'documentTranslation' => $documentTranslation,
+                    ),
+                    function () {},
+                    new RenderingContext()
+                );
+            }
+        } else {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $emptyIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
+            $actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
+            $actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
+            $actions[] = '<span class="btn btn-default disabled">' . $emptyIcon . '</span>';
+        }
+    }
 }

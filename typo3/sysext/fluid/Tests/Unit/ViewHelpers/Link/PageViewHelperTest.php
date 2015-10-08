@@ -19,39 +19,41 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
 /**
  * Test-case for Link\PageViewHelper
  */
-class PageViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class PageViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+{
+    /**
+     * @var PageViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var PageViewHelper
-	 */
-	protected $viewHelper;
+    /**
+     * setUp function
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper::class, array('renderChildren'));
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	/**
-	 * setUp function
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper::class, array('renderChildren'));
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderProvidesATagForValidLinkTarget()
+    {
+        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
+        $this->tagBuilder->expects($this->once())->method('render');
+        $this->viewHelper->render();
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderProvidesATagForValidLinkTarget() {
-		$this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
-		$this->tagBuilder->expects($this->once())->method('render');
-		$this->viewHelper->render();
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderWillNotProvideATagForNonValidLinkTarget() {
-		$this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(NULL));
-		$this->tagBuilder->expects($this->never())->method('render');
-		$this->viewHelper->render();
-	}
-
+    /**
+     * @test
+     */
+    public function renderWillNotProvideATagForNonValidLinkTarget()
+    {
+        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(null));
+        $this->tagBuilder->expects($this->never())->method('render');
+        $this->viewHelper->render();
+    }
 }

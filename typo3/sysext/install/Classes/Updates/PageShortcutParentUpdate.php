@@ -21,63 +21,66 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * to remove a possibly selected page as this would cause a different behaviour of the shortcut now
  * since the selected page is now respected in this shortcut mode.
  */
-class PageShortcutParentUpdate extends AbstractUpdate {
+class PageShortcutParentUpdate extends AbstractUpdate
+{
+    /**
+     * @var string
+     */
+    protected $title = 'Update page shortcuts with shortcut type "Parent of selected or current page"';
 
-	/**
-	 * @var string
-	 */
-	protected $title = 'Update page shortcuts with shortcut type "Parent of selected or current page"';
+    /**
+     * Checks if an update is needed
+     *
+     * @param string &$description The description for the update
+     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     */
+    public function checkForUpdate(&$description)
+    {
+        if ($this->isWizardDone()) {
+            return false;
+        }
 
-	/**
-	 * Checks if an update is needed
-	 *
-	 * @param string &$description The description for the update
-	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
-	 */
-	public function checkForUpdate(&$description) {
-		if ($this->isWizardDone()) {
-			return FALSE;
-		}
+        $pagesNeedingUpdate = $this->getUpdatablePages();
+        if (empty($pagesNeedingUpdate)) {
+            return false;
+        }
 
-		$pagesNeedingUpdate = $this->getUpdatablePages();
-		if (empty($pagesNeedingUpdate)) {
-			return FALSE;
-		}
+        $description = 'There are some shortcut pages that need to updated in order to preserve their current behaviour.';
 
-		$description = 'There are some shortcut pages that need to updated in order to preserve their current behaviour.';
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Get pages which need to be updated
+     *
+     * @return array|NULL
+     */
+    protected function getUpdatablePages()
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetRows('uid', 'pages', 'shortcut <> 0 AND shortcut_mode = ' . PageRepository::SHORTCUT_MODE_PARENT_PAGE);
+    }
 
-	/**
-	 * Get pages which need to be updated
-	 *
-	 * @return array|NULL
-	 */
-	protected function getUpdatablePages() {
-		return $this->getDatabaseConnection()->exec_SELECTgetRows('uid', 'pages', 'shortcut <> 0 AND shortcut_mode = ' . PageRepository::SHORTCUT_MODE_PARENT_PAGE);
-	}
+    /**
+     * Performs the database update
+     *
+     * @param array &$databaseQueries Queries done in this update
+     * @param mixed &$customMessages Custom messages
+     * @return bool
+     */
+    public function performUpdate(array &$databaseQueries, &$customMessages)
+    {
+        $pagesNeedingUpdate = $this->getUpdatablePages();
+        if (!empty($pagesNeedingUpdate)) {
+            $uids = array_column($pagesNeedingUpdate, 'uid');
+            $this->getDatabaseConnection()->exec_UPDATEquery(
+                'pages',
+                'uid IN (' . implode(',', $uids) . ')',
+                [ 'shortcut' => 0 ]
+            );
+            $databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
+        }
 
-	/**
-	 * Performs the database update
-	 *
-	 * @param array &$databaseQueries Queries done in this update
-	 * @param mixed &$customMessages Custom messages
-	 * @return bool
-	 */
-	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$pagesNeedingUpdate = $this->getUpdatablePages();
-		if (!empty($pagesNeedingUpdate)) {
-			$uids = array_column($pagesNeedingUpdate, 'uid');
-			$this->getDatabaseConnection()->exec_UPDATEquery(
-				'pages',
-				'uid IN (' . implode(',', $uids) . ')',
-				[ 'shortcut' => 0 ]
-			);
-			$databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
-		}
-
-		$this->markWizardAsDone();
-		return TRUE;
-	}
+        $this->markWizardAsDone();
+        return true;
+    }
 }

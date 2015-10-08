@@ -17,20 +17,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Download latest core version
  */
-class CoreUpdateDownload extends AbstractCoreUpdate {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return array Rendered content
-	 */
-	protected function executeAction() {
-		$this->view->assignMultiple(array(
-				'success' => $this->coreUpdateService->downloadVersion($this->getVersionToHandle()),
-				'status' => $this->coreUpdateService->getMessages(),
-			));
-		return $this->view->render();
-
-	}
-
+class CoreUpdateDownload extends AbstractCoreUpdate
+{
+    /**
+     * Executes the action
+     *
+     * @return array Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->view->assignMultiple(array(
+                'success' => $this->coreUpdateService->downloadVersion($this->getVersionToHandle()),
+                'status' => $this->coreUpdateService->getMessages(),
+            ));
+        return $this->view->render();
+    }
 }

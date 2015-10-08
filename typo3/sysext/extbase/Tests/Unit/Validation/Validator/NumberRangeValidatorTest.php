@@ -24,44 +24,47 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator::class;
 
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator::class;
+    /**
+     * @test
+     */
+    public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange()
+    {
+        $options = array('minimum' => 0, 'maximum' => 1000);
+        $validator = $this->getMock($this->validatorClassName, array('dummy'), array($options));
+        $this->assertFalse($validator->validate(10.5)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange() {
-		$options = array('minimum' => 0, 'maximum' => 1000);
-		$validator = $this->getMock($this->validatorClassName, array('dummy'), array($options));
-		$this->assertFalse($validator->validate(10.5)->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function numberRangeValidatorReturnsErrorForANumberOutOfRange()
+    {
+        $options = array('minimum' => 0, 'maximum' => 1000);
+        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $this->assertTrue($validator->validate(1000.1)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function numberRangeValidatorReturnsErrorForANumberOutOfRange() {
-		$options = array('minimum' => 0, 'maximum' => 1000);
-		$validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
-		$this->assertTrue($validator->validate(1000.1)->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange()
+    {
+        $options = array('minimum' => 1000, 'maximum' => 0);
+        $validator = $this->getMock($this->validatorClassName, array('dummy'), array($options));
+        $this->assertFalse($validator->validate(100)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange() {
-		$options = array('minimum' => 1000, 'maximum' => 0);
-		$validator = $this->getMock($this->validatorClassName, array('dummy'), array($options));
-		$this->assertFalse($validator->validate(100)->hasErrors());
-	}
-
-	/**
-	 * @test
-	 */
-	public function numberRangeValidatorReturnsErrorForAString() {
-		$options = array('minimum' => 0, 'maximum' => 1000);
-		$validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
-		$this->assertTrue($validator->validate('not a number')->hasErrors());
-	}
-
+    /**
+     * @test
+     */
+    public function numberRangeValidatorReturnsErrorForAString()
+    {
+        $options = array('minimum' => 0, 'maximum' => 1000);
+        $validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
+        $this->assertTrue($validator->validate('not a number')->hasErrors());
+    }
 }

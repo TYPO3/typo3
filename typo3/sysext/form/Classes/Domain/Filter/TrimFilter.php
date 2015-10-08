@@ -17,49 +17,51 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Trim filter
  */
-class TrimFilter extends AbstractFilter implements FilterInterface {
+class TrimFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Characters used by trim filter
+     *
+     * @var string
+     */
+    protected $characterList;
 
-	/**
-	 * Characters used by trim filter
-	 *
-	 * @var string
-	 */
-	protected $characterList;
+    /**
+     * Constructor
+     *
+     * @param array $arguments Filter configuration
+     */
+    public function __construct(array $arguments = array())
+    {
+        $this->setCharacterList($arguments['characterList']);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $arguments Filter configuration
-	 */
-	public function __construct(array $arguments = array()) {
-		$this->setCharacterList($arguments['characterList']);
-	}
+    /**
+     * Set the characters that need to be stripped from the
+     * beginning or the end of the input,
+     * in addition to the default trim characters
+     *
+     * @param string $characterList
+     * @return void
+     */
+    public function setCharacterList($characterList)
+    {
+        $this->characterList = $characterList;
+    }
 
-	/**
-	 * Set the characters that need to be stripped from the
-	 * beginning or the end of the input,
-	 * in addition to the default trim characters
-	 *
-	 * @param string $characterList
-	 * @return void
-	 */
-	public function setCharacterList($characterList) {
-		$this->characterList = $characterList;
-	}
-
-	/**
-	 * Return filtered value
-	 * Strip characters from the beginning and the end
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		if ($this->characterList === NULL) {
-			return trim((string)$value);
-		} else {
-			return trim((string)$value, $this->characterList);
-		}
-	}
-
+    /**
+     * Return filtered value
+     * Strip characters from the beginning and the end
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        if ($this->characterList === null) {
+            return trim((string)$value);
+        } else {
+            return trim((string)$value, $this->characterList);
+        }
+    }
 }

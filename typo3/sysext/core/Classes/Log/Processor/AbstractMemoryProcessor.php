@@ -17,63 +17,66 @@ namespace TYPO3\CMS\Core\Log\Processor;
 /**
  * Common memory processor methods.
  */
-abstract class AbstractMemoryProcessor extends AbstractProcessor {
+abstract class AbstractMemoryProcessor extends AbstractProcessor
+{
+    /**
+     * Allocated memory usage type to use
+     * If set, the real size of memory allocated from system is used.
+     * Otherwise the memory used by emalloc() is used.
+     *
+     * @var bool
+     * @see memory_get_usage()
+     * @see memory_get_peak_usage()
+     */
+    protected $realMemoryUsage = true;
 
-	/**
-	 * Allocated memory usage type to use
-	 * If set, the real size of memory allocated from system is used.
-	 * Otherwise the memory used by emalloc() is used.
-	 *
-	 * @var bool
-	 * @see memory_get_usage()
-	 * @see memory_get_peak_usage()
-	 */
-	protected $realMemoryUsage = TRUE;
+    /**
+     * Whether the size is formatted, e.g. in megabytes
+     *
+     * @var bool
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize()
+     */
+    protected $formatSize = true;
 
-	/**
-	 * Whether the size is formatted, e.g. in megabytes
-	 *
-	 * @var bool
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize()
-	 */
-	protected $formatSize = TRUE;
+    /**
+     * Sets the allocated memory usage type
+     *
+     * @param bool $realMemoryUsage Which allocated memory type to use
+     * @return void
+     */
+    public function setRealMemoryUsage($realMemoryUsage)
+    {
+        $this->realMemoryUsage = (bool)$realMemoryUsage;
+    }
 
-	/**
-	 * Sets the allocated memory usage type
-	 *
-	 * @param bool $realMemoryUsage Which allocated memory type to use
-	 * @return void
-	 */
-	public function setRealMemoryUsage($realMemoryUsage) {
-		$this->realMemoryUsage = (bool)$realMemoryUsage;
-	}
+    /**
+     * Returns the allocated memory usage type
+     *
+     * @return bool
+     */
+    public function getRealMemoryUsage()
+    {
+        return $this->realMemoryUsage;
+    }
 
-	/**
-	 * Returns the allocated memory usage type
-	 *
-	 * @return bool
-	 */
-	public function getRealMemoryUsage() {
-		return $this->realMemoryUsage;
-	}
+    /**
+     * Sets whether size should be formatted
+     *
+     * @param bool $formatSize
+     * @return void
+     */
+    public function setFormatSize($formatSize)
+    {
+        $this->formatSize = (bool)$formatSize;
+    }
 
-	/**
-	 * Sets whether size should be formatted
-	 *
-	 * @param bool $formatSize
-	 * @return void
-	 */
-	public function setFormatSize($formatSize) {
-		$this->formatSize = (bool)$formatSize;
-	}
-
-	/**
-	 * Returns whether size should be formatted
-	 *
-	 * @return bool
-	 */
-	public function getFormatSize() {
-		return $this->formatSize;
-	}
-
+    /**
+     * Returns whether size should be formatted
+     *
+     * @return bool
+     */
+    public function getFormatSize()
+    {
+        return $this->formatSize;
+    }
 }

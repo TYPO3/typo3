@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * An "Invalid Request Method" exception
  */
-class InvalidOrNoRequestHashException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class InvalidOrNoRequestHashException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

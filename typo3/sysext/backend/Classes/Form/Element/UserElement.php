@@ -19,28 +19,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Generation of elements of the type "user"
  */
-class UserElement extends AbstractFormElement {
-
-	/**
-	 * User defined field type
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$parameterArray = $this->data['parameterArray'];
-		$parameterArray['table'] = $this->data['tableName'];
-		$parameterArray['field'] = $this->data['fieldName'];
-		$parameterArray['row'] = $this->data['databaseRow'];
-		$parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
-			? $parameterArray['fieldConf']['config']['parameters']
-			: array();
-		$resultArray = $this->initializeResultArray();
-		$resultArray['html'] = GeneralUtility::callUserFunction(
-			$parameterArray['fieldConf']['config']['userFunc'],
-			$parameterArray,
-			$this
-		);
-		return $resultArray;
-	}
-
+class UserElement extends AbstractFormElement
+{
+    /**
+     * User defined field type
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $parameterArray = $this->data['parameterArray'];
+        $parameterArray['table'] = $this->data['tableName'];
+        $parameterArray['field'] = $this->data['fieldName'];
+        $parameterArray['row'] = $this->data['databaseRow'];
+        $parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
+            ? $parameterArray['fieldConf']['config']['parameters']
+            : array();
+        $resultArray = $this->initializeResultArray();
+        $resultArray['html'] = GeneralUtility::callUserFunction(
+            $parameterArray['fieldConf']['config']['userFunc'],
+            $parameterArray,
+            $this
+        );
+        return $resultArray;
+    }
 }

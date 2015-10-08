@@ -19,84 +19,87 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class OnTheFlyTest extends UnitTestCase {
+class OnTheFlyTest extends UnitTestCase
+{
+    /**
+     * @var OnTheFly
+     */
+    protected $subject;
 
-	/**
-	 * @var OnTheFly
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new OnTheFly();
+    }
 
-	protected function setUp() {
-		$this->subject = new OnTheFly();
-	}
-
-	/**
-	 * @test
-	 */
-	public function compileThrowsExceptionWithEmptyOnTheFlyList() {
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108674);
-		$this->subject->compile([]);
-	}
+    /**
+     * @test
+     */
+    public function compileThrowsExceptionWithEmptyOnTheFlyList()
+    {
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108674);
+        $this->subject->compile([]);
+    }
 
 
-	/**
-	 * @test
-	 */
-	public function compileReturnsIncomingData() {
-		/** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
-		$formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-		GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
-		$formDataProviderProphecy->addData(Argument::cetera())->willReturnArgument(0);
-		$providerList = [
-			FormDataProviderInterface::class,
-		];
-		$this->subject->setProviderList($providerList);
+    /**
+     * @test
+     */
+    public function compileReturnsIncomingData()
+    {
+        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
+        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
+        $formDataProviderProphecy->addData(Argument::cetera())->willReturnArgument(0);
+        $providerList = [
+            FormDataProviderInterface::class,
+        ];
+        $this->subject->setProviderList($providerList);
 
-		$input = [
-			'foo',
-		];
+        $input = [
+            'foo',
+        ];
 
-		$this->assertEquals($input, $this->subject->compile($input));
-	}
+        $this->assertEquals($input, $this->subject->compile($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function compileReturnsResultChangedByDataProvider() {
-		/** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
-		$formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
-		GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
+    /**
+     * @test
+     */
+    public function compileReturnsResultChangedByDataProvider()
+    {
+        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
+        $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
+        GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
 
-		$providerList = [
-			FormDataProviderInterface::class,
-		];
-		$this->subject->setProviderList($providerList);
-		$providerResult = array('foo');
-		$formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
+        $providerList = [
+            FormDataProviderInterface::class,
+        ];
+        $this->subject->setProviderList($providerList);
+        $providerResult = array('foo');
+        $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
-		$this->assertEquals($providerResult, $this->subject->compile([]));
-	}
+        $this->assertEquals($providerResult, $this->subject->compile([]));
+    }
 
-	/**
-	 * @test
-	 */
-	public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface() {
-		/** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
-		$formDataProviderProphecy = $this->prophesize(\stdClass::class);
-		GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
-		$providerList = [
-			\stdClass::class,
-		];
-		$this->subject->setProviderList($providerList);
+    /**
+     * @test
+     */
+    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface()
+    {
+        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
+        $formDataProviderProphecy = $this->prophesize(\stdClass::class);
+        GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
+        $providerList = [
+            \stdClass::class,
+        ];
+        $this->subject->setProviderList($providerList);
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108719);
-		$this->subject->compile([]);
-	}
-
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108719);
+        $this->subject->compile([]);
+    }
 }

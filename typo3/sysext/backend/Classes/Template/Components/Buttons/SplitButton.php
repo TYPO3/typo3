@@ -47,92 +47,96 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->addItem($saveAndCloseButton)
  *      ->addItem($saveAndShowPageButton);
  */
-class SplitButton extends AbstractButton implements ButtonInterface {
+class SplitButton extends AbstractButton implements ButtonInterface
+{
+    /**
+     * Internal var that determines whether the split button has received any primary
+     * actions yet
+     *
+     * @var bool
+     */
+    protected $containsPrimaryAction = false;
 
-	/**
-	 * Internal var that determines whether the split button has received any primary
-	 * actions yet
-	 *
-	 * @var bool
-	 */
-	protected $containsPrimaryAction = FALSE;
+    /**
+     * Internal array of items in the split button
+     *
+     * @var array
+     */
+    protected $items = [];
 
-	/**
-	 * Internal array of items in the split button
-	 *
-	 * @var array
-	 */
-	protected $items = [];
+    /**
+     * Adds an instance of any button to the split button
+     *
+     * @param AbstractButton $item ButtonObject to add
+     * @param bool $primaryAction Is the button the primary action?
+     *
+     * @throws \InvalidArgumentException In case a button is not valid
+     *
+     * @return $this
+     */
+    public function addItem(AbstractButton $item, $primaryAction = false)
+    {
+        if (!$item->isValid($item)) {
+            throw new \InvalidArgumentException(
+                'Only valid items may be assigned to a split Button. "' .
+                $item->getType() .
+                '" did not pass validation', 1441706330
+            );
+        }
+        if ($primaryAction && $this->containsPrimaryAction) {
+            throw new \InvalidArgumentException('A splitButton may only contain one primary action', 1441706340);
+        }
+        if ($primaryAction) {
+            $this->containsPrimaryAction = true;
+            $this->items['primary'] = clone $item;
+        } else {
+            $this->items['options'][] = clone $item;
+        }
+        return $this;
+    }
 
-	/**
-	 * Adds an instance of any button to the split button
-	 *
-	 * @param AbstractButton $item ButtonObject to add
-	 * @param bool $primaryAction Is the button the primary action?
-	 *
-	 * @throws \InvalidArgumentException In case a button is not valid
-	 *
-	 * @return $this
-	 */
-	public function addItem(AbstractButton $item, $primaryAction = FALSE) {
-		if (!$item->isValid($item)) {
-			throw new \InvalidArgumentException(
-				'Only valid items may be assigned to a split Button. "' .
-				$item->getType() .
-				'" did not pass validation', 1441706330
-			);
-		}
-		if ($primaryAction && $this->containsPrimaryAction) {
-			throw new \InvalidArgumentException('A splitButton may only contain one primary action', 1441706340);
-		}
-		if ($primaryAction) {
-			$this->containsPrimaryAction = TRUE;
-			$this->items['primary'] = clone $item;
-		} else {
-			$this->items['options'][] = clone $item;
-		}
-		return $this;
-	}
+    /**
+     * Returns the current button
+     *
+     * @return array
+     */
+    public function getButton()
+    {
+        if (!isset($this->items['primary']) && isset($this->items['options'])) {
+            $primaryAction = array_shift($this->items['options']);
+            $this->items['primary'] = $primaryAction;
+        }
+        return $this->items;
+    }
 
-	/**
-	 * Returns the current button
-	 *
-	 * @return array
-	 */
-	public function getButton() {
-		if (!isset($this->items['primary']) && isset($this->items['options'])) {
-			$primaryAction = array_shift($this->items['options']);
-			$this->items['primary'] = $primaryAction;
-		}
-		return $this->items;
-	}
+    /**
+     * Validates the current button
+     *
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        $subject = $this->getButton();
+        if (
+            isset($subject['primary'])
+            && ($subject['primary'] instanceof AbstractButton)
+            && isset($subject['options'])
+        ) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Validates the current button
-	 *
-	 *
-	 * @return bool
-	 */
-	public function isValid() {
-		$subject = $this->getButton();
-		if (
-			isset($subject['primary'])
-			&& ($subject['primary'] instanceof AbstractButton)
-			&& isset($subject['options'])
-		) {
-			return TRUE;
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Renders the HTML markup of the button
-	 *
-	 * @return string
-	 */
-	public function render() {
-		$items = $this->getButton();
-		$content = '
+    /**
+     * Renders the HTML markup of the button
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $items = $this->getButton();
+        $content = '
 		<div class="btn-group">
 			<button
 				type="submit"
@@ -147,26 +151,27 @@ class SplitButton extends AbstractButton implements ButtonInterface {
 				<span class="sr-only">Toggle Dropdown</span>
 			</button>
 			<ul class="dropdown-menu">';
-		foreach ($items['options'] as $option) {
-			$content .= '
+        foreach ($items['options'] as $option) {
+            $content .= '
 				<li>
 					<a href="#">' . $option->getIcon()->render() . ' ' . htmlspecialchars($option->getTitle()) . '</a>
 				</li>
 			';
-		}
-		$content .= '
+        }
+        $content .= '
 			</ul>
 		</div>
 		';
-		return $content;
-	}
+        return $content;
+    }
 
-	/**
-	 * Magic method so Fluid can access a button via {button}
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
-	}
+    /**
+     * Magic method so Fluid can access a button via {button}
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

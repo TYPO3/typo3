@@ -31,49 +31,49 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * created at the previous step and the data to decode. If the data is decoded
  * successfully, the result is a string. Otherwise it is NULL.
  */
-abstract class AbstractBackend {
+abstract class AbstractBackend
+{
+    /**
+     * Error message for the last operation. Derived classes should always set
+     * or clear this variable inside the createNewKeyPair() or decypt().
+     *
+     * @var string
+     */
+    protected $error = '';
 
-	/**
-	 * Error message for the last operation. Derived classes should always set
-	 * or clear this variable inside the createNewKeyPair() or decypt().
-	 *
-	 * @var string
-	 */
-	protected $error = '';
+    /**
+     * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
+     *
+     * There should only be one key pair per request because the second private key would overwrites the first private
+     * key. So the submitting the form with the first public key would not work anymore.
+     *
+     * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
+     */
+    abstract public function createNewKeyPair();
 
-	/**
-	 * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
-	 *
-	 * There should only be one key pair per request because the second private key would overwrites the first private
-	 * key. So the submitting the form with the first public key would not work anymore.
-	 *
-	 * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
-	 */
-	abstract public function createNewKeyPair();
+    /**
+     * Decripts the data using the private key.
+     *
+     * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
+     * @param string $data Data to decrypt (base64-encoded)
+     * @return string Decrypted data or NULL in case of an error
+     */
+    abstract public function decrypt($privateKey, $data);
 
-	/**
-	 * Decripts the data using the private key.
-	 *
-	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
-	 * @param string $data Data to decrypt (base64-encoded)
-	 * @return string Decrypted data or NULL in case of an error
-	 */
-	abstract public function decrypt($privateKey, $data);
+    /**
+     * Checks if this backend is available for calling.
+     *
+     * @return bool
+     */
+    abstract public function isAvailable();
 
-	/**
-	 * Checks if this backend is available for calling.
-	 *
-	 * @return bool
-	 */
-	abstract public function isAvailable();
-
-	/**
-	 * Retrieves an error message.
-	 *
-	 * @return string An error message or empty string if there were no error
-	 */
-	public function getLastError() {
-		return $this->error;
-	}
-
+    /**
+     * Retrieves an error message.
+     *
+     * @return string An error message or empty string if there were no error
+     */
+    public function getLastError()
+    {
+        return $this->error;
+    }
 }

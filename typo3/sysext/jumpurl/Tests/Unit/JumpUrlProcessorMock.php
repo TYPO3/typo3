@@ -19,16 +19,17 @@ use TYPO3\CMS\Jumpurl\JumpUrlProcessor;
 /**
  * Testcase for handling jump URLs when given with a test parameter
  */
-class JumpUrlProcessorMock extends JumpUrlProcessor {
-
-	/**
-	 * Makes the parent getParametersForSecureFile() method accessible.
-	 *
-	 * @param string $jumpUrl
-	 * @param array $configuration
-	 * @return array
-	 */
-	public function getParametersForSecureFile($jumpUrl, array $configuration) {
-		return parent::getParametersForSecureFile($jumpUrl, $configuration);
-	}
+class JumpUrlProcessorMock extends JumpUrlProcessor
+{
+    /**
+     * Makes the parent getParametersForSecureFile() method accessible.
+     *
+     * @param string $jumpUrl
+     * @param array $configuration
+     * @return array
+     */
+    public function getParametersForSecureFile($jumpUrl, array $configuration)
+    {
+        return parent::getParametersForSecureFile($jumpUrl, $configuration);
+    }
 }

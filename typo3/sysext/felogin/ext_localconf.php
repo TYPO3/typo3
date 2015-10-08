@@ -23,7 +23,7 @@ tt_content.login {
 
 // add login to new content element wizard
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	mod.wizards.newContentElement.wizardItems.forms {
 		elements.login {
 			iconIdentifier = content-elements-login

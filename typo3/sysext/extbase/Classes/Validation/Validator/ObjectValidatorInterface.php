@@ -19,14 +19,14 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-interface ObjectValidatorInterface extends ValidatorInterface {
-
-	/**
-	 * Allows to set a container to keep track of validated instances.
-	 *
-	 * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
-	 * @return void
-	 * @api
-	 */
-	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer);
+interface ObjectValidatorInterface extends ValidatorInterface
+{
+    /**
+     * Allows to set a container to keep track of validated instances.
+     *
+     * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
+     * @return void
+     * @api
+     */
+    public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer);
 }

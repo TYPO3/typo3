@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 /**
  * This is an invalid enumeration because the constant values are not unique
  */
-class DuplicateConstantValueEnumeration extends \TYPO3\CMS\Core\Type\Enumeration {
-	const FOO = 1;
-	const BAR = 1;
+class DuplicateConstantValueEnumeration extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    const FOO = 1;
+    const BAR = 1;
 }

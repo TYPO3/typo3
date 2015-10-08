@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Dbal\ExtensionManager;
 /**
  * Class that renders fields for the Extension Manager configuration.
  */
-class MessageDisplay {
-
-	/**
-	 * Renders a message for EM.
-	 *
-	 * @return string
-	 */
-	public function displayMessage() {
-		$out = '
+class MessageDisplay
+{
+    /**
+     * Renders a message for EM.
+     *
+     * @return string
+     */
+    public function displayMessage()
+    {
+        $out = '
 			<div>
 				<div class="alert alert-info">
 					<h4>PostgreSQL</h4>
@@ -37,7 +38,6 @@ class MessageDisplay {
 				</div>
 			</div>
 		';
-		return $out;
-	}
-
+        return $out;
+    }
 }

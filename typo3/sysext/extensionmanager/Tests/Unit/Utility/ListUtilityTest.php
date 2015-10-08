@@ -14,157 +14,160 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Package;
 
 /**
  * List utility test
  *
  */
-class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 */
-	protected $subject;
+    /**
+     * @return void
+     */
+    protected function setUp()
+    {
+        $this->subject = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class, array('emitPackagesMayHaveChangedSignal'));
+        $packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+        $packageManagerMock
+                ->expects($this->any())
+                ->method('getActivePackages')
+                ->will($this->returnValue(array(
+                    'lang' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', false),
+                    'news' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', false),
+                    'saltedpasswords' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', false),
+                    'rsaauth' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', false),
+                )));
+        $this->inject($this->subject, 'packageManager', $packageManagerMock);
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function setUp() {
-		$this->subject = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class, array('emitPackagesMayHaveChangedSignal'));
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$packageManagerMock
-				->expects($this->any())
-				->method('getActivePackages')
-				->will($this->returnValue(array(
-					'lang' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
-					'news' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
-					'saltedpasswords' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
-					'rsaauth' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
-				)));
-		$this->inject($this->subject, 'packageManager', $packageManagerMock);
-	}
+    /**
+     * @return array
+     */
+    public function getAvailableAndInstalledExtensionsDataProvider()
+    {
+        return array(
+            'same extension lists' => array(
+                array(
+                    'lang' => array(),
+                    'news' => array(),
+                    'saltedpasswords' => array(),
+                    'rsaauth' => array()
+                ),
+                array(
+                    'lang' => array('installed' => true),
+                    'news' => array('installed' => true),
+                    'saltedpasswords' => array('installed' => true),
+                    'rsaauth' => array('installed' => true)
+                )
+            ),
+            'different extension lists' => array(
+                array(
+                    'lang' => array(),
+                    'news' => array(),
+                    'saltedpasswords' => array(),
+                    'rsaauth' => array()
+                ),
+                array(
+                    'lang' => array('installed' => true),
+                    'news' => array('installed' => true),
+                    'saltedpasswords' => array('installed' => true),
+                    'rsaauth' => array('installed' => true)
+                )
+            ),
+            'different extension lists - set2' => array(
+                array(
+                    'lang' => array(),
+                    'news' => array(),
+                    'saltedpasswords' => array(),
+                    'rsaauth' => array(),
+                    'em' => array()
+                ),
+                array(
+                    'lang' => array('installed' => true),
+                    'news' => array('installed' => true),
+                    'saltedpasswords' => array('installed' => true),
+                    'rsaauth' => array('installed' => true),
+                    'em' => array()
+                )
+            ),
+            'different extension lists - set3' => array(
+                array(
+                    'lang' => array(),
+                    'fluid' => array(),
+                    'news' => array(),
+                    'saltedpasswords' => array(),
+                    'rsaauth' => array(),
+                    'em' => array()
+                ),
+                array(
+                    'lang' => array('installed' => true),
+                    'fluid' => array(),
+                    'news' => array('installed' => true),
+                    'saltedpasswords' => array('installed' => true),
+                    'rsaauth' => array('installed' => true),
+                    'em' => array()
+                )
+            )
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getAvailableAndInstalledExtensionsDataProvider() {
-		return array(
-			'same extension lists' => array(
-				array(
-					'lang' => array(),
-					'news' => array(),
-					'saltedpasswords' => array(),
-					'rsaauth' => array()
-				),
-				array(
-					'lang' => array('installed' => TRUE),
-					'news' => array('installed' => TRUE),
-					'saltedpasswords' => array('installed' => TRUE),
-					'rsaauth' => array('installed' => TRUE)
-				)
-			),
-			'different extension lists' => array(
-				array(
-					'lang' => array(),
-					'news' => array(),
-					'saltedpasswords' => array(),
-					'rsaauth' => array()
-				),
-				array(
-					'lang' => array('installed' => TRUE),
-					'news' => array('installed' => TRUE),
-					'saltedpasswords' => array('installed' => TRUE),
-					'rsaauth' => array('installed' => TRUE)
-				)
-			),
-			'different extension lists - set2' => array(
-				array(
-					'lang' => array(),
-					'news' => array(),
-					'saltedpasswords' => array(),
-					'rsaauth' => array(),
-					'em' => array()
-				),
-				array(
-					'lang' => array('installed' => TRUE),
-					'news' => array('installed' => TRUE),
-					'saltedpasswords' => array('installed' => TRUE),
-					'rsaauth' => array('installed' => TRUE),
-					'em' => array()
-				)
-			),
-			'different extension lists - set3' => array(
-				array(
-					'lang' => array(),
-					'fluid' => array(),
-					'news' => array(),
-					'saltedpasswords' => array(),
-					'rsaauth' => array(),
-					'em' => array()
-				),
-				array(
-					'lang' => array('installed' => TRUE),
-					'fluid' => array(),
-					'news' => array('installed' => TRUE),
-					'saltedpasswords' => array('installed' => TRUE),
-					'rsaauth' => array('installed' => TRUE),
-					'em' => array()
-				)
-			)
-		);
-	}
+    /**
+     * @test
+     * @dataProvider getAvailableAndInstalledExtensionsDataProvider
+     * @param $availableExtensions
+     * @param $expectedResult
+     * @return void
+     */
+    public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult)
+    {
+        $this->assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
+    }
 
-	/**
-	 * @test
-	 * @dataProvider getAvailableAndInstalledExtensionsDataProvider
-	 * @param $availableExtensions
-	 * @param $expectedResult
-	 * @return void
-	 */
-	public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult) {
-		$this->assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
-	}
+    /**
+     * @return array
+     */
+    public function enrichExtensionsWithEmConfInformationDataProvider()
+    {
+        return array(
+            'simple key value array emconf' => array(
+                array(
+                    'lang' => array('property1' => 'oldvalue'),
+                    'news' => array(),
+                    'saltedpasswords' => array(),
+                    'rsaauth' => array()
+                ),
+                array(
+                    'property1' => 'property value1'
+                ),
+                array(
+                    'lang' => array('property1' => 'oldvalue'),
+                    'news' => array('property1' => 'property value1'),
+                    'saltedpasswords' => array('property1' => 'property value1'),
+                    'rsaauth' => array('property1' => 'property value1')
+                )
+            )
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function enrichExtensionsWithEmConfInformationDataProvider() {
-		return array(
-			'simple key value array emconf' => array(
-				array(
-					'lang' => array('property1' => 'oldvalue'),
-					'news' => array(),
-					'saltedpasswords' => array(),
-					'rsaauth' => array()
-				),
-				array(
-					'property1' => 'property value1'
-				),
-				array(
-					'lang' => array('property1' => 'oldvalue'),
-					'news' => array('property1' => 'property value1'),
-					'saltedpasswords' => array('property1' => 'property value1'),
-					'rsaauth' => array('property1' => 'property value1')
-				)
-			)
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider enrichExtensionsWithEmConfInformationDataProvider
-	 * @param $extensions
-	 * @param $emConf
-	 * @param $expectedResult
-	 * @return void
-	 */
-	public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult) {
-		$this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array('findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'), array(), '', FALSE));
-		$emConfUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class);
-		$emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
-		$this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
-		$this->assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
-	}
-
+    /**
+     * @test
+     * @dataProvider enrichExtensionsWithEmConfInformationDataProvider
+     * @param $extensions
+     * @param $emConf
+     * @param $expectedResult
+     * @return void
+     */
+    public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
+    {
+        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array('findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'), array(), '', false));
+        $emConfUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class);
+        $emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
+        $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
+        $this->assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
+    }
 }

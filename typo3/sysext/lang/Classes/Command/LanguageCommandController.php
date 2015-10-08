@@ -20,78 +20,81 @@ use TYPO3\CMS\Core\Package\PackageManager;
 /**
  * Language command controller updates translation packages
  */
-class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected $signalSlotDispatcher;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
+    /**
+     * @var \TYPO3\CMS\Lang\Service\RegistryService
+     */
+    protected $registryService;
 
-	/**
-	 * @var \TYPO3\CMS\Lang\Service\RegistryService
-	 */
-	protected $registryService;
+    /**
+     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     */
+    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
+    {
+        $this->signalSlotDispatcher = $signalSlotDispatcher;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+    /**
+     * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
+     */
+    public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService)
+    {
+        $this->registryService = $registryService;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
-	 */
-	public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService) {
-		$this->registryService = $registryService;
-	}
+    /**
+     * Update language file for each extension
+     *
+     * @param string $localesToUpdate Comma separated list of locales that needs to be updated
+     * @return void
+     */
+    public function updateCommand($localesToUpdate = '')
+    {
+        /** @var $translationService \TYPO3\CMS\Lang\Service\TranslationService */
+        $translationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\TranslationService::class);
+        /** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
+        $languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
+        $locales = array();
+        if (!empty($localesToUpdate)) {
+            $locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $localesToUpdate, true);
+        } else {
+            $languages = $languageRepository->findSelected();
+            foreach ($languages as $language) {
+                /** @var $language \TYPO3\CMS\Lang\Domain\Model\Language */
+                $locales[] = $language->getLocale();
+            }
+        }
+        /** @var PackageManager $packageManager */
+        $packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
+        $this->emitPackagesMayHaveChangedSignal();
+        $packages = $packageManager->getAvailablePackages();
+        $this->outputLine((sprintf('Updating language packs of all activated extensions for locales "%s"', implode(', ', $locales))));
+        $this->output->progressStart(count($locales) * count($packages));
+        foreach ($locales as $locale) {
+            /** @var PackageInterface $package */
+            foreach ($packages as $package) {
+                $extensionKey = $package->getPackageKey();
+                $result = $translationService->updateTranslation($extensionKey, $locale);
+                if (empty($result[$extensionKey][$locale]['error'])) {
+                    $this->registryService->set($locale, $GLOBALS['EXEC_TIME']);
+                }
+                $this->output->progressAdvance();
+            }
+        }
+        $this->output->progressFinish();
+    }
 
-	/**
-	 * Update language file for each extension
-	 *
-	 * @param string $localesToUpdate Comma separated list of locales that needs to be updated
-	 * @return void
-	 */
-	public function updateCommand($localesToUpdate = '') {
-		/** @var $translationService \TYPO3\CMS\Lang\Service\TranslationService */
-		$translationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\TranslationService::class);
-		/** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
-		$languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
-		$locales = array();
-		if (!empty($localesToUpdate)) {
-			$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $localesToUpdate, TRUE);
-		} else {
-			$languages = $languageRepository->findSelected();
-			foreach ($languages as $language) {
-				/** @var $language \TYPO3\CMS\Lang\Domain\Model\Language */
-				$locales[] = $language->getLocale();
-			}
-		}
-		/** @var PackageManager $packageManager */
-		$packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$this->emitPackagesMayHaveChangedSignal();
-		$packages = $packageManager->getAvailablePackages();
-		$this->outputLine((sprintf('Updating language packs of all activated extensions for locales "%s"', implode(', ', $locales))));
-		$this->output->progressStart(count($locales) * count($packages));
-		foreach ($locales as $locale) {
-			/** @var PackageInterface $package */
-			foreach ($packages as $package) {
-				$extensionKey = $package->getPackageKey();
-				$result = $translationService->updateTranslation($extensionKey, $locale);
-				if (empty($result[$extensionKey][$locale]['error'])) {
-					$this->registryService->set($locale, $GLOBALS['EXEC_TIME']);
-				}
-				$this->output->progressAdvance();
-			}
-		}
-		$this->output->progressFinish();
-	}
-
-	/**
-	 * Emits packages may have changed signal
-	 */
-	protected function emitPackagesMayHaveChangedSignal() {
-		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
-	}
-
+    /**
+     * Emits packages may have changed signal
+     */
+    protected function emitPackagesMayHaveChangedSignal()
+    {
+        $this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+    }
 }

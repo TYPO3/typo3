@@ -19,37 +19,37 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Iconv charset preset
  */
-class IconvPreset extends Configuration\AbstractPreset {
+class IconvPreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Iconv';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Iconv';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 80;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 80;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'SYS/t3lib_cs_convMethod' => 'iconv',
+        'SYS/t3lib_cs_utils' => 'iconv',
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'SYS/t3lib_cs_convMethod' => 'iconv',
-		'SYS/t3lib_cs_utils' => 'iconv',
-	);
-
-	/**
-	 * Check if iconv PHP module is loaded
-	 *
-	 * @return bool TRUE if iconv PHP module is loaded
-	 */
-	public function isAvailable() {
-		$result = FALSE;
-		if (extension_loaded('iconv')) {
-			$result = TRUE;
-		}
-		return $result;
-	}
-
+    /**
+     * Check if iconv PHP module is loaded
+     *
+     * @return bool TRUE if iconv PHP module is loaded
+     */
+    public function isAvailable()
+    {
+        $result = false;
+        if (extension_loaded('iconv')) {
+            $result = true;
+        }
+        return $result;
+    }
 }

@@ -20,95 +20,98 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Repository for \TYPO3\CMS\Form\Domain\Model\Content
  */
-class ContentRepository {
+class ContentRepository
+{
+    /**
+     * Get the referenced record from the database
+     *
+     * Using the GET or POST variable 'P'
+     *
+     * @return bool|\TYPO3\CMS\Form\Domain\Model\Content if found, FALSE if not
+     */
+    public function getRecord()
+    {
+        $record = false;
+        $getPostVariables = GeneralUtility::_GP('P');
+        $table = (string)$getPostVariables['table'];
+        $recordId = (int)$getPostVariables['uid'];
+        $row = BackendUtility::getRecord($table, $recordId);
+        if (is_array($row)) {
+            // strip off the leading "[Translate to XY]" text after localizing the original record
+            $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
+            $transOrigPointerField = $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'];
+            if ($row[$languageField] > 0 && $row[$transOrigPointerField] > 0) {
+                $bodytext = preg_replace('/^\[.*?\] /', '', $row['bodytext'], 1);
+            } else {
+                $bodytext = $row['bodytext'];
+            }
 
-	/**
-	 * Get the referenced record from the database
-	 *
-	 * Using the GET or POST variable 'P'
-	 *
-	 * @return bool|\TYPO3\CMS\Form\Domain\Model\Content if found, FALSE if not
-	 */
-	public function getRecord() {
-		$record = FALSE;
-		$getPostVariables = GeneralUtility::_GP('P');
-		$table = (string)$getPostVariables['table'];
-		$recordId = (int)$getPostVariables['uid'];
-		$row = BackendUtility::getRecord($table, $recordId);
-		if (is_array($row)) {
-			// strip off the leading "[Translate to XY]" text after localizing the original record
-			$languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
-			$transOrigPointerField = $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'];
-			if ($row[$languageField] > 0 && $row[$transOrigPointerField] > 0) {
-				$bodytext = preg_replace('/^\[.*?\] /', '', $row['bodytext'], 1);
-			} else {
-				$bodytext = $row['bodytext'];
-			}
+            /** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
+            $typoScriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+            $typoScriptParser->parse($bodytext);
+            /** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
+            $record = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Model\Content::class);
+            $record->setUid($row['uid']);
+            $record->setPageId($row['pid']);
+            $record->setTyposcript($typoScriptParser->setup);
+        }
+        return $record;
+    }
 
-			/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$typoScriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
-			$typoScriptParser->parse($bodytext);
-			/** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
-			$record = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Model\Content::class);
-			$record->setUid($row['uid']);
-			$record->setPageId($row['pid']);
-			$record->setTyposcript($typoScriptParser->setup);
-		}
-		return $record;
-	}
+    /**
+     * Check if the referenced record exists
+     *
+     * @return bool TRUE if record exists, FALSE if not
+     */
+    public function hasRecord()
+    {
+        return $this->getRecord() !== false;
+    }
 
-	/**
-	 * Check if the referenced record exists
-	 *
-	 * @return bool TRUE if record exists, FALSE if not
-	 */
-	public function hasRecord() {
-		return $this->getRecord() !== FALSE;
-	}
+    /**
+     * Convert and save the incoming data of the FORM wizard
+     *
+     * @return bool TRUE if succeeded, FALSE if not
+     */
+    public function save()
+    {
+        $json = GeneralUtility::_GP('configuration');
+        $parameters = GeneralUtility::_GP('P');
+        $success = false;
+        /** @var $converter \TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript */
+        $converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript::class);
+        $typoscript = $converter->convert($json);
+        if ($typoscript) {
+            // Make TCEmain object:
+            /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            $tce->stripslashes_values = 0;
+            // Put content into the data array:
+            $data = array();
+            $data[$parameters['table']][$parameters['uid']][$parameters['field']] = $typoscript;
+            // Perform the update:
+            $tce->start($data, array());
+            $tce->process_datamap();
+            $success = true;
+        }
+        return $success;
+    }
 
-	/**
-	 * Convert and save the incoming data of the FORM wizard
-	 *
-	 * @return bool TRUE if succeeded, FALSE if not
-	 */
-	public function save() {
-		$json = GeneralUtility::_GP('configuration');
-		$parameters = GeneralUtility::_GP('P');
-		$success = FALSE;
-		/** @var $converter \TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript */
-		$converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript::class);
-		$typoscript = $converter->convert($json);
-		if ($typoscript) {
-			// Make TCEmain object:
-			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-			$tce->stripslashes_values = 0;
-			// Put content into the data array:
-			$data = array();
-			$data[$parameters['table']][$parameters['uid']][$parameters['field']] = $typoscript;
-			// Perform the update:
-			$tce->start($data, array());
-			$tce->process_datamap();
-			$success = TRUE;
-		}
-		return $success;
-	}
-
-	/**
-	 * Read and convert the content record to JSON
-	 *
-	 * @return string The JSON object if record exists, FALSE if not
-	 */
-	public function getRecordAsJson() {
-		$json = FALSE;
-		$record = $this->getRecord();
-		if ($record) {
-			$typoscript = $record->getTyposcript();
-			/** @var $converter \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter */
-			$converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter::class);
-			$json = $converter->convert($typoscript);
-		}
-		return $json;
-	}
-
+    /**
+     * Read and convert the content record to JSON
+     *
+     * @return string The JSON object if record exists, FALSE if not
+     */
+    public function getRecordAsJson()
+    {
+        $json = false;
+        $record = $this->getRecord();
+        if ($record) {
+            $typoscript = $record->getTyposcript();
+            /** @var $converter \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter */
+            $converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter::class);
+            $json = $converter->convert($typoscript);
+        }
+        return $json;
+    }
 }

@@ -14,69 +14,72 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 /**
  * Testcase for RenderViewHelper
  */
-class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
+        $this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper::class, array('dummy'));
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
-		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
-		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper::class, array('dummy'));
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-	}
+    /**
+     * @test
+     */
+    public function loadSettingsIntoArgumentsSetsSettingsIfNoSettingsAreSpecified()
+    {
+        $arguments = array(
+            'someArgument' => 'someValue'
+        );
+        $expected = array(
+            'someArgument' => 'someValue',
+            'settings' => 'theSettings'
+        );
+        $this->templateVariableContainer->add('settings', 'theSettings');
 
-	/**
-	 * @test
-	 */
-	public function loadSettingsIntoArgumentsSetsSettingsIfNoSettingsAreSpecified() {
-		$arguments = array(
-			'someArgument' => 'someValue'
-		);
-		$expected = array(
-			'someArgument' => 'someValue',
-			'settings' => 'theSettings'
-		);
-		$this->templateVariableContainer->add('settings', 'theSettings');
+        $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
+        $this->assertEquals($expected, $actual);
+    }
 
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
-		$this->assertEquals($expected, $actual);
-	}
+    /**
+     * @test
+     */
+    public function loadSettingsIntoArgumentsDoesNotOverrideGivenSettings()
+    {
+        $arguments = array(
+            'someArgument' => 'someValue',
+            'settings' => 'specifiedSettings'
+        );
+        $expected = array(
+            'someArgument' => 'someValue',
+            'settings' => 'specifiedSettings'
+        );
+        $this->templateVariableContainer->add('settings', 'theSettings');
 
-	/**
-	 * @test
-	 */
-	public function loadSettingsIntoArgumentsDoesNotOverrideGivenSettings() {
-		$arguments = array(
-			'someArgument' => 'someValue',
-			'settings' => 'specifiedSettings'
-		);
-		$expected = array(
-			'someArgument' => 'someValue',
-			'settings' => 'specifiedSettings'
-		);
-		$this->templateVariableContainer->add('settings', 'theSettings');
+        $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
+        $this->assertEquals($expected, $actual);
+    }
 
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
-		$this->assertEquals($expected, $actual);
-	}
+    /**
+     * @test
+     */
+    public function loadSettingsIntoArgumentsDoesNotThrowExceptionIfSettingsAreNotInTemplateVariableContainer()
+    {
+        $arguments = array(
+            'someArgument' => 'someValue'
+        );
+        $expected = array(
+            'someArgument' => 'someValue'
+        );
 
-	/**
-	 * @test
-	 */
-	public function loadSettingsIntoArgumentsDoesNotThrowExceptionIfSettingsAreNotInTemplateVariableContainer() {
-		$arguments = array(
-			'someArgument' => 'someValue'
-		);
-		$expected = array(
-			'someArgument' => 'someValue'
-		);
-
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
-		$this->assertEquals($expected, $actual);
-	}
-
+        $actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
+        $this->assertEquals($expected, $actual);
+    }
 }

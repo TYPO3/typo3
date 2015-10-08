@@ -18,37 +18,38 @@ namespace TYPO3\CMS\Scheduler\Example;
  * Provides a task that sleeps for some time
  * This is useful for testing parallel executions
  */
-class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
+    /**
+     * Number of seconds the task should be sleeping for
+     *
+     * @var int
+     */
+    public $sleepTime = 10;
 
-	/**
-	 * Number of seconds the task should be sleeping for
-	 *
-	 * @var int
-	 */
-	public $sleepTime = 10;
+    /**
+     * Function executed from the Scheduler.
+     * Goes to sleep ;-)
+     *
+     * @return bool
+     */
+    public function execute()
+    {
+        $time = 10;
+        if (!empty($this->sleepTime)) {
+            $time = $this->sleepTime;
+        }
+        sleep($time);
+        return true;
+    }
 
-	/**
-	 * Function executed from the Scheduler.
-	 * Goes to sleep ;-)
-	 *
-	 * @return bool
-	 */
-	public function execute() {
-		$time = 10;
-		if (!empty($this->sleepTime)) {
-			$time = $this->sleepTime;
-		}
-		sleep($time);
-		return TRUE;
-	}
-
-	/**
-	 * This method returns the sleep duration as additional information
-	 *
-	 * @return string Information to display
-	 */
-	public function getAdditionalInformation() {
-		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime') . ': ' . $this->sleepTime;
-	}
-
+    /**
+     * This method returns the sleep duration as additional information
+     *
+     * @return string Information to display
+     */
+    public function getAdditionalInformation()
+    {
+        return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime') . ': ' . $this->sleepTime;
+    }
 }

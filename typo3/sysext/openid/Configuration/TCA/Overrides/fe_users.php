@@ -3,27 +3,27 @@ defined('TYPO3_MODE') or die();
 
 // Prepare new columns for fe_users table
 $tempColumns = array(
-	'tx_openid_openid' => array(
-		'exclude' => 0,
-		'label' => 'LLL:EXT:openid/locallang_db.xlf:be_users.tx_openid_openid',
-		'config' => array(
-			'type' => 'input',
-			'size' => '30',
-			// Requirement: unique (BE users are unique in the whole system)
-			'eval' => 'trim,nospace,uniqueInPid',
-			'wizards' => array(
-				'0' => array(
-					'type' => 'popup',
-					'title' => 'Add OpenID',
-					'module' => array(
-						'name' => 'wizard_openid'
-					),
-					'icon' => 'EXT:openid/ext_icon_small.png',
-					'JSopenParams' => ',width=800,height=600,status=0,menubar=0,scrollbars=0',
-				)
-			),
-		)
-	)
+    'tx_openid_openid' => array(
+        'exclude' => 0,
+        'label' => 'LLL:EXT:openid/locallang_db.xlf:be_users.tx_openid_openid',
+        'config' => array(
+            'type' => 'input',
+            'size' => '30',
+            // Requirement: unique (BE users are unique in the whole system)
+            'eval' => 'trim,nospace,uniqueInPid',
+            'wizards' => array(
+                '0' => array(
+                    'type' => 'popup',
+                    'title' => 'Add OpenID',
+                    'module' => array(
+                        'name' => 'wizard_openid'
+                    ),
+                    'icon' => 'EXT:openid/ext_icon_small.png',
+                    'JSopenParams' => ',width=800,height=600,status=0,menubar=0,scrollbars=0',
+                )
+            ),
+        )
+    )
 );
 // Add new columns to fe_users table
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns);

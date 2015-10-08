@@ -24,24 +24,25 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 /**
  * Test case
  */
-class ErrorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ErrorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function theConstructorSetsTheErrorMessageCorrectly()
+    {
+        $errorMessage = 'The message';
+        $error = new \TYPO3\CMS\Extbase\Error\Error($errorMessage, 0);
+        $this->assertEquals($errorMessage, $error->getMessage());
+    }
 
-	/**
-	 * @test
-	 */
-	public function theConstructorSetsTheErrorMessageCorrectly() {
-		$errorMessage = 'The message';
-		$error = new \TYPO3\CMS\Extbase\Error\Error($errorMessage, 0);
-		$this->assertEquals($errorMessage, $error->getMessage());
-	}
-
-	/**
-	 * @test
-	 */
-	public function theConstructorSetsTheErrorCodeCorrectly() {
-		$errorCode = 123456789;
-		$error = new \TYPO3\CMS\Extbase\Error\Error('', $errorCode);
-		$this->assertEquals($errorCode, $error->getCode());
-	}
-
+    /**
+     * @test
+     */
+    public function theConstructorSetsTheErrorCodeCorrectly()
+    {
+        $errorCode = 123456789;
+        $error = new \TYPO3\CMS\Extbase\Error\Error('', $errorCode);
+        $this->assertEquals($errorCode, $error->getCode());
+    }
 }

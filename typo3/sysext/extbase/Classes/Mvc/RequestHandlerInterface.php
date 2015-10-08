@@ -19,31 +19,31 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * @api
  */
-interface RequestHandlerInterface {
+interface RequestHandlerInterface
+{
+    /**
+     * Handles a raw request and returns the respsonse.
+     *
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @api
+     */
+    public function handleRequest();
 
-	/**
-	 * Handles a raw request and returns the respsonse.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
-	 * @api
-	 */
-	public function handleRequest();
+    /**
+     * Checks if the request handler can handle the current request.
+     *
+     * @return bool TRUE if it can handle the request, otherwise FALSE
+     * @api
+     */
+    public function canHandleRequest();
 
-	/**
-	 * Checks if the request handler can handle the current request.
-	 *
-	 * @return bool TRUE if it can handle the request, otherwise FALSE
-	 * @api
-	 */
-	public function canHandleRequest();
-
-	/**
-	 * Returns the priority - how eager the handler is to actually handle the
-	 * request. An integer > 0 means "I want to handle this request" where
-	 * "100" is default. "0" means "I am a fallback solution".
-	 *
-	 * @return int The priority of the request handler
-	 * @api
-	 */
-	public function getPriority();
+    /**
+     * Returns the priority - how eager the handler is to actually handle the
+     * request. An integer > 0 means "I want to handle this request" where
+     * "100" is default. "0" means "I am a fallback solution".
+     *
+     * @return int The priority of the request handler
+     * @api
+     */
+    public function getPriority();
 }

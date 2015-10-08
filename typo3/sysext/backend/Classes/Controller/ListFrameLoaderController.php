@@ -20,40 +20,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Script Class for redirecting shortcut actions to the correct script
  * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, this logic is not needed anymore
  */
-class ListFrameLoaderController {
+class ListFrameLoaderController
+{
+    /**
+     * @var string
+     */
+    protected $content;
 
-	/**
-	 * @var string
-	 */
-	protected $content;
-
-	/**
-	 * Main content generated
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function main() {
-		GeneralUtility::logDeprecatedFunction();
-		$GLOBALS['TBE_TEMPLATE']->divClass = '';
-		$this->content .= $this->getDocumentTemplate()->startPage('List Frame Loader');
-		$this->content .= $this->getDocumentTemplate()->wrapScriptTags('
+    /**
+     * Main content generated
+     *
+     * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     */
+    public function main()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        $GLOBALS['TBE_TEMPLATE']->divClass = '';
+        $this->content .= $this->getDocumentTemplate()->startPage('List Frame Loader');
+        $this->content .= $this->getDocumentTemplate()->wrapScriptTags('
 			var theUrl = top.getModuleUrl("");
 			if (theUrl)	window.location.href=theUrl;
 		');
-		// End page:
-		$this->content .= $this->getDocumentTemplate()->endPage();
-		// Output:
-		echo $this->content;
-	}
+        // End page:
+        $this->content .= $this->getDocumentTemplate()->endPage();
+        // Output:
+        echo $this->content;
+    }
 
-	/**
-	 * Returns an instance of DocumentTemplate
-	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
-	}
-
+    /**
+     * Returns an instance of DocumentTemplate
+     *
+     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+     */
+    protected function getDocumentTemplate()
+    {
+        return $GLOBALS['TBE_TEMPLATE'];
+    }
 }

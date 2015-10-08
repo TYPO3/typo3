@@ -53,61 +53,62 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  * </output>
  * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
  */
-class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
+class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface
+{
+    /**
+     * Renders a linked icon as known from the TYPO3 backend.
+     *
+     * If the URI is left empty, the icon is rendered without link.
+     *
+     * @param string $uri The target URI for the link. If you want to execute JavaScript here, prefix the URI with
+     *     "javascript:". Leave empty to render just an icon.
+     * @param string $icon Icon to be used.
+     * @param string $title Title attribute of the icon construct
+     * @param array $additionalAttributes Additional tag attributes. They will be added directly to the resulting HTML tag.
+     *
+     * @return string The rendered icon with or without link
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
+     */
+    public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array())
+    {
+        return static::renderStatic(
+            array(
+                'uri' => $uri,
+                'icon' => $icon,
+                'title' => $title,
+                'additionalAttributes' => $additionalAttributes
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Renders a linked icon as known from the TYPO3 backend.
-	 *
-	 * If the URI is left empty, the icon is rendered without link.
-	 *
-	 * @param string $uri The target URI for the link. If you want to execute JavaScript here, prefix the URI with
-	 *     "javascript:". Leave empty to render just an icon.
-	 * @param string $icon Icon to be used.
-	 * @param string $title Title attribute of the icon construct
-	 * @param array $additionalAttributes Additional tag attributes. They will be added directly to the resulting HTML tag.
-	 *
-	 * @return string The rendered icon with or without link
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
-	 */
-	public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array()) {
-		return static::renderStatic(
-			array(
-				'uri' => $uri,
-				'icon' => $icon,
-				'title' => $title,
-				'additionalAttributes' => $additionalAttributes
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        GeneralUtility::logDeprecatedFunction();
+        $uri = $arguments['uri'];
+        $icon = $arguments['icon'];
+        $title = $arguments['title'];
+        $additionalAttributes = $arguments['additionalAttributes'];
+        $additionalTagAttributes = '';
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $icon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '</span>';
+        if (empty($uri)) {
+            return $icon;
+        }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		GeneralUtility::logDeprecatedFunction();
-		$uri = $arguments['uri'];
-		$icon = $arguments['icon'];
-		$title = $arguments['title'];
-		$additionalAttributes = $arguments['additionalAttributes'];
-		$additionalTagAttributes = '';
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '</span>';
-		if (empty($uri)) {
-			return $icon;
-		}
-
-		if ($additionalAttributes) {
-			foreach ($additionalAttributes as $argumentKey => $argumentValue) {
-				$additionalTagAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
-			}
-		}
-		return '<a href="' . $uri . '"' . $additionalTagAttributes . '>' . $icon . '</a>';
-	}
-
+        if ($additionalAttributes) {
+            foreach ($additionalAttributes as $argumentKey => $argumentValue) {
+                $additionalTagAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
+            }
+        }
+        return '<a href="' . $uri . '"' . $additionalTagAttributes . '>' . $icon . '</a>';
+    }
 }

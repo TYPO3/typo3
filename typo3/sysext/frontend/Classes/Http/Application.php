@@ -20,75 +20,78 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 /**
  * Entry point for the TYPO3 Frontend
  */
-class Application implements ApplicationInterface {
+class Application implements ApplicationInterface
+{
+    /**
+     * @var Bootstrap
+     */
+    protected $bootstrap;
 
-	/**
-	 * @var Bootstrap
-	 */
-	protected $bootstrap;
+    /**
+     * Usually this is equal to PATH_site = kept empty
+     * @var string
+     */
+    protected $entryPointPath = '';
 
-	/**
-	 * Usually this is equal to PATH_site = kept empty
-	 * @var string
-	 */
-	protected $entryPointPath = '';
+    /**
+     * All available request handlers that can deal with a Frontend Request
+     * @var array
+     */
+    protected $availableRequestHandlers = array(
+        \TYPO3\CMS\Frontend\Http\RequestHandler::class,
+        \TYPO3\CMS\Frontend\Http\EidRequestHandler::class
+    );
 
-	/**
-	 * All available request handlers that can deal with a Frontend Request
-	 * @var array
-	 */
-	protected $availableRequestHandlers = array(
-		\TYPO3\CMS\Frontend\Http\RequestHandler::class,
-		\TYPO3\CMS\Frontend\Http\EidRequestHandler::class
-	);
+    /**
+     * Constructor setting up legacy constant and register available Request Handlers
+     *
+     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
+     */
+    public function __construct($classLoader)
+    {
+        $this->defineLegacyConstants();
 
-	/**
-	 * Constructor setting up legacy constant and register available Request Handlers
-	 *
-	 * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
-	 */
-	public function __construct($classLoader) {
-		$this->defineLegacyConstants();
+        $this->bootstrap = Bootstrap::getInstance()
+            ->initializeClassLoader($classLoader)
+            ->baseSetup($this->entryPointPath);
 
-		$this->bootstrap = Bootstrap::getInstance()
-			->initializeClassLoader($classLoader)
-			->baseSetup($this->entryPointPath);
+        // Redirect to install tool if base configuration is not found
+        if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
+            $this->bootstrap->redirectToInstallTool($this->entryPointPath);
+        }
 
-		// Redirect to install tool if base configuration is not found
-		if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
-			$this->bootstrap->redirectToInstallTool($this->entryPointPath);
-		}
+        foreach ($this->availableRequestHandlers as $requestHandler) {
+            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
+        }
 
-		foreach ($this->availableRequestHandlers as $requestHandler) {
-			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
-		}
+        $this->bootstrap->configure();
+    }
 
-		$this->bootstrap->configure();
-	}
+    /**
+     * Starting point
+     *
+     * @param callable $execute
+     * @return void
+     */
+    public function run(callable $execute = null)
+    {
+        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
-	/**
-	 * Starting point
-	 *
-	 * @param callable $execute
-	 * @return void
-	 */
-	public function run(callable $execute = NULL) {
-		$this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+        if ($execute !== null) {
+            if ($execute instanceof \Closure) {
+                $execute->bindTo($this);
+            }
+            call_user_func($execute);
+        }
 
-		if ($execute !== NULL) {
-			if ($execute instanceof \Closure) {
-				$execute->bindTo($this);
-			}
-			call_user_func($execute);
-		}
+        $this->bootstrap->shutdown();
+    }
 
-		$this->bootstrap->shutdown();
-	}
-
-	/**
-	 * Define constants and variables
-	 */
-	protected function defineLegacyConstants() {
-		define('TYPO3_MODE', 'FE');
-	}
+    /**
+     * Define constants and variables
+     */
+    protected function defineLegacyConstants()
+    {
+        define('TYPO3_MODE', 'FE');
+    }
 }

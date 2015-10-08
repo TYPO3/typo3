@@ -17,23 +17,23 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Contains EDITPANEL class object.
  */
-class EditPanelContentObject extends AbstractContentObject {
-
-	/**
-	 * Rendering the cObject, EDITPANEL
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 */
-	public function render($conf = array()) {
-		$theValue = '';
-		if ($GLOBALS['TSFE']->beUserLogin) {
-			$theValue = $this->cObj->editPanel($theValue, $conf);
-		}
-		if (isset($conf['stdWrap.'])) {
-			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-		}
-		return $theValue;
-	}
-
+class EditPanelContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, EDITPANEL
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Output
+     */
+    public function render($conf = array())
+    {
+        $theValue = '';
+        if ($GLOBALS['TSFE']->beUserLogin) {
+            $theValue = $this->cObj->editPanel($theValue, $conf);
+        }
+        if (isset($conf['stdWrap.'])) {
+            $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+        }
+        return $theValue;
+    }
 }

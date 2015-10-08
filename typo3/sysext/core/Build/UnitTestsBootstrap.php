@@ -35,191 +35,202 @@ use TYPO3\CMS\Core\Core\Bootstrap;
  *     --bootstrap typo3/sysext/core/Build/UnitTestsBootstrap.php \
  *     typo3/sysext/core/Tests/Uinit/DataHandling/DataHandlerTest.php
  */
-class UnitTestsBootstrap {
+class UnitTestsBootstrap
+{
+    /**
+     * Bootstraps the system for unit tests.
+     *
+     * @return void
+     */
+    public function bootstrapSystem()
+    {
+        $this->enableDisplayErrors()
+            ->checkForCliDispatch()
+            ->defineSitePath()
+            ->setTypo3Context()
+            ->createNecessaryDirectoriesInDocumentRoot()
+            ->includeAndStartCoreBootstrap()
+            ->initializeConfiguration()
+            ->finishCoreBootstrap();
+    }
 
-	/**
-	 * Bootstraps the system for unit tests.
-	 *
-	 * @return void
-	 */
-	public function bootstrapSystem() {
-		$this->enableDisplayErrors()
-			->checkForCliDispatch()
-			->defineSitePath()
-			->setTypo3Context()
-			->createNecessaryDirectoriesInDocumentRoot()
-			->includeAndStartCoreBootstrap()
-			->initializeConfiguration()
-			->finishCoreBootstrap();
-	}
+    /**
+     * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function enableDisplayErrors()
+    {
+        @ini_set('display_errors', 1);
+        return $this;
+    }
 
-	/**
-	 * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function enableDisplayErrors() {
-		@ini_set('display_errors', 1);
-		return $this;
-	}
+    /**
+     * Checks whether the tests are run using the CLI dispatcher. If so, echos a helpful message and exits with
+     * an error code 1.
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function checkForCliDispatch()
+    {
+        if (!defined('TYPO3_MODE')) {
+            return $this;
+        }
 
-	/**
-	 * Checks whether the tests are run using the CLI dispatcher. If so, echos a helpful message and exits with
-	 * an error code 1.
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function checkForCliDispatch() {
-		if (!defined('TYPO3_MODE')) {
-			return $this;
-		}
+        array_shift($_SERVER['argv']);
+        $flatArguments = implode(' ', $_SERVER['argv']);
+        echo 'Please run the unit tests using the following command:' . chr(10) .
+            sprintf('typo3/../bin/phpunit %s', $flatArguments) . chr(10) .
+            chr(10);
 
-		array_shift($_SERVER['argv']);
-		$flatArguments = implode(' ', $_SERVER['argv']);
-		echo 'Please run the unit tests using the following command:' . chr(10) .
-			sprintf('typo3/../bin/phpunit %s', $flatArguments) . chr(10) .
-			chr(10);
+        exit(1);
+    }
 
-		exit(1);
-	}
+    /**
+     * Defines the PATH_site and PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function defineSitePath()
+    {
+        /** @var string */
+        define('PATH_site', $this->getWebRoot());
+        /** @var string */
+        define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
+        $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
-	/**
-	 * Defines the PATH_site and PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function defineSitePath() {
-		/** @var string */
-		define('PATH_site', $this->getWebRoot());
-		/** @var string */
-		define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
-		$_SERVER['SCRIPT_NAME'] = PATH_thisScript;
+        if (!file_exists(PATH_thisScript)) {
+            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+        }
 
-		if (!file_exists(PATH_thisScript)) {
-			die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Returns the absolute path the TYPO3 document root.
+     *
+     * @return string the TYPO3 document root using Unix path separators
+     */
+    protected function getWebRoot()
+    {
+        if (getenv('TYPO3_PATH_WEB')) {
+            $webRoot = getenv('TYPO3_PATH_WEB');
+        } else {
+            $webRoot = getcwd();
+        }
+        return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
+    }
 
-	/**
-	 * Returns the absolute path the TYPO3 document root.
-	 *
-	 * @return string the TYPO3 document root using Unix path separators
-	 */
-	protected function getWebRoot() {
-		if (getenv('TYPO3_PATH_WEB')) {
-			$webRoot = getenv('TYPO3_PATH_WEB');
-		} else {
-			$webRoot = getcwd();
-		}
-		return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
-	}
+    /**
+     * Defines TYPO3_MODE, TYPO3_cliMode and sets the environment variable TYPO3_CONTEXT.
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function setTypo3Context()
+    {
+        /** @var string */
+        define('TYPO3_MODE', 'BE');
+        /** @var string */
+        define('TYPO3_cliMode', true);
+        putenv('TYPO3_CONTEXT=Testing');
 
-	/**
-	 * Defines TYPO3_MODE, TYPO3_cliMode and sets the environment variable TYPO3_CONTEXT.
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function setTypo3Context() {
-		/** @var string */
-		define('TYPO3_MODE', 'BE');
-		/** @var string */
-		define('TYPO3_cliMode', TRUE);
-		putenv('TYPO3_CONTEXT=Testing');
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Creates the following directories in the TYPO3 document root:
+     * - typo3conf
+     * - typo3conf/ext
+     * - typo3temp
+     * - uploads
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function createNecessaryDirectoriesInDocumentRoot()
+    {
+        $this->createDirectory(PATH_site . 'uploads');
+        $this->createDirectory(PATH_site . 'typo3temp');
+        $this->createDirectory(PATH_site . 'typo3conf/ext');
 
-	/**
-	 * Creates the following directories in the TYPO3 document root:
-	 * - typo3conf
-	 * - typo3conf/ext
-	 * - typo3temp
-	 * - uploads
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function createNecessaryDirectoriesInDocumentRoot() {
-		$this->createDirectory(PATH_site . 'uploads');
-		$this->createDirectory(PATH_site . 'typo3temp');
-		$this->createDirectory(PATH_site . 'typo3conf/ext');
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Creates the directory $directory (recursively if required).
+     *
+     * If $directory already exists, this method is a no-op.
+     *
+     * @param string $directory absolute path of the directory to be created
+     * @return void
+     * @throws \RuntimeException
+     */
+    protected function createDirectory($directory)
+    {
+        if (is_dir($directory)) {
+            return;
+        }
+        @mkdir($directory, 0777, true);
+        clearstatcache();
+        if (!is_dir($directory)) {
+            throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
+        }
+    }
 
-	/**
-	 * Creates the directory $directory (recursively if required).
-	 *
-	 * If $directory already exists, this method is a no-op.
-	 *
-	 * @param string $directory absolute path of the directory to be created
-	 * @return void
-	 * @throws \RuntimeException
-	 */
-	protected function createDirectory($directory) {
-		if (is_dir($directory)) {
-			return;
-		}
-		@mkdir($directory, 0777, TRUE);
-		clearstatcache();
-		if (!is_dir($directory)) {
-			throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
-		}
-	}
+    /**
+     * Includes the Core Bootstrap class and calls its first few functions.
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function includeAndStartCoreBootstrap()
+    {
+        $classLoaderFilepath = __DIR__ . '/../../../../vendor/autoload.php';
+        if (!file_exists($classLoaderFilepath)) {
+            die('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+        }
+        $classLoader = require $classLoaderFilepath;
 
-	/**
-	 * Includes the Core Bootstrap class and calls its first few functions.
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function includeAndStartCoreBootstrap() {
-		$classLoaderFilepath = __DIR__ . '/../../../../vendor/autoload.php';
-		if (!file_exists($classLoaderFilepath)) {
-			die('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
-		}
-		$classLoader = require $classLoaderFilepath;
+        Bootstrap::getInstance()
+            ->initializeClassLoader($classLoader)
+            ->baseSetup();
 
-		Bootstrap::getInstance()
-			->initializeClassLoader($classLoader)
-			->baseSetup();
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function initializeConfiguration()
+    {
+        $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
+        $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
 
-	/**
-	 * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function initializeConfiguration() {
-		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
-		$GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
+        // avoid failing tests that rely on HTTP_HOST retrieval
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
 
-		// avoid failing tests that rely on HTTP_HOST retrieval
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Finishes the last steps of the Core Bootstrap.
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function finishCoreBootstrap()
+    {
+        Bootstrap::getInstance()
+            ->disableCoreCache()
+            ->initializeCachingFramework()
+            ->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class)
+            ->ensureClassLoadingInformationExists();
 
-	/**
-	 * Finishes the last steps of the Core Bootstrap.
-	 *
-	 * @return UnitTestsBootstrap fluent interface
-	 */
-	protected function finishCoreBootstrap() {
-		Bootstrap::getInstance()
-			->disableCoreCache()
-			->initializeCachingFramework()
-			->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class)
-			->ensureClassLoadingInformationExists();
-
-		return $this;
-	}
+        return $this;
+    }
 }
 
 if (PHP_SAPI !== 'cli') {
-	die('This script supports command line usage only. Please check your command.');
+    die('This script supports command line usage only. Please check your command.');
 }
 $bootstrap = new UnitTestsBootstrap();
 $bootstrap->bootstrapSystem();

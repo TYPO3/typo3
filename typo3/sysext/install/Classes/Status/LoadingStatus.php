@@ -17,11 +17,10 @@ namespace TYPO3\CMS\Install\Status;
 /**
  * Loading level status - Used in Extension compatibility tester
  */
-class LoadingStatus extends AbstractStatus implements StatusInterface {
-
-	/**
-	 * @var string The severity
-	 */
-	protected $severity = 'loading';
-
+class LoadingStatus extends AbstractStatus implements StatusInterface
+{
+    /**
+     * @var string The severity
+     */
+    protected $severity = 'loading';
 }

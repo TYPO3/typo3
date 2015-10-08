@@ -17,53 +17,54 @@ namespace TYPO3\CMS\Core\Utility;
 /**
  * Class with helper functions for CSV handling
  */
-class CsvUtility {
+class CsvUtility
+{
+    /**
+     * Convert a string, formatted as CSV, into an multidimensional array
+     *
+     * This cannot be done by str_getcsv, since it's impossible to handle enclosed cells with a line feed in it
+     *
+     * @param string $input The CSV input
+     * @param string $fieldDelimiter The field delimiter
+     * @param string $fieldEnclosure The field enclosure
+     * @param int $maximumColumns The maximum amount of columns
+     * @return array
+     */
+    public static function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $maximumColumns = 0)
+    {
+        $multiArray = array();
+        $maximumCellCount = 0;
 
-	/**
-	 * Convert a string, formatted as CSV, into an multidimensional array
-	 *
-	 * This cannot be done by str_getcsv, since it's impossible to handle enclosed cells with a line feed in it
-	 *
-	 * @param string $input The CSV input
-	 * @param string $fieldDelimiter The field delimiter
-	 * @param string $fieldEnclosure The field enclosure
-	 * @param int $maximumColumns The maximum amount of columns
-	 * @return array
-	 */
-	static public function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $maximumColumns = 0) {
-		$multiArray = array();
-		$maximumCellCount = 0;
+        if (($handle = fopen('php://memory', 'r+')) !== false) {
+            fwrite($handle, $input);
+            rewind($handle);
+            while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== false) {
+                $maximumCellCount = max(count($cells), $maximumCellCount);
+                $multiArray[] = $cells;
+            }
+            fclose($handle);
+        }
 
-		if (($handle = fopen('php://memory', 'r+')) !== FALSE) {
-			fwrite($handle, $input);
-			rewind($handle);
-			while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== FALSE) {
-				$maximumCellCount = max(count($cells), $maximumCellCount);
-				$multiArray[] = $cells;
-			}
-			fclose($handle);
-		}
+        if ($maximumColumns > $maximumCellCount) {
+            $maximumCellCount = $maximumColumns;
+        }
 
-		if ($maximumColumns > $maximumCellCount) {
-			$maximumCellCount = $maximumColumns;
-		}
+        foreach ($multiArray as &$row) {
+            for ($key = 0; $key < $maximumCellCount; $key++) {
+                if (
+                    $maximumColumns > 0
+                    && $maximumColumns < $maximumCellCount
+                    && $key >= $maximumColumns
+                ) {
+                    if (isset($row[$key])) {
+                        unset($row[$key]);
+                    }
+                } elseif (!isset($row[$key])) {
+                    $row[$key] = '';
+                }
+            }
+        }
 
-		foreach ($multiArray as &$row) {
-			for ($key = 0; $key < $maximumCellCount; $key++) {
-				if (
-					$maximumColumns > 0
-					&& $maximumColumns < $maximumCellCount
-					&& $key >= $maximumColumns
-				) {
-					if (isset($row[$key])) {
-						unset($row[$key]);
-					}
-				} elseif (!isset($row[$key])) {
-					$row[$key] = '';
-				}
-			}
-		}
-
-		return $multiArray;
-	}
+        return $multiArray;
+    }
 }

@@ -25,36 +25,36 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('string', 'integer');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('string', 'integer');
+    /**
+     * @var string
+     */
+    protected $targetType = 'string';
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = 'string';
+    /**
+     * @var int
+     */
+    protected $priority = 1;
 
-	/**
-	 * @var int
-	 */
-	protected $priority = 1;
-
-	/**
-	 * Actually convert from $source to $targetType, taking into account the fully
-	 * built $convertedChildProperties and $configuration.
-	 *
-	 * @param string $source
-	 * @param string $targetType
-	 * @param array $convertedChildProperties
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return string
-	 * @api
-	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		return (string)$source;
-	}
-
+    /**
+     * Actually convert from $source to $targetType, taking into account the fully
+     * built $convertedChildProperties and $configuration.
+     *
+     * @param string $source
+     * @param string $targetType
+     * @param array $convertedChildProperties
+     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+     * @return string
+     * @api
+     */
+    public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
+    {
+        return (string)$source;
+    }
 }

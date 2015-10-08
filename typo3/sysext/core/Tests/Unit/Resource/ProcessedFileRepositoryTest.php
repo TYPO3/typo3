@@ -17,20 +17,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 /**
  * Processed file repository test
  */
-class ProcessedFileRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ProcessedFileRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function cleanUnavailableColumnsWorks()
+    {
+        $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class, array('dummy'), array(), '', false);
+        $databaseMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('admin_get_fields'));
+        $databaseMock->expects($this->once())->method('admin_get_fields')->will($this->returnValue(array('storage' => '', 'checksum' => '')));
+        $fixture->_set('databaseConnection', $databaseMock);
 
-	/**
-	 * @test
-	 */
-	public function cleanUnavailableColumnsWorks() {
-		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class, array('dummy'), array(), '', FALSE);
-		$databaseMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('admin_get_fields'));
-		$databaseMock->expects($this->once())->method('admin_get_fields')->will($this->returnValue(array('storage' => '', 'checksum' => '')));
-		$fixture->_set('databaseConnection', $databaseMock);
+        $actual = $fixture->_call('cleanUnavailableColumns', array('storage' => 'a', 'checksum' => 'b', 'key3' => 'c'));
 
-		$actual = $fixture->_call('cleanUnavailableColumns', array('storage' => 'a', 'checksum' => 'b', 'key3' => 'c'));
-
-		$this->assertSame(array('storage' => 'a', 'checksum' => 'b'), $actual);
-	}
-
+        $this->assertSame(array('storage' => 'a', 'checksum' => 'b'), $actual);
+    }
 }

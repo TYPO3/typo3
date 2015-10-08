@@ -25,46 +25,47 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 /**
  * Displays icon identified by icon identifier
  */
-class IconViewHelper extends AbstractViewHelper implements CompilableInterface {
+class IconViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Prints icon html for $identifier key
+     *
+     * @param string $identifier
+     * @param string $size
+     * @param string $overlay
+     * @param string $state
+     * @return string
+     */
+    public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = null, $state = IconState::STATE_DEFAULT)
+    {
+        return static::renderStatic(
+            array(
+                'identifier' => $identifier,
+                'size' => $size,
+                'overlay' => $overlay,
+                'state' => $state
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Prints icon html for $identifier key
-	 *
-	 * @param string $identifier
-	 * @param string $size
-	 * @param string $overlay
-	 * @param string $state
-	 * @return string
-	 */
-	public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = NULL, $state = IconState::STATE_DEFAULT) {
-		return static::renderStatic(
-			array(
-				'identifier' => $identifier,
-				'size' => $size,
-				'overlay' => $overlay,
-				'state' => $state
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Print icon html for $identifier key
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$identifier = $arguments['identifier'];
-		$size = $arguments['size'];
-		$overlay = $arguments['overlay'];
-		$state = IconState::cast($arguments['state']);
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render();
-	}
-
+    /**
+     * Print icon html for $identifier key
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $identifier = $arguments['identifier'];
+        $size = $arguments['size'];
+        $overlay = $arguments['overlay'];
+        $state = IconState::cast($arguments['state']);
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render();
+    }
 }

@@ -17,44 +17,47 @@ use TYPO3\CMS\Fluid\ViewHelpers\Format\RawViewHelper;
 /**
  * Test case
  */
-class RawViewHelperTest extends ViewHelperBaseTestcase {
+class RawViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var RawViewHelper|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $subject;
 
-	/**
-	 * @var RawViewHelper|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->subject = $this->getMock(RawViewHelper::class, array('renderChildren'));
+        $this->injectDependenciesIntoViewHelper($this->subject);
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->subject = $this->getMock(RawViewHelper::class, array('renderChildren'));
-		$this->injectDependenciesIntoViewHelper($this->subject);
-	}
+    /**
+     * @test
+     */
+    public function viewHelperDeactivatesEscapingInterceptor()
+    {
+        $this->assertFalse($this->subject->isEscapingInterceptorEnabled());
+    }
 
-	/**
-	 * @test
-	 */
-	public function viewHelperDeactivatesEscapingInterceptor() {
-		$this->assertFalse($this->subject->isEscapingInterceptorEnabled());
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsUnmodifiedValueIfSpecified()
+    {
+        $value = 'input value " & äöüß@';
+        $this->subject->expects($this->never())->method('renderChildren');
+        $actualResult = $this->subject->render($value);
+        $this->assertEquals($value, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsUnmodifiedValueIfSpecified() {
-		$value = 'input value " & äöüß@';
-		$this->subject->expects($this->never())->method('renderChildren');
-		$actualResult = $this->subject->render($value);
-		$this->assertEquals($value, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsUnmodifiedChildNodesIfNoValueIsSpecified() {
-		$childNodes = 'input value " & äöüß@';
-		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue($childNodes));
-		$actualResult = $this->subject->render();
-		$this->assertEquals($childNodes, $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function renderReturnsUnmodifiedChildNodesIfNoValueIsSpecified()
+    {
+        $childNodes = 'input value " & äöüß@';
+        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue($childNodes));
+        $actualResult = $this->subject->render();
+        $this->assertEquals($childNodes, $actualResult);
+    }
 }

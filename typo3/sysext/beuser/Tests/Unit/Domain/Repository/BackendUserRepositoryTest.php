@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 /**
  * Test case
  */
-class BackendUserRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function classCanBeInstantiated() {
-		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array(), array(), '', FALSE);
-		new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository($objectManager);
-	}
-
+class BackendUserRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function classCanBeInstantiated()
+    {
+        $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array(), array(), '', false);
+        new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository($objectManager);
+    }
 }

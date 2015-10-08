@@ -22,17 +22,17 @@ namespace TYPO3\CMS\Install\Configuration;
  *
  * There must be only one custom preset per feature!
  */
-interface CustomPresetInterface extends PresetInterface {
-
-	/**
-	 * Mark preset as active.
-	 * The custom features do not know by itself if they are
-	 * active or not since the configuration options may overlay
-	 * with other presets.
-	 * Marking the custom preset as active is therefor taken care
-	 * off by the feature itself if no other preset is active.
-	 *
-	 * @return void
-	 */
-	public function setActive();
+interface CustomPresetInterface extends PresetInterface
+{
+    /**
+     * Mark preset as active.
+     * The custom features do not know by itself if they are
+     * active or not since the configuration options may overlay
+     * with other presets.
+     * Marking the custom preset as active is therefor taken care
+     * off by the feature itself if no other preset is active.
+     *
+     * @return void
+     */
+    public function setActive();
 }

@@ -17,41 +17,43 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 /**
  * An entity
  */
-class ValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject {
+class ValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
+{
+    /**
+     * The value object's name
+     *
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * The value object's name
-	 *
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * Constructs this value object
+     *
+     * @param string $name Name of this blog
+     */
+    public function __construct($name)
+    {
+        $this->setName($name);
+    }
 
-	/**
-	 * Constructs this value object
-	 *
-	 * @param string $name Name of this blog
-	 */
-	public function __construct($name) {
-		$this->setName($name);
-	}
+    /**
+     * Sets this value object's name
+     *
+     * @param string $name The value object's name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Sets this value object's name
-	 *
-	 * @param string $name The value object's name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-	/**
-	 * Returns the value object's name
-	 *
-	 * @return string The value object's name
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
+    /**
+     * Returns the value object's name
+     *
+     * @return string The value object's name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

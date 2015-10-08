@@ -17,42 +17,42 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Hook\DataHandler;
 /**
  * Test case
  */
-class CheckFlexFormValueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CheckFlexFormValueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions()
+    {
+        $currentFlexFormDataArray = array(
+            'foo' => array(
+                'bar' => 'baz',
+                'qux' => array(
+                    'quux' => 'quuux',
+                    'switchableControllerActions' => array()
+                ),
+                'switchableControllerActions' => array()
+            ),
+            'switchableControllerActions' => array()
+        );
 
-	/**
-	 * @test
-	 */
-	public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions() {
-		$currentFlexFormDataArray = array(
-			'foo' => array(
-				'bar' => 'baz',
-				'qux' => array(
-					'quux' => 'quuux',
-					'switchableControllerActions' => array()
-				),
-				'switchableControllerActions' => array()
-			),
-			'switchableControllerActions' => array()
-		);
+        $expectedFlexFormDataArray = array(
+            'foo' => array(
+                'bar' => 'baz',
+                'qux' => array(
+                    'quux' => 'quuux',
+                ),
+            ),
+        );
 
-		$expectedFlexFormDataArray = array(
-			'foo' => array(
-				'bar' => 'baz',
-				'qux' => array(
-					'quux' => 'quuux',
-				),
-			),
-		);
+        /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+        $dataHandler = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 
-		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
-		$dataHandler = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $newFlexFormDataArray = array();
+        /** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
+        $checkFlexFormValue = $this->getMock(\TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class, array('dummy'));
+        $checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
 
-		$newFlexFormDataArray = array();
-		/** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
-		$checkFlexFormValue = $this->getMock(\TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class, array('dummy'));
-		$checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
-
-		$this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
-	}
-
+        $this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
+    }
 }

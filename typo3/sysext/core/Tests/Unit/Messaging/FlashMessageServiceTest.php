@@ -17,32 +17,34 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 /**
  * Test case
  */
-class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
+     */
+    protected $flashMessageService;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
-	 */
-	protected $flashMessageService;
+    protected function setUp()
+    {
+        $this->flashMessageService = $this->getAccessibleMock(\TYPO3\CMS\Core\Messaging\FlashMessageService::class, array('dummy'));
+    }
 
-	protected function setUp() {
-		$this->flashMessageService = $this->getAccessibleMock(\TYPO3\CMS\Core\Messaging\FlashMessageService::class, array('dummy'));
-	}
+    /**
+     * @test
+     */
+    public function flashMessageServiceInitiallyIsEmpty()
+    {
+        $this->assertSame(array(), $this->flashMessageService->_get('flashMessageQueues'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function flashMessageServiceInitiallyIsEmpty() {
-		$this->assertSame(array(), $this->flashMessageService->_get('flashMessageQueues'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function getMessageQueueByIdentifierRegistersNewFlashmessageQueuesOnlyOnce() {
-		$this->assertSame(
-			$this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages'),
-			$this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages')
-		);
-	}
-
+    /**
+     * @test
+     */
+    public function getMessageQueueByIdentifierRegistersNewFlashmessageQueuesOnlyOnce()
+    {
+        $this->assertSame(
+            $this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages'),
+            $this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages')
+        );
+    }
 }

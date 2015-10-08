@@ -5,7 +5,7 @@ $GLOBALS['TCA']['be_users']['columns']['password']['config']['max'] = 100;
 
 // Backend configuration for saltedpasswords
 // Get eval field operations methods as array keys
-$operations = array_flip(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA']['be_users']['columns']['password']['config']['eval'], TRUE));
+$operations = array_flip(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA']['be_users']['columns']['password']['config']['eval'], true));
 // Remove md5 and temporary password from the list of evaluated methods
 unset($operations['md5'], $operations['password']);
 // Append new methods to have "password" as last operation.

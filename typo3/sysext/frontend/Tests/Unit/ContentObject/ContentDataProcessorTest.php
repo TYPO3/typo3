@@ -16,71 +16,73 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\DataProcessorFixture;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor
  */
-class ContentDataProcessorTest extends UnitTestCase {
+class ContentDataProcessorTest extends UnitTestCase
+{
+    /**
+     * @var ContentDataProcessor
+     */
+    protected $contentDataProcessor = null;
 
-	/**
-	 * @var ContentDataProcessor
-	 */
-	protected $contentDataProcessor = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->contentDataProcessor = new ContentDataProcessor();
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->contentDataProcessor = new ContentDataProcessor();
-	}
+    /**
+     * @test
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionCode 1427455378
+     */
+    public function throwsExceptionIfProcessorClassDoesNotExist()
+    {
+        $contentObjectRendererStub = new ContentObjectRenderer();
+        $config = [
+            'dataProcessing.' => [
+                '10' => 'fooClass'
+            ]
+        ];
+        $variables = [];
+        $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \UnexpectedValueException
-	 * @expectedExceptionCode 1427455378
-	 */
-	public function throwsExceptionIfProcessorClassDoesNotExist() {
-		$contentObjectRendererStub = new ContentObjectRenderer();
-		$config = [
-			'dataProcessing.' => [
-				'10' => 'fooClass'
-			]
-		];
-		$variables = [];
-		$this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
-	}
+    /**
+     * @test
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionCode 1427455377
+     */
+    public function throwsExceptionIfProcessorClassDoesNotImplementInterface()
+    {
+        $contentObjectRendererStub = new ContentObjectRenderer();
+        $config = [
+            'dataProcessing.' => [
+                '10' => get_class($this)
+            ]
+        ];
+        $variables = [];
+        $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \UnexpectedValueException
-	 * @expectedExceptionCode 1427455377
-	 */
-	public function throwsExceptionIfProcessorClassDoesNotImplementInterface() {
-		$contentObjectRendererStub = new ContentObjectRenderer();
-		$config = [
-			'dataProcessing.' => [
-				'10' => get_class($this)
-			]
-		];
-		$variables = [];
-		$this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
-	}
-
-	/**
-	 * @test
-	 */
-	public function processorIsCalled() {
-		$contentObjectRendererStub = new ContentObjectRenderer();
-		$config = [
-			'dataProcessing.' => [
-				'10' => DataProcessorFixture::class,
-				'10.' => ['foo' => 'bar'],
-			]
-		];
-		$variables = [];
-		$this->assertSame(['foo' => 'bar'], $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables));
-	}
-
+    /**
+     * @test
+     */
+    public function processorIsCalled()
+    {
+        $contentObjectRendererStub = new ContentObjectRenderer();
+        $config = [
+            'dataProcessing.' => [
+                '10' => DataProcessorFixture::class,
+                '10.' => ['foo' => 'bar'],
+            ]
+        ];
+        $variables = [];
+        $this->assertSame(['foo' => 'bar'], $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables));
+    }
 }

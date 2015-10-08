@@ -19,47 +19,50 @@ use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 /**
  * Model for the module storage
  */
-class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface {
+class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var \SplObjectStorage
+     */
+    protected $entries;
 
-	/**
-	 * @var \SplObjectStorage
-	 */
-	protected $entries;
+    /**
+     * construct
+     */
+    public function __construct()
+    {
+        $this->entries = new \SplObjectStorage();
+    }
 
-	/**
-	 * construct
-	 */
-	public function __construct() {
-		$this->entries = new \SplObjectStorage();
-	}
+    /**
+     * Set Entries
+     *
+     * @param \SplObjectStorage $entries
+     * @return void
+     */
+    public function setEntries($entries)
+    {
+        $this->entries = $entries;
+    }
 
-	/**
-	 * Set Entries
-	 *
-	 * @param \SplObjectStorage $entries
-	 * @return void
-	 */
-	public function setEntries($entries) {
-		$this->entries = $entries;
-	}
+    /**
+     * Get Entries
+     *
+     * @return \SplObjectStorage
+     */
+    public function getEntries()
+    {
+        return $this->entries;
+    }
 
-	/**
-	 * Get Entries
-	 *
-	 * @return \SplObjectStorage
-	 */
-	public function getEntries() {
-		return $this->entries;
-	}
-
-	/**
-	 * Attach Entry
-	 *
-	 * @param BackendModule $entry
-	 * @return void
-	 */
-	public function attachEntry(BackendModule $entry) {
-		$this->entries->attach($entry);
-	}
-
+    /**
+     * Attach Entry
+     *
+     * @param BackendModule $entry
+     * @return void
+     */
+    public function attachEntry(BackendModule $entry)
+    {
+        $this->entries->attach($entry);
+    }
 }

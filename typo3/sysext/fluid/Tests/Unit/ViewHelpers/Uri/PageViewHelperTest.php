@@ -20,37 +20,39 @@ use TYPO3\CMS\Fluid\ViewHelpers\Uri\PageViewHelper;
 /**
  * Test-case for Link\PageViewHelper
  */
-class PageViewHelperTest extends ViewHelperBaseTestcase {
+class PageViewHelperTest extends ViewHelperBaseTestcase
+{
+    /**
+     * @var PageViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var PageViewHelper
-	 */
-	protected $viewHelper;
+    /**
+     * setUp function
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, array('renderChildren'));
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	/**
-	 * setUp function
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, array('renderChildren'));
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderProvidesUriForValidLinkTarget()
+    {
+        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
+        $this->viewHelper->render();
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderProvidesUriForValidLinkTarget() {
-		$this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
-		$this->viewHelper->render();
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderWillNotProvideUriForNonValidLinkTarget() {
-		$this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(NULL));
-		$this->viewHelper->render();
-	}
-
+    /**
+     * @test
+     */
+    public function renderWillNotProvideUriForNonValidLinkTarget()
+    {
+        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(null));
+        $this->viewHelper->render();
+    }
 }

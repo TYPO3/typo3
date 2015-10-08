@@ -53,64 +53,67 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
+class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
+{
+    /**
+     * Initialize the arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('name', 'string', 'Name of the section', true);
+    }
 
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('name', 'string', 'Name of the section', TRUE);
-	}
+    /**
+     * Save the associated view helper node in a static public class variable.
+     * called directly after the view helper was built.
+     *
+     * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode
+     * @param array $viewHelperArguments
+     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
+     * @return void
+     */
+    public static function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer)
+    {
+        $sectionName = $viewHelperArguments['name']->getText();
+        if (!$variableContainer->exists('sections')) {
+            $variableContainer->add('sections', array());
+        }
+        $sections = $variableContainer->get('sections');
+        $sections[$sectionName] = $syntaxTreeNode;
+        $variableContainer->remove('sections');
+        $variableContainer->add('sections', $sections);
+    }
 
-	/**
-	 * Save the associated view helper node in a static public class variable.
-	 * called directly after the view helper was built.
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode
-	 * @param array $viewHelperArguments
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
-	 * @return void
-	 */
-	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
-		$sectionName = $viewHelperArguments['name']->getText();
-		if (!$variableContainer->exists('sections')) {
-			$variableContainer->add('sections', array());
-		}
-		$sections = $variableContainer->get('sections');
-		$sections[$sectionName] = $syntaxTreeNode;
-		$variableContainer->remove('sections');
-		$variableContainer->add('sections', $sections);
-	}
+    /**
+     * Rendering directly returns all child nodes.
+     *
+     * @return string HTML String of all child nodes.
+     * @api
+     */
+    public function render()
+    {
+        if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection')) {
+            $this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection');
+            return $this->renderChildren();
+        }
+        return '';
+    }
 
-	/**
-	 * Rendering directly returns all child nodes.
-	 *
-	 * @return string HTML String of all child nodes.
-	 * @api
-	 */
-	public function render() {
-		if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection')) {
-			$this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection');
-			return $this->renderChildren();
-		}
-		return '';
-	}
-
-	/**
-	 * The inner contents of a section should not be rendered.
-	 *
-	 * @param string $argumentsVariableName
-	 * @param string $renderChildrenClosureVariableName
-	 * @param string $initializationPhpCode
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
-	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
-	 * @return string
-	 */
-	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
-		return '\'\'';
-	}
-
+    /**
+     * The inner contents of a section should not be rendered.
+     *
+     * @param string $argumentsVariableName
+     * @param string $renderChildrenClosureVariableName
+     * @param string $initializationPhpCode
+     * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+     * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
+     * @return string
+     */
+    public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler)
+    {
+        return '\'\'';
+    }
 }

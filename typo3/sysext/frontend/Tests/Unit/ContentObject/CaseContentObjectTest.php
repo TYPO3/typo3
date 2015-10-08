@@ -25,56 +25,59 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\CaseContentObject
  */
-class CaseContentObjectTest extends UnitTestCase {
+class CaseContentObjectTest extends UnitTestCase
+{
+    /**
+     * @var CaseContentObject|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $subject = null;
 
-	/**
-	 * @var CaseContentObject|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $subject = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        /** @var TypoScriptFrontendController $tsfe */
+        $tsfe = $this->getMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
+        $tsfe->tmpl = $this->getMock(TemplateService::class, array('dummy'));
+        $tsfe->config = array();
+        $tsfe->page = array();
+        $tsfe->sys_page = $this->getMock(PageRepository::class, array('getRawRecord'));
+        $tsfe->csConvObj = new CharsetConverter();
+        $tsfe->renderCharset = 'utf-8';
+        $GLOBALS['TSFE'] = $tsfe;
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		/** @var TypoScriptFrontendController $tsfe */
-		$tsfe = $this->getMock(TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
-		$tsfe->tmpl = $this->getMock(TemplateService::class, array('dummy'));
-		$tsfe->config = array();
-		$tsfe->page = array();
-		$tsfe->sys_page = $this->getMock(PageRepository::class, array('getRawRecord'));
-		$tsfe->csConvObj = new CharsetConverter();
-		$tsfe->renderCharset = 'utf-8';
-		$GLOBALS['TSFE'] = $tsfe;
+        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer->setContentObjectClassMap(array(
+            'CASE' => CaseContentObject::class,
+            'TEXT' => TextContentObject::class,
+        ));
+        $this->subject = new CaseContentObject($contentObjectRenderer);
+    }
 
-		$contentObjectRenderer = new ContentObjectRenderer();
-		$contentObjectRenderer->setContentObjectClassMap(array(
-			'CASE' => CaseContentObject::class,
-			'TEXT' => TextContentObject::class,
-		));
-		$this->subject = new CaseContentObject($contentObjectRenderer);
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet()
+    {
+        $conf = array(
+            'key' => 'not existing'
+        );
+        $this->assertSame('', $this->subject->render($conf));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet() {
-		$conf = array(
-			'key' => 'not existing'
-		);
-		$this->assertSame('', $this->subject->render($conf));
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist() {
-		$conf = array(
-			'key' => 'not existing',
-			'default' => 'TEXT',
-			'default.' => array(
-				'value' => 'expected value'
-			),
-		);
-		$this->assertSame('expected value', $this->subject->render($conf));
-	}
+    /**
+     * @test
+     */
+    public function renderReturnsContentFromDefaultObjectIfKeyDoesNotExist()
+    {
+        $conf = array(
+            'key' => 'not existing',
+            'default' => 'TEXT',
+            'default.' => array(
+                'value' => 'expected value'
+            ),
+        );
+        $this->assertSame('expected value', $this->subject->render($conf));
+    }
 }

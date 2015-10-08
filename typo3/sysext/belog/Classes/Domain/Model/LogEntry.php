@@ -20,433 +20,464 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  * @todo : This should be stuffed to some more central place
  */
-class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * Storage page ID of the log entry
+     *
+     * @var int
+     */
+    protected $pid = 0;
 
-	/**
-	 * Storage page ID of the log entry
-	 *
-	 * @var int
-	 */
-	protected $pid = 0;
+    /**
+     * This is not a relation to BeUser model, since the user does
+     * not always exist, but we want the uid in then anyway.
+     * This case is ugly in extbase, the best way we
+     * have found now is to resolve the username (if it exists) in a
+     * view helper and just use the uid of the be user here.
+     *
+     * @var int
+     */
+    protected $backendUserUid = 0;
 
-	/**
-	 * This is not a relation to BeUser model, since the user does
-	 * not always exist, but we want the uid in then anyway.
-	 * This case is ugly in extbase, the best way we
-	 * have found now is to resolve the username (if it exists) in a
-	 * view helper and just use the uid of the be user here.
-	 *
-	 * @var int
-	 */
-	protected $backendUserUid = 0;
+    /**
+     * Action ID of the action that happened, for example 3 was a file action
+     *
+     * @var int
+     */
+    protected $action = 0;
 
-	/**
-	 * Action ID of the action that happened, for example 3 was a file action
-	 *
-	 * @var int
-	 */
-	protected $action = 0;
+    /**
+     * UID of the record the event happened to
+     *
+     * @var int
+     */
+    protected $recordUid = 0;
 
-	/**
-	 * UID of the record the event happened to
-	 *
-	 * @var int
-	 */
-	protected $recordUid = 0;
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $tableName = 0;
 
-	/**
-	 * Table name
-	 *
-	 * @var string
-	 */
-	protected $tableName = 0;
+    /**
+     * PID of the record the event happened to
+     *
+     * @var int
+     */
+    protected $recordPid = 0;
 
-	/**
-	 * PID of the record the event happened to
-	 *
-	 * @var int
-	 */
-	protected $recordPid = 0;
+    /**
+     * Error code
+     *
+     * @var int
+     */
+    protected $error = 0;
 
-	/**
-	 * Error code
-	 *
-	 * @var int
-	 */
-	protected $error = 0;
+    /**
+     * This is the log message itself, but possibly with %s substitutions.
+     *
+     * @var string
+     */
+    protected $details = '';
 
-	/**
-	 * This is the log message itself, but possibly with %s substitutions.
-	 *
-	 * @var string
-	 */
-	protected $details = '';
+    /**
+     * Timestamp when the log entry was written
+     *
+     * @var int
+     */
+    protected $tstamp = 0;
 
-	/**
-	 * Timestamp when the log entry was written
-	 *
-	 * @var int
-	 */
-	protected $tstamp = 0;
+    /**
+     * Type code
+     *
+     * @var int
+     */
+    protected $type = 0;
 
-	/**
-	 * Type code
-	 *
-	 * @var int
-	 */
-	protected $type = 0;
+    /**
+     * Details number
+     *
+     * @var int
+     */
+    protected $detailsNumber = 0;
 
-	/**
-	 * Details number
-	 *
-	 * @var int
-	 */
-	protected $detailsNumber = 0;
+    /**
+     * IP address of client
+     *
+     * @var string
+     */
+    protected $ip = '';
 
-	/**
-	 * IP address of client
-	 *
-	 * @var string
-	 */
-	protected $ip = '';
+    /**
+     * Serialized log data. This is a serialized array with substitutions for $this->details.
+     *
+     * @var string
+     */
+    protected $logData = '';
 
-	/**
-	 * Serialized log data. This is a serialized array with substitutions for $this->details.
-	 *
-	 * @var string
-	 */
-	protected $logData = '';
+    /**
+     * Event PID
+     *
+     * @var int
+     */
+    protected $eventPid = 0;
 
-	/**
-	 * Event PID
-	 *
-	 * @var int
-	 */
-	protected $eventPid = 0;
+    /**
+     * This is only the UID and not the full workspace object for the same reason as in $beUserUid.
+     *
+     * @var int
+     */
+    protected $workspaceUid = 0;
 
-	/**
-	 * This is only the UID and not the full workspace object for the same reason as in $beUserUid.
-	 *
-	 * @var int
-	 */
-	protected $workspaceUid = 0;
+    /**
+     * New ID
+     *
+     * @var string
+     */
+    protected $newId = 0;
 
-	/**
-	 * New ID
-	 *
-	 * @var string
-	 */
-	protected $newId = 0;
+    /**
+     * Set pid
+     *
+     * @param int $pid
+     * @return void
+     */
+    public function setPid($pid)
+    {
+        $this->pid = (int)$pid;
+    }
 
-	/**
-	 * Set pid
-	 *
-	 * @param int $pid
-	 * @return void
-	 */
-	public function setPid($pid) {
-		$this->pid = (int)$pid;
-	}
+    /**
+     * Get pid
+     *
+     * @return int
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
 
-	/**
-	 * Get pid
-	 *
-	 * @return int
-	 */
-	public function getPid() {
-		return $this->pid;
-	}
+    /**
+     * Set backend user uid
+     *
+     * @param int $beUserUid
+     * @return void
+     */
+    public function setBackendUserUid($beUserUid)
+    {
+        $this->backendUserUid = $beUserUid;
+    }
 
-	/**
-	 * Set backend user uid
-	 *
-	 * @param int $beUserUid
-	 * @return void
-	 */
-	public function setBackendUserUid($beUserUid) {
-		$this->backendUserUid = $beUserUid;
-	}
+    /**
+     * Get backend user id
+     *
+     * @return int
+     */
+    public function getBackendUserUid()
+    {
+        return $this->backendUserUid;
+    }
 
-	/**
-	 * Get backend user id
-	 *
-	 * @return int
-	 */
-	public function getBackendUserUid() {
-		return $this->backendUserUid;
-	}
+    /**
+     * Set action
+     *
+     * @param int $action
+     * @return void
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
+    }
 
-	/**
-	 * Set action
-	 *
-	 * @param int $action
-	 * @return void
-	 */
-	public function setAction($action) {
-		$this->action = $action;
-	}
+    /**
+     * Get action
+     *
+     * @return int
+     */
+    public function getAction()
+    {
+        return (int)$this->action;
+    }
 
-	/**
-	 * Get action
-	 *
-	 * @return int
-	 */
-	public function getAction() {
-		return (int)$this->action;
-	}
+    /**
+     * Set record uid
+     *
+     * @param int $recordUid
+     * @return void
+     */
+    public function setRecordUid($recordUid)
+    {
+        $this->recordUid = $recordUid;
+    }
 
-	/**
-	 * Set record uid
-	 *
-	 * @param int $recordUid
-	 * @return void
-	 */
-	public function setRecordUid($recordUid) {
-		$this->recordUid = $recordUid;
-	}
+    /**
+     * Get record uid
+     *
+     * @return int
+     */
+    public function getRecordUid()
+    {
+        return (int)$this->recordUid;
+    }
 
-	/**
-	 * Get record uid
-	 *
-	 * @return int
-	 */
-	public function getRecordUid() {
-		return (int)$this->recordUid;
-	}
+    /**
+     * Set table name
+     *
+     * @param string $tableName
+     * @return void
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+    }
 
-	/**
-	 * Set table name
-	 *
-	 * @param string $tableName
-	 * @return void
-	 */
-	public function setTableName($tableName) {
-		$this->tableName = $tableName;
-	}
+    /**
+     * Get table name
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
 
-	/**
-	 * Get table name
-	 *
-	 * @return string
-	 */
-	public function getTableName() {
-		return $this->tableName;
-	}
+    /**
+     * Set record pid
+     *
+     * @param int $recordPid
+     * @return void
+     */
+    public function setRecordPid($recordPid)
+    {
+        $this->recordPid = $recordPid;
+    }
 
-	/**
-	 * Set record pid
-	 *
-	 * @param int $recordPid
-	 * @return void
-	 */
-	public function setRecordPid($recordPid) {
-		$this->recordPid = $recordPid;
-	}
+    /**
+     * Get record pid
+     *
+     * @return int
+     */
+    public function getRecordPid()
+    {
+        return (int)$this->recordPid;
+    }
 
-	/**
-	 * Get record pid
-	 *
-	 * @return int
-	 */
-	public function getRecordPid() {
-		return (int)$this->recordPid;
-	}
+    /**
+     * Set error
+     *
+     * @param int $error
+     * @return void
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
 
-	/**
-	 * Set error
-	 *
-	 * @param int $error
-	 * @return void
-	 */
-	public function setError($error) {
-		$this->error = $error;
-	}
+    /**
+     * Get error
+     *
+     * @return int
+     */
+    public function getError()
+    {
+        return (int)$this->error;
+    }
 
-	/**
-	 * Get error
-	 *
-	 * @return int
-	 */
-	public function getError() {
-		return (int)$this->error;
-	}
+    /**
+     * Set details
+     *
+     * @param string $details
+     * @return void
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+    }
 
-	/**
-	 * Set details
-	 *
-	 * @param string $details
-	 * @return void
-	 */
-	public function setDetails($details) {
-		$this->details = $details;
-	}
+    /**
+     * Get details
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
 
-	/**
-	 * Get details
-	 *
-	 * @return string
-	 */
-	public function getDetails() {
-		return $this->details;
-	}
+    /**
+     * Set tstamp
+     *
+     * @param int $tstamp
+     * @return void
+     */
+    public function setTstamp($tstamp)
+    {
+        $this->tstamp = $tstamp;
+    }
 
-	/**
-	 * Set tstamp
-	 *
-	 * @param int $tstamp
-	 * @return void
-	 */
-	public function setTstamp($tstamp) {
-		$this->tstamp = $tstamp;
-	}
+    /**
+     * Get tstamp
+     *
+     * @return int
+     */
+    public function getTstamp()
+    {
+        return (int)$this->tstamp;
+    }
 
-	/**
-	 * Get tstamp
-	 *
-	 * @return int
-	 */
-	public function getTstamp() {
-		return (int)$this->tstamp;
-	}
+    /**
+     * Set type
+     *
+     * @param int $type
+     * @return void
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 
-	/**
-	 * Set type
-	 *
-	 * @param int $type
-	 * @return void
-	 */
-	public function setType($type) {
-		$this->type = $type;
-	}
+    /**
+     * Get type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return (int)$this->type;
+    }
 
-	/**
-	 * Get type
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return (int)$this->type;
-	}
+    /**
+     * Set details number
+     *
+     * @param int $detailsNumber
+     * @return void
+     */
+    public function setDetailsNumber($detailsNumber)
+    {
+        $this->detailsNumber = $detailsNumber;
+    }
 
-	/**
-	 * Set details number
-	 *
-	 * @param int $detailsNumber
-	 * @return void
-	 */
-	public function setDetailsNumber($detailsNumber) {
-		$this->detailsNumber = $detailsNumber;
-	}
+    /**
+     * Get details number
+     *
+     * @return int
+     */
+    public function getDetailsNumber()
+    {
+        return (int)$this->detailsNumber;
+    }
 
-	/**
-	 * Get details number
-	 *
-	 * @return int
-	 */
-	public function getDetailsNumber() {
-		return (int)$this->detailsNumber;
-	}
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return void
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    }
 
-	/**
-	 * Set ip
-	 *
-	 * @param string $ip
-	 * @return void
-	 */
-	public function setIp($ip) {
-		$this->ip = $ip;
-	}
+    /**
+     * Get ip
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
 
-	/**
-	 * Get ip
-	 *
-	 * @return string
-	 */
-	public function getIp() {
-		return $this->ip;
-	}
+    /**
+     * Set log data
+     *
+     * @param string $logData
+     * @return void
+     */
+    public function setLogData($logData)
+    {
+        $this->logData = $logData;
+    }
 
-	/**
-	 * Set log data
-	 *
-	 * @param string $logData
-	 * @return void
-	 */
-	public function setLogData($logData) {
-		$this->logData = $logData;
-	}
+    /**
+     * Get log data
+     *
+     * @return array
+     */
+    public function getLogData()
+    {
+        if ($this->logData === '') {
+            return array();
+        }
+        $logData = @unserialize($this->logData);
+        if (!is_array($logData)) {
+            $logData = array();
+        }
+        return $logData;
+    }
 
-	/**
-	 * Get log data
-	 *
-	 * @return array
-	 */
-	public function getLogData() {
-		if ($this->logData === '') {
-			return array();
-		}
-		$logData = @unserialize($this->logData);
-		if (!is_array($logData)) {
-			$logData = array();
-		}
-		return $logData;
-	}
+    /**
+     * Set event pid
+     *
+     * @param int $eventPid
+     * @return void
+     */
+    public function setEventPid($eventPid)
+    {
+        $this->eventPid = $eventPid;
+    }
 
-	/**
-	 * Set event pid
-	 *
-	 * @param int $eventPid
-	 * @return void
-	 */
-	public function setEventPid($eventPid) {
-		$this->eventPid = $eventPid;
-	}
+    /**
+     * Get event pid
+     *
+     * @return int
+     */
+    public function getEventPid()
+    {
+        return (int)$this->eventPid;
+    }
 
-	/**
-	 * Get event pid
-	 *
-	 * @return int
-	 */
-	public function getEventPid() {
-		return (int)$this->eventPid;
-	}
+    /**
+     * Set workspace uid
+     *
+     * @param int $workspaceUid
+     * @return void
+     */
+    public function setWorkspaceUid($workspaceUid)
+    {
+        $this->workspaceUid = $workspaceUid;
+    }
 
-	/**
-	 * Set workspace uid
-	 *
-	 * @param int $workspaceUid
-	 * @return void
-	 */
-	public function setWorkspaceUid($workspaceUid) {
-		$this->workspaceUid = $workspaceUid;
-	}
+    /**
+     * Get workspace
+     *
+     * @return int
+     */
+    public function getWorkspaceUid()
+    {
+        return (int)$this->workspaceUid;
+    }
 
-	/**
-	 * Get workspace
-	 *
-	 * @return int
-	 */
-	public function getWorkspaceUid() {
-		return (int)$this->workspaceUid;
-	}
+    /**
+     * Set new id
+     *
+     * @param string $newId
+     * @return void
+     */
+    public function setNewId($newId)
+    {
+        $this->newId = $newId;
+    }
 
-	/**
-	 * Set new id
-	 *
-	 * @param string $newId
-	 * @return void
-	 */
-	public function setNewId($newId) {
-		$this->newId = $newId;
-	}
-
-	/**
-	 * Get new id
-	 *
-	 * @return string
-	 */
-	public function getNewId() {
-		return $this->newId;
-	}
-
+    /**
+     * Get new id
+     *
+     * @return string
+     */
+    public function getNewId()
+    {
+        return $this->newId;
+    }
 }

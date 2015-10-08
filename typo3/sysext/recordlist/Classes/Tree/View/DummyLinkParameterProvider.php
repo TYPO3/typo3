@@ -17,58 +17,61 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
 /**
  * This class is a dummy class used for the FileSystemNavigationFrameController
  */
-class DummyLinkParameterProvider implements LinkParameterProviderInterface {
+class DummyLinkParameterProvider implements LinkParameterProviderInterface
+{
+    /**
+     * @var array
+     */
+    protected $parameters = [];
 
-	/**
-	 * @var array
-	 */
-	protected $parameters = [];
+    /**
+     * @var string
+     */
+    protected $thisScript;
 
-	/**
-	 * @var string
-	 */
-	protected $thisScript;
+    /**
+     * @param string $mode
+     * @param string $act
+     * @param string $thisScript
+     */
+    public function __construct($mode, $act, $thisScript)
+    {
+        if ($mode) {
+            $this->parameters['mode'] = $mode;
+        }
+        if ($act) {
+            $this->parameters['act'] = $act;
+        }
+        $this->thisScript = $thisScript;
+    }
 
-	/**
-	 * @param string $mode
-	 * @param string $act
-	 * @param string $thisScript
-	 */
-	public function __construct($mode, $act, $thisScript) {
-		if ($mode) {
-			$this->parameters['mode'] = $mode;
-		}
-		if ($act) {
-			$this->parameters['act'] = $act;
-		}
-		$this->thisScript = $thisScript;
-	}
+    /**
+     * @param array $values Array of values to include into the parameters or which might influence the parameters
+     *
+     * @return string[] Array of parameters which have to be added to URLs
+     */
+    public function getUrlParameters(array $values)
+    {
+        return $this->parameters;
+    }
 
-	/**
-	 * @param array $values Array of values to include into the parameters or which might influence the parameters
-	 *
-	 * @return string[] Array of parameters which have to be added to URLs
-	 */
-	public function getUrlParameters(array $values) {
-		return $this->parameters;
-	}
+    /**
+     * @param array $values Values to be checked
+     *
+     * @return bool Returns TRUE if the given values match the currently selected item
+     */
+    public function isCurrentlySelectedItem(array $values)
+    {
+        return false;
+    }
 
-	/**
-	 * @param array $values Values to be checked
-	 *
-	 * @return bool Returns TRUE if the given values match the currently selected item
-	 */
-	public function isCurrentlySelectedItem(array $values) {
-		return FALSE;
-	}
-
-	/**
-	 * Returns the URL of the current script
-	 *
-	 * @return string
-	 */
-	public function getScriptUrl() {
-		return $this->thisScript;
-	}
-
+    /**
+     * Returns the URL of the current script
+     *
+     * @return string
+     */
+    public function getScriptUrl()
+    {
+        return $this->thisScript;
+    }
 }

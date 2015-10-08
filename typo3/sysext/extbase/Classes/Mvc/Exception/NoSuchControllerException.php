@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 /**
  * A "No Such Controller" exception
  */
-class NoSuchControllerException extends \TYPO3\CMS\Extbase\Mvc\Exception {
-
+class NoSuchControllerException extends \TYPO3\CMS\Extbase\Mvc\Exception
+{
 }

@@ -20,19 +20,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * To satisfy the And constraint, a node-tuple must satisfy both constraint1 and
  * constraint2.
  */
-interface AndInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
+interface AndInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
+{
+    /**
+     * Gets the first constraint.
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+     */
+    public function getConstraint1();
 
-	/**
-	 * Gets the first constraint.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
-	 */
-	public function getConstraint1();
-
-	/**
-	 * Gets the second constraint.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
-	 */
-	public function getConstraint2();
+    /**
+     * Gets the second constraint.
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+     */
+    public function getConstraint2();
 }

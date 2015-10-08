@@ -21,45 +21,46 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * A simple text extractor to extract text from plain text files.
  *
  */
-class PlainTextExtractor implements TextExtractorInterface {
+class PlainTextExtractor implements TextExtractorInterface
+{
+    /**
+     * Checks if the given file can be read by this extractor
+     *
+     * @param FileInterface $file
+     * @return bool
+     */
+    public function canExtractText(FileInterface $file)
+    {
+        $canExtract = false;
 
-	/**
-	 * Checks if the given file can be read by this extractor
-	 *
-	 * @param FileInterface $file
-	 * @return bool
-	 */
-	public function canExtractText(FileInterface $file) {
-		$canExtract = FALSE;
+        if ($file->getMimeType() === 'text/plain') {
+            $canExtract = true;
+        }
 
-		if ($file->getMimeType() === 'text/plain') {
-			$canExtract = TRUE;
-		}
+        return $canExtract;
+    }
 
-		return $canExtract;
-	}
+    /**
+     * The actual text extraction.
+     *
+     * @param FileInterface $file
+     * @return string
+     */
+    public function extractText(FileInterface $file)
+    {
+        $localTempFile = $file->getForLocalProcessing(false);
 
-	/**
-	 * The actual text extraction.
-	 *
-	 * @param FileInterface $file
-	 * @return string
-	 */
-	public function extractText(FileInterface $file) {
-		$localTempFile = $file->getForLocalProcessing(FALSE);
+        // extract text
+        $content = file_get_contents($localTempFile);
 
-		// extract text
-		$content = file_get_contents($localTempFile);
+        // In case of remote storage, the temporary copy of the
+        // original file in typo3temp must be removed
+        // Simply compare the filenames, because the filename is so unique that
+        // it is nearly impossible to have a file with this name in a storage
+        if (PathUtility::basename($localTempFile) !== $file->getName()) {
+            unlink($localTempFile);
+        }
 
-		// In case of remote storage, the temporary copy of the
-		// original file in typo3temp must be removed
-		// Simply compare the filenames, because the filename is so unique that
-		// it is nearly impossible to have a file with this name in a storage
-		if (PathUtility::basename($localTempFile) !== $file->getName()) {
-			unlink($localTempFile);
-		}
-
-		return $content;
-	}
-
+        return $content;
+    }
 }

@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Fluid\View\Exception;
  *
  * @api
  */
-class InvalidSectionException extends \TYPO3\CMS\Fluid\View\Exception {
-
+class InvalidSectionException extends \TYPO3\CMS\Fluid\View\Exception
+{
 }

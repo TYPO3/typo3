@@ -18,19 +18,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Determines the relative order of two rows in the result set by evaluating operand for
  * each.
  */
-interface OrderingInterface {
+interface OrderingInterface
+{
+    /**
+     * The operand by which to order.
+     *
+     * @return DynamicOperandInterface the operand; non-null
+     */
+    public function getOperand();
 
-	/**
-	 * The operand by which to order.
-	 *
-	 * @return DynamicOperandInterface the operand; non-null
-	 */
-	public function getOperand();
-
-	/**
-	 * Gets the order.
-	 *
-	 * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-	 */
-	public function getOrder();
+    /**
+     * Gets the order.
+     *
+     * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     */
+    public function getOrder();
 }

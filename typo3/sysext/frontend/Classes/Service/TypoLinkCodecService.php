@@ -17,80 +17,81 @@ namespace TYPO3\CMS\Frontend\Service;
 /**
  * This class provides basic functionality to encode and decode typolink strings
  */
-class TypoLinkCodecService {
+class TypoLinkCodecService
+{
+    /**
+     * Delimiter for TypoLink string parts
+     *
+     * @var string
+     */
+    protected static $partDelimiter = ' ';
 
-	/**
-	 * Delimiter for TypoLink string parts
-	 *
-	 * @var string
-	 */
-	static protected $partDelimiter = ' ';
+    /**
+     * Symbol for TypoLink parts not specified
+     *
+     * @var string
+     */
+    protected static $emptyValueSymbol = '-';
 
-	/**
-	 * Symbol for TypoLink parts not specified
-	 *
-	 * @var string
-	 */
-	static protected $emptyValueSymbol = '-';
+    /**
+     * Encode TypoLink parts to a single string
+     *
+     * @param array $typoLinkParts Array with keys url and optionally any of target, class, title, additionalParams
+     * @return string Returns a correctly encoded TypoLink string
+     */
+    public function encode(array $typoLinkParts)
+    {
+        if (empty($typoLinkParts) || !isset($typoLinkParts['url'])) {
+            return '';
+        }
 
-	/**
-	 * Encode TypoLink parts to a single string
-	 *
-	 * @param array $typoLinkParts Array with keys url and optionally any of target, class, title, additionalParams
-	 * @return string Returns a correctly encoded TypoLink string
-	 */
-	public function encode(array $typoLinkParts) {
-		if (empty($typoLinkParts) || !isset($typoLinkParts['url'])) {
-			return '';
-		}
+        // Get empty structure
+        $reverseSortedParameters = array_reverse($this->decode(''), true);
+        $aValueWasSet = false;
+        foreach ($reverseSortedParameters as $key => &$value) {
+            $value = isset($typoLinkParts[$key]) ? $typoLinkParts[$key] : '';
+            // escape special character \ and "
+            $value = str_replace([ '\\', '"' ], [ '\\\\', '\\"' ], $value);
+            // enclose with quotes if a string contains the delimiter
+            if (strpos($value, static::$partDelimiter) !== false) {
+                $value = '"' . $value . '"';
+            }
+            // fill with - if another values has already been set
+            if ($value === '' && $aValueWasSet) {
+                $value = static::$emptyValueSymbol;
+            }
+            if ($value !== '') {
+                $aValueWasSet = true;
+            }
+        }
 
-		// Get empty structure
-		$reverseSortedParameters = array_reverse($this->decode(''), TRUE);
-		$aValueWasSet = FALSE;
-		foreach ($reverseSortedParameters as $key => &$value) {
-			$value = isset($typoLinkParts[$key]) ? $typoLinkParts[$key] : '';
-			// escape special character \ and "
-			$value = str_replace([ '\\', '"' ], [ '\\\\', '\\"' ], $value);
-			// enclose with quotes if a string contains the delimiter
-			if (strpos($value, static::$partDelimiter) !== FALSE) {
-				$value = '"' . $value . '"';
-			}
-			// fill with - if another values has already been set
-			if ($value === '' && $aValueWasSet) {
-				$value = static::$emptyValueSymbol;
-			}
-			if ($value !== '') {
-				$aValueWasSet = TRUE;
-			}
-		}
+        return trim(implode(static::$partDelimiter, array_reverse($reverseSortedParameters, true)));
+    }
 
-		return trim(implode(static::$partDelimiter, array_reverse($reverseSortedParameters, TRUE)));
-	}
+    /**
+     * Decodes a TypoLink string into its parts
+     *
+     * @param string $typoLink The properly encoded TypoLink string
+     * @return array Associative array of TypoLink parts with the keys url, target, class, title, additionalParams
+     */
+    public function decode($typoLink)
+    {
+        $typoLink = trim($typoLink);
+        if ($typoLink !== '') {
+            $parts = str_replace([ '\\\\', '\\"' ], [ '\\', '"' ], str_getcsv($typoLink, static::$partDelimiter));
+        } else {
+            $parts = '';
+        }
 
-	/**
-	 * Decodes a TypoLink string into its parts
-	 *
-	 * @param string $typoLink The properly encoded TypoLink string
-	 * @return array Associative array of TypoLink parts with the keys url, target, class, title, additionalParams
-	 */
-	public function decode($typoLink) {
-		$typoLink = trim($typoLink);
-		if ($typoLink !== '') {
-			$parts = str_replace([ '\\\\', '\\"' ], [ '\\', '"' ], str_getcsv($typoLink, static::$partDelimiter));
-		} else {
-			$parts = '';
-		}
+        // The order of the entries is crucial!!
+        $typoLinkParts = [
+            'url' => isset($parts[0]) ? trim($parts[0]) : '',
+            'target' => isset($parts[1]) && $parts[1] !== static::$emptyValueSymbol ? trim($parts[1]) : '',
+            'class' => isset($parts[2]) && $parts[2] !== static::$emptyValueSymbol ? trim($parts[2]) : '',
+            'title' => isset($parts[3]) && $parts[3] !== static::$emptyValueSymbol ? trim($parts[3]) : '',
+            'additionalParams' => isset($parts[4]) && $parts[4] !== static::$emptyValueSymbol ? trim($parts[4]) : ''
+        ];
 
-		// The order of the entries is crucial!!
-		$typoLinkParts = [
-			'url' => isset($parts[0]) ? trim($parts[0]) : '',
-			'target' => isset($parts[1]) && $parts[1] !== static::$emptyValueSymbol ? trim($parts[1]) : '',
-			'class' => isset($parts[2]) && $parts[2] !== static::$emptyValueSymbol ? trim($parts[2]) : '',
-			'title' => isset($parts[3]) && $parts[3] !== static::$emptyValueSymbol ? trim($parts[3]) : '',
-			'additionalParams' => isset($parts[4]) && $parts[4] !== static::$emptyValueSymbol ? trim($parts[4]) : ''
-		];
-
-		return $typoLinkParts;
-	}
-
+        return $typoLinkParts;
+    }
 }

@@ -24,732 +24,772 @@ use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 /**
  * Testcase
  */
-class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = array();
 
-	/**
-	 * @var array A backup of registered singleton instances
-	 */
-	protected $singletonInstances = array();
+    /**
+     * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected $subject = null;
 
-	/**
-	 * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-	 */
-	protected $subject = NULL;
+    /**
+     * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $contentObjectRenderer = null;
 
-	/**
-	 * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $contentObjectRenderer = NULL;
+    /**
+     * @var StandaloneView|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $standaloneView = null;
 
-	/**
-	 * @var StandaloneView|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $standaloneView = NULL;
+    /**
+     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $request = null;
 
-	/**
-	 * @var Request|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $request = NULL;
+    /**
+     * Set up
+     */
+    protected function setUp()
+    {
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        $this->contentObjectRenderer = $this->getMock(
+            \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
+        );
+        $this->subject = $this->getAccessibleMock(
+            \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
+            array('initializeStandaloneViewInstance'),
+            array($this->contentObjectRenderer)
+        );
+        /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $tsfe->tmpl = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
+        $GLOBALS['TSFE'] = $tsfe;
+    }
 
-	/**
-	 * Set up
-	 */
-	protected function setUp() {
-		$this->singletonInstances = GeneralUtility::getSingletonInstances();
-		$this->contentObjectRenderer = $this->getMock(
-			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
-		);
-		$this->subject = $this->getAccessibleMock(
-			\TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-			array('initializeStandaloneViewInstance'),
-			array($this->contentObjectRenderer)
-		);
-		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
-		$tsfe->tmpl = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
-		$GLOBALS['TSFE'] = $tsfe;
-	}
+    /**
+     * Tear down
+     */
+    protected function tearDown()
+    {
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
+    }
 
-	/**
-	 * Tear down
-	 */
-	protected function tearDown() {
-		GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		parent::tearDown();
-	}
+    /**
+     * Add a mock standalone view to subject
+     */
+    protected function addMockViewToSubject()
+    {
+        $this->standaloneView = $this->getMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array(), array(), '', false);
+        $this->request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class);
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->request));
+        $this->subject->_set('view', $this->standaloneView);
+    }
 
-	/**
-	 * Add a mock standalone view to subject
-	 */
-	protected function addMockViewToSubject() {
-		$this->standaloneView = $this->getMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array(), array(), '', FALSE);
-		$this->request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class);
-		$this->standaloneView
-			->expects($this->any())
-			->method('getRequest')
-			->will($this->returnValue($this->request));
-		$this->subject->_set('view', $this->standaloneView);
-	}
+    /**
+     * @test
+     */
+    public function constructSetsContentObjectRenderer()
+    {
+        $this->assertSame($this->contentObjectRenderer, $this->subject->getContentObject());
+    }
 
-	/**
-	 * @test
-	 */
-	public function constructSetsContentObjectRenderer() {
-		$this->assertSame($this->contentObjectRenderer, $this->subject->getContentObject());
-	}
+    /**
+     * @test
+     */
+    public function renderCallsInitializeStandaloneViewInstance()
+    {
+        $this->addMockViewToSubject();
+        $this->subject
+            ->expects($this->once())
+            ->method('initializeStandaloneViewInstance');
+        $this->subject->render(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsInitializeStandaloneViewInstance() {
-		$this->addMockViewToSubject();
-		$this->subject
-			->expects($this->once())
-			->method('initializeStandaloneViewInstance');
-		$this->subject->render(array());
-	}
+    /**
+     * @test
+     */
+    public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile()
+    {
+        $this->addMockViewToSubject();
+        /** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
+        $templateService = $GLOBALS['TSFE']->tmpl;
+        $templateService
+            ->expects($this->any())
+            ->method('getFileName')
+            ->with('foo');
+        $this->subject->render(array('file' => 'foo'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile() {
-		$this->addMockViewToSubject();
-		/** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
-		$templateService = $GLOBALS['TSFE']->tmpl;
-		$templateService
-			->expects($this->any())
-			->method('getFileName')
-			->with('foo');
-		$this->subject->render(array('file' => 'foo'));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->any())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $this->subject->render(array('file' => 'foo', 'file.' => array('bar' => 'baz')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->any())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$this->subject->render(array('file' => 'foo', 'file.' => array('bar' => 'baz')));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->at(0))
+            ->method('stdWrap')
+            ->with('FILE', array('file' => 'dummyPath5/'));
+        $this->contentObjectRenderer
+            ->expects($this->at(1))
+            ->method('stdWrap')
+            ->with('FILE', array('file' => 'dummyPath25/'));
+        $this->subject->render(array(
+                'templateName' => 'foobar',
+                'templateRootPaths.' => array(
+                    10 => 'FILE',
+                    '10.' => array(
+                        'file' => 'dummyPath5/',
+                    ),
+                    15 => 'dummyPath6/',
+                    25 => 'FILE',
+                    '25.' => array(
+                        'file' => 'dummyPath25/',
+                    ),
+                )
+            )
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->at(0))
-			->method('stdWrap')
-			->with('FILE', array('file' => 'dummyPath5/'));
-		$this->contentObjectRenderer
-			->expects($this->at(1))
-			->method('stdWrap')
-			->with('FILE', array('file' => 'dummyPath25/'));
-		$this->subject->render(array(
-				'templateName' => 'foobar',
-				'templateRootPaths.' => array(
-					10 => 'FILE',
-					'10.' => array(
-						'file' => 'dummyPath5/',
-					),
-					15 => 'dummyPath6/',
-					25 => 'FILE',
-					'25.' => array(
-						'file' => 'dummyPath25/',
-					),
-				)
-			)
-		);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsTemplateFileInView()
+    {
+        $this->addMockViewToSubject();
+        /** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
+        $templateService = $GLOBALS['TSFE']->tmpl;
+        $templateService
+            ->expects($this->any())
+            ->method('getFileName')
+            ->with('foo')
+            ->will($this->returnValue('bar'));
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('setTemplatePathAndFilename')
+            ->with(PATH_site . 'bar');
+        $this->subject->render(array('file' => 'foo'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsTemplateFileInView() {
-		$this->addMockViewToSubject();
-		/** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
-		$templateService = $GLOBALS['TSFE']->tmpl;
-		$templateService
-			->expects($this->any())
-			->method('getFileName')
-			->with('foo')
-			->will($this->returnValue('bar'));
-		$this->standaloneView
-			->expects($this->any())
-			->method('setTemplatePathAndFilename')
-			->with(PATH_site . 'bar');
-		$this->subject->render(array('file' => 'foo'));
-	}
+    /**
+     * @test
+     */
+    public function renderSetsTemplateFileByTemplateInView()
+    {
+        $this->addMockViewToSubject();
 
-	/**
-	 * @test
-	 */
-	public function renderSetsTemplateFileByTemplateInView() {
-		$this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->any())
+            ->method('cObjGetSingle')
+            ->with('FILE', array('file' => PATH_site . 'foo/bar.html'))
+            ->will($this->returnValue('baz'));
 
-		$this->contentObjectRenderer
-			->expects($this->any())
-			->method('cObjGetSingle')
-			->with('FILE', array('file' => PATH_site . 'foo/bar.html'))
-			->will($this->returnValue('baz'));
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('setTemplateSource')
+            ->with('baz');
 
-		$this->standaloneView
-			->expects($this->any())
-			->method('setTemplateSource')
-			->with('baz');
+        $this->subject->render(array(
+            'template' => 'FILE',
+            'template.' => array(
+                'file' => PATH_site . 'foo/bar.html'
+            )
+        ));
+    }
 
-		$this->subject->render(array(
-			'template' => 'FILE',
-			'template.' => array(
-				'file' => PATH_site . 'foo/bar.html'
-			)
-		));
-	}
+    /**
+     * @test
+     */
+    public function renderSetsTemplateFileByTemplateNameInView()
+    {
+        $this->addMockViewToSubject();
 
-	/**
-	 * @test
-	 */
-	public function renderSetsTemplateFileByTemplateNameInView() {
-		$this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('getFormat')
+            ->will($this->returnValue('html'));
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setTemplate')
+            ->with('foo');
 
-		$this->standaloneView
-			->expects($this->any())
-			->method('getFormat')
-			->will($this->returnValue('html'));
-		$this->standaloneView
-			->expects($this->once())
-			->method('setTemplate')
-			->with('foo');
+        $this->subject->render(array(
+            'templateName' => 'foo',
+            'templateRootPaths.' => array(
+                0 => 'dummyPath1/',
+                1 => 'dummyPath2/')
+            )
+        );
+    }
 
-		$this->subject->render(array(
-			'templateName' => 'foo',
-			'templateRootPaths.' => array(
-				0 => 'dummyPath1/',
-				1 => 'dummyPath2/')
-			)
-		);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsTemplateFileByTemplateNameStdWrapInView()
+    {
+        $this->addMockViewToSubject();
 
-	/**
-	 * @test
-	 */
-	public function renderSetsTemplateFileByTemplateNameStdWrapInView() {
-		$this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('TEXT', array('value' => 'bar'))
+            ->will($this->returnValue('bar'));
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('getFormat')
+            ->will($this->returnValue('html'));
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setTemplate')
+            ->with('bar');
 
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('TEXT', array('value' => 'bar'))
-			->will($this->returnValue('bar'));
-		$this->standaloneView
-			->expects($this->any())
-			->method('getFormat')
-			->will($this->returnValue('html'));
-		$this->standaloneView
-			->expects($this->once())
-			->method('setTemplate')
-			->with('bar');
+        $this->subject->render(array(
+            'templateName' => 'TEXT',
+            'templateName.' => array('value' => 'bar'),
+            'templateRootPaths.' => array(
+                0 => 'dummyPath1/',
+                1 => 'dummyPath2/')
+            )
+        );
+    }
 
-		$this->subject->render(array(
-			'templateName' => 'TEXT',
-			'templateName.' => array('value' => 'bar'),
-			'templateRootPaths.' => array(
-				0 => 'dummyPath1/',
-				1 => 'dummyPath2/')
-			)
-		);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsLayoutRootPathInView()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setLayoutRootPaths')
+            ->with(array(PATH_site . 'foo/bar.html'));
+        $this->subject->render(array('layoutRootPath' => 'foo/bar.html'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsLayoutRootPathInView() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setLayoutRootPaths')
-			->with(array(PATH_site . 'foo/bar.html'));
-		$this->subject->render(array('layoutRootPath' => 'foo/bar.html'));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForLayoutRootPath()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $this->subject->render(array('layoutRootPath' => 'foo', 'layoutRootPath.' => array('bar' => 'baz')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForLayoutRootPath() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$this->subject->render(array('layoutRootPath' => 'foo', 'layoutRootPath.' => array('bar' => 'baz')));
-	}
+    /**
+     * @test
+     */
+    public function layoutRootPathsHasStdWrapSupport()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->at(0))
+            ->method('stdWrap')
+            ->with('FILE', array('file' => 'foo/bar.html'));
+        $this->subject->render(
+            array(
+                'layoutRootPaths.' => array(
+                    10 => 'FILE',
+                    '10.' => array(
+                        'file' => 'foo/bar.html',
+                    ),
+                    20 => 'foo/bar2.html',
+                )
+            )
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function layoutRootPathsHasStdWrapSupport() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->at(0))
-			->method('stdWrap')
-			->with('FILE', array('file' => 'foo/bar.html'));
-		$this->subject->render(
-			array(
-				'layoutRootPaths.' => array(
-					10 => 'FILE',
-					'10.' => array(
-						'file' => 'foo/bar.html',
-					),
-					20 => 'foo/bar2.html',
-				)
-			)
-		);
-	}
+    /**
+     * @test
+     */
+    public function fallbacksForLayoutRootPathAreSet()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setLayoutRootPaths')
+            ->with(array(10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
+        $this->subject->render(array('layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function fallbacksForLayoutRootPathAreSet() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setLayoutRootPaths')
-			->with(array(10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
-		$this->subject->render(array('layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
-	}
+    /**
+     * @test
+     */
+    public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setLayoutRootPaths')
+            ->with(array(0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
+        $this->subject->render(array('layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setLayoutRootPaths')
-			->with(array(0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
-		$this->subject->render(array('layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
-	}
+    /**
+     * @test
+     */
+    public function renderSetsPartialRootPathInView()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setPartialRootPaths')
+            ->with(array(PATH_site . 'foo/bar.html'));
+        $this->subject->render(array('partialRootPath' => 'foo/bar.html'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsPartialRootPathInView() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setPartialRootPaths')
-			->with(array(PATH_site . 'foo/bar.html'));
-		$this->subject->render(array('partialRootPath' => 'foo/bar.html'));
-	}
+    /**
+     * @test
+     */
+    public function partialRootPathsHasStdWrapSupport()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->at(0))
+            ->method('stdWrap')
+            ->with('FILE', array('file' => 'foo/bar.html'));
+        $this->subject->render(
+            array(
+                'partialRootPaths.' => array(
+                    10 => 'FILE',
+                    '10.' => array(
+                        'file' => 'foo/bar.html',
+                    ),
+                    20 => 'foo/bar2.html',
+                )
+            )
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function partialRootPathsHasStdWrapSupport() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->at(0))
-			->method('stdWrap')
-			->with('FILE', array('file' => 'foo/bar.html'));
-		$this->subject->render(
-			array(
-				'partialRootPaths.' => array(
-					10 => 'FILE',
-					'10.' => array(
-						'file' => 'foo/bar.html',
-					),
-					20 => 'foo/bar2.html',
-				)
-			)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForPartialRootPath() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$this->subject->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForPartialRootPath()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $this->subject->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
+    }
 
 
-	/**
-	 * @test
-	 */
-	public function fallbacksForPartialRootPathAreSet() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setPartialRootPaths')
-			->with(array(10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
-		$this->subject->render(array('partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
-	}
+    /**
+     * @test
+     */
+    public function fallbacksForPartialRootPathAreSet()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setPartialRootPaths')
+            ->with(array(10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
+        $this->subject->render(array('partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function fallbacksForPartialRootPathAreAppendedToPartialRootPath() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setPartialRootPaths')
-			->with(array(0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
-		$this->subject->render(array('partialRootPath' => 'main', 'partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
-	}
+    /**
+     * @test
+     */
+    public function fallbacksForPartialRootPathAreAppendedToPartialRootPath()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setPartialRootPaths')
+            ->with(array(0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
+        $this->subject->render(array('partialRootPath' => 'main', 'partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsFormatInView() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('setFormat')
-			->with('xml');
-		$this->subject->render(array('format' => 'xml'));
-	}
+    /**
+     * @test
+     */
+    public function renderSetsFormatInView()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('setFormat')
+            ->with('xml');
+        $this->subject->render(array('format' => 'xml'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForFormat() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$this->subject->render(array('format' => 'foo', 'format.' => array('bar' => 'baz')));
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForFormat()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $this->subject->render(array('format' => 'foo', 'format.' => array('bar' => 'baz')));
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsExtbasePluginNameInRequest() {
-		$this->addMockViewToSubject();
-		$this->request
-			->expects($this->once())
-			->method('setPluginName')
-			->with('foo');
-		$configuration = array(
-			'extbase.' => array(
-				'pluginName' => 'foo',
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsExtbasePluginNameInRequest()
+    {
+        $this->addMockViewToSubject();
+        $this->request
+            ->expects($this->once())
+            ->method('setPluginName')
+            ->with('foo');
+        $configuration = array(
+            'extbase.' => array(
+                'pluginName' => 'foo',
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForExtbasePluginName() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$configuration = array(
-			'extbase.' => array(
-				'pluginName' => 'foo',
-				'pluginName.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForExtbasePluginName()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $configuration = array(
+            'extbase.' => array(
+                'pluginName' => 'foo',
+                'pluginName.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsExtbaseControllerExtensionNameInRequest() {
-		$this->addMockViewToSubject();
-		$this->request
-			->expects($this->once())
-			->method('setControllerExtensionName')
-			->with('foo');
-		$configuration = array(
-			'extbase.' => array(
-				'controllerExtensionName' => 'foo',
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsExtbaseControllerExtensionNameInRequest()
+    {
+        $this->addMockViewToSubject();
+        $this->request
+            ->expects($this->once())
+            ->method('setControllerExtensionName')
+            ->with('foo');
+        $configuration = array(
+            'extbase.' => array(
+                'controllerExtensionName' => 'foo',
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForExtbaseControllerExtensionName() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$configuration = array(
-			'extbase.' => array(
-				'controllerExtensionName' => 'foo',
-				'controllerExtensionName.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForExtbaseControllerExtensionName()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $configuration = array(
+            'extbase.' => array(
+                'controllerExtensionName' => 'foo',
+                'controllerExtensionName.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsExtbaseControllerNameInRequest() {
-		$this->addMockViewToSubject();
-		$this->request
-			->expects($this->once())
-			->method('setControllerName')
-			->with('foo');
-		$configuration = array(
-			'extbase.' => array(
-				'controllerName' => 'foo',
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsExtbaseControllerNameInRequest()
+    {
+        $this->addMockViewToSubject();
+        $this->request
+            ->expects($this->once())
+            ->method('setControllerName')
+            ->with('foo');
+        $configuration = array(
+            'extbase.' => array(
+                'controllerName' => 'foo',
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForExtbaseControllerName() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$configuration = array(
-			'extbase.' => array(
-				'controllerName' => 'foo',
-				'controllerName.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForExtbaseControllerName()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $configuration = array(
+            'extbase.' => array(
+                'controllerName' => 'foo',
+                'controllerName.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderSetsExtbaseControllerActionNameInRequest() {
-		$this->addMockViewToSubject();
-		$this->request
-			->expects($this->once())
-			->method('setControllerActionName')
-			->with('foo');
-		$configuration = array(
-			'extbase.' => array(
-				'controllerActionName' => 'foo',
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderSetsExtbaseControllerActionNameInRequest()
+    {
+        $this->addMockViewToSubject();
+        $this->request
+            ->expects($this->once())
+            ->method('setControllerActionName')
+            ->with('foo');
+        $configuration = array(
+            'extbase.' => array(
+                'controllerActionName' => 'foo',
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapForExtbaseControllerActionName() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('foo', array('bar' => 'baz'));
-		$configuration = array(
-			'extbase.' => array(
-				'controllerActionName' => 'foo',
-				'controllerActionName.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapForExtbaseControllerActionName()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('foo', array('bar' => 'baz'));
+        $configuration = array(
+            'extbase.' => array(
+                'controllerActionName' => 'foo',
+                'controllerActionName.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderAssignsSettingsArrayToView() {
-		$this->addMockViewToSubject();
+    /**
+     * @test
+     */
+    public function renderAssignsSettingsArrayToView()
+    {
+        $this->addMockViewToSubject();
 
-		$configuration = array(
-			'settings.' => array(
-				'foo' => 'value',
-				'bar.' => array(
-					'baz' => 'value2',
-				),
-			),
-		);
+        $configuration = array(
+            'settings.' => array(
+                'foo' => 'value',
+                'bar.' => array(
+                    'baz' => 'value2',
+                ),
+            ),
+        );
 
-		$expectedSettingsToBeSet = array(
-			'foo' => 'value',
-			'bar' => array(
-				'baz' => 'value2',
-			),
-		);
+        $expectedSettingsToBeSet = array(
+            'foo' => 'value',
+            'bar' => array(
+                'baz' => 'value2',
+            ),
+        );
 
-		/** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
-		$typoScriptServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
-		$typoScriptServiceMock
-			->expects($this->once())
-			->method('convertTypoScriptArrayToPlainArray')
-			->with($configuration['settings.'])
-			->will($this->returnValue($expectedSettingsToBeSet));
-		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class, $typoScriptServiceMock);
+        /** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
+        $typoScriptServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+        $typoScriptServiceMock
+            ->expects($this->once())
+            ->method('convertTypoScriptArrayToPlainArray')
+            ->with($configuration['settings.'])
+            ->will($this->returnValue($expectedSettingsToBeSet));
+        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class, $typoScriptServiceMock);
 
-		$this->standaloneView
-			->expects($this->at(1))
-			->method('assign')
-			->with('settings', $expectedSettingsToBeSet);
+        $this->standaloneView
+            ->expects($this->at(1))
+            ->method('assign')
+            ->with('settings', $expectedSettingsToBeSet);
 
-		$this->subject->render($configuration);
-	}
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 */
-	public function renderThrowsExceptionForNotAllowedVariableData() {
-		$this->addMockViewToSubject();
-		$configuration = array(
-			'variables.' => array(
-				'data' => 'foo',
-				'data.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function renderThrowsExceptionForNotAllowedVariableData()
+    {
+        $this->addMockViewToSubject();
+        $configuration = array(
+            'variables.' => array(
+                'data' => 'foo',
+                'data.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 */
-	public function renderThrowsExceptionForNotAllowedVariableCurrent() {
-		$this->addMockViewToSubject();
-		$configuration = array(
-			'variables.' => array(
-				'current' => 'foo',
-				'current.' => array(
-					'bar' => 'baz',
-				),
-			),
-		);
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function renderThrowsExceptionForNotAllowedVariableCurrent()
+    {
+        $this->addMockViewToSubject();
+        $configuration = array(
+            'variables.' => array(
+                'current' => 'foo',
+                'current.' => array(
+                    'bar' => 'baz',
+                ),
+            ),
+        );
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsCObjGetSingleForAllowedVariable() {
-		$this->addMockViewToSubject();
-		$configuration = array(
-			'variables.' => array(
-				'aVar' => 'TEXT',
-				'aVar.' => array(
-					'value' => 'foo',
-				),
-			),
-		);
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('cObjGetSingle')
-			->with('TEXT', array('value' => 'foo'));
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderCallsCObjGetSingleForAllowedVariable()
+    {
+        $this->addMockViewToSubject();
+        $configuration = array(
+            'variables.' => array(
+                'aVar' => 'TEXT',
+                'aVar.' => array(
+                    'value' => 'foo',
+                ),
+            ),
+        );
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->with('TEXT', array('value' => 'foo'));
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderAssignsRenderedContentObjectVariableToView() {
-		$this->addMockViewToSubject();
-		$configuration = array(
-			'variables.' => array(
-				'aVar' => 'TEXT',
-				'aVar.' => array(
-					'value' => 'foo',
-				),
-			),
-		);
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('cObjGetSingle')
-			->will($this->returnValue('foo'));
-		$this->standaloneView
-			->expects($this->once())
-			->method('assignMultiple')
-			->with(array('aVar' => 'foo', 'data' => array(), 'current' => NULL));
-		$this->subject->render($configuration);
-	}
+    /**
+     * @test
+     */
+    public function renderAssignsRenderedContentObjectVariableToView()
+    {
+        $this->addMockViewToSubject();
+        $configuration = array(
+            'variables.' => array(
+                'aVar' => 'TEXT',
+                'aVar.' => array(
+                    'value' => 'foo',
+                ),
+            ),
+        );
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('cObjGetSingle')
+            ->will($this->returnValue('foo'));
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('assignMultiple')
+            ->with(array('aVar' => 'foo', 'data' => array(), 'current' => null));
+        $this->subject->render($configuration);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderAssignsContentObjectRendererDataToView() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer->data = array('foo');
-		$this->standaloneView
-			->expects($this->once())
-			->method('assignMultiple')
-			->with(array('data' => array('foo'), 'current' => NULL));
-		$this->subject->render(array());
-	}
+    /**
+     * @test
+     */
+    public function renderAssignsContentObjectRendererDataToView()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer->data = array('foo');
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('assignMultiple')
+            ->with(array('data' => array('foo'), 'current' => null));
+        $this->subject->render(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderAssignsContentObjectRendererCurrentValueToView() {
-		$this->addMockViewToSubject();
-		$this->contentObjectRenderer->data = array('currentKey' => 'currentValue');
-		$this->contentObjectRenderer->currentValKey = 'currentKey';
-		$this->standaloneView
-			->expects($this->once())
-			->method('assignMultiple')
-			->with(array('data' => array('currentKey' => 'currentValue'), 'current' => 'currentValue'));
-		$this->subject->render(array());
-	}
+    /**
+     * @test
+     */
+    public function renderAssignsContentObjectRendererCurrentValueToView()
+    {
+        $this->addMockViewToSubject();
+        $this->contentObjectRenderer->data = array('currentKey' => 'currentValue');
+        $this->contentObjectRenderer->currentValKey = 'currentKey';
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('assignMultiple')
+            ->with(array('data' => array('currentKey' => 'currentValue'), 'current' => 'currentValue'));
+        $this->subject->render(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsRenderOnStandaloneViewie() {
-		$this->addMockViewToSubject();
-		$this->standaloneView
-			->expects($this->once())
-			->method('render');
-		$this->subject->render(array());
-	}
+    /**
+     * @test
+     */
+    public function renderCallsRenderOnStandaloneViewie()
+    {
+        $this->addMockViewToSubject();
+        $this->standaloneView
+            ->expects($this->once())
+            ->method('render');
+        $this->subject->render(array());
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration() {
-		$this->addMockViewToSubject();
-		$configuration = array(
-			'stdWrap.' => array(
-				'foo' => 'bar',
-			),
-		);
-		$this->standaloneView
-			->expects($this->any())
-			->method('render')
-			->will($this->returnValue('baz'));
-		$this->contentObjectRenderer
-			->expects($this->once())
-			->method('stdWrap')
-			->with('baz', array('foo' => 'bar'));
-		$this->subject->render($configuration);
-	}
-
+    /**
+     * @test
+     */
+    public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration()
+    {
+        $this->addMockViewToSubject();
+        $configuration = array(
+            'stdWrap.' => array(
+                'foo' => 'bar',
+            ),
+        );
+        $this->standaloneView
+            ->expects($this->any())
+            ->method('render')
+            ->will($this->returnValue('baz'));
+        $this->contentObjectRenderer
+            ->expects($this->once())
+            ->method('stdWrap')
+            ->with('baz', array('foo' => 'bar'));
+        $this->subject->render($configuration);
+    }
 }

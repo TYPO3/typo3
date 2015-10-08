@@ -17,26 +17,26 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON container abstract
  */
-class ContainerJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
+class ContainerJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement
+{
+    /**
+     * The items within this container
+     *
+     * @var array
+     */
+    public $elementContainer = array(
+        'hasDragAndDrop' => true,
+        'items' => array()
+    );
 
-	/**
-	 * The items within this container
-	 *
-	 * @var array
-	 */
-	public $elementContainer = array(
-		'hasDragAndDrop' => TRUE,
-		'items' => array()
-	);
-
-	/**
-	 * Add an element to this container
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement $element The element to add
-	 * @return void
-	 */
-	public function addElement(\TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement $element) {
-		$this->elementContainer['items'][] = $element;
-	}
-
+    /**
+     * Add an element to this container
+     *
+     * @param \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement $element The element to add
+     * @return void
+     */
+    public function addElement(\TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement $element)
+    {
+        $this->elementContainer['items'][] = $element;
+    }
 }

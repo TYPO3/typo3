@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Exception;
 /**
  * An exception when dependency configuration could not be found after uploading a t3x file
  */
-class DependencyConfigurationNotFoundException extends ExtensionManagerException {
-
+class DependencyConfigurationNotFoundException extends ExtensionManagerException
+{
 }

@@ -22,105 +22,110 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Class BackendModuleRequestHandlerTest
  */
-class SplitButtonTest extends UnitTestCase {
+class SplitButtonTest extends UnitTestCase
+{
+    /**
+     * Try to validate an empty button
+     *
+     * @test
+     * @return void
+     */
+    public function isButtonValidBlankCallExpectFalse()
+    {
+        $button = new SplitButton();
+        $isValid = $button->isValid();
+        $this->assertFalse($isValid);
+    }
 
-	/**
-	 * Try to validate an empty button
-	 *
-	 * @test
-	 * @return void
-	 */
-	public function isButtonValidBlankCallExpectFalse() {
-		$button = new SplitButton();
-		$isValid = $button->isValid();
-		$this->assertFalse($isValid);
-	}
+    /**
+     * Try adding an invalid button to a splitButton
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1441706330
+     * @return void
+     */
+    public function isButtonValidInvalidButtonGivenExpectFalse()
+    {
+        $button = new SplitButton();
 
-	/**
-	 * Try adding an invalid button to a splitButton
-	 *
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1441706330
-	 * @return void
-	 */
-	public function isButtonValidInvalidButtonGivenExpectFalse() {
-		$button = new SplitButton();
+        $primaryAction = new LinkButton();
+        $button->addItem($primaryAction);
 
-		$primaryAction = new LinkButton();
-		$button->addItem($primaryAction);
+        $isValid = $button->isValid();
+        $this->assertFalse($isValid);
+    }
 
-		$isValid = $button->isValid();
-		$this->assertFalse($isValid);
-	}
+    /**
+     * Try to add multiple primary actions
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1441706340
+     * @return void
+     */
+    public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse()
+    {
+        $button = new SplitButton();
 
-	/**
-	 * Try to add multiple primary actions
-	 *
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1441706340
-	 * @return void
-	 */
-	public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse() {
-		$button = new SplitButton();
+        $primaryAction = new LinkButton();
+        $icon = new Icon();
+        $primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
+        $button->addItem($primaryAction, true);
 
-		$primaryAction = new LinkButton();
-		$icon = new Icon();
-		$primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
-		$button->addItem($primaryAction, TRUE);
+        $anotherPrimaryAction = new LinkButton();
+        $anotherPrimaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
+        $button->addItem($anotherPrimaryAction, true);
 
-		$anotherPrimaryAction = new LinkButton();
-		$anotherPrimaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
-		$button->addItem($anotherPrimaryAction, TRUE);
+        $isValid = $button->isValid();
+        $this->assertFalse($isValid);
+    }
 
-		$isValid = $button->isValid();
-		$this->assertFalse($isValid);
-	}
+    /**
+     * Try to add an invalid button as second parameter
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode 1441706330
+     * @return void
+     */
+    public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse()
+    {
+        $button = new SplitButton();
 
-	/**
-	 * Try to add an invalid button as second parameter
-	 *
-	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1441706330
-	 * @return void
-	 */
-	public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse() {
-		$button = new SplitButton();
+        $primaryAction = new LinkButton();
+        $icon = new Icon();
+        $primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
+        $button->addItem($primaryAction, true);
 
-		$primaryAction = new LinkButton();
-		$icon = new Icon();
-		$primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
-		$button->addItem($primaryAction, TRUE);
+        $anotherPrimaryAction = new LinkButton();
+        $anotherPrimaryAction->setTitle('husel')->setHref('husel');
+        $button->addItem($anotherPrimaryAction, true);
 
-		$anotherPrimaryAction = new LinkButton();
-		$anotherPrimaryAction->setTitle('husel')->setHref('husel');
-		$button->addItem($anotherPrimaryAction, TRUE);
+        $isValid = $button->isValid();
+        $this->assertFalse($isValid);
+    }
 
-		$isValid = $button->isValid();
-		$this->assertFalse($isValid);
-	}
+    /**
+     * Send in a valid button
+     *
+     * @test
+     * @return void
+     */
+    public function isButtonValidValidSetupExpectTrue()
+    {
+        $button = new SplitButton();
 
-	/**
-	 * Send in a valid button
-	 *
-	 * @test
-	 * @return void
-	 */
-	public function isButtonValidValidSetupExpectTrue() {
-		$button = new SplitButton();
+        $primaryAction = new LinkButton();
+        $icon = new Icon();
+        $primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
+        $button->addItem($primaryAction, true);
 
-		$primaryAction = new LinkButton();
-		$icon = new Icon();
-		$primaryAction->setTitle('husel')->setHref('husel')->setIcon($icon);
-		$button->addItem($primaryAction, TRUE);
+        $anotherAction = new LinkButton();
+        $anotherAction->setTitle('husel')->setHref('husel')->setIcon($icon);
+        $button->addItem($anotherAction);
 
-		$anotherAction = new LinkButton();
-		$anotherAction->setTitle('husel')->setHref('husel')->setIcon($icon);
-		$button->addItem($anotherAction);
-
-		$isValid = $button->isValid();
-		$this->assertTrue($isValid);
-	}
+        $isValid = $button->isValid();
+        $this->assertTrue($isValid);
+    }
 }

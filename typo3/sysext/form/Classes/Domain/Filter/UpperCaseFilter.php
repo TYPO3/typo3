@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Uppercase filter
  */
-class UpperCaseFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Convert alphabetic characters to uppercase
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		return $this->convertCase($value, 'toUpper');
-	}
-
+class UpperCaseFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Convert alphabetic characters to uppercase
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        return $this->convertCase($value, 'toUpper');
+    }
 }

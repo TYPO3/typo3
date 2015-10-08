@@ -13,52 +13,59 @@
  */
 
 namespace {
-	function user_testFunctionWithSingleArgument() {
-		return count(func_get_args()) === 1;
-	}
+    function user_testFunctionWithSingleArgument()
+    {
+        return count(func_get_args()) === 1;
+    }
 
-	function user_testFunctionWithThreeArguments() {
-		return count(func_get_args()) === 3;
-	}
+    function user_testFunctionWithThreeArguments()
+    {
+        return count(func_get_args()) === 3;
+    }
 
-	function user_testFunctionWithThreeArgumentsSpaces() {
-		$result = TRUE;
-		foreach (func_get_args() as $argument) {
-			$result &= (trim($argument) == $argument);
-		}
-		return $result;
-	}
+    function user_testFunctionWithThreeArgumentsSpaces()
+    {
+        $result = true;
+        foreach (func_get_args() as $argument) {
+            $result &= (trim($argument) == $argument);
+        }
+        return $result;
+    }
 
-	function user_testFunctionWithSpaces($value) {
-		return $value === ' 3, 4, 5, 6 ';
-	}
+    function user_testFunctionWithSpaces($value)
+    {
+        return $value === ' 3, 4, 5, 6 ';
+    }
 
-	function user_testFunction() {
-		return TRUE;
-	}
+    function user_testFunction()
+    {
+        return true;
+    }
 
-	function user_testFunctionFalse() {
-		return FALSE;
-	}
+    function user_testFunctionFalse()
+    {
+        return false;
+    }
 
-	function user_testFunctionWithQuoteMissing($value) {
-		return $value === 'value "';
-	}
+    function user_testFunctionWithQuoteMissing($value)
+    {
+        return $value === 'value "';
+    }
 
-	function user_testQuotes($value) {
-		return $value === '1 " 2';
-	}
+    function user_testQuotes($value)
+    {
+        return $value === '1 " 2';
+    }
 
-	class ConditionMatcherUserFunctions {
-
-		/**
-		 * @param mixed $value
-		 * @return bool
-		 */
-		static public function isTrue($value) {
-			return (bool)$value;
-		}
-
-	}
+    class ConditionMatcherUserFunctions
+    {
+        /**
+         * @param mixed $value
+         * @return bool
+         */
+        public static function isTrue($value)
+        {
+            return (bool)$value;
+        }
+    }
 }
-

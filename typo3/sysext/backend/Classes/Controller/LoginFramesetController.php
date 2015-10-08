@@ -23,78 +23,83 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script Class, putting the frameset together.
  */
-class LoginFramesetController {
+class LoginFramesetController
+{
+    /**
+     * @var string
+     */
+    protected $content;
 
-	/**
-	 * @var string
-	 */
-	protected $content;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $GLOBALS['SOBE'] = $this;
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$GLOBALS['SOBE'] = $this;
-	}
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->main();
+        $response->getBody()->write($this->content);
+        return $response;
+    }
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * As this controller goes only through the main() method, it is rather simple for now
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->main();
-		$response->getBody()->write($this->content);
-		return $response;
-	}
+    /**
+     * Main function.
+     * Creates the header code and the frameset for the two frames.
+     *
+     * @return void
+     */
+    public function main()
+    {
+        $title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
+        $this->getDocumentTemplate()->startPage($title);
 
-	/**
-	 * Main function.
-	 * Creates the header code and the frameset for the two frames.
-	 *
-	 * @return void
-	 */
-	public function main() {
-		$title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-		$this->getDocumentTemplate()->startPage($title);
-
-		// Create the frameset for the window
-		$this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
+        // Create the frameset for the window
+        $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
 				<frame name="dummy" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
 			</frameset>
 		</html>';
-	}
+    }
 
-	/**
-	 * Outputs the page content.
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-	 */
-	public function printContent() {
-		GeneralUtility::logDeprecatedFunction();
-		echo $this->content;
-	}
+    /**
+     * Outputs the page content.
+     *
+     * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
+     */
+    public function printContent()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        echo $this->content;
+    }
 
-	/**
-	 * Returns an instance of DocumentTemplate
-	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
-	}
+    /**
+     * Returns an instance of DocumentTemplate
+     *
+     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+     */
+    protected function getDocumentTemplate()
+    {
+        return $GLOBALS['TBE_TEMPLATE'];
+    }
 
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
-	}
-
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
+    }
 }

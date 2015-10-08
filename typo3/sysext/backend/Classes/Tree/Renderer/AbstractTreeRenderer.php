@@ -17,33 +17,32 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
 /**
  * Abstract Renderer
  */
-abstract class AbstractTreeRenderer {
+abstract class AbstractTreeRenderer
+{
+    /**
+     * Renders a node recursive or just a single instance
+     *
+     * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = true);
 
-	/**
-	 * Renders a node recursive or just a single instance
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = TRUE);
+    /**
+     * Renders a node collection recursive or just a single instance
+     *
+     * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = true);
 
-	/**
-	 * Renders a node collection recursive or just a single instance
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = TRUE);
-
-	/**
-	 * Renders an tree recursive or just a single instance
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\AbstractTree $node
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE);
-
+    /**
+     * Renders an tree recursive or just a single instance
+     *
+     * @param \TYPO3\CMS\Backend\Tree\AbstractTree $node
+     * @param bool $recursive
+     * @return mixed
+     */
+    abstract public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true);
 }

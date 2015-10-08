@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Unsupported Order" exception: The order you specified in the query is not supported by now.
  */
-class UnsupportedRelationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class UnsupportedRelationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

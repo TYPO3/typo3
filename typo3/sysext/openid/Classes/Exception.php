@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Openid;
 /**
  * Excpetion thrown if something went wrong during OpenID handshake
  */
-class Exception extends \TYPO3\CMS\Core\Exception {
-
+class Exception extends \TYPO3\CMS\Core\Exception
+{
 }

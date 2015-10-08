@@ -20,14 +20,14 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
-	/**
-	 * Loads PHP code from the cache and require_onces it right away.
-	 *
-	 * @param string $entryIdentifier An identifier which describes the cache entry to load
-	 * @return mixed Potential return value from the include operation
-	 * @api
-	 */
-	public function requireOnce($entryIdentifier);
-
+interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+{
+    /**
+     * Loads PHP code from the cache and require_onces it right away.
+     *
+     * @param string $entryIdentifier An identifier which describes the cache entry to load
+     * @return mixed Potential return value from the include operation
+     * @api
+     */
+    public function requireOnce($entryIdentifier);
 }

@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface CommandControllerInterface extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {
-
+interface CommandControllerInterface extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
+{
 }

@@ -19,55 +19,59 @@ use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 /**
  * Test case.
  */
-class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
-	/**
-	 * @var CommandLineBackend
-	 */
-	protected $subject = NULL;
+class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var CommandLineBackend
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		if (TYPO3_OS === 'WIN') {
-			$this->markTestSkipped('This test is not available on Windows.');
-		}
+    protected function setUp()
+    {
+        if (TYPO3_OS === 'WIN') {
+            $this->markTestSkipped('This test is not available on Windows.');
+        }
 
-		$this->subject = new CommandLineBackend();
-	}
+        $this->subject = new CommandLineBackend();
+    }
 
-	/**
-	 * @test
-	 */
-	public function createNewKeyPairCreatesReadyKeyPair() {
-		$keyPair = $this->subject->createNewKeyPair();
-		if ($keyPair === NULL) {
-			$this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
-		}
+    /**
+     * @test
+     */
+    public function createNewKeyPairCreatesReadyKeyPair()
+    {
+        $keyPair = $this->subject->createNewKeyPair();
+        if ($keyPair === null) {
+            $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
+        }
 
-		$this->assertTrue($keyPair->isReady());
-	}
+        $this->assertTrue($keyPair->isReady());
+    }
 
-	/**
-	 * @test
-	 */
-	public function createNewKeyPairCreatesKeyPairWithDefaultExponent() {
-		$keyPair = $this->subject->createNewKeyPair();
-		if ($keyPair === NULL) {
-			$this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
-		}
+    /**
+     * @test
+     */
+    public function createNewKeyPairCreatesKeyPairWithDefaultExponent()
+    {
+        $keyPair = $this->subject->createNewKeyPair();
+        if ($keyPair === null) {
+            $this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
+        }
 
-		$this->assertSame(
-			CommandLineBackend::DEFAULT_EXPONENT,
-			$keyPair->getExponent()
-		);
-	}
+        $this->assertSame(
+            CommandLineBackend::DEFAULT_EXPONENT,
+            $keyPair->getExponent()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance() {
-		$this->assertSame(
-			$this->subject->createNewKeyPair(),
-			$this->subject->createNewKeyPair()
-		);
-	}
-
+    /**
+     * @test
+     */
+    public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance()
+    {
+        $this->assertSame(
+            $this->subject->createNewKeyPair(),
+            $this->subject->createNewKeyPair()
+        );
+    }
 }

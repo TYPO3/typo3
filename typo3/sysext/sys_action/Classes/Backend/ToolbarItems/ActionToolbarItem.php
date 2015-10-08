@@ -23,158 +23,168 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Adds action links to the backend's toolbar
  */
-class ActionToolbarItem implements ToolbarItemInterface {
+class ActionToolbarItem implements ToolbarItemInterface
+{
+    /**
+     * @var array List of action entries
+     */
+    protected $actionEntries = array();
 
-	/**
-	 * @var array List of action entries
-	 */
-	protected $actionEntries = array();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
+        $this->initializeActionEntries();
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
-		$this->initializeActionEntries();
-	}
+    /**
+     * Render toolbar icon
+     *
+     * @return string HTML
+     */
+    public function getItem()
+    {
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $title = $this->getLanguageService()->getLL('action_toolbaritem', true);
+        return '<span title="' . $title . '">' . $iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
+    }
 
-	/**
-	 * Render toolbar icon
-	 *
-	 * @return string HTML
-	 */
-	public function getItem() {
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$title = $this->getLanguageService()->getLL('action_toolbaritem', TRUE);
-		return '<span title="' . $title . '">' . $iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
-	}
+    /**
+     * Render drop down
+     *
+     * @return string HTML
+     */
+    public function getDropDown()
+    {
+        $actionMenu = array();
+        $actionMenu[] = '<ul class="dropdown-list">';
+        foreach ($this->actionEntries as $linkConf) {
+            $actionMenu[] = '<li>';
+            $actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content" class="dropdown-list-link">';
+            $actionMenu[] = $linkConf[2] . htmlspecialchars($linkConf[0]);
+            $actionMenu[] = '</a>';
+            $actionMenu[] = '</li>';
+        }
+        $actionMenu[] = '</ul>';
+        return implode(LF, $actionMenu);
+    }
 
-	/**
-	 * Render drop down
-	 *
-	 * @return string HTML
-	 */
-	public function getDropDown() {
-		$actionMenu = array();
-		$actionMenu[] = '<ul class="dropdown-list">';
-		foreach ($this->actionEntries as $linkConf) {
-			$actionMenu[] = '<li>';
-			$actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content" class="dropdown-list-link">';
-			$actionMenu[] = $linkConf[2] . htmlspecialchars($linkConf[0]);
-			$actionMenu[] = '</a>';
-			$actionMenu[] = '</li>';
-		}
-		$actionMenu[] = '</ul>';
-		return implode(LF, $actionMenu);
-	}
+    /**
+     * Gets the entries for the action menu
+     *
+     * @return array Array of action menu entries
+     */
+    protected function initializeActionEntries()
+    {
+        $backendUser = $this->getBackendUser();
+        $databaseConnection = $this->getDatabaseConnection();
+        $actions = array();
+        if ($backendUser->isAdmin()) {
+            $queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
+        } else {
+            $groupList = 0;
+            if ($backendUser->groupList) {
+                $groupList = $backendUser->groupList;
+            }
+            $queryResource = $databaseConnection->exec_SELECT_mm_query(
+                'sys_action.*',
+                'sys_action',
+                'sys_action_asgr_mm',
+                'be_groups',
+                ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
+                'sys_action.uid',
+                'sys_action.sorting'
+            );
+        }
 
-	/**
-	 * Gets the entries for the action menu
-	 *
-	 * @return array Array of action menu entries
-	 */
-	protected function initializeActionEntries() {
-		$backendUser = $this->getBackendUser();
-		$databaseConnection = $this->getDatabaseConnection();
-		$actions = array();
-		if ($backendUser->isAdmin()) {
-			$queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
-		} else {
-			$groupList = 0;
-			if ($backendUser->groupList) {
-				$groupList = $backendUser->groupList;
-			}
-			$queryResource = $databaseConnection->exec_SELECT_mm_query(
-				'sys_action.*',
-				'sys_action',
-				'sys_action_asgr_mm',
-				'be_groups',
-				' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
-				'sys_action.uid',
-				'sys_action.sorting'
-			);
-		}
+        if ($queryResource) {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
+                $actions[] = array(
+                    $actionRow['title'],
+                    BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
+                    $iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
+                );
+            }
+            $databaseConnection->sql_free_result($queryResource);
+        }
+        $this->actionEntries = $actions;
+    }
 
-		if ($queryResource) {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
-				$actions[] = array(
-					$actionRow['title'],
-					BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-					$iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
-				);
-			}
-			$databaseConnection->sql_free_result($queryResource);
-		}
-		$this->actionEntries = $actions;
-	}
+    /**
+     * This toolbar needs no additional attributes
+     *
+     * @return array
+     */
+    public function getAdditionalAttributes()
+    {
+        return array();
+    }
 
-	/**
-	 * This toolbar needs no additional attributes
-	 *
-	 * @return array
-	 */
-	public function getAdditionalAttributes() {
-		return array();
-	}
+    /**
+     * This item has a drop down
+     *
+     * @return bool
+     */
+    public function hasDropDown()
+    {
+        return true;
+    }
 
-	/**
-	 * This item has a drop down
-	 *
-	 * @return bool
-	 */
-	public function hasDropDown() {
-		return TRUE;
-	}
+    /**
+     * This toolbar is rendered if there are action entries, no further user restriction
+     *
+     * @return bool TRUE
+     */
+    public function checkAccess()
+    {
+        $result = false;
+        if (!empty($this->actionEntries)) {
+            $result = true;
+        }
+        return $result;
+    }
 
-	/**
-	 * This toolbar is rendered if there are action entries, no further user restriction
-	 *
-	 * @return bool TRUE
-	 */
-	public function checkAccess() {
-		$result = FALSE;
-		if (!empty($this->actionEntries)) {
-			$result = TRUE;
-		}
-		return $result;
-	}
+    /**
+     * Position relative to others
+     *
+     * @return int
+     */
+    public function getIndex()
+    {
+        return 35;
+    }
 
-	/**
-	 * Position relative to others
-	 *
-	 * @return int
-	 */
-	public function getIndex() {
-		return 35;
-	}
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * Returns LanguageService
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * Return DatabaseConnection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * Return DatabaseConnection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

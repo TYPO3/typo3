@@ -18,16 +18,17 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
  * see typo3/sysext/backend/Classes/Tree/View/NewRecordPageTreeView.php
  */
-class NewRecordPageTreeView extends PageTreeView {
-
-	/**
-	 * Determines whether to expand a branch or not.
-	 * Here the branch is expanded if the current id matches the global id for the listing/new
-	 *
-	 * @param int $id The ID (page id) of the element
-	 * @return bool Returns TRUE if the IDs matches
-	 */
-	public function expandNext($id) {
-		return $id == $GLOBALS['SOBE']->id ? 1 : 0;
-	}
+class NewRecordPageTreeView extends PageTreeView
+{
+    /**
+     * Determines whether to expand a branch or not.
+     * Here the branch is expanded if the current id matches the global id for the listing/new
+     *
+     * @param int $id The ID (page id) of the element
+     * @return bool Returns TRUE if the IDs matches
+     */
+    public function expandNext($id)
+    {
+        return $id == $GLOBALS['SOBE']->id ? 1 : 0;
+    }
 }

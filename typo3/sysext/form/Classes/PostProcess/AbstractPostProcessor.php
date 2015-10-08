@@ -17,21 +17,21 @@ namespace TYPO3\CMS\Form\PostProcess;
 /**
  * The mail post processor
  */
-abstract class AbstractPostProcessor {
+abstract class AbstractPostProcessor
+{
+    /**
+     * @var \TYPO3\CMS\Form\Mvc\Controller\ControllerContext
+     */
+    protected $controllerContext;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Mvc\Controller\ControllerContext
-	 */
-	protected $controllerContext;
-
-	/**
-	 * Set the current controller context
-	 *
-	 * @param \TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext
-	 * @return void
-	 */
-	public function setControllerContext(\TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext) {
-		$this->controllerContext = $controllerContext;
-	}
-
+    /**
+     * Set the current controller context
+     *
+     * @param \TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext
+     * @return void
+     */
+    public function setControllerContext(\TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+    }
 }

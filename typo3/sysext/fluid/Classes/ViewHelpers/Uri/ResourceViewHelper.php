@@ -31,53 +31,54 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * (depending on current package)
  * </output>
  */
-class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface {
+class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render the URI to the resource. The filename is used from child content.
+     *
+     * @param string $path The path and filename of the resource (relative to Public resource directory of the extension).
+     * @param string $extensionName Target extension name. If not set, the current extension name will be used
+     * @param bool $absolute If set, an absolute URI is rendered
+     * @return string The URI to the resource
+     * @api
+     */
+    public function render($path, $extensionName = null, $absolute = false)
+    {
+        return static::renderStatic(
+            array(
+                'path' => $path,
+                'extensionName' => $extensionName,
+                'absolute' => $absolute
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render the URI to the resource. The filename is used from child content.
-	 *
-	 * @param string $path The path and filename of the resource (relative to Public resource directory of the extension).
-	 * @param string $extensionName Target extension name. If not set, the current extension name will be used
-	 * @param bool $absolute If set, an absolute URI is rendered
-	 * @return string The URI to the resource
-	 * @api
-	 */
-	public function render($path, $extensionName = NULL, $absolute = FALSE) {
-		return static::renderStatic(
-			array(
-				'path' => $path,
-				'extensionName' => $extensionName,
-				'absolute' => $absolute
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $path = $arguments['path'];
+        $extensionName = $arguments['extensionName'];
+        $absolute = $arguments['absolute'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$path = $arguments['path'];
-		$extensionName = $arguments['extensionName'];
-		$absolute = $arguments['absolute'];
-
-		if ($extensionName === NULL) {
-			$extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
-		}
-		$uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
-		$uri = GeneralUtility::getFileAbsFileName($uri);
-		$uri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($uri);
-		if (TYPO3_MODE === 'BE' && $absolute === FALSE && $uri !== FALSE) {
-			$uri = '../' . $uri;
-		}
-		if ($absolute === TRUE) {
-			$uri = $renderingContext->getControllerContext()->getRequest()->getBaseUri() . $uri;
-		}
-		return $uri;
-	}
-
+        if ($extensionName === null) {
+            $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
+        }
+        $uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
+        $uri = GeneralUtility::getFileAbsFileName($uri);
+        $uri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($uri);
+        if (TYPO3_MODE === 'BE' && $absolute === false && $uri !== false) {
+            $uri = '../' . $uri;
+        }
+        if ($absolute === true) {
+            $uri = $renderingContext->getControllerContext()->getRequest()->getBaseUri() . $uri;
+        }
+        return $uri;
+    }
 }

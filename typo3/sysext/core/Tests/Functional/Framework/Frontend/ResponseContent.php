@@ -17,58 +17,59 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend;
 /**
  * Model of frontend response content
  */
-class ResponseContent {
+class ResponseContent
+{
+    /**
+     * @var array|ResponseSection[]
+     */
+    protected $sections;
 
-	/**
-	 * @var array|ResponseSection[]
-	 */
-	protected $sections;
+    /**
+     * @var array
+     */
+    protected $structure;
 
-	/**
-	 * @var array
-	 */
-	protected $structure;
+    /**
+     * @var array
+     */
+    protected $structurePaths;
 
-	/**
-	 * @var array
-	 */
-	protected $structurePaths;
+    /**
+     * @var array
+     */
+    protected $records;
 
-	/**
-	 * @var array
-	 */
-	protected $records;
+    /**
+     * @var array
+     */
+    protected $queries;
 
-	/**
-	 * @var array
-	 */
-	protected $queries;
+    /**
+     * @param Response $response
+     */
+    public function __construct(Response $response)
+    {
+        $content = json_decode($response->getContent(), true);
 
-	/**
-	 * @param Response $response
-	 */
-	public function __construct(Response $response) {
-		$content = json_decode($response->getContent(), TRUE);
+        if ($content !== null && is_array($content)) {
+            foreach ($content as $sectionIdentifier => $sectionData) {
+                $section = new ResponseSection($sectionIdentifier, $sectionData);
+                $this->sections[$sectionIdentifier] = $section;
+            }
+        }
+    }
 
-		if ($content !== NULL && is_array($content)) {
-			foreach ($content as $sectionIdentifier => $sectionData) {
-				$section = new ResponseSection($sectionIdentifier, $sectionData);
-				$this->sections[$sectionIdentifier] = $section;
-			}
-		}
-	}
+    /**
+     * @param string $sectionIdentifier
+     * @return NULL|ResponseSection
+     * @throws \RuntimeException
+     */
+    public function getSection($sectionIdentifier)
+    {
+        if (isset($this->sections[$sectionIdentifier])) {
+            return $this->sections[$sectionIdentifier];
+        }
 
-	/**
-	 * @param string $sectionIdentifier
-	 * @return NULL|ResponseSection
-	 * @throws \RuntimeException
-	 */
-	public function getSection($sectionIdentifier) {
-		if (isset($this->sections[$sectionIdentifier])) {
-			return $this->sections[$sectionIdentifier];
-		}
-
-		throw new \RuntimeException('ResponseSection "' . $sectionIdentifier . '" does not exist');
-	}
-
+        throw new \RuntimeException('ResponseSection "' . $sectionIdentifier . '" does not exist');
+    }
 }

@@ -19,68 +19,69 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseSection;
 /**
  * Model of frontend response
  */
-class StructureHasRecordConstraint extends AbstractStructureRecordConstraint {
+class StructureHasRecordConstraint extends AbstractStructureRecordConstraint
+{
+    /**
+     * @param ResponseSection $responseSection
+     * @return bool
+     */
+    protected function matchesSection(ResponseSection $responseSection)
+    {
+        $nonMatchingVariants = array();
+        $remainingRecordVariants = array();
 
-	/**
-	 * @param ResponseSection $responseSection
-	 * @return bool
-	 */
-	protected function matchesSection(ResponseSection $responseSection) {
-		$nonMatchingVariants = array();
-		$remainingRecordVariants = array();
+        foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
+            if (empty($structure) || !is_array($structure)) {
+                $this->sectionFailures[$responseSection->getIdentifier()] = 'No records found in "' . $path . '"';
+                return false;
+            }
 
-		foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
-			if (empty($structure) || !is_array($structure)) {
-				$this->sectionFailures[$responseSection->getIdentifier()] = 'No records found in "' . $path . '"';
-				return FALSE;
-			}
+            $remainingRecords = array();
+            $nonMatchingValues = $this->getNonMatchingValues($structure);
 
-			$remainingRecords = array();
-			$nonMatchingValues = $this->getNonMatchingValues($structure);
+            if ($this->strict) {
+                $remainingRecords = $this->getRemainingRecords($structure);
+            }
 
-			if ($this->strict) {
-				$remainingRecords = $this->getRemainingRecords($structure);
-			}
+            if (empty($nonMatchingValues) && (!$this->strict || empty($remainingRecords))) {
+                return true;
+            }
 
-			if (empty($nonMatchingValues) && (!$this->strict || empty($remainingRecords))) {
-				return TRUE;
-			}
+            if (!empty($nonMatchingValues)) {
+                $nonMatchingVariants[$path] = $nonMatchingValues;
+            }
+            if ($this->strict && !empty($remainingRecords)) {
+                $remainingRecordVariants[$path] = $remainingRecords;
+            }
+        }
 
-			if (!empty($nonMatchingValues)) {
-				$nonMatchingVariants[$path] = $nonMatchingValues;
-			}
-			if ($this->strict && !empty($remainingRecords)) {
-				$remainingRecordVariants[$path] = $remainingRecords;
-			}
-		}
+        $failureMessage = '';
 
-		$failureMessage = '';
+        if (!empty($nonMatchingVariants)) {
+            $failureMessage .= 'Could not assert all values for "' . $this->table . '.' . $this->field . '"' . LF;
+            foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
+                $failureMessage .= '  * Not found in "' . $path . '": ' . implode(', ', $nonMatchingValues) . LF;
+            }
+        }
 
-		if (!empty($nonMatchingVariants)) {
-			$failureMessage .= 'Could not assert all values for "' . $this->table . '.' . $this->field . '"' . LF;
-			foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
-				$failureMessage .= '  * Not found in "' . $path . '": ' . implode(', ', $nonMatchingValues) . LF;
-			}
-		}
+        if (!empty($remainingRecordVariants)) {
+            $failureMessage .= 'Found remaining records for "' . $this->table . '.' . $this->field . '"' . LF;
+            foreach ($remainingRecordVariants as $path => $remainingRecords) {
+                $failureMessage .= '  * Found in "' . $path . '": ' . implode(', ', array_keys($remainingRecords)) . LF;
+            }
+        }
 
-		if (!empty($remainingRecordVariants)) {
-			$failureMessage .= 'Found remaining records for "' . $this->table . '.' . $this->field . '"' . LF;
-			foreach ($remainingRecordVariants as $path => $remainingRecords) {
-				$failureMessage .= '  * Found in "' . $path . '": ' . implode(', ', array_keys($remainingRecords)) . LF;
-			}
-		}
+        $this->sectionFailures[$responseSection->getIdentifier()] = $failureMessage;
+        return false;
+    }
 
-		$this->sectionFailures[$responseSection->getIdentifier()] = $failureMessage;
-		return FALSE;
-	}
-
-	/**
-	 * Returns a string representation of the constraint.
-	 *
-	 * @return string
-	 */
-	public function toString() {
-		return 'structure has record';
-	}
-
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'structure has record';
+    }
 }

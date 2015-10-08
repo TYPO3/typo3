@@ -17,59 +17,59 @@ namespace TYPO3\CMS\Install\Controller\Action;
 /**
  * General action interface
  */
-interface ActionInterface {
+interface ActionInterface
+{
+    /**
+     * Handle this action
+     *
+     * @return string Rendered content
+     */
+    public function handle();
 
-	/**
-	 * Handle this action
-	 *
-	 * @return string Rendered content
-	 */
-	public function handle();
+    /**
+     * Set form protection token
+     *
+     * @param string $token Form protection token
+     * @return void
+     */
+    public function setToken($token);
 
-	/**
-	 * Set form protection token
-	 *
-	 * @param string $token Form protection token
-	 * @return void
-	 */
-	public function setToken($token);
+    /**
+     * Set controller, Either string 'step', 'tool' or 'common'
+     *
+     * @param string $controller Controller name
+     * @return void
+     */
+    public function setController($controller);
 
-	/**
-	 * Set controller, Either string 'step', 'tool' or 'common'
-	 *
-	 * @param string $controller Controller name
-	 * @return void
-	 */
-	public function setController($controller);
+    /**
+     * Set action name. This is usually similar to the class name,
+     * only for loginForm, the action is login
+     *
+     * @param string $action Name of target action for forms
+     * @return void
+     */
+    public function setAction($action);
 
-	/**
-	 * Set action name. This is usually similar to the class name,
-	 * only for loginForm, the action is login
-	 *
-	 * @param string $action Name of target action for forms
-	 * @return void
-	 */
-	public function setAction($action);
+    /**
+     * Set POST values
+     *
+     * @param array $postValues List of values submitted via POST
+     * @return void
+     */
+    public function setPostValues(array $postValues);
 
-	/**
-	 * Set POST values
-	 *
-	 * @param array $postValues List of values submitted via POST
-	 * @return void
-	 */
-	public function setPostValues(array $postValues);
+    /**
+     * Set the last error array as returned by error_get_last()
+     *
+     * @param array $lastError
+     */
+    public function setLastError(array $lastError);
 
-	/**
-	 * Set the last error array as returned by error_get_last()
-	 *
-	 * @param array $lastError
-	 */
-	public function setLastError(array $lastError);
-
-	/**
-	 * Status messages from controller
-	 *
-	 * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
-	 */
-	public function setMessages(array $messages = array());
+    /**
+     * Status messages from controller
+     *
+     * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
+     */
+    public function setMessages(array $messages = array());
 }

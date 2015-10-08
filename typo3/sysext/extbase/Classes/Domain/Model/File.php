@@ -19,17 +19,17 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
+class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+{
+    /**
+     * @return \TYPO3\CMS\Core\Resource\File
+     */
+    public function getOriginalResource()
+    {
+        if ($this->originalResource === null) {
+            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($this->getUid());
+        }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Resource\File
-	 */
-	public function getOriginalResource() {
-		if ($this->originalResource === NULL) {
-			$this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($this->getUid());
-		}
-
-		return $this->originalResource;
-	}
-
+        return $this->originalResource;
+    }
 }

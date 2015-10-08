@@ -23,43 +23,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class FormatViewHelper extends AbstractViewHelper implements CompilableInterface {
+class FormatViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Disable the escaping interceptor
+     *
+     * @var bool
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * Disable the escaping interceptor
-	 *
-	 * @var bool
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * Format the content
+     *
+     * @param string $content
+     * @return string
+     */
+    public function render($content = '')
+    {
+        return self::renderStatic(
+            array(
+                'content' => $content,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Format the content
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	public function render($content = '') {
-		return self::renderStatic(
-			array(
-				'content' => $content,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		if (empty($content)) {
-			$content = $renderChildrenClosure();
-		}
-		return nl2br(trim(strip_tags($content, '<strong><em><b><i>')));
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        if (empty($content)) {
+            $content = $renderChildrenClosure();
+        }
+        return nl2br(trim(strip_tags($content, '<strong><em><b><i>')));
+    }
 }

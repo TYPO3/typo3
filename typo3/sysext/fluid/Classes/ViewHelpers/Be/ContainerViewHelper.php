@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
  *
@@ -47,72 +46,72 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * will be loaded, plus ExtJS and jQuery and some inline labels for usage in JS code.
  * </output>
  */
-class ContainerViewHelper extends AbstractBackendViewHelper {
+class ContainerViewHelper extends AbstractBackendViewHelper
+{
+    /**
+     * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
+     *
+     * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
+     * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
+     * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
+     * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
+     * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
+     * @param bool $loadJQuery whether to load jQuery library. Defaults to FALSE
+     * @param array $includeCssFiles List of custom CSS file to be loaded
+     * @param array $includeJsFiles List of custom JavaScript file to be loaded
+     * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
+     * @param array $includeRequireJsModules List of RequireJS modules to be loaded
+     * @return string
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @see \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    public function render($pageTitle = '', $enableClickMenu = true, $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null)
+    {
+        $pageRenderer = $this->getPageRenderer();
+        $doc = $this->getDocInstance();
+        $doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
 
-	/**
-	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
-	 *
-	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
-	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
-	 * @param bool $loadJQuery whether to load jQuery library. Defaults to FALSE
-	 * @param array $includeCssFiles List of custom CSS file to be loaded
-	 * @param array $includeJsFiles List of custom JavaScript file to be loaded
-	 * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
-	 * @param array $includeRequireJsModules List of RequireJS modules to be loaded
-	 * @return string
-	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @see \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeRequireJsModules = NULL) {
-		$pageRenderer = $this->getPageRenderer();
-		$doc = $this->getDocInstance();
-		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
-
-		// Load various standard libraries
-		if ($enableClickMenu) {
-			$doc->getContextMenuCode();
-		}
-		if ($loadExtJs) {
-			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme);
-			if ($enableExtJsDebug) {
-				$pageRenderer->enableExtJsDebug();
-			}
-		}
-		if ($loadJQuery) {
-			$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
-		}
-		// Include custom CSS and JS files
-		if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
-			foreach ($includeCssFiles as $addCssFile) {
-				$pageRenderer->addCssFile($addCssFile);
-			}
-		}
-		if (is_array($includeJsFiles) && count($includeJsFiles) > 0) {
-			foreach ($includeJsFiles as $addJsFile) {
-				$pageRenderer->addJsFile($addJsFile);
-			}
-		}
-		if (is_array($includeRequireJsModules) && count($includeRequireJsModules) > 0) {
-			foreach ($includeRequireJsModules as $addRequireJsFile) {
-				$pageRenderer->loadRequireJsModule($addRequireJsFile);
-			}
-		}
-		// Add inline language labels
-		if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-			$extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
-			foreach ($addJsInlineLabels as $key) {
-				$label = LocalizationUtility::translate($key, $extensionKey);
-				$pageRenderer->addInlineLanguageLabel($key, $label);
-			}
-		}
-		// Render the content and return it
-		$output = $this->renderChildren();
-		$output = $doc->startPage($pageTitle) . $output;
-		$output .= $doc->endPage();
-		return $output;
-	}
-
+        // Load various standard libraries
+        if ($enableClickMenu) {
+            $doc->getContextMenuCode();
+        }
+        if ($loadExtJs) {
+            $pageRenderer->loadExtJS(true, $loadExtJsTheme);
+            if ($enableExtJsDebug) {
+                $pageRenderer->enableExtJsDebug();
+            }
+        }
+        if ($loadJQuery) {
+            $pageRenderer->loadJquery(null, null, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
+        }
+        // Include custom CSS and JS files
+        if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
+            foreach ($includeCssFiles as $addCssFile) {
+                $pageRenderer->addCssFile($addCssFile);
+            }
+        }
+        if (is_array($includeJsFiles) && count($includeJsFiles) > 0) {
+            foreach ($includeJsFiles as $addJsFile) {
+                $pageRenderer->addJsFile($addJsFile);
+            }
+        }
+        if (is_array($includeRequireJsModules) && count($includeRequireJsModules) > 0) {
+            foreach ($includeRequireJsModules as $addRequireJsFile) {
+                $pageRenderer->loadRequireJsModule($addRequireJsFile);
+            }
+        }
+        // Add inline language labels
+        if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
+            $extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
+            foreach ($addJsInlineLabels as $key) {
+                $label = LocalizationUtility::translate($key, $extensionKey);
+                $pageRenderer->addInlineLanguageLabel($key, $label);
+            }
+        }
+        // Render the content and return it
+        $output = $this->renderChildren();
+        $output = $doc->startPage($pageTitle) . $output;
+        $output .= $doc->endPage();
+        return $output;
+    }
 }

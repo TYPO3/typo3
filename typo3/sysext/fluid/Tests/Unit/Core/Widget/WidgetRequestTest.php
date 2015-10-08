@@ -24,27 +24,28 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 /**
  * Test case
  */
-class WidgetRequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class WidgetRequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function setWidgetContextAlsoSetsControllerObjectName()
+    {
+        $widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class, array('getControllerObjectName'));
+        $widgetContext->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Tx_Fluid_ControllerObjectName'));
+        $widgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('setControllerObjectName'));
+        $widgetRequest->expects($this->once())->method('setControllerObjectName')->with('Tx_Fluid_ControllerObjectName');
+        $widgetRequest->setWidgetContext($widgetContext);
+    }
 
-	/**
-	 * @test
-	 */
-	public function setWidgetContextAlsoSetsControllerObjectName() {
-		$widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class, array('getControllerObjectName'));
-		$widgetContext->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Tx_Fluid_ControllerObjectName'));
-		$widgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('setControllerObjectName'));
-		$widgetRequest->expects($this->once())->method('setControllerObjectName')->with('Tx_Fluid_ControllerObjectName');
-		$widgetRequest->setWidgetContext($widgetContext);
-	}
-
-	/**
-	 * @test
-	 */
-	public function widgetContextCanBeReadAgain() {
-		$widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-		$widgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('setControllerObjectName'));
-		$widgetRequest->setWidgetContext($widgetContext);
-		$this->assertSame($widgetContext, $widgetRequest->getWidgetContext());
-	}
-
+    /**
+     * @test
+     */
+    public function widgetContextCanBeReadAgain()
+    {
+        $widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+        $widgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('setControllerObjectName'));
+        $widgetRequest->setWidgetContext($widgetContext);
+        $this->assertSame($widgetContext, $widgetRequest->getWidgetContext());
+    }
 }

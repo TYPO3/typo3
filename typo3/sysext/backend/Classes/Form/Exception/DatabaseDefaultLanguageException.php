@@ -19,6 +19,6 @@ use TYPO3\CMS\Backend\Form\Exception;
 /**
  * Thrown if a language overlay record is handled and no default language record is found.
  */
-class DatabaseDefaultLanguageException extends Exception {
-
+class DatabaseDefaultLanguageException extends Exception
+{
 }

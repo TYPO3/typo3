@@ -20,17 +20,17 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Set rootline
  */
-class DatabasePageRootline implements FormDataProviderInterface {
-
-	/**
-	 * Fetch rootline
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$result['rootline'] = BackendUtility::BEgetRootLine($result['effectivePid'], '', TRUE);
-		return $result;
-	}
-
+class DatabasePageRootline implements FormDataProviderInterface
+{
+    /**
+     * Fetch rootline
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $result['rootline'] = BackendUtility::BEgetRootLine($result['effectivePid'], '', true);
+        return $result;
+    }
 }

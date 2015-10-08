@@ -21,42 +21,43 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 /**
  * FlagValue viewhelper
  */
-class FlagValueViewHelper extends AbstractViewHelper implements CompilableInterface {
+class FlagValueViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render additional flag information
+     *
+     * @param int $flags
+     * @return string
+     */
+    public function render($flags)
+    {
+        return static::renderStatic(
+            array(
+                'flags' => $flags,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render additional flag information
-	 *
-	 * @param int $flags
-	 * @return string
-	 */
-	public function render($flags) {
-		return static::renderStatic(
-			array(
-				'flags' => $flags,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $flags = (int)$arguments['flags'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$flags = (int)$arguments['flags'];
+        if ($flags > 0) {
+            $content = ($flags & 128 ? '<title>' : '')
+                . ($flags & 64 ? '<meta/keywords>' : '')
+                . ($flags & 32 ? '<meta/description>' : '');
 
-		if ($flags > 0) {
-			$content = ($flags & 128 ? '<title>' : '')
-				. ($flags & 64 ? '<meta/keywords>' : '')
-				. ($flags & 32 ? '<meta/description>' : '');
-
-			return htmlspecialchars($content);
-		}
-		return '';
-	}
-
+            return htmlspecialchars($content);
+        }
+        return '';
+    }
 }

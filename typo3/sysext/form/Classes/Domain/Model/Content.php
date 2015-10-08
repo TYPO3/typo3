@@ -17,84 +17,89 @@ namespace TYPO3\CMS\Form\Domain\Model;
 /**
  * Content domain model
  */
-class Content {
+class Content
+{
+    /**
+     * The uid
+     *
+     * @var int
+     */
+    protected $uid = 0;
 
-	/**
-	 * The uid
-	 *
-	 * @var int
-	 */
-	protected $uid = 0;
+    /**
+     * The page id
+     *
+     * @var int
+     */
+    protected $pageId = 0;
 
-	/**
-	 * The page id
-	 *
-	 * @var int
-	 */
-	protected $pageId = 0;
+    /**
+     * The configuration Typoscript
+     *
+     * @var array
+     */
+    protected $typoscript = array();
 
-	/**
-	 * The configuration Typoscript
-	 *
-	 * @var array
-	 */
-	protected $typoscript = array();
+    /**
+     * Sets the uid
+     *
+     * @param int $uid The uid
+     * @return void
+     */
+    public function setUid($uid)
+    {
+        $this->uid = (int)$uid;
+    }
 
-	/**
-	 * Sets the uid
-	 *
-	 * @param int $uid The uid
-	 * @return void
-	 */
-	public function setUid($uid) {
-		$this->uid = (int)$uid;
-	}
+    /**
+     * Returns the uid
+     *
+     * @return int The uid
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
 
-	/**
-	 * Returns the uid
-	 *
-	 * @return int The uid
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
+    /**
+     * Sets the page id
+     *
+     * @param int $pageId The page id
+     * @return void
+     */
+    public function setPageId($pageId)
+    {
+        $this->pageId = (int)$pageId;
+    }
 
-	/**
-	 * Sets the page id
-	 *
-	 * @param int $pageId The page id
-	 * @return void
-	 */
-	public function setPageId($pageId) {
-		$this->pageId = (int)$pageId;
-	}
+    /**
+     * Returns the page id
+     *
+     * @return int The page id
+     */
+    public function getPageId()
+    {
+        return $this->pageId;
+    }
 
-	/**
-	 * Returns the page id
-	 *
-	 * @return int The page id
-	 */
-	public function getPageId() {
-		return $this->pageId;
-	}
+    /**
+     * Sets the Typoscript configuration
+     *
+     * @param array $typoscript The Typoscript configuration
+     * @return void
+     */
+    public function setTyposcript(array $typoscript)
+    {
+        $this->typoscript = (array)$typoscript;
+    }
 
-	/**
-	 * Sets the Typoscript configuration
-	 *
-	 * @param array $typoscript The Typoscript configuration
-	 * @return void
-	 */
-	public function setTyposcript(array $typoscript) {
-		$this->typoscript = (array)$typoscript;
-	}
-
-	/**
-	 * Returns the Typoscript configuration
-	 *
-	 * @return array The Typoscript configuration
-	 */
-	public function getTyposcript() {
-		return $this->typoscript;
-	}
-
+    /**
+     * Returns the Typoscript configuration
+     *
+     * @return array The Typoscript configuration
+     */
+    public function getTyposcript()
+    {
+        return $this->typoscript;
+    }
 }

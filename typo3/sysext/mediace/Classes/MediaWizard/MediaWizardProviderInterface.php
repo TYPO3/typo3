@@ -18,22 +18,21 @@ namespace TYPO3\CMS\Mediace\MediaWizard;
  * Interface for classes which hook into tslib_mediawizard adding additional
  * media wizard providers
  */
-interface MediaWizardProviderInterface {
+interface MediaWizardProviderInterface
+{
+    /**
+     * Tells the calling party if we can handle the URL passed to the constructor
+     *
+     * @param string $url URL to be handled
+     * @return bool
+     */
+    public function canHandle($url);
 
-	/**
-	 * Tells the calling party if we can handle the URL passed to the constructor
-	 *
-	 * @param string $url URL to be handled
-	 * @return bool
-	 */
-	public function canHandle($url);
-
-	/**
-	 * Rewrites a media provider URL into a canonized form that can be embedded
-	 *
-	 * @param string $url URL to be handled
-	 * @return string Canonized URL that can be used to embed
-	 */
-	public function rewriteUrl($url);
-
+    /**
+     * Rewrites a media provider URL into a canonized form that can be embedded
+     *
+     * @param string $url URL to be handled
+     * @return string Canonized URL that can be used to embed
+     */
+    public function rewriteUrl($url);
 }

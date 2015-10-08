@@ -21,50 +21,50 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Contains a preview rendering for the page module of CType="textmedia"
  */
-class TextmediaPreviewRenderer implements PageLayoutViewDrawItemHookInterface {
+class TextmediaPreviewRenderer implements PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of a content element of type "textmedia"
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionality
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     *
+     * @return void
+     */
+    public function preProcess(
+        PageLayoutView &$parentObject,
+        &$drawItem,
+        &$headerContent,
+        &$itemContent,
+        array &$row
+    ) {
+        if ($row['CType'] === 'textmedia') {
+            if ($row['bodytext']) {
+                $itemContent .= $parentObject->linkEditContent($parentObject->renderText($row['bodytext']), $row) . '<br />';
+            }
 
-	/**
-	 * Preprocesses the preview rendering of a content element of type "textmedia"
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionality
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 *
-	 * @return void
-	 */
-	public function preProcess(
-		PageLayoutView &$parentObject,
-		&$drawItem,
-		&$headerContent,
-		&$itemContent,
-		array &$row
-	) {
-		if ($row['CType'] === 'textmedia') {
-			if ($row['bodytext']) {
-				$itemContent .= $parentObject->linkEditContent($parentObject->renderText($row['bodytext']), $row) . '<br />';
-			}
+            if ($row['media']) {
+                $itemContent .= $parentObject->thumbCode($row, 'tt_content', 'media') . '<br />';
 
-			if ($row['media']) {
-				$itemContent .= $parentObject->thumbCode($row, 'tt_content', 'media') . '<br />';
+                $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'media', $row);
 
-				$fileReferences = BackendUtility::resolveFileReferences('tt_content', 'media', $row);
+                if (!empty($fileReferences)) {
+                    $linkedContent = '';
 
-				if (!empty($fileReferences)) {
-					$linkedContent = '';
+                    foreach ($fileReferences as $fileReference) {
+                        $linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
+                    }
 
-					foreach ($fileReferences as $fileReference) {
-						$linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
-					}
+                    $itemContent .= $parentObject->linkEditContent($linkedContent, $row);
 
-					$itemContent .= $parentObject->linkEditContent($linkedContent, $row);
+                    unset($linkedContent);
+                }
+            }
 
-					unset($linkedContent);
-				}
-			}
-
-			$drawItem = FALSE;
-		}
-	}
+            $drawItem = false;
+        }
+    }
 }

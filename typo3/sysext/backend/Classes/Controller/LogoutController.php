@@ -23,56 +23,58 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
  * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
  */
-class LogoutController {
+class LogoutController
+{
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it is rather simple for now
+     * This will be split up in an abstract controller once proper routing/dispatcher is in place.
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function logoutAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->logout();
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * As this controller goes only through the main() method, it is rather simple for now
-	 * This will be split up in an abstract controller once proper routing/dispatcher is in place.
-	 *
-	 * @param ServerRequestInterface $request the current request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface the response with the content
-	 */
-	public function logoutAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->logout();
+        $redirectUrl = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
+        $redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
+        if (empty($redirectUrl)) {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', array(), $uriBuilder::ABSOLUTE_URL);
+        }
+        return $response
+            ->withStatus(303)
+            ->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectUrl));
+    }
 
-		$redirectUrl = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
-		$redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
-		if (empty($redirectUrl)) {
-			/** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-			$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-			$redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', array(), $uriBuilder::ABSOLUTE_URL);
-		}
-		return $response
-			->withStatus(303)
-			->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectUrl));
-	}
+    /**
+     * Performs the logout processing
+     *
+     * @return void
+     */
+    public function logout()
+    {
+        if (empty($this->getBackendUser()->user['username'])) {
+            return;
+        }
+        // Logout written to log
+        $this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
+        /** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
+        $backendFormProtection = FormProtectionFactory::get();
+        $backendFormProtection->removeSessionTokenFromRegistry();
+        $this->getBackendUser()->logoff();
+    }
 
-	/**
-	 * Performs the logout processing
-	 *
-	 * @return void
-	 */
-	public function logout() {
-		if (empty($this->getBackendUser()->user['username'])) {
-			return;
-		}
-		// Logout written to log
-		$this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
-		/** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
-		$backendFormProtection = FormProtectionFactory::get();
-		$backendFormProtection->removeSessionTokenFromRegistry();
-		$this->getBackendUser()->logoff();
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

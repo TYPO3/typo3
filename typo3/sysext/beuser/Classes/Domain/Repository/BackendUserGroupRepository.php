@@ -17,23 +17,24 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup
  */
-class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+    /**
+     * @var array Default order is by title ascending
+     */
+    protected $defaultOrderings = array(
+        'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+    );
 
-	/**
-	 * @var array Default order is by title ascending
-	 */
-	protected $defaultOrderings = array(
-		'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-	);
-
-	/**
-	 * Overwrite createQuery to don't respect enable fields
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-	 */
-	public function createQuery() {
-		$query = parent::createQuery();
-		$query->getQuerySettings()->setIgnoreEnableFields(TRUE);
-		return $query;
-	}
+    /**
+     * Overwrite createQuery to don't respect enable fields
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     */
+    public function createQuery()
+    {
+        $query = parent::createQuery();
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+        return $query;
+    }
 }

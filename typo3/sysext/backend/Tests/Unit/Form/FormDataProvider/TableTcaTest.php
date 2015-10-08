@@ -20,54 +20,57 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TableTca;
 /**
  * Test case
  */
-class TableTcaTest extends UnitTestCase {
+class TableTcaTest extends UnitTestCase
+{
+    /**
+     * @var TableTca
+     */
+    protected $subject;
 
-	/**
-	 * @var TableTca
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new TableTca();
+    }
 
-	protected function setUp() {
-		$this->subject = new TableTca();
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsTableTcaFromGlobalsInResult()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
+        $expected = array('foo');
+        $GLOBALS['TCA'][$input['tableName']] = $expected;
+        $result = $this->subject->addData($input);
+        $this->assertEquals($expected, $result['vanillaTableTca']);
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsTableTcaFromGlobalsInResult() {
-		$input = [
-			'tableName' => 'aTable',
-		];
-		$expected = array('foo');
-		$GLOBALS['TCA'][$input['tableName']] = $expected;
-		$result = $this->subject->addData($input);
-		$this->assertEquals($expected, $result['vanillaTableTca']);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet() {
-		$input = [
-			'tableName' => 'aTable',
-		];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437914223);
 
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437914223);
+        $this->subject->addData($input);
+    }
 
-		$this->subject->addData($input);
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
+        $GLOBALS['TCA'][$input['tableName']] = 'foo';
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437914223);
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray() {
-		$input = [
-			'tableName' => 'aTable',
-		];
-		$GLOBALS['TCA'][$input['tableName']] = 'foo';
-		$this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437914223);
-
-		$this->subject->addData($input);
-	}
-
+        $this->subject->addData($input);
+    }
 }

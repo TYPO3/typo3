@@ -20,62 +20,62 @@ namespace TYPO3\CMS\Install\Configuration;
  * A preset is a class for handling a specific configuration
  * set of a feature.
  */
-interface PresetInterface {
+interface PresetInterface
+{
+    /**
+     * Set POST values
+     *
+     * @param array $postValues Post values of feature
+     * @return mixed
+     */
+    public function setPostValues(array $postValues);
 
-	/**
-	 * Set POST values
-	 *
-	 * @param array $postValues Post values of feature
-	 * @return mixed
-	 */
-	public function setPostValues(array $postValues);
+    /**
+     * Check if preset is available on the system
+     *
+     * @return bool TRUE if preset is available
+     */
+    public function isAvailable();
 
-	/**
-	 * Check if preset is available on the system
-	 *
-	 * @return bool TRUE if preset is available
-	 */
-	public function isAvailable();
+    /**
+     * Wrapper for isAvailable, used in fluid
+     *
+     * @return bool TRUE if preset is available
+     */
+    public function getIsAvailable();
 
-	/**
-	 * Wrapper for isAvailable, used in fluid
-	 *
-	 * @return bool TRUE if preset is available
-	 */
-	public function getIsAvailable();
+    /**
+     * Check is preset is currently active on the system
+     *
+     * @return bool TRUE if preset is active
+     */
+    public function isActive();
 
-	/**
-	 * Check is preset is currently active on the system
-	 *
-	 * @return bool TRUE if preset is active
-	 */
-	public function isActive();
+    /**
+     * Wrapper for isActive, used in fluid
+     *
+     * @return bool TRUE if preset is active
+     */
+    public function getIsActive();
 
-	/**
-	 * Wrapper for isActive, used in fluid
-	 *
-	 * @return bool TRUE if preset is active
-	 */
-	public function getIsActive();
+    /**
+     * Get name of preset
+     *
+     * @return string Name
+     */
+    public function getName();
 
-	/**
-	 * Get name of preset
-	 *
-	 * @return string Name
-	 */
-	public function getName();
+    /**
+     * Get priority of preset
+     *
+     * @return int Priority, usually between 0 and 100
+     */
+    public function getPriority();
 
-	/**
-	 * Get priority of preset
-	 *
-	 * @return int Priority, usually between 0 and 100
-	 */
-	public function getPriority();
-
-	/**
-	 * Get configuration values to activate prefix
-	 *
-	 * @return array Configuration values needed to activate prefix
-	 */
-	public function getConfigurationValues();
+    /**
+     * Get configuration values to activate prefix
+     *
+     * @return array Configuration values needed to activate prefix
+     */
+    public function getConfigurationValues();
 }

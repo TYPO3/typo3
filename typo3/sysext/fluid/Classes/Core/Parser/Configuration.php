@@ -15,43 +15,44 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
  */
-class Configuration {
+class Configuration
+{
+    /**
+     * Generic interceptors registered with the configuration.
+     *
+     * @var array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
+     */
+    protected $interceptors = array();
 
-	/**
-	 * Generic interceptors registered with the configuration.
-	 *
-	 * @var array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
-	 */
-	protected $interceptors = array();
+    /**
+     * Adds an interceptor to apply to values coming from object accessors.
+     *
+     * @param \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor
+     * @return void
+     */
+    public function addInterceptor(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor)
+    {
+        foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
+            if (!isset($this->interceptors[$interceptionPoint])) {
+                $this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+            }
+            if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
+                $this->interceptors[$interceptionPoint]->attach($interceptor);
+            }
+        }
+    }
 
-	/**
-	 * Adds an interceptor to apply to values coming from object accessors.
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor
-	 * @return void
-	 */
-	public function addInterceptor(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor) {
-		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
-			if (!isset($this->interceptors[$interceptionPoint])) {
-				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
-			}
-			if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
-				$this->interceptors[$interceptionPoint]->attach($interceptor);
-			}
-		}
-	}
-
-	/**
-	 * Returns all interceptors for a given Interception Point.
-	 *
-	 * @param int $interceptionPoint one of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants,
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface>
-	 */
-	public function getInterceptors($interceptionPoint) {
-		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
-			return $this->interceptors[$interceptionPoint];
-		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
-	}
-
+    /**
+     * Returns all interceptors for a given Interception Point.
+     *
+     * @param int $interceptionPoint one of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants,
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface>
+     */
+    public function getInterceptors($interceptionPoint)
+    {
+        if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
+            return $this->interceptors[$interceptionPoint];
+        }
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+    }
 }

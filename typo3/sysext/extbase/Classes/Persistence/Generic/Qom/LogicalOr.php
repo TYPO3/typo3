@@ -22,54 +22,57 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * satisfy constraint2 but not constraint1, or
  * satisfy both constraint1 and constraint2.
  */
-class LogicalOr implements OrInterface {
+class LogicalOr implements OrInterface
+{
+    /**
+     * @var ConstraintInterface
+     */
+    protected $constraint1;
 
-	/**
-	 * @var ConstraintInterface
-	 */
-	protected $constraint1;
+    /**
+     * @var ConstraintInterface
+     */
+    protected $constraint2;
 
-	/**
-	 * @var ConstraintInterface
-	 */
-	protected $constraint2;
+    /**
+     * @param ConstraintInterface $constraint1
+     * @param ConstraintInterface $constraint2
+     */
+    public function __construct(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
+    {
+        $this->constraint1 = $constraint1;
+        $this->constraint2 = $constraint2;
+    }
 
-	/**
-	 * @param ConstraintInterface $constraint1
-	 * @param ConstraintInterface $constraint2
-	 */
-	public function __construct(ConstraintInterface $constraint1, ConstraintInterface $constraint2) {
-		$this->constraint1 = $constraint1;
-		$this->constraint2 = $constraint2;
-	}
+    /**
+     * Fills an array with the names of all bound variables in the constraints
+     *
+     * @param array &$boundVariables
+     * @return void
+     */
+    public function collectBoundVariableNames(&$boundVariables)
+    {
+        $this->constraint1->collectBoundVariablenames($boundVariables);
+        $this->constraint2->collectBoundVariablenames($boundVariables);
+    }
 
-	/**
-	 * Fills an array with the names of all bound variables in the constraints
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-		$this->constraint1->collectBoundVariablenames($boundVariables);
-		$this->constraint2->collectBoundVariablenames($boundVariables);
-	}
+    /**
+     * Gets the first constraint.
+     *
+     * @return ConstraintInterface the constraint; non-null
+     */
+    public function getConstraint1()
+    {
+        return $this->constraint1;
+    }
 
-	/**
-	 * Gets the first constraint.
-	 *
-	 * @return ConstraintInterface the constraint; non-null
-	 */
-	public function getConstraint1() {
-		return $this->constraint1;
-	}
-
-	/**
-	 * Gets the second constraint.
-	 *
-	 * @return ConstraintInterface the constraint; non-null
-	 */
-	public function getConstraint2() {
-		return $this->constraint2;
-	}
-
+    /**
+     * Gets the second constraint.
+     *
+     * @return ConstraintInterface the constraint; non-null
+     */
+    public function getConstraint2()
+    {
+        return $this->constraint2;
+    }
 }

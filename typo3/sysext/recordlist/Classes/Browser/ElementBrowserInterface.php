@@ -14,19 +14,18 @@ namespace TYPO3\CMS\Recordlist\Browser;
  * The TYPO3 project - inspiring people to share!
  */
 
-interface ElementBrowserInterface {
+interface ElementBrowserInterface
+{
+    /**
+     * @return string HTML content
+     */
+    public function render();
 
-	/**
-	 * @return string HTML content
-	 */
-	public function render();
-
-	/**
-	 * Session data for this class can be set from outside with this method.
-	 *
-	 * @param mixed[] $data Session data array
-	 * @return array[] Session data and boolean which indicates that data needs to be stored in session because it's changed
-	 */
-	public function processSessionData($data);
-
+    /**
+     * Session data for this class can be set from outside with this method.
+     *
+     * @param mixed[] $data Session data array
+     * @return array[] Session data and boolean which indicates that data needs to be stored in session because it's changed
+     */
+    public function processSessionData($data);
 }

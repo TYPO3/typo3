@@ -20,85 +20,87 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues;
 /**
  * Test case
  */
-class DatabaseRecordOverrideValuesTest extends UnitTestCase {
+class DatabaseRecordOverrideValuesTest extends UnitTestCase
+{
+    /**
+     * @var DatabaseRecordOverrideValues
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabaseRecordOverrideValues
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new DatabaseRecordOverrideValues();
+    }
 
-	protected function setUp() {
-		$this->subject = new DatabaseRecordOverrideValues();
-	}
+    /**
+     * @test
+     */
+    public function addDataReturnSameDataIfNoOverrideValuesSet()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'uid' => 42,
+            ],
+            'overrideValues' => [
+                'anotherField' => 13,
+            ]
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataReturnSameDataIfNoOverrideValuesSet() {
-		$input = [
-			'tableName' => 'aTable',
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'input',
-						],
-					],
-				],
-			],
-			'databaseRow' => [
-				'uid' => 42,
-			],
-			'overrideValues' => [
-				'anotherField' => 13,
-			]
-		];
+        $this->assertSame($input, $this->subject->addData($input));
+    }
 
-		$this->assertSame($input, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsDatabaseRowAndTcaType()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'vanillaTableTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'anotherField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'uid' => 42,
+            ],
+            'overrideValues' => [
+                'aField' => 256,
+                'anotherField' => 13,
+            ]
+        ];
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsDatabaseRowAndTcaType() {
-		$input = [
-			'tableName' => 'aTable',
-			'vanillaTableTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'input',
-						],
-					],
-					'anotherField' => [
-						'config' => [
-							'type' => 'input',
-						],
-					],
-				],
-			],
-			'databaseRow' => [
-				'uid' => 42,
-			],
-			'overrideValues' => [
-				'aField' => 256,
-				'anotherField' => 13,
-			]
-		];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = 256;
+        $expected['databaseRow']['anotherField'] = 13;
+        $expected['vanillaTableTca']['columns']['aField']['config'] = [
+            'type' => 'hidden',
+            'renderType' => 'hidden',
+        ];
+        $expected['vanillaTableTca']['columns']['anotherField']['config'] = [
+            'type' => 'hidden',
+            'renderType' => 'hidden',
+        ];
 
-		$expected = $input;
-		$expected['databaseRow']['aField'] = 256;
-		$expected['databaseRow']['anotherField'] = 13;
-		$expected['vanillaTableTca']['columns']['aField']['config'] = [
-			'type' => 'hidden',
-			'renderType' => 'hidden',
-		];
-		$expected['vanillaTableTca']['columns']['anotherField']['config'] = [
-			'type' => 'hidden',
-			'renderType' => 'hidden',
-		];
-
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

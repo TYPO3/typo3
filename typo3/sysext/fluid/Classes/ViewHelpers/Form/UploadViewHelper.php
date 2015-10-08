@@ -35,49 +35,50 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
+class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'input';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
+    /**
+     * Initialize the arguments.
+     *
+     * @return void
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+        $this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
+        $this->registerUniversalTagAttributes();
+    }
 
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
-		$this->registerUniversalTagAttributes();
-	}
+    /**
+     * Renders the upload field.
+     *
+     * @return string
+     * @api
+     */
+    public function render()
+    {
+        $name = $this->getName();
+        $allowedFields = array('name', 'type', 'tmp_name', 'error', 'size');
+        foreach ($allowedFields as $fieldName) {
+            $this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
+        }
+        $this->tag->addAttribute('type', 'file');
 
-	/**
-	 * Renders the upload field.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function render() {
-		$name = $this->getName();
-		$allowedFields = array('name', 'type', 'tmp_name', 'error', 'size');
-		foreach ($allowedFields as $fieldName) {
-			$this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
-		}
-		$this->tag->addAttribute('type', 'file');
+        if (isset($this->arguments['multiple'])) {
+            $this->tag->addAttribute('name', $name . '[]');
+        } else {
+            $this->tag->addAttribute('name', $name);
+        }
 
-		if (isset($this->arguments['multiple'])) {
-			$this->tag->addAttribute('name', $name . '[]');
-		} else {
-			$this->tag->addAttribute('name', $name);
-		}
-
-		$this->setErrorClassAttribute();
-		return $this->tag->render();
-	}
-
+        $this->setErrorClassAttribute();
+        return $this->tag->render();
+    }
 }

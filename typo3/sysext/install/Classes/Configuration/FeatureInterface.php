@@ -17,27 +17,27 @@ namespace TYPO3\CMS\Install\Configuration;
 /**
  * A feature representation handles preset classes.
  */
-interface FeatureInterface {
+interface FeatureInterface
+{
+    /**
+     * Initialize presets
+     *
+     * @param array $postValues List of $POST values of this feature
+     * @return void
+     */
+    public function initializePresets(array $postValues);
 
-	/**
-	 * Initialize presets
-	 *
-	 * @param array $postValues List of $POST values of this feature
-	 * @return void
-	 */
-	public function initializePresets(array $postValues);
+    /**
+     * Get list of presets ordered by priority
+     *
+     * @return array<PresetInterface>
+     */
+    public function getPresetsOrderedByPriority();
 
-	/**
-	 * Get list of presets ordered by priority
-	 *
-	 * @return array<PresetInterface>
-	 */
-	public function getPresetsOrderedByPriority();
-
-	/**
-	 * Get name of feature
-	 *
-	 * @return string Name
-	 */
-	public function getName();
+    /**
+     * Get name of feature
+     *
+     * @return string Name
+     */
+    public function getName();
 }

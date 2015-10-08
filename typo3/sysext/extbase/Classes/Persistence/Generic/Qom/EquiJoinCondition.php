@@ -21,96 +21,102 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the selector2Name node has a property named property2Name, and
  * the value of property property1Name is equal to the value of property property2Name.
  */
-class EquiJoinCondition implements EquiJoinConditionInterface {
+class EquiJoinCondition implements EquiJoinConditionInterface
+{
+    /**
+     * @var string
+     */
+    protected $selector1Name;
 
-	/**
-	 * @var string
-	 */
-	protected $selector1Name;
+    /**
+     * @var string
+     */
+    protected $property1Name;
 
-	/**
-	 * @var string
-	 */
-	protected $property1Name;
+    /**
+     * @var string
+     */
+    protected $selector2Name;
 
-	/**
-	 * @var string
-	 */
-	protected $selector2Name;
+    /**
+     * @var string
+     */
+    protected $property2Name;
 
-	/**
-	 * @var string
-	 */
-	protected $property2Name;
+    /**
+     * Constructs this EquiJoinCondition instance
+     *
+     * @param string $selector1Name the name of the first selector; non-null
+     * @param string $property1Name the property name in the first selector; non-null
+     * @param string $selector2Name the name of the second selector; non-null
+     * @param string $property2Name the property name in the second selector; non-null
+     */
+    public function __construct($selector1Name, $property1Name, $selector2Name, $property2Name)
+    {
+        // @todo Test for selector1Name = selector2Name -> exception
+        $this->selector1Name = $selector1Name;
+        $this->property1Name = $property1Name;
+        $this->selector2Name = $selector2Name;
+        $this->property2Name = $property2Name;
+    }
 
-	/**
-	 * Constructs this EquiJoinCondition instance
-	 *
-	 * @param string $selector1Name the name of the first selector; non-null
-	 * @param string $property1Name the property name in the first selector; non-null
-	 * @param string $selector2Name the name of the second selector; non-null
-	 * @param string $property2Name the property name in the second selector; non-null
-	 */
-	public function __construct($selector1Name, $property1Name, $selector2Name, $property2Name) {
-		// @todo Test for selector1Name = selector2Name -> exception
-		$this->selector1Name = $selector1Name;
-		$this->property1Name = $property1Name;
-		$this->selector2Name = $selector2Name;
-		$this->property2Name = $property2Name;
-	}
+    /**
+     * Gets the name of the first selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelector1Name()
+    {
+        return $this->selector1Name;
+    }
 
-	/**
-	 * Gets the name of the first selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelector1Name() {
-		return $this->selector1Name;
-	}
+    /**
+     * Gets the name of the first property.
+     *
+     * @return string the property name; non-null
+     */
+    public function getProperty1Name()
+    {
+        return $this->property1Name;
+    }
 
-	/**
-	 * Gets the name of the first property.
-	 *
-	 * @return string the property name; non-null
-	 */
-	public function getProperty1Name() {
-		return $this->property1Name;
-	}
+    /**
+     * Gets the name of the second selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getSelector2Name()
+    {
+        return $this->selector2Name;
+    }
 
-	/**
-	 * Gets the name of the second selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getSelector2Name() {
-		return $this->selector2Name;
-	}
+    /**
+     * Gets the name of the second property.
+     *
+     * @return string the property name; non-null
+     */
+    public function getProperty2Name()
+    {
+        return $this->property2Name;
+    }
 
-	/**
-	 * Gets the name of the second property.
-	 *
-	 * @return string the property name; non-null
-	 */
-	public function getProperty2Name() {
-		return $this->property2Name;
-	}
+    /**
+     * Gets the name of the child selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getChildSelectorName()
+    {
+        return '';
+    }
 
-	/**
-	 * Gets the name of the child selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getChildSelectorName() {
-		return '';
-	}
-
-	/**
-	 * Gets the name of the parent selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getParentSelectorName() {
-		return '';
-	}
-
+    /**
+     * Gets the name of the parent selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getParentSelectorName()
+    {
+        return '';
+    }
 }

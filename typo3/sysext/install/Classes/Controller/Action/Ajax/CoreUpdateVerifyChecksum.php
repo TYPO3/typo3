@@ -17,21 +17,21 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Verify checksum of a downloaded core
  */
-class CoreUpdateVerifyChecksum extends AbstractCoreUpdate {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return array Rendered content
-	 */
-	protected function executeAction() {
-		$this->view->assignMultiple(
-			array(
-				'success' => $this->coreUpdateService->verifyFileChecksum($this->getVersionToHandle()),
-				'status' => $this->coreUpdateService->getMessages(),
-			)
-		);
-		return $this->view->render();
-	}
-
+class CoreUpdateVerifyChecksum extends AbstractCoreUpdate
+{
+    /**
+     * Executes the action
+     *
+     * @return array Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->view->assignMultiple(
+            array(
+                'success' => $this->coreUpdateService->verifyFileChecksum($this->getVersionToHandle()),
+                'status' => $this->coreUpdateService->getMessages(),
+            )
+        );
+        return $this->view->render();
+    }
 }

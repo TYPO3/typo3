@@ -15,24 +15,24 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
-	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param string $tag The tag the entries must have
-	 * @return void
-	 * @api
-	 */
-	public function flushByTag($tag);
+interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+{
+    /**
+     * Removes all cache entries of this cache which are tagged by the specified tag.
+     *
+     * @param string $tag The tag the entries must have
+     * @return void
+     * @api
+     */
+    public function flushByTag($tag);
 
-	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tag
-	 *
-	 * @param string $tag The tag to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @api
-	 */
-	public function findIdentifiersByTag($tag);
-
+    /**
+     * Finds and returns all cache entry identifiers which are tagged by the
+     * specified tag
+     *
+     * @param string $tag The tag to search for
+     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+     * @api
+     */
+    public function findIdentifiersByTag($tag);
 }

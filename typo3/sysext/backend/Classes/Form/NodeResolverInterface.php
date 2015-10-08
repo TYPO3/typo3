@@ -17,21 +17,20 @@ namespace TYPO3\CMS\Backend\Form;
 /**
  * Interface must be implemented by node resolver classes
  */
-interface NodeResolverInterface {
+interface NodeResolverInterface
+{
+    /**
+     * Main data array is received by NodeFactory
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data Main data array
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data);
 
-	/**
-	 * Main data array is received by NodeFactory
-	 *
-	 * @param NodeFactory $nodeFactory
-	 * @param array $data Main data array
-	 */
-	public function __construct(NodeFactory $nodeFactory, array $data);
-
-	/**
-	 * Main resolver method
-	 *
-	 * @return string|void New class name or void if this resolver does not change current class name.
-	 */
-	public function resolve();
-
+    /**
+     * Main resolver method
+     *
+     * @return string|void New class name or void if this resolver does not change current class name.
+     */
+    public function resolve();
 }

@@ -21,71 +21,75 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Holds url + dimensions of avatar image
  */
-class Image {
+class Image
+{
+    /**
+     * Url of avatar image. Needs to be relative to the website root or an absolute URL.
+     *
+     * @var string
+     */
+    protected $url;
 
-	/**
-	 * Url of avatar image. Needs to be relative to the website root or an absolute URL.
-	 *
-	 * @var string
-	 */
-	protected $url;
+    /**
+     * @var int
+     */
+    protected $width;
 
-	/**
-	 * @var int
-	 */
-	protected $width;
+    /**
+     * @var int
+     */
+    protected $height;
 
-	/**
-	 * @var int
-	 */
-	protected $height;
+    /**
+     * Constructor
+     *
+     * @param string $url url of image. Needs to be relative to the website root or an absolute URL.
+     * @param int $width width of image
+     * @param int $height height of image
+     */
+    public function __construct($url, $width, $height)
+    {
+        $this->url = $url;
+        $this->width = (int)$width;
+        $this->height = (int)$height;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $url url of image. Needs to be relative to the website root or an absolute URL.
-	 * @param int $width width of image
-	 * @param int $height height of image
-	 */
-	public function __construct($url, $width, $height) {
-		$this->url = $url;
-		$this->width = (int)$width;
-		$this->height = (int)$height;
-	}
+    /**
+     * Get url
+     *
+     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all.
+     * @return string
+     */
+    public function getUrl($relativeToCurrentScript = false)
+    {
+        $url = $this->url;
 
-	/**
-	 * Get url
-	 *
-	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all.
-	 * @return string
-	 */
-	public function getUrl($relativeToCurrentScript = FALSE) {
-		$url = $this->url;
+        if ($relativeToCurrentScript && !GeneralUtility::isValidUrl($url)) {
+            $absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $url);
+            $pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
+            $filePart = substr(PATH_site . $url, strlen($absolutePathToContainingFolder) + 1);
+            $url = $pathPart . $filePart;
+        }
+        return $url;
+    }
 
-		if ($relativeToCurrentScript && !GeneralUtility::isValidUrl($url)) {
-			$absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $url);
-			$pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
-			$filePart = substr(PATH_site . $url, strlen($absolutePathToContainingFolder) + 1);
-			$url = $pathPart . $filePart;
-		}
-		return $url;
-	}
+    /**
+     * Get width
+     *
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
 
-	/**
-	 * Get width
-	 *
-	 * @return int
-	 */
-	public function getWidth() {
-		return $this->width;
-	}
-
-	/**
-	 * Get height
-	 *
-	 * @return int
-	 */
-	public function getHeight() {
-		return $this->height;
-	}
+    /**
+     * Get height
+     *
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
 }

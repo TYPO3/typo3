@@ -19,33 +19,33 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Internal core charset handling preset
  */
-class CoreInternalPreset extends Configuration\AbstractPreset {
+class CoreInternalPreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'CoreInternal';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'CoreInternal';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 20;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 20;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'SYS/t3lib_cs_convMethod' => '',
+        'SYS/t3lib_cs_utils' => '',
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'SYS/t3lib_cs_convMethod' => '',
-		'SYS/t3lib_cs_utils' => '',
-	);
-
-	/**
-	 * Internal core handling is always available
-	 *
-	 * @return bool TRUE
-	 */
-	public function isAvailable() {
-		return TRUE;
-	}
-
+    /**
+     * Internal core handling is always available
+     *
+     * @return bool TRUE
+     */
+    public function isAvailable()
+    {
+        return true;
+    }
 }

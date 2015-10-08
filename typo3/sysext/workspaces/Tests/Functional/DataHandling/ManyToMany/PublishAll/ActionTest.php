@@ -17,296 +17,313 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\ManyToMany\PublishA
 /**
  * Functional test for the DataHandler
  */
-class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\ManyToMany\AbstractActionTestCase {
+class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\ManyToMany\AbstractActionTestCase
+{
+    /**
+     * @var string
+     */
+    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/PublishAll/DataSet/';
 
-	/**
-	 * @var string
-	 */
-	protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/PublishAll/DataSet/';
+    /**
+     * MM Relations
+     */
 
-	/**
-	 * MM Relations
-	 */
+    /**
+     * @test
+     * @see DataSet/Assertion/addCategoryRelation.csv
+     */
+    public function addCategoryRelation()
+    {
+        parent::addCategoryRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('addCategoryRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/addCategoryRelation.csv
-	 */
-	public function addCategoryRelation() {
-		parent::addCategoryRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('addCategoryRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category A.A'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category A.A'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/deleteCategoryRelation.csv
+     */
+    public function deleteCategoryRelation()
+    {
+        parent::deleteCategoryRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('deleteCategoryRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/deleteCategoryRelation.csv
-	 */
-	public function deleteCategoryRelation() {
-		parent::deleteCategoryRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('deleteCategoryRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/changeCategoryRelationSorting.csv
+     */
+    public function changeCategoryRelationSorting()
+    {
+        parent::changeCategoryRelationSorting();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('changeCategoryRelationSorting');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/changeCategoryRelationSorting.csv
-	 */
-	public function changeCategoryRelationSorting() {
-		parent::changeCategoryRelationSorting();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('changeCategoryRelationSorting');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/createContentRecordAndAddCategoryRelation.csv
+     */
+    public function createContentAndAddRelation()
+    {
+        parent::createContentAndAddRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createContentNAddRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/createContentRecordAndAddCategoryRelation.csv
-	 */
-	public function createContentAndAddRelation() {
-		parent::createContentAndAddRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('createContentNAddRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/createCategoryRecordAndAddCategoryRelation.csv
+     */
+    public function createCategoryAndAddRelation()
+    {
+        parent::createCategoryAndAddRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createCategoryNAddRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/createCategoryRecordAndAddCategoryRelation.csv
-	 */
-	public function createCategoryAndAddRelation() {
-		parent::createCategoryAndAddRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('createCategoryNAddRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/createContentRecordAndCreateCategoryRelation.csv
+     */
+    public function createContentAndCreateRelation()
+    {
+        parent::createContentAndCreateRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createContentNCreateRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/createContentRecordAndCreateCategoryRelation.csv
-	 */
-	public function createContentAndCreateRelation() {
-		parent::createContentAndCreateRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('createContentNCreateRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/createCategoryRecordAndCreateCategoryRelation.csv
+     */
+    public function createCategoryAndCreateRelation()
+    {
+        parent::createCategoryAndCreateRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('createCategoryNCreateRelation');
+    }
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/createCategoryRecordAndCreateCategoryRelation.csv
-	 */
-	public function createCategoryAndCreateRelation() {
-		parent::createCategoryAndCreateRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('createCategoryNCreateRelation');
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
+     */
+    public function modifyCategoryOfRelation()
+    {
+        parent::modifyCategoryOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('modifyCategoryOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/modifyCategoryRecordOfCategoryRelation.csv
-	 */
-	public function modifyCategoryOfRelation() {
-		parent::modifyCategoryOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('modifyCategoryOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
+     */
+    public function modifyContentOfRelation()
+    {
+        parent::modifyContentOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('modifyContentOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/modifyContentRecordOfCategoryRelation.csv
-	 */
-	public function modifyContentOfRelation() {
-		parent::modifyContentOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('modifyContentOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
+     */
+    public function modifyBothsOfRelation()
+    {
+        parent::modifyBothsOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('modifyBothsOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/modifyBothRecordsOfCategoryRelation.csv
-	 */
-	public function modifyBothsOfRelation() {
-		parent::modifyBothsOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('modifyBothsOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
+     */
+    public function deleteContentOfRelation()
+    {
+        parent::deleteContentOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('deleteContentOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/deleteContentRecordOfCategoryRelation.csv
-	 */
-	public function deleteContentOfRelation() {
-		parent::deleteContentOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('deleteContentOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
+     */
+    public function deleteCategoryOfRelation()
+    {
+        parent::deleteCategoryOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('deleteCategoryOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/deleteCategoryRecordOfCategoryRelation.csv
-	 */
-	public function deleteCategoryOfRelation() {
-		parent::deleteCategoryOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('deleteCategoryOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
+     */
+    public function copyContentOfRelation()
+    {
+        parent::copyContentOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('copyContentOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/copyContentRecordOfCategoryRelation.csv
-	 */
-	public function copyContentOfRelation() {
-		parent::copyContentOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('copyContentOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
+     */
+    public function copyCategoryOfRelation()
+    {
+        parent::copyCategoryOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('copyCategoryOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
-	 */
-	public function copyCategoryOfRelation() {
-		parent::copyCategoryOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('copyCategoryOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
+     */
+    public function localizeContentOfRelation()
+    {
+        parent::localizeContentOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizeContentOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/localizeContentRecordOfCategoryRelation.csv
-	 */
-	public function localizeContentOfRelation() {
-		parent::localizeContentOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('localizeContentOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
+     */
+    public function localizeCategoryOfRelation()
+    {
+        parent::localizeCategoryOfRelation();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizeCategoryOfRelation');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/localizeCategoryRecordOfCategoryRelation.csv
-	 */
-	public function localizeCategoryOfRelation() {
-		parent::localizeCategoryOfRelation();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('localizeCategoryOfRelation');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('[Translate to Dansk:] Category A', 'Category B'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('[Translate to Dansk:] Category A', 'Category B'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
+     */
+    public function moveContentOfRelationToDifferentPage()
+    {
+        parent::moveContentOfRelationToDifferentPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/moveContentRecordOfCategoryRelationToDifferentPage.csv
-	 */
-	public function moveContentOfRelationToDifferentPage() {
-		parent::moveContentOfRelationToDifferentPage();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0)->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
-	}
+    /**
+     * @test
+     * @see DataSet/Assertion/copyPage.csv
+     */
+    public function copyPage()
+    {
+        parent::copyPage();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('copyPage');
 
-	/**
-	 * @test
-	 * @see DataSet/Assertion/copyPage.csv
-	 */
-	public function copyPage() {
-		parent::copyPage();
-		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-		$this->assertAssertionDataSet('copyPage');
-
-		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'])->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
-		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField('categories')
-			->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
-	}
-
+        $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'])->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
 }

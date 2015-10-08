@@ -21,19 +21,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * would return true, where childSelectorNode is the node for childSelector and
  * parentSelectorNode is the node for parentSelector.
  */
-interface EquiJoinConditionInterface extends JoinConditionInterface {
+interface EquiJoinConditionInterface extends JoinConditionInterface
+{
+    /**
+     * Gets the name of the child selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getChildSelectorName();
 
-	/**
-	 * Gets the name of the child selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getChildSelectorName();
-
-	/**
-	 * Gets the name of the parent selector.
-	 *
-	 * @return string the selector name; non-null
-	 */
-	public function getParentSelectorName();
+    /**
+     * Gets the name of the parent selector.
+     *
+     * @return string the selector name; non-null
+     */
+    public function getParentSelectorName();
 }

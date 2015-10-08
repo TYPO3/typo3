@@ -22,59 +22,62 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 /**
  * Exception handler class for content object rendering
  */
-class ProductionExceptionHandler implements ExceptionHandlerInterface {
+class ProductionExceptionHandler implements ExceptionHandlerInterface
+{
+    /**
+     * @var array
+     */
+    protected $configuration = array();
 
-	/**
-	 * @var array
-	 */
-	protected $configuration = array();
+    /**
+     * @param array $configuration
+     */
+    public function __construct(array $configuration = array())
+    {
+        $this->configuration = $configuration;
+    }
 
-	/**
-	 * @param array $configuration
-	 */
-	public function __construct(array $configuration = array()) {
-		$this->configuration = $configuration;
-	}
+    /**
+     * Handles exceptions thrown during rendering of content objects
+     * The handler can decide whether to re-throw the exception or
+     * return a nice error message for production context.
+     *
+     * @param \Exception $exception
+     * @param AbstractContentObject $contentObject
+     * @param array $contentObjectConfiguration
+     * @return string
+     * @throws \Exception
+     */
+    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = array())
+    {
+        if (!empty($this->configuration['ignoreCodes.'])) {
+            if (in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), true)) {
+                throw $exception;
+            }
+        }
+        $errorMessage = isset($this->configuration['errorMessage']) ? $this->configuration['errorMessage'] : 'Oops, an error occurred! Code: %s';
+        $code = date('YmdHis', $_SERVER['REQUEST_TIME']) . GeneralUtility::getRandomHexString(8);
 
-	/**
-	 * Handles exceptions thrown during rendering of content objects
-	 * The handler can decide whether to re-throw the exception or
-	 * return a nice error message for production context.
-	 *
-	 * @param \Exception $exception
-	 * @param AbstractContentObject $contentObject
-	 * @param array $contentObjectConfiguration
-	 * @return string
-	 * @throws \Exception
-	 */
-	public function handle(\Exception $exception, AbstractContentObject $contentObject = NULL, $contentObjectConfiguration = array()) {
-		if (!empty($this->configuration['ignoreCodes.'])) {
-			if (in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), TRUE)) {
-				throw $exception;
-			}
-		}
-		$errorMessage = isset($this->configuration['errorMessage']) ? $this->configuration['errorMessage'] : 'Oops, an error occurred! Code: %s';
-		$code = date('YmdHis', $_SERVER['REQUEST_TIME']) . GeneralUtility::getRandomHexString(8);
+        $this->logException($exception, $errorMessage, $code);
 
-		$this->logException($exception, $errorMessage, $code);
+        return sprintf($errorMessage, $code);
+    }
 
-		return sprintf($errorMessage, $code);
-	}
+    /**
+     * @param \Exception $exception
+     * @param string $errorMessage
+     * @param string $code
+     */
+    protected function logException(\Exception $exception, $errorMessage, $code)
+    {
+        $this->getLogger()->alert(sprintf($errorMessage, $code), array('exception' => $exception));
+    }
 
-	/**
-	 * @param \Exception $exception
-	 * @param string $errorMessage
-	 * @param string $code
-	 */
-	protected function logException(\Exception $exception, $errorMessage, $code) {
-		$this->getLogger()->alert(sprintf($errorMessage, $code), array('exception' => $exception));
-	}
-
-	/**
-	 * @return LoggerInterface
-	 */
-	protected function getLogger() {
-		return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-	}
-
+    /**
+     * @return LoggerInterface
+     */
+    protected function getLogger()
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
 }

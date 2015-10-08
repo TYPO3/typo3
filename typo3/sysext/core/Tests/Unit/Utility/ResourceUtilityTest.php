@@ -19,61 +19,62 @@ use TYPO3\CMS\Core\Utility\ResourceUtility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\ResourceUtility
  */
-class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @return array
+     */
+    public function recursiveFileListSortingHelperTestDataProvider()
+    {
+        return array(
+            'normal file list' => array(
+                array('fileB', 'fileA', 'someFile'),
+                array('fileA', 'fileB', 'someFile')
+            ),
+            'already in correct order' => array(
+                array('fileA', 'fileB', 'someFile'),
+                array('fileA', 'fileB', 'someFile')
+            ),
+            'hidden file' => array(
+                array('someFile', '.hiddenFile'),
+                array('.hiddenFile', 'someFile')
+            ),
+            'mixed capitalization' => array(
+                array('alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'),
+                array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
+            ),
+            'mixed capitalization reversed' => array(
+                array('MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'),
+                array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
+            ),
+            'recursive list with one sublevel' => array(
+                array('fileA', 'fileB', 'anotherDir/someFile', 'someDir/someFile', 'anotherDir/anotherFile'),
+                array('anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB')
+            ),
+            'recursive list with two sub-levels' => array(
+                array('file', 'someDir/someFile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/anotherDir/somefile', 'anotherDir/someFile'),
+                array('anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file')
+            ),
+            'recursive list with three sub-levels' => array(
+                array('someDir/someSubdir/file', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/someSubsubdir/anotherFile'),
+                array('someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file')
+            )
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function recursiveFileListSortingHelperTestDataProvider() {
-		return array(
-			'normal file list' => array(
-				array('fileB', 'fileA', 'someFile'),
-				array('fileA', 'fileB', 'someFile')
-			),
-			'already in correct order' => array(
-				array('fileA', 'fileB', 'someFile'),
-				array('fileA', 'fileB', 'someFile')
-			),
-			'hidden file' => array(
-				array('someFile', '.hiddenFile'),
-				array('.hiddenFile', 'someFile')
-			),
-			'mixed capitalization' => array(
-				array('alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'),
-				array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
-			),
-			'mixed capitalization reversed' => array(
-				array('MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'),
-				array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
-			),
-			'recursive list with one sublevel' => array(
-				array('fileA', 'fileB', 'anotherDir/someFile', 'someDir/someFile', 'anotherDir/anotherFile'),
-				array('anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB')
-			),
-			'recursive list with two sub-levels' => array(
-				array('file', 'someDir/someFile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/anotherDir/somefile', 'anotherDir/someFile'),
-				array('anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file')
-			),
-			'recursive list with three sub-levels' => array(
-				array('someDir/someSubdir/file', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/someSubsubdir/anotherFile'),
-				array('someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file')
-			)
-		);
-	}
-
-	/**
-	 * @dataProvider recursiveFileListSortingHelperTestDataProvider
-	 * @test
-	 * @param array $unsortedList
-	 * @param array $expectedList
-	 */
-	public function recursiveFileListSortingHelperCorrectlySorts($unsortedList, $expectedList) {
-		$result = $unsortedList;
-		usort(
-			$result,
-			array(ResourceUtility::class, 'recursiveFileListSortingHelper')
-		);
-		$this->assertSame($expectedList, $result);
-	}
-
+    /**
+     * @dataProvider recursiveFileListSortingHelperTestDataProvider
+     * @test
+     * @param array $unsortedList
+     * @param array $expectedList
+     */
+    public function recursiveFileListSortingHelperCorrectlySorts($unsortedList, $expectedList)
+    {
+        $result = $unsortedList;
+        usort(
+            $result,
+            array(ResourceUtility::class, 'recursiveFileListSortingHelper')
+        );
+        $this->assertSame($expectedList, $result);
+    }
 }

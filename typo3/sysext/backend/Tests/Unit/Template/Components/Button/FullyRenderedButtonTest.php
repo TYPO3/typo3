@@ -20,31 +20,32 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case for FullyRenderedButton
  */
-class FullyRenderedButtonTest extends UnitTestCase {
+class FullyRenderedButtonTest extends UnitTestCase
+{
+    /**
+     * Try to valide an empty button
+     *
+     * @test
+     * @return void
+     */
+    public function isButtonValidBlankCallExpectFalse()
+    {
+        $button = new FullyRenderedButton();
+        $isValid = $button->isValid();
+        $this->assertFalse($isValid);
+    }
 
-	/**
-	 * Try to valide an empty button
-	 *
-	 * @test
-	 * @return void
-	 */
-	public function isButtonValidBlankCallExpectFalse() {
-		$button = new FullyRenderedButton();
-		$isValid = $button->isValid();
-		$this->assertFalse($isValid);
-	}
-
-	/**
-	 * Tests a valid HTML Button
-	 *
-	 * @test
-	 * @return void
-	 */
-	public function isButtonValidHtmlSourceGivenExpectTrue() {
-		$button = new FullyRenderedButton();
-		$button->setHtmlSource('<span>Husel</span>');
-		$isValid = $button->isValid();
-		$this->assertTrue($isValid);
-	}
-
+    /**
+     * Tests a valid HTML Button
+     *
+     * @test
+     * @return void
+     */
+    public function isButtonValidHtmlSourceGivenExpectTrue()
+    {
+        $button = new FullyRenderedButton();
+        $button->setHtmlSource('<span>Husel</span>');
+        $isValid = $button->isValid();
+        $this->assertTrue($isValid);
+    }
 }

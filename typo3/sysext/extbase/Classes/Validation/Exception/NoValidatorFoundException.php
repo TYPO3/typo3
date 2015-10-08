@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
 /**
  * A "NoValidatorFound" Exception
  */
-class NoValidatorFoundException extends \TYPO3\CMS\Extbase\Validation\Exception {
-
+class NoValidatorFoundException extends \TYPO3\CMS\Extbase\Validation\Exception
+{
 }

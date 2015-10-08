@@ -20,21 +20,21 @@ use TYPO3\CMS\Form\PostProcess\PostProcessorInterface;
 /**
  * Post processor without form prefix fixture
  */
-class PostProcessorWithoutFormPrefixFixture extends AbstractPostProcessor implements PostProcessorInterface {
+class PostProcessorWithoutFormPrefixFixture extends AbstractPostProcessor implements PostProcessorInterface
+{
+    /**
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $form
+     * @param array $typoScript
+     */
+    public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript)
+    {
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
-	 * @param array $typoScript
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
-
-	}
-
-	/**
-	 * @return string
-	 */
-	public function process() {
-		return 'processedWithoutPrefix';
-	}
-
+    /**
+     * @return string
+     */
+    public function process()
+    {
+        return 'processedWithoutPrefix';
+    }
 }

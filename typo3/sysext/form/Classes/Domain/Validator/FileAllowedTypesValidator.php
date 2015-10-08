@@ -16,58 +16,60 @@ namespace TYPO3\CMS\Form\Domain\Validator;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class FileAllowedTypesValidator extends AbstractValidator {
+class FileAllowedTypesValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'element' => array('', 'The name of the element', 'string', true),
+        'errorMessage' => array('', 'The error message', 'array', true),
+        'types' => array('', 'The allowed file types', 'string', true),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'element' => array('', 'The name of the element', 'string', TRUE),
-		'errorMessage' => array('', 'The error message', 'array', TRUE),
-		'types' => array('', 'The allowed file types', 'string', TRUE),
-	);
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_fileallowedtypes';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_fileallowedtypes';
+    /**
+     * Check if the file mime type is allowed.
+     *
+     * The mime type is set in the propertymapper
+     * @see TYPO3\CMS\Form\Domain\Property\TypeConverter::convertFrom
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        $allowedTypes = strtolower($this->options['types']);
+        $allowedMimeTypes = GeneralUtility::trimExplode(', ', $allowedTypes);
+        $fileMimeType = strtolower($value['type']);
+        if (!in_array($fileMimeType, $allowedMimeTypes, true)) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1442006702
+            );
+        }
+    }
 
-	/**
-	 * Check if the file mime type is allowed.
-	 *
-	 * The mime type is set in the propertymapper
-	 * @see TYPO3\CMS\Form\Domain\Property\TypeConverter::convertFrom
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		$allowedTypes = strtolower($this->options['types']);
-		$allowedMimeTypes = GeneralUtility::trimExplode(', ', $allowedTypes);
-		$fileMimeType = strtolower($value['type']);
-		if (!in_array($fileMimeType, $allowedMimeTypes, TRUE)) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1442006702
-			);
-		}
-	}
-
-	/**
-	 * Substitute makers in the message text
-	 * Overrides the abstract
-	 *
-	 * @param string $message Message text with markers
-	 * @return string Message text with substituted markers
-	 */
-	public function substituteMarkers($message) {
-		$message = str_replace('%allowedTypes', implode(',', $this->options['types']), $message);
-		return $message;
-	}
+    /**
+     * Substitute makers in the message text
+     * Overrides the abstract
+     *
+     * @param string $message Message text with markers
+     * @return string Message text with substituted markers
+     */
+    public function substituteMarkers($message)
+    {
+        $message = str_replace('%allowedTypes', implode(',', $this->options['types']), $message);
+        return $message;
+    }
 }

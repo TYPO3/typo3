@@ -17,72 +17,73 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 /**
  * Extension test
  */
-class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex
+     *
+     * @return array
+     */
+    public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider()
+    {
+        return array(
+            'empty string' => array(
+                '',
+                4
+            ),
+            'existing category string' => array(
+                'plugin',
+                3
+            ),
+            'not existing category string' => array(
+                'foo',
+                4
+            ),
+            'string number 3' => array(
+                '3',
+                3
+            ),
+            'integer 3' => array(
+                3,
+                3
+            ),
+            'string number not in range -1' => array(
+                '-1',
+                4
+            ),
+            'integer not in range -1' => array(
+                -1,
+                4
+            ),
+            'string number not in range 11' => array(
+                '11',
+                4
+            ),
+            'integer not in range 11' => array(
+                11,
+                4
+            ),
+            'object' => array(
+                new \stdClass(),
+                4
+            ),
+            'array' => array(
+                array(),
+                4
+            ),
+        );
+    }
 
-	/**
-	 * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex
-	 *
-	 * @return array
-	 */
-	public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider() {
-		return array(
-			'empty string' => array(
-				'',
-				4
-			),
-			'existing category string' => array(
-				'plugin',
-				3
-			),
-			'not existing category string' => array(
-				'foo',
-				4
-			),
-			'string number 3' => array(
-				'3',
-				3
-			),
-			'integer 3' => array(
-				3,
-				3
-			),
-			'string number not in range -1' => array(
-				'-1',
-				4
-			),
-			'integer not in range -1' => array(
-				-1,
-				4
-			),
-			'string number not in range 11' => array(
-				'11',
-				4
-			),
-			'integer not in range 11' => array(
-				11,
-				4
-			),
-			'object' => array(
-				new \stdClass(),
-				4
-			),
-			'array' => array(
-				array(),
-				4
-			),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getCategoryIndexFromStringOrNumberReturnsIndexDataProvider
-	 * @param string|int $input Given input
-	 * @param int $expected Expected result
-	 * @return void
-	 */
-	public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected) {
-		$extension = new \TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-		$this->assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
-	}
-
+    /**
+     * @test
+     * @dataProvider getCategoryIndexFromStringOrNumberReturnsIndexDataProvider
+     * @param string|int $input Given input
+     * @param int $expected Expected result
+     * @return void
+     */
+    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
+    {
+        $extension = new \TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+        $this->assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
+    }
 }

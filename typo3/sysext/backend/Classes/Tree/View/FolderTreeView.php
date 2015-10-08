@@ -27,645 +27,665 @@ use TYPO3\CMS\Lang\LanguageService;
  * Generate a folder tree,
  * specially made for browsing folders in the File module
  */
-class FolderTreeView extends AbstractTreeView {
+class FolderTreeView extends AbstractTreeView
+{
+    /**
+     * The users' file Storages
+     *
+     * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
+     */
+    protected $storages = null;
 
-	/**
-	 * The users' file Storages
-	 *
-	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
-	 */
-	protected $storages = NULL;
+    /**
+     * @var array
+     */
+    protected $storageHashNumbers;
 
-	/**
-	 * @var array
-	 */
-	protected $storageHashNumbers;
+    /**
+     * Indicates, whether the AJAX call was successful,
+     * i.e. the requested page has been found
+     *
+     * @var bool
+     */
+    protected $ajaxStatus = false;
 
-	/**
-	 * Indicates, whether the AJAX call was successful,
-	 * i.e. the requested page has been found
-	 *
-	 * @var bool
-	 */
-	protected $ajaxStatus = FALSE;
+    /**
+     * @var array
+     */
+    protected $scope;
 
-	/**
-	 * @var array
-	 */
-	protected $scope;
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
 
-	/**
-	 * @var IconFactory
-	 */
-	protected $iconFactory;
+    /**
+     * If file-drag mode is set, temp and recycler folders are filtered out.
+     * @var bool
+     */
+    public $ext_noTempRecyclerDirs = false;
 
-	/**
-	 * If file-drag mode is set, temp and recycler folders are filtered out.
-	 * @var bool
-	 */
-	public $ext_noTempRecyclerDirs = FALSE;
+    /**
+     * override to not use a title attribute
+     * @var string
+     */
+    public $titleAttrib = '';
 
-	/**
-	 * override to not use a title attribute
-	 * @var string
-	 */
-	public $titleAttrib = '';
+    /**
+     * override to use this treeName
+     * does not need to be set in __construct()
+     * @var string
+     */
+    public $treeName = 'folder';
 
-	/**
-	 * override to use this treeName
-	 * does not need to be set in __construct()
-	 * @var string
-	 */
-	public $treeName = 'folder';
+    /**
+     * override to use this domIdPrefix
+     * @var string
+     */
+    public $domIdPrefix = 'folder';
 
-	/**
-	 * override to use this domIdPrefix
-	 * @var string
-	 */
-	public $domIdPrefix = 'folder';
+    /**
+     * Constructor function of the class
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->init();
+        $this->storages = $this->BE_USER->getFileStorages();
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
 
-	/**
-	 * Constructor function of the class
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->init();
-		$this->storages = $this->BE_USER->getFileStorages();
-		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-	}
+    /**
+     * Generate the plus/minus icon for the browsable tree.
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Entry folder object
+     * @param int $subFolderCounter The current entry number
+     * @param int $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
+     * @param int $nextCount The number of sub-elements to the current element.
+     * @param bool $isExpanded The element was expanded to render subelements if this flag is set.
+     * @return string Image tag with the plus/minus icon.
+     * @internal
+     * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
+     */
+    public function PMicon($folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded)
+    {
+        $icon = '';
+        if ($nextCount) {
+            $cmd = $this->generateExpandCollapseParameter($this->bank, !$isExpanded, $folderObject);
+            $icon = $this->PMiconATagWrap($icon, $cmd, !$isExpanded);
+        }
+        return $icon;
+    }
 
-	/**
-	 * Generate the plus/minus icon for the browsable tree.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Entry folder object
-	 * @param int $subFolderCounter The current entry number
-	 * @param int $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
-	 * @param int $nextCount The number of sub-elements to the current element.
-	 * @param bool $isExpanded The element was expanded to render subelements if this flag is set.
-	 * @return string Image tag with the plus/minus icon.
-	 * @internal
-	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
-	 */
-	public function PMicon($folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded) {
-		$icon = '';
-		if ($nextCount) {
-			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isExpanded, $folderObject);
-			$icon = $this->PMiconATagWrap($icon, $cmd, !$isExpanded);
-		}
-		return $icon;
-	}
+    /**
+     * Wrap the plus/minus icon in a link
+     *
+     * @param string $icon HTML string to wrap, probably an image tag.
+     * @param string $cmd Command for 'PM' get var
+     * @param bool $isExpand Whether to be expanded
+     * @return string Link-wrapped input string
+     * @internal
+     */
+    public function PMiconATagWrap($icon, $cmd, $isExpand = true)
+    {
+        if (empty($this->scope)) {
+            $this->scope = array(
+                'class' => get_class($this),
+                'script' => $this->thisScript,
+                'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
+            );
+        }
 
-	/**
-	 * Wrap the plus/minus icon in a link
-	 *
-	 * @param string $icon HTML string to wrap, probably an image tag.
-	 * @param string $cmd Command for 'PM' get var
-	 * @param bool $isExpand Whether to be expanded
-	 * @return string Link-wrapped input string
-	 * @internal
-	 */
-	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
-		if (empty($this->scope)) {
-			$this->scope = array(
-				'class' => get_class($this),
-				'script' => $this->thisScript,
-				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
-			);
-		}
+        if ($this->thisScript) {
+            // Activates dynamic AJAX based tree
+            $scopeData = serialize($this->scope);
+            $scopeHash = GeneralUtility::hmac($scopeData);
+            $js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
+            return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
+        } else {
+            return $icon;
+        }
+    }
 
-		if ($this->thisScript) {
-			// Activates dynamic AJAX based tree
-			$scopeData = serialize($this->scope);
-			$scopeHash = GeneralUtility::hmac($scopeData);
-			$js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
-			return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
-		} else {
-			return $icon;
-		}
-	}
+    /**
+     * @param string $cmd
+     * @param bool $isOpen
+     * @return string
+     */
+    protected function renderPMIconAndLink($cmd, $isOpen)
+    {
+        $link = $this->thisScript ? ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"' : '';
+        return '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
+    }
 
-	/**
-	 * @param string $cmd
-	 * @param bool $isOpen
-	 * @return string
-	 */
-	protected function renderPMIconAndLink($cmd, $isOpen) {
-		$link = $this->thisScript ? ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"' : '';
-		return '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
-	}
+    /**
+     * Wrapping the folder icon
+     *
+     * @param string $icon The image tag for the icon
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The row for the current element
+     * @return string The processed icon input value.
+     * @internal
+     */
+    public function wrapIcon($icon, $folderObject)
+    {
+        // Add title attribute to input icon tag
+        $theFolderIcon = '';
+        // Wrap icon in click-menu link.
+        if (!$this->ext_IconMode) {
+            // Check storage access to wrap with click menu
+            if (!$folderObject instanceof InaccessibleFolder) {
+                $theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
+            }
+        } elseif ($this->ext_IconMode === 'titlelink') {
+            $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ',' . $this->bank . ');';
+            $theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+        }
+        return $theFolderIcon;
+    }
 
-	/**
-	 * Wrapping the folder icon
-	 *
-	 * @param string $icon The image tag for the icon
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The row for the current element
-	 * @return string The processed icon input value.
-	 * @internal
-	 */
-	public function wrapIcon($icon, $folderObject) {
-		// Add title attribute to input icon tag
-		$theFolderIcon = '';
-		// Wrap icon in click-menu link.
-		if (!$this->ext_IconMode) {
-			// Check storage access to wrap with click menu
-			if (!$folderObject instanceof InaccessibleFolder) {
-				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
-			}
-		} elseif ($this->ext_IconMode === 'titlelink') {
-			$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ',' . $this->bank . ');';
-			$theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
-		}
-		return $theFolderIcon;
-	}
+    /**
+     * Wrapping $title in a-tags.
+     *
+     * @param string $title Title string
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folder record
+     * @param int $bank Bank pointer (which mount point number)
+     * @return string
+     * @internal
+     */
+    public function wrapTitle($title, $folderObject, $bank = 0)
+    {
+        // Check storage access to wrap with click menu
+        if ($folderObject instanceof InaccessibleFolder) {
+            return $title;
+        }
+        $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
+        $clickMenuParts = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', true);
 
-	/**
-	 * Wrapping $title in a-tags.
-	 *
-	 * @param string $title Title string
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folder record
-	 * @param int $bank Bank pointer (which mount point number)
-	 * @return string
-	 * @internal
-	 */
-	public function wrapTitle($title, $folderObject, $bank = 0) {
-		// Check storage access to wrap with click menu
-		if ($folderObject instanceof InaccessibleFolder) {
-			return $title;
-		}
-		$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
-		$clickMenuParts = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', TRUE);
+        return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
+    }
 
-		return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
-	}
+    /**
+     * Returns the id from the record - for folders, this is an md5 hash.
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @return int The "uid" field value.
+     */
+    public function getId($folderObject)
+    {
+        return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
+    }
 
-	/**
-	 * Returns the id from the record - for folders, this is an md5 hash.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
-	 * @return int The "uid" field value.
-	 */
-	public function getId($folderObject) {
-		return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
-	}
+    /**
+     * Returns jump-url parameter value.
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @return string The jump-url parameter.
+     */
+    public function getJumpToParam($folderObject)
+    {
+        return rawurlencode($folderObject->getCombinedIdentifier());
+    }
 
-	/**
-	 * Returns jump-url parameter value.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
-	 * @return string The jump-url parameter.
-	 */
-	public function getJumpToParam($folderObject) {
-		return rawurlencode($folderObject->getCombinedIdentifier());
-	}
+    /**
+     * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
+     * '_title' is used for setting an alternative title for folders.
+     *
+     * @param array $row The input row array (where the key "_title" is used for the title)
+     * @param int $titleLen Title length (30)
+     * @return string The title
+     */
+    public function getTitleStr($row, $titleLen = 30)
+    {
+        return $row['_title'] ?: parent::getTitleStr($row, $titleLen);
+    }
 
-	/**
-	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
-	 * '_title' is used for setting an alternative title for folders.
-	 *
-	 * @param array $row The input row array (where the key "_title" is used for the title)
-	 * @param int $titleLen Title length (30)
-	 * @return string The title
-	 */
-	public function getTitleStr($row, $titleLen = 30) {
-		return $row['_title'] ?: parent::getTitleStr($row, $titleLen);
-	}
+    /**
+     * Returns the value for the image "title" attribute
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to be used
+     * @return 	string The attribute value (is htmlspecialchared() already)
+     */
+    public function getTitleAttrib($folderObject)
+    {
+        return htmlspecialchars($folderObject->getName());
+    }
 
-	/**
-	 * Returns the value for the image "title" attribute
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to be used
-	 * @return 	string The attribute value (is htmlspecialchared() already)
-	 */
-	public function getTitleAttrib($folderObject) {
-		return htmlspecialchars($folderObject->getName());
-	}
+    /**
+     * Will create and return the HTML code for a browsable tree of folders.
+     * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
+     *
+     * @return string HTML code for the browsable tree
+     */
+    public function getBrowsableTree()
+    {
+        // Get stored tree structure AND updating it if needed according to incoming PM GET var.
+        $this->initializePositionSaving();
+        // Init done:
+        $treeItems = array();
+        // Traverse mounts:
+        foreach ($this->storages as $storageObject) {
+            $this->getBrowseableTreeForStorage($storageObject);
+            // Add tree:
+            $treeItems = array_merge($treeItems, $this->tree);
+        }
+        return $this->printTree($treeItems);
+    }
 
-	/**
-	 * Will create and return the HTML code for a browsable tree of folders.
-	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
-	 *
-	 * @return string HTML code for the browsable tree
-	 */
-	public function getBrowsableTree() {
-		// Get stored tree structure AND updating it if needed according to incoming PM GET var.
-		$this->initializePositionSaving();
-		// Init done:
-		$treeItems = array();
-		// Traverse mounts:
-		foreach ($this->storages as $storageObject) {
-			$this->getBrowseableTreeForStorage($storageObject);
-			// Add tree:
-			$treeItems = array_merge($treeItems, $this->tree);
-		}
-		return $this->printTree($treeItems);
-	}
+    /**
+     * Get a tree for one storage
+     *
+     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
+     * @return void
+     */
+    public function getBrowseableTreeForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject)
+    {
+        // If there are filemounts, show each, otherwise just the rootlevel folder
+        $fileMounts = $storageObject->getFileMounts();
+        $rootLevelFolders = array();
+        if (!empty($fileMounts)) {
+            foreach ($fileMounts as $fileMountInfo) {
+                $rootLevelFolders[] = array(
+                    'folder' => $fileMountInfo['folder'],
+                    'name' => $fileMountInfo['title']
+                );
+            }
+        } elseif ($this->BE_USER->isAdmin()) {
+            $rootLevelFolders[] = array(
+                'folder' => $storageObject->getRootLevelFolder(),
+                'name' => $storageObject->getName()
+            );
+        }
+        // Clean the tree
+        $this->reset();
+        // Go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
+        foreach ($rootLevelFolders as $rootLevelFolderInfo) {
+            /** @var $rootLevelFolder \TYPO3\CMS\Core\Resource\Folder */
+            $rootLevelFolder = $rootLevelFolderInfo['folder'];
+            $rootLevelFolderName = $rootLevelFolderInfo['name'];
+            $folderHashSpecUID = GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
+            $this->specUIDmap[$folderHashSpecUID] = $rootLevelFolder->getCombinedIdentifier();
+            // Hash key
+            $storageHashNumber = $this->getShortHashNumberForStorage($storageObject, $rootLevelFolder);
+            // Set first:
+            $this->bank = $storageHashNumber;
+            $isOpen = $this->stored[$storageHashNumber][$folderHashSpecUID] || $this->expandFirst;
+            // Set PM icon:
+            $cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
+            // Only show and link icon if storage is browseable
+            if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
+                $firstHtml = '';
+            } else {
+                $firstHtml = $this->renderPMIconAndLink($cmd, $isOpen);
+            }
+            // Mark a storage which is not online, as offline
+            // maybe someday there will be a special icon for this
+            if ($storageObject->isOnline() === false) {
+                $rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+            }
+            // Preparing rootRec for the mount
+            $icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, null, array('mount-root' => true));
+            $firstHtml .= $this->wrapIcon($icon, $rootLevelFolder);
+            $row = array(
+                'uid' => $folderHashSpecUID,
+                'title' => $rootLevelFolderName,
+                'path' => $rootLevelFolder->getCombinedIdentifier(),
+                'folder' => $rootLevelFolder
+            );
+            // Add the storage root to ->tree
+            $this->tree[] = array(
+                'HTML' => $firstHtml,
+                'row' => $row,
+                'bank' => $this->bank,
+                // hasSub is TRUE when the root of the storage is expanded
+                'hasSub' => $isOpen && $storageObject->isBrowsable(),
+                'invertedDepth' => 1000,
+            );
+            // If the mount is expanded, go down:
+            if ($isOpen && $storageObject->isBrowsable()) {
+                // Set depth:
+                $this->getFolderTree($rootLevelFolder, 999);
+            }
+        }
+    }
 
-	/**
-	 * Get a tree for one storage
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
-	 * @return void
-	 */
-	public function getBrowseableTreeForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject) {
-		// If there are filemounts, show each, otherwise just the rootlevel folder
-		$fileMounts = $storageObject->getFileMounts();
-		$rootLevelFolders = array();
-		if (!empty($fileMounts)) {
-			foreach ($fileMounts as $fileMountInfo) {
-				$rootLevelFolders[] = array(
-					'folder' => $fileMountInfo['folder'],
-					'name' => $fileMountInfo['title']
-				);
-			}
-		} elseif ($this->BE_USER->isAdmin()) {
-			$rootLevelFolders[] = array(
-				'folder' => $storageObject->getRootLevelFolder(),
-				'name' => $storageObject->getName()
-			);
-		}
-		// Clean the tree
-		$this->reset();
-		// Go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
-		foreach ($rootLevelFolders as $rootLevelFolderInfo) {
-			/** @var $rootLevelFolder \TYPO3\CMS\Core\Resource\Folder */
-			$rootLevelFolder = $rootLevelFolderInfo['folder'];
-			$rootLevelFolderName = $rootLevelFolderInfo['name'];
-			$folderHashSpecUID = GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
-			$this->specUIDmap[$folderHashSpecUID] = $rootLevelFolder->getCombinedIdentifier();
-			// Hash key
-			$storageHashNumber = $this->getShortHashNumberForStorage($storageObject, $rootLevelFolder);
-			// Set first:
-			$this->bank = $storageHashNumber;
-			$isOpen = $this->stored[$storageHashNumber][$folderHashSpecUID] || $this->expandFirst;
-			// Set PM icon:
-			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
-			// Only show and link icon if storage is browseable
-			if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
-				$firstHtml = '';
-			} else {
-				$firstHtml = $this->renderPMIconAndLink($cmd, $isOpen);
-			}
-			// Mark a storage which is not online, as offline
-			// maybe someday there will be a special icon for this
-			if ($storageObject->isOnline() === FALSE) {
-				$rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
-			}
-			// Preparing rootRec for the mount
-			$icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, NULL, array('mount-root' => TRUE));
-			$firstHtml .= $this->wrapIcon($icon, $rootLevelFolder);
-			$row = array(
-				'uid' => $folderHashSpecUID,
-				'title' => $rootLevelFolderName,
-				'path' => $rootLevelFolder->getCombinedIdentifier(),
-				'folder' => $rootLevelFolder
-			);
-			// Add the storage root to ->tree
-			$this->tree[] = array(
-				'HTML' => $firstHtml,
-				'row' => $row,
-				'bank' => $this->bank,
-				// hasSub is TRUE when the root of the storage is expanded
-				'hasSub' => $isOpen && $storageObject->isBrowsable(),
-				'invertedDepth' => 1000,
-			);
-			// If the mount is expanded, go down:
-			if ($isOpen && $storageObject->isBrowsable()) {
-				// Set depth:
-				$this->getFolderTree($rootLevelFolder, 999);
-			}
-		}
-	}
+    /**
+     * Fetches the data for the tree
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
+     * @param int $depth Max depth (recursivity limit)
+     * @param string $type HTML-code prefix for recursive calls.
+     * @return int The count of items on the level
+     * @see getBrowsableTree()
+     */
+    public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '')
+    {
+        $depth = (int)$depth;
 
-	/**
-	 * Fetches the data for the tree
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
-	 * @param int $depth Max depth (recursivity limit)
-	 * @param string $type HTML-code prefix for recursive calls.
-	 * @return int The count of items on the level
-	 * @see getBrowsableTree()
-	 */
-	public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '') {
-		$depth = (int)$depth;
+        // This generates the directory tree
+        /* array of \TYPO3\CMS\Core\Resource\Folder */
+        if ($folderObject instanceof InaccessibleFolder) {
+            $subFolders = array();
+        } else {
+            $subFolders = $folderObject->getSubfolders();
+            $subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
+            uksort($subFolders, 'strnatcasecmp');
+        }
 
-		// This generates the directory tree
-		/* array of \TYPO3\CMS\Core\Resource\Folder */
-		if ($folderObject instanceof InaccessibleFolder) {
-			$subFolders = array();
-		} else {
-			$subFolders = $folderObject->getSubfolders();
-			$subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
-			uksort($subFolders, 'strnatcasecmp');
-		}
+        $totalSubFolders = count($subFolders);
+        $HTML = '';
+        $subFolderCounter = 0;
+        $treeKey = '';
+        /** @var Folder $subFolder */
+        foreach ($subFolders as $subFolderName => $subFolder) {
+            $subFolderCounter++;
+            // Reserve space.
+            $this->tree[] = array();
+            // Get the key for this space
+            end($this->tree);
+            $isLocked = $subFolder instanceof InaccessibleFolder;
+            $treeKey = key($this->tree);
+            $specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
+            $this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
+            $row = array(
+                'uid' => $specUID,
+                'path' => $subFolder->getCombinedIdentifier(),
+                'title' => $subFolderName,
+                'folder' => $subFolder
+            );
+            // Make a recursive call to the next level
+            if (!$isLocked && $depth > 1 && $this->expandNext($specUID)) {
+                $nextCount = $this->getFolderTree($subFolder, $depth - 1, $type);
+                // Set "did expand" flag
+                $isOpen = 1;
+            } else {
+                $nextCount = $isLocked ? 0 : $this->getNumberOfSubfolders($subFolder);
+                // Clear "did expand" flag
+                $isOpen = 0;
+            }
+            // Set HTML-icons, if any:
+            if ($this->makeHTML) {
+                $HTML = $this->PMicon($subFolder, $subFolderCounter, $totalSubFolders, $nextCount, $isOpen);
+                $type = '';
 
-		$totalSubFolders = count($subFolders);
-		$HTML = '';
-		$subFolderCounter = 0;
-		$treeKey = '';
-		/** @var Folder $subFolder */
-		foreach ($subFolders as $subFolderName => $subFolder) {
-			$subFolderCounter++;
-			// Reserve space.
-			$this->tree[] = array();
-			// Get the key for this space
-			end($this->tree);
-			$isLocked = $subFolder instanceof InaccessibleFolder;
-			$treeKey = key($this->tree);
-			$specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
-			$this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
-			$row = array(
-				'uid' => $specUID,
-				'path' => $subFolder->getCombinedIdentifier(),
-				'title' => $subFolderName,
-				'folder' => $subFolder
-			);
-			// Make a recursive call to the next level
-			if (!$isLocked && $depth > 1 && $this->expandNext($specUID)) {
-				$nextCount = $this->getFolderTree($subFolder, $depth - 1, $type);
-				// Set "did expand" flag
-				$isOpen = 1;
-			} else {
-				$nextCount = $isLocked ? 0 : $this->getNumberOfSubfolders($subFolder);
-				// Clear "did expand" flag
-				$isOpen = 0;
-			}
-			// Set HTML-icons, if any:
-			if ($this->makeHTML) {
-				$HTML = $this->PMicon($subFolder, $subFolderCounter, $totalSubFolders, $nextCount, $isOpen);
-				$type = '';
+                $role = $subFolder->getRole();
+                if ($role !== FolderInterface::ROLE_DEFAULT) {
+                    $row['_title'] = '<strong>' . $subFolderName . '</strong>';
+                }
+                $icon = '<span title="' . htmlspecialchars($subFolderName) . '">'
+                    . $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, null, array('folder-open' => (bool)$isOpen))
+                    . '</span>';
+                $HTML .= $this->wrapIcon($icon, $subFolder);
+            }
+            // Finally, add the row/HTML content to the ->tree array in the reserved key.
+            $this->tree[$treeKey] = array(
+                'row' => $row,
+                'HTML' => $HTML,
+                'hasSub' => $nextCount && $this->expandNext($specUID),
+                'isFirst' => $subFolderCounter == 1,
+                'isLast' => false,
+                'invertedDepth' => $depth,
+                'bank' => $this->bank
+            );
+        }
+        if ($subFolderCounter > 0) {
+            $this->tree[$treeKey]['isLast'] = true;
+        }
+        return $totalSubFolders;
+    }
 
-				$role = $subFolder->getRole();
-				if ($role !== FolderInterface::ROLE_DEFAULT) {
-					$row['_title'] = '<strong>' . $subFolderName . '</strong>';
-				}
-				$icon = '<span title="' . htmlspecialchars($subFolderName). '">'
-					. $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, NULL, array('folder-open' => (bool)$isOpen))
-					. '</span>';
-				$HTML .= $this->wrapIcon($icon, $subFolder);
-			}
-			// Finally, add the row/HTML content to the ->tree array in the reserved key.
-			$this->tree[$treeKey] = array(
-				'row' => $row,
-				'HTML' => $HTML,
-				'hasSub' => $nextCount && $this->expandNext($specUID),
-				'isFirst' => $subFolderCounter == 1,
-				'isLast' => FALSE,
-				'invertedDepth' => $depth,
-				'bank' => $this->bank
-			);
-		}
-		if ($subFolderCounter > 0) {
-			$this->tree[$treeKey]['isLast'] = TRUE;
-		}
-		return $totalSubFolders;
-	}
+    /**
+     * Compiles the HTML code for displaying the structure found inside the ->tree array
+     *
+     * @param array|string $treeItems "tree-array" - if blank string, the internal ->tree array is used.
+     * @return string The HTML code for the tree
+     */
+    public function printTree($treeItems = '')
+    {
+        $doExpand = false;
+        $doCollapse = false;
+        $ajaxOutput = '';
+        $titleLength = (int)$this->BE_USER->uc['titleLen'];
+        if (!is_array($treeItems)) {
+            $treeItems = $this->tree;
+        }
 
-	/**
-	 * Compiles the HTML code for displaying the structure found inside the ->tree array
-	 *
-	 * @param array|string $treeItems "tree-array" - if blank string, the internal ->tree array is used.
-	 * @return string The HTML code for the tree
-	 */
-	public function printTree($treeItems = '') {
-		$doExpand = FALSE;
-		$doCollapse = FALSE;
-		$ajaxOutput = '';
-		$titleLength = (int)$this->BE_USER->uc['titleLen'];
-		if (!is_array($treeItems)) {
-			$treeItems = $this->tree;
-		}
+        if (empty($treeItems)) {
+            $message = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.message'),
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.title'),
+                FlashMessage::INFO
+            );
+            return $message->render();
+        }
 
-		if (empty($treeItems)) {
-			$message = GeneralUtility::makeInstance(
-				FlashMessage::class,
-				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.message'),
-				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.title'),
-				FlashMessage::INFO
-			);
-			return $message->render();
-		}
-
-		$expandedFolderHash = '';
-		$invertedDepthOfAjaxRequestedItem = 0;
-		$out = '<ul class="list-tree list-tree-root">';
-		// Evaluate AJAX request
-		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-			list(, $expandCollapseCommand, $expandedFolderHash, ) = $this->evaluateExpandCollapseParameter();
-			if ($expandCollapseCommand == 1) {
-				$doExpand = TRUE;
-			} else {
-				$doCollapse = TRUE;
-			}
-		}
-		// We need to count the opened <ul>'s every time we dig into another level,
-		// so we know how many we have to close when all children are done rendering
-		$closeDepth = array();
-		foreach ($treeItems as $treeItem) {
-			/** @var $folderObject \TYPO3\CMS\Core\Resource\Folder */
-			$folderObject = $treeItem['row']['folder'];
-			$classAttr = $treeItem['row']['_CSSCLASS'];
-			$folderIdentifier = $folderObject->getCombinedIdentifier();
-			// this is set if the AJAX request has just opened this folder (via the PM command)
-			$isExpandedFolderIdentifier = $expandedFolderHash == GeneralUtility::md5int($folderIdentifier);
-			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($folderObject) . '_' . $treeItem['bank']);
-			$itemHTML = '';
-			// If this item is the start of a new level,
-			// then a new level <ul> is needed, but not in ajax mode
-			if ($treeItem['isFirst'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
-				$itemHTML = '<ul class="list-tree">';
-			}
-			// Add CSS classes to the list item
-			if ($treeItem['hasSub']) {
-				$classAttr .= ' list-tree-control-open';
-			}
-			$itemHTML .= '
+        $expandedFolderHash = '';
+        $invertedDepthOfAjaxRequestedItem = 0;
+        $out = '<ul class="list-tree list-tree-root">';
+        // Evaluate AJAX request
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+            list(, $expandCollapseCommand, $expandedFolderHash, ) = $this->evaluateExpandCollapseParameter();
+            if ($expandCollapseCommand == 1) {
+                $doExpand = true;
+            } else {
+                $doCollapse = true;
+            }
+        }
+        // We need to count the opened <ul>'s every time we dig into another level,
+        // so we know how many we have to close when all children are done rendering
+        $closeDepth = array();
+        foreach ($treeItems as $treeItem) {
+            /** @var $folderObject \TYPO3\CMS\Core\Resource\Folder */
+            $folderObject = $treeItem['row']['folder'];
+            $classAttr = $treeItem['row']['_CSSCLASS'];
+            $folderIdentifier = $folderObject->getCombinedIdentifier();
+            // this is set if the AJAX request has just opened this folder (via the PM command)
+            $isExpandedFolderIdentifier = $expandedFolderHash == GeneralUtility::md5int($folderIdentifier);
+            $idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($folderObject) . '_' . $treeItem['bank']);
+            $itemHTML = '';
+            // If this item is the start of a new level,
+            // then a new level <ul> is needed, but not in ajax mode
+            if ($treeItem['isFirst'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
+                $itemHTML = '<ul class="list-tree">';
+            }
+            // Add CSS classes to the list item
+            if ($treeItem['hasSub']) {
+                $classAttr .= ' list-tree-control-open';
+            }
+            $itemHTML .= '
 				<li id="' . $idAttr . '" ' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLength), $folderObject, $treeItem['bank']) . '</span>';
-			if (!$treeItem['hasSub']) {
-				$itemHTML .= '</li>';
-			}
-			// We have to remember if this is the last one
-			// on level X so the last child on level X+1 closes the <ul>-tag
-			if ($treeItem['isLast'] && !($doExpand && $isExpandedFolderIdentifier)) {
-				$closeDepth[$treeItem['invertedDepth']] = 1;
-			}
-			// If this is the last one and does not have subitems, we need to close
-			// the tree as long as the upper levels have last items too
-			if ($treeItem['isLast'] && !$treeItem['hasSub'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
-				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
-					$closeDepth[$i] = 0;
-					$itemHTML .= '</ul></li>';
-				}
-			}
-			// Ajax request: collapse
-			if ($doCollapse && $isExpandedFolderIdentifier) {
-				$this->ajaxStatus = TRUE;
-				return $itemHTML;
-			}
-			// Ajax request: expand
-			if ($doExpand && $isExpandedFolderIdentifier) {
-				$ajaxOutput .= $itemHTML;
-				$invertedDepthOfAjaxRequestedItem = $treeItem['invertedDepth'];
-			} elseif ($invertedDepthOfAjaxRequestedItem) {
-				if ($treeItem['invertedDepth'] && ($treeItem['invertedDepth'] < $invertedDepthOfAjaxRequestedItem)) {
-					$ajaxOutput .= $itemHTML;
-				} else {
-					$this->ajaxStatus = TRUE;
-					return $ajaxOutput;
-				}
-			}
-			$out .= $itemHTML;
-		}
-		// If this is an AJAX request, output directly
-		if ($ajaxOutput) {
-			$this->ajaxStatus = TRUE;
-			return $ajaxOutput;
-		}
-		// Finally close the first ul
-		$out .= '</ul>';
-		return $out;
-	}
+            if (!$treeItem['hasSub']) {
+                $itemHTML .= '</li>';
+            }
+            // We have to remember if this is the last one
+            // on level X so the last child on level X+1 closes the <ul>-tag
+            if ($treeItem['isLast'] && !($doExpand && $isExpandedFolderIdentifier)) {
+                $closeDepth[$treeItem['invertedDepth']] = 1;
+            }
+            // If this is the last one and does not have subitems, we need to close
+            // the tree as long as the upper levels have last items too
+            if ($treeItem['isLast'] && !$treeItem['hasSub'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
+                for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+                    $closeDepth[$i] = 0;
+                    $itemHTML .= '</ul></li>';
+                }
+            }
+            // Ajax request: collapse
+            if ($doCollapse && $isExpandedFolderIdentifier) {
+                $this->ajaxStatus = true;
+                return $itemHTML;
+            }
+            // Ajax request: expand
+            if ($doExpand && $isExpandedFolderIdentifier) {
+                $ajaxOutput .= $itemHTML;
+                $invertedDepthOfAjaxRequestedItem = $treeItem['invertedDepth'];
+            } elseif ($invertedDepthOfAjaxRequestedItem) {
+                if ($treeItem['invertedDepth'] && ($treeItem['invertedDepth'] < $invertedDepthOfAjaxRequestedItem)) {
+                    $ajaxOutput .= $itemHTML;
+                } else {
+                    $this->ajaxStatus = true;
+                    return $ajaxOutput;
+                }
+            }
+            $out .= $itemHTML;
+        }
+        // If this is an AJAX request, output directly
+        if ($ajaxOutput) {
+            $this->ajaxStatus = true;
+            return $ajaxOutput;
+        }
+        // Finally close the first ul
+        $out .= '</ul>';
+        return $out;
+    }
 
-	/**
-	 * Counts the number of directories in a file path.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File path.
-	 * @return int
-	 */
-	public function getNumberOfSubfolders(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		$subFolders = $folderObject->getSubfolders();
-		return count($subFolders);
-	}
+    /**
+     * Counts the number of directories in a file path.
+     *
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File path.
+     * @return int
+     */
+    public function getNumberOfSubfolders(\TYPO3\CMS\Core\Resource\Folder $folderObject)
+    {
+        $subFolders = $folderObject->getSubfolders();
+        return count($subFolders);
+    }
 
-	/**
-	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
-	 *
-	 * @return void
-	 * @access private
-	 */
-	public function initializePositionSaving() {
-		// Get stored tree structure:
-		$this->stored = unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
-		$this->getShortHashNumberForStorage();
-		// PM action:
-		// (If an plus/minus icon has been clicked,
-		// the PM GET var is sent and we must update the stored positions in the tree):
-		// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
-		list($storageHashNumber, $doExpand, $numericFolderHash, $treeName) = $this->evaluateExpandCollapseParameter();
-		if ($treeName && $treeName == $this->treeName) {
-			if (in_array($storageHashNumber, $this->storageHashNumbers)) {
-				if ($doExpand == 1) {
-					// Set
-					$this->stored[$storageHashNumber][$numericFolderHash] = 1;
-				} else {
-					// Clear
-					unset($this->stored[$storageHashNumber][$numericFolderHash]);
-				}
-				$this->savePosition();
-			}
-		}
-	}
+    /**
+     * Get stored tree structure AND updating it if needed according to incoming PM GET var.
+     *
+     * @return void
+     * @access private
+     */
+    public function initializePositionSaving()
+    {
+        // Get stored tree structure:
+        $this->stored = unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
+        $this->getShortHashNumberForStorage();
+        // PM action:
+        // (If an plus/minus icon has been clicked,
+        // the PM GET var is sent and we must update the stored positions in the tree):
+        // 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
+        list($storageHashNumber, $doExpand, $numericFolderHash, $treeName) = $this->evaluateExpandCollapseParameter();
+        if ($treeName && $treeName == $this->treeName) {
+            if (in_array($storageHashNumber, $this->storageHashNumbers)) {
+                if ($doExpand == 1) {
+                    // Set
+                    $this->stored[$storageHashNumber][$numericFolderHash] = 1;
+                } else {
+                    // Clear
+                    unset($this->stored[$storageHashNumber][$numericFolderHash]);
+                }
+                $this->savePosition();
+            }
+        }
+    }
 
-	/**
-	 * Helper method to map md5-hash to shorter number
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
-	 * @param \TYPO3\CMS\Core\Resource\Folder $startingPointFolder
-	 * @return int
-	 */
-	protected function getShortHashNumberForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = NULL, \TYPO3\CMS\Core\Resource\Folder $startingPointFolder = NULL) {
-		if (!$this->storageHashNumbers) {
-			$this->storageHashNumbers = array();
-			// Mapping md5-hash to shorter number:
-			$hashMap = array();
-			foreach ($this->storages as $storageUid => $storage) {
-				$fileMounts = $storage->getFileMounts();
-				if (!empty($fileMounts)) {
-					foreach ($fileMounts as $fileMount) {
-						$nkey = hexdec(substr(GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
-						$this->storageHashNumbers[$storageUid . $fileMount['folder']->getCombinedIdentifier()] = $nkey;
-					}
-				} else {
-					$folder = $storage->getRootLevelFolder();
-					$nkey = hexdec(substr(GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
-					$this->storageHashNumbers[$storageUid . $folder->getCombinedIdentifier()] = $nkey;
-				}
-			}
-		}
-		if ($storageObject) {
-			if ($startingPointFolder) {
-				return $this->storageHashNumbers[$storageObject->getUid() . $startingPointFolder->getCombinedIdentifier()];
-			} else {
-				return $this->storageHashNumbers[$storageObject->getUid()];
-			}
-		} else {
-			return NULL;
-		}
-	}
+    /**
+     * Helper method to map md5-hash to shorter number
+     *
+     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
+     * @param \TYPO3\CMS\Core\Resource\Folder $startingPointFolder
+     * @return int
+     */
+    protected function getShortHashNumberForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = null, \TYPO3\CMS\Core\Resource\Folder $startingPointFolder = null)
+    {
+        if (!$this->storageHashNumbers) {
+            $this->storageHashNumbers = array();
+            // Mapping md5-hash to shorter number:
+            $hashMap = array();
+            foreach ($this->storages as $storageUid => $storage) {
+                $fileMounts = $storage->getFileMounts();
+                if (!empty($fileMounts)) {
+                    foreach ($fileMounts as $fileMount) {
+                        $nkey = hexdec(substr(GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
+                        $this->storageHashNumbers[$storageUid . $fileMount['folder']->getCombinedIdentifier()] = $nkey;
+                    }
+                } else {
+                    $folder = $storage->getRootLevelFolder();
+                    $nkey = hexdec(substr(GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
+                    $this->storageHashNumbers[$storageUid . $folder->getCombinedIdentifier()] = $nkey;
+                }
+            }
+        }
+        if ($storageObject) {
+            if ($startingPointFolder) {
+                return $this->storageHashNumbers[$storageObject->getUid() . $startingPointFolder->getCombinedIdentifier()];
+            } else {
+                return $this->storageHashNumbers[$storageObject->getUid()];
+            }
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 * Gets the values from the Expand/Collapse Parameter (&PM)
-	 * previously known as "PM" (plus/minus)
-	 * PM action:
-	 * (If an plus/minus icon has been clicked,
-	 * the PM GET var is sent and we must update the stored positions in the tree):
-	 * 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
-	 *
-	 * @param string $PM The "plus/minus" command
-	 * @return array
-	 */
-	protected function evaluateExpandCollapseParameter($PM = NULL) {
-		if ($PM === NULL) {
-			$PM = GeneralUtility::_GP('PM');
-			// IE takes anchor as parameter
-			if (($PMpos = strpos($PM, '#')) !== FALSE) {
-				$PM = substr($PM, 0, $PMpos);
-			}
-		}
-		// Take the first three parameters
-		list($mountKey, $doExpand, $folderIdentifier) = explode('_', $PM, 3);
-		// In case the folder identifier contains "_", we just need to get the fourth/last parameter
-		list($folderIdentifier, $treeName) = GeneralUtility::revExplode('_', $folderIdentifier, 2);
-		return array(
-			$mountKey,
-			$doExpand,
-			$folderIdentifier,
-			$treeName
-		);
-	}
+    /**
+     * Gets the values from the Expand/Collapse Parameter (&PM)
+     * previously known as "PM" (plus/minus)
+     * PM action:
+     * (If an plus/minus icon has been clicked,
+     * the PM GET var is sent and we must update the stored positions in the tree):
+     * 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
+     *
+     * @param string $PM The "plus/minus" command
+     * @return array
+     */
+    protected function evaluateExpandCollapseParameter($PM = null)
+    {
+        if ($PM === null) {
+            $PM = GeneralUtility::_GP('PM');
+            // IE takes anchor as parameter
+            if (($PMpos = strpos($PM, '#')) !== false) {
+                $PM = substr($PM, 0, $PMpos);
+            }
+        }
+        // Take the first three parameters
+        list($mountKey, $doExpand, $folderIdentifier) = explode('_', $PM, 3);
+        // In case the folder identifier contains "_", we just need to get the fourth/last parameter
+        list($folderIdentifier, $treeName) = GeneralUtility::revExplode('_', $folderIdentifier, 2);
+        return array(
+            $mountKey,
+            $doExpand,
+            $folderIdentifier,
+            $treeName
+        );
+    }
 
-	/**
-	 * Generates the "PM" string to sent to expand/collapse items
-	 *
-	 * @param string $mountKey The mount key / storage UID
-	 * @param bool $doExpand Whether to expand/collapse
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
-	 * @param string $treeName The name of the tree
-	 * @return string
-	 */
-	protected function generateExpandCollapseParameter($mountKey = NULL, $doExpand = FALSE, \TYPO3\CMS\Core\Resource\Folder $folderObject = NULL, $treeName = NULL) {
-		$parts = array(
-			$mountKey !== NULL ? $mountKey : $this->bank,
-			$doExpand == 1 ? 1 : 0,
-			$folderObject !== NULL ? GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
-			$treeName !== NULL ? $treeName : $this->treeName
-		);
-		return implode('_', $parts);
-	}
+    /**
+     * Generates the "PM" string to sent to expand/collapse items
+     *
+     * @param string $mountKey The mount key / storage UID
+     * @param bool $doExpand Whether to expand/collapse
+     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @param string $treeName The name of the tree
+     * @return string
+     */
+    protected function generateExpandCollapseParameter($mountKey = null, $doExpand = false, \TYPO3\CMS\Core\Resource\Folder $folderObject = null, $treeName = null)
+    {
+        $parts = array(
+            $mountKey !== null ? $mountKey : $this->bank,
+            $doExpand == 1 ? 1 : 0,
+            $folderObject !== null ? GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
+            $treeName !== null ? $treeName : $this->treeName
+        );
+        return implode('_', $parts);
+    }
 
-	/**
-	 * Gets the AJAX status.
-	 *
-	 * @return bool
-	 */
-	public function getAjaxStatus() {
-		return $this->ajaxStatus;
-	}
+    /**
+     * Gets the AJAX status.
+     *
+     * @return bool
+     */
+    public function getAjaxStatus()
+    {
+        return $this->ajaxStatus;
+    }
 
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

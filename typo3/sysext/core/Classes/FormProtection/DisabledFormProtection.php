@@ -18,55 +18,56 @@ namespace TYPO3\CMS\Core\FormProtection;
  * This class is a dummy implementation of the form protection,
  * which is used when no authentication is used.
  */
-class DisabledFormProtection extends AbstractFormProtection {
+class DisabledFormProtection extends AbstractFormProtection
+{
+    /**
+     * Disable parent constructor
+     */
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Disable parent constructor
-	 */
-	public function __construct() {
+    /**
+     * Disable parent method
+     */
+    public function generateToken($formName, $action = '', $formInstanceName = '')
+    {
+        return 'dummyToken';
+    }
 
-	}
+    /**
+     * Disable parent method.
+     * Always return TRUE.
+     *
+     * @param string $tokenId
+     * @param string $formName
+     * @param string $action
+     * @param string $formInstanceName
+     * @return bool
+     */
+    public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '')
+    {
+        return true;
+    }
 
-	/**
-	 * Disable parent method
-	 */
-	public function generateToken($formName, $action = '', $formInstanceName = '') {
-		return 'dummyToken';
-	}
+    /**
+     * Dummy implementation
+     */
+    protected function createValidationErrorMessage()
+    {
+    }
 
-	/**
-	 * Disable parent method.
-	 * Always return TRUE.
-	 *
-	 * @param string $tokenId
-	 * @param string $formName
-	 * @param string $action
-	 * @param string $formInstanceName
-	 * @return bool
-	 */
-	public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '') {
-		return TRUE;
-	}
+    /**
+     * Dummy implementation
+     */
+    protected function retrieveSessionToken()
+    {
+    }
 
-	/**
-	 * Dummy implementation
-	 */
-	protected function createValidationErrorMessage() {
-
-	}
-
-	/**
-	 * Dummy implementation
-	 */
-	protected function retrieveSessionToken() {
-
-	}
-
-	/**
-	 * Dummy implementation
-	 */
-	public function persistSessionToken() {
-
-	}
-
+    /**
+     * Dummy implementation
+     */
+    public function persistSessionToken()
+    {
+    }
 }

@@ -17,21 +17,20 @@ namespace TYPO3\CMS\Backend\Form;
 /**
  * Interface must be implemented by all container and widget classes
  */
-interface NodeInterface {
+interface NodeInterface
+{
+    /**
+     * All nodes get an instance of the NodeFactory and the main data array
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data);
 
-	/**
-	 * All nodes get an instance of the NodeFactory and the main data array
-	 *
-	 * @param NodeFactory $nodeFactory
-	 * @param array $data
-	 */
-	public function __construct(NodeFactory $nodeFactory, array $data);
-
-	/**
-	 * Main render method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render();
-
+    /**
+     * Main render method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render();
 }

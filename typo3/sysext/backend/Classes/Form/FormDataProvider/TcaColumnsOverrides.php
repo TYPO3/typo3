@@ -20,26 +20,26 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * Merge type specific columnsOverrides into columns of processedTca
  */
-class TcaColumnsOverrides implements FormDataProviderInterface {
-
-	/**
-	 * Merge columnsOverrides
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$type = $result['recordTypeValue'];
-		if (isset($result['processedTca']['types'][$type]['columnsOverrides'])
-			&& is_array($result['processedTca']['types'][$type]['columnsOverrides'])
-		) {
-			ArrayUtility::mergeRecursiveWithOverrule(
-				$result['processedTca']['columns'],
-				$result['processedTca']['types'][$type]['columnsOverrides']
-			);
-			unset($result['processedTca']['types'][$type]['columnsOverrides']);
-		}
-		return $result;
-	}
-
+class TcaColumnsOverrides implements FormDataProviderInterface
+{
+    /**
+     * Merge columnsOverrides
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $type = $result['recordTypeValue'];
+        if (isset($result['processedTca']['types'][$type]['columnsOverrides'])
+            && is_array($result['processedTca']['types'][$type]['columnsOverrides'])
+        ) {
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $result['processedTca']['columns'],
+                $result['processedTca']['types'][$type]['columnsOverrides']
+            );
+            unset($result['processedTca']['types'][$type]['columnsOverrides']);
+        }
+        return $result;
+    }
 }

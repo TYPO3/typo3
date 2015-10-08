@@ -17,18 +17,17 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional getData processing
  */
-interface ContentObjectGetDataHookInterface {
-
-	/**
-	 * Extends the getData()-Method of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer to process more/other commands
-	 *
-	 * @param string $getDataString Full content of getData-request e.g. "TSFE:id // field:title // field:uid
-	 * @param array $fields Current field-array
-	 * @param string $sectionValue Currently examined section value of the getData request e.g. "field:title
-	 * @param string $returnValue Current returnValue that was processed so far by getData
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
-	 * @return string Get data result
-	 */
-	public function getDataExtension($getDataString, array $fields, $sectionValue, $returnValue, ContentObjectRenderer &$parentObject);
-
+interface ContentObjectGetDataHookInterface
+{
+    /**
+     * Extends the getData()-Method of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer to process more/other commands
+     *
+     * @param string $getDataString Full content of getData-request e.g. "TSFE:id // field:title // field:uid
+     * @param array $fields Current field-array
+     * @param string $sectionValue Currently examined section value of the getData request e.g. "field:title
+     * @param string $returnValue Current returnValue that was processed so far by getData
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
+     * @return string Get data result
+     */
+    public function getDataExtension($getDataString, array $fields, $sectionValue, $returnValue, ContentObjectRenderer &$parentObject);
 }

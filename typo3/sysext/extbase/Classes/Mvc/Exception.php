@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * A generic MVC exception
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
-
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 }

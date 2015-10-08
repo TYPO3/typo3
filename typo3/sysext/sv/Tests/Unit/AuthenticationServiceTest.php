@@ -18,56 +18,57 @@ namespace TYPO3\CMS\Sv\Tests\Unit;
  * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
  *
  */
-class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Date provider for processLoginReturnsCorrectData
+     *
+     * @return array
+     */
+    public function processLoginDataProvider()
+    {
+        return array(
+            'Backend login with securityLevel "normal"' => array(
+                'normal',
+                array(
+                    'status' => 'login',
+                    'uname' => 'admin',
+                    'uident' => 'password',
+                ),
+                array(
+                    'status' => 'login',
+                    'uname' => 'admin',
+                    'uident' => 'password',
+                    'uident_text' => 'password',
+                )
+            ),
+            'Frontend login with securityLevel "normal"' => array(
+                'normal',
+                array(
+                    'status' => 'login',
+                    'uname' => 'admin',
+                    'uident' => 'password',
+                ),
+                array(
+                    'status' => 'login',
+                    'uname' => 'admin',
+                    'uident' => 'password',
+                    'uident_text' => 'password',
+                )
+            ),
+        );
+    }
 
-	/**
-	 * Date provider for processLoginReturnsCorrectData
-	 *
-	 * @return array
-	 */
-	public function processLoginDataProvider() {
-		return array(
-			'Backend login with securityLevel "normal"' => array(
-				'normal',
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => 'password',
-				),
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => 'password',
-					'uident_text' => 'password',
-				)
-			),
-			'Frontend login with securityLevel "normal"' => array(
-				'normal',
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => 'password',
-				),
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => 'password',
-					'uident_text' => 'password',
-				)
-			),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider processLoginDataProvider
-	 */
-	public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData) {
-		/** @var $authenticationService \TYPO3\CMS\Sv\AuthenticationService */
-		$authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Sv\AuthenticationService::class);
-		// Login data is modified by reference
-		$authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
-		$this->assertEquals($expectedProcessedData, $loginData);
-	}
-
+    /**
+     * @test
+     * @dataProvider processLoginDataProvider
+     */
+    public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData)
+    {
+        /** @var $authenticationService \TYPO3\CMS\Sv\AuthenticationService */
+        $authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Sv\AuthenticationService::class);
+        // Login data is modified by reference
+        $authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
+        $this->assertEquals($expectedProcessedData, $loginData);
+    }
 }

@@ -18,93 +18,100 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class HtmlentitiesDecodeViewHelperTest extends UnitTestCase {
+class HtmlentitiesDecodeViewHelperTest extends UnitTestCase
+{
+    /**
+     * @var HtmlentitiesDecodeViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var HtmlentitiesDecodeViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        $this->viewHelper = $this->getMock(HtmlentitiesDecodeViewHelper::class, array('renderChildren'));
 
-	protected function setUp() {
-		$this->viewHelper = $this->getMock(HtmlentitiesDecodeViewHelper::class, array('renderChildren'));
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->getMock(RenderingContext::class);
+        $this->viewHelper->setRenderingContext($renderingContext);
+    }
 
-		/** @var RenderingContext $renderingContext */
-		$renderingContext = $this->getMock(RenderingContext::class);
-		$this->viewHelper->setRenderingContext($renderingContext);
+    /**
+     * @test
+     */
+    public function viewHelperDeactivatesEscapingInterceptor()
+    {
+        $this->assertFalse($this->viewHelper->isEscapingInterceptorEnabled());
+    }
 
-	}
+    /**
+     * @test
+     */
+    public function renderUsesValueAsSourceIfSpecified()
+    {
+        $this->viewHelper->expects($this->never())->method('renderChildren');
+        $actualResult = $this->viewHelper->render('Some string');
+        $this->assertEquals('Some string', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function viewHelperDeactivatesEscapingInterceptor() {
-		$this->assertFalse($this->viewHelper->isEscapingInterceptorEnabled());
-	}
+    /**
+     * @test
+     */
+    public function renderUsesChildnodesAsSourceIfSpecified()
+    {
+        $this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Some string'));
+        $actualResult = $this->viewHelper->render();
+        $this->assertEquals('Some string', $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderUsesValueAsSourceIfSpecified() {
-		$this->viewHelper->expects($this->never())->method('renderChildren');
-		$actualResult = $this->viewHelper->render('Some string');
-		$this->assertEquals('Some string', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters()
+    {
+        $source = 'This is a sample text without special characters. <> &©"\'';
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertSame($source, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderUsesChildnodesAsSourceIfSpecified() {
-		$this->viewHelper->expects($this->atLeastOnce())->method('renderChildren')->will($this->returnValue('Some string'));
-		$actualResult = $this->viewHelper->render();
-		$this->assertEquals('Some string', $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderDecodesSimpleString()
+    {
+        $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
+        $expectedResult = 'Some special characters: & " \' < > *';
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters() {
-		$source = 'This is a sample text without special characters. <> &©"\'';
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertSame($source, $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderRespectsKeepQuoteArgument()
+    {
+        $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
+        $expectedResult = 'Some special characters: & &quot; \' < > *';
+        $actualResult = $this->viewHelper->render($source, true);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderDecodesSimpleString() {
-		$source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
-		$expectedResult = 'Some special characters: & " \' < > *';
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertEquals($expectedResult, $actualResult);
-	}
+    /**
+     * @test
+     */
+    public function renderRespectsEncodingArgument()
+    {
+        $source = utf8_decode('Some special characters: &amp; &quot; \' &lt; &gt; *');
+        $expectedResult = 'Some special characters: & " \' < > *';
+        $actualResult = $this->viewHelper->render($source, false, 'ISO-8859-1');
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	/**
-	 * @test
-	 */
-	public function renderRespectsKeepQuoteArgument() {
-		$source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
-		$expectedResult = 'Some special characters: & &quot; \' < > *';
-		$actualResult = $this->viewHelper->render($source, TRUE);
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderRespectsEncodingArgument() {
-		$source = utf8_decode('Some special characters: &amp; &quot; \' &lt; &gt; *');
-		$expectedResult = 'Some special characters: & " \' < > *';
-		$actualResult = $this->viewHelper->render($source, FALSE, 'ISO-8859-1');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsUnmodifiedSourceIfItIsNoString() {
-		$source = new \stdClass();
-		$actualResult = $this->viewHelper->render($source);
-		$this->assertSame($source, $actualResult);
-	}
-
+    /**
+     * @test
+     */
+    public function renderReturnsUnmodifiedSourceIfItIsNoString()
+    {
+        $source = new \stdClass();
+        $actualResult = $this->viewHelper->render($source);
+        $this->assertSame($source, $actualResult);
+    }
 }

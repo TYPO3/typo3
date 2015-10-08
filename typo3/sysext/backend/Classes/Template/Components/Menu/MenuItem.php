@@ -19,79 +19,83 @@ use TYPO3\CMS\Backend\Template\Components\AbstractControl;
 /**
  * MenuItem
  */
-class MenuItem extends AbstractControl {
+class MenuItem extends AbstractControl
+{
+    /**
+     * Sets the href of the menuItem
+     *
+     * @var string
+     */
+    protected $href = '';
 
-	/**
-	 * Sets the href of the menuItem
-	 *
-	 * @var string
-	 */
-	protected $href = '';
+    /**
+     * Sets the active state of the menuItem
+     *
+     * @var bool
+     */
+    protected $active = false;
 
-	/**
-	 * Sets the active state of the menuItem
-	 *
-	 * @var bool
-	 */
-	protected $active = FALSE;
+    /**
+     * Set href
+     *
+     * @param string $href Href of the MenuItem
+     *
+     * @return MenuItem
+     */
+    public function setHref($href)
+    {
+        $this->href = $href;
+        return $this;
+    }
 
-	/**
-	 * Set href
-	 *
-	 * @param string $href Href of the MenuItem
-	 *
-	 * @return MenuItem
-	 */
-	public function setHref($href) {
-		$this->href = $href;
-		return $this;
-	}
+    /**
+     * Set active
+     *
+     * @param bool $active Defines whether a menuItem is active
+     *
+     * @return MenuItem
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
 
-	/**
-	 * Set active
-	 *
-	 * @param bool $active Defines whether a menuItem is active
-	 *
-	 * @return MenuItem
-	 */
-	public function setActive($active) {
-		$this->active = $active;
-		return $this;
-	}
+    /**
+     * Get href
+     *
+     * @return string
+     */
+    public function getHref()
+    {
+        return $this->href;
+    }
 
-	/**
-	 * Get href
-	 *
-	 * @return string
-	 */
-	public function getHref() {
-		return $this->href;
-	}
+    /**
+     * Check if is active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
 
-	/**
-	 * Check if is active
-	 *
-	 * @return bool
-	 */
-	public function isActive() {
-		return $this->active;
-	}
-
-	/**
-	 * Validation
-	 *
-	 * @param MenuItem $menuItem The menuItem to validate
-	 *
-	 * @return bool
-	 */
-	public function isValid(MenuItem $menuItem) {
-		if (
-			$menuItem->getHref() !== ''
-			&& $menuItem->getTitle() !== ''
-		) {
-			return TRUE;
-		}
-		return FALSE;
-	}
-
+    /**
+     * Validation
+     *
+     * @param MenuItem $menuItem The menuItem to validate
+     *
+     * @return bool
+     */
+    public function isValid(MenuItem $menuItem)
+    {
+        if (
+            $menuItem->getHref() !== ''
+            && $menuItem->getTitle() !== ''
+        ) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install;
 /**
  * A generic install exception
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

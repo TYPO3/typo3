@@ -19,25 +19,26 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\AbstractFile|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\FileReference
+     */
+    protected $originalResource;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\AbstractFile|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\FileReference
-	 */
-	protected $originalResource;
+    /**
+     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
+     */
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource)
+    {
+        $this->originalResource = $originalResource;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
-	 */
-	public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource) {
-		$this->originalResource = $originalResource;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
-	 */
-	public function getOriginalResource() {
-		return $this->originalResource;
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
+     */
+    public function getOriginalResource()
+    {
+        return $this->originalResource;
+    }
 }

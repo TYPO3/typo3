@@ -14,43 +14,44 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource;
 
 /**
  * A task that takes care of cropping, scaling and/or masking an image.
  */
-class ImageCropScaleMaskTask extends AbstractGraphicalTask {
+class ImageCropScaleMaskTask extends AbstractGraphicalTask
+{
+    /**
+     * @var string
+     */
+    protected $type = 'Image';
 
-	/**
-	 * @var string
-	 */
-	protected $type = 'Image';
+    /**
+     * @var string
+     */
+    protected $name = 'CropScaleMask';
 
-	/**
-	 * @var string
-	 */
-	protected $name = 'CropScaleMask';
+    /**
+     * @return string
+     */
+    public function getTargetFileName()
+    {
+        return 'csm_' . parent::getTargetFilename();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTargetFileName() {
-		return 'csm_' . parent::getTargetFilename();
-	}
+    /**
+     * Checks if the given configuration is sensible for this task, i.e. if all required parameters
+     * are given, within the boundaries and don't conflict with each other.
+     *
+     * @param array $configuration
+     * @return bool
+     */
+    protected function isValidConfiguration(array $configuration)
+    {
+        // @todo Implement isValidConfiguration() method.
+    }
 
-	/**
-	 * Checks if the given configuration is sensible for this task, i.e. if all required parameters
-	 * are given, within the boundaries and don't conflict with each other.
-	 *
-	 * @param array $configuration
-	 * @return bool
-	 */
-	protected function isValidConfiguration(array $configuration) {
-		// @todo Implement isValidConfiguration() method.
-	}
-
-	public function fileNeedsProcessing() {
-		// @todo Implement fileNeedsProcessing() method.
-	}
-
+    public function fileNeedsProcessing()
+    {
+        // @todo Implement fileNeedsProcessing() method.
+    }
 }

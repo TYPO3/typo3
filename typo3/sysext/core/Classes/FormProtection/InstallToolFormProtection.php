@@ -56,39 +56,41 @@ namespace TYPO3\CMS\Core\FormProtection;
 /**
  * Install Tool form protection
  */
-class InstallToolFormProtection extends AbstractFormProtection {
+class InstallToolFormProtection extends AbstractFormProtection
+{
+    /**
+     * Creates or displays an error message telling the user that the submitted
+     * form token is invalid.
+     *
+     * @return void
+     */
+    protected function createValidationErrorMessage()
+    {
+    }
 
-	/**
-	 * Creates or displays an error message telling the user that the submitted
-	 * form token is invalid.
-	 *
-	 * @return void
-	 */
-	protected function createValidationErrorMessage() {
-	}
+    /**
+     * Retrieves or generates the session token.
+     *
+     * @return void
+     */
+    protected function retrieveSessionToken()
+    {
+        if (isset($_SESSION['installToolFormToken']) && !empty($_SESSION['installToolFormToken'])) {
+            $this->sessionToken = $_SESSION['installToolFormToken'];
+        } else {
+            $this->sessionToken = $this->generateSessionToken();
+            $this->persistSessionToken();
+        }
+    }
 
-	/**
-	 * Retrieves or generates the session token.
-	 *
-	 * @return void
-	 */
-	protected function retrieveSessionToken() {
-		if (isset($_SESSION['installToolFormToken']) && !empty($_SESSION['installToolFormToken'])) {
-			$this->sessionToken = $_SESSION['installToolFormToken'];
-		} else {
-			$this->sessionToken = $this->generateSessionToken();
-			$this->persistSessionToken();
-		}
-	}
-
-	/**
-	 * Saves the tokens so that they can be used by a later incarnation of this
-	 * class.
-	 *
-	 * @return void
-	 */
-	public function persistSessionToken() {
-		$_SESSION['installToolFormToken'] = $this->sessionToken;
-	}
-
+    /**
+     * Saves the tokens so that they can be used by a later incarnation of this
+     * class.
+     *
+     * @return void
+     */
+    public function persistSessionToken()
+    {
+        $_SESSION['installToolFormToken'] = $this->sessionToken;
+    }
 }

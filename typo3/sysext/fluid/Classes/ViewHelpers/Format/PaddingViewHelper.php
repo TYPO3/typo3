@@ -44,55 +44,56 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class PaddingViewHelper extends AbstractViewHelper implements CompilableInterface {
+class PaddingViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Pad a string to a certain length with another string
+     *
+     * @param int $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.
+     * @param string $padString The padding string
+     * @param string $padType Append the padding at this site (Possible values: right,left,both. Default: right)
+     * @param string $value string to format
+     * @return string The formatted value
+     * @api
+     */
+    public function render($padLength, $padString = ' ', $padType = 'right', $value = null)
+    {
+        return static::renderStatic(
+            array(
+                'padLength' => $padLength,
+                'padString' => $padString,
+                'padType' => $padType,
+                'value' => $value
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Pad a string to a certain length with another string
-	 *
-	 * @param int $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.
-	 * @param string $padString The padding string
-	 * @param string $padType Append the padding at this site (Possible values: right,left,both. Default: right)
-	 * @param string $value string to format
-	 * @return string The formatted value
-	 * @api
-	 */
-	public function render($padLength, $padString = ' ', $padType = 'right', $value = NULL) {
-		return static::renderStatic(
-			array(
-				'padLength' => $padLength,
-				'padString' => $padString,
-				'padType' => $padType,
-				'value' => $value
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * Applies str_pad() on the specified value.
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        if ($value === null) {
+            $value = $renderChildrenClosure();
+        }
+        $padTypes = array(
+            'left' => STR_PAD_LEFT,
+            'right' => STR_PAD_RIGHT,
+            'both' => STR_PAD_BOTH
+        );
+        $padType = $arguments['padType'];
+        if (!isset($padTypes[$padType])) {
+            $padType = 'right';
+        }
 
-	/**
-	 * Applies str_pad() on the specified value.
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		if ($value === NULL) {
-			$value = $renderChildrenClosure();
-		}
-		$padTypes = array(
-			'left' => STR_PAD_LEFT,
-			'right' => STR_PAD_RIGHT,
-			'both' => STR_PAD_BOTH
-		);
-		$padType = $arguments['padType'];
-		if (!isset($padTypes[$padType])) {
-			$padType = 'right';
-		}
-
-		return str_pad($value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
-	}
-
+        return str_pad($value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
+    }
 }

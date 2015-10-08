@@ -53,80 +53,83 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  *
  * @see https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Parsefunc/
  */
-class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface {
+class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+     */
+    protected static $tsfeBackup;
 
-	/**
-	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
-	 */
-	static protected $tsfeBackup;
+    /**
+     * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
+     * This is internal and NO part of the API. It is very likely to change.
+     *
+     * @var bool
+     * @internal
+     */
+    protected $escapingInterceptorEnabled = false;
 
-	/**
-	 * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
-	 * This is internal and NO part of the API. It is very likely to change.
-	 *
-	 * @var bool
-	 * @internal
-	 */
-	protected $escapingInterceptorEnabled = FALSE;
+    /**
+     * @param string $parseFuncTSPath path to TypoScript parseFunc setup.
+     * @return string the parsed string.
+     */
+    public function render($parseFuncTSPath = 'lib.parseFunc_RTE')
+    {
+        return static::renderStatic(
+            array(
+                'parseFuncTSPath' => $parseFuncTSPath,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * @param string $parseFuncTSPath path to TypoScript parseFunc setup.
-	 * @return string the parsed string.
-	 */
-	public function render($parseFuncTSPath = 'lib.parseFunc_RTE') {
-		return static::renderStatic(
-			array(
-				'parseFuncTSPath' => $parseFuncTSPath,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $parseFuncTSPath = $arguments['parseFuncTSPath'];
+        if (TYPO3_MODE === 'BE') {
+            self::simulateFrontendEnvironment();
+        }
+        $value = $renderChildrenClosure();
+        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $content = $contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
+        if (TYPO3_MODE === 'BE') {
+            self::resetFrontendEnvironment();
+        }
+        return $content;
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$parseFuncTSPath = $arguments['parseFuncTSPath'];
-		if (TYPO3_MODE === 'BE') {
-			self::simulateFrontendEnvironment();
-		}
-		$value = $renderChildrenClosure();
-		$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-		$content = $contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
-		if (TYPO3_MODE === 'BE') {
-			self::resetFrontendEnvironment();
-		}
-		return $content;
-	}
+    /**
+     * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
+     * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
+     *
+     * @return void
+     */
+    protected static function simulateFrontendEnvironment()
+    {
+        self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->tmpl = new \stdClass();
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+    }
 
-	/**
-	 * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
-	 * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
-	 *
-	 * @return void
-	 */
-	static protected function simulateFrontendEnvironment() {
-		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->tmpl = new \stdClass();
-		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-		$GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-	}
-
-	/**
-	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-	 *
-	 * @return void
-	 * @see simulateFrontendEnvironment()
-	 */
-	static protected function resetFrontendEnvironment() {
-		$GLOBALS['TSFE'] = self::$tsfeBackup;
-	}
-
+    /**
+     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+     *
+     * @return void
+     * @see simulateFrontendEnvironment()
+     */
+    protected static function resetFrontendEnvironment()
+    {
+        $GLOBALS['TSFE'] = self::$tsfeBackup;
+    }
 }

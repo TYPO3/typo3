@@ -14,11 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Exception;
 
 /**
  * User has no sufficient rights to modify a row that is located at root node
  */
-class AccessDeniedRootNodeException extends AccessDeniedException {
-
+class AccessDeniedRootNodeException extends AccessDeniedException
+{
 }

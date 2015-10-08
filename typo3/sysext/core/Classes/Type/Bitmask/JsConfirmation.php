@@ -17,30 +17,30 @@ namespace TYPO3\CMS\Core\Type\Bitmask;
 /**
  * A class providing constants for bitwise operations on javascript confirmation popups
  */
-class JsConfirmation extends \TYPO3\CMS\Core\Type\Enumeration {
+class JsConfirmation extends \TYPO3\CMS\Core\Type\Enumeration
+{
+    /**
+     * @var int
+     */
+    const TYPE_CHANGE = 0b00000001;
 
-	/**
-	 * @var int
-	 */
-	const TYPE_CHANGE = 0b00000001;
+    /**
+     * @var int
+     */
+    const COPY_MOVE_PASTE = 0b00000010;
 
-	/**
-	 * @var int
-	 */
-	const COPY_MOVE_PASTE = 0b00000010;
+    /**
+     * @var int
+     */
+    const DELETE = 0b00000100;
 
-	/**
-	 * @var int
-	 */
-	const DELETE = 0b00000100;
+    /**
+     * @var int
+     */
+    const FE_EDIT = 0b00001000;
 
-	/**
-	 * @var int
-	 */
-	const FE_EDIT = 0b00001000;
-
-	/**
-	 * @var int
-	 */
-	const OTHER = 0b10000000;
+    /**
+     * @var int
+     */
+    const OTHER = 0b10000000;
 }

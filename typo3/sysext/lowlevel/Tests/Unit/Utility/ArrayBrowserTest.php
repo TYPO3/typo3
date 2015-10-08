@@ -17,32 +17,34 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Utility;
 /**
  * Testcase for the \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser class in the TYPO3 Core.
  */
-class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
-	}
+    ///////////////////////////////
+    // Tests concerning depthKeys
+    ///////////////////////////////
+    /**
+     * @test
+     */
+    public function depthKeysWithEmptyFirstParameterAddsNothing()
+    {
+        $this->assertEquals(array(), $this->subject->depthKeys(array(), array()));
+    }
 
-	///////////////////////////////
-	// Tests concerning depthKeys
-	///////////////////////////////
-	/**
-	 * @test
-	 */
-	public function depthKeysWithEmptyFirstParameterAddsNothing() {
-		$this->assertEquals(array(), $this->subject->depthKeys(array(), array()));
-	}
-
-	/**
-	 * @test
-	 */
-	public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray() {
-		$this->assertEquals(array(0 => 1), $this->subject->depthKeys(array('foo'), array()));
-	}
-
+    /**
+     * @test
+     */
+    public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray()
+    {
+        $this->assertEquals(array(0 => 1), $this->subject->depthKeys(array('foo'), array()));
+    }
 }

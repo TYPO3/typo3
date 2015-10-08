@@ -21,38 +21,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Migrate date and datetime db field values to timestamp
  */
-class DatabaseRowDateTimeFields implements FormDataProviderInterface {
+class DatabaseRowDateTimeFields implements FormDataProviderInterface
+{
+    /**
+     * Migrate date and datetime db field values to timestamp
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $dateTimeFormats = $this->getDatabase()->getDateTimeFormats($result['tableName']);
+        foreach ($result['vanillaTableTca']['columns'] as $column => $columnConfig) {
+            if (isset($columnConfig['config']['dbType'])
+                && GeneralUtility::inList('date,datetime', $columnConfig['config']['dbType'])
+            ) {
+                if (!empty($result['databaseRow'][$column])
+                    &&  $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
+                ) {
+                    // Create a timestamp from current field data
+                    $result['databaseRow'][$column] = strtotime($result['databaseRow'][$column]);
+                } else {
+                    // Set to 0 timespamp
+                    $result['databaseRow'][$column] = 0;
+                }
+            }
+        }
+        return $result;
+    }
 
-	/**
-	 * Migrate date and datetime db field values to timestamp
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$dateTimeFormats = $this->getDatabase()->getDateTimeFormats($result['tableName']);
-		foreach ($result['vanillaTableTca']['columns'] as $column => $columnConfig) {
-			if (isset($columnConfig['config']['dbType'])
-				&& GeneralUtility::inList('date,datetime', $columnConfig['config']['dbType'])
-			) {
-				if (!empty($result['databaseRow'][$column])
-					&&  $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
-				) {
-					// Create a timestamp from current field data
-					$result['databaseRow'][$column] = strtotime($result['databaseRow'][$column]);
-				} else {
-					// Set to 0 timespamp
-					$result['databaseRow'][$column] = 0;
-				}
-			}
-		}
-		return $result;
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabase() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabase()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

@@ -19,66 +19,70 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class CommandArgumentDefinition {
+class CommandArgumentDefinition
+{
+    /**
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * @var bool
+     */
+    protected $required = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $required = FALSE;
+    /**
+     * @var string
+     */
+    protected $description = '';
 
-	/**
-	 * @var string
-	 */
-	protected $description = '';
+    /**
+     * Constructor
+     *
+     * @param string $name name of the command argument (= parameter name)
+     * @param bool $required defines whether this argument is required or optional
+     * @param string $description description of the argument
+     */
+    public function __construct($name, $required, $description)
+    {
+        $this->name = $name;
+        $this->required = $required;
+        $this->description = $description;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $name name of the command argument (= parameter name)
-	 * @param bool $required defines whether this argument is required or optional
-	 * @param string $description description of the argument
-	 */
-	public function __construct($name, $required, $description) {
-		$this->name = $name;
-		$this->required = $required;
-		$this->description = $description;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Returns the lowercased name with dashes as word separator
+     *
+     * @return string
+     */
+    public function getDashedName()
+    {
+        $dashedName = ucfirst($this->name);
+        $dashedName = preg_replace('/([A-Z][a-z0-9]+)/', '$1-', $dashedName);
+        return '--' . strtolower(substr($dashedName, 0, -1));
+    }
 
-	/**
-	 * Returns the lowercased name with dashes as word separator
-	 *
-	 * @return string
-	 */
-	public function getDashedName() {
-		$dashedName = ucfirst($this->name);
-		$dashedName = preg_replace('/([A-Z][a-z0-9]+)/', '$1-', $dashedName);
-		return '--' . strtolower(substr($dashedName, 0, -1));
-	}
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function isRequired() {
-		return $this->required;
-	}
-
+    /**
+     * @return string
+     */
+    public function isRequired()
+    {
+        return $this->required;
+    }
 }

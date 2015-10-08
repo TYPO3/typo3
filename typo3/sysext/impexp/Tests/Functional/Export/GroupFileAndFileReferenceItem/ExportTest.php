@@ -19,142 +19,140 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Functional test for the ImportExport
  */
-class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase {
+class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
+{
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array(
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-	);
+    /**
+     * @var array
+     */
+    protected $pathsToLinkInTestInstance = array(
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/uploads/tx_impexpgroupfiles' => 'uploads/tx_impexpgroupfiles'
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $pathsToLinkInTestInstance = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/uploads/tx_impexpgroupfiles' => 'uploads/tx_impexpgroupfiles'
-	);
+    protected function setUp()
+    {
+        parent::setUp();
 
-	protected function setUp() {
-		parent::setUp();
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/tx_impexpgroupfiles_item.xml');
+    }
 
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tx_impexpgroupfiles_item.xml');
+    /**
+     * @test
+     */
+    public function exportGroupFileAndFileReferenceItem()
+    {
+        $this->compileExportGroupFileAndFileReferenceItem();
 
-	}
+        $out = $this->export->compileMemoryToFileContent('xml');
 
-	/**
-	 * @test
-	 */
-	public function exportGroupFileAndFileReferenceItem() {
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', $out);
+    }
 
-		$this->compileExportGroupFileAndFileReferenceItem();
+    /**
+     * @test
+     */
+    public function exportGroupFileAndFileReferenceItemButImagesNotIncluded()
+    {
+        $this->export->setSaveFilesOutsideExportFile(true);
 
-		$out = $this->export->compileMemoryToFileContent('xml');
+        $this->compileExportGroupFileAndFileReferenceItem();
 
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', $out);
-	}
+        $out = $this->export->compileMemoryToFileContent('xml');
 
-	/**
-	 * @test
-	 */
-	public function exportGroupFileAndFileReferenceItemButImagesNotIncluded() {
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', $out);
 
-		$this->export->setSaveFilesOutsideExportFile(TRUE);
-
-		$this->compileExportGroupFileAndFileReferenceItem();
-
-		$out = $this->export->compileMemoryToFileContent('xml');
-
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', $out);
-
-		$temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', $temporaryFilesDirectory . 'e1c5c4e1e34e19e2facb438752e06c3f');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', $temporaryFilesDirectory . 'c3511df85d21bc578faf71c6a19eeb3ff44af370');
-	}
-
-
+        $temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', $temporaryFilesDirectory . 'e1c5c4e1e34e19e2facb438752e06c3f');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', $temporaryFilesDirectory . 'c3511df85d21bc578faf71c6a19eeb3ff44af370');
+    }
 
 
-	protected function compileExportGroupFileAndFileReferenceItem() {
 
-		$this->export->setRecordTypesIncludeFields(
-			array(
-				'pages' => array(
-					'title',
-					'deleted',
-					'doktype',
-					'hidden',
-					'perms_everybody'
-				),
-				'sys_file' => array(
-					'storage',
-					'type',
-					'metadata',
-					'extension',
-					'identifier',
-					'identifier_hash',
-					'folder_hash',
-					'mime_type',
-					'name',
-					'sha1',
-					'size',
-					'creation_date',
-					'modification_date',
-				),
-				'sys_file_storage' => array(
-					'name',
-					'description',
-					'driver',
-					'configuration',
-					'is_default',
-					'is_browsable',
-					'is_public',
-					'is_writable',
-					'is_online'
-				),
-				'tx_impexpgroupfiles_item' => array(
-					'title',
-					'deleted',
-					'hidden',
-					'images',
-					'image_references'
-				),
 
-			)
-		);
+    protected function compileExportGroupFileAndFileReferenceItem()
+    {
+        $this->export->setRecordTypesIncludeFields(
+            array(
+                'pages' => array(
+                    'title',
+                    'deleted',
+                    'doktype',
+                    'hidden',
+                    'perms_everybody'
+                ),
+                'sys_file' => array(
+                    'storage',
+                    'type',
+                    'metadata',
+                    'extension',
+                    'identifier',
+                    'identifier_hash',
+                    'folder_hash',
+                    'mime_type',
+                    'name',
+                    'sha1',
+                    'size',
+                    'creation_date',
+                    'modification_date',
+                ),
+                'sys_file_storage' => array(
+                    'name',
+                    'description',
+                    'driver',
+                    'configuration',
+                    'is_default',
+                    'is_browsable',
+                    'is_public',
+                    'is_writable',
+                    'is_online'
+                ),
+                'tx_impexpgroupfiles_item' => array(
+                    'title',
+                    'deleted',
+                    'hidden',
+                    'images',
+                    'image_references'
+                ),
 
-		$this->export->relOnlyTables = array(
-			'sys_file',
-			'sys_file_storage'
-		);
+            )
+        );
 
-		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
-		$this->export->export_addRecord('tx_impexpgroupfiles_item', BackendUtility::getRecord('tx_impexpgroupfiles_item', 1));
+        $this->export->relOnlyTables = array(
+            'sys_file',
+            'sys_file_storage'
+        );
 
-		$this->setPageTree(1, 0);
+        $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
+        $this->export->export_addRecord('tx_impexpgroupfiles_item', BackendUtility::getRecord('tx_impexpgroupfiles_item', 1));
 
-		// After adding ALL records we set relations:
-		for ($a = 0; $a < 10; $a++) {
-			$addR = $this->export->export_addDBRelations($a);
-			if (empty($addR)) {
-				break;
-			}
-		}
+        $this->setPageTree(1, 0);
 
-		// hacky, but the timestamp will change on every clone, so set the file
-		// modification timestamp to the asserted value
-		$success = @touch(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg', 1393866824);
-		if (!$success) {
-			$this->markTestSkipped('Could not set file modification timestamp for a fixture binary file. This is required for running the test successful.');
-		}
+        // After adding ALL records we set relations:
+        for ($a = 0; $a < 10; $a++) {
+            $addR = $this->export->export_addDBRelations($a);
+            if (empty($addR)) {
+                break;
+            }
+        }
 
-		$this->export->export_addFilesFromRelations();
-		$this->export->export_addFilesFromSysFilesRecords();
+        // hacky, but the timestamp will change on every clone, so set the file
+        // modification timestamp to the asserted value
+        $success = @touch(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg', 1393866824);
+        if (!$success) {
+            $this->markTestSkipped('Could not set file modification timestamp for a fixture binary file. This is required for running the test successful.');
+        }
 
-	}
-
+        $this->export->export_addFilesFromRelations();
+        $this->export->export_addFilesFromSysFilesRecords();
+    }
 }

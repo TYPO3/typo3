@@ -60,35 +60,36 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
  *
  * @api
  */
-class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
+class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+{
+    /**
+     * Initializes the "role" argument.
+     * Renders <f:then> child if the current logged in FE user belongs to the specified role (aka usergroup)
+     * otherwise renders <f:else> child.
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
+    }
 
-	/**
-	 * Initializes the "role" argument.
-	 * Renders <f:then> child if the current logged in FE user belongs to the specified role (aka usergroup)
-	 * otherwise renders <f:else> child.
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
-	}
-
-	/**
-	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
-	 *
-	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
-	 * @return bool
-	 */
-	static protected function evaluateCondition($arguments = NULL) {
-		$role = $arguments['role'];
-		if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->loginUser) {
-			return FALSE;
-		}
-		if (is_numeric($role)) {
-			return is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']);
-		} else {
-			return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
-		}
-	}
-
+    /**
+     * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
+     *
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null)
+    {
+        $role = $arguments['role'];
+        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->loginUser) {
+            return false;
+        }
+        if (is_numeric($role)) {
+            return is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']);
+        } else {
+            return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
+        }
+    }
 }

@@ -19,49 +19,50 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseSection;
 /**
  * Model of frontend response
  */
-class StructureDoesNotHaveRecordConstraint extends AbstractStructureRecordConstraint {
+class StructureDoesNotHaveRecordConstraint extends AbstractStructureRecordConstraint
+{
+    /**
+     * @param ResponseSection $responseSection
+     * @return bool
+     */
+    protected function matchesSection(ResponseSection $responseSection)
+    {
+        $matchingVariants = array();
 
-	/**
-	 * @param ResponseSection $responseSection
-	 * @return bool
-	 */
-	protected function matchesSection(ResponseSection $responseSection) {
-		$matchingVariants = array();
+        foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
+            if (empty($structure) || !is_array($structure)) {
+                $this->sectionFailures[$responseSection->getIdentifier()] = 'No records found in "' . $path . '"';
+                return false;
+            }
 
-		foreach ($responseSection->findStructures($this->recordIdentifier, $this->recordField) as $path => $structure) {
-			if (empty($structure) || !is_array($structure)) {
-				$this->sectionFailures[$responseSection->getIdentifier()] = 'No records found in "' . $path . '"';
-				return FALSE;
-			}
+            $nonMatchingValues = $this->getNonMatchingValues($structure);
+            $matchingValues = array_diff($this->values, $nonMatchingValues);
 
-			$nonMatchingValues = $this->getNonMatchingValues($structure);
-			$matchingValues = array_diff($this->values, $nonMatchingValues);
+            if (!empty($matchingValues)) {
+                $matchingVariants[$path] = $matchingValues;
+            }
+        }
 
-			if (!empty($matchingValues)) {
-				$matchingVariants[$path] = $matchingValues;
-			}
-		}
+        if (empty($matchingVariants)) {
+            return true;
+        }
 
-		if (empty($matchingVariants)) {
-			return TRUE;
-		}
+        $matchingMessage = '';
+        foreach ($matchingVariants as $path => $matchingValues) {
+            $matchingMessage .= '  * Found in "' . $path . '": ' . implode(', ', $matchingValues);
+        }
 
-		$matchingMessage = '';
-		foreach ($matchingVariants as $path => $matchingValues) {
-			$matchingMessage .= '  * Found in "' . $path . '": ' . implode(', ', $matchingValues);
-		}
+        $this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert not having values for "' . $this->table . '.' . $this->field . '"' . LF . $matchingMessage;
+        return false;
+    }
 
-		$this->sectionFailures[$responseSection->getIdentifier()] = 'Could not assert not having values for "' . $this->table . '.' . $this->field . '"' . LF . $matchingMessage;
-		return FALSE;
-	}
-
-	/**
-	 * Returns a string representation of the constraint.
-	 *
-	 * @return string
-	 */
-	public function toString() {
-		return 'structure does not have record';
-	}
-
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'structure does not have record';
+    }
 }

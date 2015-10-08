@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object\Exception;
 /**
  * "Wrong Scope" Exception
  */
-class WrongScopeException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class WrongScopeException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

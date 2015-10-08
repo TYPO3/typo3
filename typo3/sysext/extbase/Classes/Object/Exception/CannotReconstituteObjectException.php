@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object\Exception;
 /**
  * "Cannot reconstitute object" Exception
  */
-class CannotReconstituteObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class CannotReconstituteObjectException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

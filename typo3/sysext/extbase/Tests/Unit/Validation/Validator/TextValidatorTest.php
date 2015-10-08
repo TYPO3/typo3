@@ -26,51 +26,56 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
+class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase
+{
+    protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\TextValidator::class;
 
-	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\TextValidator::class;
+    public function setup()
+    {
+        $this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
+    }
 
-	public function setup() {
-		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
-	}
+    /**
+     * @test
+     */
+    public function textValidatorReturnsNoErrorForASimpleString()
+    {
+        $this->assertFalse($this->validator->validate('this is a very simple string')->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function textValidatorReturnsNoErrorForASimpleString() {
-		$this->assertFalse($this->validator->validate('this is a very simple string')->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function textValidatorAllowsTheNewLineCharacter()
+    {
+        $sampleText = 'Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.';
+        $this->assertFalse($this->validator->validate($sampleText)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function textValidatorAllowsTheNewLineCharacter() {
-		$sampleText = 'Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.';
-		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function textValidatorAllowsCommonSpecialCharacters()
+    {
+        $sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
+        $this->assertFalse($this->validator->validate($sampleText)->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function textValidatorAllowsCommonSpecialCharacters() {
-		$sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
-		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
-	}
+    /**
+     * @test
+     */
+    public function textValidatorReturnsErrorForAStringWithHtml()
+    {
+        $this->assertTrue($this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->hasErrors());
+    }
 
-	/**
-	 * @test
-	 */
-	public function textValidatorReturnsErrorForAStringWithHtml() {
-		$this->assertTrue($this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->hasErrors());
-	}
-
-	/**
-	 * @test
-	 */
-	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		// we only test for the error code, after the translation Method for message is mocked anyway
-		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221565786));
-		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
-	}
-
+    /**
+     * @test
+     */
+    public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities()
+    {
+        // we only test for the error code, after the translation Method for message is mocked anyway
+        $expected = array(new \TYPO3\CMS\Extbase\Validation\Error(null, 1221565786));
+        $this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
+    }
 }

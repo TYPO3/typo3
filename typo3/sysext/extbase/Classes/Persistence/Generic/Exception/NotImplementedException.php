@@ -17,13 +17,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "NotImplementedException" exception
  */
-class NotImplementedException extends \TYPO3\CMS\Extbase\Persistence\Exception {
-
-	/**
-	 * @param string $method
-	 */
-	public function __construct($method) {
-		parent::__construct(sprintf('Method %s is not supported by generic persistence"', $method), 1350213237);
-	}
-
+class NotImplementedException extends \TYPO3\CMS\Extbase\Persistence\Exception
+{
+    /**
+     * @param string $method
+     */
+    public function __construct($method)
+    {
+        parent::__construct(sprintf('Method %s is not supported by generic persistence"', $method), 1350213237);
+    }
 }

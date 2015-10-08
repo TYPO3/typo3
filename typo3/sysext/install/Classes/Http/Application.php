@@ -16,77 +16,79 @@ namespace TYPO3\CMS\Install\Http;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 
-
 /**
  * Entry point for the TYPO3 Install Tool
  */
-class Application implements ApplicationInterface {
+class Application implements ApplicationInterface
+{
+    /**
+     * @var Bootstrap
+     */
+    protected $bootstrap;
 
-	/**
-	 * @var Bootstrap
-	 */
-	protected $bootstrap;
+    /**
+     * @var string
+     */
+    protected $entryPointPath = 'typo3/sysext/install/Start/';
 
-	/**
-	 * @var string
-	 */
-	protected $entryPointPath = 'typo3/sysext/install/Start/';
+    /**
+     * All available request handlers that can handle an install tool request
+     * @var array
+     */
+    protected $availableRequestHandlers = array(
+        \TYPO3\CMS\Install\Http\RequestHandler::class
+    );
 
-	/**
-	 * All available request handlers that can handle an install tool request
-	 * @var array
-	 */
-	protected $availableRequestHandlers = array(
-		\TYPO3\CMS\Install\Http\RequestHandler::class
-	);
+    /**
+     * Constructor setting up legacy constant and register available Request Handlers
+     *
+     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
+     */
+    public function __construct($classLoader)
+    {
+        $this->defineLegacyConstants();
 
-	/**
-	 * Constructor setting up legacy constant and register available Request Handlers
-	 *
-	 * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
-	 */
-	public function __construct($classLoader) {
-		$this->defineLegacyConstants();
+        $this->bootstrap = Bootstrap::getInstance()
+            ->initializeClassLoader($classLoader)
+            ->baseSetup($this->entryPointPath);
 
-		$this->bootstrap = Bootstrap::getInstance()
-			->initializeClassLoader($classLoader)
-			->baseSetup($this->entryPointPath);
+        foreach ($this->availableRequestHandlers as $requestHandler) {
+            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
+        }
 
-		foreach ($this->availableRequestHandlers as $requestHandler) {
-			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
-		}
+        $this->bootstrap
+            ->startOutputBuffering()
+            ->loadConfigurationAndInitialize(false, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
+    }
 
-		$this->bootstrap
-			->startOutputBuffering()
-			->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
-	}
+    /**
+     * Set up the application and shut it down afterwards
+     * Failsafe minimal setup mode for the install tool
+     * Does not call "run()" therefore
+     *
+     * @param callable $execute
+     * @return void
+     */
+    public function run(callable $execute = null)
+    {
+        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
-	/**
-	 * Set up the application and shut it down afterwards
-	 * Failsafe minimal setup mode for the install tool
-	 * Does not call "run()" therefore
-	 *
-	 * @param callable $execute
-	 * @return void
-	 */
-	public function run(callable $execute = NULL) {
-		$this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+        if ($execute !== null) {
+            if ($execute instanceof \Closure) {
+                $execute->bindTo($this);
+            }
+            call_user_func($execute);
+        }
 
-		if ($execute !== NULL) {
-			if ($execute instanceof \Closure) {
-				$execute->bindTo($this);
-			}
-			call_user_func($execute);
-		}
+        $this->bootstrap->shutdown();
+    }
 
-		$this->bootstrap->shutdown();
-	}
-
-	/**
-	 * Define constants
-	 */
-	protected function defineLegacyConstants() {
-		define('TYPO3_MODE', 'BE');
-		define('TYPO3_enterInstallScript', '1');
-	}
+    /**
+     * Define constants
+     */
+    protected function defineLegacyConstants()
+    {
+        define('TYPO3_MODE', 'BE');
+        define('TYPO3_enterInstallScript', '1');
+    }
 }

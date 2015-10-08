@@ -17,33 +17,34 @@ namespace TYPO3\CMS\Belog\Domain\Model;
 /**
  * Stub model for sys history - only properties required for belog module are added currently
  */
-class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * List of changed fields
+     *
+     * @var string
+     */
+    protected $fieldlist = '';
 
-	/**
-	 * List of changed fields
-	 *
-	 * @var string
-	 */
-	protected $fieldlist = '';
+    /**
+     * Set list of changed fields
+     *
+     * @param string $fieldlist
+     * @return void
+     */
+    public function setFieldlist($fieldlist)
+    {
+        // @todo think about exploding this to an array
+        $this->fieldlist = $fieldlist;
+    }
 
-	/**
-	 * Set list of changed fields
-	 *
-	 * @param string $fieldlist
-	 * @return void
-	 */
-	public function setFieldlist($fieldlist) {
-		// @todo think about exploding this to an array
-		$this->fieldlist = $fieldlist;
-	}
-
-	/**
-	 * Get field list
-	 *
-	 * @return string
-	 */
-	public function getFieldlist() {
-		return $this->fieldlist;
-	}
-
+    /**
+     * Get field list
+     *
+     * @return string
+     */
+    public function getFieldlist()
+    {
+        return $this->fieldlist;
+    }
 }

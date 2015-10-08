@@ -17,38 +17,38 @@ namespace TYPO3\CMS\Reports\Report\Status;
 /**
  * Post processes the warning messages found in about modules.
  */
-class WarningMessagePostProcessor {
-
-	/**
-	 * Tries to get the highest severity of the system's status first, if
-	 * something is found it is assumed that the status update task is set up
-	 * properly or the status report has been checked manually and we take over
-	 * control over the system warning messages.
-	 *
-	 * @param array $warningMessages An array of messages related to already found issues.
-	 */
-	public function displayWarningMessages_postProcess(array &$warningMessages) {
-		// Get highest severity
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
-		$highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', NULL);
-		if (!is_null($highestSeverity)) {
-			if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
-				// Display a message that there's something wrong and that
-				// the admin should take a look at the detailed status report
-				$GLOBALS['LANG']->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
-				$reportModuleIdentifier = 'system_ReportsTxreportsm1';
-				$reportModuleParameters = array(
-					'tx_reports_system_reportstxreportsm1[extension]=tx_reports',
-					'tx_reports_system_reportstxreportsm1[report]=status',
-					'tx_reports_system_reportstxreportsm1[action]=detail',
-					'tx_reports_system_reportstxreportsm1[controller]=Report',
-				);
-				$warningMessages['tx_reports_status_notification'] = sprintf(
-					$GLOBALS['LANG']->getLL('status_problemNotification'),
-					'<a href="javascript:top.goToModule(\'' . $reportModuleIdentifier . '\', 1, \'&' . implode('&', $reportModuleParameters) . '\');">', '</a>'
-				);
-			}
-		}
-	}
-
+class WarningMessagePostProcessor
+{
+    /**
+     * Tries to get the highest severity of the system's status first, if
+     * something is found it is assumed that the status update task is set up
+     * properly or the status report has been checked manually and we take over
+     * control over the system warning messages.
+     *
+     * @param array $warningMessages An array of messages related to already found issues.
+     */
+    public function displayWarningMessages_postProcess(array &$warningMessages)
+    {
+        // Get highest severity
+        $registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', null);
+        if (!is_null($highestSeverity)) {
+            if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
+                // Display a message that there's something wrong and that
+                // the admin should take a look at the detailed status report
+                $GLOBALS['LANG']->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
+                $reportModuleIdentifier = 'system_ReportsTxreportsm1';
+                $reportModuleParameters = array(
+                    'tx_reports_system_reportstxreportsm1[extension]=tx_reports',
+                    'tx_reports_system_reportstxreportsm1[report]=status',
+                    'tx_reports_system_reportstxreportsm1[action]=detail',
+                    'tx_reports_system_reportstxreportsm1[controller]=Report',
+                );
+                $warningMessages['tx_reports_status_notification'] = sprintf(
+                    $GLOBALS['LANG']->getLL('status_problemNotification'),
+                    '<a href="javascript:top.goToModule(\'' . $reportModuleIdentifier . '\', 1, \'&' . implode('&', $reportModuleParameters) . '\');">', '</a>'
+                );
+            }
+        }
+    }
 }

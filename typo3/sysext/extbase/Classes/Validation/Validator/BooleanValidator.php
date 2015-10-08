@@ -17,71 +17,71 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for boolean values
  */
-class BooleanValidator extends AbstractValidator {
+class BooleanValidator extends AbstractValidator
+{
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        // The default is set to NULL here, because we need to be backward compatible here, because this
+        // BooleanValidator is called automatically on boolean action arguments. If we would set it to TRUE,
+        // every FALSE value for an action argument would break.
+        // @todo with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
+        // in Flow, which won't be called on boolean action arguments.
+        'is' => array(null, 'Boolean value', 'boolean|string|integer')
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		// The default is set to NULL here, because we need to be backward compatible here, because this
-		// BooleanValidator is called automatically on boolean action arguments. If we would set it to TRUE,
-		// every FALSE value for an action argument would break.
-		// @todo with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
-		// in Flow, which won't be called on boolean action arguments.
-		'is' => array(NULL, 'Boolean value', 'boolean|string|integer')
-	);
 
+    /**
+     * Check if $value matches the expectation given to the validator.
+     * If it does not match, the function adds an error to the result.
+     *
+     * Also testing for '1' (true), '0' and '' (false) because casting varies between
+     * tests and actual usage. This makes the validator loose but still keeping functionality.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     */
+    public function isValid($value)
+    {
+        // see comment above, check if expectation is NULL, then nothing to do!
+        if ($this->options['is'] === null) {
+            return;
+        }
+        switch (strtolower((string)$this->options['is'])) {
+            case 'true':
+            case '1':
+                $expectation = true;
+                break;
+            case 'false':
+            case '':
+            case '0':
+                $expectation = false;
+                break;
+            default:
+                $this->addError('The given expectation is not valid.', 1361959227);
+                return;
+        }
 
-	/**
-	 * Check if $value matches the expectation given to the validator.
-	 * If it does not match, the function adds an error to the result.
-	 *
-	 * Also testing for '1' (true), '0' and '' (false) because casting varies between
-	 * tests and actual usage. This makes the validator loose but still keeping functionality.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 */
-	public function isValid($value) {
-		// see comment above, check if expectation is NULL, then nothing to do!
-		if ($this->options['is'] === NULL) {
-			return;
-		}
-		switch (strtolower((string)$this->options['is'])) {
-			case 'true':
-			case '1':
-				$expectation = TRUE;
-				break;
-			case 'false':
-			case '':
-			case '0':
-				$expectation = FALSE;
-				break;
-			default:
-				$this->addError('The given expectation is not valid.', 1361959227);
-				return;
-		}
-
-		if ($value !== $expectation) {
-			if (!is_bool($value)) {
-				$this->addError($this->translateErrorMessage(
-					'validator.boolean.nottrue',
-					'extbase'
-				), 1361959230);
-			} else {
-				if ($expectation) {
-					$this->addError($this->translateErrorMessage(
-						'validator.boolean.nottrue',
-						'extbase'
-					), 1361959228);
-				} else {
-					$this->addError($this->translateErrorMessage(
-						'validator.boolean.notfalse',
-						'extbase'
-					), 1361959229);
-				}
-			}
-		}
-	}
-
+        if ($value !== $expectation) {
+            if (!is_bool($value)) {
+                $this->addError($this->translateErrorMessage(
+                    'validator.boolean.nottrue',
+                    'extbase'
+                ), 1361959230);
+            } else {
+                if ($expectation) {
+                    $this->addError($this->translateErrorMessage(
+                        'validator.boolean.nottrue',
+                        'extbase'
+                    ), 1361959228);
+                } else {
+                    $this->addError($this->translateErrorMessage(
+                        'validator.boolean.notfalse',
+                        'extbase'
+                    ), 1361959229);
+                }
+            }
+        }
+    }
 }

@@ -27,60 +27,63 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 /**
  * Dispatcher which resolves a route to call a controller and method (but also a callable)
  */
-class RouteDispatcher extends Dispatcher implements DispatcherInterface {
+class RouteDispatcher extends Dispatcher implements DispatcherInterface
+{
+    /**
+     * Main method to resolve the route and checks the target of the route, and tries to call it.
+     *
+     * @param ServerRequestInterface $request the current server request
+     * @param ResponseInterface $response the prepared response
+     * @return ResponseInterface the filled response by the callable / controller/action
+     * @throws RouteNotFoundException if the route was not found
+     * @throws \InvalidArgumentException if the defined target for the route is invalid
+     */
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        /** @var Router $router */
+        $router = GeneralUtility::makeInstance(Router::class);
+        /** @var Route $route */
+        $route = $router->matchRequest($request);
+        $request = $request->withAttribute('route', $route);
+        if (!$this->isValidRequest($request)) {
+            throw new RouteNotFoundException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
+        }
 
-	/**
-	 * Main method to resolve the route and checks the target of the route, and tries to call it.
-	 *
-	 * @param ServerRequestInterface $request the current server request
-	 * @param ResponseInterface $response the prepared response
-	 * @return ResponseInterface the filled response by the callable / controller/action
-	 * @throws RouteNotFoundException if the route was not found
-	 * @throws \InvalidArgumentException if the defined target for the route is invalid
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response) {
-		/** @var Router $router */
-		$router = GeneralUtility::makeInstance(Router::class);
-		/** @var Route $route */
-		$route = $router->matchRequest($request);
-		$request = $request->withAttribute('route', $route);
-		if (!$this->isValidRequest($request)) {
-			throw new RouteNotFoundException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
-		}
+        $targetIdentifier = $route->getOption('target');
+        $target = $this->getCallableFromTarget($targetIdentifier);
+        return call_user_func_array($target, array($request, $response));
+    }
 
-		$targetIdentifier = $route->getOption('target');
-		$target = $this->getCallableFromTarget($targetIdentifier);
-		return call_user_func_array($target, array($request, $response));
-	}
+    /**
+     * Wrapper method for static form protection utility
+     *
+     * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
+     */
+    protected function getFormProtection()
+    {
+        return FormProtectionFactory::get();
+    }
 
-	/**
-	 * Wrapper method for static form protection utility
-	 *
-	 * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
-	 */
-	protected function getFormProtection() {
-		return FormProtectionFactory::get();
-	}
-
-	/**
-	 * Checks if the request token is valid. This is checked to see if the route is really
-	 * created by the same instance. Should be called for all routes in the backend except
-	 * for the ones that don't require a login.
-	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return bool
-	 * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
-	 */
-	protected function isValidRequest($request) {
-		$route = $request->getAttribute('route');
-		if ($route->getOption('access') === 'public') {
-			return TRUE;
-		} elseif ($route->getOption('ajax')) {
-			$token = (string)(isset($request->getParsedBody()['ajaxToken']) ? $request->getParsedBody()['ajaxToken'] : $request->getQueryParams()['ajaxToken']);
-			return $this->getFormProtection()->validateToken($token, 'ajaxCall', $route->getOption('_identifier'));
-		} else {
-			$token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
-			return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
-		}
-	}
+    /**
+     * Checks if the request token is valid. This is checked to see if the route is really
+     * created by the same instance. Should be called for all routes in the backend except
+     * for the ones that don't require a login.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return bool
+     * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
+     */
+    protected function isValidRequest($request)
+    {
+        $route = $request->getAttribute('route');
+        if ($route->getOption('access') === 'public') {
+            return true;
+        } elseif ($route->getOption('ajax')) {
+            $token = (string)(isset($request->getParsedBody()['ajaxToken']) ? $request->getParsedBody()['ajaxToken'] : $request->getQueryParams()['ajaxToken']);
+            return $this->getFormProtection()->validateToken($token, 'ajaxCall', $route->getOption('_identifier'));
+        } else {
+            $token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
+            return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+        }
+    }
 }

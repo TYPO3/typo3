@@ -27,60 +27,62 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class Typo3DependencyViewHelper extends AbstractViewHelper implements CompilableInterface {
+class Typo3DependencyViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Finds and returns the suitable TYPO3 versions of an extension
+     *
+     * @param Extension $extension
+     * @return string
+     */
+    public function render(Extension $extension)
+    {
+        return static::renderStatic(
+            array(
+                'extension' => $extension,
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Finds and returns the suitable TYPO3 versions of an extension
-	 *
-	 * @param Extension $extension
-	 * @return string
-	 */
-	public function render(Extension $extension) {
-		return static::renderStatic(
-			array(
-				'extension' => $extension,
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $extension = $arguments['extension'];
+        /** @var Dependency $dependency */
+        foreach ($extension->getDependencies() as $dependency) {
+            if ($dependency->getIdentifier() === 'typo3') {
+                $lowestVersion = $dependency->getLowestVersion();
+                $highestVersion = $dependency->getHighestVersion();
+                $cssClass = self::isVersionSuitable($lowestVersion, $highestVersion) ? 'success' : 'default';
+                return
+                    '<span class="label label-' . $cssClass . '">'
+                        . htmlspecialchars($lowestVersion) . ' - ' . htmlspecialchars($highestVersion)
+                    . '</span>';
+            }
+        }
+        return '';
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$extension = $arguments['extension'];
-		/** @var Dependency $dependency */
-		foreach ($extension->getDependencies() as $dependency) {
-			if ($dependency->getIdentifier() === 'typo3') {
-				$lowestVersion = $dependency->getLowestVersion();
-				$highestVersion = $dependency->getHighestVersion();
-				$cssClass = self::isVersionSuitable($lowestVersion, $highestVersion) ? 'success' : 'default';
-				return
-					'<span class="label label-' . $cssClass . '">'
-						. htmlspecialchars($lowestVersion) . ' - ' . htmlspecialchars($highestVersion)
-					. '</span>';
-			}
-		}
-		return '';
-	}
-
-	/**
-	 * Check if current TYPO3 version is suitable for the extension
-	 *
-	 * @param string $lowestVersion
-	 * @param string $highestVersion
-	 * @return bool
-	 */
-	static protected function isVersionSuitable($lowestVersion, $highestVersion) {
-		$numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
-		$numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($lowestVersion);
-		$numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($highestVersion);
-		return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
-	}
-
+    /**
+     * Check if current TYPO3 version is suitable for the extension
+     *
+     * @param string $lowestVersion
+     * @param string $highestVersion
+     * @return bool
+     */
+    protected static function isVersionSuitable($lowestVersion, $highestVersion)
+    {
+        $numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
+        $numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($lowestVersion);
+        $numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($highestVersion);
+        return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
+    }
 }

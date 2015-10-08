@@ -17,54 +17,57 @@ namespace TYPO3\CMS\Version\Dependency;
 /**
  * Object to hold reference information of a database field and one accordant element.
  */
-class ReferenceEntity {
+class ReferenceEntity
+{
+    /**
+     * @var \TYPO3\CMS\Version\Dependency\ElementEntity
+     */
+    protected $element;
 
-	/**
-	 * @var \TYPO3\CMS\Version\Dependency\ElementEntity
-	 */
-	protected $element;
+    /**
+     * @var string
+     */
+    protected $field;
 
-	/**
-	 * @var string
-	 */
-	protected $field;
+    /**
+     * Creates this object.
+     *
+     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+     * @param string $field
+     */
+    public function __construct(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field)
+    {
+        $this->element = $element;
+        $this->field = $field;
+    }
 
-	/**
-	 * Creates this object.
-	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
-	 * @param string $field
-	 */
-	public function __construct(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field) {
-		$this->element = $element;
-		$this->field = $field;
-	}
+    /**
+     * Gets the elements.
+     *
+     * @return \TYPO3\CMS\Version\Dependency\ElementEntity
+     */
+    public function getElement()
+    {
+        return $this->element;
+    }
 
-	/**
-	 * Gets the elements.
-	 *
-	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
-	 */
-	public function getElement() {
-		return $this->element;
-	}
+    /**
+     * Gets the field.
+     *
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
 
-	/**
-	 * Gets the field.
-	 *
-	 * @return string
-	 */
-	public function getField() {
-		return $this->field;
-	}
-
-	/**
-	 * Converts this object for string representation.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->element . '.' . $this->field;
-	}
-
+    /**
+     * Converts this object for string representation.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->element . '.' . $this->field;
+    }
 }

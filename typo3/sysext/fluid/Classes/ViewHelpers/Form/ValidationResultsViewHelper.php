@@ -68,25 +68,25 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
-	/**
-	 * Iterates through selected errors of the request.
-	 *
-	 * @param string $for The name of the error name (e.g. argument name or property name). This can also be a property path (like blog.title), and will then only display the validation errors of that property.
-	 * @param string $as The name of the variable to store the current error
-	 * @return string Rendered string
-	 * @api
-	 */
-	public function render($for = '', $as = 'validationResults') {
-		$validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
-		if ($validationResults !== NULL && $for !== '') {
-			$validationResults = $validationResults->forProperty($for);
-		}
-		$this->templateVariableContainer->add($as, $validationResults);
-		$output = $this->renderChildren();
-		$this->templateVariableContainer->remove($as);
-		return $output;
-	}
-
+class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
+    /**
+     * Iterates through selected errors of the request.
+     *
+     * @param string $for The name of the error name (e.g. argument name or property name). This can also be a property path (like blog.title), and will then only display the validation errors of that property.
+     * @param string $as The name of the variable to store the current error
+     * @return string Rendered string
+     * @api
+     */
+    public function render($for = '', $as = 'validationResults')
+    {
+        $validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
+        if ($validationResults !== null && $for !== '') {
+            $validationResults = $validationResults->forProperty($for);
+        }
+        $this->templateVariableContainer->add($as, $validationResults);
+        $output = $this->renderChildren();
+        $this->templateVariableContainer->remove($as);
+        return $output;
+    }
 }

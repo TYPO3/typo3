@@ -17,62 +17,61 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON radio
  */
-class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
+class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement
+{
+    /**
+     * The ExtJS xtype of the element
+     *
+     * @var string
+     */
+    public $xtype = 'typo3-form-wizard-elements-basic-radio';
 
-	/**
-	 * The ExtJS xtype of the element
-	 *
-	 * @var string
-	 */
-	public $xtype = 'typo3-form-wizard-elements-basic-radio';
+    /**
+     * The configuration array for the xtype
+     *
+     * @var array
+     */
+    public $configuration = array(
+        'attributes' => array(
+            'type' => 'radio'
+        ),
+        'filters' => array(),
+        'label' => array(
+            'value' => ''
+        ),
+        'layout' => 'back',
+        'validation' => array()
+    );
 
-	/**
-	 * The configuration array for the xtype
-	 *
-	 * @var array
-	 */
-	public $configuration = array(
-		'attributes' => array(
-			'type' => 'radio'
-		),
-		'filters' => array(),
-		'label' => array(
-			'value' => ''
-		),
-		'layout' => 'back',
-		'validation' => array()
-	);
-
-	/**
-	 * Allowed attributes for this object
-	 *
-	 * @var array
-	 */
-	protected $allowedAttributes = array(
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'translate',
-		/* element specific attributes */
-		'autofocus',
-		'checked',
-		'disabled',
-		'name',
-		'readonly',
-		'required',
-		'type',
-		'value'
-	);
-
+    /**
+     * Allowed attributes for this object
+     *
+     * @var array
+     */
+    protected $allowedAttributes = array(
+        'accesskey',
+        'class',
+        'contenteditable',
+        'contextmenu',
+        'dir',
+        'draggable',
+        'dropzone',
+        'hidden',
+        'id',
+        'lang',
+        'spellcheck',
+        'style',
+        'tabindex',
+        'title',
+        'translate',
+        /* element specific attributes */
+        'autofocus',
+        'checked',
+        'disabled',
+        'name',
+        'readonly',
+        'required',
+        'type',
+        'value'
+    );
 }

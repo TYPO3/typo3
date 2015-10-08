@@ -19,12 +19,13 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Testcase for \TYPO3\CMS\Core\Http\HttpRequest
  */
-class HttpRequestTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function pearLibraryCanBeInstantiated() {
-		$this->assertInstanceOf('HTTP_Request2', new \HTTP_Request2());
-	}
+class HttpRequestTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function pearLibraryCanBeInstantiated()
+    {
+        $this->assertInstanceOf('HTTP_Request2', new \HTTP_Request2());
+    }
 }

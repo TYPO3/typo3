@@ -81,13 +81,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * @see \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::convertArgumentValue()
  * @api
  */
-class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
-
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('condition', 'boolean', 'Condition to be evaluated.');
-	}
-
+class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+{
+    /**
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('condition', 'boolean', 'Condition to be evaluated.');
+    }
 }

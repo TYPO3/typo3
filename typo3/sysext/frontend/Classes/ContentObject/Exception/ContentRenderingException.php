@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 /**
  * Class Exception
  */
-class ContentRenderingException extends \TYPO3\CMS\Core\Error\Exception {
-
+class ContentRenderingException extends \TYPO3\CMS\Core\Error\Exception
+{
 }

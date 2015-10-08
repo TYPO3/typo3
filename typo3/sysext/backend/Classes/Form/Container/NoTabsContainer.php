@@ -20,19 +20,19 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * This container is called by FullRecordContainer and just wraps the output
  * of PaletteAndSingleContainer in some HTML.
  */
-class NoTabsContainer extends AbstractContainer {
-
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$options = $this->data;
-		$options['renderType'] = 'paletteAndSingleContainer';
-		$resultArray = $this->nodeFactory->create($options)->render();
-		$resultArray['html'] = '<div class="tab-content">' . $resultArray['html'] . '</div>';
-		return $resultArray;
-	}
-
+class NoTabsContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $options = $this->data;
+        $options['renderType'] = 'paletteAndSingleContainer';
+        $resultArray = $this->nodeFactory->create($options)->render();
+        $resultArray['html'] = '<div class="tab-content">' . $resultArray['html'] . '</div>';
+        return $resultArray;
+    }
 }

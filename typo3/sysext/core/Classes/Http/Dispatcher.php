@@ -24,60 +24,62 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Used in eID Frontend Requests, see EidRequestHandler
  */
-class Dispatcher implements DispatcherInterface {
+class Dispatcher implements DispatcherInterface
+{
+    /**
+     * Main method that fetches the target from the request and calls the target directly
+     *
+     * @param ServerRequestInterface $request the current server request
+     * @param ResponseInterface $response the prepared response
+     * @return ResponseInterface the filled response by the callable / controller/action
+     * @throws \InvalidArgumentException if the defined target is invalid
+     */
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $targetIdentifier = $request->getAttribute('target');
+        $target = $this->getCallableFromTarget($targetIdentifier);
+        return call_user_func_array($target, array($request, $response));
+    }
 
-	/**
-	 * Main method that fetches the target from the request and calls the target directly
-	 *
-	 * @param ServerRequestInterface $request the current server request
-	 * @param ResponseInterface $response the prepared response
-	 * @return ResponseInterface the filled response by the callable / controller/action
-	 * @throws \InvalidArgumentException if the defined target is invalid
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response) {
-		$targetIdentifier = $request->getAttribute('target');
-		$target = $this->getCallableFromTarget($targetIdentifier);
-		return call_user_func_array($target, array($request, $response));
-	}
+    /**
+     * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
+     * which can be handed to call_user_func_array()
+     *
+     * @param array|string|callable $target the target which is being resolved.
+     * @return callable
+     * @throws \InvalidArgumentException
+     */
+    protected function getCallableFromTarget($target)
+    {
+        if (is_array($target)) {
+            return $target;
+        }
 
-	/**
-	 * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
-	 * which can be handed to call_user_func_array()
-	 *
-	 * @param array|string|callable $target the target which is being resolved.
-	 * @return callable
-	 * @throws \InvalidArgumentException
-	 */
-	protected function getCallableFromTarget($target) {
-		if (is_array($target)) {
-			return $target;
-		}
+        if (is_object($target) && $target instanceof \Closure) {
+            return $target;
+        }
 
-		if (is_object($target) && $target instanceof \Closure) {
-			return $target;
-		}
+        // Only a class name is given
+        if (is_string($target) && strpos($target, ':') === false) {
+            $targetObject = GeneralUtility::makeInstance($target);
+            if (!method_exists($targetObject, '__invoke')) {
+                throw new \InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
+            }
+            return $targetObject;
+        }
 
-		// Only a class name is given
-		if (is_string($target) && strpos($target, ':') === FALSE) {
-			$targetObject = GeneralUtility::makeInstance($target);
-			if (!method_exists($targetObject, '__invoke')) {
-				throw new \InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
-			}
-			return $targetObject;
-		}
+        // Check if the target is a concatenated string of "className::actionMethod"
+        if (is_string($target) && strpos($target, '::') !== false) {
+            list($className, $methodName) = explode('::', $target, 2);
+            $targetObject = GeneralUtility::makeInstance($className);
+            return [$targetObject, $methodName];
+        }
 
-		// Check if the target is a concatenated string of "className::actionMethod"
-		if (is_string($target) && strpos($target, '::') !== FALSE) {
-			list($className, $methodName) = explode('::', $target, 2);
-			$targetObject = GeneralUtility::makeInstance($className);
-			return [$targetObject, $methodName];
-		}
+        // This needs to be checked at last as a string with object::method is recognize as callable
+        if (is_callable($target)) {
+            return $target;
+        }
 
-		// This needs to be checked at last as a string with object::method is recognize as callable
-		if (is_callable($target)) {
-			return $target;
-		}
-
-		throw new \InvalidArgumentException('Invalid target for "' . $target. '", as it is not callable.', 1425381442);
-	}
+        throw new \InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
+    }
 }

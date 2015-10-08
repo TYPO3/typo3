@@ -26,58 +26,58 @@ namespace TYPO3\CMS\Extbase\Property;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface PropertyMappingConfigurationInterface {
+interface PropertyMappingConfigurationInterface
+{
+    /**
+     * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
+     *
+     * @param string $propertyName
+     * @return bool
+     * @api
+     */
+    public function shouldSkip($propertyName);
 
-	/**
-	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
-	 *
-	 * @param string $propertyName
-	 * @return bool
-	 * @api
-	 */
-	public function shouldSkip($propertyName);
+    /**
+     * Whether unknown (unconfigured) properties should be skipped during
+     * mapping, instead if causing an error.
+     *
+     * @return bool
+     * @api
+     */
+    public function shouldSkipUnknownProperties();
 
-	/**
-	 * Whether unknown (unconfigured) properties should be skipped during
-	 * mapping, instead if causing an error.
-	 *
-	 * @return bool
-	 * @api
-	 */
-	public function shouldSkipUnknownProperties();
+    /**
+     * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
+     *
+     * @param string $propertyName
+     * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
+     * @api
+     */
+    public function getConfigurationFor($propertyName);
 
-	/**
-	 * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
-	 *
-	 * @param string $propertyName
-	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
-	 * @api
-	 */
-	public function getConfigurationFor($propertyName);
+    /**
+     * Maps the given $sourcePropertyName to a target property name.
+     * Can be used to rename properties from source to target.
+     *
+     * @param string $sourcePropertyName
+     * @return string property name of target
+     * @api
+     */
+    public function getTargetPropertyName($sourcePropertyName);
 
-	/**
-	 * Maps the given $sourcePropertyName to a target property name.
-	 * Can be used to rename properties from source to target.
-	 *
-	 * @param string $sourcePropertyName
-	 * @return string property name of target
-	 * @api
-	 */
-	public function getTargetPropertyName($sourcePropertyName);
+    /**
+     * @param string $typeConverterClassName
+     * @param string $key
+     * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration
+     * @api
+     */
+    public function getConfigurationValue($typeConverterClassName, $key);
 
-	/**
-	 * @param string $typeConverterClassName
-	 * @param string $key
-	 * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration
-	 * @api
-	 */
-	public function getConfigurationValue($typeConverterClassName, $key);
-
-	/**
-	 * This method can be used to explicitly force a TypeConverter to be used for this Configuration.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
-	 * @api
-	 */
-	public function getTypeConverter();
+    /**
+     * This method can be used to explicitly force a TypeConverter to be used for this Configuration.
+     *
+     * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface The type converter to be used for this particular PropertyMappingConfiguration, or NULL if the system-wide configured type converter should be used.
+     * @api
+     */
+    public function getTypeConverter();
 }

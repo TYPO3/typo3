@@ -18,6 +18,6 @@ namespace TYPO3\CMS\Core\Package\Exception;
  * "Package states file not writable" Exception
  * Adapted from FLOW for TYPO3 CMS
  */
-class PackageStatesFileNotWritableException extends \TYPO3\CMS\Core\Package\Exception {
-
+class PackageStatesFileNotWritableException extends \TYPO3\CMS\Core\Package\Exception
+{
 }

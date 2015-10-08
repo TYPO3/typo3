@@ -17,64 +17,68 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 /**
  * Simple Cache for classInfos
  */
-class ClassInfoCache {
+class ClassInfoCache
+{
+    /**
+     * @var array
+     */
+    private $level1Cache = array();
 
-	/**
-	 * @var array
-	 */
-	private $level1Cache = array();
+    /**
+     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     */
+    private $level2Cache;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
-	 */
-	private $level2Cache;
+    /**
+     * constructor
+     */
+    public function __construct()
+    {
+        $this->initializeLevel2Cache();
+    }
 
-	/**
-	 * constructor
-	 */
-	public function __construct() {
-		$this->initializeLevel2Cache();
-	}
+    /**
+     * checks if cacheentry exists for id
+     *
+     * @param string $id
+     * @return bool
+     */
+    public function has($id)
+    {
+        return isset($this->level1Cache[$id]) || $this->level2Cache->has($id);
+    }
 
-	/**
-	 * checks if cacheentry exists for id
-	 *
-	 * @param string $id
-	 * @return bool
-	 */
-	public function has($id) {
-		return isset($this->level1Cache[$id]) || $this->level2Cache->has($id);
-	}
+    /**
+     * Gets the cache for the id
+     *
+     * @param string $id
+     * @return mixed
+     */
+    public function get($id)
+    {
+        if (!isset($this->level1Cache[$id])) {
+            $this->level1Cache[$id] = $this->level2Cache->get($id);
+        }
+        return $this->level1Cache[$id];
+    }
 
-	/**
-	 * Gets the cache for the id
-	 *
-	 * @param string $id
-	 * @return mixed
-	 */
-	public function get($id) {
-		if (!isset($this->level1Cache[$id])) {
-			$this->level1Cache[$id] = $this->level2Cache->get($id);
-		}
-		return $this->level1Cache[$id];
-	}
+    /**
+     * sets the cache for the id
+     *
+     * @param string $id
+     * @param mixed $value
+     */
+    public function set($id, $value)
+    {
+        $this->level1Cache[$id] = $value;
+        $this->level2Cache->set($id, $value);
+    }
 
-	/**
-	 * sets the cache for the id
-	 *
-	 * @param string $id
-	 * @param mixed $value
-	 */
-	public function set($id, $value) {
-		$this->level1Cache[$id] = $value;
-		$this->level2Cache->set($id, $value);
-	}
-
-	/**
-	 * Initialize the TYPO3 second level cache
-	 */
-	private function initializeLevel2Cache() {
-		$this->level2Cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('extbase_object');
-	}
-
+    /**
+     * Initialize the TYPO3 second level cache
+     */
+    private function initializeLevel2Cache()
+    {
+        $this->level2Cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('extbase_object');
+    }
 }

@@ -33,288 +33,295 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
  * Is not used by FormEngine though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
  */
-class SimpleDataHandlerController {
+class SimpleDataHandlerController
+{
+    /**
+     * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
+     *
+     * @var array
+     */
+    public $flags;
 
-	/**
-	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
-	 *
-	 * @var array
-	 */
-	public $flags;
+    /**
+     * Data array on the form [tablename][uid][fieldname] = value
+     *
+     * @var array
+     */
+    public $data;
 
-	/**
-	 * Data array on the form [tablename][uid][fieldname] = value
-	 *
-	 * @var array
-	 */
-	public $data;
+    /**
+     * Command array on the form [tablename][uid][command] = value.
+     * This array may get additional data set internally based on clipboard commands send in CB var!
+     *
+     * @var array
+     */
+    public $cmd;
 
-	/**
-	 * Command array on the form [tablename][uid][command] = value.
-	 * This array may get additional data set internally based on clipboard commands send in CB var!
-	 *
-	 * @var array
-	 */
-	public $cmd;
+    /**
+     * Array passed to ->setMirror.
+     *
+     * @var array
+     */
+    public $mirror;
 
-	/**
-	 * Array passed to ->setMirror.
-	 *
-	 * @var array
-	 */
-	public $mirror;
+    /**
+     * Cache command sent to ->clear_cacheCmd
+     *
+     * @var string
+     */
+    public $cacheCmd;
 
-	/**
-	 * Cache command sent to ->clear_cacheCmd
-	 *
-	 * @var string
-	 */
-	public $cacheCmd;
+    /**
+     * Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
+     *
+     * @var string
+     */
+    public $redirect;
 
-	/**
-	 * Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
-	 *
-	 * @var string
-	 */
-	public $redirect;
+    /**
+     * Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
+     *
+     * @var int
+     */
+    public $prErr;
 
-	/**
-	 * Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
-	 *
-	 * @var int
-	 */
-	public $prErr;
+    /**
+     * Clipboard command array. May trigger changes in "cmd"
+     *
+     * @var array
+     */
+    public $CB;
 
-	/**
-	 * Clipboard command array. May trigger changes in "cmd"
-	 *
-	 * @var array
-	 */
-	public $CB;
+    /**
+     * Verification code
+     *
+     * @var string
+     */
+    public $vC;
 
-	/**
-	 * Verification code
-	 *
-	 * @var string
-	 */
-	public $vC;
+    /**
+     * Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
+     *
+     * @var int
+     */
+    public $uPT;
 
-	/**
-	 * Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
-	 *
-	 * @var int
-	 */
-	public $uPT;
+    /**
+     * TYPO3 Core Engine
+     *
+     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+     */
+    public $tce;
 
-	/**
-	 * TYPO3 Core Engine
-	 *
-	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-	 */
-	public $tce;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $GLOBALS['SOBE'] = $this;
+        $this->init();
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$GLOBALS['SOBE'] = $this;
-		$this->init();
-	}
+    /**
+     * Initialization of the class
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $beUser = $this->getBackendUser();
+        // GPvars:
+        $this->flags = GeneralUtility::_GP('flags');
+        $this->data = GeneralUtility::_GP('data');
+        $this->cmd = GeneralUtility::_GP('cmd');
+        $this->mirror = GeneralUtility::_GP('mirror');
+        $this->cacheCmd = GeneralUtility::_GP('cacheCmd');
+        $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
+        $this->prErr = GeneralUtility::_GP('prErr');
+        $this->CB = GeneralUtility::_GP('CB');
+        $this->vC = GeneralUtility::_GP('vC');
+        $this->uPT = GeneralUtility::_GP('uPT');
+        // Creating TCEmain object
+        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
+        $this->tce->stripslashes_values = 0;
+        // Configuring based on user prefs.
+        if ($beUser->uc['recursiveDelete']) {
+            // TRUE if the delete Recursive flag is set.
+            $this->tce->deleteTree = 1;
+        }
+        if ($beUser->uc['copyLevels']) {
+            // Set to number of page-levels to copy.
+            $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
+        }
+        if ($beUser->uc['neverHideAtCopy']) {
+            $this->tce->neverHideAtCopy = 1;
+        }
+        $TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
+        if (is_array($TCAdefaultOverride)) {
+            $this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
+        }
+        // Reverse order.
+        if ($this->flags['reverseOrder']) {
+            $this->tce->reverseOrder = 1;
+        }
+    }
 
-	/**
-	 * Initialization of the class
-	 *
-	 * @return void
-	 */
-	public function init() {
-		$beUser = $this->getBackendUser();
-		// GPvars:
-		$this->flags = GeneralUtility::_GP('flags');
-		$this->data = GeneralUtility::_GP('data');
-		$this->cmd = GeneralUtility::_GP('cmd');
-		$this->mirror = GeneralUtility::_GP('mirror');
-		$this->cacheCmd = GeneralUtility::_GP('cacheCmd');
-		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
-		$this->prErr = GeneralUtility::_GP('prErr');
-		$this->CB = GeneralUtility::_GP('CB');
-		$this->vC = GeneralUtility::_GP('vC');
-		$this->uPT = GeneralUtility::_GP('uPT');
-		// Creating TCEmain object
-		$this->tce = GeneralUtility::makeInstance(DataHandler::class);
-		$this->tce->stripslashes_values = 0;
-		// Configuring based on user prefs.
-		if ($beUser->uc['recursiveDelete']) {
-			// TRUE if the delete Recursive flag is set.
-			$this->tce->deleteTree = 1;
-		}
-		if ($beUser->uc['copyLevels']) {
-			// Set to number of page-levels to copy.
-			$this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
-		}
-		if ($beUser->uc['neverHideAtCopy']) {
-			$this->tce->neverHideAtCopy = 1;
-		}
-		$TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
-		if (is_array($TCAdefaultOverride)) {
-			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
-		}
-		// Reverse order.
-		if ($this->flags['reverseOrder']) {
-			$this->tce->reverseOrder = 1;
-		}
-	}
+    /**
+     * Clipboard pasting and deleting.
+     *
+     * @return void
+     */
+    public function initClipboard()
+    {
+        if (is_array($this->CB)) {
+            $clipObj = GeneralUtility::makeInstance(Clipboard::class);
+            $clipObj->initializeClipboard();
+            if ($this->CB['paste']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->cmd = $clipObj->makePasteCmdArray(
+                    $this->CB['paste'],
+                    $this->cmd,
+                    isset($this->CB['update']) ? $this->CB['update'] : null
+                );
+            }
+            if ($this->CB['delete']) {
+                $clipObj->setCurrentPad($this->CB['pad']);
+                $this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
+            }
+        }
+    }
 
-	/**
-	 * Clipboard pasting and deleting.
-	 *
-	 * @return void
-	 */
-	public function initClipboard() {
-		if (is_array($this->CB)) {
-			$clipObj = GeneralUtility::makeInstance(Clipboard::class);
-			$clipObj->initializeClipboard();
-			if ($this->CB['paste']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makePasteCmdArray(
-					$this->CB['paste'],
-					$this->cmd,
-					isset($this->CB['update']) ? $this->CB['update'] : NULL
-				);
-			}
-			if ($this->CB['delete']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
-			}
-		}
-	}
+    /**
+     * Executing the posted actions ...
+     *
+     * @return void
+     */
+    public function main()
+    {
+        // LOAD TCEmain with data and cmd arrays:
+        $this->tce->start($this->data, $this->cmd);
+        if (is_array($this->mirror)) {
+            $this->tce->setMirror($this->mirror);
+        }
+        // Checking referer / executing
+        $refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+        $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+        if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+            $this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
+        } else {
+            // Register uploaded files
+            $this->tce->process_uploads($_FILES);
+            // Execute actions:
+            $this->tce->process_datamap();
+            $this->tce->process_cmdmap();
+            // Clearing cache:
+            if (!empty($this->cacheCmd)) {
+                $this->tce->clear_cacheCmd($this->cacheCmd);
+            }
+            // Update page tree?
+            if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
+                BackendUtility::setUpdateSignal('updatePageTree');
+            }
+        }
+    }
 
-	/**
-	 * Executing the posted actions ...
-	 *
-	 * @return void
-	 */
-	public function main() {
-		// LOAD TCEmain with data and cmd arrays:
-		$this->tce->start($this->data, $this->cmd);
-		if (is_array($this->mirror)) {
-			$this->tce->setMirror($this->mirror);
-		}
-		// Checking referer / executing
-		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
-		} else {
-			// Register uploaded files
-			$this->tce->process_uploads($_FILES);
-			// Execute actions:
-			$this->tce->process_datamap();
-			$this->tce->process_cmdmap();
-			// Clearing cache:
-			if (!empty($this->cacheCmd)) {
-				$this->tce->clear_cacheCmd($this->cacheCmd);
-			}
-			// Update page tree?
-			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
-				BackendUtility::setUpdateSignal('updatePageTree');
-			}
-		}
-	}
+    /**
+     * Redirecting the user after the processing has been done.
+     * Might also display error messages directly, if any.
+     *
+     * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     */
+    public function finish()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        // Prints errors, if...
+        if ($this->prErr) {
+            $this->tce->printLogErrorMessages($this->redirect);
+        }
+        if ($this->redirect) {
+            HttpUtility::redirect($this->redirect);
+        }
+    }
 
-	/**
-	 * Redirecting the user after the processing has been done.
-	 * Might also display error messages directly, if any.
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function finish() {
-		GeneralUtility::logDeprecatedFunction();
-		// Prints errors, if...
-		if ($this->prErr) {
-			$this->tce->printLogErrorMessages($this->redirect);
-		}
-		if ($this->redirect) {
-			HttpUtility::redirect($this->redirect);
-		}
-	}
+    /**
+     * Injects the request object for the current request or subrequest
+     * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $this->initClipboard();
+        $this->main();
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
-	 *
-	 * @param ServerRequestInterface $request the current request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface the response with the content
-	 */
-	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$this->initClipboard();
-		$this->main();
+        // Write errors to flash message queue
+        if ($this->prErr) {
+            $this->tce->printLogErrorMessages($this->redirect);
+        }
+        if ($this->redirect) {
+            $response = $response
+                ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
+                ->withStatus(303);
+        }
+        return $response;
+    }
 
-		// Write errors to flash message queue
-		if ($this->prErr) {
-			$this->tce->printLogErrorMessages($this->redirect);
-		}
-		if ($this->redirect) {
-			$response = $response
-				->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
-				->withStatus(303);
-		}
-		return $response;
-	}
+    /**
+     * Processes all AJAX calls and returns a JSON formatted string
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        // do the regular / main logic
+        $this->initClipboard();
+        $this->main();
 
-	/**
-	 * Processes all AJAX calls and returns a JSON formatted string
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
-		// do the regular / main logic
-		$this->initClipboard();
-		$this->main();
+        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
-		/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $content = array(
+            'redirect' => $this->redirect,
+            'messages' => array(),
+            'hasErrors' => false
+        );
 
-		$content = array(
-			'redirect' => $this->redirect,
-			'messages' => array(),
-			'hasErrors' => FALSE
-		);
+        // Prints errors (= write them to the message queue)
+        if ($this->prErr) {
+            $content['hasErrors'] = true;
+            $this->tce->printLogErrorMessages($this->redirect);
+        }
 
-		// Prints errors (= write them to the message queue)
-		if ($this->prErr) {
-			$content['hasErrors'] = TRUE;
-			$this->tce->printLogErrorMessages($this->redirect);
-		}
+        $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+        if (!empty($messages)) {
+            foreach ($messages as $message) {
+                $content['messages'][] = array(
+                    'title'    => $message->getTitle(),
+                    'message'  => $message->getMessage(),
+                    'severity' => $message->getSeverity()
+                );
+                if ($message->getSeverity() === AbstractMessage::ERROR) {
+                    $content['hasErrors'] = true;
+                }
+            }
+        }
 
-		$messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
-		if (!empty($messages)) {
-			foreach ($messages as $message) {
-				$content['messages'][] = array(
-					'title'    => $message->getTitle(),
-					'message'  => $message->getMessage(),
-					'severity' => $message->getSeverity()
-				);
-				if ($message->getSeverity() === AbstractMessage::ERROR) {
-					$content['hasErrors'] = TRUE;
-				}
-			}
-		}
+        $response->getBody()->write(json_encode($content));
+        return $response;
+    }
 
-		$response->getBody()->write(json_encode($content));
-		return $response;
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

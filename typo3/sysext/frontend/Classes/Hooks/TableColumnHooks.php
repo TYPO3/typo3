@@ -17,28 +17,29 @@ namespace TYPO3\CMS\Frontend\Hooks;
 /**
  * Hooks / manipulation data for TCA columns e.g. to sort items within itemsProcFunc
  */
-class TableColumnHooks {
+class TableColumnHooks
+{
+    /**
+     * sort list items (used for plugins, list_type) by name
+     * @param array $parameters
+     */
+    public function sortPluginList(array &$parameters)
+    {
+        @usort(
+            $parameters['items'],
+            function ($item1, $item2) {
+                return strcasecmp($this->getLanguageService()->sL($item1[0]), $this->getLanguageService()->sL($item2[0]));
+            }
+        );
+    }
 
-	/**
-	 * sort list items (used for plugins, list_type) by name
-	 * @param array $parameters
-	 */
-	public function sortPluginList(array &$parameters) {
-		@usort(
-			$parameters['items'],
-			function ($item1, $item2) {
-				return strcasecmp($this->getLanguageService()->sL($item1[0]), $this->getLanguageService()->sL($item2[0]));
-			}
-		);
-	}
-
-	/**
-	 * Returns LanguageService
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

@@ -19,91 +19,97 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Testcase for the package class
  *
  */
-class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     */
+    protected function setUp()
+    {
+        vfsStream::setup('Packages');
+    }
 
-	/**
-	 */
-	protected function setUp() {
-		vfsStream::setup('Packages');
-	}
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException
+     */
+    public function constructThrowsPackageDoesNotExistException()
+    {
+        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
+    }
 
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException
-	 */
-	public function constructThrowsPackageDoesNotExistException() {
-		$packageManagerMock = $this->getMock(PackageManager::class);
-		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
-	}
+    /**
+     */
+    public function validPackageKeys()
+    {
+        return array(
+            array('Doctrine.DBAL'),
+            array('TYPO3.CMS'),
+            array('My.Own.TwitterPackage'),
+            array('GoFor.IT'),
+            array('Symfony.Symfony')
+        );
+    }
 
-	/**
-	 */
-	public function validPackageKeys() {
-		return array(
-			array('Doctrine.DBAL'),
-			array('TYPO3.CMS'),
-			array('My.Own.TwitterPackage'),
-			array('GoFor.IT'),
-			array('Symfony.Symfony')
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validPackageKeys
+     */
+    public function constructAcceptsValidPackageKeys($packageKey)
+    {
+        $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
+        mkdir($packagePath, 0777, true);
+        file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
+        file_put_contents($packagePath . 'ext_emconf.php', '');
 
-	/**
-	 * @test
-	 * @dataProvider validPackageKeys
-	 */
-	public function constructAcceptsValidPackageKeys($packageKey) {
-		$packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
-		mkdir($packagePath, 0777, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
-		file_put_contents($packagePath . 'ext_emconf.php', '');
+        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        $package = new Package($packageManagerMock, $packageKey, $packagePath);
+        $this->assertEquals($packageKey, $package->getPackageKey());
+    }
 
-		$packageManagerMock = $this->getMock(PackageManager::class);
-		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new Package($packageManagerMock, $packageKey, $packagePath);
-		$this->assertEquals($packageKey, $package->getPackageKey());
-	}
+    /**
+     */
+    public function invalidPackageKeys()
+    {
+        return array(
+            array('TYPO3..Flow'),
+            array('RobertLemke.Flow. Twitter'),
+            array('Schalke*4')
+        );
+    }
 
-	/**
-	 */
-	public function invalidPackageKeys() {
-		return array(
-			array('TYPO3..Flow'),
-			array('RobertLemke.Flow. Twitter'),
-			array('Schalke*4')
-		);
-	}
+    /**
+     * @test
+     * @dataProvider invalidPackageKeys
+     * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException
+     */
+    public function constructRejectsInvalidPackageKeys($packageKey)
+    {
+        $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
+        mkdir($packagePath, 0777, true);
 
-	/**
-	 * @test
-	 * @dataProvider invalidPackageKeys
-	 * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException
-	 */
-	public function constructRejectsInvalidPackageKeys($packageKey) {
-		$packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
-		mkdir($packagePath, 0777, TRUE);
+        $packageManagerMock = $this->getMock(PackageManager::class);
+        new Package($packageManagerMock, $packageKey, $packagePath);
+    }
 
-		$packageManagerMock = $this->getMock(PackageManager::class);
-		new Package($packageManagerMock, $packageKey, $packagePath);
-	}
+    /**
+     * @test
+     */
+    public function aPackageCanBeFlaggedAsProtected()
+    {
+        $packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
+        mkdir($packagePath, 0700, true);
+        file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
+        file_put_contents($packagePath . 'ext_emconf.php', '');
 
-	/**
-	 * @test
-	 */
-	public function aPackageCanBeFlaggedAsProtected() {
-		$packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
-		mkdir($packagePath, 0700, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
-		file_put_contents($packagePath . 'ext_emconf.php', '');
+        $packageManagerMock = $this->getMock(PackageManager::class);
+        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        $package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 
-		$packageManagerMock = $this->getMock(PackageManager::class);
-		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
-
-		$this->assertFalse($package->isProtected());
-		$package->setProtected(TRUE);
-		$this->assertTrue($package->isProtected());
-	}
-
+        $this->assertFalse($package->isProtected());
+        $package->setProtected(true);
+        $this->assertTrue($package->isProtected());
+    }
 }

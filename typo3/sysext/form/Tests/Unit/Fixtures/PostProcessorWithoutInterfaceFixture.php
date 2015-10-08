@@ -17,21 +17,21 @@ namespace TYPO3\CMS\Form\Tests\Unit\Fixtures;
 /**
  * Post processor with form prefix fixture
  */
-class PostProcessorWithoutInterfaceFixture {
+class PostProcessorWithoutInterfaceFixture
+{
+    /**
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $form
+     * @param array $typoScript
+     */
+    public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript)
+    {
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
-	 * @param array $typoScript
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
-
-	}
-
-	/**
-	 * @return string
-	 */
-	public function process() {
-		return 'withoutInterface';
-	}
-
+    /**
+     * @return string
+     */
+    public function process()
+    {
+        return 'withoutInterface';
+    }
 }

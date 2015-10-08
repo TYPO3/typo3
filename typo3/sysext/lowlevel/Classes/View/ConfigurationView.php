@@ -28,238 +28,245 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 /**
  * Script class for the Config module
  */
-class ConfigurationView extends BaseScriptClass {
+class ConfigurationView extends BaseScriptClass
+{
+    /**
+     * @var StandaloneView
+     */
+    protected $view;
 
-	/**
-	 * @var StandaloneView
-	 */
-	protected $view;
+    /**
+     * The name of the module
+     *
+     * @var string
+     */
+    protected $moduleName = 'system_config';
 
-	/**
-	 * The name of the module
-	 *
-	 * @var string
-	 */
-	protected $moduleName = 'system_config';
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->getRequest()->setControllerExtensionName('lowlevel');
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->view = GeneralUtility::makeInstance(StandaloneView::class);
-		$this->view->getRequest()->setControllerExtensionName('lowlevel');
-	}
+    /**
+     * Initialization
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->menuConfig();
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
+        $this->doc->form = '<form action="" method="post">';
+        $this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Css/styles.css');
+        $this->doc->bodyTagId = 'ext-lowlevel-Modules-Configuration-index-php';
+    }
 
-	/**
-	 * Initialization
-	 *
-	 * @return void
-	 */
-	public function init() {
-		$this->menuConfig();
-		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
-		$this->doc->form = '<form action="" method="post">';
-		$this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Css/styles.css');
-		$this->doc->bodyTagId = 'ext-lowlevel-Modules-Configuration-index-php';
-	}
+    /**
+     * Menu Configuration
+     *
+     * @return void
+     */
+    public function menuConfig()
+    {
+        // MENU-ITEMS:
+        // If array, then it's a selector box menu
+        // If empty string it's just a variable, that'll be saved.
+        // Values NOT in this array will not be saved in the settings-array for the module.
+        $this->MOD_MENU = array(
+            'function' => array(
+                0 => LocalizationUtility::translate('typo3ConfVars', 'lowlevel'),
+                1 => LocalizationUtility::translate('tca', 'lowlevel'),
+                2 => LocalizationUtility::translate('tcaDescr', 'lowlevel'),
+                3 => LocalizationUtility::translate('loadedExt', 'lowlevel'),
+                4 => LocalizationUtility::translate('t3services', 'lowlevel'),
+                5 => LocalizationUtility::translate('tbemodules', 'lowlevel'),
+                6 => LocalizationUtility::translate('tbemodulesext', 'lowlevel'),
+                7 => LocalizationUtility::translate('tbeStyles', 'lowlevel'),
+                8 => LocalizationUtility::translate('beUser', 'lowlevel'),
+                9 => LocalizationUtility::translate('usersettings', 'lowlevel')
+            ),
+            'regexsearch' => '',
+            'fixedLgd' => ''
+        );
+        // CLEANSE SETTINGS
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
+    }
 
-	/**
-	 * Menu Configuration
-	 *
-	 * @return void
-	 */
-	public function menuConfig() {
-		// MENU-ITEMS:
-		// If array, then it's a selector box menu
-		// If empty string it's just a variable, that'll be saved.
-		// Values NOT in this array will not be saved in the settings-array for the module.
-		$this->MOD_MENU = array(
-			'function' => array(
-				0 => LocalizationUtility::translate('typo3ConfVars', 'lowlevel'),
-				1 => LocalizationUtility::translate('tca', 'lowlevel'),
-				2 => LocalizationUtility::translate('tcaDescr', 'lowlevel'),
-				3 => LocalizationUtility::translate('loadedExt', 'lowlevel'),
-				4 => LocalizationUtility::translate('t3services', 'lowlevel'),
-				5 => LocalizationUtility::translate('tbemodules', 'lowlevel'),
-				6 => LocalizationUtility::translate('tbemodulesext', 'lowlevel'),
-				7 => LocalizationUtility::translate('tbeStyles', 'lowlevel'),
-				8 => LocalizationUtility::translate('beUser', 'lowlevel'),
-				9 => LocalizationUtility::translate('usersettings', 'lowlevel')
-			),
-			'regexsearch' => '',
-			'fixedLgd' => ''
-		);
-		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
-	}
+    /**
+     * Main function
+     *
+     * @return void
+     */
+    public function main()
+    {
+        /** @var ArrayBrowser $arrayBrowser */
+        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
+        $label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
+        $search_field = GeneralUtility::_GP('search_field');
 
-	/**
-	 * Main function
-	 *
-	 * @return void
-	 */
-	public function main() {
-		/** @var ArrayBrowser $arrayBrowser */
-		$arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
-		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
-		$search_field = GeneralUtility::_GP('search_field');
+        $templatePathAndFilename = GeneralUtility::getFileAbsFileName('EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html');
+        $this->view->setTemplatePathAndFilename($templatePathAndFilename);
+        $this->view->assign('label', $label);
+        $this->view->assign('search_field', $search_field);
+        $this->view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
 
-		$templatePathAndFilename = GeneralUtility::getFileAbsFileName('EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html');
-		$this->view->setTemplatePathAndFilename($templatePathAndFilename);
-		$this->view->assign('label', $label);
-		$this->view->assign('search_field', $search_field);
-		$this->view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
+        switch ($this->MOD_SETTINGS['function']) {
+            case 0:
+                $theVar = $GLOBALS['TYPO3_CONF_VARS'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TYPO3_CONF_VARS';
+                break;
+            case 1:
+                $theVar = $GLOBALS['TCA'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TCA';
+                break;
+            case 2:
+                $theVar = $GLOBALS['TCA_DESCR'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TCA_DESCR';
+                break;
+            case 3:
+                $theVar = $GLOBALS['TYPO3_LOADED_EXT'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TYPO3_LOADED_EXT';
+                break;
+            case 4:
+                $theVar = $GLOBALS['T3_SERVICES'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$T3_SERVICES';
+                break;
+            case 5:
+                $theVar = $GLOBALS['TBE_MODULES'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TBE_MODULES';
+                break;
+            case 6:
+                $theVar = $GLOBALS['TBE_MODULES_EXT'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TBE_MODULES_EXT';
+                break;
+            case 7:
+                $theVar = $GLOBALS['TBE_STYLES'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TBE_STYLES';
+                break;
+            case 8:
+                $theVar = $GLOBALS['BE_USER']->uc;
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$BE_USER->uc';
+                break;
+            case 9:
+                $theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
+                break;
+            default:
+                $theVar = array();
+        }
+        // Update node:
+        $update = 0;
+        $node = GeneralUtility::_GET('node');
+        // If any plus-signs were clicked, it's registred.
+        if (is_array($node)) {
+            $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]);
+            $update = 1;
+        }
+        if ($update) {
+            $this->getBackendUser()->pushModuleData($this->moduleName, $this->MOD_SETTINGS);
+        }
+        $arrayBrowser->dontLinkVar = true;
+        $arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
+        $arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
+        $arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
+        $arrayBrowser->searchKeysToo = true;
 
-		switch ($this->MOD_SETTINGS['function']) {
-			case 0:
-				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TYPO3_CONF_VARS';
-				break;
-			case 1:
-				$theVar = $GLOBALS['TCA'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TCA';
-				break;
-			case 2:
-				$theVar = $GLOBALS['TCA_DESCR'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TCA_DESCR';
-				break;
-			case 3:
-				$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
-				break;
-			case 4:
-				$theVar = $GLOBALS['T3_SERVICES'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$T3_SERVICES';
-				break;
-			case 5:
-				$theVar = $GLOBALS['TBE_MODULES'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TBE_MODULES';
-				break;
-			case 6:
-				$theVar = $GLOBALS['TBE_MODULES_EXT'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TBE_MODULES_EXT';
-				break;
-			case 7:
-				$theVar = $GLOBALS['TBE_STYLES'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TBE_STYLES';
-				break;
-			case 8:
-				$theVar = $GLOBALS['BE_USER']->uc;
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$BE_USER->uc';
-				break;
-			case 9:
-				$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
-				ArrayUtility::naturalKeySortRecursive($theVar);
-				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
-				break;
-			default:
-				$theVar = array();
-		}
-		// Update node:
-		$update = 0;
-		$node = GeneralUtility::_GET('node');
-		// If any plus-signs were clicked, it's registred.
-		if (is_array($node)) {
-			$this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]);
-			$update = 1;
-		}
-		if ($update) {
-			$this->getBackendUser()->pushModuleData($this->moduleName, $this->MOD_SETTINGS);
-		}
-		$arrayBrowser->dontLinkVar = TRUE;
-		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
-		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
-		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
-		$arrayBrowser->searchKeysToo = TRUE;
+        // If any POST-vars are send, update the condition array
+        if (GeneralUtility::_POST('search') && trim($search_field)) {
+            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
+        }
+        // mask the encryption key to not show it as plaintext in the configuration module
+        if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
+            $theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
+        }
+        $tree = $arrayBrowser->tree($theVar, '', '');
+        $this->view->assign('tree', $tree);
 
-		// If any POST-vars are send, update the condition array
-		if (GeneralUtility::_POST('search') && trim($search_field)) {
-			$arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
-		}
-		// mask the encryption key to not show it as plaintext in the configuration module
-		if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
-			$theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
-		}
-		$tree = $arrayBrowser->tree($theVar, '', '');
-		$this->view->assign('tree', $tree);
-
-		// Setting up the buttons and markers for docheader
-		$docHeaderButtons = $this->getButtons();
-		$markers = array(
-			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => $this->getFuncMenu(),
-			'CONTENT' => $this->view->render(),
-		);
-		// Build the <body> for the module
-		$this->content = $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
-		// Renders the module page
-		$this->content = $this->doc->render('Configuration', $this->content);
-	}
+        // Setting up the buttons and markers for docheader
+        $docHeaderButtons = $this->getButtons();
+        $markers = array(
+            'CSH' => $docHeaderButtons['csh'],
+            'FUNC_MENU' => $this->getFuncMenu(),
+            'CONTENT' => $this->view->render(),
+        );
+        // Build the <body> for the module
+        $this->content = $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
+        // Renders the module page
+        $this->content = $this->doc->render('Configuration', $this->content);
+    }
 
 
-	/**
-	 * Injects the request object for the current request or subrequest
-	 * Simply calls main() and init() and outputs the content
-	 *
-	 * @param ServerRequestInterface $request the current request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface the response with the content
-	 */
-	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$GLOBALS['SOBE'] = $this;
-		$this->init();
-		$this->main();
+    /**
+     * Injects the request object for the current request or subrequest
+     * Simply calls main() and init() and outputs the content
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $GLOBALS['SOBE'] = $this;
+        $this->init();
+        $this->main();
 
-		$response->getBody()->write($this->content);
-		return $response;
-	}
+        $response->getBody()->write($this->content);
+        return $response;
+    }
 
-	/**
-	 * Print output to browser
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function printContent() {
-		GeneralUtility::logDeprecatedFunction();
-		echo $this->content;
-	}
+    /**
+     * Print output to browser
+     *
+     * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     */
+    public function printContent()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        echo $this->content;
+    }
 
-	/**
-	 * Create the panel of buttons for submitting the form or otherwise perform operations.
-	 *
-	 * @return array All available buttons as an assoc. array
-	 */
-	protected function getButtons() {
-		$buttons = array(
-			'csh' => '',
-			'shortcut' => ''
-		);
-		// Shortcut
-		if ($this->getBackendUser()->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
-		}
-		return $buttons;
-	}
+    /**
+     * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @return array All available buttons as an assoc. array
+     */
+    protected function getButtons()
+    {
+        $buttons = array(
+            'csh' => '',
+            'shortcut' => ''
+        );
+        // Shortcut
+        if ($this->getBackendUser()->mayMakeShortcut()) {
+            $buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
+        }
+        return $buttons;
+    }
 
-	/**
-	 * Create the function menu
-	 *
-	 * @return string HTML of the function menu
-	 */
-	protected function getFuncMenu() {
-		$funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-		return $funcMenu;
-	}
-
+    /**
+     * Create the function menu
+     *
+     * @return string HTML of the function menu
+     */
+    protected function getFuncMenu()
+    {
+        $funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+        return $funcMenu;
+    }
 }

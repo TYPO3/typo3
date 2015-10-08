@@ -17,31 +17,32 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Contains RESTORE_REGISTER class object.
  */
-class ScalableVectorGraphicsContentObject extends AbstractContentObject {
-
-	/**
-	 * Rendering the cObject, SVG
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Empty string (the cObject only sets internal data!)
-	 */
-	public function render($conf = array()) {
-		$width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
-		if (!$width) {
-			$width = 600;
-		}
-		$height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
-		if (!$height) {
-			$height = 400;
-		}
-		$src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
-		if (!$src) {
-			$src = NULL;
-		}
-		$value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
-		$noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
-		if ($src) {
-			$content = '
+class ScalableVectorGraphicsContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, SVG
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Empty string (the cObject only sets internal data!)
+     */
+    public function render($conf = array())
+    {
+        $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
+        if (!$width) {
+            $width = 600;
+        }
+        $height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
+        if (!$height) {
+            $height = 400;
+        }
+        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
+        if (!$src) {
+            $src = null;
+        }
+        $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
+        $noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
+        if ($src) {
+            $content = '
 
 					<!--[if IE]>
 					<object src="' . $src . '" classid="image/svg+xml" width="' . $width . '" height="' . $height . '">
@@ -53,8 +54,8 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject {
 					</object>
 
 			';
-		} else {
-			$content = '
+        } else {
+            $content = '
 				<script type="image/svg+xml">
 					<svg xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -67,11 +68,10 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject {
 			' . $noscript . '
 				</noscript>
 			';
-		}
-		if (isset($conf['stdWrap.'])) {
-			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-		}
-		return $content;
-	}
-
+        }
+        if (isset($conf['stdWrap.'])) {
+            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+        }
+        return $content;
+    }
 }

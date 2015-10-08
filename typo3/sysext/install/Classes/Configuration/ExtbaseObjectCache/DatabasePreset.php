@@ -19,39 +19,39 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Database preset
  */
-class DatabasePreset extends Configuration\AbstractPreset {
+class DatabasePreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Database';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Database';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 50;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 50;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'SYS/caching/cacheConfigurations/extbase_object' => array(
+            'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+            'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+            'options' => array(
+                'defaultLifetime' => 0,
+            ),
+            'groups' => array('system')
+        )
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'SYS/caching/cacheConfigurations/extbase_object' => array(
-			'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-			'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-			'options' => array(
-				'defaultLifetime' => 0,
-			),
-			'groups' => array('system')
-		)
-	);
-
-	/**
-	 * Database preset is always available
-	 *
-	 * @return bool TRUE
-	 */
-	public function isAvailable() {
-		return TRUE;
-	}
-
+    /**
+     * Database preset is always available
+     *
+     * @return bool TRUE
+     */
+    public function isAvailable()
+    {
+        return true;
+    }
 }

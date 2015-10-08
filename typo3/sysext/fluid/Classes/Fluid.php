@@ -13,21 +13,21 @@ namespace TYPO3\CMS\Fluid;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-class Fluid {
+class Fluid
+{
+    const LEGACY_NAMESPACE_SEPARATOR = '_';
+    const NAMESPACE_SEPARATOR = '\\';
 
-	const LEGACY_NAMESPACE_SEPARATOR = '_';
-	const NAMESPACE_SEPARATOR = '\\';
-
-	/**
-	 * Can be used to enable the verbose mode of Fluid.
-	 *
-	 * This enables the following things:
-	 * - ViewHelper argument descriptions are being parsed from the PHPDoc
-	 *
-	 * This is NO PUBLIC API and the way this mode is enabled might change without
-	 * notice in the future.
-	 *
-	 * @var bool
-	 */
-	static public $debugMode = FALSE;
+    /**
+     * Can be used to enable the verbose mode of Fluid.
+     *
+     * This enables the following things:
+     * - ViewHelper argument descriptions are being parsed from the PHPDoc
+     *
+     * This is NO PUBLIC API and the way this mode is enabled might change without
+     * notice in the future.
+     *
+     * @var bool
+     */
+    public static $debugMode = false;
 }

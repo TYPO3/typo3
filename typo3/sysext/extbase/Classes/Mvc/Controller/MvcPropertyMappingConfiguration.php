@@ -27,42 +27,44 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration {
+class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
+{
+    /**
+     * Allow creation of a certain sub property
+     *
+     * @param string $propertyPath
+     * @return void
+     * @api
+     */
+    public function allowCreationForSubProperty($propertyPath)
+    {
+        $this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+    }
 
-	/**
-	 * Allow creation of a certain sub property
-	 *
-	 * @param string $propertyPath
-	 * @return void
-	 * @api
-	 */
-	public function allowCreationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
-	}
+    /**
+     * Allow modification for a given property path
+     *
+     * @param string $propertyPath
+     * @return void
+     * @api
+     */
+    public function allowModificationForSubProperty($propertyPath)
+    {
+        $this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+    }
 
-	/**
-	 * Allow modification for a given property path
-	 *
-	 * @param string $propertyPath
-	 * @return void
-	 * @api
-	 */
-	public function allowModificationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
-	}
-
-	/**
-	 * Set the target type for a certain property. Especially useful
-	 * if there is an object which has a nested object which is abstract,
-	 * and you want to instanciate a concrete object instead.
-	 *
-	 * @param string $propertyPath
-	 * @param string $targetType
-	 * @return void
-	 * @api
-	 */
-	public function setTargetTypeForSubProperty($propertyPath, $targetType) {
-		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
-	}
-
+    /**
+     * Set the target type for a certain property. Especially useful
+     * if there is an object which has a nested object which is abstract,
+     * and you want to instanciate a concrete object instead.
+     *
+     * @param string $propertyPath
+     * @param string $targetType
+     * @return void
+     * @api
+     */
+    public function setTargetTypeForSubProperty($propertyPath, $targetType)
+    {
+        $this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
+    }
 }

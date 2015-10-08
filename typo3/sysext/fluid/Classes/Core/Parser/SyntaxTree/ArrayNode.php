@@ -14,50 +14,52 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
 /**
  * Array Syntax Tree Node. Handles JSON-like arrays.
  */
-class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
+class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+{
+    /**
+     * An associative array. Each key is a string. Each value is either a literal, or an AbstractNode.
+     *
+     * @var array
+     */
+    protected $internalArray = array();
 
-	/**
-	 * An associative array. Each key is a string. Each value is either a literal, or an AbstractNode.
-	 *
-	 * @var array
-	 */
-	protected $internalArray = array();
+    /**
+     * Constructor.
+     *
+     * @param array $internalArray Array to store
+     */
+    public function __construct($internalArray)
+    {
+        $this->internalArray = $internalArray;
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param array $internalArray Array to store
-	 */
-	public function __construct($internalArray) {
-		$this->internalArray = $internalArray;
-	}
+    /**
+     * Evaluate the array and return an evaluated array
+     *
+     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return array An associative array with literal values
+     */
+    public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    {
+        $arrayToBuild = array();
+        foreach ($this->internalArray as $key => $value) {
+            if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
+                $arrayToBuild[$key] = $value->evaluate($renderingContext);
+            } else {
+                // @todo - this case should not happen!
+                $arrayToBuild[$key] = $value;
+            }
+        }
+        return $arrayToBuild;
+    }
 
-	/**
-	 * Evaluate the array and return an evaluated array
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return array An associative array with literal values
-	 */
-	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-		$arrayToBuild = array();
-		foreach ($this->internalArray as $key => $value) {
-			if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
-				$arrayToBuild[$key] = $value->evaluate($renderingContext);
-			} else {
-				// @todo - this case should not happen!
-				$arrayToBuild[$key] = $value;
-			}
-		}
-		return $arrayToBuild;
-	}
-
-	/**
-	 * INTERNAL; DO NOT CALL DIRECTLY!
-	 *
-	 * @return array
-	 */
-	public function getInternalArray() {
-		return $this->internalArray;
-	}
-
+    /**
+     * INTERNAL; DO NOT CALL DIRECTLY!
+     *
+     * @return array
+     */
+    public function getInternalArray()
+    {
+        return $this->internalArray;
+    }
 }

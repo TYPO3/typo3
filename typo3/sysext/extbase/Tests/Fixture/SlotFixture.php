@@ -24,7 +24,9 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 /**
  * A slot
  */
-class SlotFixture {
-	public function slot() {}
-
+class SlotFixture
+{
+    public function slot()
+    {
+    }
 }

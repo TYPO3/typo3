@@ -19,22 +19,22 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class InstallToolDisabledAction extends Action\AbstractAction {
-
-	/**
-	 * Executes the action
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		/** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
-		$statusCheck = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
-		$statusObjects = $statusCheck->getStatus();
-		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
-		$alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
-		$this->view->assign('alerts', $alerts);
-		return $this->view->render(!empty($alerts));
-	}
-
+class InstallToolDisabledAction extends Action\AbstractAction
+{
+    /**
+     * Executes the action
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        /** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
+        $statusCheck = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
+        $statusObjects = $statusCheck->getStatus();
+        /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
+        $statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
+        $alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
+        $this->view->assign('alerts', $alerts);
+        return $this->view->render(!empty($alerts));
+    }
 }

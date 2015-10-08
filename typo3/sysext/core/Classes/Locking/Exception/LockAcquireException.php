@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Locking\Exception;
 /**
  * An exception indicating a lock acquisition error
  */
-class LockAcquireException extends \TYPO3\CMS\Core\Locking\Exception {
-
-
+class LockAcquireException extends \TYPO3\CMS\Core\Locking\Exception
+{
 }

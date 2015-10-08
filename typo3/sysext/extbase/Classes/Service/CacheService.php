@@ -17,73 +17,77 @@ namespace TYPO3\CMS\Extbase\Service;
 /**
  * Cache clearing helper functions
  */
-class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
+class CacheService implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var \SplStack
+     */
+    protected $pageIdStack;
 
-	/**
-	 * @var \SplStack
-	 */
-	protected $pageIdStack;
+    /**
+     * @var \TYPO3\CMS\Core\Cache\CacheManager
+     */
+    protected $cacheManager;
 
-	/**
-	 * @var \TYPO3\CMS\Core\Cache\CacheManager
-	 */
-	protected $cacheManager;
+    /**
+     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+     */
+    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    {
+        $this->cacheManager = $cacheManager;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-	 */
-	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
-		$this->cacheManager = $cacheManager;
-	}
+    /**
+     * Initializes the pageIdStack
+     */
+    public function __construct()
+    {
+        $this->pageIdStack = new \SplStack;
+    }
 
-	/**
-	 * Initializes the pageIdStack
-	 */
-	public function __construct() {
-		$this->pageIdStack = new \SplStack;
-	}
+    /**
+     * @return \SplStack
+     */
+    public function getPageIdStack()
+    {
+        return $this->pageIdStack;
+    }
 
-	/**
-	 * @return \SplStack
-	 */
-	public function getPageIdStack() {
-		return $this->pageIdStack;
-	}
+    /**
+     * Clears the page cache
+     *
+     * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
+     * @return void
+     */
+    public function clearPageCache($pageIdsToClear = null)
+    {
+        if ($pageIdsToClear === null) {
+            $this->cacheManager->flushCachesInGroup('pages');
+        } else {
+            if (!is_array($pageIdsToClear)) {
+                $pageIdsToClear = array((int)$pageIdsToClear);
+            }
+            foreach ($pageIdsToClear as $pageId) {
+                $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+            }
+        }
+    }
 
-	/**
-	 * Clears the page cache
-	 *
-	 * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
-	 * @return void
-	 */
-	public function clearPageCache($pageIdsToClear = NULL) {
-		if ($pageIdsToClear === NULL) {
-			$this->cacheManager->flushCachesInGroup('pages');
-		} else {
-			if (!is_array($pageIdsToClear)) {
-				$pageIdsToClear = array((int)$pageIdsToClear);
-			}
-			foreach ($pageIdsToClear as $pageId) {
-				$this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
-			}
-		}
-	}
-
-	/**
-	 * Walks through the pageIdStack, collects all pageIds
-	 * as array and passes them on to clearPageCache.
-	 *
-	 * @return void
-	 */
-	public function clearCachesOfRegisteredPageIds() {
-		if (!$this->pageIdStack->isEmpty()) {
-			$pageIds = array();
-			while (!$this->pageIdStack->isEmpty()) {
-				$pageIds[] = (int)$this->pageIdStack->pop();
-			}
-			$pageIds = array_values(array_unique($pageIds));
-			$this->clearPageCache($pageIds);
-		}
-	}
-
+    /**
+     * Walks through the pageIdStack, collects all pageIds
+     * as array and passes them on to clearPageCache.
+     *
+     * @return void
+     */
+    public function clearCachesOfRegisteredPageIds()
+    {
+        if (!$this->pageIdStack->isEmpty()) {
+            $pageIds = array();
+            while (!$this->pageIdStack->isEmpty()) {
+                $pageIds[] = (int)$this->pageIdStack->pop();
+            }
+            $pageIds = array_values(array_unique($pageIds));
+            $this->clearPageCache($pageIds);
+        }
+    }
 }

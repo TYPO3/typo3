@@ -105,201 +105,212 @@ use TYPO3\CMS\Lang\LanguageService;
  * @see \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
  * @see \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
  */
-abstract class AbstractFunctionModule {
+abstract class AbstractFunctionModule
+{
+    /**
+     * Contains a reference to the parent (calling) object (which is probably an instance of
+     * an extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass
+     *
+     * @var BaseScriptClass
+     * @see init()
+     */
+    public $pObj;
 
-	/**
-	 * Contains a reference to the parent (calling) object (which is probably an instance of
-	 * an extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass
-	 *
-	 * @var BaseScriptClass
-	 * @see init()
-	 */
-	public $pObj;
+    /**
+     * @var BaseScriptClass
+     */
+    public $extObj = null;
 
-	/**
-	 * @var BaseScriptClass
-	 */
-	public $extObj = NULL;
+    /**
+     * Set to the directory name of this class file.
+     *
+     * @see init()
+     * @var string
+     */
+    public $thisPath = '';
 
-	/**
-	 * Set to the directory name of this class file.
-	 *
-	 * @see init()
-	 * @var string
-	 */
-	public $thisPath = '';
+    /**
+     * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
+     *
+     * @see incLocalLang()
+     * @var string
+     */
+    public $localLangFile = 'locallang.xlf';
 
-	/**
-	 * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
-	 *
-	 * @see incLocalLang()
-	 * @var string
-	 */
-	public $localLangFile = 'locallang.xlf';
+    /**
+     * Contains module configuration parts from TBE_MODULES_EXT if found
+     *
+     * @see handleExternalFunctionValue()
+     * @var array
+     */
+    public $extClassConf;
 
-	/**
-	 * Contains module configuration parts from TBE_MODULES_EXT if found
-	 *
-	 * @see handleExternalFunctionValue()
-	 * @var array
-	 */
-	public $extClassConf;
+    /**
+     * If this value is set it points to a key in the TBE_MODULES_EXT array (not on the top level..) where another classname/filepath/title can be defined for sub-subfunctions.
+     * This is a little hard to explain, so see it in action; it used in the extension 'func_wizards' in order to provide yet a layer of interfacing with the backend module.
+     * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
+     *
+     * @see handleExternalFunctionValue(), \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
+     * @var string
+     */
+    public $function_key = '';
 
-	/**
-	 * If this value is set it points to a key in the TBE_MODULES_EXT array (not on the top level..) where another classname/filepath/title can be defined for sub-subfunctions.
-	 * This is a little hard to explain, so see it in action; it used in the extension 'func_wizards' in order to provide yet a layer of interfacing with the backend module.
-	 * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
-	 *
-	 * @see handleExternalFunctionValue(), \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
-	 * @var string
-	 */
-	public $function_key = '';
+    /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer = null;
 
-	/**
-	 * @var PageRenderer
-	 */
-	protected $pageRenderer = NULL;
+    /**
+     * Initialize the object
+     *
+     * @param BaseScriptClass $pObj A reference to the parent (calling) object
+     * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
+     * @throws \RuntimeException
+     * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
+     */
+    public function init(&$pObj, $conf)
+    {
+        $this->pObj = $pObj;
+        // Path of this script:
+        $reflector = new \ReflectionObject($this);
+        $this->thisPath = dirname($reflector->getFilename());
+        if (!@is_dir($this->thisPath)) {
+            throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
+        }
+        // Local lang:
+        $this->incLocalLang();
+        // Setting MOD_MENU items as we need them for logging:
+        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
+    }
 
-	/**
-	 * Initialize the object
-	 *
-	 * @param BaseScriptClass $pObj A reference to the parent (calling) object
-	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
-	 * @throws \RuntimeException
-	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
-	 */
-	public function init(&$pObj, $conf) {
-		$this->pObj = $pObj;
-		// Path of this script:
-		$reflector = new \ReflectionObject($this);
-		$this->thisPath = dirname($reflector->getFilename());
-		if (!@is_dir($this->thisPath)) {
-			throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
-		}
-		// Local lang:
-		$this->incLocalLang();
-		// Setting MOD_MENU items as we need them for logging:
-		$this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-	}
+    /**
+     * If $this->function_key is set (which means there are two levels of object connectivity) then
+     * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
+     *
+     * @return void
+     * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
+     */
+    public function handleExternalFunctionValue()
+    {
+        // Must clean first to make sure the correct key is set...
+        $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
+        if ($this->function_key) {
+            $this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'], $this->function_key, $this->pObj->MOD_SETTINGS[$this->function_key]);
+        }
+    }
 
-	/**
-	 * If $this->function_key is set (which means there are two levels of object connectivity) then
-	 * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
-	 *
-	 * @return void
-	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
-	 */
-	public function handleExternalFunctionValue() {
-		// Must clean first to make sure the correct key is set...
-		$this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
-		if ($this->function_key) {
-			$this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'], $this->function_key, $this->pObj->MOD_SETTINGS[$this->function_key]);
-		}
-	}
+    /**
+     * Including any locallang file configured and merging its content over
+     * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
+     *
+     * @return void
+     */
+    public function incLocalLang()
+    {
+        if (
+            $this->localLangFile
+            && (
+                @is_file(($this->thisPath . '/' . $this->localLangFile))
+                || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml'))
+                || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php'))
+            )
+        ) {
+            $LOCAL_LANG = $this->getLanguageService()->includeLLFile($this->thisPath . '/' . $this->localLangFile, false);
+            if (is_array($LOCAL_LANG)) {
+                $GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];
+                ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
+            }
+        }
+    }
 
-	/**
-	 * Including any locallang file configured and merging its content over
-	 * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
-	 *
-	 * @return void
-	 */
-	public function incLocalLang() {
-		if (
-			$this->localLangFile
-			&& (
-				@is_file(($this->thisPath . '/' . $this->localLangFile))
-				|| @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml'))
-				|| @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php'))
-			)
-		) {
-			$LOCAL_LANG = $this->getLanguageService()->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
-			if (is_array($LOCAL_LANG)) {
-				$GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];
-				ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
-			}
-		}
-	}
+    /**
+     * Same as \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
+     *
+     * @return void
+     * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
+     */
+    public function checkExtObj()
+    {
+        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj->init($this->pObj, $this->extClassConf);
+            // Re-write:
+            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
+        }
+    }
 
-	/**
-	 * Same as \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
-	 *
-	 * @return void
-	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
-	 */
-	public function checkExtObj() {
-		if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-			$this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-			$this->extObj->init($this->pObj, $this->extClassConf);
-			// Re-write:
-			$this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
-		}
-	}
+    /**
+     * Calls the main function inside ANOTHER sub-submodule which might exist.
+     *
+     * @return void
+     */
+    public function extObjContent()
+    {
+        if (is_object($this->extObj)) {
+            return $this->extObj->main();
+        }
+    }
 
-	/**
-	 * Calls the main function inside ANOTHER sub-submodule which might exist.
-	 *
-	 * @return void
-	 */
-	public function extObjContent() {
-		if (is_object($this->extObj)) {
-			return $this->extObj->main();
-		}
-	}
+    /**
+     * Dummy function - but is used to set up additional menu items for this submodule.
+     *
+     * @return array A MOD_MENU array which will be merged together with the one from the parent object
+     * @see init(), \TYPO3\CMS\Frontend\Controller\PageInformationController::modMenu()
+     */
+    public function modMenu()
+    {
+        return array();
+    }
 
-	/**
-	 * Dummy function - but is used to set up additional menu items for this submodule.
-	 *
-	 * @return array A MOD_MENU array which will be merged together with the one from the parent object
-	 * @see init(), \TYPO3\CMS\Frontend\Controller\PageInformationController::modMenu()
-	 */
-	public function modMenu() {
-		return array();
-	}
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * @return DocumentTemplate
+     */
+    protected function getDocumentTemplate()
+    {
+        return $GLOBALS['TBE_TEMPLATE'];
+    }
 
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
-	}
+    /**
+     * @return string
+     */
+    protected function getBackPath()
+    {
+        return $GLOBALS['BACK_PATH'];
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getBackPath() {
-		return $GLOBALS['BACK_PATH'];
-	}
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        if ($this->pageRenderer === null) {
+            $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        }
 
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		if ($this->pageRenderer === NULL) {
-			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-		}
-
-		return $this->pageRenderer;
-	}
-
+        return $this->pageRenderer;
+    }
 }

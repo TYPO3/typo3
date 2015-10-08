@@ -20,14 +20,13 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * Processors provide additional data in an automatic way, without having to
  * collect that data yourself.
  */
-interface ProcessorInterface {
-
-	/**
-	 * Processes a log record and adds additional data.
-	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
-	 * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
-	 */
-	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord);
-
+interface ProcessorInterface
+{
+    /**
+     * Processes a log record and adds additional data.
+     *
+     * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
+     * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
+     */
+    public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord);
 }

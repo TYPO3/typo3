@@ -27,221 +27,234 @@ use TYPO3\CMS\Core\Type\File as FileType;
  * Every access to table sys_file_metadata which is not handled by TCEmain
  * has to use this Repository class
  */
-class MetaDataRepository implements SingletonInterface {
+class MetaDataRepository implements SingletonInterface
+{
+    /**
+     * @var string
+     */
+    protected $tableName = 'sys_file_metadata';
 
-	/**
-	 * @var string
-	 */
-	protected $tableName = 'sys_file_metadata';
+    /**
+     * Internal storage for database table fields
+     *
+     * @var array
+     */
+    protected $tableFields = array();
 
-	/**
-	 * Internal storage for database table fields
-	 *
-	 * @var array
-	 */
-	protected $tableFields = array();
+    /**
+     * Wrapper method for getting DatabaseConnection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * Wrapper method for getting DatabaseConnection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * Returns array of meta-data properties
+     *
+     * @param File $file
+     * @return array
+     */
+    public function findByFile(File $file)
+    {
+        $record = $this->findByFileUid($file->getUid());
 
-	/**
-	 * Returns array of meta-data properties
-	 *
-	 * @param File $file
-	 * @return array
-	 */
-	public function findByFile(File $file) {
-		$record = $this->findByFileUid($file->getUid());
+        // It could be possible that the meta information is freshly
+        // created and inserted into the database. If this is the case
+        // we have to take care about correct meta information for width and
+        // height in case of an image.
+        if (!empty($record['newlyCreated'])) {
+            if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
+                $fileNameAndPath = $file->getForLocalProcessing(false);
 
-		// It could be possible that the meta information is freshly
-		// created and inserted into the database. If this is the case
-		// we have to take care about correct meta information for width and
-		// height in case of an image.
-		if (!empty($record['newlyCreated'])) {
-			if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
-				$fileNameAndPath = $file->getForLocalProcessing(FALSE);
+                $imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
 
-				$imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
+                $additionalMetaInformation = array(
+                    'width' => $imageInfo->getWidth(),
+                    'height' => $imageInfo->getHeight(),
+                );
 
-				$additionalMetaInformation = array(
-					'width' => $imageInfo->getWidth(),
-					'height' => $imageInfo->getHeight(),
-				);
+                $this->update($file->getUid(), $additionalMetaInformation);
+            }
+            $record = $this->findByFileUid($file->getUid());
+        }
 
-				$this->update($file->getUid(), $additionalMetaInformation);
-			}
-			$record = $this->findByFileUid($file->getUid());
-		}
+        return $record;
+    }
 
-		return $record;
-	}
+    /**
+     * Retrieves metadata for file
+     *
+     * @param int $uid
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function findByFileUid($uid)
+    {
+        $uid = (int)$uid;
+        if ($uid <= 0) {
+            throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
+        }
+        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 
-	/**
-	 * Retrieves metadata for file
-	 *
-	 * @param int $uid
-	 * @return array
-	 * @throws \RuntimeException
-	 */
-	public function findByFileUid($uid) {
-		$uid = (int)$uid;
-		if ($uid <= 0) {
-			throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
-		}
-		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
+        if ($record === false) {
+            $record = $this->createMetaDataRecord($uid);
+        }
 
-		if ($record === FALSE) {
-			$record = $this->createMetaDataRecord($uid);
-		}
+        $passedData = new \ArrayObject($record);
+        $this->emitRecordPostRetrievalSignal($passedData);
+        return $passedData->getArrayCopy();
+    }
 
-		$passedData = new \ArrayObject($record);
-		$this->emitRecordPostRetrievalSignal($passedData);
-		return $passedData->getArrayCopy();
-	}
+    /**
+     * General Where-Clause which is needed to fetch only language 0 and live record.
+     *
+     * @return string
+     */
+    protected function getGeneralWhereClause()
+    {
+        return ' AND sys_language_uid IN (0,-1) AND pid=0';
+    }
 
-	/**
-	 * General Where-Clause which is needed to fetch only language 0 and live record.
-	 *
-	 * @return string
-	 */
-	protected function getGeneralWhereClause() {
-		return ' AND sys_language_uid IN (0,-1) AND pid=0';
-	}
+    /**
+     * Create empty
+     *
+     * @param int $fileUid
+     * @param array $additionalFields
+     * @return array
+     */
+    public function createMetaDataRecord($fileUid, array $additionalFields = array())
+    {
+        $emptyRecord =  array(
+            'file' => (int)$fileUid,
+            'pid' => 0,
+            'crdate' => $GLOBALS['EXEC_TIME'],
+            'tstamp' => $GLOBALS['EXEC_TIME'],
+            'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
+            'l10n_diffsource' => ''
+        );
+        $emptyRecord = array_merge($emptyRecord, $additionalFields);
+        $this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
+        $record = $emptyRecord;
+        $record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
+        $record['newlyCreated']  = true;
 
-	/**
-	 * Create empty
-	 *
-	 * @param int $fileUid
-	 * @param array $additionalFields
-	 * @return array
-	 */
-	public function createMetaDataRecord($fileUid, array $additionalFields = array()) {
-		$emptyRecord =  array(
-			'file' => (int)$fileUid,
-			'pid' => 0,
-			'crdate' => $GLOBALS['EXEC_TIME'],
-			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
-			'l10n_diffsource' => ''
-		);
-		$emptyRecord = array_merge($emptyRecord, $additionalFields);
-		$this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
-		$record = $emptyRecord;
-		$record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
-		$record['newlyCreated']  = TRUE;
+        $this->emitRecordCreatedSignal($record);
 
-		$this->emitRecordCreatedSignal($record);
+        return $record;
+    }
 
-		return $record;
-	}
+    /**
+     * Updates the metadata record in the database
+     *
+     * @param int $fileUid the file uid to update
+     * @param array $data Data to update
+     * @return void
+     * @internal
+     */
+    public function update($fileUid, array $data)
+    {
+        if (empty($this->tableFields)) {
+            $this->tableFields = $this->getDatabaseConnection()->admin_get_fields($this->tableName);
+        }
+        $updateRow = array_intersect_key($data, $this->tableFields);
+        if (array_key_exists('uid', $updateRow)) {
+            unset($updateRow['uid']);
+        }
+        $row = $this->findByFileUid($fileUid);
+        if (!empty($updateRow)) {
+            $updateRow['tstamp'] = time();
+            $this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
 
-	/**
-	 * Updates the metadata record in the database
-	 *
-	 * @param int $fileUid the file uid to update
-	 * @param array $data Data to update
-	 * @return void
-	 * @internal
-	 */
-	public function update($fileUid, array $data) {
-		if (empty($this->tableFields)) {
-			$this->tableFields = $this->getDatabaseConnection()->admin_get_fields($this->tableName);
-		}
-		$updateRow = array_intersect_key($data, $this->tableFields);
-		if (array_key_exists('uid', $updateRow)) {
-			unset($updateRow['uid']);
-		}
-		$row = $this->findByFileUid($fileUid);
-		if (!empty($updateRow)) {
-			$updateRow['tstamp'] = time();
-			$this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
+            $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
+        }
+    }
 
-			$this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
-		}
-	}
+    /**
+     * Remove all metadata records for a certain file from the database
+     *
+     * @param int $fileUid
+     * @return void
+     */
+    public function removeByFileUid($fileUid)
+    {
+        $this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
+        $this->emitRecordDeletedSignal($fileUid);
+    }
 
-	/**
-	 * Remove all metadata records for a certain file from the database
-	 *
-	 * @param int $fileUid
-	 * @return void
-	 */
-	public function removeByFileUid($fileUid) {
-		$this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
-		$this->emitRecordDeletedSignal($fileUid);
-	}
+    /**
+     * Get the SignalSlot dispatcher
+     *
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected function getSignalSlotDispatcher()
+    {
+        return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+    }
 
-	/**
-	 * Get the SignalSlot dispatcher
-	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected function getSignalSlotDispatcher() {
-		return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-	}
+    /**
+     * Get the ObjectManager
+     *
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+    }
 
-	/**
-	 * Get the ObjectManager
-	 *
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-	}
+    /**
+     * Signal that is called after a record has been loaded from database
+     * Allows other places to do extension of metadata at runtime or
+     * for example translation and workspace overlay
+     *
+     * @param \ArrayObject $data
+     * @signal
+     */
+    protected function emitRecordPostRetrievalSignal(\ArrayObject $data)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordPostRetrieval', array($data));
+    }
 
-	/**
-	 * Signal that is called after a record has been loaded from database
-	 * Allows other places to do extension of metadata at runtime or
-	 * for example translation and workspace overlay
-	 *
-	 * @param \ArrayObject $data
-	 * @signal
-	 */
-	protected function emitRecordPostRetrievalSignal(\ArrayObject $data) {
-		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordPostRetrieval', array($data));
-	}
+    /**
+     * Signal that is called after an IndexRecord is updated
+     *
+     * @param array $data
+     * @signal
+     */
+    protected function emitRecordUpdatedSignal(array $data)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordUpdated', array($data));
+    }
 
-	/**
-	 * Signal that is called after an IndexRecord is updated
-	 *
-	 * @param array $data
-	 * @signal
-	 */
-	protected function emitRecordUpdatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordUpdated', array($data));
-	}
+    /**
+     * Signal that is called after an IndexRecord is created
+     *
+     * @param array $data
+     * @signal
+     */
+    protected function emitRecordCreatedSignal(array $data)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordCreated', array($data));
+    }
 
-	/**
-	 * Signal that is called after an IndexRecord is created
-	 *
-	 * @param array $data
-	 * @signal
-	 */
-	protected function emitRecordCreatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordCreated', array($data));
-	}
+    /**
+     * Signal that is called after an IndexRecord is deleted
+     *
+     * @param int $fileUid
+     * @signal
+     */
+    protected function emitRecordDeletedSignal($fileUid)
+    {
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordDeleted', array($fileUid));
+    }
 
-	/**
-	 * Signal that is called after an IndexRecord is deleted
-	 *
-	 * @param int $fileUid
-	 * @signal
-	 */
-	protected function emitRecordDeletedSignal($fileUid) {
-		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordDeleted', array($fileUid));
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
-	 */
-	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+     */
+    public static function getInstance()
+    {
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+    }
 }

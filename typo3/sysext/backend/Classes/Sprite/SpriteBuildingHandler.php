@@ -19,33 +19,33 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Sprite build handler
  */
-class SpriteBuildingHandler extends AbstractSpriteHandler {
+class SpriteBuildingHandler extends AbstractSpriteHandler
+{
+    /**
+     * @var SpriteGenerator
+     */
+    protected $generatorInstance = null;
 
-	/**
-	 * @var SpriteGenerator
-	 */
-	protected $generatorInstance = NULL;
-
-	/**
-	 * Interface function. This will be called from the sprite manager to
-	 * refresh all caches.
-	 *
-	 * @return void
-	 */
-	public function generate() {
-		$this->generatorInstance = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Sprite\SpriteGenerator::class, 'GeneratorHandler');
-		$this->generatorInstance
-			->setOmitSpriteNameInIconName(TRUE)
-			->setIncludeTimestampInCSS(TRUE)
-			->setSpriteFolder(SpriteManager::$tempPath)
-			->setCSSFolder(SpriteManager::$tempPath);
-		$iconsToProcess = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
-		foreach ($iconsToProcess as $iconName => $iconFile) {
-			$iconsToProcess[$iconName] = GeneralUtility::resolveBackPath('typo3/' . $iconFile);
-		}
-		$generatorResponse = $this->generatorInstance->generateSpriteFromArray($iconsToProcess);
-		$this->iconNames = array_merge($this->iconNames, $generatorResponse['iconNames']);
-		parent::generate();
-	}
-
+    /**
+     * Interface function. This will be called from the sprite manager to
+     * refresh all caches.
+     *
+     * @return void
+     */
+    public function generate()
+    {
+        $this->generatorInstance = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Sprite\SpriteGenerator::class, 'GeneratorHandler');
+        $this->generatorInstance
+            ->setOmitSpriteNameInIconName(true)
+            ->setIncludeTimestampInCSS(true)
+            ->setSpriteFolder(SpriteManager::$tempPath)
+            ->setCSSFolder(SpriteManager::$tempPath);
+        $iconsToProcess = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
+        foreach ($iconsToProcess as $iconName => $iconFile) {
+            $iconsToProcess[$iconName] = GeneralUtility::resolveBackPath('typo3/' . $iconFile);
+        }
+        $generatorResponse = $this->generatorInstance->generateSpriteFromArray($iconsToProcess);
+        $this->iconNames = array_merge($this->iconNames, $generatorResponse['iconNames']);
+        parent::generate();
+    }
 }

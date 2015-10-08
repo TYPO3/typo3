@@ -17,17 +17,17 @@ namespace TYPO3\CMS\Recordlist\Tests\Unit\Browser;
 /**
  * Test case
  */
-class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function printCurrentUrlWithAnyTextReturnsThatText() {
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
-		$subject = new \TYPO3\CMS\Recordlist\Browser\ElementBrowser();
-		$subject->act = 'file';
-		$result = $subject->printCurrentUrl('Teststring');
-		$this->assertContains('Teststring', $result);
-	}
-
+class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function printCurrentUrlWithAnyTextReturnsThatText()
+    {
+        $GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', false);
+        $subject = new \TYPO3\CMS\Recordlist\Browser\ElementBrowser();
+        $subject->act = 'file';
+        $result = $subject->printCurrentUrl('Teststring');
+        $this->assertContains('Teststring', $result);
+    }
 }

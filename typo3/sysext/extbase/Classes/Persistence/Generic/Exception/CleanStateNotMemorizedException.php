@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Invalid Class" exception
  */
-class CleanStateNotMemorizedException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class CleanStateNotMemorizedException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

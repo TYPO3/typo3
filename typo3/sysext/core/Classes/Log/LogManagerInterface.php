@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Core\Log;
 /**
  * LogManager Contract for delivering log instances.
  */
-interface LogManagerInterface {
-
-	/**
-	 * Gets a logger instance for the given name.
-	 *
-	 * @param string $name
-	 * @return \Psr\Log\LoggerInterface
-	 */
-	public function getLogger($name = '');
-
+interface LogManagerInterface
+{
+    /**
+     * Gets a logger instance for the given name.
+     *
+     * @param string $name
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function getLogger($name = '');
 }

@@ -17,55 +17,60 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
 /**
  * Test case
  */
-class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
+     */
+    protected $mockResponse;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
-	 */
-	protected $mockResponse;
+    protected function setUp()
+    {
+        $this->mockResponse = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Response::class, array('dummy'));
+    }
 
-	protected function setUp() {
-		$this->mockResponse = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Response::class, array('dummy'));
-	}
+    /**
+     * @test
+     */
+    public function propertyContentInitiallyIsNull()
+    {
+        $this->assertNull($this->mockResponse->_get('content'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function propertyContentInitiallyIsNull() {
-		$this->assertNull($this->mockResponse->_get('content'));
-	}
+    /**
+     * @test
+     */
+    public function setContentSetsContentCorrectly()
+    {
+        $this->mockResponse->setContent('foo');
+        $this->assertSame('foo', $this->mockResponse->_get('content'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function setContentSetsContentCorrectly() {
-		$this->mockResponse->setContent('foo');
-		$this->assertSame('foo', $this->mockResponse->_get('content'));
-	}
+    /**
+     * @test
+     */
+    public function appendContentAppendsContentCorrectly()
+    {
+        $this->mockResponse->_set('content', 'foo');
+        $this->mockResponse->appendContent('bar');
+        $this->assertSame('foobar', $this->mockResponse->_get('content'));
+    }
 
-	/**
-	 * @test
-	 */
-	public function appendContentAppendsContentCorrectly() {
-		$this->mockResponse->_set('content', 'foo');
-		$this->mockResponse->appendContent('bar');
-		$this->assertSame('foobar', $this->mockResponse->_get('content'));
-	}
+    /**
+     * @test
+     */
+    public function getContentReturnsContentCorrectly()
+    {
+        $this->mockResponse->_set('content', 'foo');
+        $this->assertSame('foo', $this->mockResponse->getContent());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getContentReturnsContentCorrectly() {
-		$this->mockResponse->_set('content', 'foo');
-		$this->assertSame('foo', $this->mockResponse->getContent());
-	}
-
-	/**
-	 * @test
-	 */
-	public function __toStringReturnsActualContent() {
-		$this->mockResponse->_set('content', 'foo');
-		$this->assertSame('foo', (string)$this->mockResponse);
-	}
-
+    /**
+     * @test
+     */
+    public function __toStringReturnsActualContent()
+    {
+        $this->mockResponse->_set('content', 'foo');
+        $this->assertSame('foo', (string)$this->mockResponse);
+    }
 }

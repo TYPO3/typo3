@@ -20,61 +20,60 @@ use TYPO3\CMS\Core\Resource\Folder;
 /**
  * Interface OnlineMediaInterface
  */
-interface OnlineMediaHelperInterface {
+interface OnlineMediaHelperInterface
+{
+    /**
+     * Constructor
+     *
+     * @param string $extension file extension bind to the OnlineMedia helper
+     */
+    public function __construct($extension);
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $extension file extension bind to the OnlineMedia helper
-	 */
-	public function __construct($extension);
+    /**
+     * Try to transform given URL to a File
+     *
+     * @param string $url
+     * @param Folder $targetFolder
+     * @return File|NULL
+     */
+    public function transformUrlToFile($url, Folder $targetFolder);
 
-	/**
-	 * Try to transform given URL to a File
-	 *
-	 * @param string $url
-	 * @param Folder $targetFolder
-	 * @return File|NULL
-	 */
-	public function transformUrlToFile($url, Folder $targetFolder);
+    /**
+     * Get Online Media item id
+     *
+     * @param File $file
+     * @return string
+     */
+    public function getOnlineMediaId(File $file);
 
-	/**
-	 * Get Online Media item id
-	 *
-	 * @param File $file
-	 * @return string
-	 */
-	public function getOnlineMediaId(File $file);
+    /**
+     * Get public url
+     *
+     * Return NULL if you want to use core default behaviour
+     *
+     * @param File $file
+     * @param bool $relativeToCurrentScript
+     * @return string|NULL
+     */
+    public function getPublicUrl(File $file, $relativeToCurrentScript = false);
 
-	/**
-	 * Get public url
-	 *
-	 * Return NULL if you want to use core default behaviour
-	 *
-	 * @param File $file
-	 * @param bool $relativeToCurrentScript
-	 * @return string|NULL
-	 */
-	public function getPublicUrl(File $file, $relativeToCurrentScript = FALSE);
+    /**
+     * Get local absolute file path to preview image
+     *
+     * Return an empty string when no preview image is available
+     *
+     * @param File $file
+     * @return string
+     */
+    public function getPreviewImage(File $file);
 
-	/**
-	 * Get local absolute file path to preview image
-	 *
-	 * Return an empty string when no preview image is available
-	 *
-	 * @param File $file
-	 * @return string
-	 */
-	public function getPreviewImage(File $file);
-
-	/**
-	 * Get meta data for OnlineMedia item
-	 *
-	 * See $GLOBALS[TCA][sys_file_metadata][columns] for possible fields to fill/use
-	 *
-	 * @param File $file
-	 * @return array with metadata
-	 */
-	public function getMetaData(File $file);
-
+    /**
+     * Get meta data for OnlineMedia item
+     *
+     * See $GLOBALS[TCA][sys_file_metadata][columns] for possible fields to fill/use
+     *
+     * @param File $file
+     * @return array with metadata
+     */
+    public function getMetaData(File $file);
 }

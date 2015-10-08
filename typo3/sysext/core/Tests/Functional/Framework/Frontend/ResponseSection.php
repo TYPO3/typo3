@@ -17,117 +17,123 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend;
 /**
  * Model of frontend response content
  */
-class ResponseSection {
+class ResponseSection
+{
+    /**
+     * @var string
+     */
+    protected $identifier;
 
-	/**
-	 * @var string
-	 */
-	protected $identifier;
+    /**
+     * @var array
+     */
+    protected $structure;
 
-	/**
-	 * @var array
-	 */
-	protected $structure;
+    /**
+     * @var array
+     */
+    protected $structurePaths;
 
-	/**
-	 * @var array
-	 */
-	protected $structurePaths;
+    /**
+     * @var array
+     */
+    protected $records;
 
-	/**
-	 * @var array
-	 */
-	protected $records;
+    /**
+     * @var array
+     */
+    protected $queries;
 
-	/**
-	 * @var array
-	 */
-	protected $queries;
+    /**
+     * @param string $identifier
+     * @param array $data
+     */
+    public function __construct($identifier, array $data)
+    {
+        $this->identifier = (string)$identifier;
+        $this->structure = $data['structure'];
+        $this->structurePaths = $data['structurePaths'];
+        $this->records = $data['records'];
 
-	/**
-	 * @param string $identifier
-	 * @param array $data
-	 */
-	public function __construct($identifier, array $data) {
-		$this->identifier = (string)$identifier;
-		$this->structure = $data['structure'];
-		$this->structurePaths = $data['structurePaths'];
-		$this->records = $data['records'];
+        if (!empty($data['queries'])) {
+            $this->queries = $data['queries'];
+        }
+    }
 
-		if (!empty($data['queries'])) {
-			$this->queries = $data['queries'];
-		}
-	}
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getIdentifier() {
-		return $this->identifier;
-	}
+    /**
+     * @return array
+     */
+    public function getStructure()
+    {
+        return $this->structure;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getStructure() {
-		return $this->structure;
-	}
+    /**
+     * @return array
+     */
+    public function getStructurePaths()
+    {
+        return $this->structurePaths;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getStructurePaths() {
-		return $this->structurePaths;
-	}
+    /**
+     * @return array
+     */
+    public function getRecords()
+    {
+        return $this->records;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRecords() {
-		return $this->records;
-	}
+    /**
+     * @return array
+     */
+    public function getQueries()
+    {
+        return $this->queries;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getQueries() {
-		return $this->queries;
-	}
+    /**
+     * @param string $recordIdentifier
+     * @param string $fieldName
+     * @return array
+     */
+    public function findStructures($recordIdentifier, $fieldName = '')
+    {
+        $structures = array();
 
-	/**
-	 * @param string $recordIdentifier
-	 * @param string $fieldName
-	 * @return array
-	 */
-	public function findStructures($recordIdentifier, $fieldName = '') {
-		$structures = array();
+        if (empty($this->structurePaths[$recordIdentifier])) {
+            return $structures;
+        }
 
-		if (empty($this->structurePaths[$recordIdentifier])) {
-			return $structures;
-		}
+        foreach ($this->structurePaths[$recordIdentifier] as $steps) {
+            $structure = $this->structure;
+            $steps[] = $recordIdentifier;
 
-		foreach ($this->structurePaths[$recordIdentifier] as $steps) {
-			$structure = $this->structure;
-			$steps[] = $recordIdentifier;
+            if (!empty($fieldName)) {
+                $steps[] = $fieldName;
+            }
 
-			if (!empty($fieldName)) {
-				$steps[] = $fieldName;
-			}
+            foreach ($steps as $step) {
+                if (!isset($structure[$step])) {
+                    $structure = null;
+                    break;
+                }
+                $structure = $structure[$step];
+            }
 
-			foreach ($steps as $step) {
-				if (!isset($structure[$step])) {
-					$structure = NULL;
-					break;
-				}
-				$structure = $structure[$step];
-			}
+            if (!empty($structure)) {
+                $structures[implode('/', $steps)] = $structure;
+            }
+        }
 
-			if (!empty($structure)) {
-				$structures[implode('/', $steps)] = $structure;
-			}
-		}
-
-		return $structures;
-	}
-
+        return $structures;
+    }
 }

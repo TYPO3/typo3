@@ -17,97 +17,99 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON radiogroup
  */
-class RadioGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement {
+class RadioGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement
+{
+    /**
+     * The ExtJS xtype of the element
+     *
+     * @var string
+     */
+    public $xtype = 'typo3-form-wizard-elements-predefined-radiogroup';
 
-	/**
-	 * The ExtJS xtype of the element
-	 *
-	 * @var string
-	 */
-	public $xtype = 'typo3-form-wizard-elements-predefined-radiogroup';
+    /**
+     * The configuration array for the xtype
+     *
+     * @var array
+     */
+    public $configuration = array(
+        'attributes' => array(),
+        'legend' => array(
+            'value' => ''
+        ),
+        'options' => array(),
+        'various' => array(
+            'name' => ''
+        ),
+        'validation' => array()
+    );
 
-	/**
-	 * The configuration array for the xtype
-	 *
-	 * @var array
-	 */
-	public $configuration = array(
-		'attributes' => array(),
-		'legend' => array(
-			'value' => ''
-		),
-		'options' => array(),
-		'various' => array(
-			'name' => ''
-		),
-		'validation' => array()
-	);
+    /**
+     * Allowed attributes for this object
+     *
+     * @var array
+     */
+    protected $allowedAttributes = array(
+        'class',
+        'dir',
+        'id',
+        'lang',
+        'style'
+    );
 
-	/**
-	 * Allowed attributes for this object
-	 *
-	 * @var array
-	 */
-	protected $allowedAttributes = array(
-		'class',
-		'dir',
-		'id',
-		'lang',
-		'style'
-	);
+    /**
+     * Set all the parameters for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
+     */
+    public function setParameters(array $parameters)
+    {
+        parent::setParameters($parameters);
+        $this->setOptions($parameters);
+        $this->setVarious($parameters);
+    }
 
-	/**
-	 * Set all the parameters for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
-	 */
-	public function setParameters(array $parameters) {
-		parent::setParameters($parameters);
-		$this->setOptions($parameters);
-		$this->setVarious($parameters);
-	}
+    /**
+     * Set the options for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setOptions(array $parameters)
+    {
+        if (is_array($parameters)) {
+            $keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
+            foreach ($keys as $key) {
+                $class = $parameters[$key];
+                if ((int)$key && strpos($key, '.') === false) {
+                    if (isset($parameters[$key . '.']) && $class === 'RADIO') {
+                        $childElementArguments = $parameters[$key . '.'];
+                        if (isset($childElementArguments['checked'])) {
+                            $childElementArguments['attributes']['selected'] = 'selected';
+                            unset($childElementArguments['checked']);
+                        }
+                        if (isset($childElementArguments['label.'])) {
+                            $childElementArguments['data'] = $childElementArguments['label.']['value'];
+                            unset($childElementArguments['label.']);
+                        }
+                        $this->configuration['options'][] = $childElementArguments;
+                    }
+                }
+            }
+        }
+    }
 
-	/**
-	 * Set the options for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 */
-	protected function setOptions(array $parameters) {
-		if (is_array($parameters)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
-			foreach ($keys as $key) {
-				$class = $parameters[$key];
-				if ((int)$key && strpos($key, '.') === FALSE) {
-					if (isset($parameters[$key . '.']) && $class === 'RADIO') {
-						$childElementArguments = $parameters[$key . '.'];
-						if (isset($childElementArguments['checked'])) {
-							$childElementArguments['attributes']['selected'] = 'selected';
-							unset($childElementArguments['checked']);
-						}
-						if (isset($childElementArguments['label.'])) {
-							$childElementArguments['data'] = $childElementArguments['label.']['value'];
-							unset($childElementArguments['label.']);
-						}
-						$this->configuration['options'][] = $childElementArguments;
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Set the various properties for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 */
-	protected function setVarious(array $parameters) {
-		if (isset($parameters['name'])) {
-			$this->configuration['various']['name'] = $parameters['name'];
-		}
-	}
-
+    /**
+     * Set the various properties for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setVarious(array $parameters)
+    {
+        if (isset($parameters['name'])) {
+            $this->configuration['various']['name'] = $parameters['name'];
+        }
+    }
 }

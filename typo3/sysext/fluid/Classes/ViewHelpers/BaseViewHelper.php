@@ -32,41 +32,42 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class BaseViewHelper extends AbstractViewHelper implements CompilableInterface {
+class BaseViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Render the "Base" tag by outputting $request->getBaseUri()
+     *
+     * Note: renders as <base></base>, because IE6 will else refuse to display
+     * the page...
+     *
+     * @return string "base"-Tag.
+     * @api
+     */
+    public function render()
+    {
+        return static::renderStatic(
+            array(),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Render the "Base" tag by outputting $request->getBaseUri()
-	 *
-	 * Note: renders as <base></base>, because IE6 will else refuse to display
-	 * the page...
-	 *
-	 * @return string "base"-Tag.
-	 * @api
-	 */
-	public function render() {
-		return static::renderStatic(
-			array(),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * Render the "Base" tag by outputting $request->getBaseUri()
-	 *
-	 * Note: renders as <base></base>, because IE6 will else refuse to display
-	 * the page...
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string "base"-Tag.
-	 * @api
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$controllerContext = $renderingContext->getControllerContext();
-		return '<base href="' . htmlspecialchars($controllerContext->getRequest()->getBaseUri()) . '" />';
-	}
-
+    /**
+     * Render the "Base" tag by outputting $request->getBaseUri()
+     *
+     * Note: renders as <base></base>, because IE6 will else refuse to display
+     * the page...
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string "base"-Tag.
+     * @api
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $controllerContext = $renderingContext->getControllerContext();
+        return '<base href="' . htmlspecialchars($controllerContext->getRequest()->getBaseUri()) . '" />';
+    }
 }

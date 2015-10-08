@@ -17,24 +17,24 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures;
 /**
  * Fixture class for the filename filters in the local driver.
  */
-class LocalDriverFilenameFilter {
-
-	/**
-	 * Filter filename
-	 *
-	 * @param string $itemName
-	 * @param string $itemIdentifier
-	 * @param string $parentIdentifier
-	 * @param array $additionalInformation
-	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance
-	 * @return bool|int
-	 */
-	static public function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance) {
-		if ($itemName == 'fileA' || $itemName == 'folderA/') {
-			return -1;
-		} else {
-			return TRUE;
-		}
-	}
-
+class LocalDriverFilenameFilter
+{
+    /**
+     * Filter filename
+     *
+     * @param string $itemName
+     * @param string $itemIdentifier
+     * @param string $parentIdentifier
+     * @param array $additionalInformation
+     * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance
+     * @return bool|int
+     */
+    public static function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance)
+    {
+        if ($itemName == 'fileA' || $itemName == 'folderA/') {
+            return -1;
+        } else {
+            return true;
+        }
+    }
 }

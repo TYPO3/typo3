@@ -19,29 +19,29 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array<string>
+     */
+    protected $sourceTypes = array('string');
 
-	/**
-	 * @var array<string>
-	 */
-	protected $sourceTypes = array('string');
+    /**
+     * @var string
+     */
+    protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\Folder::class;
 
-	/**
-	 * @var string
-	 */
-	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\Folder::class;
+    /**
+     * @var string
+     */
+    protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Folder::class;
 
-	/**
-	 * @var string
-	 */
-	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Folder::class;
-
-	/**
-	 * @param string $source
-	 * @return \TYPO3\CMS\Core\Resource\Folder
-	 */
-	protected function getOriginalResource($source) {
-		return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
-	}
-
+    /**
+     * @param string $source
+     * @return \TYPO3\CMS\Core\Resource\Folder
+     */
+    protected function getOriginalResource($source)
+    {
+        return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
+    }
 }

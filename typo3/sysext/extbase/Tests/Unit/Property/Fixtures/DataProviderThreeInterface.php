@@ -17,4 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures;
 /**
  * Fixture DataProviderThreeInterface
  */
-interface DataProviderThreeInterface extends DataProviderTwoInterface {}
+interface DataProviderThreeInterface extends DataProviderTwoInterface
+{
+}

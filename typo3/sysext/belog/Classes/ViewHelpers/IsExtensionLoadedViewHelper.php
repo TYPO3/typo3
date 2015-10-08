@@ -23,33 +23,34 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Returns true, if a specific extension is loaded
  * @internal
  */
-class IsExtensionLoadedViewHelper extends AbstractViewHelper implements CompilableInterface {
+class IsExtensionLoadedViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * Checks whether an extension is loaded.
+     *
+     * @param string $extensionKey The extension's key
+     * @return bool TRUE if extension is loaded, FALSE otherwise
+     */
+    public function render($extensionKey)
+    {
+        return static::renderStatic(
+            array(
+                'extensionKey' => $extensionKey
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Checks whether an extension is loaded.
-	 *
-	 * @param string $extensionKey The extension's key
-	 * @return bool TRUE if extension is loaded, FALSE otherwise
-	 */
-	public function render($extensionKey) {
-		return static::renderStatic(
-			array(
-				'extensionKey' => $extensionKey
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return ExtensionManagementUtility::isLoaded($arguments['extensionKey']);
-	}
-
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return ExtensionManagementUtility::isLoaded($arguments['extensionKey']);
+    }
 }

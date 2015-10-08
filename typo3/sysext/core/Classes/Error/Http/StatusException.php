@@ -17,62 +17,65 @@ namespace TYPO3\CMS\Core\Error\Http;
 /**
  * HTTP Status Exception
  */
-class StatusException extends \TYPO3\CMS\Core\Error\Exception {
+class StatusException extends \TYPO3\CMS\Core\Error\Exception
+{
+    /**
+     * @var array HTTP Status Header lines
+     */
+    protected $statusHeaders;
 
-	/**
-	 * @var array HTTP Status Header lines
-	 */
-	protected $statusHeaders;
+    /**
+     * @var string Title of the message
+     */
+    protected $title = 'Oops, an error occurred!';
 
-	/**
-	 * @var string Title of the message
-	 */
-	protected $title = 'Oops, an error occurred!';
+    /**
+     * Constructor for this Status Exception
+     *
+     * @param string|array $statusHeaders HTTP Status header line(s)
+     * @param string $title Title of the error message
+     * @param string $message Error Message
+     * @param int $code Exception Code
+     */
+    public function __construct($statusHeaders, $message, $title = '', $code = 0)
+    {
+        if (is_array($statusHeaders)) {
+            $this->statusHeaders = $statusHeaders;
+        } else {
+            $this->statusHeaders = array($statusHeaders);
+        }
+        $this->title = $title ?: $this->title;
+        parent::__construct($message, $code);
+    }
 
-	/**
-	 * Constructor for this Status Exception
-	 *
-	 * @param string|array $statusHeaders HTTP Status header line(s)
-	 * @param string $title Title of the error message
-	 * @param string $message Error Message
-	 * @param int $code Exception Code
-	 */
-	public function __construct($statusHeaders, $message, $title = '', $code = 0) {
-		if (is_array($statusHeaders)) {
-			$this->statusHeaders = $statusHeaders;
-		} else {
-			$this->statusHeaders = array($statusHeaders);
-		}
-		$this->title = $title ?: $this->title;
-		parent::__construct($message, $code);
-	}
+    /**
+     * Setter for the title.
+     *
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * Setter for the title.
-	 *
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * Getter for the title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Getter for the title.
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
-	/**
-	 * Getter for the Status Header.
-	 *
-	 * @return string
-	 */
-	public function getStatusHeaders() {
-		return $this->statusHeaders;
-	}
-
+    /**
+     * Getter for the Status Header.
+     *
+     * @return string
+     */
+    public function getStatusHeaders()
+    {
+        return $this->statusHeaders;
+    }
 }

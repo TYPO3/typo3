@@ -19,62 +19,65 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Sendmail path handling preset
  */
-class SendmailPreset extends Configuration\AbstractPreset {
+class SendmailPreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Sendmail';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Sendmail';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 50;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 50;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'MAIL/transport_sendmail_command' => '',
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'MAIL/transport_sendmail_command' => '',
-	);
+    /**
+     * Get configuration values to activate prefix
+     *
+     * @return array Configuration values needed to activate prefix
+     */
+    public function getConfigurationValues()
+    {
+        $configurationValues = $this->configurationValues;
+        $configurationValues['MAIL/transport_sendmail_command'] = $this->getSendmailPath();
+        return $configurationValues;
+    }
 
-	/**
-	 * Get configuration values to activate prefix
-	 *
-	 * @return array Configuration values needed to activate prefix
-	 */
-	public function getConfigurationValues() {
-		$configurationValues = $this->configurationValues;
-		$configurationValues['MAIL/transport_sendmail_command'] = $this->getSendmailPath();
-		return $configurationValues;
-	}
+    /**
+     * Check if sendmail path if set
+     *
+     * @return bool TRUE if sendmail path if set
+     */
+    public function isAvailable()
+    {
+        return !empty($this->getSendmailPath());
+    }
 
-	/**
-	 * Check if sendmail path if set
-	 *
-	 * @return bool TRUE if sendmail path if set
-	 */
-	public function isAvailable() {
-		return !empty($this->getSendmailPath());
-	}
+    /**
+     * Path where executable was found
+     *
+     * @return string|bool Sendmail path or FALSE if not set
+     */
+    public function getSendmailPath()
+    {
+        return ini_get('sendmail_path');
+    }
 
-	/**
-	 * Path where executable was found
-	 *
-	 * @return string|bool Sendmail path or FALSE if not set
-	 */
-	public function getSendmailPath() {
-		return ini_get('sendmail_path');
-	}
-
-	/**
-	 * Check is preset is currently active on the system
-	 *
-	 * @return bool TRUE if preset is active
-	 */
-	public function isActive() {
-		$this->configurationValues['MAIL/transport_sendmail_command'] = $this->getSendmailPath();
-		return parent::isActive();
-	}
-
+    /**
+     * Check is preset is currently active on the system
+     *
+     * @return bool TRUE if preset is active
+     */
+    public function isActive()
+    {
+        $this->configurationValues['MAIL/transport_sendmail_command'] = $this->getSendmailPath();
+        return parent::isActive();
+    }
 }

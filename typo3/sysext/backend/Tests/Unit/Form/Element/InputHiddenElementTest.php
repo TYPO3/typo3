@@ -1,5 +1,6 @@
 <?php
 namespace typo3\sysext\backend\Tests\Unit\Form\Element;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,24 +19,25 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Tests for InputHiddenElement Form
  */
-class InputHiddenElementTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function renderReturnsElementsAsAdditionalHiddenFields() {
-		$data = [
-				'parameterArray' => [
-				'itemFormElName' => 'foo',
-				'itemFormElValue' => 'bar'
-			]
-		];
-		$subject = $this->getAccessibleMock(InputHiddenElement::class, array('dummy'), array(), '', FALSE);
-		$subject->_set('data', $data);
-		$result = $subject->render();
-		$additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);
-		$this->assertContains('name="foo"', $additionalHiddenFieldsResult);
-		$this->assertContains('value="bar"', $additionalHiddenFieldsResult);
-		$this->assertContains('type="hidden"', $additionalHiddenFieldsResult);
-	}
+class InputHiddenElementTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function renderReturnsElementsAsAdditionalHiddenFields()
+    {
+        $data = [
+                'parameterArray' => [
+                'itemFormElName' => 'foo',
+                'itemFormElValue' => 'bar'
+            ]
+        ];
+        $subject = $this->getAccessibleMock(InputHiddenElement::class, array('dummy'), array(), '', false);
+        $subject->_set('data', $data);
+        $result = $subject->render();
+        $additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);
+        $this->assertContains('name="foo"', $additionalHiddenFieldsResult);
+        $this->assertContains('value="bar"', $additionalHiddenFieldsResult);
+        $this->assertContains('type="hidden"', $additionalHiddenFieldsResult);
+    }
 }

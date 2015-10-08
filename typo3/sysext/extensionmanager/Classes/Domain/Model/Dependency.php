@@ -17,108 +17,115 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 /**
  * Main extension model
  */
-class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $identifier = '';
 
-	/**
-	 * @var string
-	 */
-	protected $identifier = '';
+    /**
+     * @var string
+     */
+    protected $lowestVersion = '';
 
-	/**
-	 * @var string
-	 */
-	protected $lowestVersion = '';
+    /**
+     * @var string
+     */
+    protected $highestVersion = '';
 
-	/**
-	 * @var string
-	 */
-	protected $highestVersion = '';
+    /**
+     * @var string
+     */
+    protected $type = '';
 
-	/**
-	 * @var string
-	 */
-	protected $type = '';
+    /**
+     * @var array
+     */
+    protected static $dependencyTypes = array(
+        'depends',
+        'conflicts',
+        'suggests'
+    );
 
-	/**
-	 * @var array
-	 */
-	static protected $dependencyTypes = array(
-		'depends',
-		'conflicts',
-		'suggests'
-	);
+    /**
+     * @var array
+     */
+    public static $specialDependencies = array(
+        'typo3',
+        'php'
+    );
 
-	/**
-	 * @var array
-	 */
-	static public $specialDependencies = array(
-		'typo3',
-		'php'
-	);
+    /**
+     * @param string $highestVersion
+     * @return void
+     */
+    public function setHighestVersion($highestVersion)
+    {
+        $this->highestVersion = $highestVersion;
+    }
 
-	/**
-	 * @param string $highestVersion
-	 * @return void
-	 */
-	public function setHighestVersion($highestVersion) {
-		$this->highestVersion = $highestVersion;
-	}
+    /**
+     * @return string
+     */
+    public function getHighestVersion()
+    {
+        return $this->highestVersion;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getHighestVersion() {
-		return $this->highestVersion;
-	}
+    /**
+     * @param string $identifier
+     * @return void
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
 
-	/**
-	 * @param string $identifier
-	 * @return void
-	 */
-	public function setIdentifier($identifier) {
-		$this->identifier = $identifier;
-	}
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getIdentifier() {
-		return $this->identifier;
-	}
+    /**
+     * @param string $lowestVersion
+     * @return void
+     */
+    public function setLowestVersion($lowestVersion)
+    {
+        $this->lowestVersion = $lowestVersion;
+    }
 
-	/**
-	 * @param string $lowestVersion
-	 * @return void
-	 */
-	public function setLowestVersion($lowestVersion) {
-		$this->lowestVersion = $lowestVersion;
-	}
+    /**
+     * @return string
+     */
+    public function getLowestVersion()
+    {
+        return $this->lowestVersion;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getLowestVersion() {
-		return $this->lowestVersion;
-	}
+    /**
+     * @param string $type
+     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException if no valid dependency type was given
+     * @return void
+     */
+    public function setType($type)
+    {
+        if (in_array($type, self::$dependencyTypes)) {
+            $this->type = $type;
+        } else {
+            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . ' was not a valid dependency type.');
+        }
+    }
 
-	/**
-	 * @param string $type
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException if no valid dependency type was given
-	 * @return void
-	 */
-	public function setType($type) {
-		if (in_array($type, self::$dependencyTypes)) {
-			$this->type = $type;
-		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . ' was not a valid dependency type.');
-		}
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getType() {
-		return $this->type;
-	}
-
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

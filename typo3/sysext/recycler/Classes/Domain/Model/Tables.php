@@ -19,66 +19,68 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 /**
  * Model class for the 'recycler' extension.
  */
-class Tables {
+class Tables
+{
+    /**
+     * Get tables for menu example
+     *
+     * @param int $startUid UID from selected page
+     * @param int $depth How many levels recursive
+     * @return string The tables to be displayed
+     */
+    public function getTables($startUid, $depth = 0)
+    {
+        $deletedRecordsTotal = 0;
+        $lang = $this->getLanguageService();
+        $tables = array();
+        foreach (RecyclerUtility::getModifyableTables() as $tableName) {
+            $deletedField = RecyclerUtility::getDeletedField($tableName);
+            if ($deletedField) {
+                // Determine whether the table has deleted records:
+                $deletedCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
+                if ($deletedCount) {
+                    /* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
+                    $deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
+                    $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
+                    if (isset($deletedData[$tableName])) {
+                        if ($deletedRecordsInTable = count($deletedData[$tableName])) {
+                            $deletedRecordsTotal += $deletedRecordsInTable;
+                            $tables[] = array(
+                                $tableName,
+                                $deletedRecordsInTable,
+                                RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        $jsonArray = $tables;
+        array_unshift($jsonArray, array(
+            '',
+            $deletedRecordsTotal,
+            $lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
+        ));
+        return $jsonArray;
+    }
 
-	/**
-	 * Get tables for menu example
-	 *
-	 * @param int $startUid UID from selected page
-	 * @param int $depth How many levels recursive
-	 * @return string The tables to be displayed
-	 */
-	public function getTables($startUid, $depth = 0) {
-		$deletedRecordsTotal = 0;
-		$lang = $this->getLanguageService();
-		$tables = array();
-		foreach (RecyclerUtility::getModifyableTables() as $tableName) {
-			$deletedField = RecyclerUtility::getDeletedField($tableName);
-			if ($deletedField) {
-				// Determine whether the table has deleted records:
-				$deletedCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
-				if ($deletedCount) {
-					/* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-					$deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
-					$deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
-					if (isset($deletedData[$tableName])) {
-						if ($deletedRecordsInTable = count($deletedData[$tableName])) {
-							$deletedRecordsTotal += $deletedRecordsInTable;
-							$tables[] = array(
-								$tableName,
-								$deletedRecordsInTable,
-								RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
-							);
-						}
-					}
-				}
-			}
-		}
-		$jsonArray = $tables;
-		array_unshift($jsonArray, array(
-			'',
-			$deletedRecordsTotal,
-			$lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
-		));
-		return $jsonArray;
-	}
+    /**
+     * Returns an instance of DatabaseConnection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
-	/**
-	 * Returns an instance of DatabaseConnection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * Returns an instance of LanguageService
-	 *
-	 * @return \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

@@ -24,33 +24,35 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case for the Abstract Validator
  */
-abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    protected $validatorClassName;
 
-	protected $validatorClassName;
+    /**
+     * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
+     */
+    protected $validator;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
-	 */
-	protected $validator;
+    protected function setUp()
+    {
+        $this->validator = $this->getValidator();
+    }
 
-	protected function setUp() {
-		$this->validator = $this->getValidator();
-	}
+    /**
+     * @param array $options
+     * @return mixed
+     */
+    protected function getValidator($options = array())
+    {
+        $validator = new $this->validatorClassName($options);
+        return $validator;
+    }
 
-	/**
-	 * @param array $options
-	 * @return mixed
-	 */
-	protected function getValidator($options = array()) {
-		$validator = new $this->validatorClassName($options);
-		return $validator;
-	}
-
-	/**
-	 * @param array $options
-	 */
-	protected function validatorOptions($options) {
-		$this->validator = $this->getValidator($options);
-	}
-
+    /**
+     * @param array $options
+     */
+    protected function validatorOptions($options)
+    {
+        $this->validator = $this->getValidator($options);
+    }
 }

@@ -26,114 +26,120 @@ namespace TYPO3\CMS\Extbase\Error;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Message {
+class Message
+{
+    /**
+     * The default (english) error message
+     *
+     * @var string
+     */
+    protected $message = 'Unknown message';
 
-	/**
-	 * The default (english) error message
-	 *
-	 * @var string
-	 */
-	protected $message = 'Unknown message';
+    /**
+     * The error code
+     *
+     * @var string
+     */
+    protected $code;
 
-	/**
-	 * The error code
-	 *
-	 * @var string
-	 */
-	protected $code;
+    /**
+     * The message arguments. Will be replaced in the message body.
+     *
+     * @var array
+     */
+    protected $arguments = array();
 
-	/**
-	 * The message arguments. Will be replaced in the message body.
-	 *
-	 * @var array
-	 */
-	protected $arguments = array();
+    /**
+     * An optional title for the message (used eg. in flashMessages).
+     *
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * An optional title for the message (used eg. in flashMessages).
-	 *
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * Constructs this error
+     *
+     * @param string $message An english error message which is used if no other error message can be resolved
+     * @param int $code A unique error code
+     * @param array $arguments Array of arguments to be replaced in message
+     * @param string $title optional title for the message
+     * @api
+     */
+    public function __construct($message, $code, array $arguments = array(), $title = '')
+    {
+        $this->message = $message;
+        $this->code = $code;
+        $this->arguments = $arguments;
+        $this->title = $title;
+    }
 
-	/**
-	 * Constructs this error
-	 *
-	 * @param string $message An english error message which is used if no other error message can be resolved
-	 * @param int $code A unique error code
-	 * @param array $arguments Array of arguments to be replaced in message
-	 * @param string $title optional title for the message
-	 * @api
-	 */
-	public function __construct($message, $code, array $arguments = array(), $title = '') {
-		$this->message = $message;
-		$this->code = $code;
-		$this->arguments = $arguments;
-		$this->title = $title;
-	}
+    /**
+     * Returns the error message
+     *
+     * @return string The error message
+     * @api
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
-	/**
-	 * Returns the error message
-	 *
-	 * @return string The error message
-	 * @api
-	 */
-	public function getMessage() {
-		return $this->message;
-	}
+    /**
+     * Returns the error code
+     *
+     * @return string The error code
+     * @api
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 
-	/**
-	 * Returns the error code
-	 *
-	 * @return string The error code
-	 * @api
-	 */
-	public function getCode() {
-		return $this->code;
-	}
+    /**
+     * Get arguments
+     *
+     * @return array
+     * @api
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
 
-	/**
-	 * Get arguments
-	 *
-	 * @return array
-	 * @api
-	 */
-	public function getArguments() {
-		return $this->arguments;
-	}
+    /**
+     * Get title
+     *
+     * @return string
+     * @api
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Get title
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Return the rendered message
+     *
+     * @return string
+     * @api
+     */
+    public function render()
+    {
+        if (!empty($this->arguments)) {
+            return vsprintf($this->message, $this->arguments);
+        } else {
+            return $this->message;
+        }
+    }
 
-	/**
-	 * Return the rendered message
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function render() {
-		if (!empty($this->arguments)) {
-			return vsprintf($this->message, $this->arguments);
-		} else {
-			return $this->message;
-		}
-	}
-
-	/**
-	 * Converts this error into a string
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function __toString() {
-		return $this->render();
-	}
-
+    /**
+     * Converts this error into a string
+     *
+     * @return string
+     * @api
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

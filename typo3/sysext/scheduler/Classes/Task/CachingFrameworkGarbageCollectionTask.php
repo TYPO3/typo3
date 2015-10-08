@@ -21,36 +21,36 @@ namespace TYPO3\CMS\Scheduler\Task;
  * calls the garbage collection of a cache if the cache backend
  * is configured to be cleaned.
  */
-class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
+    /**
+     * Backend types that should be cleaned up,
+     * set by additional field provider.
+     *
+     * @var array Selected backends to do garbage collection for
+     */
+    public $selectedBackends = array();
 
-	/**
-	 * Backend types that should be cleaned up,
-	 * set by additional field provider.
-	 *
-	 * @var array Selected backends to do garbage collection for
-	 */
-	public $selectedBackends = array();
-
-	/**
-	 * Execute garbage collection, called by scheduler.
-	 *
-	 * @return bool
-	 */
-	public function execute() {
-		// Global sub-array with all configured caches
-		$cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
-		if (is_array($cacheConfigurations)) {
-			// Iterate through configured caches and call garbage collection if
-			// backend is within selected backends in additional field of task
-			foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
-				// The cache backend used for this cache
-				$usedCacheBackend = $cacheConfiguration['backend'];
-				if (in_array($usedCacheBackend, $this->selectedBackends)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache($cacheName)->collectGarbage();
-				}
-			}
-		}
-		return TRUE;
-	}
-
+    /**
+     * Execute garbage collection, called by scheduler.
+     *
+     * @return bool
+     */
+    public function execute()
+    {
+        // Global sub-array with all configured caches
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+        if (is_array($cacheConfigurations)) {
+            // Iterate through configured caches and call garbage collection if
+            // backend is within selected backends in additional field of task
+            foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
+                // The cache backend used for this cache
+                $usedCacheBackend = $cacheConfiguration['backend'];
+                if (in_array($usedCacheBackend, $this->selectedBackends)) {
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache($cacheName)->collectGarbage();
+                }
+            }
+        }
+        return true;
+    }
 }

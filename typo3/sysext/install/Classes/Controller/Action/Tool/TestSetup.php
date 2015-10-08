@@ -22,668 +22,685 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Test various system setup settings
  */
-class TestSetup extends Action\AbstractAction {
+class TestSetup extends Action\AbstractAction
+{
+    /**
+     * @var string Absolute path to image folder
+     */
+    protected $imageBasePath = '';
 
-	/**
-	 * @var string Absolute path to image folder
-	 */
-	protected $imageBasePath = '';
+    /**
+     * Executes the tool
+     *
+     * @return string Rendered content
+     */
+    protected function executeAction()
+    {
+        $this->imageBasePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
 
-	/**
-	 * Executes the tool
-	 *
-	 * @return string Rendered content
-	 */
-	protected function executeAction() {
-		$this->imageBasePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $actionMessages = array();
+        if (isset($this->postValues['set']['testMail'])) {
+            $actionMessages[] = $this->sendTestMail();
+        }
 
-		$actionMessages = array();
-		if (isset($this->postValues['set']['testMail'])) {
-			$actionMessages[] = $this->sendTestMail();
-		}
+        if (isset($this->postValues['set']['testTrueTypeFont'])) {
+            $this->view->assign('trueTypeFontTested', true);
+            $actionMessages[] = $this->createTrueTypeFontTestImage();
+        }
 
-		if (isset($this->postValues['set']['testTrueTypeFont'])) {
-			$this->view->assign('trueTypeFontTested', TRUE);
-			$actionMessages[] = $this->createTrueTypeFontTestImage();
-		}
+        if (isset($this->postValues['set']['testConvertImageFormatsToJpg'])) {
+            $this->view->assign('convertImageFormatsToJpgTested', true);
+            if ($this->isImageMagickEnabledAndConfigured()) {
+                $actionMessages[] = $this->convertImageFormatsToJpg();
+            } else {
+                $actionMessages[] = $this->imageMagickDisabledMessage();
+            }
+        }
 
-		if (isset($this->postValues['set']['testConvertImageFormatsToJpg'])) {
-			$this->view->assign('convertImageFormatsToJpgTested', TRUE);
-			if ($this->isImageMagickEnabledAndConfigured()) {
-				$actionMessages[] = $this->convertImageFormatsToJpg();
-			} else {
-				$actionMessages[] = $this->imageMagickDisabledMessage();
-			}
-		}
+        if (isset($this->postValues['set']['testWriteGifAndPng'])) {
+            $this->view->assign('writeGifAndPngTested', true);
+            if ($this->isImageMagickEnabledAndConfigured()) {
+                $actionMessages[] = $this->writeGifAndPng();
+            } else {
+                $actionMessages[] = $this->imageMagickDisabledMessage();
+            }
+        }
 
-		if (isset($this->postValues['set']['testWriteGifAndPng'])) {
-			$this->view->assign('writeGifAndPngTested', TRUE);
-			if ($this->isImageMagickEnabledAndConfigured()) {
-				$actionMessages[] = $this->writeGifAndPng();
-			} else {
-				$actionMessages[] = $this->imageMagickDisabledMessage();
-			}
-		}
+        if (isset($this->postValues['set']['testScalingImages'])) {
+            $this->view->assign('scalingImagesTested', true);
+            if ($this->isImageMagickEnabledAndConfigured()) {
+                $actionMessages[] = $this->scaleImages();
+            } else {
+                $actionMessages[] = $this->imageMagickDisabledMessage();
+            }
+        }
 
-		if (isset($this->postValues['set']['testScalingImages'])) {
-			$this->view->assign('scalingImagesTested', TRUE);
-			if ($this->isImageMagickEnabledAndConfigured()) {
-				$actionMessages[] = $this->scaleImages();
-			} else {
-				$actionMessages[] = $this->imageMagickDisabledMessage();
-			}
-		}
+        if (isset($this->postValues['set']['testCombiningImages'])) {
+            $this->view->assign('combiningImagesTested', true);
+            if ($this->isImageMagickEnabledAndConfigured()) {
+                $actionMessages[] = $this->combineImages();
+            } else {
+                $actionMessages[] = $this->imageMagickDisabledMessage();
+            }
+        }
 
-		if (isset($this->postValues['set']['testCombiningImages'])) {
-			$this->view->assign('combiningImagesTested', TRUE);
-			if ($this->isImageMagickEnabledAndConfigured()) {
-				$actionMessages[] = $this->combineImages();
-			} else {
-				$actionMessages[] = $this->imageMagickDisabledMessage();
-			}
-		}
+        if (isset($this->postValues['set']['testGdlib'])) {
+            $this->view->assign('gdlibTested', true);
+            $actionMessages[] = $this->gdlib();
+        }
 
-		if (isset($this->postValues['set']['testGdlib'])) {
-			$this->view->assign('gdlibTested', TRUE);
-			$actionMessages[] = $this->gdlib();
-		}
+        $this->view->assign('actionMessages', $actionMessages);
+        $this->view->assign('senderEmailAddress', $this->getSenderEmailAddress());
+        $this->view->assign('imageConfiguration', $this->getImageConfiguration());
 
-		$this->view->assign('actionMessages', $actionMessages);
-		$this->view->assign('senderEmailAddress', $this->getSenderEmailAddress());
-		$this->view->assign('imageConfiguration', $this->getImageConfiguration());
+        return $this->view->render();
+    }
 
-		return $this->view->render();
-	}
+    /**
+     * Send a test mail to specified email address
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function sendTestMail()
+    {
+        if (
+            !isset($this->postValues['values']['testEmailRecipient'])
+            || !GeneralUtility::validEmail($this->postValues['values']['testEmailRecipient'])
+        ) {
+            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message->setTitle('Mail not sent');
+            $message->setMessage('Given address is not a valid email address.');
+        } else {
+            $recipient = $this->postValues['values']['testEmailRecipient'];
+            /** @var $mailMessage \TYPO3\CMS\Core\Mail\MailMessage */
+            $mailMessage = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+            $mailMessage
+                ->addTo($recipient)
+                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
+                ->setSubject($this->getEmailSubject())
+                ->setBody('<html><body>html test content</body></html>', 'text/html')
+                ->addPart('TEST CONTENT')
+                ->send();
+            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message->setTitle('Test mail sent');
+            $message->setMessage('Recipient: ' . $recipient);
+        }
+        return $message;
+    }
 
-	/**
-	 * Send a test mail to specified email address
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function sendTestMail() {
-		if (
-			!isset($this->postValues['values']['testEmailRecipient'])
-			|| !GeneralUtility::validEmail($this->postValues['values']['testEmailRecipient'])
-		) {
-			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-			$message->setTitle('Mail not sent');
-			$message->setMessage('Given address is not a valid email address.');
-		} else {
-			$recipient = $this->postValues['values']['testEmailRecipient'];
-			/** @var $mailMessage \TYPO3\CMS\Core\Mail\MailMessage */
-			$mailMessage = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
-			$mailMessage
-				->addTo($recipient)
-				->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-				->setSubject($this->getEmailSubject())
-				->setBody('<html><body>html test content</body></html>', 'text/html')
-				->addPart('TEST CONTENT')
-				->send();
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
-			$message->setTitle('Test mail sent');
-			$message->setMessage('Recipient: ' . $recipient);
-		}
-		return $message;
-	}
+    /**
+     * Get sender address from configuration
+     * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+     * If this setting is empty fall back to 'no-reply@example.com'
+     *
+     * @return string Returns an email address
+     */
+    protected function getSenderEmailAddress()
+    {
+        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
+            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+            : 'no-reply@example.com';
+    }
 
-	/**
-	 * Get sender address from configuration
-	 * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-	 * If this setting is empty fall back to 'no-reply@example.com'
-	 *
-	 * @return string Returns an email address
-	 */
-	protected function getSenderEmailAddress() {
-		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
-			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-			: 'no-reply@example.com';
-	}
+    /**
+     * Gets sender name from configuration
+     * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+     * If this setting is empty, it falls back to a default string.
+     *
+     * @return string
+     */
+    protected function getSenderEmailName()
+    {
+        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
+            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+            : 'TYPO3 CMS install tool';
+    }
 
-	/**
-	 * Gets sender name from configuration
-	 * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
-	 * If this setting is empty, it falls back to a default string.
-	 *
-	 * @return string
-	 */
-	protected function getSenderEmailName() {
-		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
-			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
-			: 'TYPO3 CMS install tool';
-	}
+    /**
+     * Gets email subject from configuration
+     * ['TYPO3_CONF_VARS']['SYS']['sitename']
+     * If this setting is empty, it falls back to a default string.
+     *
+     * @return string
+     */
+    protected function getEmailSubject()
+    {
+        $name = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
+            ? ' from site "' .  $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"'
+            : '';
+        return 'Test TYPO3 CMS mail delivery' . $name;
+    }
 
-	/**
-	 * Gets email subject from configuration
-	 * ['TYPO3_CONF_VARS']['SYS']['sitename']
-	 * If this setting is empty, it falls back to a default string.
-	 *
-	 * @return string
-	 */
-	protected function getEmailSubject() {
-		$name = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
-			? ' from site "' .  $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"'
-			: '';
-		return 'Test TYPO3 CMS mail delivery' . $name;
-	}
+    /**
+     * Create true type font test image
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function createTrueTypeFontTestImage()
+    {
+        $parseTimeStart = GeneralUtility::milliseconds();
 
-	/**
-	 * Create true type font test image
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function createTrueTypeFontTestImage() {
-		$parseTimeStart = GeneralUtility::milliseconds();
+        $image = @imagecreate(200, 50);
+        imagecolorallocate($image, 255, 255, 55);
+        $textColor = imagecolorallocate($image, 233, 14, 91);
+        @imagettftext(
+            $image,
+            GeneralUtility::freetypeDpiComp(20),
+            0,
+            10,
+            20,
+            $textColor,
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
+            'Testing true type'
+        );
+        $outputFile = PATH_site . 'typo3temp/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
+        imagegif($image, $outputFile);
 
-		$image = @imagecreate(200, 50);
-		imagecolorallocate($image, 255, 255, 55);
-		$textColor = imagecolorallocate($image, 233, 14, 91);
-		@imagettftext(
-			$image,
-			GeneralUtility::freetypeDpiComp(20),
-			0,
-			10,
-			20,
-			$textColor,
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
-			'Testing true type'
-		);
-		$outputFile = PATH_site . 'typo3temp/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
-		imagegif($image, $outputFile);
+        /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+        $message->setTitle('True type font');
+        $message->setMessage(
+            'If the two images below do not look the same, please check your FreeType 2 module.'
+        );
 
-		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-		$message->setTitle('True type font');
-		$message->setMessage(
-			'If the two images below do not look the same, please check your FreeType 2 module.'
-		);
+        $testResults = array();
+        $testResults['ttf'] = array();
+        $testResults['ttf']['message'] = $message;
+        $testResults['ttf']['title'] = '';
+        $testResults['ttf']['outputFile'] = $outputFile;
+        $testResults['ttf']['referenceFile'] = $this->imageBasePath . 'TestReference/Font.gif';
 
-		$testResults = array();
-		$testResults['ttf'] = array();
-		$testResults['ttf']['message'] = $message;
-		$testResults['ttf']['title'] = '';
-		$testResults['ttf']['outputFile'] = $outputFile;
-		$testResults['ttf']['referenceFile'] = $this->imageBasePath . 'TestReference/Font.gif';
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+    /**
+     * Create jpg from various image formats using IM / GM
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function convertImageFormatsToJpg()
+    {
+        $this->setUpDatabaseConnectionMock();
+        $imageProcessor = $this->initializeImageProcessor();
+        $parseTimeStart = GeneralUtility::milliseconds();
 
-	/**
-	 * Create jpg from various image formats using IM / GM
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function convertImageFormatsToJpg() {
-		$this->setUpDatabaseConnectionMock();
-		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = GeneralUtility::milliseconds();
+        $inputFormatsToTest = array('jpg', 'gif', 'png', 'tif', 'bmp', 'pcx', 'tga', 'pdf', 'ai');
 
-		$inputFormatsToTest = array('jpg', 'gif', 'png', 'tif', 'bmp', 'pcx', 'tga', 'pdf', 'ai');
+        $testResults = array();
+        foreach ($inputFormatsToTest as $formatToTest) {
+            $result = array();
+            if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $formatToTest)) {
+                /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message->setTitle('Skipped test');
+                $message->setMessage('Handling format ' . $formatToTest . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']');
+                $result['error'] = $message;
+            } else {
+                $imageProcessor->IM_commands = array();
+                $inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
+                $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $formatToTest;
+                $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), true);
+                $result['title'] = 'Read ' . $formatToTest;
+                if ($imResult !== null) {
+                    $result['outputFile'] = $imResult[3];
+                    $result['referenceFile'] = $this->imageBasePath . 'TestReference/Read-' . $formatToTest . '.jpg';
+                    $result['command'] = $imageProcessor->IM_commands;
+                } else {
+                    $result['error'] = $this->imageGenerationFailedMessage();
+                }
+            }
+            $testResults[] = $result;
+        }
 
-		$testResults = array();
-		foreach ($inputFormatsToTest as $formatToTest) {
-			$result = array();
-			if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $formatToTest)) {
-				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
-				$message->setTitle('Skipped test');
-				$message->setMessage('Handling format ' . $formatToTest . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']');
-				$result['error'] = $message;
-			} else {
-				$imageProcessor->IM_commands = array();
-				$inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
-				$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $formatToTest;
-				$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), TRUE);
-				$result['title'] = 'Read ' . $formatToTest;
-				if ($imResult !== NULL) {
-					$result['outputFile'] = $imResult[3];
-					$result['referenceFile'] = $this->imageBasePath . 'TestReference/Read-' . $formatToTest . '.jpg';
-					$result['command'] = $imageProcessor->IM_commands;
-				} else {
-					$result['error'] = $this->imageGenerationFailedMessage();
-				}
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-			}
-			$testResults[] = $result;
-		}
+    /**
+     * Write gif and png test
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function writeGifAndPng()
+    {
+        $this->setUpDatabaseConnectionMock();
+        $imageProcessor = $this->initializeImageProcessor();
+        $parseTimeStart = GeneralUtility::milliseconds();
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+        $testResults = array(
+            'gif' => array(),
+            'png' => array(),
+        );
 
-	/**
-	 * Write gif and png test
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function writeGifAndPng() {
-		$this->setUpDatabaseConnectionMock();
-		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = GeneralUtility::milliseconds();
+        // Gif
+        $inputFile = $this->imageBasePath . 'TestInput/Test.gif';
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', array(), true);
+        if ($imResult !== null && is_file($imResult[3])) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
+                clearstatcache();
+                $previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
+                $methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
+                clearstatcache();
+                $compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
+                /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+                $message->setTitle('Compressed gif');
+                $message->setMessage(
+                    'Method used by compress: ' . $methodUsed . LF
+                    . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
+                );
+            } else {
+                /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+                $message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
+            }
+            $testResults['gif']['message'] = $message;
+            $testResults['gif']['title'] = 'Write gif';
+            $testResults['gif']['outputFile'] = $imResult[3];
+            $testResults['gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-gif.gif';
+            $testResults['gif']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['gif']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$testResults = array(
-			'gif' => array(),
-			'png' => array(),
-		);
+        // Png
+        $inputFile = $this->imageBasePath . 'TestInput/Test.png';
+        $imageProcessor->IM_commands = array();
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-png');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', array(), true);
+        if ($imResult !== null) {
+            $testResults['png']['title'] = 'Write png';
+            $testResults['png']['outputFile'] = $imResult[3];
+            $testResults['png']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-png.png';
+            $testResults['png']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['png']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		// Gif
-		$inputFile = $this->imageBasePath . 'TestInput/Test.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', array(), TRUE);
-		if ($imResult !== NULL && is_file($imResult[3])) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
-				clearstatcache();
-				$previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
-				$methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
-				clearstatcache();
-				$compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
-				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-				$message->setTitle('Compressed gif');
-				$message->setMessage(
-					'Method used by compress: ' . $methodUsed . LF
-					. ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
-				);
-			} else {
-				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-				$message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
-			}
-			$testResults['gif']['message'] = $message;
-			$testResults['gif']['title'] = 'Write gif';
-			$testResults['gif']['outputFile'] = $imResult[3];
-			$testResults['gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-gif.gif';
-			$testResults['gif']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['gif']['error'] = $this->imageGenerationFailedMessage();
-		}
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-		// Png
-		$inputFile = $this->imageBasePath . 'TestInput/Test.png';
-		$imageProcessor->IM_commands = array();
-		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-png');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', array(), TRUE);
-		if ($imResult !== NULL) {
-			$testResults['png']['title'] = 'Write png';
-			$testResults['png']['outputFile'] = $imResult[3];
-			$testResults['png']['referenceFile'] = $this->imageBasePath . 'TestReference/Write-png.png';
-			$testResults['png']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['png']['error'] = $this->imageGenerationFailedMessage();
-		}
+    /**
+     * Write gif and png test
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function scaleImages()
+    {
+        $this->setUpDatabaseConnectionMock();
+        $imageProcessor = $this->initializeImageProcessor();
+        $parseTimeStart = GeneralUtility::milliseconds();
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+        $testResults = array(
+            'gif-to-gif' => array(),
+            'png-to-png' => array(),
+            'gif-to-jpg' => array(),
+        );
 
-	/**
-	 * Write gif and png test
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function scaleImages() {
-		$this->setUpDatabaseConnectionMock();
-		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = GeneralUtility::milliseconds();
+        $imageProcessor->IM_commands = array();
+        $inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-gif');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', array(), true);
+        if ($imResult !== null) {
+            $testResults['gif-to-gif']['title'] = 'gif to gif';
+            $testResults['gif-to-gif']['outputFile'] = $imResult[3];
+            $testResults['gif-to-gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-gif.gif';
+            $testResults['gif-to-gif']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['gif-to-gif']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$testResults = array(
-			'gif-to-gif' => array(),
-			'png-to-png' => array(),
-			'gif-to-jpg' => array(),
-		);
+        $imageProcessor->IM_commands = array();
+        $inputFile = $this->imageBasePath . 'TestInput/Transparent.png';
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-png');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', array(), true);
+        if ($imResult !== null) {
+            $testResults['png-to-png']['title'] = 'png to png';
+            $testResults['png-to-png']['outputFile'] = $imResult[3];
+            $testResults['png-to-png']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-png.png';
+            $testResults['png-to-png']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['png-to-png']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$imageProcessor->IM_commands = array();
-		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-gif');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', array(), TRUE);
-		if ($imResult !== NULL) {
-			$testResults['gif-to-gif']['title'] = 'gif to gif';
-			$testResults['gif-to-gif']['outputFile'] = $imResult[3];
-			$testResults['gif-to-gif']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-gif.gif';
-			$testResults['gif-to-gif']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['gif-to-gif']['error'] = $this->imageGenerationFailedMessage();
-		}
+        $imageProcessor->IM_commands = array();
+        $inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', array(), true);
+        if ($imResult !== null) {
+            $testResults['gif-to-jpg']['title'] = 'gif to jpg';
+            $testResults['gif-to-jpg']['outputFile'] = $imResult[3];
+            $testResults['gif-to-jpg']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-jpg.jpg';
+            $testResults['gif-to-jpg']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['gif-to-jpg']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$imageProcessor->IM_commands = array();
-		$inputFile = $this->imageBasePath . 'TestInput/Transparent.png';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-png');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', array(), TRUE);
-		if ($imResult !== NULL) {
-			$testResults['png-to-png']['title'] = 'png to png';
-			$testResults['png-to-png']['outputFile'] = $imResult[3];
-			$testResults['png-to-png']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-png.png';
-			$testResults['png-to-png']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['png-to-png']['error'] = $this->imageGenerationFailedMessage();
-		}
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-		$imageProcessor->IM_commands = array();
-		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', array(), TRUE);
-		if ($imResult !== NULL) {
-			$testResults['gif-to-jpg']['title'] = 'gif to jpg';
-			$testResults['gif-to-jpg']['outputFile'] = $imResult[3];
-			$testResults['gif-to-jpg']['referenceFile'] = $this->imageBasePath . 'TestReference/Scale-jpg.jpg';
-			$testResults['gif-to-jpg']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['gif-to-jpg']['error'] = $this->imageGenerationFailedMessage();
-		}
+    /**
+     * Combine multiple images into one test
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function combineImages()
+    {
+        $this->setUpDatabaseConnectionMock();
+        $imageProcessor = $this->initializeImageProcessor();
+        $parseTimeStart = GeneralUtility::milliseconds();
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+        $testResults = array(
+            'combine1' => array(),
+            'combine2' => array(),
+        );
 
-	/**
-	 * Combine multiple images into one test
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function combineImages() {
-		$this->setUpDatabaseConnectionMock();
-		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = GeneralUtility::milliseconds();
+        $inputFile = $this->imageBasePath . 'TestInput/BackgroundGreen.gif';
+        $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
+        $maskFile = $this->imageBasePath . 'TestInput/MaskBlackWhite.gif';
+        $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
+            . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
+        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, true);
+        $result = $imageProcessor->getImageDimensions($resultFile);
+        if ($result) {
+            $testResults['combine1']['title'] = 'Combine using a GIF mask with only black and white';
+            $testResults['combine1']['outputFile'] = $result[3];
+            $testResults['combine1']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-1.jpg';
+            $testResults['combine1']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['combine1']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$testResults = array(
-			'combine1' => array(),
-			'combine2' => array(),
-		);
+        $imageProcessor->IM_commands = array();
+        $inputFile = $this->imageBasePath . 'TestInput/BackgroundCombine.jpg';
+        $overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
+        $maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
+        $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
+            . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
+        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, true);
+        $result = $imageProcessor->getImageDimensions($resultFile);
+        if ($result) {
+            $testResults['combine2']['title'] = 'Combine using a JPG mask with graylevels';
+            $testResults['combine2']['outputFile'] = $result[3];
+            $testResults['combine2']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-2.jpg';
+            $testResults['combine2']['command'] = $imageProcessor->IM_commands;
+        } else {
+            $testResults['combine2']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		$inputFile = $this->imageBasePath . 'TestInput/BackgroundGreen.gif';
-		$overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
-		$maskFile = $this->imageBasePath . 'TestInput/MaskBlackWhite.gif';
-		$resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
-			. StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
-		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
-		$result = $imageProcessor->getImageDimensions($resultFile);
-		if ($result) {
-			$testResults['combine1']['title'] = 'Combine using a GIF mask with only black and white';
-			$testResults['combine1']['outputFile'] = $result[3];
-			$testResults['combine1']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-1.jpg';
-			$testResults['combine1']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['combine1']['error'] = $this->imageGenerationFailedMessage();
-		}
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-		$imageProcessor->IM_commands = array();
-		$inputFile = $this->imageBasePath . 'TestInput/BackgroundCombine.jpg';
-		$overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
-		$maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
-		$resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
-			. StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
-		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
-		$result = $imageProcessor->getImageDimensions($resultFile);
-		if ($result) {
-			$testResults['combine2']['title'] = 'Combine using a JPG mask with graylevels';
-			$testResults['combine2']['outputFile'] = $result[3];
-			$testResults['combine2']['referenceFile'] = $this->imageBasePath . 'TestReference/Combine-2.jpg';
-			$testResults['combine2']['command'] = $imageProcessor->IM_commands;
-		} else {
-			$testResults['combine2']['error'] = $this->imageGenerationFailedMessage();
-		}
+    /**
+     * Test gdlib functions
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function gdlib()
+    {
+        $this->setUpDatabaseConnectionMock();
+        $imageProcessor = $this->initializeImageProcessor();
+        $parseTimeStart = GeneralUtility::milliseconds();
+        $gifOrPng = $imageProcessor->gifExtension;
+        $testResults = array();
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+        // GD with simple box
+        $imageProcessor->IM_commands = array();
+        $image = imagecreatetruecolor(170, 136);
+        $backgroundColor = imagecolorallocate($image, 0, 0, 0);
+        imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
+        $workArea = array(0, 0, 170, 136);
+        $conf = array(
+            'dimensions' => '10,50,150,36',
+            'color' => 'olive',
+        );
+        $imageProcessor->makeBox($image, $conf, $workArea);
+        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
+        $imageProcessor->ImageWrite($image, $outputFile);
+        $result = $imageProcessor->getImageDimensions($outputFile);
+        $testResults['simple'] = array();
+        $testResults['simple']['title'] = 'Create simple image';
+        $testResults['simple']['outputFile'] = $result[3];
+        $testResults['simple']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-simple.' . $gifOrPng;
 
-	/**
-	 * Test gdlib functions
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function gdlib() {
-		$this->setUpDatabaseConnectionMock();
-		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = GeneralUtility::milliseconds();
-		$gifOrPng = $imageProcessor->gifExtension;
-		$testResults = array();
+        // GD from image with box
+        $imageProcessor->IM_commands = array();
+        $inputFile = $this->imageBasePath . 'TestInput/Test.' . $gifOrPng;
+        $image = $imageProcessor->imageCreateFromFile($inputFile);
+        $workArea = array(0, 0, 170, 136);
+        $conf = array(
+            'dimensions' => '10,50,150,36',
+            'color' => 'olive',
+        );
+        $imageProcessor->makeBox($image, $conf, $workArea);
+        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
+        $imageProcessor->ImageWrite($image, $outputFile);
+        $result = $imageProcessor->getImageDimensions($outputFile);
+        $testResults['box'] = array();
+        $testResults['box']['title'] = 'Create image from file';
+        $testResults['box']['outputFile'] = $result[3];
+        $testResults['box']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-box.' . $gifOrPng;
 
-		// GD with simple box
-		$imageProcessor->IM_commands = array();
-		$image = imagecreatetruecolor(170, 136);
-		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
-		imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
-		$workArea = array(0, 0, 170, 136);
-		$conf = array(
-			'dimensions' => '10,50,150,36',
-			'color' => 'olive',
-		);
-		$imageProcessor->makeBox($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
-		$imageProcessor->ImageWrite($image, $outputFile);
-		$result = $imageProcessor->getImageDimensions($outputFile);
-		$testResults['simple'] = array();
-		$testResults['simple']['title'] = 'Create simple image';
-		$testResults['simple']['outputFile'] = $result[3];
-		$testResults['simple']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-simple.' . $gifOrPng;
+        // GD with text
+        $imageProcessor->IM_commands = array();
+        $image = imagecreatetruecolor(170, 136);
+        $backgroundColor = imagecolorallocate($image, 128, 128, 150);
+        imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
+        $workArea = array(0, 0, 170, 136);
+        $conf = array(
+            'iterations' => 1,
+            'angle' => 0,
+            'antiAlias' => 1,
+            'text' => 'HELLO WORLD',
+            'fontColor' => '#003366',
+            'fontSize' => 18,
+            'fontFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
+            'offset' => '17,40',
+        );
+        $conf['BBOX'] = $imageProcessor->calcBBox($conf);
+        $imageProcessor->makeText($image, $conf, $workArea);
+        $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
+        $imageProcessor->ImageWrite($image, $outputFile);
+        $result = $imageProcessor->getImageDimensions($outputFile);
+        $testResults['text'] = array();
+        $testResults['text']['title'] = 'Render text with TrueType font';
+        $testResults['text']['outputFile'] = $result[3];
+        $testResults['text']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-text.' . $gifOrPng;
 
-		// GD from image with box
-		$imageProcessor->IM_commands = array();
-		$inputFile = $this->imageBasePath . 'TestInput/Test.' . $gifOrPng;
-		$image = $imageProcessor->imageCreateFromFile($inputFile);
-		$workArea = array(0, 0, 170, 136);
-		$conf = array(
-			'dimensions' => '10,50,150,36',
-			'color' => 'olive',
-		);
-		$imageProcessor->makeBox($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
-		$imageProcessor->ImageWrite($image, $outputFile);
-		$result = $imageProcessor->getImageDimensions($outputFile);
-		$testResults['box'] = array();
-		$testResults['box']['title'] = 'Create image from file';
-		$testResults['box']['outputFile'] = $result[3];
-		$testResults['box']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-box.' . $gifOrPng;
+        // GD with text, niceText
+        $testResults['niceText'] = array();
+        if ($this->isImageMagickEnabledAndConfigured()) {
+            // Warning: Re-uses $conf from above!
+            $conf['offset'] = '17,65';
+            $conf['niceText'] = 1;
+            $imageProcessor->makeText($image, $conf, $workArea);
+            $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
+            $imageProcessor->ImageWrite($image, $outputFile);
+            $result = $imageProcessor->getImageDimensions($outputFile);
+            $testResults['niceText']['title'] = 'Render text with TrueType font using \'niceText\' option';
+            $testResults['niceText']['outputFile'] = $result[3];
+            $testResults['niceText']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-niceText.' . $gifOrPng;
+            $testResults['niceText']['command'] = $imageProcessor->IM_commands;
+            /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+            $message->setTitle('Note on \'niceText\'');
+            $message->setMessage(
+                '\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by'
+                . ' actually rendering the textstring in double size on a black/white mask, downscaling the mask'
+                . ' and masking the text onto the image through this mask. This involves'
+                . ' ImageMagick \'combine\'/\'composite\' and \'convert\'.'
+            );
+            $testResults['niceText']['message'] = $message;
+        } else {
+            $result['niceText']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		// GD with text
-		$imageProcessor->IM_commands = array();
-		$image = imagecreatetruecolor(170, 136);
-		$backgroundColor = imagecolorallocate($image, 128, 128, 150);
-		imagefilledrectangle($image, 0, 0, 170, 136, $backgroundColor);
-		$workArea = array(0, 0, 170, 136);
-		$conf = array(
-			'iterations' => 1,
-			'angle' => 0,
-			'antiAlias' => 1,
-			'text' => 'HELLO WORLD',
-			'fontColor' => '#003366',
-			'fontSize' => 18,
-			'fontFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
-			'offset' => '17,40',
-		);
-		$conf['BBOX'] = $imageProcessor->calcBBox($conf);
-		$imageProcessor->makeText($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
-		$imageProcessor->ImageWrite($image, $outputFile);
-		$result = $imageProcessor->getImageDimensions($outputFile);
-		$testResults['text'] = array();
-		$testResults['text']['title'] = 'Render text with TrueType font';
-		$testResults['text']['outputFile'] = $result[3];
-		$testResults['text']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-text.' . $gifOrPng;
+        // GD with text, niceText, shadow
+        $testResults['shadow'] = array();
+        if ($this->isImageMagickEnabledAndConfigured()) {
+            // Warning: Re-uses $conf from above!
+            $conf['offset'] = '17,90';
+            $conf['niceText'] = 1;
+            $conf['shadow.'] = array(
+                'offset' => '2,2',
+                'blur' => $imageProcessor->V5_EFFECTS ? '20' : '90',
+                'opacity' => '50',
+                'color' => 'black'
+            );
+            // Warning: Re-uses $image from above!
+            $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
+            $imageProcessor->makeText($image, $conf, $workArea);
+            $outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
+            $imageProcessor->ImageWrite($image, $outputFile);
+            $result = $imageProcessor->getImageDimensions($outputFile);
+            $testResults['shadow']['title'] = 'Render \'niceText\' with a shadow under';
+            $testResults['shadow']['outputFile'] = $result[3];
+            $testResults['shadow']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-shadow.' . $gifOrPng;
+            $testResults['shadow']['command'] = $imageProcessor->IM_commands;
+            /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+            $message->setTitle('Note on \'shadow\'');
+            $message->setMessage(
+                'This test makes sense only if the above test had a correct output. But if so, you may not see'
+                . ' a soft dropshadow from the third text string as you should. In that case you are most likely'
+                . ' using ImageMagick 5 and should set the flag TYPO3_CONF_VARS[GFX][im_v5effects].'
+            );
+            $testResults['shadow']['message'] = $message;
+        } else {
+            $result['shadow']['error'] = $this->imageGenerationFailedMessage();
+        }
 
-		// GD with text, niceText
-		$testResults['niceText'] = array();
-		if ($this->isImageMagickEnabledAndConfigured()) {
-			// Warning: Re-uses $conf from above!
-			$conf['offset'] = '17,65';
-			$conf['niceText'] = 1;
-			$imageProcessor->makeText($image, $conf, $workArea);
-			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
-			$imageProcessor->ImageWrite($image, $outputFile);
-			$result = $imageProcessor->getImageDimensions($outputFile);
-			$testResults['niceText']['title'] = 'Render text with TrueType font using \'niceText\' option';
-			$testResults['niceText']['outputFile'] = $result[3];
-			$testResults['niceText']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-niceText.' . $gifOrPng;
-			$testResults['niceText']['command'] = $imageProcessor->IM_commands;
-			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-			$message->setTitle('Note on \'niceText\'');
-			$message->setMessage(
-				'\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by'
-				. ' actually rendering the textstring in double size on a black/white mask, downscaling the mask'
-				. ' and masking the text onto the image through this mask. This involves'
-				. ' ImageMagick \'combine\'/\'composite\' and \'convert\'.'
-			);
-			$testResults['niceText']['message'] = $message;
-		} else {
-			$result['niceText']['error'] = $this->imageGenerationFailedMessage();
-		}
+        $this->view->assign('testResults', $testResults);
+        return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
+    }
 
-		// GD with text, niceText, shadow
-		$testResults['shadow'] = array();
-		if ($this->isImageMagickEnabledAndConfigured()) {
-			// Warning: Re-uses $conf from above!
-			$conf['offset'] = '17,90';
-			$conf['niceText'] = 1;
-			$conf['shadow.'] = array(
-				'offset' => '2,2',
-				'blur' => $imageProcessor->V5_EFFECTS ? '20' : '90',
-				'opacity' => '50',
-				'color' => 'black'
-			);
-			// Warning: Re-uses $image from above!
-			$imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
-			$imageProcessor->makeText($image, $conf, $workArea);
-			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
-			$imageProcessor->ImageWrite($image, $outputFile);
-			$result = $imageProcessor->getImageDimensions($outputFile);
-			$testResults['shadow']['title'] = 'Render \'niceText\' with a shadow under';
-			$testResults['shadow']['outputFile'] = $result[3];
-			$testResults['shadow']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-shadow.' . $gifOrPng;
-			$testResults['shadow']['command'] = $imageProcessor->IM_commands;
-			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-			$message->setTitle('Note on \'shadow\'');
-			$message->setMessage(
-				'This test makes sense only if the above test had a correct output. But if so, you may not see'
-				. ' a soft dropshadow from the third text string as you should. In that case you are most likely'
-				. ' using ImageMagick 5 and should set the flag TYPO3_CONF_VARS[GFX][im_v5effects].'
-			);
-			$testResults['shadow']['message'] = $message;
-		} else {
-			$result['shadow']['error'] = $this->imageGenerationFailedMessage();
-		}
+    /**
+     * Create a 'image test was done' message
+     *
+     * @param int $parseTime Parse time
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function imageTestDoneMessage($parseTime = 0)
+    {
+        /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message->setTitle('Executed image tests');
+        $message->setMessage('Parse time: ' . $parseTime . ' ms');
+        return $message;
+    }
 
-		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
-	}
+    /**
+     * Create a 'imageMagick disabled' message
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function imageMagickDisabledMessage()
+    {
+        /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+        $message->setTitle('Tests not executed');
+        $message->setMessage('ImageMagick / GraphicsMagick handling is disabled or not configured correctly.');
+        return $message;
+    }
 
-	/**
-	 * Create a 'image test was done' message
-	 *
-	 * @param int $parseTime Parse time
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function imageTestDoneMessage($parseTime = 0) {
-		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
-		$message->setTitle('Executed image tests');
-		$message->setMessage('Parse time: ' . $parseTime . ' ms');
-		return $message;
-	}
+    /**
+     * Create a 'image generation failed' message
+     *
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    protected function imageGenerationFailedMessage()
+    {
+        /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
+        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+        $message->setTitle('Image generation failed');
+        $message->setMessage(
+            'ImageMagick / GraphicsMagick handling is enabled, but the execute'
+            . ' command returned an error. Please check your settings, especially'
+            . ' [\'GFX\'][\'im_path\'] and [\'GFX\'][\'im_path_lzw\'] and ensure Ghostscript is installed on your server.'
+        );
+        return $message;
+    }
 
-	/**
-	 * Create a 'imageMagick disabled' message
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function imageMagickDisabledMessage() {
-		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-		$message->setTitle('Tests not executed');
-		$message->setMessage('ImageMagick / GraphicsMagick handling is disabled or not configured correctly.');
-		return $message;
-	}
+    /**
+     * Gather image configuration overview
+     *
+     * @return array Result array
+     */
+    protected function getImageConfiguration()
+    {
+        $result = array();
+        $result['imageMagickOrGraphicsMagick'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm' ? 'gm' : 'im';
+        $result['imageMagickEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
+        $result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
+        $result['imageMagickVersion'] = $this->determineImageMagickVersion();
+        $result['imageMagick5Effects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
+        $result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
+        $result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
+        $result['fileFormats'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
+        return $result;
+    }
 
-	/**
-	 * Create a 'image generation failed' message
-	 *
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	protected function imageGenerationFailedMessage() {
-		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-		$message->setTitle('Image generation failed');
-		$message->setMessage(
-			'ImageMagick / GraphicsMagick handling is enabled, but the execute'
-			. ' command returned an error. Please check your settings, especially'
-			. ' [\'GFX\'][\'im_path\'] and [\'GFX\'][\'im_path_lzw\'] and ensure Ghostscript is installed on your server.'
-		);
-		return $message;
-	}
+    /**
+     * Initialize image processor
+     *
+     * @return GraphicalFunctions Initialized image processor
+     */
+    protected function initializeImageProcessor()
+    {
+        /** @var GraphicalFunctions $imageProcessor */
+        $imageProcessor = $this->objectManager->get(GraphicalFunctions::class);
+        $imageProcessor->init();
+        $imageProcessor->tempPath = PATH_site . 'typo3temp/';
+        $imageProcessor->dontCheckForExistingTempFile = 1;
+        $imageProcessor->filenamePrefix = 'installTool-';
+        $imageProcessor->dontCompress = 1;
+        $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
+        $imageProcessor->noFramePrepended = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noFramePrepended'];
+        return $imageProcessor;
+    }
 
-	/**
-	 * Gather image configuration overview
-	 *
-	 * @return array Result array
-	 */
-	protected function getImageConfiguration() {
-		$result = array();
-		$result['imageMagickOrGraphicsMagick'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm' ? 'gm' : 'im';
-		$result['imageMagickEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
-		$result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
-		$result['imageMagickVersion'] = $this->determineImageMagickVersion();
-		$result['imageMagick5Effects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
-		$result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
-		$result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
-		$result['fileFormats'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-		return $result;
-	}
+    /**
+     * Find out if ImageMagick or GraphicsMagick is enabled and set up
+     *
+     * @return bool TRUE if enabled and path is set
+     */
+    protected function isImageMagickEnabledAndConfigured()
+    {
+        $enabled = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
+        $path = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
+        return $enabled && $path;
+    }
 
-	/**
-	 * Initialize image processor
-	 *
-	 * @return GraphicalFunctions Initialized image processor
-	 */
-	protected function initializeImageProcessor() {
-		/** @var GraphicalFunctions $imageProcessor */
-		$imageProcessor = $this->objectManager->get(GraphicalFunctions::class);
-		$imageProcessor->init();
-		$imageProcessor->tempPath = PATH_site . 'typo3temp/';
-		$imageProcessor->dontCheckForExistingTempFile = 1;
-		$imageProcessor->filenamePrefix = 'installTool-';
-		$imageProcessor->dontCompress = 1;
-		$imageProcessor->alternativeOutputKey = 'typo3InstallTest';
-		$imageProcessor->noFramePrepended = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noFramePrepended'];
-		return $imageProcessor;
-	}
+    /**
+     * Determine ImageMagick / GraphicsMagick version
+     *
+     * @return string Version
+     */
+    protected function determineImageMagickVersion()
+    {
+        $command = \TYPO3\CMS\Core\Utility\CommandUtility::imageMagickCommand('identify', '-version');
+        \TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $result);
+        $string = $result[0];
+        list(, $version) = explode('Magick', $string);
+        list($version) = explode(' ', trim($version));
+        return trim($version);
+    }
 
-	/**
-	 * Find out if ImageMagick or GraphicsMagick is enabled and set up
-	 *
-	 * @return bool TRUE if enabled and path is set
-	 */
-	protected function isImageMagickEnabledAndConfigured() {
-		$enabled = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
-		$path = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
-		return $enabled && $path;
-	}
-
-	/**
-	 * Determine ImageMagick / GraphicsMagick version
-	 *
-	 * @return string Version
-	 */
-	protected function determineImageMagickVersion() {
-		$command = \TYPO3\CMS\Core\Utility\CommandUtility::imageMagickCommand('identify', '-version');
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $result);
-		$string = $result[0];
-		list(, $version) = explode('Magick', $string);
-		list($version) = explode(' ', trim($version));
-		return trim($version);
-	}
-
-	/**
-	 * Instantiate a dummy instance for $GLOBALS['TYPO3_DB'] to
-	 * prevent real database calls
-	 *
-	 * @return void
-	 */
-	protected function setUpDatabaseConnectionMock() {
-		$database = $this->objectManager->get(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
-		$GLOBALS['TYPO3_DB'] = $database;
-	}
-
+    /**
+     * Instantiate a dummy instance for $GLOBALS['TYPO3_DB'] to
+     * prevent real database calls
+     *
+     * @return void
+     */
+    protected function setUpDatabaseConnectionMock()
+    {
+        $database = $this->objectManager->get(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
+        $GLOBALS['TYPO3_DB'] = $database;
+    }
 }

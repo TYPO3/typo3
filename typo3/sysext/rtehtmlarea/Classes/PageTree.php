@@ -28,52 +28,52 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class which generates the page tree
  */
-class PageTree extends ElementBrowserPageTreeView {
+class PageTree extends ElementBrowserPageTreeView
+{
+    /**
+     * Back-reference to ElementBrowser class for RTE
+     *
+     * @var BrowseLinks
+     */
+    protected $linkParameterProvider;
 
-	/**
-	 * Back-reference to ElementBrowser class for RTE
-	 *
-	 * @var BrowseLinks
-	 */
-	protected $linkParameterProvider;
+    /**
+     * Create the page navigation tree in HTML
+     *
+     * @param array|string $treeArr Tree array
+     * @return string HTML output.
+     */
+    public function printTree($treeArr = '')
+    {
+        $titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
+        if (!is_array($treeArr)) {
+            $treeArr = $this->tree;
+        }
+        $out = '';
+        $closeDepth = array();
+        foreach ($treeArr as $treeItem) {
+            $classAttr = $treeItem['row']['_CSSCLASS'];
+            if ($treeItem['isFirst']) {
+                $out .= '<ul class="list-tree">';
+            }
 
-	/**
-	 * Create the page navigation tree in HTML
-	 *
-	 * @param array|string $treeArr Tree array
-	 * @return string HTML output.
-	 */
-	public function printTree($treeArr = '') {
-		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
-		if (!is_array($treeArr)) {
-			$treeArr = $this->tree;
-		}
-		$out = '';
-		$closeDepth = array();
-		foreach ($treeArr as $treeItem) {
+            // Add CSS classes to the list item
+            if ($treeItem['hasSub']) {
+                $classAttr .= ' list-tree-control-open';
+            }
 
-			$classAttr = $treeItem['row']['_CSSCLASS'];
-			if ($treeItem['isFirst']) {
-				$out .= '<ul class="list-tree">';
-			}
-
-			// Add CSS classes to the list item
-			if ($treeItem['hasSub']) {
-				$classAttr .= ' list-tree-control-open';
-			}
-
-			$selected = '';
-			if ($this->linkParameterProvider->curUrlInfo['act'] === 'page' && $this->linkParameterProvider->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->linkParameterProvider->curUrlInfo['pageid']) {
-				$selected = ' bg-success';
-			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()
-					. 'act=' . $this->linkParameterProvider->act . '&editorNo=' . $this->linkParameterProvider->editorNo
-					. '&contentTypo3Language=' . $this->linkParameterProvider->contentTypo3Language
-					. '&mode=' . $this->linkParameterProvider->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
-			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid'])
-				? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>'
-				: '';
-			$out .= '
+            $selected = '';
+            if ($this->linkParameterProvider->curUrlInfo['act'] === 'page' && $this->linkParameterProvider->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->linkParameterProvider->curUrlInfo['pageid']) {
+                $selected = ' bg-success';
+            }
+            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()
+                    . 'act=' . $this->linkParameterProvider->act . '&editorNo=' . $this->linkParameterProvider->editorNo
+                    . '&contentTypo3Language=' . $this->linkParameterProvider->contentTypo3Language
+                    . '&mode=' . $this->linkParameterProvider->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+            $cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid'])
+                ? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>'
+                : '';
+            $out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
 					<span class="list-tree-group' . $selected . '">
 						' . $cEbullet . '
@@ -82,25 +82,24 @@ class PageTree extends ElementBrowserPageTreeView {
 					</span>
 				';
 
-			if (!$treeItem['hasSub']) {
-				$out .= '</li>';
-			}
+            if (!$treeItem['hasSub']) {
+                $out .= '</li>';
+            }
 
-			// We have to remember if this is the last one
-			// on level X so the last child on level X+1 closes the <ul>-tag
-			if ($treeItem['isLast']) {
-				$closeDepth[$treeItem['invertedDepth']] = 1;
-			}
-			// If this is the last one and does not have subitems, we need to close
-			// the tree as long as the upper levels have last items too
-			if ($treeItem['isLast'] && !$treeItem['hasSub']) {
-				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
-					$closeDepth[$i] = 0;
-					$out .= '</ul></li>';
-				}
-			}
-		}
-		return '<ul class="list-tree list-tree-root">' . $out . '</ul>';
-	}
-
+            // We have to remember if this is the last one
+            // on level X so the last child on level X+1 closes the <ul>-tag
+            if ($treeItem['isLast']) {
+                $closeDepth[$treeItem['invertedDepth']] = 1;
+            }
+            // If this is the last one and does not have subitems, we need to close
+            // the tree as long as the upper levels have last items too
+            if ($treeItem['isLast'] && !$treeItem['hasSub']) {
+                for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+                    $closeDepth[$i] = 0;
+                    $out .= '</ul></li>';
+                }
+            }
+        }
+        return '<ul class="list-tree list-tree-root">' . $out . '</ul>';
+    }
 }

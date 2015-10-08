@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Install\Controller\Exception;
  * controller action classes and caught in controller to handle
  * the redirect.
  */
-class RedirectException extends \TYPO3\CMS\Install\Controller\Exception {
-
+class RedirectException extends \TYPO3\CMS\Install\Controller\Exception
+{
 }

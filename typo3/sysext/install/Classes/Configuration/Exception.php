@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Install\Configuration;
 /**
  * A configuration exception
  */
-class Exception extends \TYPO3\CMS\Install\Exception {
-
+class Exception extends \TYPO3\CMS\Install\Exception
+{
 }

@@ -17,15 +17,14 @@ namespace TYPO3\CMS\Core\Log\Writer;
 /**
  * Log writer interface
  */
-interface WriterInterface {
-
-	/**
-	 * Writes the log record
-	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
-	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
-	 * @throws \Exception
-	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record);
-
+interface WriterInterface
+{
+    /**
+     * Writes the log record
+     *
+     * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+     * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
+     * @throws \Exception
+     */
+    public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record);
 }

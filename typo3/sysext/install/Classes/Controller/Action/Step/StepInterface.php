@@ -19,41 +19,42 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Interface implemented by single steps
  */
-interface StepInterface {
-	/**
-	 * Execute a step
-	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
-	 */
-	public function execute();
+interface StepInterface
+{
+    /**
+     * Execute a step
+     *
+     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     */
+    public function execute();
 
-	/**
-	 * Whether this step must be executed
-	 *
-	 * @return bool TRUE if this step needs to be executed
-	 */
-	public function needsExecution();
+    /**
+     * Whether this step must be executed
+     *
+     * @return bool TRUE if this step needs to be executed
+     */
+    public function needsExecution();
 
-	/**
-	 * Tell the action which position it has in the list of actions
-	 *
-	 * @param int $current The current position
-	 * @param int $total The total number of steps
-	 * @return void
-	 */
-	public function setStepsCounter($current, $total);
+    /**
+     * Tell the action which position it has in the list of actions
+     *
+     * @param int $current The current position
+     * @param int $total The total number of steps
+     * @return void
+     */
+    public function setStepsCounter($current, $total);
 
-	/**
-	 * Gets current position
-	 *
-	 * @return int
-	 */
-	public function getCurrentStep();
+    /**
+     * Gets current position
+     *
+     * @return int
+     */
+    public function getCurrentStep();
 
-	/**
-	 * Gets total steps
-	 *
-	 * @return int
-	 */
-	public function getTotalSteps();
+    /**
+     * Gets total steps
+     *
+     * @return int
+     */
+    public function getTotalSteps();
 }

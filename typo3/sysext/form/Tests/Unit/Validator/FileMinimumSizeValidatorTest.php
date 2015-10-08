@@ -17,56 +17,60 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
 /**
  * Test case
  */
-class FileMinimumSizeValidatorTest extends AbstractValidatorTest {
+class FileMinimumSizeValidatorTest extends AbstractValidatorTest
+{
+    /**
+     * @var string
+     */
+    protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\FileMinimumSizeValidator::class;
 
-	/**
-	 * @var string
-	 */
-	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\FileMinimumSizeValidator::class;
+    protected function setUp()
+    {
+        $this->markTestSkipped('validate() instead of isValid() needs to be used');
+    }
 
-	protected function setUp() {
-		$this->markTestSkipped('validate() instead of isValid() needs to be used');
-	}
+    public function validSizesProvider()
+    {
+        return array(
+            '12B for min. 11B' => array(array(11, 12)),
+            '12B for min. 12B' => array(array(12, 12))
+        );
+    }
 
-	public function validSizesProvider() {
-		return array(
-			'12B for min. 11B' => array(array(11, 12)),
-			'12B for min. 12B' => array(array(12, 12))
-		);
-	}
+    public function invalidSizesProvider()
+    {
+        return array(
+            '11B for min. 12B' => array(array(12, 11))
+        );
+    }
 
-	public function invalidSizesProvider() {
-		return array(
-			'11B for min. 12B' => array(array(12, 11))
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validSizesProvider
+     */
+    public function validateForValidInputHasEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options['minimum'] = $input[0];
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider validSizesProvider
-	 */
-	public function validateForValidInputHasEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$options['minimum'] = $input[0];
-		$subject = $this->createSubject($options);
+        $this->assertEmpty(
+            $subject->validate($input[1])->getErrors()
+        );
+    }
 
-		$this->assertEmpty(
-			$subject->validate($input[1])->getErrors()
-		);
-	}
+    /**
+     * @test
+     * @dataProvider invalidSizesProvider
+     */
+    public function validateForInvalidInputHasNotEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $options['minimum'] = $input[0];
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider invalidSizesProvider
-	 */
-	public function validateForInvalidInputHasNotEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$options['minimum'] = $input[0];
-		$subject = $this->createSubject($options);
-
-		$this->assertNotEmpty(
-			$subject->validate($input[1])->getErrors()
-		);
-	}
-
+        $this->assertNotEmpty(
+            $subject->validate($input[1])->getErrors()
+        );
+    }
 }

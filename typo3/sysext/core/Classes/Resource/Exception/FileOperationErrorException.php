@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
  * An exception when something is wrong with the file handling
  *
  */
-class FileOperationErrorException extends \TYPO3\CMS\Core\Resource\Exception\AbstractFileOperationException {
-
-
+class FileOperationErrorException extends \TYPO3\CMS\Core\Resource\Exception\AbstractFileOperationException
+{
 }

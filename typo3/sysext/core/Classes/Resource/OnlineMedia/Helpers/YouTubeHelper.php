@@ -21,80 +21,83 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * SlideShare helper class
  */
-class YouTubeHelper extends AbstractOEmbedHelper {
+class YouTubeHelper extends AbstractOEmbedHelper
+{
+    /**
+     * Get public url
+     *
+     * @param File $file
+     * @param bool $relativeToCurrentScript
+     * @return string|NULL
+     */
+    public function getPublicUrl(File $file, $relativeToCurrentScript = false)
+    {
+        $videoId = $this->getOnlineMediaId($file);
+        return sprintf('https://www.youtube.com/watch?v=%s', $videoId);
+    }
 
-	/**
-	 * Get public url
-	 *
-	 * @param File $file
-	 * @param bool $relativeToCurrentScript
-	 * @return string|NULL
-	 */
-	public function getPublicUrl(File $file, $relativeToCurrentScript = FALSE) {
-		$videoId = $this->getOnlineMediaId($file);
-		return sprintf('https://www.youtube.com/watch?v=%s', $videoId);
-	}
+    /**
+     * Get local absolute file path to preview image
+     *
+     * @param File $file
+     * @return string
+     */
+    public function getPreviewImage(File $file)
+    {
+        $videoId = $this->getOnlineMediaId($file);
+        $temporaryFileName = $this->getTempFolderPath() . 'youtube_' . md5($videoId) . '.jpg';
 
-	/**
-	 * Get local absolute file path to preview image
-	 *
-	 * @param File $file
-	 * @return string
-	 */
-	public function getPreviewImage(File $file) {
-		$videoId = $this->getOnlineMediaId($file);
-		$temporaryFileName = $this->getTempFolderPath() . 'youtube_' . md5($videoId) . '.jpg';
+        if (!file_exists($temporaryFileName)) {
+            $previewImage = GeneralUtility::getUrl(
+                sprintf('https://img.youtube.com/vi/%s/0.jpg', $videoId)
+            );
+            if ($previewImage !== false) {
+                file_put_contents($temporaryFileName, $previewImage);
+                GeneralUtility::fixPermissions($temporaryFileName);
+            }
+        }
 
-		if (!file_exists($temporaryFileName)) {
-			$previewImage = GeneralUtility::getUrl(
-				sprintf('https://img.youtube.com/vi/%s/0.jpg', $videoId)
-			);
-			if ($previewImage !== FALSE) {
-				file_put_contents($temporaryFileName, $previewImage);
-				GeneralUtility::fixPermissions($temporaryFileName);
-			}
-		}
+        return $temporaryFileName;
+    }
 
-		return $temporaryFileName;
-	}
+    /**
+     * Try to transform given URL to a File
+     *
+     * @param string $url
+     * @param Folder $targetFolder
+     * @return File|NULL
+     */
+    public function transformUrlToFile($url, Folder $targetFolder)
+    {
+        $videoId = null;
+        // Try to get the YouTube code from given url.
+        // These formats are supported with and without http(s)://
+        // - youtu.be/<code> # Share URL
+        // - www.youtube.com/watch?v=<code> # Normal web link
+        // - www.youtube.com/v/<code>
+        // - www.youtube-nocookie.com/v/<code> # youtube-nocookie.com web link
+        // - www.youtube.com/embed/<code> # URL form iframe embed code, can also get code from full iframe snippet
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+            $videoId = $match[1];
+        }
+        if (empty($videoId)) {
+            return null;
+        }
+        return $this->transformMediaIdToFile($videoId, $targetFolder, $this->extension);
+    }
 
-	/**
-	 * Try to transform given URL to a File
-	 *
-	 * @param string $url
-	 * @param Folder $targetFolder
-	 * @return File|NULL
-	 */
-	public function transformUrlToFile($url, Folder $targetFolder) {
-		$videoId = NULL;
-		// Try to get the YouTube code from given url.
-		// These formats are supported with and without http(s)://
-		// - youtu.be/<code> # Share URL
-		// - www.youtube.com/watch?v=<code> # Normal web link
-		// - www.youtube.com/v/<code>
-		// - www.youtube-nocookie.com/v/<code> # youtube-nocookie.com web link
-		// - www.youtube.com/embed/<code> # URL form iframe embed code, can also get code from full iframe snippet
-		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
-			$videoId = $match[1];
-		}
-		if (empty($videoId)) {
-			return NULL;
-		}
-		return $this->transformMediaIdToFile($videoId, $targetFolder, $this->extension);
-	}
-
-	/**
-	 * Get oEmbed url to retrieve oEmbed data
-	 *
-	 * @param string $mediaId
-	 * @param string $format
-	 * @return string
-	 */
-	protected function getOEmbedUrl($mediaId, $format = 'json') {
-		return sprintf('https://www.youtube.com/oembed?url=%s&format=%s',
-			urlencode(sprintf('https://www.youtube.com/watch?v=%s', $mediaId)),
-			rawurlencode($format)
-		);
-	}
-
+    /**
+     * Get oEmbed url to retrieve oEmbed data
+     *
+     * @param string $mediaId
+     * @param string $format
+     * @return string
+     */
+    protected function getOEmbedUrl($mediaId, $format = 'json')
+    {
+        return sprintf('https://www.youtube.com/oembed?url=%s&format=%s',
+            urlencode(sprintf('https://www.youtube.com/watch?v=%s', $mediaId)),
+            rawurlencode($format)
+        );
+    }
 }

@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures;
 /**
  * Fixture for TYPO3\CMS\Core\Utility\GeneralUtility
  */
-class GeneralUtilityFixture extends \TYPO3\CMS\Core\Utility\GeneralUtility {
-
-	/**
-	 * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
-	 * @return void
-	 */
-	static public function setApplicationContext($applicationContext) {
-		static::$applicationContext = $applicationContext;
-	}
-
+class GeneralUtilityFixture extends \TYPO3\CMS\Core\Utility\GeneralUtility
+{
+    /**
+     * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
+     * @return void
+     */
+    public static function setApplicationContext($applicationContext)
+    {
+        static::$applicationContext = $applicationContext;
+    }
 }

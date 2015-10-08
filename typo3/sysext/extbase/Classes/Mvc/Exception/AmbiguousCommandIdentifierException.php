@@ -19,32 +19,33 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
+class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException
+{
+    /**
+     * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
+     */
+    protected $matchingCommands = array();
 
-	/**
-	 * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
-	 */
-	protected $matchingCommands = array();
+    /**
+     * Overwrites parent constructor to be able to inject matching commands.
+     *
+     * @param string $message
+     * @param int $code
+     * @param \Exception|NULL $previousException
+     * @param array $matchingCommands <\TYPO3\CMS\Extbase\Mvc\Cli\Command> $matchingCommands Commands that matched the command identifier
+     * @see Exception
+     */
+    public function __construct($message = '', $code = 0, \Exception $previousException = null, array $matchingCommands)
+    {
+        $this->matchingCommands = $matchingCommands;
+        parent::__construct($message, $code, $previousException);
+    }
 
-	/**
-	 * Overwrites parent constructor to be able to inject matching commands.
-	 *
-	 * @param string $message
-	 * @param int $code
-	 * @param \Exception|NULL $previousException
-	 * @param array $matchingCommands <\TYPO3\CMS\Extbase\Mvc\Cli\Command> $matchingCommands Commands that matched the command identifier
-	 * @see Exception
-	 */
-	public function __construct($message = '', $code = 0, \Exception $previousException = NULL, array $matchingCommands) {
-		$this->matchingCommands = $matchingCommands;
-		parent::__construct($message, $code, $previousException);
-	}
-
-	/**
-	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
-	 */
-	public function getMatchingCommands() {
-		return $this->matchingCommands;
-	}
-
+    /**
+     * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
+     */
+    public function getMatchingCommands()
+    {
+        return $this->matchingCommands;
+    }
 }

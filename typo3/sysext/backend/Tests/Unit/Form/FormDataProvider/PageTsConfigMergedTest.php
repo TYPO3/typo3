@@ -20,122 +20,126 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged;
 /**
  * Test case
  */
-class PageTsConfigMergedTest extends UnitTestCase {
+class PageTsConfigMergedTest extends UnitTestCase
+{
+    /**
+     * @var PageTsConfigMerged
+     */
+    protected $subject;
 
-	/**
-	 * @var PageTsConfigMerged
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new PageTsConfigMerged();
+    }
 
-	protected function setUp() {
-		$this->subject = new PageTsConfigMerged();
-	}
+    /**
+     * @test
+     */
+    public function addDataSetsMergedTsConfigToTsConfig()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            '' => 'aType',
+            'pageTsConfig' => [
+                'aSetting' => 'aValue',
+            ],
+        ];
+        $expected = $input;
+        $expected['pageTsConfigMerged'] = $input['pageTsConfig'];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataSetsMergedTsConfigToTsConfig() {
-		$input = [
-			'tableName' => 'aTable',
-			'' => 'aType',
-			'pageTsConfig' => [
-				'aSetting' => 'aValue',
-			],
-		];
-		$expected = $input;
-		$expected['pageTsConfigMerged'] = $input['pageTsConfig'];
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataKeepsTableSpecificConfigurationWithoutType()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'recordTypeValue' => 'aType',
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'disabled' => 1,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['pageTsConfigMerged'] = $input['pageTsConfig'];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataKeepsTableSpecificConfigurationWithoutType() {
-		$input = [
-			'tableName' => 'aTable',
-			'recordTypeValue' => 'aType',
-			'pageTsConfig' => [
-				'TCEFORM.' => [
-					'aTable.' => [
-						'aField.' => [
-							'disabled' => 1,
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['pageTsConfigMerged'] = $input['pageTsConfig'];
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
+    /**
+     * @test
+     */
+    public function addDataMergesTypeSpecificConfiguration()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'recordTypeValue' => 'aType',
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'types.' => [
+                                'aType.' => [
+                                    'disabled' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['pageTsConfigMerged'] = [
+            'TCEFORM.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'disabled' => 1,
+                    ],
+                ],
+            ],
+        ];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataMergesTypeSpecificConfiguration() {
-		$input = [
-			'tableName' => 'aTable',
-			'recordTypeValue' => 'aType',
-			'pageTsConfig' => [
-				'TCEFORM.' => [
-					'aTable.' => [
-						'aField.' => [
-							'types.' => [
-								'aType.' => [
-									'disabled' => 1,
-								],
-							],
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['pageTsConfigMerged'] = [
-			'TCEFORM.' => [
-				'aTable.' => [
-					'aField.' => [
-						'disabled' => 1,
-					],
-				],
-			],
-		];
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataTypeSpecificConfigurationOverwritesMainConfiguration() {
-		$input = [
-			'tableName' => 'aTable',
-			'recordTypeValue' => 'aType',
-			'pageTsConfig' => [
-				'TCEFORM.' => [
-					'aTable.' => [
-						'aField.' => [
-							'disabled' => 0,
-							'types.' => [
-								'aType.' => [
-									'disabled' => 1,
-								],
-							],
-						],
-					],
-				],
-			],
-		];
-		$expected = $input;
-		$expected['pageTsConfigMerged'] = [
-			'TCEFORM.' => [
-				'aTable.' => [
-					'aField.' => [
-						'disabled' => 1,
-					],
-				],
-			],
-		];
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+    /**
+     * @test
+     */
+    public function addDataTypeSpecificConfigurationOverwritesMainConfiguration()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'recordTypeValue' => 'aType',
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'disabled' => 0,
+                            'types.' => [
+                                'aType.' => [
+                                    'disabled' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['pageTsConfigMerged'] = [
+            'TCEFORM.' => [
+                'aTable.' => [
+                    'aField.' => [
+                        'disabled' => 1,
+                    ],
+                ],
+            ],
+        ];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

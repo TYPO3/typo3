@@ -20,53 +20,55 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Contains an abstract class for all tslib content class implementations.
  */
-abstract class AbstractContentObject {
+abstract class AbstractContentObject
+{
+    /**
+     * @var ContentObjectRenderer
+     */
+    protected $cObj;
 
-	/**
-	 * @var ContentObjectRenderer
-	 */
-	protected $cObj;
+    /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer = null;
 
-	/**
-	 * @var PageRenderer
-	 */
-	protected $pageRenderer = NULL;
+    /**
+     * Default constructor.
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function __construct(ContentObjectRenderer $cObj)
+    {
+        $this->cObj = $cObj;
+    }
 
-	/**
-	 * Default constructor.
-	 *
-	 * @param ContentObjectRenderer $cObj
-	 */
-	public function __construct(ContentObjectRenderer $cObj) {
-		$this->cObj = $cObj;
-	}
+    /**
+     * Renders the content object.
+     *
+     * @param array $conf
+     * @return string
+     */
+    abstract public function render($conf = array());
 
-	/**
-	 * Renders the content object.
-	 *
-	 * @param array $conf
-	 * @return string
-	 */
-	abstract public function render($conf = array());
+    /**
+     * Getter for current cObj
+     *
+     * @return ContentObjectRenderer
+     */
+    public function getContentObject()
+    {
+        return $this->cObj;
+    }
 
-	/**
-	 * Getter for current cObj
-	 *
-	 * @return ContentObjectRenderer
-	 */
-	public function getContentObject() {
-		return $this->cObj;
-	}
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        if ($this->pageRenderer === null) {
+            $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        }
 
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		if ($this->pageRenderer === NULL) {
-			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-		}
-
-		return $this->pageRenderer;
-	}
-
+        return $this->pageRenderer;
+    }
 }

@@ -17,36 +17,38 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  */
-class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Form\Domain\Filter\DigitFilter
+     */
+    protected $subject;
 
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Filter\DigitFilter
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Form\Domain\Filter\DigitFilter();
+    }
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\DigitFilter();
-	}
+    public function validDataProvider()
+    {
+        return array(
+            '1,00 -> 100' => array('1,00', '100'),
+            '1E+49 -> 149' => array('1E+49', '149'),
+            '100 -> 100' => array('100', '100'),
+            '00000 -> 00000' => array('00000', '00000'),
+            'ABCD -> ""' => array('ABCD', ''),
+        );
+    }
 
-	public function validDataProvider() {
-		return array(
-			'1,00 -> 100' => array('1,00', '100'),
-			'1E+49 -> 149' => array('1E+49', '149'),
-			'100 -> 100' => array('100', '100'),
-			'00000 -> 00000' => array('00000', '00000'),
-			'ABCD -> ""' => array('ABCD', ''),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider validDataProvider
-	 */
-	public function filterForStringsReturnsStringsFilteredToOnlyContainDigits($input, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->subject->filter($input)
-		);
-	}
-
+    /**
+     * @test
+     * @dataProvider validDataProvider
+     */
+    public function filterForStringsReturnsStringsFilteredToOnlyContainDigits($input, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->subject->filter($input)
+        );
+    }
 }

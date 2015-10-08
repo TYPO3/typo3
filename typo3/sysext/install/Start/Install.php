@@ -99,11 +99,11 @@
  * @see https://forge.typo3.org/issues/64504
  */
 if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-	die('TYPO3 CMS requires PHP 5.5 or above');
+    die('TYPO3 CMS requires PHP 5.5 or above');
 }
 
 // set up bare minimum application: class loader, LocalConfiguration, but no extensions and such
-call_user_func(function() {
-	$classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
-	(new \TYPO3\CMS\Install\Http\Application($classLoader))->run();
+call_user_func(function () {
+    $classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
+    (new \TYPO3\CMS\Install\Http\Application($classLoader))->run();
 });

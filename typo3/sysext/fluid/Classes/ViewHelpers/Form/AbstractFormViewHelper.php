@@ -17,82 +17,84 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  */
-abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @inject
+     */
+    protected $persistenceManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
-	 */
-	protected $persistenceManager;
+    /**
+     * Prefixes / namespaces the given name with the form field prefix
+     *
+     * @param string $fieldName field name to be prefixed
+     * @return string namespaced field name
+     */
+    protected function prefixFieldName($fieldName)
+    {
+        if ($fieldName === null || $fieldName === '') {
+            return '';
+        }
+        if (!$this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')) {
+            return $fieldName;
+        }
+        $fieldNamePrefix = (string)$this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix');
+        if ($fieldNamePrefix === '') {
+            return $fieldName;
+        }
+        $fieldNameSegments = explode('[', $fieldName, 2);
+        $fieldName = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
+        if (count($fieldNameSegments) > 1) {
+            $fieldName .= '[' . $fieldNameSegments[1];
+        }
+        return $fieldName;
+    }
 
-	/**
-	 * Prefixes / namespaces the given name with the form field prefix
-	 *
-	 * @param string $fieldName field name to be prefixed
-	 * @return string namespaced field name
-	 */
-	protected function prefixFieldName($fieldName) {
-		if ($fieldName === NULL || $fieldName === '') {
-			return '';
-		}
-		if (!$this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix')) {
-			return $fieldName;
-		}
-		$fieldNamePrefix = (string)$this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'fieldNamePrefix');
-		if ($fieldNamePrefix === '') {
-			return $fieldName;
-		}
-		$fieldNameSegments = explode('[', $fieldName, 2);
-		$fieldName = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
-		if (count($fieldNameSegments) > 1) {
-			$fieldName .= '[' . $fieldNameSegments[1];
-		}
-		return $fieldName;
-	}
+    /**
+     * Renders a hidden form field containing the technical identity of the given object.
+     *
+     * @param object $object Object to create the identity field for
+     * @param string $name Name
+     * @return string A hidden field containing the Identity (UID in TYPO3 Flow, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
+     * @see \TYPO3\CMS\Extbase\Mvc\Controller\Argument::setValue()
+     */
+    protected function renderHiddenIdentityField($object, $name)
+    {
+        if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+            $object = $object->_loadRealInstance();
+        }
+        if (!is_object($object)
+            || !($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject)
+            || ($object->_isNew() && !$object->_isClone())) {
+            return '';
+        }
+        // Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
+        // Using that one breaks re-submission of data in forms in case of an error.
+        $identifier = $object->getUid();
+        if ($identifier === null) {
+            return LF . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . LF;
+        }
+        $name = $this->prefixFieldName($name) . '[__identity]';
+        $this->registerFieldNameForFormTokenGeneration($name);
 
-	/**
-	 * Renders a hidden form field containing the technical identity of the given object.
-	 *
-	 * @param object $object Object to create the identity field for
-	 * @param string $name Name
-	 * @return string A hidden field containing the Identity (UID in TYPO3 Flow, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
-	 * @see \TYPO3\CMS\Extbase\Mvc\Controller\Argument::setValue()
-	 */
-	protected function renderHiddenIdentityField($object, $name) {
-		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-			$object = $object->_loadRealInstance();
-		}
-		if (!is_object($object)
-			|| !($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject)
-			|| ($object->_isNew() && !$object->_isClone())) {
-			return '';
-		}
-		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
-		// Using that one breaks re-submission of data in forms in case of an error.
-		$identifier = $object->getUid();
-		if ($identifier === NULL) {
-			return LF . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . LF;
-		}
-		$name = $this->prefixFieldName($name) . '[__identity]';
-		$this->registerFieldNameForFormTokenGeneration($name);
+        return LF . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . LF;
+    }
 
-		return LF . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . LF;
-	}
-
-	/**
-	 * Register a field name for inclusion in the HMAC / Form Token generation
-	 *
-	 * @param string $fieldName name of the field to register
-	 * @return void
-	 */
-	protected function registerFieldNameForFormTokenGeneration($fieldName) {
-		if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames')) {
-			$formFieldNames = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
-		} else {
-			$formFieldNames = array();
-		}
-		$formFieldNames[] = $fieldName;
-		$this->viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames', $formFieldNames);
-	}
-
+    /**
+     * Register a field name for inclusion in the HMAC / Form Token generation
+     *
+     * @param string $fieldName name of the field to register
+     * @return void
+     */
+    protected function registerFieldNameForFormTokenGeneration($fieldName)
+    {
+        if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames')) {
+            $formFieldNames = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
+        } else {
+            $formFieldNames = array();
+        }
+        $formFieldNames[] = $fieldName;
+        $this->viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames', $formFieldNames);
+    }
 }

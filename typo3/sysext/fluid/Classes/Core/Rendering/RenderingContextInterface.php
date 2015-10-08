@@ -11,26 +11,26 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-interface RenderingContextInterface {
+interface RenderingContextInterface
+{
+    /**
+     * Get the template variable container
+     *
+     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
+     */
+    public function getTemplateVariableContainer();
 
-	/**
-	 * Get the template variable container
-	 *
-	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
-	 */
-	public function getTemplateVariableContainer();
+    /**
+     * Get the controller context which will be passed to the ViewHelper
+     *
+     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
+     */
+    public function getControllerContext();
 
-	/**
-	 * Get the controller context which will be passed to the ViewHelper
-	 *
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
-	 */
-	public function getControllerContext();
-
-	/**
-	 * Get the ViewHelperVariableContainer
-	 *
-	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-	 */
-	public function getViewHelperVariableContainer();
+    /**
+     * Get the ViewHelperVariableContainer
+     *
+     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     */
+    public function getViewHelperVariableContainer();
 }

@@ -18,10 +18,12 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 /**
  * Fixture overwriting current version
  */
-class VersionNumberUtilityFixture extends VersionNumberUtility {
-	public static $versionNumber;
+class VersionNumberUtilityFixture extends VersionNumberUtility
+{
+    public static $versionNumber;
 
-	static public function getCurrentTypo3Version() {
-		return self::$versionNumber;
-	}
+    public static function getCurrentTypo3Version()
+    {
+        return self::$versionNumber;
+    }
 }

@@ -20,99 +20,99 @@ use TYPO3\CMS\Install\Status;
  * Service class to check the default folder permissions
  *
  */
-class DefaultPermissionsCheck {
+class DefaultPermissionsCheck
+{
+    /**
+     * @var array Recommended values for a secure production site
+     *
+     * These are not the default settings (which are 0664/2775), because they might not work on every installation.
+     * For security reasons these are the recommended values nevertheless (no world-readable files).
+     * It's up to the admins to decide if these recommended secure values can be applied to their installation.
+     */
+    protected $recommended = array(
+        'fileCreateMask' => '0660',
+        'folderCreateMask' => '2770',
+    );
 
-	/**
-	 * @var array Recommended values for a secure production site
-	 *
-	 * These are not the default settings (which are 0664/2775), because they might not work on every installation.
-	 * For security reasons these are the recommended values nevertheless (no world-readable files).
-	 * It's up to the admins to decide if these recommended secure values can be applied to their installation.
-	 */
-	protected $recommended = array(
-		'fileCreateMask' => '0660',
-		'folderCreateMask' => '2770',
-	);
+    /**
+     * @var array Verbose names of the settings
+     */
+    protected $names = array(
+        'fileCreateMask' => 'Default File permissions',
+        'folderCreateMask' => 'Default Directory permissions',
+    );
 
-	/**
-	 * @var array Verbose names of the settings
-	 */
-	protected $names = array(
-		'fileCreateMask' => 'Default File permissions',
-		'folderCreateMask' => 'Default Directory permissions',
-	);
-
-	/**
-	 * Checks a BE/*mask setting for it's security
-	 *
-	 * If it permits world writing: Error
-	 * If it permits world reading: Warning
-	 * If it permits group writing: Notice
-	 * If it permits group reading: Notice
-	 * If it permits only user read/write: Ok
-	 *
-	 * @param string $which fileCreateMask or folderCreateMask
-	 * @return \TYPO3\CMS\Install\Status\StatusInterface
-	 */
-	public function getMaskStatus($which) {
-		$octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
-		$dec = octdec($octal);
-		$perms = array(
-			'ox' => (($dec & 001) == 001),
-			'ow' => (($dec & 002) == 002),
-			'or' => (($dec & 004) == 004),
-			'gx' => (($dec & 010) == 010),
-			'gw' => (($dec & 020) == 020),
-			'gr' => (($dec & 040) == 040),
-			'ux' => (($dec & 0100) == 0100),
-			'uw' => (($dec & 0200) == 0200),
-			'ur' => (($dec & 0400) == 0400),
-			'setgid' => (($dec & 02000) == 02000),
-		);
-		$extraMessage = '';
-		$groupPermissions = FALSE;
-		if (!$perms['uw'] || !$perms['ur']) {
-			$permissionStatus = new Status\ErrorStatus();
-			$extraMessage = ' (not read or writable by the user)';
-		} elseif ($perms['ow']) {
-			if (TYPO3_OS === 'WIN') {
-				$permissionStatus = new Status\InfoStatus();
-				$extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
-			} else {
-				$permissionStatus = new Status\ErrorStatus();
-				$extraMessage = ' (writable by anyone on the server)';
-			}
-		} elseif ($perms['or']) {
-			$permissionStatus = new Status\NoticeStatus();
-			$extraMessage = ' (readable by anyone on the server). This is the default set by TYPO3 CMS to be as much compatible as possible but if your system allows, please consider to change rights';
-		} elseif ($perms['gw']) {
-			$permissionStatus = new Status\OkStatus();
-			$extraMessage = ' (group writable)';
-			$groupPermissions = TRUE;
-		} elseif ($perms['gr']) {
-			$permissionStatus = new Status\OkStatus();
-			$extraMessage = ' (group readable)';
-			$groupPermissions = TRUE;
-		} else {
-			$permissionStatus = new Status\OkStatus();
-		}
-		$permissionStatus->setTitle($this->names[$which] . ' (BE/' . $which . ')');
-		$message = 'Recommended: ' . $this->recommended[$which] . '.';
-		$message .= ' Currently configured as ';
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE'][$which] === $this->recommended[$which]) {
-			$message .= 'recommended';
-		} else {
-			$message .= $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
-		}
-		$message .= $extraMessage . '.';
-		if ($groupPermissions) {
-			$message .= ' This is fine as long as the web server\'s group only comprises trusted users.';
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])) {
-				$message .= ' Your site is configured (BE/createGroup) to write as group \'' . $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] . '\'.';
-			}
-		}
-		$permissionStatus->setMessage($message);
-		return $permissionStatus;
-	}
-
+    /**
+     * Checks a BE/*mask setting for it's security
+     *
+     * If it permits world writing: Error
+     * If it permits world reading: Warning
+     * If it permits group writing: Notice
+     * If it permits group reading: Notice
+     * If it permits only user read/write: Ok
+     *
+     * @param string $which fileCreateMask or folderCreateMask
+     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     */
+    public function getMaskStatus($which)
+    {
+        $octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
+        $dec = octdec($octal);
+        $perms = array(
+            'ox' => (($dec & 001) == 001),
+            'ow' => (($dec & 002) == 002),
+            'or' => (($dec & 004) == 004),
+            'gx' => (($dec & 010) == 010),
+            'gw' => (($dec & 020) == 020),
+            'gr' => (($dec & 040) == 040),
+            'ux' => (($dec & 0100) == 0100),
+            'uw' => (($dec & 0200) == 0200),
+            'ur' => (($dec & 0400) == 0400),
+            'setgid' => (($dec & 02000) == 02000),
+        );
+        $extraMessage = '';
+        $groupPermissions = false;
+        if (!$perms['uw'] || !$perms['ur']) {
+            $permissionStatus = new Status\ErrorStatus();
+            $extraMessage = ' (not read or writable by the user)';
+        } elseif ($perms['ow']) {
+            if (TYPO3_OS === 'WIN') {
+                $permissionStatus = new Status\InfoStatus();
+                $extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
+            } else {
+                $permissionStatus = new Status\ErrorStatus();
+                $extraMessage = ' (writable by anyone on the server)';
+            }
+        } elseif ($perms['or']) {
+            $permissionStatus = new Status\NoticeStatus();
+            $extraMessage = ' (readable by anyone on the server). This is the default set by TYPO3 CMS to be as much compatible as possible but if your system allows, please consider to change rights';
+        } elseif ($perms['gw']) {
+            $permissionStatus = new Status\OkStatus();
+            $extraMessage = ' (group writable)';
+            $groupPermissions = true;
+        } elseif ($perms['gr']) {
+            $permissionStatus = new Status\OkStatus();
+            $extraMessage = ' (group readable)';
+            $groupPermissions = true;
+        } else {
+            $permissionStatus = new Status\OkStatus();
+        }
+        $permissionStatus->setTitle($this->names[$which] . ' (BE/' . $which . ')');
+        $message = 'Recommended: ' . $this->recommended[$which] . '.';
+        $message .= ' Currently configured as ';
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE'][$which] === $this->recommended[$which]) {
+            $message .= 'recommended';
+        } else {
+            $message .= $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
+        }
+        $message .= $extraMessage . '.';
+        if ($groupPermissions) {
+            $message .= ' This is fine as long as the web server\'s group only comprises trusted users.';
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])) {
+                $message .= ' Your site is configured (BE/createGroup) to write as group \'' . $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] . '\'.';
+            }
+        }
+        $permissionStatus->setMessage($message);
+        return $permissionStatus;
+    }
 }

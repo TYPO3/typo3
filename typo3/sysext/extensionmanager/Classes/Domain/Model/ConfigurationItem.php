@@ -17,186 +17,203 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 /**
  * Model for extension configuration items
  */
-class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $category = '';
 
-	/**
-	 * @var string
-	 */
-	protected $category = '';
+    /**
+     * @var string
+     */
+    protected $subCategory = '';
 
-	/**
-	 * @var string
-	 */
-	protected $subCategory = '';
+    /**
+     * @var string
+     */
+    protected $type = '';
 
-	/**
-	 * @var string
-	 */
-	protected $type = '';
+    /**
+     * @var string
+     */
+    protected $labelHeadline = '';
 
-	/**
-	 * @var string
-	 */
-	protected $labelHeadline = '';
+    /**
+     * @var string
+     */
+    protected $labelText = '';
 
-	/**
-	 * @var string
-	 */
-	protected $labelText = '';
+    /**
+     * @var mixed
+     */
+    protected $generic = '';
 
-	/**
-	 * @var mixed
-	 */
-	protected $generic = '';
+    /**
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * @var string
+     */
+    protected $value = '';
 
-	/**
-	 * @var string
-	 */
-	protected $value = '';
+    /**
+     * @var int
+     */
+    protected $highlight = 0;
 
-	/**
-	 * @var int
-	 */
-	protected $highlight = 0;
+    /**
+     * @param string $category
+     * @return void
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
 
-	/**
-	 * @param string $category
-	 * @return void
-	 */
-	public function setCategory($category) {
-		$this->category = $category;
-	}
+    /**
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCategory() {
-		return $this->category;
-	}
+    /**
+     * @param string $labelHeadline
+     * @return void
+     */
+    public function setLabelHeadline($labelHeadline)
+    {
+        $this->labelHeadline = $labelHeadline;
+    }
 
-	/**
-	 * @param string $labelHeadline
-	 * @return void
-	 */
-	public function setLabelHeadline($labelHeadline) {
-		$this->labelHeadline = $labelHeadline;
-	}
+    /**
+     * @return string
+     */
+    public function getLabelHeadline()
+    {
+        return $this->labelHeadline;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getLabelHeadline() {
-		return $this->labelHeadline;
-	}
+    /**
+     * @param string $labelText
+     * @return void
+     */
+    public function setLabelText($labelText)
+    {
+        $this->labelText = $labelText;
+    }
 
-	/**
-	 * @param string $labelText
-	 * @return void
-	 */
-	public function setLabelText($labelText) {
-		$this->labelText = $labelText;
-	}
+    /**
+     * @return string
+     */
+    public function getLabelText()
+    {
+        return $this->labelText;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getLabelText() {
-		return $this->labelText;
-	}
+    /**
+     * @param string $subCategory
+     * @return void
+     */
+    public function setSubCategory($subCategory)
+    {
+        $this->subCategory = $subCategory;
+    }
 
-	/**
-	 * @param string $subCategory
-	 * @return void
-	 */
-	public function setSubCategory($subCategory) {
-		$this->subCategory = $subCategory;
-	}
+    /**
+     * @return string
+     */
+    public function getSubCategory()
+    {
+        return $this->subCategory;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSubCategory() {
-		return $this->subCategory;
-	}
+    /**
+     * @param string $type
+     * @return void
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 
-	/**
-	 * @param string $type
-	 * @return void
-	 */
-	public function setType($type) {
-		$this->type = $type;
-	}
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getType() {
-		return $this->type;
-	}
+    /**
+     * @param mixed $userFunc
+     * @return void
+     */
+    public function setGeneric($userFunc)
+    {
+        $this->generic = $userFunc;
+    }
 
-	/**
-	 * @param mixed $userFunc
-	 * @return void
-	 */
-	public function setGeneric($userFunc) {
-		$this->generic = $userFunc;
-	}
+    /**
+     * @return mixed
+     */
+    public function getGeneric()
+    {
+        return $this->generic;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getGeneric() {
-		return $this->generic;
-	}
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * @param string $value
+     * @return void
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 
-	/**
-	 * @param string $value
-	 * @return void
-	 */
-	public function setValue($value) {
-		$this->value = $value;
-	}
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+    /**
+     * @param int $highlight
+     * @return void
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
+    }
 
-	/**
-	 * @param int $highlight
-	 * @return void
-	 */
-	public function setHighlight($highlight) {
-		$this->highlight = $highlight;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getHighlight() {
-		return $this->highlight;
-	}
-
+    /**
+     * @return int
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
 }

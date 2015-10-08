@@ -22,14 +22,14 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * Is usually called from the RequestHandler,
  */
-interface DispatcherInterface {
-
-	/**
-	 * Main method to dispatch a request and its response to a callable object
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response);
+interface DispatcherInterface
+{
+    /**
+     * Main method to dispatch a request and its response to a callable object
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response);
 }

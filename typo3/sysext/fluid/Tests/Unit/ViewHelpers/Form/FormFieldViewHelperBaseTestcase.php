@@ -24,28 +24,29 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 /**
  * Test for the Abstract Form view helper
  */
-abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $mockConfigurationManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $mockConfigurationManager;
+    /**
+     * @return void
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function setUp() {
-		parent::setUp();
-		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
-	 * @return void
-	 */
-	protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper) {
-		$viewHelper->_set('configurationManager', $this->mockConfigurationManager);
-		parent::injectDependenciesIntoViewHelper($viewHelper);
-	}
-
+    /**
+     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+     * @return void
+     */
+    protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper)
+    {
+        $viewHelper->_set('configurationManager', $this->mockConfigurationManager);
+        parent::injectDependenciesIntoViewHelper($viewHelper);
+    }
 }

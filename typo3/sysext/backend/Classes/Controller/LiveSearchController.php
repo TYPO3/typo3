@@ -23,43 +23,44 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Returns the results for any live searches, e.g. in the toolbar
  */
-class LiveSearchController {
+class LiveSearchController
+{
+    /**
+     * @var array
+     */
+    protected $searchResults = array();
 
-	/**
-	 * @var array
-	 */
-	protected $searchResults = array();
+    /**
+     * Processes all AJAX calls and sends back a JSON object
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function liveSearchAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $queryString = $request->getQueryParams()['q'];
+        $liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
+        $queryParser = GeneralUtility::makeInstance(QueryParser::class);
 
-	/**
-	 * Processes all AJAX calls and sends back a JSON object
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function liveSearchAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$queryString = $request->getQueryParams()['q'];
-		$liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
-		$queryParser = GeneralUtility::makeInstance(QueryParser::class);
-
-		$searchResults = array();
-		$liveSearch->setQueryString($queryString);
-		// Jump & edit - find page and retrieve an edit link (this is only for pages
-		if ($queryParser->isValidPageJump($queryString)) {
-			$searchResults[] = array_merge($liveSearch->findPage($queryString), ['type' => 'pageJump']);
-			$commandQuery = $queryParser->getCommandForPageJump($queryString);
-			if ($commandQuery) {
-				$queryString = $commandQuery;
-			}
-		}
-		// Search through the database and find records who match to the given search string
-		$resultArray = $liveSearch->find($queryString);
-		foreach ($resultArray as $resultFromTable) {
-			foreach ($resultFromTable as $item) {
-				$searchResults[] = $item;
-			}
-		}
-		$response->getBody()->write(json_encode($searchResults));
-		return $response;
-	}
+        $searchResults = array();
+        $liveSearch->setQueryString($queryString);
+        // Jump & edit - find page and retrieve an edit link (this is only for pages
+        if ($queryParser->isValidPageJump($queryString)) {
+            $searchResults[] = array_merge($liveSearch->findPage($queryString), ['type' => 'pageJump']);
+            $commandQuery = $queryParser->getCommandForPageJump($queryString);
+            if ($commandQuery) {
+                $queryString = $commandQuery;
+            }
+        }
+        // Search through the database and find records who match to the given search string
+        $resultArray = $liveSearch->find($queryString);
+        foreach ($resultArray as $resultFromTable) {
+            foreach ($resultFromTable as $item) {
+                $searchResults[] = $item;
+            }
+        }
+        $response->getBody()->write(json_encode($searchResults));
+        return $response;
+    }
 }

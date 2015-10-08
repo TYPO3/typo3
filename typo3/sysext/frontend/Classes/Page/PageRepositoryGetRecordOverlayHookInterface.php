@@ -17,28 +17,27 @@ namespace TYPO3\CMS\Frontend\Page;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\Page\PageRepository
  */
-interface PageRepositoryGetRecordOverlayHookInterface {
+interface PageRepositoryGetRecordOverlayHookInterface
+{
+    /**
+     * Enables to preprocess a record overlay
+     *
+     * @param string $table
+     * @param array $row
+     * @param int $sys_language_content
+     * @param string $OLmode
+     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
+     */
+    public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 
-	/**
-	 * Enables to preprocess a record overlay
-	 *
-	 * @param string $table
-	 * @param array $row
-	 * @param int $sys_language_content
-	 * @param string $OLmode
-	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
-	 */
-	public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
-
-	/**
-	 * Enables to postprocess a record overlay
-	 *
-	 * @param string $table
-	 * @param array $row
-	 * @param int $sys_language_content
-	 * @param string $OLmode
-	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
-	 */
-	public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
-
+    /**
+     * Enables to postprocess a record overlay
+     *
+     * @param string $table
+     * @param array $row
+     * @param int $sys_language_content
+     * @param string $OLmode
+     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
+     */
+    public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 }

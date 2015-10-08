@@ -17,43 +17,44 @@ namespace TYPO3\CMS\Form\View\Wizard;
 /**
  * The form wizard load view
  */
-class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
+class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
+{
+    /**
+     * The main render method
+     *
+     * Gathers all content and echos it to the screen
+     *
+     * @return void
+     */
+    public function render()
+    {
+        $jsonObject = $this->repository->getRecordAsJson();
+        $this->headerOutput($jsonObject);
+    }
 
-	/**
-	 * The main render method
-	 *
-	 * Gathers all content and echos it to the screen
-	 *
-	 * @return void
-	 */
-	public function render() {
-		$jsonObject = $this->repository->getRecordAsJson();
-		$this->headerOutput($jsonObject);
-	}
-
-	/**
-	 * Construct the response header
-	 *
-	 * @param mixed $jsonObject JSON string, FALSE if not succeeded
-	 * @return void
-	 */
-	protected function headerOutput($jsonObject) {
-		if (!$jsonObject) {
-			header('HTTP/1.1 500 Internal Server Error');
-			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_load_message_failed', FALSE));
-		} else {
-			$jsonArray = array('configuration' => $jsonObject);
-		}
-		$json = json_encode($jsonArray);
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Pragma: no-cache');
-		header('Content-Length: ' . strlen($json));
-		header('Content-Type: application/json; charset=utf-8');
-		header('Content-Transfer-Encoding: 8bit');
-		echo $json;
-		die;
-	}
-
+    /**
+     * Construct the response header
+     *
+     * @param mixed $jsonObject JSON string, FALSE if not succeeded
+     * @return void
+     */
+    protected function headerOutput($jsonObject)
+    {
+        if (!$jsonObject) {
+            header('HTTP/1.1 500 Internal Server Error');
+            $jsonArray = array('message' => $this->getLanguageService()->getLL('action_load_message_failed', false));
+        } else {
+            $jsonArray = array('configuration' => $jsonObject);
+        }
+        $json = json_encode($jsonArray);
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . strlen($json));
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Transfer-Encoding: 8bit');
+        echo $json;
+        die;
+    }
 }

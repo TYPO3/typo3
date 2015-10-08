@@ -20,46 +20,47 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 /**
  * Test case
  */
-class TcaInlineExpandCollapseStateTest extends UnitTestCase {
+class TcaInlineExpandCollapseStateTest extends UnitTestCase
+{
+    /**
+     * @var TcaInlineExpandCollapseState
+     */
+    protected $subject;
 
-	/**
-	 * @var TcaInlineExpandCollapseState
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new TcaInlineExpandCollapseState();
+    }
 
-	protected function setUp() {
-		$this->subject = new TcaInlineExpandCollapseState();
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataAddsInlineStatusForTableUid() {
-		$input = [
-			'command' => 'edit',
-			'tableName' => 'aParentTable',
-			'databaseRow' => [
-				'uid' => 5,
-			],
-		];
-		$inlineState = [
-			'aParentTable' => [
-				5 => [
-					'aChildTable' => [
-						// Records 23 and 42 are expanded
-						23,
-						42,
-					],
-				],
-			],
-		];
-		$GLOBALS['BE_USER'] = new \stdClass();
-		$GLOBALS['BE_USER']->uc = [
-			'inlineView' => serialize($inlineState),
-		];
-		$expected = $input;
-		$expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+    /**
+     * @test
+     */
+    public function addDataAddsInlineStatusForTableUid()
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'aParentTable',
+            'databaseRow' => [
+                'uid' => 5,
+            ],
+        ];
+        $inlineState = [
+            'aParentTable' => [
+                5 => [
+                    'aChildTable' => [
+                        // Records 23 and 42 are expanded
+                        23,
+                        42,
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['BE_USER'] = new \stdClass();
+        $GLOBALS['BE_USER']->uc = [
+            'inlineView' => serialize($inlineState),
+        ];
+        $expected = $input;
+        $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

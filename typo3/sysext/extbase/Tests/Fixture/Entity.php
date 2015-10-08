@@ -17,41 +17,43 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 /**
  * An entity
  */
-class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * The entity's name
+     *
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * The entity's name
-	 *
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * Constructs this entity
+     *
+     * @param string $name Name of this blog
+     */
+    public function __construct($name)
+    {
+        $this->setName($name);
+    }
 
-	/**
-	 * Constructs this entity
-	 *
-	 * @param string $name Name of this blog
-	 */
-	public function __construct($name) {
-		$this->setName($name);
-	}
+    /**
+     * Sets this entity's name
+     *
+     * @param string $name The entity's name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Sets this entity's name
-	 *
-	 * @param string $name The entity's name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-	/**
-	 * Returns the entity's name
-	 *
-	 * @return string The entity's name
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
+    /**
+     * Returns the entity's name
+     *
+     * @return string The entity's name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

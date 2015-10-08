@@ -18,31 +18,31 @@ namespace TYPO3\CMS\Mediace\Hooks\PageLayoutView;
  * Contains a preview rendering for the page module of
  * CType="multimedia"
  */
-class MultimediaPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
+class MultimediaPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+{
+    /**
+     * Preprocesses the preview rendering of a content element of type "multimedia"
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param bool $drawItem Whether to draw the item using the default functionality
+     * @param string $headerContent Header content
+     * @param string $itemContent Item content
+     * @param array $row Record row of tt_content
+     *
+     * @return void
+     */
+    public function preProcess(
+        \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+        &$drawItem,
+        &$headerContent,
+        &$itemContent,
+        array &$row
+    ) {
+        if ($row['CType'] === 'multimedia' && $row['multimedia']) {
+            $itemContent .= $parentObject->renderText($row['multimedia']) . '<br />';
+            $itemContent .= $parentObject->renderText($row['parameters']) . '<br />';
 
-	/**
-	 * Preprocesses the preview rendering of a content element of type "multimedia"
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param bool $drawItem Whether to draw the item using the default functionality
-	 * @param string $headerContent Header content
-	 * @param string $itemContent Item content
-	 * @param array $row Record row of tt_content
-	 *
-	 * @return void
-	 */
-	public function preProcess(
-		\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
-		&$drawItem,
-		&$headerContent,
-		&$itemContent,
-		array &$row
-	) {
-		if ($row['CType'] === 'multimedia' && $row['multimedia']) {
-			$itemContent .= $parentObject->renderText($row['multimedia']) . '<br />';
-			$itemContent .= $parentObject->renderText($row['parameters']) . '<br />';
-
-			$drawItem = FALSE;
-		}
-	}
+            $drawItem = false;
+        }
+    }
 }

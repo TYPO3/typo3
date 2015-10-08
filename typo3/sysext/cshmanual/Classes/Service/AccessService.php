@@ -17,29 +17,30 @@ namespace TYPO3\CMS\Cshmanual\Service;
 /**
  * Access service
  */
-class AccessService {
+class AccessService
+{
+    /**
+     * Check if current backend user has access to given identifier
+     *
+     * @param string $type The type
+     * @param string $identifier The search string in access list
+     * @return bool TRUE if the user has access
+     */
+    public function checkAccess($type, $identifier)
+    {
+        if (!empty($type) && !empty($identifier)) {
+            return $this->getBackendUser()->check($type, $identifier);
+        }
+        return false;
+    }
 
-	/**
-	 * Check if current backend user has access to given identifier
-	 *
-	 * @param string $type The type
-	 * @param string $identifier The search string in access list
-	 * @return bool TRUE if the user has access
-	 */
-	public function checkAccess($type, $identifier) {
-		if (!empty($type) && !empty($identifier)) {
-			return $this->getBackendUser()->check($type, $identifier);
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Returns the current BE user.
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
+    /**
+     * Returns the current BE user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }
-

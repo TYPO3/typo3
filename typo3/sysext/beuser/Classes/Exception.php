@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Beuser;
 /**
  * Generic Beuser exception
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

@@ -19,29 +19,29 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class TextValidator extends AbstractValidator {
-
-	/**
-	 * Checks if the given value is a valid text (contains no XML tags).
-	 *
-	 * Be aware that the value of this check entirely depends on the output context.
-	 * The validated text is not expected to be secure in every circumstance, if you
-	 * want to be sure of that, use a customized regular expression or filter on output.
-	 *
-	 * See http://php.net/filter_var for details.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 * @api
-	 */
-	public function isValid($value) {
-		if ($value !== filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)) {
-			$this->addError(
-				$this->translateErrorMessage(
-					'validator.text.notvalid',
-					'extbase'
-				), 1221565786);
-		}
-	}
-
+class TextValidator extends AbstractValidator
+{
+    /**
+     * Checks if the given value is a valid text (contains no XML tags).
+     *
+     * Be aware that the value of this check entirely depends on the output context.
+     * The validated text is not expected to be secure in every circumstance, if you
+     * want to be sure of that, use a customized regular expression or filter on output.
+     *
+     * See http://php.net/filter_var for details.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     * @api
+     */
+    public function isValid($value)
+    {
+        if ($value !== filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)) {
+            $this->addError(
+                $this->translateErrorMessage(
+                    'validator.text.notvalid',
+                    'extbase'
+                ), 1221565786);
+        }
+    }
 }

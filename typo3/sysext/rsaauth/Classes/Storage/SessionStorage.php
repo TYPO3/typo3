@@ -21,38 +21,40 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * easy to extract. This storage is useful only as an example. It is better to
  * use "split" storage for keys.
  */
-class SessionStorage extends AbstractStorage {
+class SessionStorage extends AbstractStorage
+{
+    /**
+     * Creates an instance of this class. It checks and initializes PHP
+     * sessions if necessary.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        if (!isset($_SESSION) || !is_array($_SESSION)) {
+            session_start();
+        }
+    }
 
-	/**
-	 * Creates an instance of this class. It checks and initializes PHP
-	 * sessions if necessary.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		if (!isset($_SESSION) || !is_array($_SESSION)) {
-			session_start();
-		}
-	}
+    /**
+     * Obtains key from the session
+     *
+     * @return string The key or NULL
+     * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::get()
+     */
+    public function get()
+    {
+        return isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : null;
+    }
 
-	/**
-	 * Obtains key from the session
-	 *
-	 * @return string The key or NULL
-	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::get()
-	 */
-	public function get() {
-		return isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : NULL;
-	}
-
-	/**
-	 * Puts key to the session
-	 *
-	 * @param string $key The key
-	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
-	 */
-	public function put($key) {
-		$_SESSION['tx_rsaauth_key'] = $key;
-	}
-
+    /**
+     * Puts key to the session
+     *
+     * @param string $key The key
+     * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
+     */
+    public function put($key)
+    {
+        $_SESSION['tx_rsaauth_key'] = $key;
+    }
 }

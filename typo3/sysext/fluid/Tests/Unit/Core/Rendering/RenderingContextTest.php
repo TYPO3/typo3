@@ -14,44 +14,47 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 /**
  * Test case
  */
-class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Parsing state
+     *
+     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     */
+    protected $renderingContext;
 
-	/**
-	 * Parsing state
-	 *
-	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
-	 */
-	protected $renderingContext;
+    protected function setUp()
+    {
+        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array('dummy'));
+    }
 
-	protected function setUp() {
-		$this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array('dummy'));
-	}
+    /**
+     * @test
+     */
+    public function templateVariableContainerCanBeReadCorrectly()
+    {
+        $templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
+        $this->renderingContext->injectTemplateVariableContainer($templateVariableContainer);
+        $this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
+    }
 
-	/**
-	 * @test
-	 */
-	public function templateVariableContainerCanBeReadCorrectly() {
-		$templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
-		$this->renderingContext->injectTemplateVariableContainer($templateVariableContainer);
-		$this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
-	}
+    /**
+     * @test
+     */
+    public function controllerContextCanBeReadCorrectly()
+    {
+        $controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
+        $this->renderingContext->setControllerContext($controllerContext);
+        $this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
+    }
 
-	/**
-	 * @test
-	 */
-	public function controllerContextCanBeReadCorrectly() {
-		$controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
-		$this->renderingContext->setControllerContext($controllerContext);
-		$this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
-	}
-
-	/**
-	 * @test
-	 */
-	public function viewHelperVariableContainerCanBeReadCorrectly() {
-		$viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
-		$this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
-		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
-	}
-
+    /**
+     * @test
+     */
+    public function viewHelperVariableContainerCanBeReadCorrectly()
+    {
+        $viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
+        $this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
+        $this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
+    }
 }

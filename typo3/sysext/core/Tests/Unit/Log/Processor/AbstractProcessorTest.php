@@ -17,33 +17,34 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 /**
  * Test case
  */
-class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException
+     */
+    public function processorRefusesInvalidConfigurationOptions()
+    {
+        $invalidConfiguration = array(
+            'foo' => 'bar'
+        );
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture::class, $invalidConfiguration);
+    }
 
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException
-	 */
-	public function processorRefusesInvalidConfigurationOptions() {
-		$invalidConfiguration = array(
-			'foo' => 'bar'
-		);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture::class, $invalidConfiguration);
-	}
+    /**
+     * @test
+     */
+    public function loggerExecutesProcessors()
+    {
+        $logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
+        $writer = new \TYPO3\CMS\Core\Log\Writer\NullWriter();
+        $level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
+        $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('dummy', $level, 'message');
+        $processor = $this->getMock(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class, array('processLogRecord'));
+        $processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
 
-	/**
-	 * @test
-	 */
-	public function loggerExecutesProcessors() {
-		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
-		$writer = new \TYPO3\CMS\Core\Log\Writer\NullWriter();
-		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
-		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('dummy', $level, 'message');
-		$processor = $this->getMock(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class, array('processLogRecord'));
-		$processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
-
-		$logger->addWriter($level, $writer);
-		$logger->addProcessor($level, $processor);
-		$logger->warning('test');
-	}
-
+        $logger->addWriter($level, $writer);
+        $logger->addProcessor($level, $processor);
+        $logger->warning('test');
+    }
 }

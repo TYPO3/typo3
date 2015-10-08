@@ -17,46 +17,49 @@ namespace OliverHader\IrreTutorial\Domain\Model;
 /**
  * Price
  */
-class Price extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Price extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * @var float
+     */
+    protected $price = 0.0;
 
-	/**
-	 * @var float
-	 */
-	protected $price = 0.0;
+    /**
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * @return string $title
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * @return float $price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
 
-	/**
-	 * @return float $price
-	 */
-	public function getPrice() {
-		return $this->price;
-	}
-
-	/**
-	 * @param float $price
-	 * @return void
-	 */
-	public function setPrice($price) {
-		$this->price = $price;
-	}
-
+    /**
+     * @param float $price
+     * @return void
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
 }

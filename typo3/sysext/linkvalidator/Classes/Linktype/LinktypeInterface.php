@@ -17,49 +17,48 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 /**
  * This class provides interface implementation.
  */
-interface LinktypeInterface {
+interface LinktypeInterface
+{
+    /**
+     * Checks a given link for validity
+     *
+     * @param string $url Url to check
+     * @param array $softRefEntry The soft reference entry which builds the context of that url
+     * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
+     * @return string Validation error message or success code
+     */
+    public function checkLink($url, $softRefEntry, $reference);
 
-	/**
-	 * Checks a given link for validity
-	 *
-	 * @param string $url Url to check
-	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
-	 * @return string Validation error message or success code
-	 */
-	public function checkLink($url, $softRefEntry, $reference);
+    /**
+     * Base type fetching method, based on the type that softRefParserObj returns.
+     *
+     * @param array $value Reference properties
+     * @param string $type Current type
+     * @param string $key Validator hook name
+     * @return string Fetched type
+     */
+    public function fetchType($value, $type, $key);
 
-	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns.
-	 *
-	 * @param array $value Reference properties
-	 * @param string $type Current type
-	 * @param string $key Validator hook name
-	 * @return string Fetched type
-	 */
-	public function fetchType($value, $type, $key);
+    /**
+     * Get the value of the private property errorParams.
+     *
+     * @return array All parameters needed for the rendering of the error message
+     */
+    public function getErrorParams();
 
-	/**
-	 * Get the value of the private property errorParams.
-	 *
-	 * @return array All parameters needed for the rendering of the error message
-	 */
-	public function getErrorParams();
+    /**
+     * Construct a valid Url for browser output
+     *
+     * @param array $row Broken link record
+     * @return string Parsed broken url
+     */
+    public function getBrokenUrl($row);
 
-	/**
-	 * Construct a valid Url for browser output
-	 *
-	 * @param array $row Broken link record
-	 * @return string Parsed broken url
-	 */
-	public function getBrokenUrl($row);
-
-	/**
-	 * Generate the localized error message from the error params saved from the parsing
-	 *
-	 * @param array $errorParams All parameters needed for the rendering of the error message
-	 * @return string Validation error message
-	 */
-	public function getErrorMessage($errorParams);
-
+    /**
+     * Generate the localized error message from the error params saved from the parsing
+     *
+     * @param array $errorParams All parameters needed for the rendering of the error message
+     * @return string Validation error message
+     */
+    public function getErrorMessage($errorParams);
 }

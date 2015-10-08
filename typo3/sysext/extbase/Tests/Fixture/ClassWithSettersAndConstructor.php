@@ -24,32 +24,35 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  * A dummy class with setters for testing data mapping
  *
  */
-class ClassWithSettersAndConstructor {
+class ClassWithSettersAndConstructor
+{
+    /**
+     * @var mixed
+     */
+    protected $property1;
 
-	/**
-	 * @var mixed
-	 */
-	protected $property1;
+    /**
+     * @var mixed
+     */
+    protected $property2;
 
-	/**
-	 * @var mixed
-	 */
-	protected $property2;
+    public function __construct($property1)
+    {
+        $this->property1 = $property1;
+    }
 
-	public function __construct($property1) {
-		$this->property1 = $property1;
-	}
+    public function getProperty1()
+    {
+        return $this->property1;
+    }
 
-	public function getProperty1() {
-		return $this->property1;
-	}
+    public function getProperty2()
+    {
+        return $this->property2;
+    }
 
-	public function getProperty2() {
-		return $this->property2;
-	}
-
-	public function setProperty2($property2) {
-		$this->property2 = $property2;
-	}
-
+    public function setProperty2($property2)
+    {
+        $this->property2 = $property2;
+    }
 }

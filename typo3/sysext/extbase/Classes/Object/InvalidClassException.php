@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * "Invalid class" Exception
  */
-class InvalidClassException extends \TYPO3\CMS\Extbase\Object\Exception {
-
+class InvalidClassException extends \TYPO3\CMS\Extbase\Object\Exception
+{
 }

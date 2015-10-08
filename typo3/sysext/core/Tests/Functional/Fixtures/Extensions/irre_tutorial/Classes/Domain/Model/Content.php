@@ -17,53 +17,57 @@ namespace OliverHader\IrreTutorial\Domain\Model;
 /**
  * Content
  */
-class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    /**
+     * @var string
+     */
+    protected $header = '';
 
-	/**
-	 * @var string
-	 */
-	protected $header = '';
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
+     */
+    protected $hotels = null;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
-	 */
-	protected $hotels = NULL;
+    /**
+     * Initializes this object.
+     */
+    public function __construct()
+    {
+        $this->hotels = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
 
-	/**
-	 * Initializes this object.
-	 */
-	public function __construct() {
-		$this->hotels = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
+    /**
+     * @return string $header
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
 
-	/**
-	 * @return string $header
-	 */
-	public function getHeader() {
-		return $this->header;
-	}
+    /**
+     * @param string $header
+     * @return void
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+    }
 
-	/**
-	 * @param string $header
-	 * @return void
-	 */
-	public function setHeader($header) {
-		$this->header = $header;
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
+     */
+    public function getHotels()
+    {
+        return $this->hotels;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
-	 */
-	public function getHotels() {
-		return $this->hotels;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel> $hotels
-	 * @return void
-	 */
-	public function setHotels(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels) {
-		$this->hotels = $hotels;
-	}
-
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel> $hotels
+     * @return void
+     */
+    public function setHotels(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels)
+    {
+        $this->hotels = $hotels;
+    }
 }

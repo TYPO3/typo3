@@ -17,122 +17,121 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import\GroupFileAndFileReferenceItem
 /**
  * Functional test for the ImportExport
  */
-class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase {
+class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
+{
+    /**
+     * @var array
+     */
+    protected $additionalFoldersToCreate = array(
+        '/uploads/tx_impexpgroupfiles'
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $additionalFoldersToCreate = array(
-		'/uploads/tx_impexpgroupfiles'
-	);
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array(
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array(
-		'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/impexp_group_files'
-	);
+    /**
+     * @var string
+     */
+    protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/GroupFileAndFileReferenceItem/DataSet/Assertion/';
 
-	/**
-	 * @var string
-	 */
-	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/Import/GroupFileAndFileReferenceItem/DataSet/Assertion/';
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItem()
+    {
+        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
+        $this->import->importData(0);
 
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItem() {
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 
-		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
-		$this->import->importData(0);
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
 
-		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
-		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+    }
 
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItemWithRootLevelOnlyAllowed()
+    {
+        $GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = 1;
 
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-	}
+        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
+        $this->import->importData(0);
 
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItemWithRootLevelOnlyAllowed() {
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 
-		$GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = 1;
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelOnlyAllowed');
 
-		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
-		$this->import->importData(0);
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+    }
 
-		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
-		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItemWithRootLevelNotAllowed()
+    {
+        $GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = 0;
 
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelOnlyAllowed');
+        $this->import->loadFile(__DIR__ . '/ImportExportXml/impexp-group-file-and-file_reference-item-on-pid-zero.xml', 1);
+        $this->import->importData(0);
 
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-	}
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
 
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItemWithRootLevelNotAllowed() {
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelNotAllowed');
 
-		$GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = 0;
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileNotExists(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
 
-		$this->import->loadFile(__DIR__ . '/ImportExportXml/impexp-group-file-and-file_reference-item-on-pid-zero.xml', 1);
-		$this->import->importData(0);
+        $expectedErrors = array(
+            'Error: Record type tx_impexpgroupfiles_item is not allowed on pid 0'
+        );
+        $errors = $this->import->errorLog;
+        $this->assertSame($expectedErrors, $errors);
+    }
 
-		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItemWithRootLevelAndPagesAllowed()
+    {
+        $GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = -1;
 
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelNotAllowed');
-
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileNotExists(PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-
-		$expectedErrors = array(
-    		'Error: Record type tx_impexpgroupfiles_item is not allowed on pid 0'
-		);
-		$errors = $this->import->errorLog;
-		$this->assertSame($expectedErrors, $errors);
-	}
-
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItemWithRootLevelAndPagesAllowed() {
-
-		$GLOBALS['TCA']['tx_impexpgroupfiles_item']['ctrl']['rootLevel'] = -1;
-
-		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
-		$this->import->importData(0);
+        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', 1);
+        $this->import->importData(0);
 
 
-		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
-		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelAndPagesAllowed');
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItemWithRootLevelAndPagesAllowed');
 
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-	}
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+    }
 
-	/**
-	 * @test
-	 */
-	public function importGroupFileAndFileReferenceItemButImagesNotIncluded() {
+    /**
+     * @test
+     */
+    public function importGroupFileAndFileReferenceItemButImagesNotIncluded()
+    {
+        $this->import->loadFile(PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', 1);
+        $this->import->importData(0);
 
-		$this->import->loadFile(PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', 1);
-		$this->import->importData(0);
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 
-		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
-		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+        $this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
 
-		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
-
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
-		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
-	}
-
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+        $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+    }
 }

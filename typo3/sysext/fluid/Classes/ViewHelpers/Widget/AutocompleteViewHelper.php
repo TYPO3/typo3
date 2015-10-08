@@ -42,27 +42,27 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * @api
  */
-class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+{
+    /**
+     * @var bool
+     */
+    protected $ajaxWidget = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $ajaxWidget = TRUE;
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController
+     * @inject
+     */
+    protected $controller;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController
-	 * @inject
-	 */
-	protected $controller;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects
-	 * @param string $for
-	 * @param string $searchProperty
-	 * @return string
-	 */
-	public function render(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects, $for, $searchProperty) {
-		return $this->initiateSubRequest();
-	}
-
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects
+     * @param string $for
+     * @param string $searchProperty
+     * @return string
+     */
+    public function render(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects, $for, $searchProperty)
+    {
+        return $this->initiateSubRequest();
+    }
 }

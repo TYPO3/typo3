@@ -17,59 +17,62 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
 /**
  * Test case
  */
-class IpValidatorTest extends AbstractValidatorTest {
+class IpValidatorTest extends AbstractValidatorTest
+{
+    /**
+     * @var string
+     */
+    protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\IpValidator::class;
 
-	/**
-	 * @var string
-	 */
-	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\IpValidator::class;
+    /**
+     * @return array
+     */
+    public function validIpv4Provider()
+    {
+        return array(
+            '127.0.0.1'   => array('127.0.0.1'),
+            '10.0.0.4'    => array('10.0.0.4'),
+            '192.168.0.4' => array('192.168.0.4'),
+            '0.0.0.0'     => array('0.0.0.0')
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function validIpv4Provider() {
-		return array(
-			'127.0.0.1'   => array('127.0.0.1'),
-			'10.0.0.4'    => array('10.0.0.4'),
-			'192.168.0.4' => array('192.168.0.4'),
-			'0.0.0.0'     => array('0.0.0.0')
-		);
-	}
+    /**
+     * @return array
+     */
+    public function invalidIpv4Provider()
+    {
+        return array(
+            '127.0.0.256' => array('127.0.0.256'),
+            '256.0.0.2'   => array('256.0.0.2')
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function invalidIpv4Provider() {
-		return array(
-			'127.0.0.256' => array('127.0.0.256'),
-			'256.0.0.2'   => array('256.0.0.2')
-		);
-	}
+    /**
+     * @test
+     * @dataProvider validIpv4Provider
+     */
+    public function validateForValidInputHasEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider validIpv4Provider
-	 */
-	public function validateForValidInputHasEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$subject = $this->createSubject($options);
+        $this->assertEmpty(
+            $subject->validate($input)->getErrors()
+        );
+    }
 
-		$this->assertEmpty(
-			$subject->validate($input)->getErrors()
-		);
-	}
+    /**
+     * @test
+     * @dataProvider invalidIpv4Provider
+     */
+    public function validateForInvalidInputHasNotEmptyErrorResult($input)
+    {
+        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
+        $subject = $this->createSubject($options);
 
-	/**
-	 * @test
-	 * @dataProvider invalidIpv4Provider
-	 */
-	public function validateForInvalidInputHasNotEmptyErrorResult($input) {
-		$options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-		$subject = $this->createSubject($options);
-
-		$this->assertNotEmpty(
-			$subject->validate($input)->getErrors()
-		);
-	}
-
+        $this->assertNotEmpty(
+            $subject->validate($input)->getErrors()
+        );
+    }
 }

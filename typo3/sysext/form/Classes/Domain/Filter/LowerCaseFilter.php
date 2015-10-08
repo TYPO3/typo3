@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Form\Domain\Filter;
 /**
  * Lowercase filter
  */
-class LowerCaseFilter extends AbstractFilter implements FilterInterface {
-
-	/**
-	 * Convert alphabetic characters to lowercase
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		return $this->convertCase($value, 'toLower');
-	}
-
+class LowerCaseFilter extends AbstractFilter implements FilterInterface
+{
+    /**
+     * Convert alphabetic characters to lowercase
+     *
+     * @param string $value
+     * @return string
+     */
+    public function filter($value)
+    {
+        return $this->convertCase($value, 'toLower');
+    }
 }

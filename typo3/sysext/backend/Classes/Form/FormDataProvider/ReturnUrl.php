@@ -20,20 +20,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Resolve return Url if not set otherwise.
  */
-class ReturnUrl extends AbstractItemProvider implements FormDataProviderInterface {
+class ReturnUrl extends AbstractItemProvider implements FormDataProviderInterface
+{
+    /**
+     * Add return unl
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        if ($result['returnUrl'] === null) {
+            $result['returnUrl'] = GeneralUtility::linkThisScript();
+        }
 
-	/**
-	 * Add return unl
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		if ($result['returnUrl'] === NULL) {
-			$result['returnUrl'] = GeneralUtility::linkThisScript();
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

@@ -23,36 +23,38 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 /**
  * Represents a widget request.
  */
-class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request {
+class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
+     */
+    protected $widgetContext;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
-	 */
-	protected $widgetContext;
+    /**
+     * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
+     */
+    public function getWidgetContext()
+    {
+        return $this->widgetContext;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
-	 */
-	public function getWidgetContext() {
-		return $this->widgetContext;
-	}
+    /**
+     * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
+     * @return void
+     */
+    public function setWidgetContext(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
+    {
+        $this->widgetContext = $widgetContext;
+        $this->setControllerObjectName($widgetContext->getControllerObjectName());
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
-	 * @return void
-	 */
-	public function setWidgetContext(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext) {
-		$this->widgetContext = $widgetContext;
-		$this->setControllerObjectName($widgetContext->getControllerObjectName());
-	}
-
-	/**
-	 * Returns the unique URI namespace for this widget in the format pluginNamespace[widgetIdentifier]
-	 *
-	 * @return string
-	 */
-	public function getArgumentPrefix() {
-		return $this->widgetContext->getParentPluginNamespace() . '[' . $this->widgetContext->getWidgetIdentifier() . ']';
-	}
-
+    /**
+     * Returns the unique URI namespace for this widget in the format pluginNamespace[widgetIdentifier]
+     *
+     * @return string
+     */
+    public function getArgumentPrefix()
+    {
+        return $this->widgetContext->getParentPluginNamespace() . '[' . $this->widgetContext->getWidgetIdentifier() . ']';
+    }
 }

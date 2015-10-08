@@ -17,54 +17,56 @@ namespace TYPO3\CMS\Backend\InterfaceState\ExtDirect;
 /**
  * ExtDirect DataProvider for State
  */
-class DataProvider {
+class DataProvider
+{
+    /**
+     * @var \TYPO3\CMS\Backend\Controller\UserSettingsController
+     */
+    protected $userSettingsController;
 
-	/**
-	 * @var \TYPO3\CMS\Backend\Controller\UserSettingsController
-	 */
-	protected $userSettingsController;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // All data is saved in BE_USER->uc
+        $this->userSettingsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Backend\Controller\UserSettingsController::class
+        );
+    }
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		// All data is saved in BE_USER->uc
-		$this->userSettingsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Backend\Controller\UserSettingsController::class
-		);
-	}
+    /**
+     * Gets state for given key
+     *
+     * @param \stdClass $parameter
+     * @return array
+     */
+    public function getState($parameter)
+    {
+        $key = $parameter->params->key;
+        $data = $this->userSettingsController->process('get', $key);
+        return array(
+            'success' => true,
+            'data' => $data
+        );
+    }
 
-	/**
-	 * Gets state for given key
-	 *
-	 * @param \stdClass $parameter
-	 * @return array
-	 */
-	public function getState($parameter) {
-		$key = $parameter->params->key;
-		$data = $this->userSettingsController->process('get', $key);
-		return array(
-			'success' => TRUE,
-			'data' => $data
-		);
-	}
-
-	/**
-	 * Save the state for a given key
-	 *
-	 * @param \stdClass $parameter
-	 * @return array
-	 */
-	public function setState($parameter) {
-		$key = $parameter->params->key;
-		$data = json_decode($parameter->params->data);
-		foreach ($data as $setting) {
-			$this->userSettingsController->process('set', $key . '.' . $setting->name, $setting->value);
-		}
-		return array(
-			'success' => TRUE,
-			'params' => $parameter
-		);
-	}
-
+    /**
+     * Save the state for a given key
+     *
+     * @param \stdClass $parameter
+     * @return array
+     */
+    public function setState($parameter)
+    {
+        $key = $parameter->params->key;
+        $data = json_decode($parameter->params->data);
+        foreach ($data as $setting) {
+            $this->userSettingsController->process('set', $key . '.' . $setting->name, $setting->value);
+        }
+        return array(
+            'success' => true,
+            'params' => $parameter
+        );
+    }
 }

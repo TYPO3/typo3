@@ -19,48 +19,50 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
+class Response extends \TYPO3\CMS\Extbase\Mvc\Response
+{
+    /**
+     * @var int
+     */
+    private $exitCode = 0;
 
-	/**
-	 * @var int
-	 */
-	private $exitCode = 0;
+    /**
+     * Sets the numerical exit code which should be returned when exiting this application.
+     *
+     * @param int $exitCode
+     * @throws \InvalidArgumentException
+     * @return void
+     * @api
+     */
+    public function setExitCode($exitCode)
+    {
+        if (!is_integer($exitCode)) {
+            throw new \InvalidArgumentException(sprintf('Tried to set invalid exit code. The value must be integer, %s given.', gettype($exitCode)), 1312222064);
+        }
+        $this->exitCode = $exitCode;
+    }
 
-	/**
-	 * Sets the numerical exit code which should be returned when exiting this application.
-	 *
-	 * @param int $exitCode
-	 * @throws \InvalidArgumentException
-	 * @return void
-	 * @api
-	 */
-	public function setExitCode($exitCode) {
-		if (!is_integer($exitCode)) {
-			throw new \InvalidArgumentException(sprintf('Tried to set invalid exit code. The value must be integer, %s given.', gettype($exitCode)), 1312222064);
-		}
-		$this->exitCode = $exitCode;
-	}
+    /**
+     * Rets the numerical exit code which should be returned when exiting this application.
+     *
+     * @return int
+     * @api
+     */
+    public function getExitCode()
+    {
+        return $this->exitCode;
+    }
 
-	/**
-	 * Rets the numerical exit code which should be returned when exiting this application.
-	 *
-	 * @return int
-	 * @api
-	 */
-	public function getExitCode() {
-		return $this->exitCode;
-	}
-
-	/**
-	 * Renders and sends the whole web response
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function send() {
-		if ($this->content !== NULL) {
-			echo $this->shutdown();
-		}
-	}
-
+    /**
+     * Renders and sends the whole web response
+     *
+     * @return void
+     * @api
+     */
+    public function send()
+    {
+        if ($this->content !== null) {
+            echo $this->shutdown();
+        }
+    }
 }

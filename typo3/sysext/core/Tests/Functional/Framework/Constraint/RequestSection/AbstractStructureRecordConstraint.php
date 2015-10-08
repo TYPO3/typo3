@@ -17,26 +17,27 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection;
 /**
  * Model of frontend response
  */
-abstract class AbstractStructureRecordConstraint extends AbstractRecordConstraint {
+abstract class AbstractStructureRecordConstraint extends AbstractRecordConstraint
+{
+    /**
+     * @var string
+     */
+    protected $recordIdentifier;
 
-	/**
-	 * @var string
-	 */
-	protected $recordIdentifier;
+    /**
+     * @var string
+     */
+    protected $recordField;
 
-	/**
-	 * @var string
-	 */
-	protected $recordField;
+    public function setRecordIdentifier($recordIdentifier)
+    {
+        $this->recordIdentifier = $recordIdentifier;
+        return $this;
+    }
 
-	public function setRecordIdentifier($recordIdentifier) {
-		$this->recordIdentifier = $recordIdentifier;
-		return $this;
-	}
-
-	public function setRecordField($recordField) {
-		$this->recordField = $recordField;
-		return $this;
-	}
-
+    public function setRecordField($recordField)
+    {
+        $this->recordField = $recordField;
+        return $this;
+    }
 }

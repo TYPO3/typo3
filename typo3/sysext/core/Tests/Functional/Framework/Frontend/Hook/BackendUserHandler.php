@@ -19,43 +19,45 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handler for backend user
  */
-class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface {
+class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @param array $parameters
+     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
+     */
+    public function initialize(array $parameters, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController)
+    {
+        $backendUserId = (int)GeneralUtility::_GP('backendUserId');
+        $workspaceId = (int)GeneralUtility::_GP('workspaceId');
 
-	/**
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
-	 */
-	public function initialize(array $parameters, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController) {
-		$backendUserId = (int)GeneralUtility::_GP('backendUserId');
-		$workspaceId = (int)GeneralUtility::_GP('workspaceId');
+        if (empty($backendUserId) || empty($workspaceId)) {
+            return;
+        }
 
-		if (empty($backendUserId) || empty($workspaceId)) {
-			return;
-		}
+        $backendUser = $this->createBackendUser();
+        $backendUser->user = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . $backendUserId);
+        $backendUser->setTemporaryWorkspace($workspaceId);
+        $frontendController->beUserLogin = true;
 
-		$backendUser = $this->createBackendUser();
-		$backendUser->user = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . $backendUserId);
-		$backendUser->setTemporaryWorkspace($workspaceId);
-		$frontendController->beUserLogin = TRUE;
+        $parameters['BE_USER'] = $backendUser;
+        $GLOBALS['BE_USER'] = $backendUser;
+    }
 
-		$parameters['BE_USER'] = $backendUser;
-		$GLOBALS['BE_USER'] = $backendUser;
-	}
+    /**
+     * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+     */
+    protected function createBackendUser()
+    {
+        return GeneralUtility::makeInstance(
+            \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class
+        );
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
-	 */
-	protected function createBackendUser() {
-		return GeneralUtility::makeInstance(
-			\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class
-		);
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

@@ -17,20 +17,19 @@ namespace TYPO3\CMS\Taskcenter;
 /**
  * Interface for classes which provide a task.
  */
-interface TaskInterface {
+interface TaskInterface
+{
+    /**
+     * Returns the content for a task
+     *
+     * @return string A task rendered HTML
+     */
+    public function getTask();
 
-	/**
-	 * Returns the content for a task
-	 *
-	 * @return string A task rendered HTML
-	 */
-	public function getTask();
-
-	/**
-	 * Returns the overview of a task
-	 *
-	 * @return string A task rendered HTML
-	 */
-	public function getOverview();
-
+    /**
+     * Returns the overview of a task
+     *
+     * @return string A task rendered HTML
+     */
+    public function getOverview();
 }

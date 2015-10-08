@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
  *
  * @api
  */
-class InvalidCacheException extends \TYPO3\CMS\Core\Cache\Exception {
-
-
+class InvalidCacheException extends \TYPO3\CMS\Core\Cache\Exception
+{
 }

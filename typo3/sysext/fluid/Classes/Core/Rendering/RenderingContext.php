@@ -11,92 +11,97 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface {
+class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+{
+    /**
+     * Template Variable Container. Contains all variables available through object accessors in the template
+     *
+     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+     */
+    protected $templateVariableContainer;
 
-	/**
-	 * Template Variable Container. Contains all variables available through object accessors in the template
-	 *
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
-	 */
-	protected $templateVariableContainer;
+    /**
+     * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
+     * the whole syntax tree should be cacheable
+     *
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @inject
+     */
+    protected $objectManager;
 
-	/**
-	 * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
-	 * the whole syntax tree should be cacheable
-	 *
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
-	 */
-	protected $objectManager;
+    /**
+     * Controller context being passed to the ViewHelper
+     *
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     */
+    protected $controllerContext;
 
-	/**
-	 * Controller context being passed to the ViewHelper
-	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-	 */
-	protected $controllerContext;
+    /**
+     * ViewHelper Variable Container
+     *
+     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     * @inject
+     */
+    protected $viewHelperVariableContainer;
 
-	/**
-	 * ViewHelper Variable Container
-	 *
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-	 * @inject
-	 */
-	protected $viewHelperVariableContainer;
+    /**
+     * Returns the object manager. Only the ViewHelperNode should do this.
+     *
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    public function getObjectManager()
+    {
+        return $this->objectManager;
+    }
 
-	/**
-	 * Returns the object manager. Only the ViewHelperNode should do this.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	public function getObjectManager() {
-		return $this->objectManager;
-	}
+    /**
+     * Injects the template variable container containing all variables available through Object Accessors
+     * in the template
+     *
+     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer The template variable container to set
+     */
+    public function injectTemplateVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer)
+    {
+        $this->templateVariableContainer = $templateVariableContainer;
+    }
 
-	/**
-	 * Injects the template variable container containing all variables available through Object Accessors
-	 * in the template
-	 *
-	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer The template variable container to set
-	 */
-	public function injectTemplateVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer) {
-		$this->templateVariableContainer = $templateVariableContainer;
-	}
+    /**
+     * Get the template variable container
+     *
+     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
+     */
+    public function getTemplateVariableContainer()
+    {
+        return $this->templateVariableContainer;
+    }
 
-	/**
-	 * Get the template variable container
-	 *
-	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
-	 */
-	public function getTemplateVariableContainer() {
-		return $this->templateVariableContainer;
-	}
+    /**
+     * Set the controller context which will be passed to the ViewHelper
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext The controller context to set
+     */
+    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+    }
 
-	/**
-	 * Set the controller context which will be passed to the ViewHelper
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext The controller context to set
-	 */
-	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
-		$this->controllerContext = $controllerContext;
-	}
+    /**
+     * Get the controller context which will be passed to the ViewHelper
+     *
+     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
+     */
+    public function getControllerContext()
+    {
+        return $this->controllerContext;
+    }
 
-	/**
-	 * Get the controller context which will be passed to the ViewHelper
-	 *
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
-	 */
-	public function getControllerContext() {
-		return $this->controllerContext;
-	}
-
-	/**
-	 * Get the ViewHelperVariableContainer
-	 *
-	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-	 */
-	public function getViewHelperVariableContainer() {
-		return $this->viewHelperVariableContainer;
-	}
-
+    /**
+     * Get the ViewHelperVariableContainer
+     *
+     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     */
+    public function getViewHelperVariableContainer()
+    {
+        return $this->viewHelperVariableContainer;
+    }
 }

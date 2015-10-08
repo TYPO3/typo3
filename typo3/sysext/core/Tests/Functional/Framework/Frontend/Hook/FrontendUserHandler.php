@@ -19,32 +19,33 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handler for frontend user
  */
-class FrontendUserHandler implements \TYPO3\CMS\Core\SingletonInterface {
+class FrontendUserHandler implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * Initialize
+     *
+     * @param array $parameters
+     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
+     */
+    public function initialize(array $parameters, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController)
+    {
+        $frontendUserId = (int)GeneralUtility::_GP('frontendUserId');
+        $frontendController->fe_user->checkPid = 0;
 
-	/**
-	 * Initialize
-	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
-	 */
-	public function initialize(array $parameters, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController) {
-		$frontendUserId = (int)GeneralUtility::_GP('frontendUserId');
-		$frontendController->fe_user->checkPid = 0;
+        $frontendUser = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'fe_users', 'uid =' . $frontendUserId);
+        if (is_array($frontendUser)) {
+            $frontendController->loginUser = 1;
+            $frontendController->fe_user->createUserSession($frontendUser);
+            $frontendController->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
+            $frontendController->initUserGroups();
+        }
+    }
 
-		$frontendUser = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'fe_users', 'uid =' . $frontendUserId);
-		if (is_array($frontendUser)) {
-			$frontendController->loginUser = 1;
-			$frontendController->fe_user->createUserSession($frontendUser);
-			$frontendController->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
-			$frontendController->initUserGroups();
-		}
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

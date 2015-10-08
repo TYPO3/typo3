@@ -17,6 +17,6 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
 /**
  * A repository for persons
  */
-class PersonRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-
+class PersonRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 }

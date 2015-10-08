@@ -17,15 +17,15 @@ namespace TYPO3\CMS\Lang\View\Language;
 /**
  * JSON view for "activateLanguage" action in "Language" controller
  */
-class ActivateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
-
-	/**
-	 * Returns the response data
-	 *
-	 * @return array The response data
-	 */
-	protected function getReponseData() {
-		return $this->variables['response'];
-	}
-
+class ActivateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView
+{
+    /**
+     * Returns the response data
+     *
+     * @return array The response data
+     */
+    protected function getReponseData()
+    {
+        return $this->variables['response'];
+    }
 }

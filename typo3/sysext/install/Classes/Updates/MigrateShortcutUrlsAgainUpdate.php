@@ -17,74 +17,75 @@ namespace TYPO3\CMS\Install\Updates;
 /**
  * Migrate backend shorcut urls
  */
-class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate {
+class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
+{
+    /**
+     * @var string
+     */
+    protected $title = 'Migrate backend shortcut urls';
 
-	/**
-	 * @var string
-	 */
-	protected $title = 'Migrate backend shortcut urls';
+    /**
+     * Checks if an update is needed
+     *
+     * @param string &$description The description for the update
+     * @return bool Whether an update is needed (TRUE) or not (FALSE)
+     */
+    public function checkForUpdate(&$description)
+    {
+        $shortcutsCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_be_shortcuts');
+        if ($this->isWizardDone() || $shortcutsCount === 0) {
+            return false;
+        }
 
-	/**
-	 * Checks if an update is needed
-	 *
-	 * @param string &$description The description for the update
-	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
-	 */
-	public function checkForUpdate(&$description) {
-		$shortcutsCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_be_shortcuts');
-		if ($this->isWizardDone() || $shortcutsCount === 0) {
-			return FALSE;
-		}
+        $description = 'Migrate old shorcut urls to the new module urls.';
 
-		$description = 'Migrate old shorcut urls to the new module urls.';
+        return true;
+    }
 
-		return TRUE;
-	}
+    /**
+     * Performs the database update if shorcuts are available
+     *
+     * @param array &$databaseQueries Queries done in this update
+     * @param mixed &$customMessages Custom messages
+     * @return bool
+     */
+    public function performUpdate(array &$databaseQueries, &$customMessages)
+    {
+        $db = $this->getDatabaseConnection();
+        $shortcuts = $db->exec_SELECTgetRows('uid,url', 'sys_be_shortcuts', '1=1');
+        if (!empty($shortcuts)) {
+            foreach ($shortcuts as $shortcut) {
+                $decodedUrl = urldecode($shortcut['url']);
+                $encodedUrl = str_replace(
+                    array(
+                        '/typo3/sysext/cms/layout/db_layout.php?&',
+                        '/typo3/sysext/cms/layout/db_layout.php?',
+                        '/typo3/file_edit.php?&',
+                        // From 7.2 to 7.4
+                        'mod.php',
+                    ),
+                    array(
+                        '/typo3/index.php?&M=web_layout&',
+                        urlencode('/typo3/index.php?&M=web_layout&'),
+                        '/typo3/index.php?&M=file_edit&',
+                        // From 7.2 to 7.4
+                        'index.php',
+                    ),
+                    $decodedUrl
+                );
 
-	/**
-	 * Performs the database update if shorcuts are available
-	 *
-	 * @param array &$databaseQueries Queries done in this update
-	 * @param mixed &$customMessages Custom messages
-	 * @return bool
-	 */
-	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$db = $this->getDatabaseConnection();
-		$shortcuts = $db->exec_SELECTgetRows('uid,url', 'sys_be_shortcuts', '1=1');
-		if (!empty($shortcuts)) {
-			foreach ($shortcuts as $shortcut) {
-				$decodedUrl = urldecode($shortcut['url']);
-				$encodedUrl = str_replace(
-					array(
-						'/typo3/sysext/cms/layout/db_layout.php?&',
-						'/typo3/sysext/cms/layout/db_layout.php?',
-						'/typo3/file_edit.php?&',
-						// From 7.2 to 7.4
-						'mod.php',
-					),
-					array(
-						'/typo3/index.php?&M=web_layout&',
-						urlencode('/typo3/index.php?&M=web_layout&'),
-						'/typo3/index.php?&M=file_edit&',
-						// From 7.2 to 7.4
-						'index.php',
-					),
-					$decodedUrl
-				);
+                $db->exec_UPDATEquery(
+                    'sys_be_shortcuts',
+                    'uid=' . (int)$shortcut['uid'],
+                    array(
+                        'url' => $encodedUrl,
+                    )
+                );
+                $databaseQueries[] = $db->debug_lastBuiltQuery;
+            }
+        }
 
-				$db->exec_UPDATEquery(
-					'sys_be_shortcuts',
-					'uid=' . (int)$shortcut['uid'],
-					array(
-						'url' => $encodedUrl,
-					)
-				);
-				$databaseQueries[] = $db->debug_lastBuiltQuery;
-			}
-		}
-
-		$this->markWizardAsDone();
-		return TRUE;
-	}
-
+        $this->markWizardAsDone();
+        return true;
+    }
 }

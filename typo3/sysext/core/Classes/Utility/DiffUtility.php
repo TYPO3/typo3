@@ -18,28 +18,29 @@ use cogpowered\FineDiff\Diff;
 /**
  * This class has functions which generates a difference output of a content string
  */
-class DiffUtility {
+class DiffUtility
+{
+    /**
+     * If set, the HTML tags are stripped from the input strings first.
+     *
+     * @var bool
+     */
+    public $stripTags = true;
 
-	/**
-	 * If set, the HTML tags are stripped from the input strings first.
-	 *
-	 * @var bool
-	 */
-	public $stripTags = TRUE;
-
-	/**
-	 * This will produce a color-marked-up diff output in HTML from the input strings.
-	 *
-	 * @param string $str1 String 1
-	 * @param string $str2 String 2
-	 * @return string Formatted output.
-	 */
-	public function makeDiffDisplay($str1, $str2) {
-		if ($this->stripTags) {
-			$str1 = strip_tags($str1);
-			$str2 = strip_tags($str2);
-		}
-		$diff = new Diff();
-		return $diff->render($str1, $str2);
-	}
+    /**
+     * This will produce a color-marked-up diff output in HTML from the input strings.
+     *
+     * @param string $str1 String 1
+     * @param string $str2 String 2
+     * @return string Formatted output.
+     */
+    public function makeDiffDisplay($str1, $str2)
+    {
+        if ($this->stripTags) {
+            $str1 = strip_tags($str1);
+            $str2 = strip_tags($str2);
+        }
+        $diff = new Diff();
+        return $diff->render($str1, $str2);
+    }
 }

@@ -20,24 +20,25 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * Add user TsConfig to result
  */
-class UserTsConfig implements FormDataProviderInterface {
+class UserTsConfig implements FormDataProviderInterface
+{
+    /**
+     * Add user typo script config
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $result['userTsConfig'] = $this->getBackendUser()->userTS;
+        return $result;
+    }
 
-	/**
-	 * Add user typo script config
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$result['userTsConfig'] = $this->getBackendUser()->userTS;
-		return $result;
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUser() {
-		return $GLOBALS['BE_USER'];
-	}
-
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
 }

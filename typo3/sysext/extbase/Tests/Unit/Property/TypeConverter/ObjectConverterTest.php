@@ -27,92 +27,96 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 /**
  * Test case
  */
-class ObjectConverterTest extends UnitTestCase {
+class ObjectConverterTest extends UnitTestCase
+{
+    /**
+     * @var ObjectConverter
+     */
+    protected $converter;
 
-	/**
-	 * @var ObjectConverter
-	 */
-	protected $converter;
+    /**
+     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $mockReflectionService;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $mockReflectionService;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $mockObjectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $mockObjectManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $mockContainer;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $mockContainer;
+    /**
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function setUp()
+    {
+        $this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+        $this->mockContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 
-	/**
-	 * @throws \InvalidArgumentException
-	 * @throws \RuntimeException
-	 */
-	protected function setUp() {
-		$this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-		$this->mockContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
+        $this->converter = new ObjectConverter();
+        $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
+        $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
+        $this->inject($this->converter, 'objectContainer', $this->mockContainer);
+    }
 
-		$this->converter = new ObjectConverter();
-		$this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
-		$this->inject($this->converter, 'objectManager', $this->mockObjectManager);
-		$this->inject($this->converter, 'objectContainer', $this->mockContainer);
-	}
+    /**
+     * @test
+     */
+    public function checkMetadata()
+    {
+        $this->assertEquals(array('array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        $this->assertEquals(0, $this->converter->getPriority(), 'Priority does not match');
+    }
 
-	/**
-	 * @test
-	 */
-	public function checkMetadata() {
-		$this->assertEquals(array('array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-		$this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
-		$this->assertEquals(0, $this->converter->getPriority(), 'Priority does not match');
-	}
+    /**
+     * @return array
+     */
+    public function dataProviderForCanConvert()
+    {
+        return array(
+            // Is entity => cannot convert
+            array(\TYPO3\CMS\Extbase\Tests\Fixture\Entity::class, false),
+            // Is valueobject => cannot convert
+            array(\TYPO3\CMS\Extbase\Tests\Fixture\ValueObject::class, false),
+            // Is no entity and no value object => can convert
+            array('stdClass', true)
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function dataProviderForCanConvert() {
-		return array(
-			// Is entity => cannot convert
-			array(\TYPO3\CMS\Extbase\Tests\Fixture\Entity::class, FALSE),
-			// Is valueobject => cannot convert
-			array(\TYPO3\CMS\Extbase\Tests\Fixture\ValueObject::class, FALSE),
-			// Is no entity and no value object => can convert
-			array('stdClass', TRUE)
-		);
-	}
+    /**
+     * @test
+     * @dataProvider dataProviderForCanConvert
+     * @param $className
+     * @param $expected
+     */
+    public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($className, $expected)
+    {
+        $this->assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
+    }
 
-	/**
-	 * @test
-	 * @dataProvider dataProviderForCanConvert
-	 * @param $className
-	 * @param $expected
-	 */
-	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($className, $expected) {
-		$this->assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
-	}
+    /**
+     * @test
+     */
+    public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
+    {
+        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->will($this->returnValue(false));
+        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->will($this->returnValue(array(
+            'thePropertyName' => array(
+                'type' => 'TheTypeOfSubObject',
+                'elementType' => null
+            )
+        )));
+        $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
 
-	/**
-	 * @test
-	 */
-	public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType() {
-		$this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->will($this->returnValue(FALSE));
-		$this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->will($this->returnValue(array(
-			'thePropertyName' => array(
-				'type' => 'TheTypeOfSubObject',
-				'elementType' => NULL
-			)
-		)));
-		$this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
-
-		$configuration = new PropertyMappingConfiguration();
-		$configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, array());
-		$this->assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
-	}
-
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, array());
+        $this->assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
+    }
 }

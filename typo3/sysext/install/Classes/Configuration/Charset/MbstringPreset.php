@@ -19,37 +19,37 @@ use TYPO3\CMS\Install\Configuration;
 /**
  * Mbstring charset preset
  */
-class MbstringPreset extends Configuration\AbstractPreset {
+class MbstringPreset extends Configuration\AbstractPreset
+{
+    /**
+     * @var string Name of preset
+     */
+    protected $name = 'Mbstring';
 
-	/**
-	 * @var string Name of preset
-	 */
-	protected $name = 'Mbstring';
+    /**
+     * @var int Priority of preset
+     */
+    protected $priority = 90;
 
-	/**
-	 * @var int Priority of preset
-	 */
-	protected $priority = 90;
+    /**
+     * @var array Configuration values handled by this preset
+     */
+    protected $configurationValues = array(
+        'SYS/t3lib_cs_convMethod' => 'mbstring',
+        'SYS/t3lib_cs_utils' => 'mbstring',
+    );
 
-	/**
-	 * @var array Configuration values handled by this preset
-	 */
-	protected $configurationValues = array(
-		'SYS/t3lib_cs_convMethod' => 'mbstring',
-		'SYS/t3lib_cs_utils' => 'mbstring',
-	);
-
-	/**
-	 * Check if mbstring PHP module is loaded
-	 *
-	 * @return bool TRUE if mbstring PHP module is loaded
-	 */
-	public function isAvailable() {
-		$result = FALSE;
-		if (extension_loaded('mbstring')) {
-			$result = TRUE;
-		}
-		return $result;
-	}
-
+    /**
+     * Check if mbstring PHP module is loaded
+     *
+     * @return bool TRUE if mbstring PHP module is loaded
+     */
+    public function isAvailable()
+    {
+        $result = false;
+        if (extension_loaded('mbstring')) {
+            $result = true;
+        }
+        return $result;
+    }
 }

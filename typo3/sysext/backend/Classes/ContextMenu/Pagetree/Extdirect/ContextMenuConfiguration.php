@@ -17,37 +17,38 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect;
 /**
  * Context Menu of the Page Tree
  */
-class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu {
+class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu
+{
+    /**
+     * Sets the data provider
+     *
+     * @return void
+     */
+    protected function initDataProvider()
+    {
+        /** @var $dataProvider \TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider */
+        $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider::class);
+        $this->setDataProvider($dataProvider);
+    }
 
-	/**
-	 * Sets the data provider
-	 *
-	 * @return void
-	 */
-	protected function initDataProvider() {
-		/** @var $dataProvider \TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider */
-		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider::class);
-		$this->setDataProvider($dataProvider);
-	}
-
-	/**
-	 * Returns the actions for the given node information's
-	 *
-	 * @param \stdClass $nodeData
-	 * @return array
-	 */
-	public function getActionsForNodeArray($nodeData) {
-		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-		$node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId()));
-		$this->initDataProvider();
-		$this->dataProvider->setContextMenuType('table.' . $node->getType());
-		$actionCollection = $this->dataProvider->getActionsForNode($node);
-		$actions = array();
-		if ($actionCollection instanceof \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection) {
-			$actions = $actionCollection->toArray();
-		}
-		return $actions;
-	}
-
+    /**
+     * Returns the actions for the given node information's
+     *
+     * @param \stdClass $nodeData
+     * @return array
+     */
+    public function getActionsForNodeArray($nodeData)
+    {
+        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+        $node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        $node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId()));
+        $this->initDataProvider();
+        $this->dataProvider->setContextMenuType('table.' . $node->getType());
+        $actionCollection = $this->dataProvider->getActionsForNode($node);
+        $actions = array();
+        if ($actionCollection instanceof \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection) {
+            $actions = $actionCollection->toArray();
+        }
+        return $actions;
+    }
 }

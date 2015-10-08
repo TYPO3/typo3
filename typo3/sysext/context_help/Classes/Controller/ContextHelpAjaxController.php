@@ -24,46 +24,47 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Class ContextHelpAjaxController
  */
-class ContextHelpAjaxController {
+class ContextHelpAjaxController
+{
+    /**
+     * The main dispatcher function. Collect data and prepare HTML output.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $params = isset($request->getParsedBody()['params']) ? $request->getParsedBody()['params'] : $request->getQueryParams()['params'];
+        if ($params['action'] === 'getContextHelp') {
+            $result = $this->getContextHelp($params['table'], $params['field']);
+            $response->getBody()->write(json_encode([
+                'title' => $result['title'],
+                'content' => $result['description'],
+                'link' => $result['moreInfo']
+            ]));
+        }
+        return $response;
+    }
 
-	/**
-	 * The main dispatcher function. Collect data and prepare HTML output.
-	 *
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response) {
-		$params = isset($request->getParsedBody()['params']) ? $request->getParsedBody()['params'] : $request->getQueryParams()['params'];
-		if ($params['action'] === 'getContextHelp') {
-			$result = $this->getContextHelp($params['table'], $params['field']);
-			$response->getBody()->write(json_encode([
-				'title' => $result['title'],
-				'content' => $result['description'],
-				'link' => $result['moreInfo']
-			]));
-		}
-		return $response;
-	}
-
-	/**
-	 * Fetch the context help for the given table/field parameters
-	 *
-	 * @param string $table Table identifier
-	 * @param string $field Field identifier
-	 * @return array complete Help information
-	 */
-	protected function getContextHelp($table, $field) {
-		$helpTextArray = BackendUtility::helpTextArray($table, $field);
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
-		return array(
-			'title' => $helpTextArray['title'],
-			'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
-			'id' => $table . '.' . $field,
-			'moreInfo' => $helpTextArray['moreInfo']
-		);
-	}
-
+    /**
+     * Fetch the context help for the given table/field parameters
+     *
+     * @param string $table Table identifier
+     * @param string $field Field identifier
+     * @return array complete Help information
+     */
+    protected function getContextHelp($table, $field)
+    {
+        $helpTextArray = BackendUtility::helpTextArray($table, $field);
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
+        return array(
+            'title' => $helpTextArray['title'],
+            'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
+            'id' => $table . '.' . $field,
+            'moreInfo' => $helpTextArray['moreInfo']
+        );
+    }
 }

@@ -34,46 +34,47 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
  * </output>
  */
-class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
+    /**
+     * @var string
+     */
+    protected $tagName = 'a';
 
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
+    /**
+     * Arguments initialization
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerUniversalTagAttributes();
+        $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
+        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
+        $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
+        $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
+    }
 
-	/**
-	 * Arguments initialization
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
-		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
-		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
-	}
-
-	/**
-	 * @param string $email The email address to be turned into a link.
-	 * @return string Rendered email link
-	 */
-	public function render($email) {
-		if (TYPO3_MODE === 'FE') {
-			list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
-		} else {
-			$linkHref = 'mailto:' . $email;
-			$linkText = $email;
-		}
-		$tagContent = $this->renderChildren();
-		if ($tagContent !== NULL) {
-			$linkText = $tagContent;
-		}
-		$this->tag->setContent($linkText);
-		$escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
-		$this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
-		$this->tag->forceClosingTag(TRUE);
-		return $this->tag->render();
-	}
-
+    /**
+     * @param string $email The email address to be turned into a link.
+     * @return string Rendered email link
+     */
+    public function render($email)
+    {
+        if (TYPO3_MODE === 'FE') {
+            list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+        } else {
+            $linkHref = 'mailto:' . $email;
+            $linkText = $email;
+        }
+        $tagContent = $this->renderChildren();
+        if ($tagContent !== null) {
+            $linkText = $tagContent;
+        }
+        $this->tag->setContent($linkText);
+        $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
+        $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
+        $this->tag->forceClosingTag(true);
+        return $this->tag->render();
+    }
 }

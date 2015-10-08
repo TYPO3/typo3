@@ -17,33 +17,35 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures;
 /**
  * Disable getRecordWSOL and getRecordTitle dependency by returning stable results
  */
-class ProcessedValueForGroupWithMultipleAllowedTablesFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility {
+class ProcessedValueForGroupWithMultipleAllowedTablesFixture extends \TYPO3\CMS\Backend\Utility\BackendUtility
+{
+    /**
+     * Get record WSOL
+     */
+    public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = true, $unsetMovePointers = false)
+    {
+        static $called = 0;
+        ++$called;
+        if ($called === 1) {
+            return array('title' => 'Page 1');
+        }
+        if ($called === 2) {
+            return array('header' => 'Configuration 2');
+        }
+    }
 
-	/**
-	 * Get record WSOL
-	 */
-	static public function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
-		static $called = 0;
-		++$called;
-		if ($called === 1) {
-			return array('title' => 'Page 1');
-		}
-		if ($called === 2) {
-			return array('header' => 'Configuration 2');
-		}
-	}
-
-	/**
-	 * Get record title
-	 */
-	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
-		static $called = 0;
-		++$called;
-		if ($called === 1) {
-			return 'Page 1';
-		}
-		if ($called === 2) {
-			return 'Configuration 2';
-		}
-	}
+    /**
+     * Get record title
+     */
+    public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
+    {
+        static $called = 0;
+        ++$called;
+        if ($called === 1) {
+            return 'Page 1';
+        }
+        if ($called === 2) {
+            return 'Configuration 2';
+        }
+    }
 }

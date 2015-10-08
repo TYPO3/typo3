@@ -20,135 +20,138 @@ use TYPO3\CMS\Core\Resource;
 /**
  * Render the image attributes and reconstruct magic images, if necessary (and possible)
  */
-class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
+class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+{
+    /**
+     * Same as class name
+     *
+     * @var string
+     */
+    public $prefixId = 'ImageRenderingController';
 
-	/**
-	 * Same as class name
-	 *
-	 * @var string
-	 */
-	public $prefixId = 'ImageRenderingController';
+    /**
+     * Path to this script relative to the extension dir
+     *
+     * @var string
+     */
+    public $scriptRelPath = 'Classes/Controller/ImageRenderingController.php';
 
-	/**
-	 * Path to this script relative to the extension dir
-	 *
-	 * @var string
-	 */
-	public $scriptRelPath = 'Classes/Controller/ImageRenderingController.php';
+    /**
+     * The extension key
+     *
+     * @var string
+     */
+    public $extKey = 'rtehtmlarea';
 
-	/**
-	 * The extension key
-	 *
-	 * @var string
-	 */
-	public $extKey = 'rtehtmlarea';
+    /**
+     * Configuration
+     *
+     * @var array
+     */
+    public $conf = array();
 
-	/**
-	 * Configuration
-	 *
-	 * @var array
-	 */
-	public $conf = array();
+    /**
+     * cObj object
+     *
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    public $cObj;
 
-	/**
-	 * cObj object
-	 *
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	public $cObj;
+    /**
+     * Returns a processed image to be displayed on the Frontend.
+     *
+     * @param string $content Content input (not used).
+     * @param array $conf TypoScript configuration
+     * @return string HTML output
+     */
+    public function renderImageAttributes($content = '', $conf)
+    {
+        $imageAttributes = $this->getImageAttributes();
 
-	/**
-	 * Returns a processed image to be displayed on the Frontend.
-	 *
-	 * @param string $content Content input (not used).
-	 * @param array $conf TypoScript configuration
-	 * @return string HTML output
-	 */
-	public function renderImageAttributes($content = '', $conf) {
+        // It is pretty rare to be in presence of an external image as the default behaviour
+        // of the RTE is to download the external image and create a local image.
+        // However, it may happen if the RTE has the flag "disable"
+        if (!$this->isExternalImage()) {
+            $fileUid = (int)$imageAttributes['data-htmlarea-file-uid'];
+            if ($fileUid) {
+                try {
+                    $file = Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
+                    if ($imageAttributes['src'] !== $file->getPublicUrl()) {
+                        // Source file is a processed image
+                        $imageConfiguration = array(
+                            'width' => (int)$imageAttributes['width'],
+                            'height' => (int)$imageAttributes['height']
+                        );
+                        $processedFile = $this->getMagicImageService()->createMagicImage($file, $imageConfiguration);
+                        $additionalAttributes = array(
+                            'src' => $processedFile->getPublicUrl(),
+                            'title' => $imageAttributes['title'] ?: $file->getProperty('title'),
+                            'alt' => $imageAttributes['alt'] ?: $file->getProperty('alternative'),
+                            'width' => $processedFile->getProperty('width'),
+                            'height' => $processedFile->getProperty('height'),
+                        );
+                        $imageAttributes = array_merge($imageAttributes, $additionalAttributes);
+                    }
+                } catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
+                    // Log the fact the file could not be retrieved.
+                    $message = sprintf('I could not find file with uid "%s"', $fileUid);
+                    $this->getLogger()->error($message);
+                }
+            }
+        }
+        return '<img ' . GeneralUtility::implodeAttributes($imageAttributes, true, true) . ' />';
+    }
 
-		$imageAttributes = $this->getImageAttributes();
+    /**
+     * Returns a sanitizes array of attributes out of $this->cObj
+     *
+     * @return array
+     */
+    protected function getImageAttributes()
+    {
+        return $this->cObj->parameters;
+    }
 
-		// It is pretty rare to be in presence of an external image as the default behaviour
-		// of the RTE is to download the external image and create a local image.
-		// However, it may happen if the RTE has the flag "disable"
-		if (!$this->isExternalImage()) {
-			$fileUid = (int)$imageAttributes['data-htmlarea-file-uid'];
-			if ($fileUid) {
-				try {
-					$file = Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
-					if ($imageAttributes['src'] !== $file->getPublicUrl()) {
-						// Source file is a processed image
-						$imageConfiguration = array(
-							'width' => (int)$imageAttributes['width'],
-							'height' => (int)$imageAttributes['height']
-						);
-						$processedFile = $this->getMagicImageService()->createMagicImage($file, $imageConfiguration);
-						$additionalAttributes = array(
-							'src' => $processedFile->getPublicUrl(),
-							'title' => $imageAttributes['title'] ?: $file->getProperty('title'),
-							'alt' => $imageAttributes['alt'] ?: $file->getProperty('alternative'),
-							'width' => $processedFile->getProperty('width'),
-							'height' => $processedFile->getProperty('height'),
-						);
-						$imageAttributes = array_merge($imageAttributes, $additionalAttributes);
-					}
-				} catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
-					// Log the fact the file could not be retrieved.
-					$message = sprintf('I could not find file with uid "%s"', $fileUid);
-					$this->getLogger()->error($message);
-				}
-			}
-		}
-		return '<img ' . GeneralUtility::implodeAttributes($imageAttributes, TRUE, TRUE) . ' />';
-	}
+    /**
+     * Instantiates and prepares the Magic Image service.
+     *
+     * @return \TYPO3\CMS\Core\Resource\Service\MagicImageService
+     */
+    protected function getMagicImageService()
+    {
 
-	/**
-	 * Returns a sanitizes array of attributes out of $this->cObj
-	 *
-	 * @return array
-	 */
-	protected function getImageAttributes() {
-		return $this->cObj->parameters;
-	}
+        /** @var $magicImageService Resource\Service\MagicImageService */
+        $magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
 
-	/**
-	 * Instantiates and prepares the Magic Image service.
-	 *
-	 * @return \TYPO3\CMS\Core\Resource\Service\MagicImageService
-	 */
-	protected function getMagicImageService() {
+        // Get RTE configuration
+        $pageTSConfig = $this->frontendController->getPagesTSconfig();
+        if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.']['default.'])) {
+            $magicImageService->setMagicImageMaximumDimensions($pageTSConfig['RTE.']['default.']);
+        }
 
-		/** @var $magicImageService Resource\Service\MagicImageService */
-		$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
+        return $magicImageService;
+    }
 
-		// Get RTE configuration
-		$pageTSConfig = $this->frontendController->getPagesTSconfig();
-		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.']['default.'])) {
-			$magicImageService->setMagicImageMaximumDimensions($pageTSConfig['RTE.']['default.']);
-		}
+    /**
+     * Tells whether the image URL is found to be "external".
+     *
+     * @return bool
+     */
+    protected function isExternalImage()
+    {
+        $srcAbsoluteUrl = $this->cObj->parameters['src'];
+        return strtolower(substr($srcAbsoluteUrl, 0, 4)) === 'http' || substr($srcAbsoluteUrl, 0, 2) === '//';
+    }
 
-		return $magicImageService;
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected function getLogger()
+    {
 
-	/**
-	 * Tells whether the image URL is found to be "external".
-	 *
-	 * @return bool
-	 */
-	protected function isExternalImage() {
-		$srcAbsoluteUrl = $this->cObj->parameters['src'];
-		return strtolower(substr($srcAbsoluteUrl, 0, 4)) === 'http' || substr($srcAbsoluteUrl, 0, 2) === '//';
-	}
+        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
-	/**
-	 * @return \TYPO3\CMS\Core\Log\Logger
-	 */
-	protected function getLogger() {
-
-		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
-
-		return $logManager->getLogger(get_class($this));
-	}
-
+        return $logManager->getLogger(get_class($this));
+    }
 }

@@ -20,57 +20,59 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Context Menu plugin for htmlArea RTE
  */
-class ContextMenu extends RteHtmlAreaApi {
+class ContextMenu extends RteHtmlAreaApi
+{
+    /**
+     * The name of the plugin registered by the extension
+     *
+     * @var string
+     */
+    protected $pluginName = 'ContextMenu';
 
-	/**
-	 * The name of the plugin registered by the extension
-	 *
-	 * @var string
-	 */
-	protected $pluginName = 'ContextMenu';
+    /**
+     * Returns TRUE if the plugin is available and correctly initialized
+     *
+     * @param array $configuration Configuration array given from calling object down to the single plugins
+     * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+     */
+    public function main(array $configuration)
+    {
+        return parent::main($configuration)
+            && !($this->configuration['client']['browser'] === 'opera' || $this->configuration['thisConfig']['contextMenu.']['disabled']);
+    }
 
-	/**
-	 * Returns TRUE if the plugin is available and correctly initialized
-	 *
-	 * @param array $configuration Configuration array given from calling object down to the single plugins
-	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
-	 */
-	public function main(array $configuration) {
-		return parent::main($configuration)
-			&& !($this->configuration['client']['browser'] === 'opera' || $this->configuration['thisConfig']['contextMenu.']['disabled']);
-	}
+    /**
+     * Return JS configuration of the htmlArea plugins registered by the extension
+     *
+     * @return string JS configuration for registered plugins
+     */
+    public function buildJavascriptConfiguration()
+    {
+        $jsArray = array();
+        if (is_array($this->configuration['thisConfig']['contextMenu.'])) {
+            $jsArray[] = 'RTEarea[editornumber].contextMenu =  ' . $this->buildNestedJSArray($this->configuration['thisConfig']['contextMenu.']) . ';';
+            if ($this->configuration['thisConfig']['contextMenu.']['showButtons']) {
+                $jsArray[] = 'RTEarea[editornumber].contextMenu.showButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['showButtons'])), true)) . ';';
+            }
+            if ($this->configuration['thisConfig']['contextMenu.']['hideButtons']) {
+                $jsArray[] = 'RTEarea[editornumber].contextMenu.hideButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['hideButtons'])), true)) . ';';
+            }
+        }
+        return implode(LF, $jsArray);
+    }
 
-	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @return string JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration() {
-		$jsArray = array();
-		if (is_array($this->configuration['thisConfig']['contextMenu.'])) {
-			$jsArray[] = 'RTEarea[editornumber].contextMenu =  ' . $this->buildNestedJSArray($this->configuration['thisConfig']['contextMenu.']) . ';';
-			if ($this->configuration['thisConfig']['contextMenu.']['showButtons']) {
-				$jsArray[] = 'RTEarea[editornumber].contextMenu.showButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['showButtons'])), TRUE)) . ';';
-			}
-			if ($this->configuration['thisConfig']['contextMenu.']['hideButtons']) {
-				$jsArray[] = 'RTEarea[editornumber].contextMenu.hideButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['contextMenu.']['hideButtons'])), TRUE)) . ';';
-			}
-		}
-		return implode(LF, $jsArray);
-	}
-
-	/**
-	 * Translate Page TS Config array in JS nested array definition
-	 * Replace 0 values with false
-	 * Unquote regular expression values
-	 * Replace empty arrays with empty objects
-	 *
-	 * @param array $conf: Page TSConfig configuration array
-	 * @return string nested JS array definition
-	 */
-	protected function buildNestedJSArray($conf) {
-		$convertedConf = GeneralUtility::removeDotsFromTS($conf);
-		return str_replace(array(':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
-	}
-
+    /**
+     * Translate Page TS Config array in JS nested array definition
+     * Replace 0 values with false
+     * Unquote regular expression values
+     * Replace empty arrays with empty objects
+     *
+     * @param array $conf: Page TSConfig configuration array
+     * @return string nested JS array definition
+     */
+    protected function buildNestedJSArray($conf)
+    {
+        $convertedConf = GeneralUtility::removeDotsFromTS($conf);
+        return str_replace(array(':"0"', ':"\\/^(', ')$\\/i"', ':"\\/^(', ')$\\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
+    }
 }

@@ -17,17 +17,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional getImgResource processing
  */
-interface ContentObjectGetImageResourceHookInterface {
-
-	/**
-	 * Hook for post-processing image resources
-	 *
-	 * @param string $file Original image file
-	 * @param array $configuration TypoScript getImgResource properties
-	 * @param array $imageResource Information of the created/converted image resource
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent Parent content object
-	 * @return array Modified image resource information
-	 */
-	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, ContentObjectRenderer $parent);
-
+interface ContentObjectGetImageResourceHookInterface
+{
+    /**
+     * Hook for post-processing image resources
+     *
+     * @param string $file Original image file
+     * @param array $configuration TypoScript getImgResource properties
+     * @param array $imageResource Information of the created/converted image resource
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent Parent content object
+     * @return array Modified image resource information
+     */
+    public function getImgResourcePostProcess($file, array $configuration, array $imageResource, ContentObjectRenderer $parent);
 }

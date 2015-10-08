@@ -17,68 +17,73 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 /**
  * Module data object
  */
-class ModuleData {
+class ModuleData
+{
+    /**
+     * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
+     */
+    protected $demand;
 
-	/**
-	 * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
-	 */
-	protected $demand;
+    /**
+     * @var array
+     */
+    protected $compareUserList = array();
 
-	/**
-	 * @var array
-	 */
-	protected $compareUserList = array();
+    /**
+     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+     */
+    public function injectDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
+    {
+        $this->demand = $demand;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-	 */
-	public function injectDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand) {
-		$this->demand = $demand;
-	}
+    /**
+     * @return \TYPO3\CMS\Beuser\Domain\Model\Demand
+     */
+    public function getDemand()
+    {
+        return $this->demand;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Beuser\Domain\Model\Demand
-	 */
-	public function getDemand() {
-		return $this->demand;
-	}
+    /**
+     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+     * @return void
+     */
+    public function setDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
+    {
+        $this->demand = $demand;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-	 * @return void
-	 */
-	public function setDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand) {
-		$this->demand = $demand;
-	}
+    /**
+     * Returns the compare list as array of user uis
+     *
+     * @return array
+     */
+    public function getCompareUserList()
+    {
+        return array_keys($this->compareUserList);
+    }
 
-	/**
-	 * Returns the compare list as array of user uis
-	 *
-	 * @return array
-	 */
-	public function getCompareUserList() {
-		return array_keys($this->compareUserList);
-	}
+    /**
+     * Adds one backend user (by uid) to the compare user list
+     * Cannot be ObjectStorage, must be array
+     *
+     * @param int $uid
+     * @return void
+     */
+    public function attachUidCompareUser($uid)
+    {
+        $this->compareUserList[$uid] = true;
+    }
 
-	/**
-	 * Adds one backend user (by uid) to the compare user list
-	 * Cannot be ObjectStorage, must be array
-	 *
-	 * @param int $uid
-	 * @return void
-	 */
-	public function attachUidCompareUser($uid) {
-		$this->compareUserList[$uid] = TRUE;
-	}
-
-	/**
-	 * Strip one backend user from the compare user list
-	 *
-	 * @param int $uid
-	 * @return void
-	 */
-	public function detachUidCompareUser($uid) {
-		unset($this->compareUserList[$uid]);
-	}
-
+    /**
+     * Strip one backend user from the compare user list
+     *
+     * @param int $uid
+     * @return void
+     */
+    public function detachUidCompareUser($uid)
+    {
+        unset($this->compareUserList[$uid]);
+    }
 }

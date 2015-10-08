@@ -23,6 +23,6 @@ namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
 /**
  * An exception if no widget context could be found inside the AjaxWidgetContextHolder.
  */
-class RenderingContextNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception {
-
+class RenderingContextNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception
+{
 }

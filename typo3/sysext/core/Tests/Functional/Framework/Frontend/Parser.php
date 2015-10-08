@@ -17,86 +17,91 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Frontend;
 /**
  * Model of frontend response
  */
-class Parser implements \TYPO3\CMS\Core\SingletonInterface {
+class Parser implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array
+     */
+    protected $paths = array();
 
-	/**
-	 * @var array
-	 */
-	protected $paths = array();
+    /**
+     * @var array
+     */
+    protected $records = array();
 
-	/**
-	 * @var array
-	 */
-	protected $records = array();
+    /**
+     * @return array
+     */
+    public function getPaths()
+    {
+        return $this->paths;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getPaths() {
-		return $this->paths;
-	}
+    /**
+     * @return array
+     */
+    public function getRecords()
+    {
+        return $this->records;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getRecords() {
-		return $this->records;
-	}
+    /**
+     * @param array $structure
+     * @param array $path
+     */
+    public function parse(array $structure, array $path = array())
+    {
+        $this->process($structure);
+    }
 
-	/**
-	 * @param array $structure
-	 * @param array $path
-	 */
-	public function parse(array $structure, array $path = array()) {
-		$this->process($structure);
-	}
+    /**
+     * @param array $iterator
+     * @param array $path
+     */
+    protected function process(array $iterator, array $path = array())
+    {
+        foreach ($iterator as $identifier => $properties) {
+            $this->addRecord($identifier, $properties);
+            $this->addPath($identifier, $path);
+            foreach ($properties as $propertyName => $propertyValue) {
+                if (!is_array($propertyValue)) {
+                    continue;
+                }
+                $nestedPath = array_merge($path, array($identifier, $propertyName));
+                $this->process($propertyValue, $nestedPath);
+            }
+        }
+    }
 
-	/**
-	 * @param array $iterator
-	 * @param array $path
-	 */
-	protected function process(array $iterator, array $path = array()) {
-		foreach ($iterator as $identifier => $properties) {
-			$this->addRecord($identifier, $properties);
-			$this->addPath($identifier, $path);
-			foreach ($properties as $propertyName => $propertyValue) {
-				if (!is_array($propertyValue)) {
-					continue;
-				}
-				$nestedPath = array_merge($path, array($identifier, $propertyName));
-				$this->process($propertyValue, $nestedPath);
-			}
-		}
-	}
+    /**
+     * @param string $identifier
+     * @param array $properties
+     */
+    protected function addRecord($identifier, array $properties)
+    {
+        if (isset($this->records[$identifier])) {
+            return;
+        }
 
-	/**
-	 * @param string $identifier
-	 * @param array $properties
-	 */
-	protected function addRecord($identifier, array $properties) {
-		if (isset($this->records[$identifier])) {
-			return;
-		}
+        foreach ($properties as $propertyName => $propertyValue) {
+            if (is_array($propertyValue)) {
+                unset($properties[$propertyName]);
+            }
+        }
 
-		foreach ($properties as $propertyName => $propertyValue) {
-			if (is_array($propertyValue)) {
-				unset($properties[$propertyName]);
-			}
-		}
+        $this->records[$identifier] = $properties;
+    }
 
-		$this->records[$identifier] = $properties;
-	}
+    /**
+     * @param string $identifier
+     * @param array $path
+     */
+    protected function addPath($identifier, array $path)
+    {
+        if (!isset($this->paths[$identifier])) {
+            $this->paths[$identifier] = array();
+        }
 
-	/**
-	 * @param string $identifier
-	 * @param array $path
-	 */
-	protected function addPath($identifier, array $path) {
-		if (!isset($this->paths[$identifier])) {
-			$this->paths[$identifier] = array();
-		}
-
-		$this->paths[$identifier][] = $path;
-	}
-
+        $this->paths[$identifier][] = $path;
+    }
 }

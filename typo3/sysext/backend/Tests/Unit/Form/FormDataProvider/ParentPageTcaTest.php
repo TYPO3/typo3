@@ -20,29 +20,30 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca;
 /**
  * Test case
  */
-class ParentPageTcaTest extends UnitTestCase {
+class ParentPageTcaTest extends UnitTestCase
+{
+    /**
+     * @var ParentPageTca
+     */
+    protected $subject;
 
-	/**
-	 * @var ParentPageTca
-	 */
-	protected $subject;
+    protected function setUp()
+    {
+        $this->subject = new ParentPageTca();
+    }
 
-	protected function setUp() {
-		$this->subject = new ParentPageTca();
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsTableTcaFromGlobalsPagesTcaInResult() {
-		$input = [
-			'tableName' => 'aTable',
-			'parentPageRow' => array(),
-		];
-		$expected = array('foo');
-		$GLOBALS['TCA']['pages'] = $expected;
-		$result = $this->subject->addData($input);
-		$this->assertEquals($expected, $result['vanillaParentPageTca']);
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsTableTcaFromGlobalsPagesTcaInResult()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'parentPageRow' => array(),
+        ];
+        $expected = array('foo');
+        $GLOBALS['TCA']['pages'] = $expected;
+        $result = $this->subject->addData($input);
+        $this->assertEquals($expected, $result['vanillaParentPageTca']);
+    }
 }

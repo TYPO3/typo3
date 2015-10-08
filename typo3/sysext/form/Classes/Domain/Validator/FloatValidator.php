@@ -14,48 +14,49 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-class FloatValidator extends AbstractValidator {
+class FloatValidator extends AbstractValidator
+{
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_float';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_float';
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function isValid($value) {
-		$locale = localeconv();
-		$valueFiltered = str_replace(
-			array(
-				$locale['thousands_sep'],
-				$locale['mon_thousands_sep'],
-				$locale['decimal_point'],
-				$locale['mon_decimal_point']
-			),
-			array(
-				'',
-				'',
-				'.',
-				'.'
-			),
-			$value
-		);
-		if ($value != strval(floatval($valueFiltered))) {
-			$this->addError(
-				$this->renderMessage(
-					$this->options['errorMessage'][0],
-					$this->options['errorMessage'][1],
-					'error'
-				),
-				1442002070
-			);
-		}
-	}
+    /**
+     * Check if $value is valid. If it is not valid, needs to add an error
+     * to result.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function isValid($value)
+    {
+        $locale = localeconv();
+        $valueFiltered = str_replace(
+            array(
+                $locale['thousands_sep'],
+                $locale['mon_thousands_sep'],
+                $locale['decimal_point'],
+                $locale['mon_decimal_point']
+            ),
+            array(
+                '',
+                '',
+                '.',
+                '.'
+            ),
+            $value
+        );
+        if ($value != strval(floatval($valueFiltered))) {
+            $this->addError(
+                $this->renderMessage(
+                    $this->options['errorMessage'][0],
+                    $this->options['errorMessage'][1],
+                    'error'
+                ),
+                1442002070
+            );
+        }
+    }
 }

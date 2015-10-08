@@ -19,202 +19,207 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Authentication services class
  */
-class AuthenticationService extends AbstractAuthenticationService {
+class AuthenticationService extends AbstractAuthenticationService
+{
+    /**
+     * Process the submitted credentials.
+     * In this case hash the clear text password if it has been submitted.
+     *
+     * @param array $loginData Credentials that are submitted and potentially modified by other services
+     * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
+     * @return bool
+     */
+    public function processLoginData(array &$loginData, $passwordTransmissionStrategy)
+    {
+        $isProcessed = false;
+        if ($passwordTransmissionStrategy === 'normal') {
+            $loginData['uident_text'] = $loginData['uident'];
+            $isProcessed = true;
+        }
+        return $isProcessed;
+    }
 
-	/**
-	 * Process the submitted credentials.
-	 * In this case hash the clear text password if it has been submitted.
-	 *
-	 * @param array $loginData Credentials that are submitted and potentially modified by other services
-	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return bool
-	 */
-	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
-		$isProcessed = FALSE;
-		if ($passwordTransmissionStrategy === 'normal') {
-			$loginData['uident_text'] = $loginData['uident'];
-			$isProcessed = TRUE;
-		}
-		return $isProcessed;
-	}
+    /**
+     * Find a user (eg. look up the user record in database when a login is sent)
+     *
+     * @return mixed User array or FALSE
+     */
+    public function getUser()
+    {
+        if ($this->login['status'] !== 'login') {
+            return false;
+        }
+        if (!$this->login['uident']) {
+            // Failed Login attempt (no password given)
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array(
+                $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
+            ));
+            GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            return false;
+        }
 
-	/**
-	 * Find a user (eg. look up the user record in database when a login is sent)
-	 *
-	 * @return mixed User array or FALSE
-	 */
-	public function getUser() {
-		if ($this->login['status'] !== 'login') {
-			return FALSE;
-		}
-		if (!$this->login['uident']) {
-			// Failed Login attempt (no password given)
-			$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array(
-				$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
-			));
-			GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-			return FALSE;
-		}
+        $user = $this->fetchUserRecord($this->login['uname']);
+        if (!is_array($user)) {
+            // Failed login attempt (no username found)
+            $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+            // Logout written to log
+            GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+        } else {
+            if ($this->writeDevLog) {
+                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
+            }
+        }
+        return $user;
+    }
 
-		$user = $this->fetchUserRecord($this->login['uname']);
-		if (!is_array($user)) {
-			// Failed login attempt (no username found)
-			$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-			// Logout written to log
-			GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-		} else {
-			if ($this->writeDevLog) {
-				GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
-			}
-		}
-		return $user;
-	}
+    /**
+     * Authenticate a user (Check various conditions for the user that might invalidate its authentication, eg. password match, domain, IP, etc.)
+     *
+     * @param array $user Data of user.
+     * @return int >= 200: User authenticated successfully.
+     *                     No more checking is needed by other auth services.
+     *             >= 100: User not authenticated; this service is not responsible.
+     *                     Other auth services will be asked.
+     *             > 0:    User authenticated successfully.
+     *                     Other auth services will still be asked.
+     *             <= 0:   Authentication failed, no more checking needed
+     *                     by other auth services.
+     */
+    public function authUser(array $user)
+    {
+        $OK = 100;
+        if ($this->login['uident'] && $this->login['uname']) {
+            // Checking password match for user:
+            $OK = $this->compareUident($user, $this->login);
+            if (!$OK) {
+                // Failed login attempt (wrong password) - write that to the log!
+                if ($this->writeAttemptLog) {
+                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+                    GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                }
+                if ($this->writeDevLog) {
+                    GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], AuthenticationService::class, 2);
+                }
+            }
+            // Checking the domain (lockToDomain)
+            if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
+                // Lock domain didn't match, so error:
+                if ($this->writeAttemptLog) {
+                    $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
+                    GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                }
+                $OK = 0;
+            }
+        }
+        return $OK;
+    }
 
-	/**
-	 * Authenticate a user (Check various conditions for the user that might invalidate its authentication, eg. password match, domain, IP, etc.)
-	 *
-	 * @param array $user Data of user.
-	 * @return int >= 200: User authenticated successfully.
-	 *                     No more checking is needed by other auth services.
-	 *             >= 100: User not authenticated; this service is not responsible.
-	 *                     Other auth services will be asked.
-	 *             > 0:    User authenticated successfully.
-	 *                     Other auth services will still be asked.
-	 *             <= 0:   Authentication failed, no more checking needed
-	 *                     by other auth services.
-	 */
-	public function authUser(array $user) {
-		$OK = 100;
-		if ($this->login['uident'] && $this->login['uname']) {
-			// Checking password match for user:
-			$OK = $this->compareUident($user, $this->login);
-			if (!$OK) {
-				// Failed login attempt (wrong password) - write that to the log!
-				if ($this->writeAttemptLog) {
-					$this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-				}
-				if ($this->writeDevLog) {
-					GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], AuthenticationService::class, 2);
-				}
-			}
-			// Checking the domain (lockToDomain)
-			if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
-				// Lock domain didn't match, so error:
-				if ($this->writeAttemptLog) {
-					$this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
-					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-				}
-				$OK = 0;
-			}
-		}
-		return $OK;
-	}
+    /**
+     * Find usergroup records, currently only for frontend
+     *
+     * @param array $user Data of user.
+     * @param array $knownGroups Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
+     * @return mixed Groups array, keys = uid which must be unique
+     */
+    public function getGroups($user, $knownGroups)
+    {
+        /*
+         * Attention: $knownGroups is not used within this method, but other services can use it.
+         * This parameter should not be removed!
+         * The FrontendUserAuthentication call getGroups and handover the previous detected groups.
+         */
+        $groupDataArr = array();
+        if ($this->mode === 'getGroupsFE') {
+            $groups = array();
+            if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
+                $groupList = $user[$this->db_user['usergroup_column']];
+                $groups = array();
+                $this->getSubGroups($groupList, '', $groups);
+            }
+            // ADD group-numbers if the IPmask matches.
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] as $IPel) {
+                    if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
+                        $groups[] = (int)$IPel[1];
+                    }
+                }
+            }
+            $groups = array_unique($groups);
+            if (!empty($groups)) {
+                $list = implode(',', $groups);
+                if ($this->writeDevLog) {
+                    GeneralUtility::devLog('Get usergroups with id: ' . $list, __CLASS__);
+                }
+                $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+                $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
+                $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
+                while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                    $groupDataArr[$row['uid']] = $row;
+                }
+                if ($res) {
+                    $this->getDatabaseConnection()->sql_free_result($res);
+                }
+            } else {
+                if ($this->writeDevLog) {
+                    GeneralUtility::devLog('No usergroups found.', AuthenticationService::class, 2);
+                }
+            }
+        }
+        return $groupDataArr;
+    }
 
-	/**
-	 * Find usergroup records, currently only for frontend
-	 *
-	 * @param array $user Data of user.
-	 * @param array $knownGroups Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
-	 * @return mixed Groups array, keys = uid which must be unique
-	 */
-	public function getGroups($user, $knownGroups) {
-		/*
-		 * Attention: $knownGroups is not used within this method, but other services can use it.
-		 * This parameter should not be removed!
-		 * The FrontendUserAuthentication call getGroups and handover the previous detected groups.
-		 */
-		$groupDataArr = array();
-		if ($this->mode === 'getGroupsFE') {
-			$groups = array();
-			if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
-				$groupList = $user[$this->db_user['usergroup_column']];
-				$groups = array();
-				$this->getSubGroups($groupList, '', $groups);
-			}
-			// ADD group-numbers if the IPmask matches.
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] as $IPel) {
-					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
-						$groups[] = (int)$IPel[1];
-					}
-				}
-			}
-			$groups = array_unique($groups);
-			if (!empty($groups)) {
-				$list = implode(',', $groups);
-				if ($this->writeDevLog) {
-					GeneralUtility::devLog('Get usergroups with id: ' . $list, __CLASS__);
-				}
-				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-				$hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
-				$res = $this->getDatabaseConnection()->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
-				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-					$groupDataArr[$row['uid']] = $row;
-				}
-				if ($res) {
-					$this->getDatabaseConnection()->sql_free_result($res);
-				}
-			} else {
-				if ($this->writeDevLog) {
-					GeneralUtility::devLog('No usergroups found.', AuthenticationService::class, 2);
-				}
-			}
-		}
-		return $groupDataArr;
-	}
+    /**
+     * Fetches subgroups of groups. Function is called recursively for each subgroup.
+     * Function was previously copied from
+     * \TYPO3\CMS\Core\Authentication\BackendUserAuthentication->fetchGroups and has been slightly modified.
+     *
+     * @param string $grList Commalist of fe_groups uid numbers
+     * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
+     * @param array $groups
+     * @return array
+     * @access private
+     */
+    public function getSubGroups($grList, $idList = '', &$groups)
+    {
+        // Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
+        $lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
+        $hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
+        $res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
+        // Internal group record storage
+        $groupRows = array();
+        // The groups array is filled
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+            if (!in_array($row['uid'], $groups)) {
+                $groups[] = $row['uid'];
+            }
+            $groupRows[$row['uid']] = $row;
+        }
+        // Traversing records in the correct order
+        $include_staticArr = GeneralUtility::intExplode(',', $grList);
+        // traversing list
+        foreach ($include_staticArr as $uid) {
+            // Get row:
+            $row = $groupRows[$uid];
+            // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
+            if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
+                // Include sub groups
+                if (trim($row['subgroup'])) {
+                    // Make integer list
+                    $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
+                    // Call recursively, pass along list of already processed groups so they are not processed again.
+                    $this->getSubGroups($theList, $idList . ',' . $uid, $groups);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Fetches subgroups of groups. Function is called recursively for each subgroup.
-	 * Function was previously copied from
-	 * \TYPO3\CMS\Core\Authentication\BackendUserAuthentication->fetchGroups and has been slightly modified.
-	 *
-	 * @param string $grList Commalist of fe_groups uid numbers
-	 * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
-	 * @param array $groups
-	 * @return array
-	 * @access private
-	 */
-	public function getSubGroups($grList, $idList = '', &$groups) {
-		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-		$hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
-		$res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
-		// Internal group record storage
-		$groupRows = array();
-		// The groups array is filled
-		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-			if (!in_array($row['uid'], $groups)) {
-				$groups[] = $row['uid'];
-			}
-			$groupRows[$row['uid']] = $row;
-		}
-		// Traversing records in the correct order
-		$include_staticArr = GeneralUtility::intExplode(',', $grList);
-		// traversing list
-		foreach ($include_staticArr as $uid) {
-			// Get row:
-			$row = $groupRows[$uid];
-			// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-			if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
-				// Include sub groups
-				if (trim($row['subgroup'])) {
-					// Make integer list
-					$theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-					// Call recursively, pass along list of already processed groups so they are not processed again.
-					$this->getSubGroups($theList, $idList . ',' . $uid, $groups);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Returns the database connection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
+    /**
+     * Returns the database connection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 }

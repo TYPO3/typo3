@@ -17,31 +17,31 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Contains TEXT class object.
  */
-class TextContentObject extends AbstractContentObject {
-
-	/**
-	 * Rendering the cObject, TEXT
-	 *
-	 * @param array $conf Array of TypoScript properties
-	 * @return string Output
-	 */
-	public function render($conf = array()) {
-		if (!is_array($conf)) {
-			return '';
-		}
-		$content = '';
-		if (isset($conf['value'])) {
-			$content = $conf['value'];
-			unset($conf['value']);
-		}
-		if (isset($conf['value.'])) {
-			$content = $this->cObj->stdWrap($content, $conf['value.']);
-			unset($conf['value.']);
-		}
-		if (!empty($conf)) {
-			$content = $this->cObj->stdWrap($content, $conf);
-		}
-		return $content;
-	}
-
+class TextContentObject extends AbstractContentObject
+{
+    /**
+     * Rendering the cObject, TEXT
+     *
+     * @param array $conf Array of TypoScript properties
+     * @return string Output
+     */
+    public function render($conf = array())
+    {
+        if (!is_array($conf)) {
+            return '';
+        }
+        $content = '';
+        if (isset($conf['value'])) {
+            $content = $conf['value'];
+            unset($conf['value']);
+        }
+        if (isset($conf['value.'])) {
+            $content = $this->cObj->stdWrap($content, $conf['value.']);
+            unset($conf['value.']);
+        }
+        if (!empty($conf)) {
+            $content = $this->cObj->stdWrap($content, $conf);
+        }
+        return $content;
+    }
 }

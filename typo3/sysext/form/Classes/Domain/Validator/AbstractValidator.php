@@ -16,95 +16,100 @@ namespace TYPO3\CMS\Form\Domain\Validator;
 
 use TYPO3\CMS\Form\Utility\FormUtility;
 
-abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+{
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate';
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate';
+    /**
+     * @var FormUtility
+     */
+    protected $formUtility;
 
-	/**
-	 * @var FormUtility
-	 */
-	protected $formUtility;
+    /**
+     * @var mixed
+     */
+    protected $rawArgument;
 
-	/**
-	 * @var mixed
-	 */
-	protected $rawArgument;
+    /**
+     * @var array
+     */
+    protected $supportedOptions = array(
+        'element' => array('', 'The name of the element', 'string', true),
+        'errorMessage' => array('', 'The error message', 'array', true),
+    );
 
-	/**
-	 * @var array
-	 */
-	protected $supportedOptions = array(
-		'element' => array('', 'The name of the element', 'string', TRUE),
-		'errorMessage' => array('', 'The error message', 'array', TRUE),
-	);
+    /**
+     * This validator always needs to be executed even if the given value is empty.
+     * See AbstractValidator::validate()
+     *
+     * @var boolean
+     */
+    protected $acceptsEmptyValues = false;
 
-	/**
-	 * This validator always needs to be executed even if the given value is empty.
-	 * See AbstractValidator::validate()
-	 *
-	 * @var boolean
-	 */
-	protected $acceptsEmptyValues = FALSE;
+    /**
+     * @param mixed $rawArgument
+     */
+    public function setRawArgument($rawArgument)
+    {
+        $this->rawArgument = $rawArgument;
+    }
 
-	/**
-	 * @param mixed $rawArgument
-	 */
-	public function setRawArgument($rawArgument) {
-		$this->rawArgument = $rawArgument;
-	}
+    /**
+     * @param FormUtility $formUtility
+     */
+    public function setFormUtility(FormUtility $formUtility)
+    {
+        $this->formUtility = $formUtility;
+    }
 
-	/**
-	 * @param FormUtility $formUtility
-	 */
-	public function setFormUtility(FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
+    /**
+     * Substitute makers in the message text
+     * In some cases this method will be override by rule class
+     *
+     * @param string $message Message text with markers
+     * @return string Message text with substituted markers
+     */
+    public function substituteMarkers($message)
+    {
+        return $message;
+    }
 
-	/**
-	 * Substitute makers in the message text
-	 * In some cases this method will be override by rule class
-	 *
-	 * @param string $message Message text with markers
-	 * @return string Message text with substituted markers
-	 */
-	public function substituteMarkers($message) {
-		return $message;
-	}
+    /**
+     * Get the local language label(s) for the message
+     * In some cases this method will be override by rule class
+     *
+     * @param string $type The type
+     * @return string The local language message label
+     */
+    public function getLocalLanguageLabel($type = '')
+    {
+        $label = static::LOCALISATION_OBJECT_NAME . '.' . $type;
+        $message = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'form');
+        return $message;
+    }
 
-	/**
-	 * Get the local language label(s) for the message
-	 * In some cases this method will be override by rule class
-	 *
-	 * @param string $type The type
-	 * @return string The local language message label
-	 */
-	public function getLocalLanguageLabel($type = '') {
-		$label = static::LOCALISATION_OBJECT_NAME . '.' . $type;
-		$message = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'form');
-		return $message;
-	}
-
-	/**
-	 * Set the message, like 'required' for the validation rule
-	 * and substitutes markers for values, like %maximum
-	 *
-	 *
-	 * @param mixed $message Message as string or TS
-	 * @param NULL|string $type Name of the cObj
-	 * @param string $messageType message or error
-	 * @return string
-	 */
-	public function renderMessage($message = NULL, $type = NULL, $messageType = 'message') {
-		$message = $this->formUtility->renderItem(
-			$message,
-			$type,
-			$this->getLocalLanguageLabel($messageType)
-		);
-		return $this->substituteMarkers($message);
-	}
+    /**
+     * Set the message, like 'required' for the validation rule
+     * and substitutes markers for values, like %maximum
+     *
+     *
+     * @param mixed $message Message as string or TS
+     * @param NULL|string $type Name of the cObj
+     * @param string $messageType message or error
+     * @return string
+     */
+    public function renderMessage($message = null, $type = null, $messageType = 'message')
+    {
+        $message = $this->formUtility->renderItem(
+            $message,
+            $type,
+            $this->getLocalLanguageLabel($messageType)
+        );
+        return $this->substituteMarkers($message);
+    }
 }

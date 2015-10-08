@@ -19,14 +19,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Fixture for forced windows environment
  */
-class WindowsPathUtilityFixture extends PathUtility {
-
-	/**
-	 * Is windows?
-	 *
-	 * @return bool
-	 */
-	static public function isWindows() {
-		return TRUE;
-	}
+class WindowsPathUtilityFixture extends PathUtility
+{
+    /**
+     * Is windows?
+     *
+     * @return bool
+     */
+    public static function isWindows()
+    {
+        return true;
+    }
 }

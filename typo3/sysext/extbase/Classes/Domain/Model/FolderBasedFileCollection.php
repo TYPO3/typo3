@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class FolderBasedFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection {
-
+class FolderBasedFileCollection extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
+{
 }

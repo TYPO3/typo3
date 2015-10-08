@@ -17,67 +17,68 @@ namespace TYPO3\CMS\Core\Utility;
 /**
  * Utility class for the File Abstraction Layer (aka subpackage Resource in EXT:core)
  */
-class ResourceUtility {
+class ResourceUtility
+{
+    /**
+     * This is a helper method that can be used with u?sort methods to sort a list of (relative) file paths, e.g.
+     * array("someDir/fileA", "fileA", "fileB", "anotherDir/fileA").
+     *
+     * Directories are sorted first in the lists, with the deepest structures first (while every level is sorted
+     * alphabetically)
+     *
+     * @param string $elementA
+     * @param string $elementB
+     * @return int
+     */
+    public static function recursiveFileListSortingHelper($elementA, $elementB)
+    {
+        if (strpos($elementA, '/') === false) {
+            // first element is a file
+            if (strpos($elementB, '/') === false) {
+                $result = self::nameCompareSortingHelper($elementA, $elementB);
+            } else {
+                // second element is a directory => always sort it first
+                $result = 1;
+            }
+        } else {
+            // first element is a directory
+            if (strpos($elementB, '/') === false) {
+                // second element is a file => always sort it last
+                $result = -1;
+            } else {
+                // both elements are directories => we have to recursively sort here
+                list($pathPartA, $elementA) = explode('/', $elementA, 2);
+                list($pathPartB, $elementB) = explode('/', $elementB, 2);
 
-	/**
-	 * This is a helper method that can be used with u?sort methods to sort a list of (relative) file paths, e.g.
-	 * array("someDir/fileA", "fileA", "fileB", "anotherDir/fileA").
-	 *
-	 * Directories are sorted first in the lists, with the deepest structures first (while every level is sorted
-	 * alphabetically)
-	 *
-	 * @param string $elementA
-	 * @param string $elementB
-	 * @return int
-	 */
-	static public function recursiveFileListSortingHelper($elementA, $elementB) {
-		if (strpos($elementA, '/') === FALSE) {
-			// first element is a file
-			if (strpos($elementB, '/') === FALSE) {
-				$result = self::nameCompareSortingHelper($elementA, $elementB);
-			} else {
-				// second element is a directory => always sort it first
-				$result = 1;
-			}
-		} else {
-			// first element is a directory
-			if (strpos($elementB, '/') === FALSE)  {
-				// second element is a file => always sort it last
-				$result = -1;
-			} else {
-				// both elements are directories => we have to recursively sort here
-				list($pathPartA, $elementA) = explode('/', $elementA, 2);
-				list($pathPartB, $elementB) = explode('/', $elementB, 2);
+                if ($pathPartA === $pathPartB) {
+                    // same directory => sort by subpaths
+                    $result = self::recursiveFileListSortingHelper($elementA, $elementB);
+                } else {
+                    // different directories => sort by current directories
+                    $result = self::nameCompareSortingHelper($pathPartA, $pathPartB);
+                }
+            }
+        }
 
-				if ($pathPartA === $pathPartB) {
-					// same directory => sort by subpaths
-					$result = self::recursiveFileListSortingHelper($elementA, $elementB);
-				} else {
-					// different directories => sort by current directories
-					$result = self::nameCompareSortingHelper($pathPartA, $pathPartB);
-				}
-			}
-		}
+        return $result;
+    }
 
-		return $result;
-	}
+    /**
+     * This is a helper method that can be used with u?sort methods to sort a list of names in natural order. With
+     * capitalized first if both equal in lowercase.
+     *
+     * @param string $elementA
+     * @param string $elementB
+     * @return int
+     */
+    public static function nameCompareSortingHelper($elementA, $elementB)
+    {
+        $result = strnatcasecmp($elementA, $elementB);
+        if ($result === 0) {
+            // Both are same in case insensitive so it's ok to check then now unnaturally.
+            $result = strcmp($elementA, $elementB);
+        }
 
-	/**
-	 * This is a helper method that can be used with u?sort methods to sort a list of names in natural order. With
-	 * capitalized first if both equal in lowercase.
-	 *
-	 * @param string $elementA
-	 * @param string $elementB
-	 * @return int
-	 */
-	static public function nameCompareSortingHelper($elementA, $elementB) {
-		$result = strnatcasecmp($elementA, $elementB);
-		if ($result === 0) {
-			// Both are same in case insensitive so it's ok to check then now unnaturally.
-			$result = strcmp($elementA, $elementB);
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

@@ -21,22 +21,22 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionDecoder;
 /**
  * Class that hooks into DataHandler and decrypts rsa encrypted data
  */
-class DecryptionHook {
+class DecryptionHook
+{
+    /**
+     * @param array $incomingFieldArray
+     * @param string $table
+     * @param int $id
+     * @param DataHandler $parentObject
+     */
+    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $parentObject)
+    {
+        $serializedString = serialize($incomingFieldArray);
+        if (strpos($serializedString, 'rsa:') === false) {
+            return;
+        }
 
-	/**
-	 * @param array $incomingFieldArray
-	 * @param string $table
-	 * @param int $id
-	 * @param DataHandler $parentObject
-	 */
-	public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $parentObject) {
-		$serializedString = serialize($incomingFieldArray);
-		if (strpos($serializedString, 'rsa:') === FALSE) {
-			return;
-		}
-
-		$rsaEncryptionDecoder = GeneralUtility::makeInstance(RsaEncryptionDecoder::class);
-		$incomingFieldArray = $rsaEncryptionDecoder->decrypt($incomingFieldArray);
-	}
-
+        $rsaEncryptionDecoder = GeneralUtility::makeInstance(RsaEncryptionDecoder::class);
+        $incomingFieldArray = $rsaEncryptionDecoder->decrypt($incomingFieldArray);
+    }
 }

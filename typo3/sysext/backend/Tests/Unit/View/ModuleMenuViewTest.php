@@ -17,68 +17,68 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View;
 /**
  * Test for TYPO3\CMS\Backend\ModuleMenuView
  */
-class ModuleMenuViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ModuleMenuViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function unsetHiddenModulesUnsetsHiddenModules()
+    {
+        /** @var \TYPO3\CMS\Backend\View\ModuleMenuView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $moduleMenuViewMock */
+        $moduleMenuViewMock = $this->getAccessibleMock(
+            \TYPO3\CMS\Backend\View\ModuleMenuView::class,
+            array('dummy'),
+            array(),
+            '',
+            false
+        );
 
-	/**
-	 * @test
-	 */
-	public function unsetHiddenModulesUnsetsHiddenModules() {
-		/** @var \TYPO3\CMS\Backend\View\ModuleMenuView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $moduleMenuViewMock */
-		$moduleMenuViewMock = $this->getAccessibleMock(
-			\TYPO3\CMS\Backend\View\ModuleMenuView::class,
-			array('dummy'),
-			array(),
-			'',
-			FALSE
-		);
+        $loadedModulesFixture = array(
+            'file' => array(),
+            'tools' => array(),
+            'web' => array(
+                'sub' => array(
+                    'list' => array(),
+                    'func' => array(),
+                    'info' => array(),
+                ),
+            ),
+            'user' => array(
+                'sub' => array(
+                    'task' => array(),
+                    'settings' => array(),
+                ),
+            ),
+        );
+        $moduleMenuViewMock->_set('loadedModules', $loadedModulesFixture);
 
-		$loadedModulesFixture = array(
-			'file' => array(),
-			'tools' => array(),
-			'web' => array(
-				'sub' => array(
-					'list' => array(),
-					'func' => array(),
-					'info' => array(),
-				),
-			),
-			'user' => array(
-				'sub' => array(
-					'task' => array(),
-					'settings' => array(),
-				),
-			),
-		);
-		$moduleMenuViewMock->_set('loadedModules', $loadedModulesFixture);
+        $userTsFixture = array(
+            'value' => 'file,help',
+            'properties' => array(
+                'web' => 'list,func',
+                'user' => 'task',
+            ),
+        );
 
-		$userTsFixture = array(
-			'value' => 'file,help',
-			'properties' => array(
-				'web' => 'list,func',
-				'user' => 'task',
-			),
-		);
+        $GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', false);
+        $GLOBALS['BE_USER']->expects($this->any())->method('getTSConfig')->will($this->returnValue($userTsFixture));
 
-		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
-		$GLOBALS['BE_USER']->expects($this->any())->method('getTSConfig')->will($this->returnValue($userTsFixture));
+        $expectedResult = array(
+            'tools' => array(),
+            'web' => array(
+                'sub' => array(
+                    'info' => array(),
+                ),
+            ),
+            'user' => array(
+                'sub' => array(
+                    'settings' => array(),
+                ),
+            ),
+        );
 
-		$expectedResult = array(
-			'tools' => array(),
-			'web' => array(
-				'sub' => array(
-					'info' => array(),
-				),
-			),
-			'user' => array(
-				'sub' => array(
-					'settings' => array(),
-				),
-			),
-		);
-
-		$moduleMenuViewMock->_call('unsetHiddenModules');
-		$actualResult = $moduleMenuViewMock->_get('loadedModules');
-		$this->assertSame($expectedResult, $actualResult);
-	}
-
+        $moduleMenuViewMock->_call('unsetHiddenModules');
+        $actualResult = $moduleMenuViewMock->_get('loadedModules');
+        $this->assertSame($expectedResult, $actualResult);
+    }
 }

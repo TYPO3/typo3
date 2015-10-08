@@ -17,56 +17,58 @@ namespace TYPO3\CMS\Core\Cache;
 /**
  * This service provides the sql schema for the caching framework
  */
-class DatabaseSchemaService {
+class DatabaseSchemaService
+{
+    /**
+     * Get schema SQL of required cache framework tables.
+     *
+     * This method needs ext_localconf and ext_tables loaded!
+     *
+     * @return string Cache framework SQL
+     */
+    public function getCachingFrameworkRequiredDatabaseSchema()
+    {
+        // Use new to circumvent the singleton pattern of CacheManager
+        $cacheManager = new CacheManager;
+        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        // Cache manager needs cache factory. cache factory injects itself to manager in __construct()
+        new CacheFactory('production', $cacheManager);
 
-	/**
-	 * Get schema SQL of required cache framework tables.
-	 *
-	 * This method needs ext_localconf and ext_tables loaded!
-	 *
-	 * @return string Cache framework SQL
-	 */
-	public function getCachingFrameworkRequiredDatabaseSchema() {
-		// Use new to circumvent the singleton pattern of CacheManager
-		$cacheManager = new CacheManager;
-		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-		// Cache manager needs cache factory. cache factory injects itself to manager in __construct()
-		new CacheFactory('production', $cacheManager);
+        $tableDefinitions = '';
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
+            $backend = $cacheManager->getCache($cacheName)->getBackend();
+            if (method_exists($backend, 'getTableDefinitions')) {
+                $tableDefinitions .= LF . $backend->getTableDefinitions();
+            }
+        }
 
-		$tableDefinitions = '';
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
-			$backend = $cacheManager->getCache($cacheName)->getBackend();
-			if (method_exists($backend, 'getTableDefinitions')) {
-				$tableDefinitions .= LF . $backend->getTableDefinitions();
-			}
-		}
+        return $tableDefinitions;
+    }
 
-		return $tableDefinitions;
-	}
+    /**
+     * A slot method to inject the required caching framework database tables to the
+     * tables definitions string
+     *
+     * @param array $sqlString
+     * @param string $extensionKey
+     * @return array
+     */
+    public function addCachingFrameworkRequiredDatabaseSchemaForInstallUtility(array $sqlString, $extensionKey)
+    {
+        $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
+        return array($sqlString, $extensionKey);
+    }
 
-	/**
-	 * A slot method to inject the required caching framework database tables to the
-	 * tables definitions string
-	 *
-	 * @param array $sqlString
-	 * @param string $extensionKey
-	 * @return array
-	 */
-	public function addCachingFrameworkRequiredDatabaseSchemaForInstallUtility(array $sqlString, $extensionKey) {
-		$sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-		return array($sqlString, $extensionKey);
-	}
-
-	/**
-	 * A slot method to inject the required caching framework database tables to the
-	 * tables definitions string
-	 *
-	 * @param array $sqlString
-	 * @return array
-	 */
-	public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString) {
-		$sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-		return array($sqlString);
-	}
-
+    /**
+     * A slot method to inject the required caching framework database tables to the
+     * tables definitions string
+     *
+     * @param array $sqlString
+     * @return array
+     */
+    public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString)
+    {
+        $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
+        return array($sqlString);
+    }
 }

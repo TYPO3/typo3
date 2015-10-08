@@ -24,65 +24,66 @@ require_once __DIR__ . '/../../../../adodb/adodb/drivers/adodb-postgres7.inc.php
 /**
  * Base test case for dbal database tests.
  */
-abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * Prepare a DatabaseConnection subject.
+     * Used by driver specific test cases.
+     *
+     * @param string $driver Driver to use like "mssql", "oci8" and "postgres7"
+     * @param array $configuration Dbal configuration array
+     * @return \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     */
+    protected function prepareSubject($driver, array $configuration)
+    {
+        /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', false);
 
-	/**
-	 * Prepare a DatabaseConnection subject.
-	 * Used by driver specific test cases.
-	 *
-	 * @param string $driver Driver to use like "mssql", "oci8" and "postgres7"
-	 * @param array $configuration Dbal configuration array
-	 * @return \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-	 */
-	protected function prepareSubject($driver, array $configuration) {
-		/** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', FALSE);
+        $subject->conf = $configuration;
 
-		$subject->conf = $configuration;
+        // Disable caching
+        $mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', false);
+        $subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
-		// Disable caching
-		$mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', FALSE);
-		$subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
+        // Inject SqlParser - Its logic is tested with the tests, too.
+        $sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', false);
+        $sqlParser->_set('databaseConnection', $subject);
+        $sqlParser->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $subject));
+        $sqlParser->_set('nativeSqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Mysql::class, $subject));
+        $subject->SQLparser = $sqlParser;
 
-		// Inject SqlParser - Its logic is tested with the tests, too.
-		$sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', FALSE);
-		$sqlParser->_set('databaseConnection', $subject);
-		$sqlParser->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $subject));
-		$sqlParser->_set('nativeSqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Mysql::class, $subject));
-		$subject->SQLparser = $sqlParser;
+        // Mock away schema migration service from install tool
+        $installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', false);
+        $installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
+        $subject->_set('installerSql', $installerSqlMock);
 
-		// Mock away schema migration service from install tool
-		$installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', FALSE);
-		$installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
-		$subject->_set('installerSql', $installerSqlMock);
+        $subject->initialize();
 
-		$subject->initialize();
+        // Fake a working connection
+        $handlerKey = '_DEFAULT';
+        $subject->lastHandlerKey = $handlerKey;
+        $adodbDriverClass = '\ADODB_' . $driver;
+        $subject->handlerInstance[$handlerKey] = new $adodbDriverClass();
+        $subject->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($subject->handlerInstance[$handlerKey]);
+        $subject->handlerInstance[$handlerKey]->_connectionID = rand(1, 1000);
 
-		// Fake a working connection
-		$handlerKey = '_DEFAULT';
-		$subject->lastHandlerKey = $handlerKey;
-		$adodbDriverClass = '\ADODB_' . $driver;
-		$subject->handlerInstance[$handlerKey] = new $adodbDriverClass();
-		$subject->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($subject->handlerInstance[$handlerKey]);
-		$subject->handlerInstance[$handlerKey]->_connectionID = rand(1, 1000);
-
-		return $subject;
-	}
+        return $subject;
+    }
 
 
-	/**
-	 * Clean a parsed SQL query for easier comparison with expected SQL.
-	 *
-	 * @param mixed $sql
-	 * @return mixed (string or array)
-	 */
-	protected function cleanSql($sql) {
-		if (!is_string($sql)) {
-			return $sql;
-		}
-		$sql = str_replace("\n", ' ', $sql);
-		$sql = preg_replace('/\\s+/', ' ', $sql);
-		return trim($sql);
-	}
-
+    /**
+     * Clean a parsed SQL query for easier comparison with expected SQL.
+     *
+     * @param mixed $sql
+     * @return mixed (string or array)
+     */
+    protected function cleanSql($sql)
+    {
+        if (!is_string($sql)) {
+            return $sql;
+        }
+        $sql = str_replace("\n", ' ', $sql);
+        $sql = preg_replace('/\\s+/', ' ', $sql);
+        return trim($sql);
+    }
 }

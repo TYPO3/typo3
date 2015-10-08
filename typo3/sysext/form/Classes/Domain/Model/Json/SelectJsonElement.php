@@ -17,103 +17,104 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /**
  * JSON select
  */
-class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
+class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement
+{
+    /**
+     * The ExtJS xtype of the element
+     *
+     * @var string
+     */
+    public $xtype = 'typo3-form-wizard-elements-basic-select';
 
-	/**
-	 * The ExtJS xtype of the element
-	 *
-	 * @var string
-	 */
-	public $xtype = 'typo3-form-wizard-elements-basic-select';
+    /**
+     * The configuration array for the xtype
+     *
+     * @var array
+     */
+    public $configuration = array(
+        'attributes' => array(),
+        'filters' => array(),
+        'label' => array(
+            'value' => ''
+        ),
+        'layout' => 'front',
+        'options' => array(),
+        'validation' => array()
+    );
 
-	/**
-	 * The configuration array for the xtype
-	 *
-	 * @var array
-	 */
-	public $configuration = array(
-		'attributes' => array(),
-		'filters' => array(),
-		'label' => array(
-			'value' => ''
-		),
-		'layout' => 'front',
-		'options' => array(),
-		'validation' => array()
-	);
+    /**
+     * Allowed attributes for this object
+     *
+     * @var array
+     */
+    protected $allowedAttributes = array(
+        'accesskey',
+        'class',
+        'contenteditable',
+        'contextmenu',
+        'dir',
+        'draggable',
+        'dropzone',
+        'hidden',
+        'id',
+        'lang',
+        'spellcheck',
+        'style',
+        'tabindex',
+        'title',
+        'translate',
+        /* element specific attributes */
+        'autofocus',
+        'disabled',
+        'multiple',
+        'name',
+        'required',
+        'size'
+    );
 
-	/**
-	 * Allowed attributes for this object
-	 *
-	 * @var array
-	 */
-	protected $allowedAttributes = array(
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'translate',
-		/* element specific attributes */
-		'autofocus',
-		'disabled',
-		'multiple',
-		'name',
-		'required',
-		'size'
-	);
+    protected $childElementsAllowed = false;
 
-	protected $childElementsAllowed = FALSE;
+    /**
+     * Set all the parameters for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
+     */
+    public function setParameters(array $parameters)
+    {
+        parent::setParameters($parameters);
+        $this->setOptions($parameters);
+    }
 
-	/**
-	 * Set all the parameters for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
-	 */
-	public function setParameters(array $parameters) {
-		parent::setParameters($parameters);
-		$this->setOptions($parameters);
-	}
-
-	/**
-	 * Set the options for this object
-	 *
-	 * @param array $parameters Configuration array
-	 * @return void
-	 */
-	protected function setOptions(array $parameters) {
-		if (is_array($parameters)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
-			foreach ($keys as $key) {
-				$class = $parameters[$key];
-				if ((int)$key && strpos($key, '.') === FALSE) {
-					if (isset($parameters[$key . '.']) && $class === 'OPTION') {
-						$childElementArguments = $parameters[$key . '.'];
-						if (isset($childElementArguments['selected'])) {
-							$childElementArguments['attributes']['selected'] = $childElementArguments['selected'];
-							unset($childElementArguments['selected']);
-							if (isset($childElementArguments['value'])) {
-								$childElementArguments['attributes']['value'] = $childElementArguments['value'];
-								unset($childElementArguments['value']);
-							}
-							$this->configuration['options'][] = $childElementArguments;
-						}
-						$this->configuration['options'][] = $childElementArguments;
-					}
-				}
-			}
-		}
-	}
-
+    /**
+     * Set the options for this object
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setOptions(array $parameters)
+    {
+        if (is_array($parameters)) {
+            $keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
+            foreach ($keys as $key) {
+                $class = $parameters[$key];
+                if ((int)$key && strpos($key, '.') === false) {
+                    if (isset($parameters[$key . '.']) && $class === 'OPTION') {
+                        $childElementArguments = $parameters[$key . '.'];
+                        if (isset($childElementArguments['selected'])) {
+                            $childElementArguments['attributes']['selected'] = $childElementArguments['selected'];
+                            unset($childElementArguments['selected']);
+                            if (isset($childElementArguments['value'])) {
+                                $childElementArguments['attributes']['value'] = $childElementArguments['value'];
+                                unset($childElementArguments['value']);
+                            }
+                            $this->configuration['options'][] = $childElementArguments;
+                        }
+                        $this->configuration['options'][] = $childElementArguments;
+                    }
+                }
+            }
+        }
+    }
 }

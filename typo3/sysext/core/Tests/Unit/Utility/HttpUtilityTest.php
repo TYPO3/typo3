@@ -17,45 +17,46 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\HttpUtility
  */
-class HttpUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class HttpUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @param array $urlParts
+     * @param string $expected
+     * @dataProvider isUrlBuiltCorrectlyDataProvider
+     * @test
+     */
+    public function isUrlBuiltCorrectly(array $urlParts, $expected)
+    {
+        $url = \TYPO3\CMS\Core\Utility\HttpUtility::buildUrl($urlParts);
+        $this->assertEquals($expected, $url);
+    }
 
-	/**
-	 * @param array $urlParts
-	 * @param string $expected
-	 * @dataProvider isUrlBuiltCorrectlyDataProvider
-	 * @test
-	 */
-	public function isUrlBuiltCorrectly(array $urlParts, $expected) {
-		$url = \TYPO3\CMS\Core\Utility\HttpUtility::buildUrl($urlParts);
-		$this->assertEquals($expected, $url);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function isUrlBuiltCorrectlyDataProvider() {
-		return array(
-			'rebuild url without scheme' => array(
-				parse_url('typo3.org/path/index.php'),
-				'typo3.org/path/index.php'
-			),
-			'rebuild url with scheme' => array(
-				parse_url('http://typo3.org/path/index.php'),
-				'http://typo3.org/path/index.php'
-			),
-			'rebuild url with all properties' => array(
-				parse_url('http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'),
-				'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'
-			),
-			'url without username, but password' => array(
-				array(
-					'scheme' => 'http',
-					'pass' => 'secrept',
-					'host' => 'typo3.org'
-				),
-				'http://typo3.org'
-			)
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function isUrlBuiltCorrectlyDataProvider()
+    {
+        return array(
+            'rebuild url without scheme' => array(
+                parse_url('typo3.org/path/index.php'),
+                'typo3.org/path/index.php'
+            ),
+            'rebuild url with scheme' => array(
+                parse_url('http://typo3.org/path/index.php'),
+                'http://typo3.org/path/index.php'
+            ),
+            'rebuild url with all properties' => array(
+                parse_url('http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'),
+                'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'
+            ),
+            'url without username, but password' => array(
+                array(
+                    'scheme' => 'http',
+                    'pass' => 'secrept',
+                    'host' => 'typo3.org'
+                ),
+                'http://typo3.org'
+            )
+        );
+    }
 }

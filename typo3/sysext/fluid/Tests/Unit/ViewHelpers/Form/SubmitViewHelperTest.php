@@ -14,33 +14,34 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 /**
  * Test for the "Submit" Form view helper
  */
-class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
+class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
+{
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper
+     */
+    protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper
-	 */
-	protected $viewHelper;
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper::class, array('dummy'));
+        $this->arguments['name'] = '';
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->initializeArguments();
+    }
 
-	protected function setUp() {
-		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper::class, array('dummy'));
-		$this->arguments['name'] = '';
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
-	}
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsTagNameAndDefaultAttributes()
+    {
+        $mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+        $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
+        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
 
-	/**
-	 * @test
-	 */
-	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
-		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
+        $this->viewHelper->_set('tag', $mockTagBuilder);
 
-		$this->viewHelper->_set('tag', $mockTagBuilder);
-
-		$this->viewHelper->initialize();
-		$this->viewHelper->render();
-	}
-
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
 }

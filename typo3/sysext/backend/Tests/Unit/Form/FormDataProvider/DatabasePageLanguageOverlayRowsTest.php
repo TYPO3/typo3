@@ -23,54 +23,56 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Test case
  */
-class DatabasePageLanguageOverlayRowsTest extends UnitTestCase {
+class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
+{
+    /**
+     * @var DatabasePageLanguageOverlayRows
+     */
+    protected $subject;
 
-	/**
-	 * @var DatabasePageLanguageOverlayRows
-	 */
-	protected $subject;
+    /**
+     * @var DatabaseConnection | ObjectProphecy
+     */
+    protected $dbProphecy;
 
-	/**
-	 * @var DatabaseConnection | ObjectProphecy
-	 */
-	protected $dbProphecy;
+    protected function setUp()
+    {
+        $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 
-	protected function setUp() {
-		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
-		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+        $this->subject = new DatabasePageLanguageOverlayRows();
+    }
 
-		$this->subject = new DatabasePageLanguageOverlayRows();
-	}
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionOnDatabaseError()
+    {
+        $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
+        $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
+        $this->setExpectedException(\UnexpectedValueException::class,  $this->anything(), 1440777705);
+        $this->subject->addData([]);
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDataThrowsExceptionOnDatabaseError() {
-		$this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(NULL);
-		$this->dbProphecy->sql_error(Argument::cetera())->willReturn(NULL);
-		$this->setExpectedException(\UnexpectedValueException::class,  $this->anything(), 1440777705);
-		$this->subject->addData([]);
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsPageLanguageOverlayRows() {
-		$input = [
-			'effectivePid' => '23',
-		];
-		$expected = $input;
-		$expected['pageLanguageOverlayRows'] = [
-			0 => [
-				'uid' => '1',
-				'pid' => '42',
-				'sys_language_uid' => '2',
-			],
-		];
-		$this->dbProphecy->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=23')
-			->shouldBeCalled()
-			->willReturn($expected['pageLanguageOverlayRows']);
-		$this->assertSame($expected, $this->subject->addData($input));
-	}
-
+    /**
+     * @test
+     */
+    public function addDataSetsPageLanguageOverlayRows()
+    {
+        $input = [
+            'effectivePid' => '23',
+        ];
+        $expected = $input;
+        $expected['pageLanguageOverlayRows'] = [
+            0 => [
+                'uid' => '1',
+                'pid' => '42',
+                'sys_language_uid' => '2',
+            ],
+        ];
+        $this->dbProphecy->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=23')
+            ->shouldBeCalled()
+            ->willReturn($expected['pageLanguageOverlayRows']);
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

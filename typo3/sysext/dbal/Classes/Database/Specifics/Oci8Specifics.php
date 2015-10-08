@@ -18,15 +18,16 @@ namespace TYPO3\CMS\Dbal\Database\Specifics;
  * This class contains the specifics for Oracle DBMS.
  * Any logic is in AbstractSpecifics.
  */
-class Oci8Specifics extends AbstractSpecifics {
-	/**
-	 * Contains the specifics that need to be taken care of for Oracle DBMS.
-	 *
-	 * @var array
-	 */
-	protected $specificProperties = array(
-		self::TABLE_MAXLENGTH => 30,
-		self::FIELD_MAXLENGTH => 30,
-		self::LIST_MAXEXPRESSIONS => 1000
-	);
+class Oci8Specifics extends AbstractSpecifics
+{
+    /**
+     * Contains the specifics that need to be taken care of for Oracle DBMS.
+     *
+     * @var array
+     */
+    protected $specificProperties = array(
+        self::TABLE_MAXLENGTH => 30,
+        self::FIELD_MAXLENGTH => 30,
+        self::LIST_MAXEXPRESSIONS => 1000
+    );
 }

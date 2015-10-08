@@ -22,52 +22,53 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Get username from backend user id
  * @internal
  */
-class UsernameViewHelper extends AbstractViewHelper implements CompilableInterface {
+class UsernameViewHelper extends AbstractViewHelper implements CompilableInterface
+{
+    /**
+     * First level cache of user names
+     *
+     * @var array
+     */
+    protected static $usernameRuntimeCache = array();
 
-	/**
-	 * First level cache of user names
-	 *
-	 * @var array
-	 */
-	static protected $usernameRuntimeCache = array();
+    /**
+     * Resolve user name from backend user id.
+     *
+     * @param int $uid Uid of the user
+     * @return string Username or an empty string if there is no user with that UID
+     */
+    public function render($uid)
+    {
+        return static::renderStatic(
+            array(
+                'uid' => $uid
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
-	/**
-	 * Resolve user name from backend user id.
-	 *
-	 * @param int $uid Uid of the user
-	 * @return string Username or an empty string if there is no user with that UID
-	 */
-	public function render($uid) {
-		return static::renderStatic(
-			array(
-				'uid' => $uid
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
+    /**
+     * @param array $arguments
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $uid = $arguments['uid'];
 
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 *
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$uid = $arguments['uid'];
+        if (isset(static::$usernameRuntimeCache[$uid])) {
+            return static::$usernameRuntimeCache[$uid];
+        }
 
-		if (isset(static::$usernameRuntimeCache[$uid])) {
-			return static::$usernameRuntimeCache[$uid];
-		}
-
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$backendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository::class);
-		/** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
-		$user = $backendUserRepository->findByUid($uid);
-		// $user may be NULL if user was deleted from DB, set it to empty string to always return a string
-		static::$usernameRuntimeCache[$uid] = ($user === NULL) ? '' : $user->getUserName();
-		return static::$usernameRuntimeCache[$uid];
-	}
-
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $backendUserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository::class);
+        /** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
+        $user = $backendUserRepository->findByUid($uid);
+        // $user may be NULL if user was deleted from DB, set it to empty string to always return a string
+        static::$usernameRuntimeCache[$uid] = ($user === null) ? '' : $user->getUserName();
+        return static::$usernameRuntimeCache[$uid];
+    }
 }

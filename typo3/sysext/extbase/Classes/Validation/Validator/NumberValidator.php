@@ -19,22 +19,22 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class NumberValidator extends AbstractValidator {
-
-	/**
-	 * Checks if the given value is a valid number.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 */
-	public function isValid($value) {
-		if (!is_numeric($value)) {
-			$this->addError(
-			$this->translateErrorMessage(
-				'validator.number.notvalid',
-				'extbase'
-			), 1221563685);
-		}
-	}
-
+class NumberValidator extends AbstractValidator
+{
+    /**
+     * Checks if the given value is a valid number.
+     *
+     * @param mixed $value The value that should be validated
+     * @return void
+     */
+    public function isValid($value)
+    {
+        if (!is_numeric($value)) {
+            $this->addError(
+            $this->translateErrorMessage(
+                'validator.number.notvalid',
+                'extbase'
+            ), 1221563685);
+        }
+    }
 }

@@ -17,31 +17,31 @@ namespace TYPO3\CMS\Core\Messaging;
 /**
  * A class representing flash messages.
  */
-class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface {
+class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * Array of \TYPO3\CMS\Core\Messaging\FlashMessageQueue objects
+     *
+     * @var array
+     */
+    protected $flashMessageQueues = array();
 
-	/**
-	 * Array of \TYPO3\CMS\Core\Messaging\FlashMessageQueue objects
-	 *
-	 * @var array
-	 */
-	protected $flashMessageQueues = array();
-
-	/**
-	 * Return the message queue for the given identifier.
-	 * If no queue exists, an empty one will be created.
-	 *
-	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
-	 * @api
-	 */
-	public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages') {
-		if (!isset($this->flashMessageQueues[$identifier])) {
-			$this->flashMessageQueues[$identifier] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
-				$identifier
-			);
-		}
-		return $this->flashMessageQueues[$identifier];
-	}
-
+    /**
+     * Return the message queue for the given identifier.
+     * If no queue exists, an empty one will be created.
+     *
+     * @param string $identifier
+     * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     * @api
+     */
+    public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages')
+    {
+        if (!isset($this->flashMessageQueues[$identifier])) {
+            $this->flashMessageQueues[$identifier] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
+                $identifier
+            );
+        }
+        return $this->flashMessageQueues[$identifier];
+    }
 }

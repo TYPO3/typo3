@@ -25,69 +25,70 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * initializes possible language base data, finds out if tabs should be rendered and
  * then calls either TabsContainer or a NoTabsContainer for further processing.
  */
-class FullRecordContainer extends AbstractContainer {
+class FullRecordContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $table = $this->data['tableName'];
+        $row = $this->data['databaseRow'];
+        $recordTypeValue = $this->data['recordTypeValue'];
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$table = $this->data['tableName'];
-		$row = $this->data['databaseRow'];
-		$recordTypeValue = $this->data['recordTypeValue'];
+        // Load the description content for the table if requested
+        if (!empty($this->data['processedTca']['interface']['always_description'])) {
+            $languageService = $this->getLanguageService();
+            $languageService->loadSingleTableDescription($table);
+        }
 
-		// Load the description content for the table if requested
-		if (!empty($this->data['processedTca']['interface']['always_description'])) {
-			$languageService = $this->getLanguageService();
-			$languageService->loadSingleTableDescription($table);
-		}
+        // List of items to be rendered
+        $itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
 
-		// List of items to be rendered
-		$itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+        $fieldsArray = GeneralUtility::trimExplode(',', $itemList, true);
 
-		$fieldsArray = GeneralUtility::trimExplode(',', $itemList, TRUE);
+        // Streamline the fields array
+        // First, make sure there is always a --div-- definition for the first element
+        if (substr($fieldsArray[0], 0, 7) !== '--div--') {
+            array_unshift($fieldsArray, '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab');
+        }
+        // If first tab has no label definition, add "general" label
+        $firstTabHasLabel = count(GeneralUtility::trimExplode(';',  $fieldsArray[0])) > 1;
+        if (!$firstTabHasLabel) {
+            $fieldsArray[0] = '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab';
+        }
+        // If there are at least two --div-- definitions, inner container will be a TabContainer, else a NoTabContainer
+        $tabCount = 0;
+        foreach ($fieldsArray as $field) {
+            if (substr($field, 0, 7) === '--div--') {
+                $tabCount++;
+            }
+        }
+        $hasTabs = true;
+        if ($tabCount < 2) {
+            // Remove first tab definition again if there is only one tab defined
+            array_shift($fieldsArray);
+            $hasTabs = false;
+        }
 
-		// Streamline the fields array
-		// First, make sure there is always a --div-- definition for the first element
-		if (substr($fieldsArray[0], 0, 7) !== '--div--') {
-			array_unshift($fieldsArray, '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab');
-		}
-		// If first tab has no label definition, add "general" label
-		$firstTabHasLabel = count(GeneralUtility::trimExplode(';',  $fieldsArray[0])) > 1;
-		if (!$firstTabHasLabel) {
-			$fieldsArray[0] = '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab';
-		}
-		// If there are at least two --div-- definitions, inner container will be a TabContainer, else a NoTabContainer
-		$tabCount = 0;
-		foreach ($fieldsArray as $field) {
-			if (substr($field, 0, 7) === '--div--') {
-				$tabCount++;
-			}
-		}
-		$hasTabs = TRUE;
-		if ($tabCount < 2) {
-			// Remove first tab definition again if there is only one tab defined
-			array_shift($fieldsArray);
-			$hasTabs = FALSE;
-		}
+        $data = $this->data;
+        $data['fieldsArray'] = $fieldsArray;
+        if ($hasTabs) {
+            $data['renderType'] = 'tabsContainer';
+        } else {
+            $data['renderType'] = 'noTabsContainer';
+        }
 
-		$data = $this->data;
-		$data['fieldsArray'] = $fieldsArray;
-		if ($hasTabs) {
-			$data['renderType'] = 'tabsContainer';
-		} else {
-			$data['renderType'] = 'noTabsContainer';
-		}
+        return $this->nodeFactory->create($data)->render();
+    }
 
-		return $this->nodeFactory->create($data)->render();
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

@@ -19,74 +19,78 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * The form wizard controller
  */
-class WizardController {
+class WizardController
+{
+    /**
+     * Dispatch on action
+     *
+     * Calls the requested action
+     *
+     * @return void
+     */
+    public function dispatch()
+    {
+        switch (GeneralUtility::_GP('action')) {
+            case 'save':
+                $this->saveAction();
+                break;
+            case 'load':
+                $this->loadAction();
+                break;
+            default:
+                $this->indexAction();
+        }
+    }
 
-	/**
-	 * Dispatch on action
-	 *
-	 * Calls the requested action
-	 *
-	 * @return void
-	 */
-	public function dispatch() {
-		switch (GeneralUtility::_GP('action')) {
-			case 'save':
-				$this->saveAction();
-				break;
-			case 'load':
-				$this->loadAction();
-				break;
-			default:
-				$this->indexAction();
-		}
-	}
+    /**
+     * The index action
+     *
+     * The action which should be taken when the wizard is loaded
+     *
+     * @return void
+     */
+    protected function indexAction()
+    {
+        /** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
+        $view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
+        $view->render();
+    }
 
-	/**
-	 * The index action
-	 *
-	 * The action which should be taken when the wizard is loaded
-	 *
-	 * @return void
-	 */
-	protected function indexAction() {
-		/** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
-		$view->render();
-	}
+    /**
+     * The save action
+     *
+     * The action which should be taken when the form in the wizard is saved
+     *
+     * @return void
+     */
+    protected function saveAction()
+    {
+        /** @var $view \TYPO3\CMS\Form\View\Wizard\SaveWizardView */
+        $view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\SaveWizardView::class, $this->getRepository());
+        $view->render();
+    }
 
-	/**
-	 * The save action
-	 *
-	 * The action which should be taken when the form in the wizard is saved
-	 *
-	 * @return void
-	 */
-	protected function saveAction() {
-		/** @var $view \TYPO3\CMS\Form\View\Wizard\SaveWizardView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\SaveWizardView::class, $this->getRepository());
-		$view->render();
-	}
+    /**
+     * The load action
+     *
+     * The action which should be taken when the form in the wizard is loaded
+     *
+     * @return void
+     */
+    protected function loadAction()
+    {
+        /** @var $view \TYPO3\CMS\Form\View\Wizard\LoadWizardView */
+        $view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\LoadWizardView::class, $this->getRepository());
+        $view->render();
+    }
 
-	/**
-	 * The load action
-	 *
-	 * The action which should be taken when the form in the wizard is loaded
-	 *
-	 * @return void
-	 */
-	protected function loadAction() {
-		/** @var $view \TYPO3\CMS\Form\View\Wizard\LoadWizardView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\LoadWizardView::class, $this->getRepository());
-		$view->render();
-	}
-
-	/**
-	 * Gets the repository object.
-	 *
-	 * @return \TYPO3\CMS\Form\Domain\Repository\ContentRepository
-	 */
-	protected function getRepository() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Repository\ContentRepository::class);
-	}
-
+    /**
+     * Gets the repository object.
+     *
+     * @return \TYPO3\CMS\Form\Domain\Repository\ContentRepository
+     */
+    protected function getRepository()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Repository\ContentRepository::class);
+    }
 }

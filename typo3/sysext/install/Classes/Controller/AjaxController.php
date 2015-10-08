@@ -18,150 +18,157 @@ namespace TYPO3\CMS\Install\Controller;
  * Install tool ajax controller, handles ajax requests
  *
  */
-class AjaxController extends AbstractController {
+class AjaxController extends AbstractController
+{
+    /**
+     * @var string
+     */
+    protected $unauthorized = 'unauthorized';
 
-	/**
-	 * @var string
-	 */
-	protected $unauthorized = 'unauthorized';
+    /**
+     * @var array List of valid action names that need authentication
+     */
+    protected $authenticationActions = array(
+        'extensionCompatibilityTester',
+        'uninstallExtension',
+        'clearCache',
+        'coreUpdateUpdateVersionMatrix',
+        'coreUpdateIsUpdateAvailable',
+        'coreUpdateCheckPreConditions',
+        'coreUpdateDownload',
+        'coreUpdateVerifyChecksum',
+        'coreUpdateUnpack',
+        'coreUpdateMove',
+        'coreUpdateActivate',
+        'folderStatus',
+        'environmentStatus'
+    );
 
-	/**
-	 * @var array List of valid action names that need authentication
-	 */
-	protected $authenticationActions = array(
-		'extensionCompatibilityTester',
-		'uninstallExtension',
-		'clearCache',
-		'coreUpdateUpdateVersionMatrix',
-		'coreUpdateIsUpdateAvailable',
-		'coreUpdateCheckPreConditions',
-		'coreUpdateDownload',
-		'coreUpdateVerifyChecksum',
-		'coreUpdateUnpack',
-		'coreUpdateMove',
-		'coreUpdateActivate',
-		'folderStatus',
-		'environmentStatus'
-	);
+    /**
+     * Main entry point
+     *
+     * @return void
+     */
+    public function execute()
+    {
+        $this->loadBaseExtensions();
+        $this->initializeObjectManager();
+        // Warning: Order of these methods is security relevant and interferes with different access
+        // conditions (new/existing installation). See the single method comments for details.
+        $this->outputInstallToolNotEnabledMessageIfNeeded();
+        $this->checkInstallToolPasswordNotSet();
+        $this->initializeSession();
+        $this->checkSessionToken();
+        $this->checkSessionLifetime();
+        $this->checkLogin();
+        $this->dispatchAuthenticationActions();
+    }
 
-	/**
-	 * Main entry point
-	 *
-	 * @return void
-	 */
-	public function execute() {
-		$this->loadBaseExtensions();
-		$this->initializeObjectManager();
-		// Warning: Order of these methods is security relevant and interferes with different access
-		// conditions (new/existing installation). See the single method comments for details.
-		$this->outputInstallToolNotEnabledMessageIfNeeded();
-		$this->checkInstallToolPasswordNotSet();
-		$this->initializeSession();
-		$this->checkSessionToken();
-		$this->checkSessionLifetime();
-		$this->checkLogin();
-		$this->dispatchAuthenticationActions();
-	}
+    /**
+     * Check whether the install tool is enabled
+     *
+     * @return void
+     */
+    protected function outputInstallToolNotEnabledMessageIfNeeded()
+    {
+        if (!$this->isInstallToolAvailable()) {
+            $this->output($this->unauthorized);
+        }
+    }
 
-	/**
-	 * Check whether the install tool is enabled
-	 *
-	 * @return void
-	 */
-	protected function outputInstallToolNotEnabledMessageIfNeeded() {
-		if (!$this->isInstallToolAvailable()) {
-			$this->output($this->unauthorized);
-		}
-	}
+    /**
+     * Check if the install tool password is set
+     *
+     * @return void
+     */
+    protected function checkInstallToolPasswordNotSet()
+    {
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])) {
+            $this->output($this->unauthorized);
+        }
+    }
 
-	/**
-	 * Check if the install tool password is set
-	 *
-	 * @return void
-	 */
-	protected function checkInstallToolPasswordNotSet() {
-		if (empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])) {
-			$this->output($this->unauthorized);
-		}
-	}
+    /**
+     * Check login status
+     *
+     * @return void
+     */
+    protected function checkLogin()
+    {
+        if (!$this->session->isAuthorized()) {
+            $this->output($this->unauthorized);
+        } else {
+            $this->session->refreshSession();
+        }
+    }
 
-	/**
-	 * Check login status
-	 *
-	 * @return void
-	 */
-	protected function checkLogin() {
-		if (!$this->session->isAuthorized()) {
-			$this->output($this->unauthorized);
-		} else {
-			$this->session->refreshSession();
-		}
-	}
+    /**
+     * Overwrites abstract method
+     * In contrast to abstract method, a response "you are not authorized is outputted"
+     *
+     * @param bool $tokenOk
+     * @return void
+     */
+    protected function handleSessionTokenCheck($tokenOk)
+    {
+        if (!$tokenOk) {
+            $this->output($this->unauthorized);
+        }
+    }
 
-	/**
-	 * Overwrites abstract method
-	 * In contrast to abstract method, a response "you are not authorized is outputted"
-	 *
-	 * @param bool $tokenOk
-	 * @return void
-	 */
-	protected function handleSessionTokenCheck($tokenOk) {
-		if (!$tokenOk) {
-			$this->output($this->unauthorized);
-		}
-	}
+    /**
+     * Overwrites abstract method
+     * In contrast to abstract method, a response "you are not authorized is outputted"
+     *
+     * @return void
+     */
+    protected function handleSessionLifeTimeExpired()
+    {
+        $this->output($this->unauthorized);
+    }
 
-	/**
-	 * Overwrites abstract method
-	 * In contrast to abstract method, a response "you are not authorized is outputted"
-	 *
-	 * @return void
-	 */
-	protected function handleSessionLifeTimeExpired() {
-		$this->output($this->unauthorized);
-	}
+    /**
+     * Call an action that needs authentication
+     *
+     * @throws Exception
+     * @return string Rendered content
+     */
+    protected function dispatchAuthenticationActions()
+    {
+        $action = $this->getAction();
+        if ($action === '') {
+            $this->output('noAction');
+        }
+        $this->validateAuthenticationAction($action);
+        $actionClass = ucfirst($action);
+        /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
+        $toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
+        if (!($toolAction instanceof Action\ActionInterface)) {
+            throw new Exception(
+                $action . ' does not implement ActionInterface',
+                1369474308
+            );
+        }
+        $toolAction->setController('ajax');
+        $toolAction->setAction($action);
+        $toolAction->setToken($this->generateTokenForAction($action));
+        $toolAction->setPostValues($this->getPostValues());
+        $this->output($toolAction->handle());
+    }
 
-	/**
-	 * Call an action that needs authentication
-	 *
-	 * @throws Exception
-	 * @return string Rendered content
-	 */
-	protected function dispatchAuthenticationActions() {
-		$action = $this->getAction();
-		if ($action === '') {
-			$this->output('noAction');
-		}
-		$this->validateAuthenticationAction($action);
-		$actionClass = ucfirst($action);
-		/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
-		$toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
-		if (!($toolAction instanceof Action\ActionInterface)) {
-			throw new Exception(
-				$action . ' does not implement ActionInterface',
-				1369474308
-			);
-		}
-		$toolAction->setController('ajax');
-		$toolAction->setAction($action);
-		$toolAction->setToken($this->generateTokenForAction($action));
-		$toolAction->setPostValues($this->getPostValues());
-		$this->output($toolAction->handle());
-	}
-
-	/**
-	 * Output content.
-	 * WARNING: This exits the script execution!
-	 *
-	 * @param string $content JSON encoded content to output
-	 */
-	protected function output($content = '') {
-		ob_clean();
-		header('Content-Type: application/json; charset=utf-8');
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Pragma: no-cache');
-		echo $content;
-		die;
-	}
-
+    /**
+     * Output content.
+     * WARNING: This exits the script execution!
+     *
+     * @param string $content JSON encoded content to output
+     */
+    protected function output($content = '')
+    {
+        ob_clean();
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        echo $content;
+        die;
+    }
 }

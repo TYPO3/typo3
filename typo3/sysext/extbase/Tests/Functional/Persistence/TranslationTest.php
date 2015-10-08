@@ -19,175 +19,182 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
-class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
+class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
+{
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
 
-	/**
-	 * @var array
-	 */
-	protected $testExtensionsToLoad = array('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example');
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = array('extbase', 'fluid');
 
-	/**
-	 * @var array
-	 */
-	protected $coreExtensionsToLoad = array('extbase', 'fluid');
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
-	 */
-	protected $objectManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Repository
+     */
+    protected $postRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Repository
-	 */
-	protected $postRepository;
+    /**
+     * Sets up this test suite.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        /*
+         * Posts Dataset for the tests:
+         *
+         * Post1
+         *   -> EN: Post1
+         *   -> GR: Post1
+         * Post2
+         *   -> EN: Post2
+         * Post3
+         */
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translated-posts.xml');
 
-	/**
-	 * Sets up this test suite.
-	 */
-	protected function setUp() {
-		parent::setUp();
-		/*
-		 * Posts Dataset for the tests:
-		 *
-		 * Post1
-		 *   -> EN: Post1
-		 *   -> GR: Post1
-		 * Post2
-		 *   -> EN: Post2
-		 * Post3
-		 */
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translated-posts.xml');
+        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $this->setUpBasicFrontendEnvironment();
+    }
 
-		$this->setUpBasicFrontendEnvironment();
-	}
+    /**
+     * Minimal frontent environment to satisfy Extbase Typo3DbBackend
+     */
+    protected function setUpBasicFrontendEnvironment()
+    {
+        $environmentServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
+        $environmentServiceMock
+            ->expects($this->any())
+            ->method('isEnvironmentInFrontendMode')
+            ->willReturn(true);
+        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\EnvironmentService::class, $environmentServiceMock);
 
-	/**
-	 * Minimal frontent environment to satisfy Extbase Typo3DbBackend
-	 */
-	protected function setUpBasicFrontendEnvironment() {
-		$environmentServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\EnvironmentService::class);
-		$environmentServiceMock
-			->expects($this->any())
-			->method('isEnvironmentInFrontendMode')
-			->willReturn(TRUE);
-		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\EnvironmentService::class, $environmentServiceMock);
+        $pageRepositoryFixture = new PageRepository();
+        $frontendControllerMock = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $frontendControllerMock->sys_page = $pageRepositoryFixture;
+        $GLOBALS['TSFE'] = $frontendControllerMock;
+    }
 
-		$pageRepositoryFixture = new PageRepository();
-		$frontendControllerMock = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
-		$frontendControllerMock->sys_page = $pageRepositoryFixture;
-		$GLOBALS['TSFE'] = $frontendControllerMock;
-	}
+    /**
+     * @test
+     */
+    public function countReturnsCorrectNumberOfPosts()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function countReturnsCorrectNumberOfPosts() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(0);
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(0);
+        $postCount = $query->execute()->count();
+        $this->assertSame(3, $postCount);
+    }
 
-		$postCount = $query->execute()->count();
-		$this->assertSame(3, $postCount);
-	}
+    /**
+     * @test
+     */
+    public function countReturnsCorrectNumberOfPostsInEnglishLanguage()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function countReturnsCorrectNumberOfPostsInEnglishLanguage() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(1);
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(1);
+        $postCount = $query->execute()->count();
+        $this->assertSame(3, $postCount);
+    }
 
-		$postCount = $query->execute()->count();
-		$this->assertSame(3, $postCount);
-	}
+    /**
+     * @test
+     */
+    public function countReturnsCorrectNumberOfPostsInGreekLanguage()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function countReturnsCorrectNumberOfPostsInGreekLanguage() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(2);
+        $postCount = $query->execute()->count();
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(2);
-		$postCount = $query->execute()->count();
+        $this->assertSame(3, $postCount);
+    }
 
-		$this->assertSame(3, $postCount);
-	}
+    /**
+     * @test
+     */
+    public function fetchingPostsReturnsEnglishPostsWithFallback()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function fetchingPostsReturnsEnglishPostsWithFallback() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(1);
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(1);
+        /** @var Post[] $posts */
+        $posts = $query->execute()->toArray();
 
-		/** @var Post[] $posts */
-		$posts = $query->execute()->toArray();
+        $this->assertCount(3, $posts);
+        $this->assertSame('B EN:Post1', $posts[0]->getTitle());
+        $this->assertSame('A EN:Post2', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
+    }
 
-		$this->assertCount(3, $posts);
-		$this->assertSame('B EN:Post1', $posts[0]->getTitle());
-		$this->assertSame('A EN:Post2', $posts[1]->getTitle());
-		$this->assertSame('Post3', $posts[2]->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function fetchingPostsReturnsGreekPostsWithFallback()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function fetchingPostsReturnsGreekPostsWithFallback() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(2);
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(2);
+        /** @var Post[] $posts */
+        $posts = $query->execute()->toArray();
 
-		/** @var Post[] $posts */
-		$posts = $query->execute()->toArray();
+        $this->assertCount(3, $posts);
+        $this->assertSame('GR:Post1', $posts[0]->getTitle());
+        $this->assertSame('Post2', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
+    }
 
-		$this->assertCount(3, $posts);
-		$this->assertSame('GR:Post1', $posts[0]->getTitle());
-		$this->assertSame('Post2', $posts[1]->getTitle());
-		$this->assertSame('Post3', $posts[2]->getTitle());
-	}
+    /**
+     * @test
+     */
+    public function orderingByTitleRespectsEnglishTitles()
+    {
+        $query = $this->postRepository->createQuery();
 
-	/**
-	 * @test
-	 */
-	public function orderingByTitleRespectsEnglishTitles() {
-		$query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds(array(1));
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageUid(1);
 
-		$querySettings = $query->getQuerySettings();
-		$querySettings->setStoragePageIds(array(1));
-		$querySettings->setRespectSysLanguage(TRUE);
-		$querySettings->setLanguageUid(1);
+        $query->setOrderings(array('title' => QueryInterface::ORDER_ASCENDING));
 
-		$query->setOrderings(array('title' => QueryInterface::ORDER_ASCENDING));
+        /** @var Post[] $posts */
+        $posts = $query->execute()->toArray();
 
-		/** @var Post[] $posts */
-		$posts = $query->execute()->toArray();
-
-		$this->assertCount(3, $posts);
-		$this->assertSame('A EN:Post2', $posts[0]->getTitle());
-		$this->assertSame('B EN:Post1', $posts[1]->getTitle());
-		$this->assertSame('Post3', $posts[2]->getTitle());
-	}
-
+        $this->assertCount(3, $posts);
+        $this->assertSame('A EN:Post2', $posts[0]->getTitle());
+        $this->assertSame('B EN:Post1', $posts[1]->getTitle());
+        $this->assertSame('Post3', $posts[2]->getTitle());
+    }
 }

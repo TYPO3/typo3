@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
 /**
  * An SQL exception
  */
-class SqlErrorException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class SqlErrorException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

@@ -14,14 +14,15 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View\Fixtures;
 /**
  * [Enter description here]
  */
-class TemplateViewFixture extends \TYPO3\CMS\Fluid\View\TemplateView {
+class TemplateViewFixture extends \TYPO3\CMS\Fluid\View\TemplateView
+{
+    public $syntaxTree;
 
-	public $syntaxTree;
+    protected function resolveTemplateFile()
+    {
+    }
 
-	protected function resolveTemplateFile() {
-	}
-
-	protected function loadTemplateFile($templateFilePath) {
-	}
-
+    protected function loadTemplateFile($templateFilePath)
+    {
+    }
 }

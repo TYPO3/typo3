@@ -19,15 +19,14 @@ use TYPO3\CMS\Core\Resource\File;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional getImgResource processing
  */
-interface FileLinkHookInterface {
-
-	/**
-	 * Finds alternative previewImage for given File.
-	 *
-	 * @param File $file
-	 * @return File
-	 * @abstract
-	 */
-	public function getPreviewImage(File $file);
-
+interface FileLinkHookInterface
+{
+    /**
+     * Finds alternative previewImage for given File.
+     *
+     * @param File $file
+     * @return File
+     * @abstract
+     */
+    public function getPreviewImage(File $file);
 }

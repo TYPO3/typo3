@@ -19,16 +19,15 @@ namespace TYPO3\CMS\Backend\View;
  * tt_content_drawFooter processing.
  *
  */
-interface PageLayoutViewDrawFooterHookInterface {
-
-	/**
-	 * Preprocesses the preview footer rendering of a content element.
-	 *
-	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param string $info Processed values
-	 * @param array $row Record row of tt_content
-	 * @return void
-	 */
-	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$info, array &$row);
-
+interface PageLayoutViewDrawFooterHookInterface
+{
+    /**
+     * Preprocesses the preview footer rendering of a content element.
+     *
+     * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+     * @param string $info Processed values
+     * @param array $row Record row of tt_content
+     * @return void
+     */
+    public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$info, array &$row);
 }

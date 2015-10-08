@@ -14,135 +14,144 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
  */
-class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = array();
 
-	/**
-	 * @var array A backup of registered singleton instances
-	 */
-	protected $singletonInstances = array();
+    protected $basedir = 'basedir';
 
-	protected $basedir = 'basedir';
+    protected function setUp()
+    {
+        $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+        vfsStream::setup($this->basedir);
+    }
 
-	protected function setUp() {
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		vfsStream::setup($this->basedir);
-	}
+    protected function tearDown()
+    {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
+    }
 
-	protected function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		parent::tearDown();
-	}
+    protected function createFolderFixture($path, $name, $mockedStorage = null)
+    {
+        if ($mockedStorage === null) {
+            $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        }
+        return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name, 0);
+    }
 
-	protected function createFolderFixture($path, $name, $mockedStorage = NULL) {
-		if ($mockedStorage === NULL) {
-			$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
-		}
-		return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name, 0);
-	}
+    /**
+     * @test
+     */
+    public function constructorArgumentsAreAvailableAtRuntime()
+    {
+        $path = $this->getUniqueId();
+        $name = $this->getUniqueId();
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $fixture = $this->createFolderFixture($path, $name, $mockedStorage);
+        $this->assertSame($mockedStorage, $fixture->getStorage());
+        $this->assertStringStartsWith($path, $fixture->getIdentifier());
+        $this->assertSame($name, $fixture->getName());
+    }
 
-	/**
-	 * @test
-	 */
-	public function constructorArgumentsAreAvailableAtRuntime() {
-		$path = $this->getUniqueId();
-		$name = $this->getUniqueId();
-		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
-		$fixture = $this->createFolderFixture($path, $name, $mockedStorage);
-		$this->assertSame($mockedStorage, $fixture->getStorage());
-		$this->assertStringStartsWith($path, $fixture->getIdentifier());
-		$this->assertSame($name, $fixture->getName());
-	}
+    /**
+     * @test
+     */
+    public function propertiesCanBeUpdated()
+    {
+        $fixture = $this->createFolderFixture('/somePath', 'someName');
+        $fixture->updateProperties(array('identifier' => '/someOtherPath', 'name' => 'someNewName'));
+        $this->assertSame('someNewName', $fixture->getName());
+        $this->assertSame('/someOtherPath', $fixture->getIdentifier());
+    }
 
-	/**
-	 * @test
-	 */
-	public function propertiesCanBeUpdated() {
-		$fixture = $this->createFolderFixture('/somePath', 'someName');
-		$fixture->updateProperties(array('identifier' => '/someOtherPath', 'name' => 'someNewName'));
-		$this->assertSame('someNewName', $fixture->getName());
-		$this->assertSame('/someOtherPath', $fixture->getIdentifier());
-	}
+    /**
+     * @test
+     */
+    public function propertiesAreNotUpdatedIfNotSetInInput()
+    {
+        $fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
+        $fixture->updateProperties(array('identifier' => '/someOtherPath'));
+        $this->assertSame('someName', $fixture->getName());
+    }
 
-	/**
-	 * @test
-	 */
-	public function propertiesAreNotUpdatedIfNotSetInInput() {
-		$fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
-		$fixture->updateProperties(array('identifier' => '/someOtherPath'));
-		$this->assertSame('someName', $fixture->getName());
-	}
+    /**
+     * @test
+     */
+    public function getFilesReturnsArrayWithFilenamesAsKeys()
+    {
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(array(
+                'somefile.png' => array(
+                    'name' => 'somefile.png'
+                ),
+                'somefile.jpg' => array(
+                    'name' => 'somefile.jpg'
+                )
+            )
+        ));
+        $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
 
-	/**
-	 * @test
-	 */
-	public function getFilesReturnsArrayWithFilenamesAsKeys() {
-		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
-		$mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(array(
-				'somefile.png' => array(
-					'name' => 'somefile.png'
-				),
-				'somefile.jpg' => array(
-					'name' => 'somefile.jpg'
-				)
-			)
-		));
-		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+        $fileList = $fixture->getFiles();
 
-		$fileList = $fixture->getFiles();
+        $this->assertSame(array('somefile.png', 'somefile.jpg'), array_keys($fileList));
+    }
 
-		$this->assertSame(array('somefile.png', 'somefile.jpg'), array_keys($fileList));
-	}
+    /**
+     * @test
+     */
+    public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet()
+    {
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage
+            ->expects($this->once())
+            ->method('getFilesInFolder')
+            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), false)
+            ->will($this->returnValue(array()));
 
-	/**
-	 * @test
-	 */
-	public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet() {
-		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
-		$mockedStorage
-			->expects($this->once())
-			->method('getFilesInFolder')
-			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), FALSE)
-			->will($this->returnValue(array()));
+        $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+        $fixture->getFiles();
+    }
 
-		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
-		$fixture->getFiles();
-	}
+    /**
+     * @test
+     */
+    public function getFilesHandsOverRecursiveTRUEifSet()
+    {
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage
+            ->expects($this->once())
+            ->method('getFilesInFolder')
+            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), true)
+            ->will($this->returnValue(array()));
 
-	/**
-	 * @test
-	 */
-	public function getFilesHandsOverRecursiveTRUEifSet() {
-		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
-		$mockedStorage
-			->expects($this->once())
-			->method('getFilesInFolder')
-			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), TRUE)
-			->will($this->returnValue(array()));
+        $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+        $fixture->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
+    }
 
-		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
-		$fixture->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, TRUE);
-	}
+    /**
+     * @test
+     */
+    public function getParentFolderGetsParentFolderFromStorage()
+    {
+        $parentIdentifier = '/parent/';
+        $currentIdentifier = '/parent/current/';
 
-	/**
-	 * @test
-	 */
-	public function getParentFolderGetsParentFolderFromStorage() {
-		$parentIdentifier = '/parent/';
-		$currentIdentifier = '/parent/current/';
+        $parentFolderFixture = $this->createFolderFixture($parentIdentifier, 'parent');
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', false);
+        $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
+        $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
 
-		$parentFolderFixture = $this->createFolderFixture($parentIdentifier, 'parent');
-		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', FALSE);
-		$mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
-		$mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
+        $currentFolderFixture = $this->createFolderFixture($currentIdentifier, 'current', $mockedStorage);
 
-		$currentFolderFixture = $this->createFolderFixture($currentIdentifier, 'current', $mockedStorage);
-
-		$this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
-	}
-
+        $this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
+    }
 }

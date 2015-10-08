@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 /**
  * An "Unexpected Type" exception.
  */
-class UnexpectedTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
-
+class UnexpectedTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+{
 }

@@ -19,5 +19,6 @@ namespace TYPO3\CMS\Dbal\Database\Specifics;
  * DBMS that does not have its own requirements.
  * Any logic is in AbstractSpecifics.
  */
-class NullSpecifics extends AbstractSpecifics {
+class NullSpecifics extends AbstractSpecifics
+{
 }

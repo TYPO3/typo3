@@ -20,156 +20,160 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Base class for container and single elements - their abstracts extend from here.
  */
-abstract class AbstractNode implements NodeInterface {
+abstract class AbstractNode implements NodeInterface
+{
+    /**
+     * Main data array to work on, given from parent to child elements
+     *
+     * @var array
+     */
+    protected $data = array();
 
-	/**
-	 * Main data array to work on, given from parent to child elements
-	 *
-	 * @var array
-	 */
-	protected $data = array();
+    /**
+     * Set data to data array.
+     *
+     * @todo: Should NOT set the nodeFactory instance, this is done by AbstractContainer only,
+     * @todo: but not done for Element classes: Elements are tree leaves, they MUST
+     * @todo: not create new nodes again.
+     * @todo: Currently, AbstractFormElement still does that, but do not rely on the fact that
+     * @todo: Element classes have an instance of NodeFactory at hand.
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data)
+    {
+        $this->data = $data;
+    }
 
-	/**
-	 * Set data to data array.
-	 *
-	 * @todo: Should NOT set the nodeFactory instance, this is done by AbstractContainer only,
-	 * @todo: but not done for Element classes: Elements are tree leaves, they MUST
-	 * @todo: not create new nodes again.
-	 * @todo: Currently, AbstractFormElement still does that, but do not rely on the fact that
-	 * @todo: Element classes have an instance of NodeFactory at hand.
-	 *
-	 * @param NodeFactory $nodeFactory
-	 * @param array $data
-	 */
-	public function __construct(NodeFactory $nodeFactory, array $data) {
-		$this->data = $data;
-	}
+    /**
+     * Handler for single nodes
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    abstract public function render();
 
-	/**
-	 * Handler for single nodes
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	abstract public function render();
+    /**
+     * Initialize the array that is returned to parent after calling. This structure
+     * is identical for *all* nodes. Parent will merge the return of a child with its
+     * own stuff and in itself return an array of the same structure.
+     *
+     * @return array
+     */
+    protected function initializeResultArray()
+    {
+        return array(
+            'additionalJavaScriptPost' => array(),
+            'additionalJavaScriptSubmit' => array(),
+            'additionalHiddenFields' => array(),
+            'stylesheetFiles' => array(),
+            // can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
+            'requireJsModules' => array(),
+            'extJSCODE' => '',
+            'inlineData' => array(),
+            'html' => '',
+        );
+    }
 
-	/**
-	 * Initialize the array that is returned to parent after calling. This structure
-	 * is identical for *all* nodes. Parent will merge the return of a child with its
-	 * own stuff and in itself return an array of the same structure.
-	 *
-	 * @return array
-	 */
-	protected function initializeResultArray() {
-		return array(
-			'additionalJavaScriptPost' => array(),
-			'additionalJavaScriptSubmit' => array(),
-			'additionalHiddenFields' => array(),
-			'stylesheetFiles' => array(),
-			// can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
-			'requireJsModules' => array(),
-			'extJSCODE' => '',
-			'inlineData' => array(),
-			'html' => '',
-		);
-	}
+    /**
+     * Merge existing data with a child return array
+     *
+     * @param array $existing Currently merged array
+     * @param array $childReturn Array returned by child
+     * @return array Result array
+     */
+    protected function mergeChildReturnIntoExistingResult(array $existing, array $childReturn)
+    {
+        if (!empty($childReturn['html'])) {
+            $existing['html'] .= LF . $childReturn['html'];
+        }
+        if (!empty($childReturn['extJSCODE'])) {
+            $existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
+        }
+        foreach ($childReturn['additionalJavaScriptPost'] as $value) {
+            $existing['additionalJavaScriptPost'][] = $value;
+        }
+        foreach ($childReturn['additionalJavaScriptSubmit'] as $value) {
+            $existing['additionalJavaScriptSubmit'][] = $value;
+        }
+        foreach ($childReturn['additionalHiddenFields'] as $value) {
+            $existing['additionalHiddenFields'][] = $value;
+        }
+        foreach ($childReturn['stylesheetFiles'] as $value) {
+            $existing['stylesheetFiles'][] = $value;
+        }
+        if (!empty($childReturn['requireJsModules'])) {
+            foreach ($childReturn['requireJsModules'] as $module) {
+                $existing['requireJsModules'][] = $module;
+            }
+        }
+        if (!empty($childReturn['inlineData'])) {
+            $existingInlineData = $existing['inlineData'];
+            $childInlineData = $childReturn['inlineData'];
+            ArrayUtility::mergeRecursiveWithOverrule($existingInlineData, $childInlineData);
+            $existing['inlineData'] = $existingInlineData;
+        }
+        return $existing;
+    }
 
-	/**
-	 * Merge existing data with a child return array
-	 *
-	 * @param array $existing Currently merged array
-	 * @param array $childReturn Array returned by child
-	 * @return array Result array
-	 */
-	protected function mergeChildReturnIntoExistingResult(array $existing, array $childReturn) {
-		if (!empty($childReturn['html'])) {
-			$existing['html'] .= LF . $childReturn['html'];
-		}
-		if (!empty($childReturn['extJSCODE'])) {
-			$existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
-		}
-		foreach ($childReturn['additionalJavaScriptPost'] as $value) {
-			$existing['additionalJavaScriptPost'][] = $value;
-		}
-		foreach ($childReturn['additionalJavaScriptSubmit'] as $value) {
-			$existing['additionalJavaScriptSubmit'][] = $value;
-		}
-		foreach ($childReturn['additionalHiddenFields'] as $value) {
-			$existing['additionalHiddenFields'][] = $value;
-		}
-		foreach ($childReturn['stylesheetFiles'] as $value) {
-			$existing['stylesheetFiles'][] = $value;
-		}
-		if (!empty($childReturn['requireJsModules'])) {
-			foreach ($childReturn['requireJsModules'] as $module) {
-				$existing['requireJsModules'][] = $module;
-			}
-		}
-		if (!empty($childReturn['inlineData'])) {
-			$existingInlineData = $existing['inlineData'];
-			$childInlineData = $childReturn['inlineData'];
-			ArrayUtility::mergeRecursiveWithOverrule($existingInlineData, $childInlineData);
-			$existing['inlineData'] = $existingInlineData;
-		}
-		return $existing;
-	}
+    /**
+     * Build JSON string for validations rules and return it
+     * as data attribute for HTML elements.
+     *
+     * @param array $config
+     * @return string
+     */
+    protected function getValidationDataAsDataAttribute(array $config)
+    {
+        return sprintf(' data-formengine-validation-rules="%s" ', htmlspecialchars($this->getValidationDataAsJsonString($config)));
+    }
 
-	/**
-	 * Build JSON string for validations rules and return it
-	 * as data attribute for HTML elements.
-	 *
-	 * @param array $config
-	 * @return string
-	 */
-	protected function getValidationDataAsDataAttribute(array $config) {
-		return sprintf(' data-formengine-validation-rules="%s" ', htmlspecialchars($this->getValidationDataAsJsonString($config)));
-	}
-
-	/**
-	 * Build JSON string for validations rules.
-	 *
-	 * @param array $config
-	 * @return string
-	 */
-	protected function getValidationDataAsJsonString(array $config) {
-		$validationRules = array();
-		if (!empty($config['eval'])) {
-			$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
-			unset($config['eval']);
-			foreach ($evalList as $evalType) {
-				$validationRules[] = array(
-					'type' => $evalType,
-					'config' => $config
-				);
-			}
-		}
-		if (!empty($config['range'])) {
-			$validationRules[] = array(
-				'type' => 'range',
-				'config' => $config['range']
-			);
-		}
-		if (!empty($config['maxitems']) || !empty($config['minitems'])) {
-			$minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
-			$maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
-			$type = ($config['type']) ?: 'range';
-			if ($config['renderMode'] !== 'tree' && $maxItems <= 1 && $minItems > 0) {
-				$validationRules[] = array(
-					'type' => $type,
-					'minItems' => 1,
-					'maxItems' => 100000
-				);
-			} else {
-				$validationRules[] = array(
-					'type' => $type,
-					'minItems' => $minItems,
-					'maxItems' => $maxItems
-				);
-			}
-		}
-		if (!empty($config['required'])) {
-			$validationRules[] = array('type' => 'required');
-		}
-		return json_encode($validationRules);
-	}
-
+    /**
+     * Build JSON string for validations rules.
+     *
+     * @param array $config
+     * @return string
+     */
+    protected function getValidationDataAsJsonString(array $config)
+    {
+        $validationRules = array();
+        if (!empty($config['eval'])) {
+            $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+            unset($config['eval']);
+            foreach ($evalList as $evalType) {
+                $validationRules[] = array(
+                    'type' => $evalType,
+                    'config' => $config
+                );
+            }
+        }
+        if (!empty($config['range'])) {
+            $validationRules[] = array(
+                'type' => 'range',
+                'config' => $config['range']
+            );
+        }
+        if (!empty($config['maxitems']) || !empty($config['minitems'])) {
+            $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
+            $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
+            $type = ($config['type']) ?: 'range';
+            if ($config['renderMode'] !== 'tree' && $maxItems <= 1 && $minItems > 0) {
+                $validationRules[] = array(
+                    'type' => $type,
+                    'minItems' => 1,
+                    'maxItems' => 100000
+                );
+            } else {
+                $validationRules[] = array(
+                    'type' => $type,
+                    'minItems' => $minItems,
+                    'maxItems' => $maxItems
+                );
+            }
+        }
+        if (!empty($config['required'])) {
+            $validationRules[] = array('type' => 'required');
+        }
+        return json_encode($validationRules);
+    }
 }

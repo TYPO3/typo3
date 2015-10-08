@@ -20,18 +20,18 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Page TsConfig relevant for this record
  */
-class PageTsConfig implements FormDataProviderInterface {
+class PageTsConfig implements FormDataProviderInterface
+{
+    /**
+     * Add page TsConfig
+     *
+     * @param array $result
+     * @return array
+     */
+    public function addData(array $result)
+    {
+        $result['pageTsConfig'] = BackendUtility::getPagesTSconfig($result['effectivePid']);
 
-	/**
-	 * Add page TsConfig
-	 *
-	 * @param array $result
-	 * @return array
-	 */
-	public function addData(array $result) {
-		$result['pageTsConfig'] = BackendUtility::getPagesTSconfig($result['effectivePid']);
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

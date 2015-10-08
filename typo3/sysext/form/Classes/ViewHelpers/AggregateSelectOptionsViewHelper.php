@@ -20,87 +20,89 @@ use TYPO3\CMS\Form\Domain\Model\Element;
 /**
  * Aggregator for the select options
  */
-class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
+class AggregateSelectOptionsViewHelper extends AbstractViewHelper
+{
+    /**
+     * @var array
+     */
+    protected $options = array();
 
-	/**
-	 * @var array
-	 */
-	protected $options = array();
+    /**
+     * @var array
+     */
+    protected $selectedValues = array();
 
-	/**
-	 * @var array
-	 */
-	protected $selectedValues = array();
+    /**
+     * @param Element $model
+     * @param boolean $returnSelectedValues
+     * @return array
+     */
+    public function render(Element $model, $returnSelectedValues = false)
+    {
+        foreach ($model->getChildElements() as $element) {
+            $this->createElement($element);
+        }
 
-	/**
-	 * @param Element $model
-	 * @param boolean $returnSelectedValues
-	 * @return array
-	 */
-	public function render(Element $model, $returnSelectedValues = FALSE) {
+        if ($returnSelectedValues === true) {
+            return $this->selectedValues;
+        }
 
-		foreach ($model->getChildElements() as $element) {
-			$this->createElement($element);
-		}
+        return $this->options;
+    }
 
-		if ($returnSelectedValues === TRUE) {
-			return $this->selectedValues;
-		}
+    /**
+     * @param Element $model
+     * @param array $optGroupData
+     * @return void
+     */
+    protected function createElement(Element $model, array $optGroupData = array())
+    {
+        $this->checkElementForOptgroup($model, $optGroupData);
+    }
 
-		return $this->options;
-	}
+    /**
+     * @param Element $model
+     * @param array $optGroupData
+     * @return void
+     */
+    protected function checkElementForOptgroup(Element $model, array $optGroupData = array())
+    {
+        if ($model->getElementType() === 'OPTGROUP') {
+            $optGroupData = array(
+                'label' => $model->getAdditionalArgument('label'),
+                'disabled' => $model->getHtmlAttribute('disabled')
+            );
+            $this->getChildElements($model, $optGroupData);
+        } else {
+            $optionData = array(
+                'value' => $model->getAdditionalArgument('value') ?: $model->getElementCounter(),
+                'label' => $model->getAdditionalArgument('text'),
+                'selected' => $model->getHtmlAttribute('selected'),
+            );
 
-	/**
-	 * @param Element $model
-	 * @param array $optGroupData
-	 * @return void
-	 */
-	protected function createElement(Element $model, array $optGroupData = array()) {
-		$this->checkElementForOptgroup($model, $optGroupData);
-	}
+            if (!empty($optionData['selected'])) {
+                $this->selectedValues[] = $optionData['value'];
+            }
 
-	/**
-	 * @param Element $model
-	 * @param array $optGroupData
-	 * @return void
-	 */
-	protected function checkElementForOptgroup(Element $model, array $optGroupData = array()) {
-		if ($model->getElementType() === 'OPTGROUP') {
-			$optGroupData = array(
-				'label' => $model->getAdditionalArgument('label'),
-				'disabled' => $model->getHtmlAttribute('disabled')
-			);
-			$this->getChildElements($model, $optGroupData);
-		} else {
-			$optionData = array(
-				'value' => $model->getAdditionalArgument('value') ?: $model->getElementCounter(),
-				'label' => $model->getAdditionalArgument('text'),
-				'selected' => $model->getHtmlAttribute('selected'),
-			);
+            if (count($optGroupData)) {
+                $optGroupLabel = $optGroupData['label'];
+                $this->options[$optGroupLabel]['disabled'] = $optGroupData['disabled'];
+                $this->options[$optGroupLabel]['options'][] = $optionData;
+            } else {
+                $this->options[] = $optionData;
+            }
+        }
+    }
 
-			if (!empty($optionData['selected'])) {
-				$this->selectedValues[] = $optionData['value'];
-			}
-
-			if (count($optGroupData)) {
-				$optGroupLabel = $optGroupData['label'];
-				$this->options[$optGroupLabel]['disabled'] = $optGroupData['disabled'];
-				$this->options[$optGroupLabel]['options'][] = $optionData;
-			} else {
-				$this->options[] = $optionData;
-			}
-		}
-	}
-
-	/**
-	 * @param Element $model
-	 * @param array $optGroupData
-	 * @return void
-	 */
-	protected function getChildElements(Element $model, array $optGroupData = array()) {
-		foreach ($model->getChildElements() as $element) {
-			$this->createElement($element, $optGroupData);
-		}
-	}
-
+    /**
+     * @param Element $model
+     * @param array $optGroupData
+     * @return void
+     */
+    protected function getChildElements(Element $model, array $optGroupData = array())
+    {
+        foreach ($model->getChildElements() as $element) {
+            $this->createElement($element, $optGroupData);
+        }
+    }
 }

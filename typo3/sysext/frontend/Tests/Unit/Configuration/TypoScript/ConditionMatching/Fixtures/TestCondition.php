@@ -17,20 +17,20 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
 /**
  * Fixture for custom conditions
  */
-class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition {
-
-	/**
-	 * Test matcher tests input parameters.
-	 *
-	 * @param array $conditionParameters
-	 * @throws TestConditionException
-	 * @return bool
-	 */
-	public function matchCondition(array $conditionParameters) {
-		// Throw an exception if everything is fine, this exception is *expected* in the according unit test
-		if ($conditionParameters[0] === '= 7' && $conditionParameters[1] === '!= 6') {
-			throw new TestConditionException('All Ok', 1411581139);
-		}
-	}
-
+class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition
+{
+    /**
+     * Test matcher tests input parameters.
+     *
+     * @param array $conditionParameters
+     * @throws TestConditionException
+     * @return bool
+     */
+    public function matchCondition(array $conditionParameters)
+    {
+        // Throw an exception if everything is fine, this exception is *expected* in the according unit test
+        if ($conditionParameters[0] === '= 7' && $conditionParameters[1] === '!= 6') {
+            throw new TestConditionException('All Ok', 1411581139);
+        }
+    }
 }

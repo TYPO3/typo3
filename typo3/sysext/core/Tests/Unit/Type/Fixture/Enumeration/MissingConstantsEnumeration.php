@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 /**
  * This is an invalid enumeration because no constants are defined
  */
-class MissingConstantsEnumeration extends \TYPO3\CMS\Core\Type\Enumeration {
-
+class MissingConstantsEnumeration extends \TYPO3\CMS\Core\Type\Enumeration
+{
 }

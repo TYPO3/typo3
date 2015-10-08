@@ -16,29 +16,27 @@ namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 
-
 /**
  * An interface for text extractors
  *
  */
-interface TextExtractorInterface {
+interface TextExtractorInterface
+{
+    /**
+     * Checks if the given file can be read by this extractor
+     *
+     * @param FileInterface $file
+     * @return bool
+     */
+    public function canExtractText(FileInterface $file);
 
-	/**
-	 * Checks if the given file can be read by this extractor
-	 *
-	 * @param FileInterface $file
-	 * @return bool
-	 */
-	public function canExtractText(FileInterface $file);
-
-	/**
-	 * The actual text extraction.
-	 *
-	 * Should return a string of the file's content
-	 *
-	 * @param FileInterface $file
-	 * @return string
-	 */
-	public function extractText(FileInterface $file);
-
+    /**
+     * The actual text extraction.
+     *
+     * Should return a string of the file's content
+     *
+     * @param FileInterface $file
+     * @return string
+     */
+    public function extractText(FileInterface $file);
 }

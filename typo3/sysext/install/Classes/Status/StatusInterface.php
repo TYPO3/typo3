@@ -17,42 +17,42 @@ namespace TYPO3\CMS\Install\Status;
 /**
  * Status interface
  */
-interface StatusInterface {
+interface StatusInterface
+{
+    /**
+     * Get severity
+     *
+     * @return string The severity
+     */
+    public function getSeverity();
 
-	/**
-	 * Get severity
-	 *
-	 * @return string The severity
-	 */
-	public function getSeverity();
+    /**
+     * Get title
+     *
+     * @return string The title
+     */
+    public function getTitle();
 
-	/**
-	 * Get title
-	 *
-	 * @return string The title
-	 */
-	public function getTitle();
+    /**
+     * Set title
+     *
+     * @param string $title The title
+     * @return void
+     */
+    public function setTitle($title);
 
-	/**
-	 * Set title
-	 *
-	 * @param string $title The title
-	 * @return void
-	 */
-	public function setTitle($title);
+    /**
+     * Get status message
+     *
+     * @return string Status message
+     */
+    public function getMessage();
 
-	/**
-	 * Get status message
-	 *
-	 * @return string Status message
-	 */
-	public function getMessage();
-
-	/**
-	 * Set status message
-	 *
-	 * @param string $message Status message
-	 * @return void
-	 */
-	public function setMessage($message);
+    /**
+     * Set status message
+     *
+     * @param string $message Status message
+     * @return void
+     */
+    public function setMessage($message);
 }

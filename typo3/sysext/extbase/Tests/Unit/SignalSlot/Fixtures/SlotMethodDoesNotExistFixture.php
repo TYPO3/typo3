@@ -17,19 +17,19 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures;
 /**
  * Fixture
  */
-class SlotMethodDoesNotExistFixture {
+class SlotMethodDoesNotExistFixture
+{
+    /**
+     * @var array
+     */
+    public $arguments;
 
-	/**
-	 * @var array
-	 */
-	public $arguments;
-
-	/**
-	 * @param string $foo
-	 * @param string $baz
-	 */
-	public function slot($foo, $baz) {
-		$this->arguments = array($foo, $baz);
-	}
-
+    /**
+     * @param string $foo
+     * @param string $baz
+     */
+    public function slot($foo, $baz)
+    {
+        $this->arguments = array($foo, $baz);
+    }
 }

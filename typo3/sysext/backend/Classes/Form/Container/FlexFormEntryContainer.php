@@ -20,30 +20,30 @@ namespace TYPO3\CMS\Backend\Form\Container;
  *
  * It either forks a FlexFormTabsContainer or a FlexFormNoTabsContainer.
  */
-class FlexFormEntryContainer extends AbstractContainer {
+class FlexFormEntryContainer extends AbstractContainer
+{
+    /**
+     * Entry method
+     *
+     * @return array As defined in initializeResultArray() of AbstractNode
+     */
+    public function render()
+    {
+        $flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
 
-	/**
-	 * Entry method
-	 *
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		$flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
+        $options = $this->data;
+        $options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
+        $options['flexFormRowData'] = $this->data['parameterArray']['itemFormElValue'];
+        $options['renderType'] = 'flexFormNoTabsContainer';
 
-		$options = $this->data;
-		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
-		$options['flexFormRowData'] = $this->data['parameterArray']['itemFormElValue'];
-		$options['renderType'] = 'flexFormNoTabsContainer';
+        // Enable tabs if there is more than one sheet
+        if (count($flexFormDataStructureArray['sheets']) > 1) {
+            $options['renderType'] = 'flexFormTabsContainer';
+        }
 
-		// Enable tabs if there is more than one sheet
-		if (count($flexFormDataStructureArray['sheets']) > 1) {
-			$options['renderType'] = 'flexFormTabsContainer';
-		}
+        $resultArray = $this->nodeFactory->create($options)->render();
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
 
-		$resultArray = $this->nodeFactory->create($options)->render();
-		$resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
-
-		return $resultArray;
-	}
-
+        return $resultArray;
+    }
 }

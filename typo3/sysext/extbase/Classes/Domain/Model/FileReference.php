@@ -19,33 +19,34 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
+class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+{
+    /**
+      * Uid of the referenced sys_file. Needed for extbase to serialize the
+      * reference correctly.
+      *
+      * @var int
+      */
+    protected $uidLocal;
 
-	/**
-	  * Uid of the referenced sys_file. Needed for extbase to serialize the
-	  * reference correctly.
-	  *
-	  * @var int
-	  */
-	protected $uidLocal;
+    /**
+     * @param \TYPO3\CMS\Core\Resource\FileReference $originalResource
+     */
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\FileReference $originalResource)
+    {
+        $this->originalResource = $originalResource;
+        $this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Core\Resource\FileReference $originalResource
-	 */
-	public function setOriginalResource(\TYPO3\CMS\Core\Resource\FileReference $originalResource) {
-		$this->originalResource = $originalResource;
-		$this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Resource\FileReference
+     */
+    public function getOriginalResource()
+    {
+        if ($this->originalResource === null) {
+            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($this->getUid());
+        }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Resource\FileReference
-	 */
-	public function getOriginalResource() {
-		if ($this->originalResource === NULL) {
-			$this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($this->getUid());
-		}
-
-		return $this->originalResource;
-	}
-
+        return $this->originalResource;
+    }
 }

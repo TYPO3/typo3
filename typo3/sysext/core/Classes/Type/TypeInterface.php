@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Core\Type;
  * All of them have to implement a __toString() method that is
  * used to get a flatten string for the persistence of the object.
  */
-interface TypeInterface {
-
-	/**
-	 * Core types must implement the __toString function in order to be
-	 * serialized to the database;
-	 *
-	 * @return string
-	 */
-	public function __toString();
+interface TypeInterface
+{
+    /**
+     * Core types must implement the __toString function in order to be
+     * serialized to the database;
+     *
+     * @return string
+     */
+    public function __toString();
 }
