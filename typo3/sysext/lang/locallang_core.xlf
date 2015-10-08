@@ -181,9 +181,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="labels.disabled">
-				<source>Disabled</source>
-			</trans-unit>
 			<trans-unit id="labels.show">
 				<source>Show</source>
 			</trans-unit>

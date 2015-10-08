@@ -114,7 +114,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->getPhpVersion();
         $this->getDatabase();
         $this->getApplicationContext();
-        $this->getClassLoaderMode();
+        $this->getComposerMode();
         $this->getGitRevision();
         $this->getOperatingSystem();
 
@@ -185,18 +185,18 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Adds the class loading mode (Composer/TYPO3) to the displayed systen information
-     *
-     * @return void
+     * Adds the information if the Composer mode is enabled or disabled to the displayed system information
      */
-    protected function getClassLoaderMode()
+    protected function getComposerMode()
     {
+        if (!Bootstrap::usesComposerClassLoading()) {
+            return;
+        }
+
         $languageService = $this->getLanguageService();
         $this->systemInformation[] = array(
             'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.composerMode', true),
-            'value' => Bootstrap::usesComposerClassLoading()
-                ? $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.enabled', true)
-                : $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.disabled', true),
+            'value' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.enabled', true),
             'icon' => '<span class="fa fa-music"></span>'
         );
     }
