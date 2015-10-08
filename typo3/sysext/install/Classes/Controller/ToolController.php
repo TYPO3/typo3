@@ -28,7 +28,6 @@ class ToolController extends AbstractController {
 	 * @var array List of valid action names that need authentication
 	 */
 	protected $authenticationActions = array(
-		'welcome',
 		'importantActions',
 		'systemEnvironment',
 		'configuration',
@@ -38,6 +37,7 @@ class ToolController extends AbstractController {
 		'allConfiguration',
 		'cleanUp',
 		'loadExtensions',
+		'about',
 	);
 
 	/**
@@ -167,7 +167,7 @@ class ToolController extends AbstractController {
 	protected function dispatchAuthenticationActions() {
 		$action = $this->getAction();
 		if ($action === '') {
-			$action = 'welcome';
+			$action = 'importantActions';
 		}
 		$this->validateAuthenticationAction($action);
 		$actionClass = ucfirst($action);

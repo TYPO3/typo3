@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 use TYPO3\CMS\Install\Controller\Action;
 
 /**
- * Welcome page
+ * About page
  */
-class Welcome extends Action\AbstractAction {
+class About extends Action\AbstractAction {
 
 	/**
 	 * Executes the tool
