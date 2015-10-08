@@ -181,6 +181,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.enabled">
 				<source>Enabled</source>
 			</trans-unit>
+			<trans-unit id="labels.disabled">
+				<source>Disabled</source>
+			</trans-unit>
 			<trans-unit id="labels.show">
 				<source>Show</source>
 			</trans-unit>
@@ -1181,6 +1184,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.composerMode">
+				<source>Composer mode</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.gitrevision">
 				<source>GIT Revision</source>

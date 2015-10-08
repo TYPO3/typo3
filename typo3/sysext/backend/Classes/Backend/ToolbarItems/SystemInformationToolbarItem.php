@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -113,6 +114,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->getPhpVersion();
         $this->getDatabase();
         $this->getApplicationContext();
+        $this->getClassLoaderMode();
         $this->getGitRevision();
         $this->getOperatingSystem();
 
@@ -179,6 +181,23 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
             'icon' => '<span class="fa fa-tasks"></span>'
+        );
+    }
+
+    /**
+     * Adds the class loading mode (Composer/TYPO3) to the displayed systen information
+     *
+     * @return void
+     */
+    protected function getClassLoaderMode()
+    {
+        $languageService = $this->getLanguageService();
+        $this->systemInformation[] = array(
+            'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.composerMode', true),
+            'value' => Bootstrap::usesComposerClassLoading()
+                ? $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.enabled', true)
+                : $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.disabled', true),
+            'icon' => '<span class="fa fa-music"></span>'
         );
     }
 
