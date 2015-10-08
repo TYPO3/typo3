@@ -70,7 +70,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface
 $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
 ';
-        return str_replace('  ', TAB, $code);
+        return $code;
     }
 
     /**
