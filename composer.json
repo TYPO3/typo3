@@ -217,6 +217,7 @@
 		"classmap": ["typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
 	},
 	"include-path": [
-		"vendor/pear/http_request2/"
+		"vendor/pear/http_request2/",
+		"vendor/pear/net_url2/"
 	]
 }
