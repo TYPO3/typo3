@@ -218,10 +218,10 @@ class LiveSearch {
 			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
-				'typeLabel' =>  $this->getTitleOfCurrentRecordType($tableName),
+				'typeLabel' =>  htmlspecialchars($this->getTitleOfCurrentRecordType($tableName)),
 				'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
-				'title' => BackendUtility::getRecordTitle($tableName, $row),
-				'editLink' => $this->getEditLink($tableName, $row)
+				'title' => htmlspecialchars(BackendUtility::getRecordTitle($tableName, $row)),
+				'editLink' => htmlspecialchars($this->getEditLink($tableName, $row))
 			);
 			$isFirst = FALSE;
 		}
