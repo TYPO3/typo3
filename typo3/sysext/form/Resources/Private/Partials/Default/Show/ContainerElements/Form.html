@@ -23,17 +23,17 @@
 	additionalParams="{model.additionalArguments.additionalParams}"
 	arguments="{model.additionalArguments.arguments}"
 	argumentsToBeExcludedFromQueryString="{model.additionalArguments.argumentsToBeExcludedFromQueryString}"
-	controller="Frontend"
-	extensionName="Form"
+	controller="{model.additionalArguments.controller}"
+	extensionName="{model.additionalArguments.extensionName}"
 
-	format="{model.additionalArguments.format}"
+	format="{f:if(condition:'{model.additionalArguments.format}',then:'{model.additionalArguments.format}')}"
 	hiddenFieldClassName="{model.additionalArguments.hiddenFieldClassName}"
 
 	object="{model}"
 
 	pageType="{model.additionalArguments.pageType}"
 	pageUid="{model.additionalArguments.pageUid}"
-	pluginName="Form"
+	pluginName="{model.additionalArguments.pluginName}"
 	section="{model.additionalArguments.section}">
 
 	<ol>

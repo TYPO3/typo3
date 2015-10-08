@@ -26,7 +26,7 @@
 	controller="Frontend"
 	extensionName="Form"
 
-	format="{model.additionalArguments.format}"
+	format="{f:if(condition:'{model.additionalArguments.format}',then:'{model.additionalArguments.format}')}"
 	hiddenFieldClassName="{model.additionalArguments.hiddenFieldClassName}"
 
 	object="{model}"

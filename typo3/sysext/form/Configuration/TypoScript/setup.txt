@@ -20,6 +20,10 @@ tt_content.mailform.20 {
 <INCLUDE_TYPOSCRIPT: source="DIR: EXT:form/Configuration/TypoScript/Validators" extensions="ts">
 
 plugin.tx_form {
+	features {
+		skipDefaultArguments = 1
+	}
+
 	view {
 		templateRootPaths {
 			10 = {$plugin.tx_form.view.templateRootPath}
