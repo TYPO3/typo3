@@ -291,7 +291,7 @@ class ArrayUtility
 
     /**
      * Exports an array as string.
-     * Similar to var_export(), but representation follows the TYPO3 core CGL.
+     * Similar to var_export(), but representation follows the PSR-2 and TYPO3 core CGL.
      *
      * See unit tests for detailed examples
      *
@@ -302,7 +302,7 @@ class ArrayUtility
      */
     public static function arrayExport(array $array = array(), $level = 0)
     {
-        $lines = 'array(' . LF;
+        $lines = '[' . LF;
         $level++;
         $writeKeyIndex = false;
         $expectedKeyIndex = 0;
@@ -317,7 +317,7 @@ class ArrayUtility
         }
         foreach ($array as $key => $value) {
             // Indention
-            $lines .= str_repeat(TAB, $level);
+            $lines .= str_repeat('    ', $level);
             if ($writeKeyIndex) {
                 // Numeric / string keys
                 $lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
@@ -326,14 +326,14 @@ class ArrayUtility
                 if (!empty($value)) {
                     $lines .= self::arrayExport($value, $level);
                 } else {
-                    $lines .= 'array(),' . LF;
+                    $lines .= '[],' . LF;
                 }
             } elseif (is_int($value) || is_float($value)) {
                 $lines .= $value . ',' . LF;
             } elseif (is_null($value)) {
-                $lines .= 'NULL' . ',' . LF;
+                $lines .= 'null' . ',' . LF;
             } elseif (is_bool($value)) {
-                $lines .= $value ? 'TRUE' : 'FALSE';
+                $lines .= $value ? 'true' : 'false';
                 $lines .= ',' . LF;
             } elseif (is_string($value)) {
                 // Quote \ to \\
@@ -345,7 +345,7 @@ class ArrayUtility
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }
         }
-        $lines .= str_repeat(TAB, ($level - 1)) . ')' . ($level - 1 == 0 ? '' : ',' . LF);
+        $lines .= str_repeat('    ', ($level - 1)) . ']' . ($level - 1 == 0 ? '' : ',' . LF);
         return $lines;
     }
 

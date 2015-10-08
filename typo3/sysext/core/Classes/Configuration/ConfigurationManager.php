@@ -325,8 +325,7 @@ class ConfigurationManager
                     ArrayUtility::arrayExport(
                         ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
                     ) .
-                ';' . LF .
-            '?>',
+                ';' . LF,
             true
         );
 

@@ -970,21 +970,21 @@ class ArrayUtilityTest extends UnitTestCase
             'qux2' => 0.000000001,
         );
         $expected =
-            'array(' . LF .
-                TAB . '\'foo\' => array(' . LF .
-                    TAB . TAB . '\'bar\' => 42,' . LF .
-                    TAB . TAB . '\'bar2\' => array(' . LF .
-                        TAB . TAB . TAB . '\'baz\' => \'val\\\'ue\',' . LF .
-                        TAB . TAB . TAB . '\'baz2\' => TRUE,' . LF .
-                        TAB . TAB . TAB . '\'baz3\' => FALSE,' . LF .
-                        TAB . TAB . TAB . '\'baz4\' => array(),' . LF .
-                    TAB . TAB . '),' . LF .
-                TAB . '),' . LF .
-                TAB . '\'baz\' => 23,' . LF .
-                TAB . '\'foobar\' => NULL,' . LF .
-                TAB . '\'qux\' => 0.1,' . LF .
-                TAB . '\'qux2\' => 1.0E-9,' . LF .
-            ')';
+            '[' . LF .
+                '    \'foo\' => [' . LF .
+                    '        \'bar\' => 42,' . LF .
+                    '        \'bar2\' => [' . LF .
+                        '            \'baz\' => \'val\\\'ue\',' . LF .
+                        '            \'baz2\' => true,' . LF .
+                        '            \'baz3\' => false,' . LF .
+                        '            \'baz4\' => [],' . LF .
+                    '        ],' . LF .
+                '    ],' . LF .
+                '    \'baz\' => 23,' . LF .
+                '    \'foobar\' => null,' . LF .
+                '    \'qux\' => 0.1,' . LF .
+                '    \'qux2\' => 1.0E-9,' . LF .
+            ']';
         $this->assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1013,11 +1013,11 @@ class ArrayUtilityTest extends UnitTestCase
             '42' => 'string key representing integer'
         );
         $expected =
-            'array(' . LF .
-                TAB . '\'foo\' => \'string key\',' . LF .
-                TAB . '23 => \'integer key\',' . LF .
-                TAB . '42 => \'string key representing integer\',' . LF .
-            ')';
+            '[' . LF .
+                '    \'foo\' => \'string key\',' . LF .
+                '    23 => \'integer key\',' . LF .
+                '    42 => \'string key representing integer\',' . LF .
+            ']';
         $this->assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1032,11 +1032,11 @@ class ArrayUtilityTest extends UnitTestCase
             2 => 'two'
         );
         $expected =
-            'array(' . LF .
-                TAB . '\'zero\',' . LF .
-                TAB . '\'one\',' . LF .
-                TAB . '\'two\',' . LF .
-            ')';
+            '[' . LF .
+                '    \'zero\',' . LF .
+                '    \'one\',' . LF .
+                '    \'two\',' . LF .
+            ']';
         $this->assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1052,12 +1052,12 @@ class ArrayUtilityTest extends UnitTestCase
             4 => 'four'
         );
         $expected =
-            'array(' . LF .
-                TAB . '0 => \'zero\',' . LF .
-                TAB . '1 => \'one\',' . LF .
-                TAB . '3 => \'three\',' . LF .
-                TAB . '4 => \'four\',' . LF .
-            ')';
+            '[' . LF .
+                '    0 => \'zero\',' . LF .
+                '    1 => \'one\',' . LF .
+                '    3 => \'three\',' . LF .
+                '    4 => \'four\',' . LF .
+            ']';
         $this->assertSame($expected, ArrayUtility::arrayExport($array));
     }
 

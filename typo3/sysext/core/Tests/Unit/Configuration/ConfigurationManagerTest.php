@@ -477,11 +477,10 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $expectedContent =
             '<?php' . LF .
-                'return array(' . LF .
-                    TAB . '\'bar\' => 23,' . LF .
-                    TAB . '\'foo\' => 42,' . LF .
-                ');' . LF .
-            '?>';
+                'return [' . LF .
+                    '    \'bar\' => 23,' . LF .
+                    '    \'foo\' => 42,' . LF .
+                '];' . LF;
 
         $this->subject->writeLocalConfiguration($pairs);
         $this->assertSame($expectedContent, file_get_contents($configurationFile));
@@ -521,8 +520,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '<?php' . LF .
                 'return array(' . LF .
                     $uniqueContentString . ' => foo,' . LF .
-                ');' . LF .
-            '?>';
+                ');' . LF;
         file_put_contents(
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
@@ -551,8 +549,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $factoryConfigurationAbsoluteFile = PATH_site . $factoryConfigurationFile;
         $validFactoryConfigurationFileContent =
             '<?php' . LF .
-                'return array();' . LF .
-            '?>';
+                'return [];' . LF;
         file_put_contents(
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
@@ -565,10 +562,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uniqueContentString = $this->getUniqueId('string_');
         $validAdditionalFactoryConfigurationFileContent =
             '<?php' . LF .
-                'return array(' . LF .
+                'return [' . LF .
                     $uniqueContentString . ' => foo,' . LF .
-                ');' . LF .
-            '?>';
+                '];' . LF;
         file_put_contents(
             $additionalFactoryConfigurationAbsoluteFile,
             $validAdditionalFactoryConfigurationFileContent
