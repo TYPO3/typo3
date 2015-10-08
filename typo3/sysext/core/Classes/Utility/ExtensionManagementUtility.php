@@ -1894,6 +1894,7 @@ tt_content.' . $key . $suffix . ' {
 	 * @return void
 	 * @throws \RuntimeException
 	 * @internal Internal use ONLY. It is called by cache files and can not be protected. Do not call yourself!
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Table definition should be moved to <your_extension>/Configuration/TCA/<table_name>
 	 */
 	static public function loadNewTcaColumnsConfigFiles() {
 		global $TCA;
@@ -1902,6 +1903,7 @@ tt_content.' . $key . $suffix . ' {
 			if (!isset($TCA[$tableName]['columns'])) {
 				$columnsConfigFile = $TCA[$tableName]['ctrl']['dynamicConfigFile'];
 				if ($columnsConfigFile) {
+					GeneralUtility::logDeprecatedFunction();
 					if (GeneralUtility::isAbsPath($columnsConfigFile)) {
 						include($columnsConfigFile);
 					} else {
