@@ -84,13 +84,6 @@ abstract class AbstractController extends ActionController {
 	protected $view;
 
 	/**
-	 * BackendTemplateView Container
-	 *
-	 * @var BackendTemplateView
-	 */
-	protected $defaultViewObjectName = BackendTemplateView::class;
-
-	/**
 	 * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
 	 */
 	public function injectLogEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository) {
@@ -104,10 +97,11 @@ abstract class AbstractController extends ActionController {
 	 * @return void
 	 */
 	protected function initializeView(ViewInterface $view) {
-		/** @var BackendTemplateView $view */
-		parent::initializeView($view);
-		$view->getModuleTemplate()->getPageRenderer()->loadExtJS();
-		$view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+		if ($view instanceof BackendTemplateView) {
+			parent::initializeView($view);
+			$view->getModuleTemplate()->getPageRenderer()->loadExtJS();
+			$view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+		}
 	}
 
 	/**
@@ -115,6 +109,9 @@ abstract class AbstractController extends ActionController {
 	 * @return void
 	 */
 	public function initializeAction() {
+		if ($this->isInPageContext === FALSE) {
+			$this->defaultViewObjectName = BackendTemplateView::class;
+		}
 	}
 
 	/**
