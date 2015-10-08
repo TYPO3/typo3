@@ -44,7 +44,7 @@ indent_size = 4
 
 # PHP-Files
 [*.php]
-indent_style = tab
+indent_style = space
 indent_size = 4
 
 # ReST-Files
