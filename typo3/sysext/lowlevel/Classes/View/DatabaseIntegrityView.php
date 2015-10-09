@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Lowlevel\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Database\QueryView;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -60,6 +61,13 @@ class DatabaseIntegrityView extends BaseScriptClass
     protected $iconFactory;
 
     /**
+     * ModuleTemplate Container
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -77,11 +85,10 @@ class DatabaseIntegrityView extends BaseScriptClass
      */
     public function init()
     {
-        $this->MCONF['name'] = 'system_dbint';
+        $this->MCONF['name'] = $this->moduleName;
         $this->menuConfig();
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
-        $this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->setForm('<form action="" method="post" name="' . $this->formName . '">');
     }
 
     /**
@@ -205,17 +212,15 @@ class DatabaseIntegrityView extends BaseScriptClass
         $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . $templateFilename));
         $this->content = $this->view->render();
 
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => $this->getFuncMenu(),
-            'CONTENT' => $this->content
-        );
-        // Build the <body> for the module
-        $this->content = $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
-        // Renders the module page
-        $this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $this->content);
+        // Setting up the shortcut button for docheader
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // Shortcut
+        $shortCutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setGetVariables(['function','search','search_query_makeQuery']);
+        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+
+        $this->getModuleMenu();
     }
 
     /**
@@ -244,36 +249,40 @@ class DatabaseIntegrityView extends BaseScriptClass
         $this->init();
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
     /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
+     * Generates the action menu
      */
-    protected function getButtons()
+    protected function getModuleMenu()
     {
-        $buttons = array(
-            'csh' => '',
-            'shortcut' => ''
-        );
-        // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function,search,search_query_makeQuery', $this->moduleName);
-        }
-        return $buttons;
-    }
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('DatabaseJumpMenu');
 
-    /**
-     * Create the function menu
-     *
-     * @return string HTML of the function menu
-     */
-    protected function getFuncMenu()
-    {
-        return BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    BackendUtility::getModuleUrl(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === (int)$this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
     /**

@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Lowlevel\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,6 +44,13 @@ class ConfigurationView extends BaseScriptClass
     protected $moduleName = 'system_config';
 
     /**
+     * ModuleTemplate Container
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -59,11 +67,8 @@ class ConfigurationView extends BaseScriptClass
     public function init()
     {
         $this->menuConfig();
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
-        $this->doc->form = '<form action="" method="post">';
-        $this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Css/styles.css');
-        $this->doc->bodyTagId = 'ext-lowlevel-Modules-Configuration-index-php';
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->setForm('<form action="" method="post">');
     }
 
     /**
@@ -197,17 +202,18 @@ class ConfigurationView extends BaseScriptClass
         $tree = $arrayBrowser->tree($theVar, '', '');
         $this->view->assign('tree', $tree);
 
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => $this->getFuncMenu(),
-            'CONTENT' => $this->view->render(),
-        );
-        // Build the <body> for the module
-        $this->content = $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
-        // Renders the module page
-        $this->content = $this->doc->render('Configuration', $this->content);
+        // Setting up the shortcut button for docheader
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // Shortcut
+        if ($this->getBackendUser()->mayMakeShortcut()) {
+            $shortCutButton = $buttonBar->makeFullyRenderedButton()
+                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
+            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        }
+
+        $this->getModuleMenu();
+
+        $this->content = $this->view->render();
     }
 
 
@@ -225,7 +231,8 @@ class ConfigurationView extends BaseScriptClass
         $this->init();
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -242,31 +249,33 @@ class ConfigurationView extends BaseScriptClass
     }
 
     /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
+     * Generates the action menu
      */
-    protected function getButtons()
+    protected function getModuleMenu()
     {
-        $buttons = array(
-            'csh' => '',
-            'shortcut' => ''
-        );
-        // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
-        }
-        return $buttons;
-    }
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('ConfigurationJumpMenu');
 
-    /**
-     * Create the function menu
-     *
-     * @return string HTML of the function menu
-     */
-    protected function getFuncMenu()
-    {
-        $funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-        return $funcMenu;
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    BackendUtility::getModuleUrl(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === (int)$this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 }
