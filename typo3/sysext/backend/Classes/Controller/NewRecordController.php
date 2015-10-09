@@ -14,24 +14,25 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
+use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
-use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Script class for 'db_new'
  */
-class NewRecordController
+class NewRecordController extends AbstractModule
 {
     /**
      * @var array
@@ -133,13 +134,6 @@ class NewRecordController
     public $perms_clause;
 
     /**
-     * Document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * Accumulated HTML output
      *
      * @var string
@@ -152,16 +146,11 @@ class NewRecordController
     public $tRows;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        parent::__construct();
         $GLOBALS['SOBE'] = $this;
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
         $this->init();
@@ -188,15 +177,13 @@ class NewRecordController
         $this->id = (int)GeneralUtility::_GP('id');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         $this->pagesOnly = GeneralUtility::_GP('pagesOnly');
-        // Create instance of template class for output
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
-        $this->doc->JScode = '';
         // Setting up the context sensitive menu:
-        $this->doc->getContextMenuCode();
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         // Creating content
         $this->content = '';
-        $this->content .= $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+        $this->content .= '<h1>'
+            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle')
+            . '</h1>';
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
             $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -205,7 +192,8 @@ class NewRecordController
         if ($this->pageinfo['uid']) {
             // Get record of parent page
             $this->pidInfo = BackendUtility::getRecord('pages', $this->pageinfo['pid']);
-            // Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
+            // Checking the permissions for the user with regard to the parent page: Can he create new pages, new
+            // content record, new page after?
             if ($beUser->doesUserHaveAccess($this->pageinfo, 8)) {
                 $this->newPagesInto = 1;
             }
@@ -240,7 +228,7 @@ class NewRecordController
     {
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -253,14 +241,31 @@ class NewRecordController
     {
         // If there was a page - or if the user is admin (admins has access to the root) we proceed:
         if ($this->pageinfo['uid'] || $this->getBackendUserAuthentication()->isAdmin()) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
             // Acquiring TSconfig for this module/current page:
             $this->web_list_modTSconfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-            $this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['allowedNewTables'], true);
-            $this->deniedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['deniedNewTables'], true);
+            $this->allowedNewTables = GeneralUtility::trimExplode(
+                ',',
+                $this->web_list_modTSconfig['properties']['allowedNewTables'],
+                true
+            );
+            $this->deniedNewTables = GeneralUtility::trimExplode(
+                ',',
+                $this->web_list_modTSconfig['properties']['deniedNewTables'],
+                true
+            );
             // Acquiring TSconfig for this module/parent page:
             $this->web_list_modTSconfig_pid = BackendUtility::getModTSconfig($this->pageinfo['pid'], 'mod.web_list');
-            $this->allowedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['allowedNewTables'], true);
-            $this->deniedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['deniedNewTables'], true);
+            $this->allowedNewTables_pid = GeneralUtility::trimExplode(
+                ',',
+                $this->web_list_modTSconfig_pid['properties']['allowedNewTables'],
+                true
+            );
+            $this->deniedNewTables_pid = GeneralUtility::trimExplode(
+                ',',
+                $this->web_list_modTSconfig_pid['properties']['deniedNewTables'],
+                true
+            );
             // More init:
             if (!$this->showNewRecLink('pages')) {
                 $this->newPagesInto = 0;
@@ -270,14 +275,11 @@ class NewRecordController
             }
             // Set header-HTML and return_url
             if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
-                $iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIconForRecord('pages', $this->pageinfo, Icon::SIZE_SMALL)->render() . '</span>';
                 $title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
             } else {
-                $iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
                 $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
             }
-            $this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . '</span><br />';
-            $this->R_URI = $this->returnUrl;
+            $this->moduleTemplate->setTitle($title);
             // GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
             // Regular new element:
             if (!$this->pagesOnly) {
@@ -287,65 +289,87 @@ class NewRecordController
                 $this->pagesOnly();
             }
             // Add all the content to an output section
-            $this->content .= $this->doc->section('', $this->code);
+            $this->content .= $this->moduleTemplate->section('', $this->code);
             // Setting up the buttons and markers for docheader
-            $docHeaderButtons = $this->getButtons();
-            $markers['CSH'] = $docHeaderButtons['csh'];
-            $markers['CONTENT'] = $this->content;
+            $this->getButtons();
             // Build the <body> for the module
-            $this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
-            $this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-            $this->content .= $this->doc->endPage();
-            $this->content = $this->doc->insertStylesAndJS($this->content);
+            $this->moduleTemplate->setContent($this->content);
         }
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'csh' => '',
-            'back' => '',
-            'view' => '',
-            'new_page' => ''
-        );
+        $lang = $this->getLanguageService();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
         if (!$this->pagesOnly) {
             // New page
             if ($this->showNewRecLink('pages')) {
-                $buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', true) . '">'
-                    . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
-                    . '</a>';
+                $newPageButton = $buttonBar->makeLinkButton()
+                    ->setHref(GeneralUtility::linkThisScript(array('pagesOnly' => '1')))
+                    ->setTitle($lang->sL(
+                        'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage',
+                        true
+                    ))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
+                $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // CSH
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular');
+            $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_regular');
+            $buttonBar->addButton($cshButton);
         } elseif ($this->showNewRecLink('pages')) {
             // Pages only wizard
             // CSH
             $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_pages');
+            $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_pages');
+            $buttonBar->addButton($cshButton);
         }
         // Back
-        if ($this->R_URI) {
-            $buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+        if ($this->returnUrl) {
+            $returnButton = $buttonBar->makeLinkButton()
+                ->setHref($this->returnUrl)
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
+
+
         if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
             // View
             $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
+                $excludeDokTypes = GeneralUtility::intExplode(
+                    ',',
+                    $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
+                    true
+                );
             } else {
                 // exclude sysfolders and recycler by default
-                $excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
+                $excludeDokTypes = array(
+                    PageRepository::DOKTYPE_RECYCLER,
+                    PageRepository::DOKTYPE_SYSFOLDER,
+                    PageRepository::DOKTYPE_SPACER
+                );
             }
             if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
-                $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $viewButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setOnClick(BackendUtility::viewOnClick(
+                        $this->pageinfo['uid'],
+                        '',
+                        BackendUtility::BEgetRootLine($this->pageinfo['uid'])
+                    ))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                        'actions-document-view',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
             }
         }
-        return $buttons;
     }
 
     /**
@@ -355,14 +379,23 @@ class NewRecordController
      */
     public function pagesOnly()
     {
-        $numberOfPages = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages', '1=1' . BackendUtility::deleteClause('pages'));
+        $numberOfPages = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            'pages',
+            '1=1' . BackendUtility::deleteClause('pages')
+        );
         if ($numberOfPages > 0) {
             $this->code .= '
 				<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>
 			';
             $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             /** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
-            $this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
+            $this->code .= $positionMap->positionTree(
+                $this->id,
+                $this->pageinfo,
+                $this->perms_clause,
+                $this->returnUrl
+            );
         } else {
             // No pages yet, no need to prompt for position, redirect to page creation.
             $urlParameters = [
@@ -395,7 +428,9 @@ class NewRecordController
         // Finish initializing new pages options with TSconfig
         // Each new page option may be hidden by TSconfig
         // Enabled option for the position of a new page
-        $this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
+        $this->newPagesSelectPosition = !empty(
+            $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']
+        );
         // Pseudo-boolean (0/1) for backward compatibility
         $displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
         $displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
@@ -404,14 +439,18 @@ class NewRecordController
         // New Page
         $table = 'pages';
         $v = $GLOBALS['TCA'][$table];
-        $pageIcon = $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
-        $newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
+        $pageIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord(
+            $table,
+            array(),
+            Icon::SIZE_SMALL
+        )->render();
+        $newPageIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
         $rowContent = '';
         // New pages INSIDE this pages
         $newPageLinks = array();
         if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
             // Create link to new page inside:
-            $newPageLinks[] = $this->linkWrap($this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', true) . ')', $table, $this->id);
+            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], true) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', true) . ')', $table, $this->id);
         }
         // New pages AFTER this pages
         if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
@@ -438,7 +477,7 @@ class NewRecordController
         $iconFile = array();
         // New tables (but not pages) INSIDE this pages
         $isAdmin = $this->getBackendUserAuthentication()->isAdmin();
-        $newContentIcon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+        $newContentIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
         if ($this->newContentInto) {
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';
@@ -450,7 +489,7 @@ class NewRecordController
                         && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
                         && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
                     ) {
-                        $newRecordIcon = $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
+                        $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
                         $rowContent = '';
                         $thisTitle = '';
                         // Create new link for record:
@@ -506,7 +545,7 @@ class NewRecordController
                                 }
                                 $_EXTKEY = 'system';
                                 $thisTitle = $lang->getLL('system_records');
-                                $iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
+                                $iconFile['system'] = $this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
                             }
                             if ($groupName == '' || $groupName != $_EXTKEY) {
                                 $groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];
@@ -649,7 +688,8 @@ class NewRecordController
     /**
      * Returns TRUE if:
      * - $allowedNewTables and $deniedNewTables are empty
-     * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in $allowedNewTables
+     * - the table is not found in $deniedNewTables and $allowedNewTables is not set or the $table tablename is found in
+     *   $allowedNewTables
      *
      * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
      * has priority over $allowedNewTables.
@@ -657,6 +697,7 @@ class NewRecordController
      * @param string $table Table name to test if in allowedTables
      * @param array $allowedNewTables Array of new tables that are allowed.
      * @param array $deniedNewTables Array of new tables that are not allowed.
+     *
      * @return bool Returns TRUE if a link for creating new records should be displayed for $table
      */
     public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array())
