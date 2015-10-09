@@ -50,6 +50,7 @@ class TcaMigration
         $tca = $this->migrateIconsInOptionTags($tca);
         $tca = $this->migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca);
         $tca = $this->migrateSelectFieldRenderType($tca);
+        $tca = $this->migrateSelectFieldIconTable($tca);
         $tca = $this->migrateElementBrowserWizardToLinkHandler($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
@@ -566,6 +567,51 @@ class TcaMigration
         }
 
         return $newTca;
+    }
+
+    /**
+     * Migrate the visibility of the icon table for fields with "renderType=selectSingle"
+     *
+     * @param array $tca
+     * @return array Migrated TCA
+     */
+    public function migrateSelectFieldIconTable(array $tca) {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (empty($fieldConfig['config']['renderType']) || $fieldConfig['config']['renderType'] !== 'selectSingle') {
+                    continue;
+                }
+                if (!empty($fieldConfig['config']['selicon_cols'])) {
+                    $this->messages[] = 'The "showIconTable" setting is missing for table "' . $table . '" and field "' . $fieldName . '"';
+                    // selicon_cols without showIconTable true does not make sense, so set it to true here if not already defined
+                    if (!array_key_exists('showIconTable', $fieldConfig['config'])) {
+                        $fieldConfig['config']['showIconTable'] = true;
+                    }
+                }
+                if (array_key_exists('noIconsBelowSelect', $fieldConfig['config'])) {
+                    $this->messages[] = 'The "noIconsBelowSelect" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    if (!$fieldConfig['config']['noIconsBelowSelect']) {
+                        // If old setting was explicitly false, enable icon table if not defined yet
+                        if (!array_key_exists('showIconTable', $fieldConfig['config'])) {
+                            $fieldConfig['config']['showIconTable'] = true;
+                        }
+                    }
+                    unset($fieldConfig['config']['noIconsBelowSelect']);
+                }
+                if (array_key_exists('suppress_icons', $fieldConfig['config'])) {
+                    $this->messages[] = 'The "suppress_icons" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    unset($fieldConfig['config']['suppress_icons']);
+                }
+                if (array_key_exists('foreign_table_loadIcons', $fieldConfig['config'])) {
+                    $this->messages[] = 'The "foreign_table_loadIcons" setting for select fields was removed. Please define the setting "showIconTable" for table "' . $table . '" and field "' . $fieldName . '"';
+                    unset($fieldConfig['config']['foreign_table_loadIcons']);
+                }
+            }
+        }
+        return $tca;
     }
 
     /**

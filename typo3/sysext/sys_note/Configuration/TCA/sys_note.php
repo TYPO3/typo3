@@ -22,7 +22,7 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.category',
             'config' => array(
                 'type' => 'select',
-                    'renderType' => 'selectSingle',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('', '0', 'sysnote-type-0'),
                     array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysnote-type-1'),
@@ -30,7 +30,8 @@ return array(
                     array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '4', 'sysnote-type-4'),
                     array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '2', 'sysnote-type-2')
                 ),
-                'default' => '0'
+                'default' => '0',
+                'showIconTable' => true,
             )
         ),
         'subject' => array(

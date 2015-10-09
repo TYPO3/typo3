@@ -78,7 +78,6 @@ class SelectSingleElement extends AbstractFormElement
         $selectedIndex = 0;
         $selectedIcon = '';
         $selectedValueFound = false;
-        $onlySelectedIconShown = false;
         $size = (int)$config['size'];
 
         // Style set on <select/>
@@ -86,19 +85,6 @@ class SelectSingleElement extends AbstractFormElement
         $disabled = false;
         if (!empty($config['readOnly'])) {
             $disabled = true;
-            $onlySelectedIconShown = true;
-        }
-
-        // Icon configuration:
-        if ($config['suppress_icons'] === 'IF_VALUE_FALSE') {
-            $suppressIcons = empty($parameterArray['itemFormElValue']);
-        } elseif ($config['suppress_icons'] === 'ONLY_SELECTED') {
-            $suppressIcons = false;
-            $onlySelectedIconShown = true;
-        } elseif ($config['suppress_icons']) {
-            $suppressIcons = true;
-        } else {
-            $suppressIcons = false;
         }
 
         // Prepare groups
@@ -143,7 +129,7 @@ class SelectSingleElement extends AbstractFormElement
                 );
 
                 // ICON
-                if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
+                if ($icon) {
                     $selectIcons[] = array(
                         'title' => $title,
                         'icon' => $icon,
@@ -213,7 +199,7 @@ class SelectSingleElement extends AbstractFormElement
         $html[] = '</div>';
 
         // Create icon table:
-        if (!empty($selectIcons) && !$config['noIconsBelowSelect']) {
+        if (!empty($selectIcons) && !empty($config['showIconTable'])) {
             $selectIconColumns = (int)$config['selicon_cols'];
 
             if (!$selectIconColumns) {
@@ -238,9 +224,9 @@ class SelectSingleElement extends AbstractFormElement
                 $html[] =            '<td>';
 
                 if (is_array($selectIcon)) {
-                    $html[] = (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcon['title'] . '" data-select-index="' . $selectIcon['index'] . '">' : '');
+                    $html[] = '<a href="#" title="' . $selectIcon['title'] . '" data-select-index="' . $selectIcon['index'] . '">';
                     $html[] = $selectIcon['icon'];
-                    $html[] = (!$onlySelectedIconShown ? '</a>' : '');
+                    $html[] = '</a>';
                 }
 
                 $html[] =            '</td>';

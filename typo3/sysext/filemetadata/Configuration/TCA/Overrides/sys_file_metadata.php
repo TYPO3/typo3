@@ -129,6 +129,7 @@ $tca = array(
                         'EXT:filemetadata/Resources/Public/Icons/status_3.png'
                     ),
                 ),
+                'showIconTable' => true,
             ),
         ),
         'keywords' => array(

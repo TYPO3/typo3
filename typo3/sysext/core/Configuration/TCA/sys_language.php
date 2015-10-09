@@ -329,7 +329,8 @@ return array(
                 'selicon_cols' => 16,
                 'size' => 1,
                 'minitems' => 0,
-                'maxitems' => 1
+                'maxitems' => 1,
+                'showIconTable' => true,
             )
         )
     ),

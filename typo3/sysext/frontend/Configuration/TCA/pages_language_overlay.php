@@ -209,7 +209,8 @@ return array(
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(), // no default language here, as the pages table is always the default language
-                'default' => 0
+                'default' => 0,
+                'showIconTable' => true,
             )
         ),
         'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),

@@ -120,7 +120,6 @@ return array(
                 'default' => 'header',
                 'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
                 'authMode_enforce' => 'strict',
-                'noIconsBelowSelect' => 1
             )
         ),
         'editlock' => array(
@@ -219,7 +218,8 @@ return array(
                         0
                     )
                 ),
-                'default' => 0
+                'default' => 0,
+                'showIconTable' => true,
             )
         ),
         'l18n_parent' => array(
@@ -571,6 +571,7 @@ return array(
                 ),
                 'selicon_cols' => 6,
                 'default' => 0,
+                'showIconTable' => true,
             )
         ),
         'imageborder' => array(
@@ -811,7 +812,6 @@ return array(
                 'itemsProcFunc' => \TYPO3\CMS\Frontend\Hooks\TableColumnHooks::class . '->sortPluginList',
                 'default' => '',
                 'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
-                'noIconsBelowSelect' => 1
             )
         ),
         'select_key' => array(
@@ -1038,7 +1038,6 @@ return array(
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'suppress_icons' => 1,
                 'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldsForTable',
             )
         ),

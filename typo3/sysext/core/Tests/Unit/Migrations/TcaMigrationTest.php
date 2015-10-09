@@ -831,6 +831,153 @@ class TcaMigrationTest extends UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function migrateSetsShowIconTableIfMissingDataProvider() {
+        return [
+            'not-a-select-is-kept' => [
+                [
+                    // Given config section
+                    'type' => 'input',
+                ],
+                [
+                    // Expected config section
+                    'type' => 'input',
+                ],
+            ],
+            'not-a-selectSingle-is-kept' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectCheckBox',
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectCheckBox',
+                ],
+            ],
+            'noIconsBelowSelect-true-is-removed' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'noIconsBelowSelect' => true,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                ],
+            ],
+            'noIconsBelowSelect-false-is-removed-sets-showIconTable' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'noIconsBelowSelect' => false,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'showIconTable' => true,
+                ],
+            ],
+            'noIconsBelowSelect-false-is-removed-keeps-given-showIconTable' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'noIconsBelowSelect' => false,
+                    'showIconTable' => false,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'showIconTable' => false,
+                ],
+            ],
+            'suppress-icons-1-is-removed' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'suppress_icons' => '1',
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                ],
+            ],
+            'suppress-icons-value-is-removed' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'suppress_icons' => 'IF_VALUE_FALSE',
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                ],
+            ],
+            'selicon-cols-sets-showIconTable' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'selicon_cols' => 16,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'selicon_cols' => 16,
+                    'showIconTable' => true,
+                ],
+            ],
+            'selicon-cols-does-not-override-given-showIconTable' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'selicon_cols' => 16,
+                    'showIconTable' => false,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'selicon_cols' => 16,
+                    'showIconTable' => false,
+                ],
+            ],
+            'foreign_table_loadIcons-is-removed' => [
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'foreign_table_loadIcons' => true,
+                ],
+                [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateSetsShowIconTableIfMissingDataProvider
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     */
+    public function migrateSetsShowIconTableIfMissing(array $givenConfig, array $expectedConfig) {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => $givenConfig,
+                    ]
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['aTable']['columns']['aField']['config'] = $expectedConfig;
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
      * @test
      */
     public function migrateFixesReferenceToLinkHandler()

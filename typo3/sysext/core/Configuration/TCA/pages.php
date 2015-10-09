@@ -125,7 +125,6 @@ return array(
                     )
                 ),
                 'default' => (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
-                'noIconsBelowSelect' => 1
             )
         ),
         'title' => array(
@@ -731,7 +730,6 @@ return array(
                     )
                 ),
                 'default' => '',
-                'noIconsBelowSelect' => 1
             )
         ),
         'fe_login_mode' => array(
@@ -788,6 +786,7 @@ return array(
                     array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1)
                 ),
                 'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
+                'showIconTable' => true,
                 'selicon_cols' => 5,
                 'size' => 1,
                 'maxitems' => 1,
@@ -804,6 +803,7 @@ return array(
                     array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.none', -1)
                 ),
                 'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
+                'showIconTable' => true,
                 'selicon_cols' => 5,
                 'size' => 1,
                 'maxitems' => 1,

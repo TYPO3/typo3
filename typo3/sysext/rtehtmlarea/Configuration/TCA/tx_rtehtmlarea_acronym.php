@@ -67,7 +67,8 @@ return array(
                     array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', '-1'),
                     array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', '0')
                 ),
-                'default' => 0
+                'default' => 0,
+                'showIconTable' => true,
             )
         ),
         'type' => array(
@@ -113,7 +114,6 @@ return array(
                 'foreign_table' => 'static_languages',
                 'foreign_table_where' => 'ORDER BY static_languages.lg_name_en',
                 'itemsProcFunc' => SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaSelectItemsProcessor::class. '->translateLanguagesSelector',
-                'noIconsBelowSelect' => 1,
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
