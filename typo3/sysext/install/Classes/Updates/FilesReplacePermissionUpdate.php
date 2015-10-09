@@ -117,6 +117,6 @@ class FilesReplacePermissionUpdate extends AbstractUpdate
      */
     protected function getWhereClause()
     {
-        return 'file_permissions LIKE "%writeFile%" AND file_permissions LIKE "%replaceFile%"';
+        return 'file_permissions LIKE \'%writeFile%\' AND file_permissions LIKE \'%replaceFile%\'';
     }
 }
