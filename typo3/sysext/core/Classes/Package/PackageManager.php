@@ -1039,6 +1039,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($extensionManagerConfiguration['autoload'])) {
             $composerManifest->autoload = json_decode(json_encode($extensionManagerConfiguration['autoload']));
         }
+        // composer.json autoload-dev information must be discarded, as it may contain information only available after a composer install
+        unset($composerManifest->{'autoload-dev'});
         if (isset($extensionManagerConfiguration['autoload-dev'])) {
             $composerManifest->{'autoload-dev'} = json_decode(json_encode($extensionManagerConfiguration['autoload-dev']));
         }
