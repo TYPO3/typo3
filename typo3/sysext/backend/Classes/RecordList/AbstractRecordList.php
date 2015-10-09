@@ -209,11 +209,11 @@ abstract class AbstractRecordList {
 	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
 	 * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
 	 * @param string $_ OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
-	 * @param string $_ OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
+	 * @param string $_2 OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @param string $colType Defines the tag being used for the columns. Default is td.
 	 * @return string HTML content for the table row
 	 */
-	public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_ = '', $colType = 'td') {
+	public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td') {
 		$colType = ($colType === 'th') ? 'th' : 'td';
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
 		// Start up:
