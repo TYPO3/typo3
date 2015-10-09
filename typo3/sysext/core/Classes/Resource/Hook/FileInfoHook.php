@@ -48,8 +48,8 @@ class FileInfoHook
     {
         $fileMetadataRecord = $propertyArray['row'];
         $fileObject = null;
-        if ($fileMetadataRecord['file'] > 0) {
-            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file']);
+        if (!empty($fileMetadataRecord['file']) && $fileMetadataRecord['file'][0] > 0) {
+            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file'][0]);
         }
 
         return $this->renderFileInformationContent($fileObject);
