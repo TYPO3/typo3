@@ -136,7 +136,9 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache', true);
-        return '<span title="' . $title . '">' . $this->iconRegistry->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render() . '</span>';
+        return '<span title="' . $title . '">'
+            . $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render()
+            . '</span>';
     }
 
     /**

@@ -222,7 +222,7 @@ abstract class AbstractRecordList
      * @param string $colType Defines the tag being used for the columns. Default is td.
      * @return string HTML content for the table row
      */
-    public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_ = '', $colType = 'td')
+    public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td')
     {
         $colType = ($colType === 'th') ? 'th' : 'td';
         $noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
