@@ -101,6 +101,17 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
 
     /**
      * @test
+     * @see https://forge.typo3.org/issues/70556
+     */
+    public function findInSetIsProperlyRemappedWithTableAndFieldIdentifier()
+    {
+        $result = $this->subject->SELECTquery('pages.uid', 'pages', 'FIND_IN_SET(10, pages.fe_group)');
+        $expected = 'SELECT "pages"."uid" FROM "pages" WHERE FIND_IN_SET(10, CAST("pages"."fe_group" AS CHAR)) != 0';
+        $this->assertEquals($expected, $this->cleanSql($result));
+    }
+
+    /**
+     * @test
      * @see http://forge.typo3.org/issues/21514
      */
     public function likeBinaryOperatorIsRemappedToLike()

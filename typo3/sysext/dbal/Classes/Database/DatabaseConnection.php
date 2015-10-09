@@ -1780,11 +1780,19 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                         $patternForLike = $this->escapeStrForLike($pattern, $where_clause[$k]['func']['table']);
                         $where_clause[$k]['func']['str_like'] = $patternForLike;
                         if ($where_clause[$k]['func']['table'] !== '') {
-                            $where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
+                            if ($this->dbmsSpecifics->getSpecific(Specifics\AbstractSpecifics::CAST_FIND_IN_SET)) {
+                                $where_clause[$k]['func']['table'] = 'CAST(' . $this->quoteName($v['func']['table']);
+                            } else {
+                                $where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
+                            }
                         }
                         if ($where_clause[$k]['func']['field'] !== '') {
                             if ($this->dbmsSpecifics->getSpecific(Specifics\AbstractSpecifics::CAST_FIND_IN_SET)) {
-                                $where_clause[$k]['func']['field'] = 'CAST(' . $this->quoteName($v['func']['field']) . ' AS CHAR)';
+                                if($where_clause[$k]['func']['table'] !== '') {
+                                    $where_clause[$k]['func']['field'] = $this->quoteName($v['func']['field']) . ' AS CHAR)';
+                                } else {
+                                    $where_clause[$k]['func']['field'] = 'CAST(' . $this->quoteName($v['func']['field']) . ' AS CHAR)';
+                                }
                             } else {
                                 $where_clause[$k]['func']['field'] = $this->quoteName($v['func']['field']);
                             }
