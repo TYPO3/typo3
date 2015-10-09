@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\FormEngine;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -32,13 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RteController extends AbstractWizardController
 {
-    /**
-     * Document template object
-     *
-     * @var DocumentTemplate
-     */
-    public $doc;
-
     /**
      * Content accumulation for the module.
      *
@@ -75,15 +68,11 @@ class RteController extends AbstractWizardController
     public $MCONF = array();
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
@@ -104,13 +93,14 @@ class RteController extends AbstractWizardController
         $this->R_URI = GeneralUtility::linkThisScript(array('popView' => ''));
         // "Module name":
         $this->MCONF['name'] = 'wizard_rte';
-        // Starting the document template object:
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_rte.html');
         // Need to NOT have the page wrapped in DIV since if we do that we destroy
         // the feature that the RTE spans the whole height of the page!!!
-        $this->doc->divClass = '';
-        $this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db')) . '" method="post" enctype="multipart/form-data" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+        $this->moduleTemplate->setForm(
+            '<form action="'
+            . htmlspecialchars(BackendUtility::getModuleUrl('tce_db'))
+            . '" method="post" enctype="multipart/form-data" name="editform" '
+            . ' onsubmit="return TBE_EDITOR.checkSubmit(1);">'
+        );
     }
 
     /**
@@ -125,7 +115,7 @@ class RteController extends AbstractWizardController
     {
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -137,11 +127,19 @@ class RteController extends AbstractWizardController
     public function main()
     {
         // Translate id to the workspace version:
-        if ($versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->getBackendUserAuthentication()->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
+        if ($versionedRecord = BackendUtility::getWorkspaceVersionOfRecord(
+            $this->getBackendUserAuthentication()->workspace,
+            $this->P['table'],
+            $this->P['uid'],
+            'uid'
+        )) {
             $this->P['uid'] = $versionedRecord['uid'];
         }
         // If all parameters are available:
-        if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+        if ($this->P['table']
+            && $this->P['field']
+            && $this->P['uid']
+            && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
             /** @var TcaDatabaseRecord $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
             /** @var FormDataCompiler $formDataCompiler */
@@ -167,8 +165,9 @@ class RteController extends AbstractWizardController
             $formResultCompiler->mergeResult($formResult);
 
             // override the default jumpToUrl
-            $this->doc->JScodeArray['jumpToUrl'] = '
-				function jumpToUrl(URL,formEl) {
+            $this->moduleTemplate->addJavaScriptCode(
+                'RteWizardInlineCode',
+                'function jumpToUrl(URL,formEl) {
 					if (document.editform) {
 						if (!TBE_EDITOR.isFormChanged()) {
 							window.location.href = URL;
@@ -179,18 +178,24 @@ class RteController extends AbstractWizardController
 						window.location.href = URL;
 					}
 				}
-			';
+			'
+            );
 
             // Setting JavaScript of the pid value for viewing:
             if ($this->popView) {
-                $this->doc->JScode = $this->doc->wrapScriptTags(
-                    BackendUtility::viewOnClick($formData['databaseRow']['pid'], '', BackendUtility::BEgetRootLine($formData['databaseRow']['pid']))
+                $this->moduleTemplate->addJavaScriptCode(
+                    'PopupViewInlineJS',
+                    BackendUtility::viewOnClick(
+                        $formData['databaseRow']['pid'],
+                        '',
+                        BackendUtility::BEgetRootLine($formData['databaseRow']['pid'])
+                    )
                 );
             }
 
-            $pageTsConfig = $formData['pageTsConfig'];
-            if ((string)$pageTsConfig['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'] !== '') {
-                $width = (string)$pageTsConfig['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'];
+            $pageTsConfigMerged = $formData['pageTsConfigMerged'];
+            if ((string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'] !== '') {
+                $width = (string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'];
             } else {
                 $width = '100%';
             }
@@ -208,19 +213,24 @@ class RteController extends AbstractWizardController
             $formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
 						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />';
             // Finally, add the whole setup:
-            $this->content .= $formResultCompiler->JStop() . $formContent . $formResultCompiler->printNeededJSFunctions();
+            $this->content .= $formResultCompiler->JStop()
+                . $formContent
+                . $formResultCompiler->printNeededJSFunctions();
         } else {
             // ERROR:
-            $this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span>', 0, 1);
+            $this->content .= $this->moduleTemplate->section(
+                $this->getLanguageService()->getLL('forms_title'),
+                '<span class="text-danger">'
+                . $this->getLanguageService()->getLL('table_noData', true)
+                . '</span>',
+                0,
+                1
+            );
         }
         // Setting up the buttons and markers for docHeader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CONTENT'] = $this->content;
+        $this->getButtons();
         // Build the <body> for the module
-        $this->content = $this->doc->startPage('');
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -242,40 +252,74 @@ class RteController extends AbstractWizardController
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'close' => '',
-            'save' => '',
-            'save_view' => '',
-            'save_close' => '',
-            'shortcut' => '',
-            'undo' => ''
-        );
-        if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        if ($this->P['table']
+            && $this->P['field']
+            && $this->P['uid']
+            && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
             $closeUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
             // Getting settings for the undo button:
             $undoButton = 0;
             $databaseConnection = $this->getDatabaseConnection();
-            $undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . (int)$this->P['uid'], '', 'tstamp DESC', '1');
+            $undoRes = $databaseConnection->exec_SELECTquery(
+                'tstamp',
+                'sys_history',
+                'tablename=' . $databaseConnection->fullQuoteStr(
+                    $this->P['table'],
+                    'sys_history'
+                ) . ' AND recuid=' . (int)$this->P['uid'],
+                '',
+                'tstamp DESC',
+                '1'
+            );
             if ($undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
                 $undoButton = 1;
             }
+
             // Close
-            $buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($closeUrl) . '); return false;') . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
+            $closeButton = $buttonBar->makeLinkButton()
+                ->setHref($closeUrl)
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
+            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+
             // Save
-            $buttons['save'] = '<button class="c-inputButton" name="_savedok_x" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;" title="'
-                . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $saveButton = $buttonBar->makeInputButton()
+                ->setName('_savedok_x')
+                ->setValue('1')
+                ->setOnClick('TBE_EDITOR.checkAndDoSubmit(1); return false;')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
             // Save & View
-            $buttons['save_view'] = '<button class="c-inputButton" name="_savedokview_x" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '"  title="'
-                . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $saveAndViewButton = $buttonBar->makeInputButton()
+                ->setName('_savedokview_x')
+                ->setValue('1')
+                ->setOnClick('document.editform.redirect.value+= '  . GeneralUtility::quoteJSvalue('&popView=1') . '; '
+                    . ' TBE_EDITOR.checkAndDoSubmit(1); return false;')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
+                ->setIcon(
+                    $this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
+                );
+
             // Save & Close
-            $buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" onclick="' . htmlspecialchars('document.editform.redirect.value=' . GeneralUtility::quoteJSvalue($closeUrl) . '; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="'
-                . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $saveAndCloseButton = $buttonBar->makeInputButton()
+                ->setName('_saveandclosedok_x')
+                ->setValue('1')
+                ->setOnClick('document.editform.redirect.value=' . GeneralUtility::quoteJSvalue($closeUrl)
+                    . '; TBE_EDITOR.checkAndDoSubmit(1); return false;')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                    'actions-document-save-close',
+                    Icon::SIZE_SMALL
+                ));
+
+            // Save SplitButton
+            $saveSplitButton = $buttonBar->makeSplitButton()
+                ->addItem($saveButton)
+                ->addItem($saveAndViewButton)
+                ->addItem($saveAndCloseButton);
+            $buttonBar->addButton($saveSplitButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+
             // Undo/Revert:
             if ($undoButton) {
                 $aOnClick = 'window.location.href=' .
@@ -290,13 +334,32 @@ class RteController extends AbstractWizardController
                             )
                         )
                     ) . '; return false;';
-                $buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . '</a>';
+
+                $undoText = $this->getLanguageService()->sL(
+                    'LLL:EXT:lang/locallang_wizards.xlf:rte_undoLastChange'
+                );
+                $lastChangeLabel = sprintf(
+                    $undoText,
+                    BackendUtility::calcAge(
+                        ($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']),
+                        $this->getLanguageService()->sL(
+                            'LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'
+                        )
+                    )
+                );
+
+                $undoRevertButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setOnClick($aOnClick)
+                    ->setTitle($lastChangeLabel)
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
+                $buttonBar->addButton($undoRevertButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
             }
             // Shortcut
-            if ($this->getBackendUserAuthentication()->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->doc->makeShortcutIcon('P', '', $this->MCONF['name'], 1);
-            }
+            $shortButton = $buttonBar->makeShortcutButton()
+                ->setModuleName($this->MCONF['name'])
+                ->setGetVariables(['P']);
+            $buttonBar->addButton($shortButton);
         }
-        return $buttons;
     }
 }
