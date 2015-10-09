@@ -145,6 +145,8 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
                     // re-read the template ...
                     $this->initialize_editor($this->pObj->id, $template_uid);
                     // re-read the constants as they have changed
+                    $templateService = $this->getExtendedTemplateService();
+                    $tplRow = $this->getTemplateRow();
                     $theConstants = $this->getConstants();
                 }
             }
