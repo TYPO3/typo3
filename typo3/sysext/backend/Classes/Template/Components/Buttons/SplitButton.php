@@ -80,7 +80,8 @@ class SplitButton extends AbstractButton implements ButtonInterface
             throw new \InvalidArgumentException(
                 'Only valid items may be assigned to a split Button. "' .
                 $item->getType() .
-                '" did not pass validation', 1441706330
+                '" did not pass validation',
+                1441706330
             );
         }
         if ($primaryAction && $this->containsPrimaryAction) {
@@ -118,8 +119,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
     public function isValid()
     {
         $subject = $this->getButton();
-        if (
-            isset($subject['primary'])
+        if (isset($subject['primary'])
             && ($subject['primary'] instanceof AbstractButton)
             && isset($subject['options'])
         ) {
@@ -136,33 +136,59 @@ class SplitButton extends AbstractButton implements ButtonInterface
     public function render()
     {
         $items = $this->getButton();
+        $attributes = [
+            'type' => 'submit',
+            'class' => 'btn btn-sm btn-default ' . htmlspecialchars($items['primary']->getClasses()),
+            'name' => $items['primary']->getName(),
+            'value' => $items['primary']->getValue()
+        ];
+        if (!empty($items['primary']->getOnClick())) {
+            $attributes['onclick'] = htmlspecialchars($items['primary']->getOnClick());
+        }
+        $attributesString = '';
+        foreach ($attributes as $key => $value) {
+            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+        }
         $content = '
-		<div class="btn-group">
-			<button
-				type="submit"
-				name="' . htmlspecialchars($items['primary']->getName()) . '"
-				value="' . htmlspecialchars($items['primary']->getValue()) . '"
-				class="btn btn-sm btn-default ' . htmlspecialchars($items['primary']->getClasses()) . '"
-			>
-				' . $items['primary']->getIcon()->render() . '
-				' . htmlspecialchars($items['primary']->getTitle()) . '
-			</button>
-			<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-				<span class="caret"></span>
-				<span class="sr-only">Toggle Dropdown</span>
-			</button>
-			<ul class="dropdown-menu">';
+        <div class="btn-group">
+            <button' . $attributesString . '>
+                ' . $items['primary']->getIcon()->render() . '
+                ' . htmlspecialchars($items['primary']->getTitle()) . '
+            </button>
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">';
+
+        /** @var InputButton $option */
         foreach ($items['options'] as $option) {
+            $optionAttributes = [
+                'href' => '#',
+                'data-name' => $option->getName(),
+                'data-value' => $option->getValue()
+            ];
+            if (!empty($option->getClasses())) {
+                $optionAttributes['class'] = htmlspecialchars($option->getClasses());
+            }
+            if (!empty($option->getOnClick())) {
+                $optionAttributes['onclick'] = htmlspecialchars($option->getOnClick());
+            }
+            $optionAttributesString = '';
+            foreach ($optionAttributes as $key => $value) {
+                $optionAttributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+            }
             $content .= '
-				<li>
-					<a href="#" class="' . htmlspecialchars($option->getClasses()) . '" data-name="' . htmlspecialchars($option->getName()) . '" data-value="' . htmlspecialchars($option->getValue()) . '">' . $option->getIcon()->render() . ' ' . htmlspecialchars($option->getTitle()) . '</a>
-				</li>
-			';
+                <li>
+                    <a' . $optionAttributesString . '>' . $option->getIcon()->render() . ' '
+                    . htmlspecialchars($option->getTitle()) . '</a>
+                </li>
+            ';
         }
         $content .= '
-			</ul>
-		</div>
-		';
+            </ul>
+        </div>
+        ';
         return $content;
     }
 
