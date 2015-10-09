@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -32,13 +33,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class TableController extends AbstractWizardController
 {
-    /**
-     * Document template object
-     *
-     * @var DocumentTemplate
-     */
-    public $doc;
-
     /**
      * Content accumulation for the module.
      *
@@ -116,7 +110,7 @@ class TableController extends AbstractWizardController
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
@@ -138,12 +132,11 @@ class TableController extends AbstractWizardController
         $this->numNewRows = MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
         // Textareas or input fields:
         $this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : true;
-        // Document template object:
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_table.html');
         // Setting form tag:
         list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
-        $this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';
+        $this->moduleTemplate->setForm(
+            '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">'
+        );
         $this->tableParsing_delimiter = '|';
         $this->tableParsing_quote = '';
     }
@@ -159,7 +152,7 @@ class TableController extends AbstractWizardController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -171,19 +164,24 @@ class TableController extends AbstractWizardController
     public function main()
     {
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
-            $this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), $this->tableWizard(), 0, 1);
+            $this->content .= $this->moduleTemplate->section(
+                $this->getLanguageService()->getLL('table_title'),
+                $this->tableWizard(),
+                0,
+                1
+            );
         } else {
-            $this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span>', 0, 1);
+            $this->content .= $this->moduleTemplate->section(
+                $this->getLanguageService()->getLL('table_title'),
+                '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span>',
+                0,
+                1
+            );
         }
         // Setting up the buttons and markers for docHeader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['CONTENT'] = $this->content;
+        $this->getButtons();
         // Build the <body> for the module
-        $this->content = $this->doc->startPage('Table');
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -200,41 +198,50 @@ class TableController extends AbstractWizardController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an associative array
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'csh' => '',
-            'csh_buttons' => '',
-            'close' => '',
-            'save' => '',
-            'save_close' => '',
-            'reload' => ''
-        );
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
             // CSH
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz');
-            // CSH Buttons
-            $buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons');
+            $cshButton = $buttonBar->makeHelpButton()
+                ->setModuleName('xMOD_csh_corebe')
+                ->setFieldName('wizard_table_wiz');
+            $buttonBar->addButton($cshButton);
             // Close
-            $title = 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true) . '"';
-            $buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '" ' . $title . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
+            $closeButton = $buttonBar->makeLinkButton()
+                ->setHref($this->P['returnUrl'])
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
+            $buttonBar->addButton($closeButton);
             // Save
-            $buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $saveButton = $buttonBar->makeInputButton()
+                ->setName('_savedok')
+                ->setValue('1')
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
             // Save & Close
-            $buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $saveAndCloseButton = $buttonBar->makeInputButton()
+                ->setName('_saveandclosedok')
+                ->setValue('1')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                    'actions-document-save-close',
+                    Icon::SIZE_SMALL
+                ));
+            $splitButtonElement = $buttonBar->makeSplitButton()
+                ->addItem($saveButton)
+                ->addItem($saveAndCloseButton);
+
+            $buttonBar->addButton($splitButtonElement, ButtonBar::BUTTON_POSITION_LEFT, 3);
             // Reload
-            $buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', true) . '">'
-                . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render()
-                . '</button>';
+            $reloadButton = $buttonBar->makeInputButton()
+                ->setName('_refresh')
+                ->setValue('1')
+                ->setTitle($this->getLanguageService()->getLL('forms_refresh', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            $buttonBar->addButton($reloadButton);
         }
-        return $buttons;
     }
 
     /**
@@ -297,11 +304,12 @@ class TableController extends AbstractWizardController
             } else {
                 // Convert the input array to a string of configuration code:
                 $bodyText = $this->cfgArray2CfgString($this->TABLECFG['c']);
-                // Create cfgArr from the string based configuration - that way it is cleaned up and any incompatibilities will be removed!
+                // Create cfgArr from the string based configuration - that way it is cleaned up
+                // and any incompatibilities will be removed!
                 $configuration = $this->cfgString2CfgArray($bodyText, $row[$this->colsFieldName]);
             }
             // If a save button has been pressed, then save the new field content:
-            if ($_POST['savedok'] || $_POST['saveandclosedok']) {
+            if ($_POST['_savedok'] || $_POST['_saveandclosedok']) {
                 // Get DataHandler object:
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -322,7 +330,7 @@ class TableController extends AbstractWizardController
                 $dataHandler->start($data, array());
                 $dataHandler->process_datamap();
                 // If the save/close button was pressed, then redirect the screen:
-                if ($_POST['saveandclosedok']) {
+                if ($_POST['_saveandclosedok']) {
                     HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
                 }
             }
@@ -336,7 +344,10 @@ class TableController extends AbstractWizardController
                     $currentFlexFormData = GeneralUtility::xml2array($row[$this->P['field']]);
                     /** @var FlexFormTools $flexFormTools */
                     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                    $configuration = $flexFormTools->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
+                    $configuration = $flexFormTools->getArrayValueByPath(
+                        $this->P['flexFormPath'],
+                        $currentFlexFormData
+                    );
                     $configuration = $this->cfgString2CfgArray($configuration, 0);
                 } else {
                     // Regular line based table configuration:
@@ -369,10 +380,10 @@ class TableController extends AbstractWizardController
                 // Traverse the columns:
                 foreach ($cellArr as $cellContent) {
                     if ($this->inputStyle) {
-                        $cells[] = '<input class="form-control" type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
+                        $cells[] = '<input class="form-control" type="text" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
                     } else {
                         $cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-                        $cells[] = '<textarea class="form-control" ' . $this->doc->formWidth(20) . ' rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . htmlspecialchars($cellContent) . '</textarea>';
+                        $cells[] = '<textarea class="form-control" rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . htmlspecialchars($cellContent) . '</textarea>';
                     }
                     // Increment counter:
                     $a++;
@@ -463,7 +474,8 @@ class TableController extends AbstractWizardController
     }
 
     /**
-     * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will manipulate the internal TABLECFG array
+     * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will
+     * manipulate the internal TABLECFG array
      *
      * @return void
      * @internal
@@ -581,7 +593,11 @@ class TableController extends AbstractWizardController
         // Convert line breaks to <br /> tags:
         foreach ($this->TABLECFG['c'] as $a => $value) {
             foreach ($this->TABLECFG['c'][$a] as $b => $value2) {
-                $this->TABLECFG['c'][$a][$b] = str_replace(LF, '<br />', str_replace(CR, '', $this->TABLECFG['c'][$a][$b]));
+                $this->TABLECFG['c'][$a][$b] = str_replace(
+                    LF,
+                    '<br />',
+                    str_replace(CR, '', $this->TABLECFG['c'][$a][$b])
+                );
             }
         }
     }
@@ -600,7 +616,8 @@ class TableController extends AbstractWizardController
         foreach ($cfgArr as $valueA) {
             $thisLine = array();
             foreach ($valueA as $valueB) {
-                $thisLine[] = $this->tableParsing_quote . str_replace($this->tableParsing_delimiter, '', $valueB) . $this->tableParsing_quote;
+                $thisLine[] = $this->tableParsing_quote
+                    . str_replace($this->tableParsing_delimiter, '', $valueB) . $this->tableParsing_quote;
             }
             $inLines[] = implode($this->tableParsing_delimiter, $thisLine);
         }
@@ -633,7 +650,10 @@ class TableController extends AbstractWizardController
             $valueParts = explode($this->tableParsing_delimiter, $value);
             // Traverse columns:
             for ($a = 0; $a < $columns; $a++) {
-                if ($this->tableParsing_quote && $valueParts[$a][0] === $this->tableParsing_quote && substr($valueParts[$a], -1, 1) === $this->tableParsing_quote) {
+                if ($this->tableParsing_quote
+                    && $valueParts[$a][0] === $this->tableParsing_quote
+                    && substr($valueParts[$a], -1, 1) === $this->tableParsing_quote
+                ) {
                     $valueParts[$a] = substr(trim($valueParts[$a]), 1, -1);
                 }
                 $configurationArray[$key][$a] = $valueParts[$a];

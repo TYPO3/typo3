@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Class AbstractWizardController
  */
-class AbstractWizardController
+class AbstractWizardController extends AbstractModule
 {
     /**
      * Checks access for element
@@ -45,7 +46,8 @@ class AbstractWizardController
             } else {
                 // Fetching pid-record first.
                 $calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms(
-                    BackendUtility::getRecord('pages', $record['pid']));
+                    BackendUtility::getRecord('pages', $record['pid'])
+                );
                 $hasAccess = $calculatedPermissions & Permission::CONTENT_EDIT;
             }
             // Check internals regarding access:
