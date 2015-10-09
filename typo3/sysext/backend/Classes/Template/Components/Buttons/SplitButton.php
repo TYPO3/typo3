@@ -140,6 +140,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
 		<div class="btn-group">
 			<button
 				type="submit"
+				name="' . htmlspecialchars($items['primary']->getName()) . '"
 				value="' . htmlspecialchars($items['primary']->getValue()) . '"
 				class="btn btn-sm btn-default ' . htmlspecialchars($items['primary']->getClasses()) . '"
 			>
@@ -154,7 +155,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
         foreach ($items['options'] as $option) {
             $content .= '
 				<li>
-					<a href="#">' . $option->getIcon()->render() . ' ' . htmlspecialchars($option->getTitle()) . '</a>
+					<a href="#" class="' . htmlspecialchars($option->getClasses()) . '" data-name="' . htmlspecialchars($option->getName()) . '" data-value="' . htmlspecialchars($option->getValue()) . '">' . $option->getIcon()->render() . ' ' . htmlspecialchars($option->getTitle()) . '</a>
 				</li>
 			';
         }
