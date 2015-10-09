@@ -424,6 +424,11 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverruleTypesArray::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                        ),
+                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
@@ -431,10 +436,10 @@ return array(
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverruleTypesArray::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
                         ),
                     ),

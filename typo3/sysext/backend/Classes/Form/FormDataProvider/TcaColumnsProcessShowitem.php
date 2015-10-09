@@ -47,9 +47,7 @@ class TcaColumnsProcessShowitem implements FormDataProviderInterface
             return $result;
         }
 
-        $showItemFieldString = !empty($result['overruleTypesArray'][$recordTypeValue]['showitem'])
-            ? $result['overruleTypesArray'][$recordTypeValue]['showitem']
-            : $result['processedTca']['types'][$recordTypeValue]['showitem'];
+        $showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
         $showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, true);
 
         foreach ($showItemFieldArray as $fieldConfigurationString) {

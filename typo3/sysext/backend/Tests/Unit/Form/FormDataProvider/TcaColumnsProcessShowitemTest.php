@@ -93,47 +93,6 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersColumnsFieldReferencedInOverruledShowitems()
-    {
-        $input = [
-            'columnsToProcess' => [],
-            'databaseRow' => [],
-            'recordTypeValue' => 'aType',
-            'overruleTypesArray' => [
-                'aType' => [
-                    'showitem' => 'keepMe'
-                ]
-            ],
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => 'aField'
-                    ],
-                ],
-                'columns' => [
-                    'keepMe' => [
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                    'aField' => [
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $expected = $input;
-        $expected['columnsToProcess'] = ['keepMe'];
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
     public function addDataKeepsColumnsFieldReferencedInPalette()
     {
         $input = [

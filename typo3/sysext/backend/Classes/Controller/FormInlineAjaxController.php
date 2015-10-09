@@ -104,9 +104,9 @@ class FormInlineAjaxController
         }
 
         $childTableName = $parentConfig['foreign_table'];
-        $overruleTypesArray = [];
+        $inlineOverruleTypesArray = [];
         if (isset($parentConfig['foreign_types'])) {
-            $overruleTypesArray = $parentConfig['foreign_types'];
+            $inlineOverruleTypesArray = $parentConfig['foreign_types'];
         }
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -117,13 +117,13 @@ class FormInlineAjaxController
             'tableName' => $childTableName,
             'vanillaUid' => $childVanillaUid,
             'inlineFirstPid' => $inlineFirstPid,
-            'overruleTypesArray' => $overruleTypesArray,
+            'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
         ];
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
         // Set default values for new created records
         // @todo: This should be moved over to some data provider? foreign_record_defaults is currently not handled
-        // @todo: at all, but also not used in core itself. Bonus question: There is "overruleTypesArray", there is this
+        // @todo: at all, but also not used in core itself. Bonus question: There is "inlineOverruleTypesArray", there is this
         // @todo: default setting stuff ... why can't just "all" TCA be overwritten by parent similar to TCA type
         // @todo: related columnsOverrides? Another gem: foreign_selector_fieldTcaOverride overwrites TCA of foreign_selector
         // @todo: depending on parent ...
@@ -542,9 +542,9 @@ class FormInlineAjaxController
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
-        $overruleTypesArray = [];
+        $inlineOverruleTypesArray = [];
         if (isset($parentConfig['foreign_types'])) {
-            $overruleTypesArray = $parentConfig['foreign_types'];
+            $inlineOverruleTypesArray = $parentConfig['foreign_types'];
         }
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -555,7 +555,7 @@ class FormInlineAjaxController
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
             'inlineFirstPid' => $parentData['inlineFirstPid'],
-            'overruleTypesArray' => $overruleTypesArray,
+            'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild

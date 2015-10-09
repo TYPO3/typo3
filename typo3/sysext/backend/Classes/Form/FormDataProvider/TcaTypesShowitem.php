@@ -44,11 +44,6 @@ class TcaTypesShowitem implements FormDataProviderInterface
 
         $recordTypeValue = $result['recordTypeValue'];
 
-        // Inline may override the type value - setting is given down from InlineRecordContainer if so - used primarily for FAL
-        if (!empty($result['overruleTypesArray'][$recordTypeValue]['showitem'])) {
-            $result['processedTca']['types'][$recordTypeValue]['showitem'] = $result['overruleTypesArray'][$recordTypeValue]['showitem'];
-        }
-
         // Handle subtype_value_field, subtypes_addlist, subtypes_excludelist
         if (!empty($result['processedTca']['types'][$recordTypeValue]['subtype_value_field'])) {
             $subtypeFieldName = $result['processedTca']['types'][$recordTypeValue]['subtype_value_field'];

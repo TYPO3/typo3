@@ -185,7 +185,9 @@ class FormDataCompiler
             // This array of fields will be set as hidden-fields instead of rendered normally!
             // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
             'overrideValues' => [],
-
+            // This is the "foreign_types" section of a parent inline configuration that can be used to
+            // overrule the types TCA section of a child element.
+            'inlineOverruleTypesArray' => [],
             // Inline scenario: A localized parent record is handled and localizationMode is set to "select", so inline
             // parents can have localized children. This value is set to TRUE if this array represents a localized child
             // overlay record that has no default language record.
@@ -207,7 +209,7 @@ class FormDataCompiler
             'tabAndInlineStack' => [],
             'inlineData' => [],
             'inlineStructure' => [],
-            'overruleTypesArray' => [],
+
         );
     }
 }
