@@ -28,6 +28,16 @@ class FormDataCompiler
     protected $formDataGroup;
 
     /**
+     * List of top level array elements to be unset from
+     * result array before final result is returned.
+     *
+     * @var array
+     */
+    protected $removeKeysFromFinalResultArray = [
+        'inlineOverruleTypesArray',
+    ];
+
+    /**
      * Get form data group injected
      *
      * @param FormDataGroupInterface $formDataGroup
@@ -94,6 +104,12 @@ class FormDataCompiler
                 'Data group provider must not change result key list',
                 1438079402
             );
+        }
+
+        // Remove some data elements form result that are data provider internal and should
+        // not be exposed to calling object.
+        foreach ($this->removeKeysFromFinalResultArray as $key) {
+            unset($result[$key]);
         }
 
         return $result;
