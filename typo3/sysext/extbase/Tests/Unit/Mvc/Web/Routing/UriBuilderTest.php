@@ -667,7 +667,7 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')
-            ->will($this->returnValue(['view' => ['formatToPageTypeMapping' => ['txt' => 2]]]));
+            ->will($this->returnValue(['formatToPageTypeMapping' => ['txt' => 2]]));
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
@@ -711,7 +711,7 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects($this->any())->method('getConfiguration')
-            ->will($this->returnValue([['view' => ['formatToPageTypeMapping' => ['pdf' => 2]]]]));
+            ->will($this->returnValue(['formatToPageTypeMapping' => ['pdf' => 2]]));
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
