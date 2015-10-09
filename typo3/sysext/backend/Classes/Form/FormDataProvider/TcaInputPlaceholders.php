@@ -114,7 +114,7 @@ class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProvi
         }
 
         if (!empty($possibleUids) && !empty($fieldNameArray)) {
-            $relatedFormData = $this->getRelatedFormData($foreignTableName, $possibleUids[0]);
+            $relatedFormData = $this->getRelatedFormData($foreignTableName, $possibleUids[0], $fieldNameArray[0]);
             $value = $this->getPlaceholderValue($fieldNameArray, $relatedFormData, $recursionLevel + 1);
         }
 
@@ -129,15 +129,17 @@ class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProvi
      *
      * @param string $tableName Name of the table for which to compile formdata
      * @param int $uid UID of the record for which to compile the formdata
+     * @param string $columnToProcess The column that is required from the record
      * @return array The compiled formdata
      */
-    protected function getRelatedFormData($tableName, $uid)
+    protected function getRelatedFormData($tableName, $uid, $columnToProcess)
     {
         $fakeDataInput = [
             'command' => 'edit',
             'vanillaUid' => (int)$uid,
             'tableName' => $tableName,
             'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => [$columnToProcess],
         ];
         /** @var TcaInputPlaceholderRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaInputPlaceholderRecord::class);

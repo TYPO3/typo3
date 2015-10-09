@@ -172,6 +172,8 @@ class FormDataCompiler
             // TCA of table with processed fields. After processing, this array contains merged and resolved
             // array data, items were resolved, only used types are set, renderTypes are set.
             'processedTca' => array(),
+            // List of columns to be processed by data provider. Array value is the column name.
+            'columnsToProcess' => array(),
             // If set to TRUE, no wizards are calculated and rendered later
             'disabledWizards' => false,
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items

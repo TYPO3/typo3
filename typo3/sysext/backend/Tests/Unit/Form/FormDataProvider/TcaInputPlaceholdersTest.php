@@ -162,7 +162,13 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         /** @var TcaInputPlaceholderRecord $languageService */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile(['command' => 'edit', 'vanillaUid' => 42, 'tableName' => 'aForeignTable', 'inlineCompileExistingChildren' => false])
+        $formDataCompilerProphecy->compile([
+            'command' => 'edit',
+            'vanillaUid' => 42,
+            'tableName' => 'aForeignTable',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['aForeignField']
+        ])
             ->shouldBeCalled()
             ->willReturn($aForeignTableInput);
 
@@ -221,7 +227,13 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         /** @var TcaInputPlaceholderRecord $languageService */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile(['command' => 'edit', 'vanillaUid' => 3, 'tableName' => 'sys_file', 'inlineCompileExistingChildren' => false])
+        $formDataCompilerProphecy->compile([
+            'command' => 'edit',
+            'vanillaUid' => 3,
+            'tableName' => 'sys_file',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['sha1']
+        ])
             ->shouldBeCalled()
             ->willReturn($sysFileProphecyResult);
 
@@ -281,7 +293,13 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         /** @var TcaInputPlaceholderRecord $languageService */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
-        $formDataCompilerProphecy->compile(['command' => 'edit', 'vanillaUid' => 2, 'tableName' => 'sys_file_metadata', 'inlineCompileExistingChildren' => false])
+        $formDataCompilerProphecy->compile([
+            'command' => 'edit',
+            'vanillaUid' => 2,
+            'tableName' => 'sys_file_metadata',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['title']
+        ])
             ->shouldBeCalled()
             ->willReturn($sysFileMetadataProphecyResult);
 
@@ -358,13 +376,25 @@ class TcaInputPlaceholdersTest extends UnitTestCase
 
         $sysFileFormDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileFormDataCompilerProphecy->reveal());
-        $sysFileFormDataCompilerProphecy->compile(['command' => 'edit', 'vanillaUid' => 3, 'tableName' => 'sys_file', 'inlineCompileExistingChildren' => false])
+        $sysFileFormDataCompilerProphecy->compile([
+            'command' => 'edit',
+            'vanillaUid' => 3,
+            'tableName' => 'sys_file',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['metadata']
+        ])
             ->shouldBeCalled()
             ->willReturn($sysFileProphecyResult);
 
         $sysFileMetaDataFormDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileMetaDataFormDataCompilerProphecy->reveal());
-        $sysFileMetaDataFormDataCompilerProphecy->compile(['command' => 'edit', 'vanillaUid' => 7, 'tableName' => 'sys_file_metadata', 'inlineCompileExistingChildren' => false])
+        $sysFileMetaDataFormDataCompilerProphecy->compile([
+            'command' => 'edit',
+            'vanillaUid' => 7,
+            'tableName' => 'sys_file_metadata',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['title']
+        ])
             ->shouldBeCalled()
             ->willReturn($sysFileMetadataProphecyResult);
 

@@ -409,17 +409,41 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
+                        ),
+                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesRemoveUnusedColumns::class => array(
-                        'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
@@ -427,7 +451,7 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesRemoveUnusedColumns::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
@@ -458,7 +482,7 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesRemoveUnusedColumns::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                             // GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
@@ -561,20 +585,25 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ),
                     ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                        ),
+                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                         ),
                     ),
