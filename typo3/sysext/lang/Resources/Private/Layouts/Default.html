@@ -1,53 +1,13 @@
-<f:be.container
-	enableClickMenu="0"
-	loadExtJs="0"
-	loadJQuery="true"
-	includeRequireJsModules="{
-		0: 'TYPO3/CMS/Lang/LanguageModule'
-	}"
-	addJsInlineLabels="{
-		0: 'flashmessage.error',
-		1: 'flashmessage.information',
-		2: 'flashmessage.success',
-		3: 'flashmessage.multipleErrors',
-		4: 'flashmessage.updateComplete',
-		5: 'flashmessage.canceled',
-		6: 'flashmessage.languageActivated',
-		7: 'flashmessage.languageDeactivated',
-		8: 'flashmessage.errorOccurred',
-		9: 'table.processing',
-		10: 'table.search',
-		11: 'table.loadingRecords',
-		12: 'table.zeroRecords',
-		13: 'table.emptyTable',
-		14: 'table.dateFormat'
-	}"
+<div
+	class="typo3-fullDoc typo3-module-lang"
+	data-list-translations-uri="{f:uri.action(action:'getTranslations',format:'json')}"
+	data-update-language-uri="{f:uri.action(action:'updateLanguage',format:'json')}"
+	data-update-translation-uri="{f:uri.action(action:'updateTranslation',format:'json')}"
+	data-activate-language-uri="{f:uri.action(action:'activateLanguage',format:'json')}"
+	data-deactivate-language-uri="{f:uri.action(action:'deactivateLanguage',format:'json')}"
+	data-prefix="tx_lang_tools_langlanguage"
 >
-	<div
-		class="typo3-fullDoc typo3-module-lang"
-		data-list-translations-uri="{f:uri.action(action:'getTranslations',format:'json')}"
-		data-update-language-uri="{f:uri.action(action:'updateLanguage',format:'json')}"
-		data-update-translation-uri="{f:uri.action(action:'updateTranslation',format:'json')}"
-		data-activate-language-uri="{f:uri.action(action:'activateLanguage',format:'json')}"
-		data-deactivate-language-uri="{f:uri.action(action:'deactivateLanguage',format:'json')}"
-		data-prefix="tx_lang_tools_langlanguage"
-	>
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<f:be.menus.actionMenu>
-					<f:be.menus.actionMenuItem label="{f:translate(key: 'header.languages')}" controller="Language" action="listLanguages" />
-					<f:be.menus.actionMenuItem label="{f:translate(key: 'header.translations')}" controller="Language" action="listTranslations" />
-				</f:be.menus.actionMenu>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<f:render section="iconButtons" />
-			</div>
-		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:render section="content" />
-				<f:render partial="Icons" />
-			</div>
-		</div>
-	</div>
-</f:be.container>
+
+	<f:render section="content"/>
+	<f:render partial="Icons"/>
+</div>

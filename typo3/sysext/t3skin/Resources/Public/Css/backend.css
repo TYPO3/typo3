@@ -11573,6 +11573,9 @@ a.badge-danger:focus {
 .btn-group .collapse + .btn.collapsed:last-child {
   border-radius: 2px;
 }
+.btn-group .btn-default.disabled {
+  color: #999;
+}
 .btn-radio input[type="radio"],
 .btn-checkbox input[type="radio"],
 .btn-radio input[type="checkbox"],

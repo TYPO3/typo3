@@ -5,20 +5,6 @@
       xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:layout name="Default"/>
 
-<f:section name="iconButtons">
-	<div class="menuItems">
-		<span class="menuItem updateItem" data-action="updateActiveLanguages" title="{f:translate(key:'button.downloadAll')}">
-			<core:icon identifier="actions-system-extension-download" />
-		</span>
-		<span class="menuItem loadingItem">
-			<span title="" class="t3-icon fa fa-spin fa-circle-o-notch">&nbsp;</span>
-		</span>
-		<span class="menuItem cancelItem" data-action="cancelLanguageUpdate" title="{f:translate(key:'button.cancel')}">
-			&nbsp;<core:icon identifier="actions-document-close" />
-		</span>
-	</div>
-</f:section>
-
 <f:section name="content">
 	<h1>
 		<f:translate key="header.languages"/>

@@ -13,12 +13,31 @@ namespace TYPO3\CMS\Lang\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
+use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Language controller
  */
-class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class LanguageController extends ActionController
 {
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * @var BackendTemplateView
+     */
+    protected $view;
+
     /**
      * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository
      */
@@ -78,6 +97,9 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function listLanguagesAction()
     {
+        $this->prepareDocHeaderMenu();
+        $this->prepareDocHeaderButtons();
+
         $languages = $this->languageRepository->findAll();
         $this->view->assign('languages', $languages);
     }
@@ -89,6 +111,8 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function listTranslationsAction()
     {
+        $this->prepareDocHeaderMenu();
+
         $languages = $this->languageRepository->findSelected();
         $this->view->assign('languages', $languages);
     }
@@ -114,7 +138,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     {
         $numberOfExtensionsToUpdate = 10;
         $response = array(
-            'success'  => false,
+            'success' => false,
             'progress' => 0,
         );
         if (!empty($data['locale'])) {
@@ -164,7 +188,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             if (empty($result[$data['extension']][$data['locale']]['error'])) {
                 $response = array(
                     'success' => true,
-                    'result'  => $result,
+                    'result' => $result,
                 );
             }
         }
@@ -199,5 +223,104 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             $response = $this->languageRepository->deactivateByLocale($data['locale']);
         }
         $this->view->assign('response', $response);
+    }
+
+    /**
+     * DocHeaderMenu
+     */
+    protected function prepareDocHeaderMenu()
+    {
+        $this->view->getModuleTemplate()->setModuleName('typo3-module-lang');
+        $this->view->getModuleTemplate()->setModuleId('typo3-module-lang');
+
+        $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lang/LanguageModule');
+
+        $extensionKey = 'lang';
+        $addJsInlineLabels = [
+            'flashmessage.error',
+            'flashmessage.information',
+            'flashmessage.success',
+            'flashmessage.multipleErrors',
+            'flashmessage.updateComplete',
+            'flashmessage.canceled',
+            'flashmessage.languageActivated',
+            'flashmessage.languageDeactivated',
+            'flashmessage.errorOccurred',
+            'table.processing',
+            'table.search',
+            'table.loadingRecords',
+            'table.zeroRecords',
+            'table.emptyTable',
+            'table.dateFormat',
+        ];
+        foreach ($addJsInlineLabels as $key) {
+            $label = LocalizationUtility::translate($key, $extensionKey);
+            $this->view->getModuleTemplate()->getPageRenderer()->addInlineLanguageLabel($key, $label);
+        }
+
+        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+
+        /** @var Menu $menu */
+        $menu = GeneralUtility::makeInstance(Menu::class);
+        $menu->setIdentifier('_languageMenu');
+        $menu->setLabel($this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE));
+
+        /** @var MenuItem $languageListMenuItem */
+        $languageListMenuItem = GeneralUtility::makeInstance(MenuItem::class);
+        $action = 'listLanguages';
+        $isActive = $this->request->getControllerActionName() === $action ? TRUE : FALSE;
+        $languageListMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.languages'));
+        $uri = $uriBuilder->reset()->uriFor('listLanguages', array(), 'Language');
+        $languageListMenuItem->setHref($uri)->setActive($isActive);
+
+        /** @var MenuItem $translationMenuItem */
+        $translationMenuItem = GeneralUtility::makeInstance(MenuItem::class);
+        $action = 'listTranslations';
+        $isActive = $this->request->getControllerActionName() === $action ? TRUE : FALSE;
+        $translationMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.translations'));
+        $uri = $uriBuilder->reset()->uriFor('listTranslations', array(), 'Language');
+        $translationMenuItem->setHref($uri)->setActive($isActive);
+
+        $menu->addMenuItem($languageListMenuItem);
+        $menu->addMenuItem($translationMenuItem);
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * DocHeaderButtons
+     */
+    protected function prepareDocHeaderButtons()
+    {
+        // @todo: the html structure needed to operate the buttons correctly is broken now.
+        // @todo: LanguageModule.js and backend.css -> div.typo3-module-lang div.menuItems
+
+        $downloadAllButton = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-system-extension-download', Icon::SIZE_SMALL))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:button.downloadAll'))
+            ->setClasses('menuItem updateItem t3js-button-update')
+            ->setDataAttributes(['action' => 'updateActiveLanguages'])
+            ->setHref('#');
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->addButton($downloadAllButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+        $cancelButton = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:button.cancel'))
+            ->setClasses('menuItem cancelItem disabled t3js-button-cancel')
+            ->setDataAttributes(['action' => 'cancelLanguageUpdate'])
+            ->setHref('#');
+
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->addButton($cancelButton, ButtonBar::BUTTON_POSITION_LEFT);
     }
 }

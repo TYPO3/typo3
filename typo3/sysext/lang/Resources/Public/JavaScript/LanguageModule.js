@@ -14,7 +14,7 @@
 /**
  * Language module class
  */
-define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment) {
+define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment, Icons) {
 	'use strict';
 
 	var LanguageModule = {
@@ -23,12 +23,17 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 		table: null,
 		topMenu: null,
 		currentRequest: null,
+		userAbortRequest: false,
 		settings: {},
 		icons: {},
 		labels: {},
+		buttons: {
+			update: null,
+			cancel: null
+		},
 		identifiers: {
 			searchField: '.t3js-language-searchfield',
-			topMenu: 'div.menuItems',
+			topMenu: 'div.t3js-module-docheader',
 			activateIcon: 'span.activateIcon',
 			deactivateIcon: 'span.deactivateIcon',
 			downloadIcon: 'span.downloadIcon',
@@ -66,6 +71,7 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 		LanguageModule.table = LanguageModule.buildLanguageTable(tableElement);
 		LanguageModule.initializeSearchField();
 		LanguageModule.initializeEventHandler();
+		LanguageModule.initializeButtons();
 	};
 
 	/**
@@ -151,7 +157,7 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 	 */
 	LanguageModule.updateActiveLanguagesAction = function(triggerElement, parameters) {
 		var $activeRows = $('tr.' + LanguageModule.classes.enabled, LanguageModule.table.table().container());
-
+		LanguageModule.updateButtonStatus('update');
 		LanguageModule.topMenu.addClass(LanguageModule.classes.processing);
 		$activeRows.addClass(LanguageModule.classes.processing);
 		LanguageModule.loadTranslationsByRows($activeRows, function(row, status, data, response) {
@@ -178,7 +184,7 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 	 */
 	LanguageModule.cancelLanguageUpdateAction = function(triggerElement, parameters) {
 		var $activeRows = $('tr.' + LanguageModule.classes.enabled, LanguageModule.table.table().container());
-
+		LanguageModule.updateButtonStatus('cancel');
 		LanguageModule.topMenu.removeClass(LanguageModule.classes.processing);
 		$activeRows.removeClass(LanguageModule.classes.processing);
 		LanguageModule.abortAjaxRequest();
@@ -235,7 +241,8 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 			languageActivated: TYPO3.lang['flashmessage.languageActivated'],
 			errorOccurred: TYPO3.lang['flashmessage.errorOccurred'],
 			languageDeactivated: TYPO3.lang['flashmessage.languageDeactivated'],
-			updateComplete: TYPO3.lang['flashmessage.updateComplete']
+			updateComplete: TYPO3.lang['flashmessage.updateComplete'],
+			canceled: TYPO3.lang['flashmessage.canceled']
 		}
 	};
 
@@ -340,17 +347,46 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 	LanguageModule.initializeEventHandler = function() {
 		$(document).on('click', function(event) {
 			var $element = $(event.target);
+			var $parent = $element.closest('[data-action]');
 
 			if ($element.data('action') !== undefined) {
 				LanguageModule.handleActionEvent($element, event);
-			} else if ($element.parent().data('action') !== undefined) {
-				LanguageModule.handleActionEvent($element.parent(), event);
-			} else if ($element.parent().parent().data('action') !== undefined) {
-				LanguageModule.handleActionEvent($element.parent().parent(), event);
-			} else if ($element.parent().parent().parent().parent().data('action') !== undefined) {
-				LanguageModule.handleActionEvent($element.parent().parent().parent().parent(), event);
+			} else if ($parent.data('action') !== undefined) {
+				LanguageModule.handleActionEvent($parent, event);
 			}
 		});
+	};
+
+	/**
+	 * Initialize buttons
+	 */
+	LanguageModule.initializeButtons = function() {
+		LanguageModule.buttons.update = LanguageModule.topMenu.find('.t3js-button-update');
+		LanguageModule.buttons.cancel = LanguageModule.topMenu.find('.t3js-button-cancel');
+	};
+
+	/**
+	 * Update buttons in top menu
+	 *
+	 * @param {string} action
+	 */
+	LanguageModule.updateButtonStatus = function(action) {
+		switch (action) {
+			case 'update':
+				LanguageModule.buttons.update.data('action', 'cancelLanguageUpdate');
+				LanguageModule.buttons.cancel.removeClass('disabled');
+				Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(icons) {
+					LanguageModule.buttons.update.find('span.icon').replaceWith(icons['spinner-circle-dark']);
+				});
+				break;
+			case 'cancel':
+				LanguageModule.buttons.update.data('action', 'updateActiveLanguages');
+				LanguageModule.buttons.cancel.addClass('disabled');
+				Icons.getIcon('actions-system-extension-download', Icons.sizes.small).done(function(icons) {
+					LanguageModule.buttons.update.find('span.icon').replaceWith(icons['actions-system-extension-download']);
+				});
+				break;
+		}
 	};
 
 	/**
@@ -454,6 +490,7 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 	 */
 	LanguageModule.abortAjaxRequest = function() {
 		if (LanguageModule.currentRequest) {
+			LanguageModule.userAbortRequest = true;
 			LanguageModule.currentRequest.abort();
 		}
 	};
@@ -462,7 +499,9 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 	 * Display error flash message
 	 */
 	LanguageModule.displayError = function(label) {
-		if (typeof label === 'string' && label !== '') {
+		if (LanguageModule.userAbortRequest) {
+			LanguageModule.displaySuccess(LanguageModule.labels.canceled);
+		} else if (typeof label === 'string' && label !== '') {
 			top.TYPO3.Notification.error(LanguageModule.labels.errorHeader, label);
 		}
 	};
