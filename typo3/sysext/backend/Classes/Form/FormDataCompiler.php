@@ -142,7 +142,9 @@ class FormDataCompiler
             // Full user TsConfig
             'userTsConfig' => array(),
             // Full page TSConfig of the page that is edited or of the parent page if a record is added.
-            // This includes any defaultPageTSconfig and is merged with user TsConfig page. section
+            // This includes any defaultPageTSconfig and is merged with user TsConfig page. section. After type
+            // of handled record was determined, record type specific settings [TCEFORM.][tableName.][field.][types.][type.]
+            // are merged into [TCEFORM.][tableName.][field.]. Array keys still contain the concatenation dots.
             'pageTsConfig' => array(),
             // Not changed TCA of handled table
             'vanillaTableTca' => array(),
@@ -167,8 +169,6 @@ class FormDataCompiler
             'additionalLanguageRows' => array(),
             // The tca record type value of the record. Forced to string, there can be "named" type values.
             'recordTypeValue' => '0',
-            // prepared Ts config: Type specific configuration is merged and some additional values are set.
-            'pageTsConfigMerged' => array(),
             // TCA of table with processed fields. After processing, this array contains merged and resolved
             // array data, items were resolved, only used types are set, renderTypes are set.
             'processedTca' => array(),

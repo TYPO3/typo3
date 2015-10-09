@@ -45,7 +45,7 @@ class PageTsConfigMergedTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['pageTsConfigMerged'] = $input['pageTsConfig'];
+        $expected['pageTsConfig'] = $input['pageTsConfig'];
         $this->assertSame($expected, $this->subject->addData($input));
     }
 
@@ -68,7 +68,7 @@ class PageTsConfigMergedTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['pageTsConfigMerged'] = $input['pageTsConfig'];
+        $expected['pageTsConfig'] = $input['pageTsConfig'];
         $this->assertSame($expected, $this->subject->addData($input));
     }
 
@@ -95,7 +95,7 @@ class PageTsConfigMergedTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['pageTsConfigMerged'] = [
+        $expected['pageTsConfig'] = [
             'TCEFORM.' => [
                 'aTable.' => [
                     'aField.' => [
@@ -131,7 +131,7 @@ class PageTsConfigMergedTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['pageTsConfigMerged'] = [
+        $expected['pageTsConfig'] = [
             'TCEFORM.' => [
                 'aTable.' => [
                     'aField.' => [

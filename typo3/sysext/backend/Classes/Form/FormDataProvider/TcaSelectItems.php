@@ -105,10 +105,10 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 if (!isset($dynamicItems[$key])) {
                     $staticValues[$item[1]] = $item;
                 }
-                if (isset($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
-                    && !empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
+                if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
+                    && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
                 ) {
-                    $label = $languageService->sL($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]]);
+                    $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]]);
                 } else {
                     $label = $languageService->sL($item[0]);
                 }
@@ -464,15 +464,15 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
     protected function removeItemsByKeepItemsPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        if (empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
-            || !is_string($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
+        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
+            || !is_string($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
         ) {
             return $items;
         }
 
         return ArrayUtility::keepItemsInArray(
             $items,
-            $result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'],
+            $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'],
             function ($value) {
                 return $value[1];
             }
@@ -490,15 +490,15 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
     protected function removeItemsByRemoveItemsPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        if (empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
-            || !is_string($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
+        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
+            || !is_string($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
         ) {
             return $items;
         }
 
         $removeItems = GeneralUtility::trimExplode(
             ',',
-            $result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'],
+            $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'],
             true
         );
         foreach ($items as $key => $itemValues) {
@@ -928,12 +928,12 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 }
             }
             $pageTsConfigId = 0;
-            if ($result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']) {
-                $pageTsConfigId = (int)$result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'];
+            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']) {
+                $pageTsConfigId = (int)$result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'];
             }
             $pageTsConfigIdList = 0;
-            if ($result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']) {
-                $pageTsConfigIdList = $result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'];
+            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']) {
+                $pageTsConfigIdList = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'];
                 $pageTsConfigIdListArray = GeneralUtility::trimExplode(',', $pageTsConfigIdList, true);
                 $pageTsConfigIdList = array();
                 foreach ($pageTsConfigIdListArray as $pageTsConfigIdListElement) {
@@ -944,8 +944,8 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 $pageTsConfigIdList = implode(',', $pageTsConfigIdList);
             }
             $pageTsConfigString = '';
-            if ($result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
-                $pageTsConfigString = $result['pageTsConfigMerged']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
+            if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
+                $pageTsConfigString = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
                 $pageTsConfigString = $database->quoteStr($pageTsConfigString, $foreignTableName);
             }
 

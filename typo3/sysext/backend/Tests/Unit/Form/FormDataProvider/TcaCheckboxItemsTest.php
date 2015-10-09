@@ -210,7 +210,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -279,7 +279,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -350,7 +350,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [

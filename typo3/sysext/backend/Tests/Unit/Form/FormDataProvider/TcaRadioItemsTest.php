@@ -255,7 +255,7 @@ class TcaRadioItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -324,7 +324,7 @@ class TcaRadioItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -395,7 +395,7 @@ class TcaRadioItemsTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [

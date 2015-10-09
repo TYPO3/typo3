@@ -188,9 +188,9 @@ class RteController extends AbstractWizardController
                 );
             }
 
-            $pageTsConfigMerged = $formData['pageTsConfigMerged'];
-            if ((string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'] !== '') {
-                $width = (string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'];
+            $pageTsConfig = $formData['pageTsConfig'];
+            if ((string)$pageTsConfig['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'] !== '') {
+                $width = (string)$pageTsConfig['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'];
             } else {
                 $width = '100%';
             }

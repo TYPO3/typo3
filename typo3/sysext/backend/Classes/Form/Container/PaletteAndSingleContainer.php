@@ -395,10 +395,10 @@ class PaletteAndSingleContainer extends AbstractContainer
         }
 
         $fieldTSConfig = [];
-        if (isset($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-            && is_array($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+        if (isset($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+            && is_array($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
         ) {
-            $fieldTSConfig = $this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'];
+            $fieldTSConfig = $this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'];
         }
 
         if (!empty($fieldTSConfig['label'])) {

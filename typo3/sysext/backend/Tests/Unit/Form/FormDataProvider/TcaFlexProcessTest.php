@@ -91,7 +91,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -154,7 +154,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -232,7 +232,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -310,7 +310,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -388,7 +388,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -467,7 +467,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $this->backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
@@ -529,7 +529,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $this->backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
@@ -599,7 +599,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $this->backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
@@ -668,7 +668,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -746,7 +746,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -846,7 +846,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
@@ -903,7 +903,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $this->backendUserProphecy->isAdmin()->willReturn(true);
@@ -950,7 +950,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $this->backendUserProphecy->isAdmin()->willReturn(true);
@@ -1049,7 +1049,7 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [],
+            'pageTsConfig' => [],
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [

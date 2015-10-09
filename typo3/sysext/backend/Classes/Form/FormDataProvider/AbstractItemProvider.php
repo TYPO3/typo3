@@ -39,8 +39,8 @@ abstract class AbstractItemProvider
         $config = $result['processedTca']['columns'][$fieldName]['config'];
 
         $pageTsProcessorParameters = null;
-        if (!empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'])) {
-            $pageTsProcessorParameters = $result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'];
+        if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'])) {
+            $pageTsProcessorParameters = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'];
         }
         $processorParameters = [
             // Function manipulates $items directly and return nothing
@@ -87,7 +87,7 @@ abstract class AbstractItemProvider
      * PageTsConfig addItems:
      *
      * TCEFORMS.aTable.aField[.types][.aType].addItems.aValue = aLabel,
-     * with type specific options merged by pageTsConfigMerged already
+     * with type specific options merged by pageTsConfig already
      *
      * @param array $result result array
      * @param string $fieldName Current handle field name
@@ -97,10 +97,10 @@ abstract class AbstractItemProvider
     protected function addItemsFromPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        if (!empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
-            && is_array($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
+        if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
+            && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
         ) {
-            $addItemsArray = $result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'];
+            $addItemsArray = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'];
             foreach ($addItemsArray as $value => $label) {
                 // If the value ends with a dot, it is a subelement like "34.icon = mylabel.png", skip it
                 if (substr($value, -1) === '.') {

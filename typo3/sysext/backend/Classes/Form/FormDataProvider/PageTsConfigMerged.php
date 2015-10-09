@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 class PageTsConfigMerged implements FormDataProviderInterface
 {
     /**
-     * Merge type specific page TS to pageTsConfigMerged
+     * Merge type specific page TS to pageTsConfig
      *
      * @param array $result
      * @return array
@@ -33,7 +33,7 @@ class PageTsConfigMerged implements FormDataProviderInterface
         $mergedTsConfig = $result['pageTsConfig'];
 
         if (empty($result['pageTsConfig']['TCEFORM.']) || !is_array($result['pageTsConfig']['TCEFORM.'])) {
-            $result['pageTsConfigMerged'] = $mergedTsConfig;
+            $result['pageTsConfig'] = $mergedTsConfig;
             return $result;
         }
 
@@ -58,7 +58,7 @@ class PageTsConfigMerged implements FormDataProviderInterface
             }
         }
 
-        $result['pageTsConfigMerged'] = $mergedTsConfig;
+        $result['pageTsConfig'] = $mergedTsConfig;
 
         return $result;
     }

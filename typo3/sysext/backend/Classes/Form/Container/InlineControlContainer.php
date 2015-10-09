@@ -349,7 +349,7 @@ class InlineControlContainer extends AbstractContainer
             $selectDataInput = [
                 'tableName' => 'dummyTable',
                 'command' => 'edit',
-                'pageTsConfigMerged' => $pageTsConfig,
+                'pageTsConfig' => $pageTsConfig,
                 'vanillaTableTca' => [
                     'ctrl' => [],
                     'columns' => [

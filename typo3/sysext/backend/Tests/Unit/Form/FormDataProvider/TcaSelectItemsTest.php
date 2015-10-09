@@ -1207,7 +1207,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'AND fTable.uid=###PAGE_TSCONFIG_ID###',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid=451',
                 [
-                    'pageTsConfigMerged' => [
+                    'pageTsConfig' => [
                         'TCEFORM.' => [
                             'aTable.' => [
                                 'aField.' => [
@@ -1232,7 +1232,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.uid IN (471,481)',
                 [
-                    'pageTsConfigMerged' => [
+                    'pageTsConfig' => [
                         'TCEFORM.' => [
                             'aTable.' => [
                                 'aField.' => [
@@ -1285,7 +1285,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'is_siteroot' => null,
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -1588,7 +1588,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ]
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -1643,7 +1643,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ]
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -1939,7 +1939,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -2008,7 +2008,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
@@ -2085,7 +2085,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ],
             ],
-            'pageTsConfigMerged' => [
+            'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [

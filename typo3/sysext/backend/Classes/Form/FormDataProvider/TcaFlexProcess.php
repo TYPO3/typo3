@@ -109,9 +109,9 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
     {
         $table = $result['tableName'];
         $pageTs = [];
-        if (!empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'])
-            && is_array($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'])) {
-            $pageTs = $result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'];
+        if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'])
+            && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'])) {
+            $pageTs = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'][$flexIdentifier . '.'];
         }
         return $pageTs;
     }
@@ -258,9 +258,9 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
             $dataStructureSheetElements = $dataStructureSheetDefinition['ROOT']['el'];
 
             // Prepare pageTsConfig of this sheet
-            $pageTsConfigMerged['TCEFORM.'][$tableName . '.'] = [];
+            $pageTsConfig['TCEFORM.'][$tableName . '.'] = [];
             if (isset($pageTsConfig[$dataStructureSheetName . '.']) && is_array($pageTsConfig[$dataStructureSheetName . '.'])) {
-                $pageTsConfigMerged['TCEFORM.'][$tableName . '.'] = $pageTsConfig[$dataStructureSheetName . '.'];
+                $pageTsConfig['TCEFORM.'][$tableName . '.'] = $pageTsConfig[$dataStructureSheetName . '.'];
             }
 
             foreach ($dataStructureSheetElements as $dataStructureSheetElementName => $dataStructureSheetElementDefinition) {
@@ -305,7 +305,7 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                                             'tableName' => $result['tableName'],
                                             'command' => $command,
                                             // It is currently not possible to have pageTsConfig for section container
-                                            'pageTsConfigMerged' => [],
+                                            'pageTsConfig' => [],
                                             'databaseRow' => $valueArray,
                                             'vanillaTableTca' => [
                                                 'ctrl' => [],
@@ -354,7 +354,7 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                                     $inputToFlexFormSegment = [
                                         'tableName' => $result['tableName'],
                                         'command' => 'new',
-                                        'pageTsConfigMerged' => [],
+                                        'pageTsConfig' => [],
                                         'databaseRow' => [
                                             'uid' => $result['databaseRow']['uid'],
                                         ],
@@ -411,7 +411,7 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                         // tablename of "parent" is given down for inline elements to resolve correctly
                         'tableName' => $result['tableName'],
                         'command' => $command,
-                        'pageTsConfigMerged' => $pageTsConfigMerged,
+                        'pageTsConfig' => $pageTsConfig,
                         'databaseRow' => $valueArray,
                         'vanillaTableTca' => [
                             'ctrl' => [],

@@ -386,7 +386,7 @@ abstract class AbstractFormElement extends AbstractNode
                     $selectWizardDataInput = [
                         'tableName' => 'dummySelectWizard',
                         'command' => 'edit',
-                        'pageTsConfigMerged' => $pageTsConfig,
+                        'pageTsConfig' => $pageTsConfig,
                         'vanillaTableTca' => [
                             'ctrl' => [],
                             'columns' => [

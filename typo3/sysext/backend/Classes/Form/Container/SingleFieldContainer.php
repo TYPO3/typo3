@@ -80,10 +80,10 @@ class SingleFieldContainer extends AbstractContainer
         }
 
         $parameterArray['fieldTSConfig'] = [];
-        if (isset($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-            && is_array($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+        if (isset($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+            && is_array($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
         ) {
-            $parameterArray['fieldTSConfig'] = $this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'];
+            $parameterArray['fieldTSConfig'] = $this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'];
         }
         if ($parameterArray['fieldTSConfig']['disabled']) {
             return $resultArray;
