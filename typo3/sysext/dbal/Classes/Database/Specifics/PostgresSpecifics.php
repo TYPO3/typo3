@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Dbal\Database\Specifics;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class contains the specifics for PostgreSQL DBMS.
@@ -100,7 +101,11 @@ class PostgresSpecifics extends AbstractSpecifics
             $returnValue = null;
         } elseif ($fieldDefinition['type'] === 'varchar') {
             // Strip character class and unquote string
-            $returnValue = str_replace("\\'", "'", preg_replace('/\'(.*)\'(::(?:character\svarying|varchar|character|char|text)(?:\(\d+\))?)?\z/', '\\1', $fieldDefinition['default_value']));
+            if (StringUtility::beginsWith($fieldDefinition['default_value'], 'NULL::')) {
+                $returnValue = null;
+            } else {
+                $returnValue = str_replace("\\'", "'", preg_replace('/\'(.*)\'(::(?:character\svarying|varchar|character|char|text)(?:\(\d+\))?)?\z/', '\\1', $fieldDefinition['default_value']));
+            }
         } elseif (substr($fieldDefinition['type'], 0, 3) === 'int') {
             $returnValue = (int)preg_replace('/^\(?(\-?\d+)\)?$/', '\\1', $fieldDefinition['default_value']);
         } else {
