@@ -141,19 +141,6 @@ class TaskModuleController extends BaseScriptClass
         $GLOBALS['SOBE'] = $this;
         $this->main();
 
-    /**
-     * Injects the request object for the current request or subrequest
-     * Simply calls main() and writes the content to the response
-     *
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $GLOBALS['SOBE'] = $this;
-        $this->main();
-
         $this->moduleTemplate->setContent($this->content);
 
         $response->getBody()->write($this->moduleTemplate->renderContent());
