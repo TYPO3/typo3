@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in radio_5
  */
-class TypeRadio5ItemsProcFunc {
-
-	/**
-	 * Add two items to existing ones
-	 *
-	 * @param $params
-	 */
-	public function itemsProcFunc(&$params) {
-		$params['items'][] = array('item 1 from itemProcFunc()', 3, NULL);
-		$params['items'][] = array('item 2 from itemProcFunc()', 4, NULL);
-	}
+class TypeRadio5ItemsProcFunc
+{
+    /**
+     * Add two items to existing ones
+     *
+     * @param $params
+     */
+    public function itemsProcFunc(&$params)
+    {
+        $params['items'][] = array('item 1 from itemProcFunc()', 3, null);
+        $params['items'][] = array('item 2 from itemProcFunc()', 4, null);
+    }
 }

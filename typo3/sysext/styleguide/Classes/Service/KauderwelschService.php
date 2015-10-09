@@ -17,15 +17,15 @@ namespace TYPO3\CMS\Styleguide\Service;
 /**
  * Get test strings
  */
-class KauderwelschService {
-
-	/**
-	 * Lorem ipsum test with fixed length
-	 *
-	 * @return string
-	 */
-	public function getLoremIpsum() {
-		return 'Bacon ipsum dolor sit <strong>strong amet capicola</strong> jerky pork chop rump shoulder shank. Shankle strip <a href="#">steak pig salami link</a>. Leberkas shoulder ham hock cow salami bacon <em>em pork pork</em> chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
-	}
-
+class KauderwelschService
+{
+    /**
+     * Lorem ipsum test with fixed length
+     *
+     * @return string
+     */
+    public function getLoremIpsum()
+    {
+        return 'Bacon ipsum dolor sit <strong>strong amet capicola</strong> jerky pork chop rump shoulder shank. Shankle strip <a href="#">steak pig salami link</a>. Leberkas shoulder ham hock cow salami bacon <em>em pork pork</em> chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
+    }
 }

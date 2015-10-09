@@ -17,41 +17,43 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A "eval" user function used in text_9
  */
-class TypeText9Eval {
-
-	/**
-	 * Adds text "JSfoo" at end on mouse out
-	 *
-	 * @return string
-	 */
-	function returnFieldJS() {
-		// @todo: This call is currently not implemented in TextElement, see forge #66688
-		return '
+class TypeText9Eval
+{
+    /**
+     * Adds text "JSfoo" at end on mouse out
+     *
+     * @return string
+     */
+    public function returnFieldJS()
+    {
+        // @todo: This call is currently not implemented in TextElement, see forge #66688
+        return '
 			return value + "JSfoo";
 		';
-	}
+    }
 
-	/**
-	 * Adds text "PHPfoo-evaluate" at end on saving
-	 *
-	 * @param $value
-	 * @param $is_in
-	 * @param $set
-	 * @return string
-	 */
-	function evaluateFieldValue($value, $is_in, &$set) {
-		return $value . 'PHPfoo-evaluate';
-	}
+    /**
+     * Adds text "PHPfoo-evaluate" at end on saving
+     *
+     * @param $value
+     * @param $is_in
+     * @param $set
+     * @return string
+     */
+    public function evaluateFieldValue($value, $is_in, &$set)
+    {
+        return $value . 'PHPfoo-evaluate';
+    }
 
-	/**
-	 * Adds text "PHPfoo-deevaluate" at end on opening
-	 *
-	 * @param array $parameters
-	 * @return string
-	 */
-	function deevaluateFieldValue(array $parameters) {
-		$value = $parameters['value'];
-		return $value . 'PHPfoo-deevaluate';
-	}
-
+    /**
+     * Adds text "PHPfoo-deevaluate" at end on opening
+     *
+     * @param array $parameters
+     * @return string
+     */
+    public function deevaluateFieldValue(array $parameters)
+    {
+        $value = $parameters['value'];
+        return $value . 'PHPfoo-deevaluate';
+    }
 }

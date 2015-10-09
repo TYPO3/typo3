@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in checkbox_8
  */
-class TypeCheckbox8ItemsProcFunc {
-
-	/**
-	 * Add two items to existing ones
-	 *
-	 * @param $params
-	 */
-	public function itemsProcFunc(&$params) {
-		$params['items'][] = array('item 1 from itemProcFunc()', '');
-		$params['items'][] = array('item 2 from itemProcFunc()', '');
-	}
+class TypeCheckbox8ItemsProcFunc
+{
+    /**
+     * Add two items to existing ones
+     *
+     * @param $params
+     */
+    public function itemsProcFunc(&$params)
+    {
+        $params['items'][] = array('item 1 from itemProcFunc()', '');
+        $params['items'][] = array('item 2 from itemProcFunc()', '');
+    }
 }

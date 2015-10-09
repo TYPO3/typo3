@@ -17,27 +17,27 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 /**
  * User function 1
  */
-class User1 {
+class User1
+{
+    /**
+     * Simple user function returning a var_dump of input parameters
+     *
+     * @param array $params
+     * @param mixed $tsObj
+     * @return string
+     */
+    public function user_1(&$params, &$tsObj)
+    {
+        $out = '';
 
-	/**
-	 * Simple user function returning a var_dump of input parameters
-	 *
-	 * @param array $params
-	 * @param mixed $tsObj
-	 * @return string
-	 */
-	public function user_1(&$params, &$tsObj) {
-		$out = '';
+        // Params;
+        $out .= '<pre>';
+        ob_start();
+        var_dump($params);
+        $out .= ob_get_contents();
+        ob_end_clean();
+        $out .= '</pre>';
 
-		// Params;
-		$out .= '<pre>';
-		ob_start();
-		var_dump($params);
-		$out .= ob_get_contents();
-		ob_end_clean();
-		$out .= '</pre>';
-
-		return $out;
-	}
-
+        return $out;
+    }
 }

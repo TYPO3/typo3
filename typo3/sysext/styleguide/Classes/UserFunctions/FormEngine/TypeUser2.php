@@ -17,24 +17,25 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function rendering a type=user TCA type used in user_2
  */
-class TypeUser2 {
-
-	/**
-	 * @param array $parameters
-	 * @param $parentObject
-	 * @return string
-	 */
-	public function render(array $parameters, $parentObject) {
-		$html = array();
-		$html[] = '<div style="border: 1px dashed ' . $parameters['parameters']['color'] . '" >';
-		$html[] = '<h2>Own form field using a parameter</h2>';
-		$html[] = '<input'
-			. ' type="input"'
-			. ' name="' . $parameters['itemFormElName'] . '"'
-			. ' value="'.htmlspecialchars($parameters['itemFormElValue']) . '"'
-			. ' onchange="'.htmlspecialchars(implode('', $parameters['fieldChangeFunc'])).'"' . $parameters['onFocus']
-			. ' />';
-		$html[] = '</div>';
-		return implode(LF, $html);
-	}
+class TypeUser2
+{
+    /**
+     * @param array $parameters
+     * @param $parentObject
+     * @return string
+     */
+    public function render(array $parameters, $parentObject)
+    {
+        $html = array();
+        $html[] = '<div style="border: 1px dashed ' . $parameters['parameters']['color'] . '" >';
+        $html[] = '<h2>Own form field using a parameter</h2>';
+        $html[] = '<input'
+            . ' type="input"'
+            . ' name="' . $parameters['itemFormElName'] . '"'
+            . ' value="' . htmlspecialchars($parameters['itemFormElValue']) . '"'
+            . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"' . $parameters['onFocus']
+            . ' />';
+        $html[] = '</div>';
+        return implode(LF, $html);
+    }
 }

@@ -17,15 +17,16 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 /**
  * A user function used in select_33
  */
-class TypeSelect33ItemsProcFunc {
-
-	/**
-	 * Add two items to existing ones
-	 *
-	 * @param $params
-	 */
-	public function itemsProcFunc(&$params) {
-		$params['items'][] = array('item 1 from itemProcFunc()', 'val1');
-		$params['items'][] = array('item 2 from itemProcFunc()', 'val2');
-	}
+class TypeSelect33ItemsProcFunc
+{
+    /**
+     * Add two items to existing ones
+     *
+     * @param $params
+     */
+    public function itemsProcFunc(&$params)
+    {
+        $params['items'][] = array('item 1 from itemProcFunc()', 'val1');
+        $params['items'][] = array('item 2 from itemProcFunc()', 'val2');
+    }
 }

@@ -21,121 +21,134 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 /**
  * Backend module for Styleguide
  */
-class StyleguideController extends ActionController {
+class StyleguideController extends ActionController
+{
+    /**
+     * Buttons
+     */
+    public function buttonsAction()
+    {
+    }
 
-	/**
-	 * Buttons
-	 */
-	public function buttonsAction() {
-	}
+    /**
+     * Index
+     */
+    public function indexAction()
+    {
+    }
 
-	/**
-	 * Index
-	 */
-	public function indexAction() {
-	}
+    /**
+     * Typography
+     */
+    public function typographyAction()
+    {
+    }
 
-	/**
-	 * Typography
-	 */
-	public function typographyAction() {
-	}
+    /**
+     * Forms
+     */
+    public function formsAction()
+    {
+    }
 
-	/**
-	 * Forms
-	 */
-	public function formsAction() {
-	}
+    /**
+     * Trees
+     */
+    public function treesAction()
+    {
+    }
 
-	/**
-	 * Trees
-	 */
-	public function treesAction() {
-	}
+    /**
+     * Tables
+     */
+    public function tablesAction()
+    {
+    }
 
-	/**
-	 * Tables
-	 */
-	public function tablesAction() {
-	}
+    /**
+     * TCA
+     */
+    public function tcaAction()
+    {
+    }
 
-	/**
-	 * TCA
-	 */
-	public function tcaAction() {
-	}
+    /**
+     * Debug
+     */
+    public function debugAction()
+    {
+    }
 
-	/**
-	 * Debug
-	 */
-	public function debugAction() {
-	}
+    /**
+     * Icons
+     */
+    public function iconsAction()
+    {
+        $this->view->assign('icons', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']);
+    }
 
-	/**
-	 * Icons
-	 */
-	public function iconsAction() {
-		$this->view->assign('icons', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']);
-	}
+    /**
+     * FlashMessages
+     */
+    public function flashMessagesAction()
+    {
+        $loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
+        $this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, true);
+        $this->addFlashMessage($loremIpsum, 'Notice - Title for Notice message', FlashMessage::NOTICE, true);
+        $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
+        $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
+        $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
+    }
 
-	/**
-	 * FlashMessages
-	 */
-	public function flashMessagesAction() {
-		$loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
-		$this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, TRUE);
-		$this->addFlashMessage($loremIpsum, 'Notice - Title for Notice message', FlashMessage::NOTICE, TRUE);
-		$this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, TRUE);
-		$this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, TRUE);
-		$this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, TRUE);
-	}
+    /**
+     * Callouts
+     */
+    public function calloutAction()
+    {
+    }
 
-	/**
-	 * Callouts
-	 */
-	public function calloutAction() {
-	}
+    /**
+     * Helpers
+     */
+    public function helpersAction()
+    {
+    }
 
-	/**
-	 * Helpers
-	 */
-	public function helpersAction() {
-	}
+    /**
+     * Avatar
+     */
+    public function avatarAction()
+    {
+        $this->view->assign(
+            'backendUser',
+            $GLOBALS['BE_USER']->user
+        );
+    }
 
-	/**
-	 * Avatar
-	 */
-	public function avatarAction() {
-		$this->view->assign(
-			'backendUser',
-			$GLOBALS['BE_USER']->user
-		);
-	}
+    /**
+     * Tabs
+     */
+    public function tabAction()
+    {
+        /** @var \TYPO3\CMS\Backend\Template\DocumentTemplate */
+        $doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 
-	/**
-	 * Tabs
-	 */
-	public function tabAction() {
-		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate */
-		$doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $menuItems = array(
+            0 => array(
+                'label' => 'First label',
+                'content' => 'First content'
+            ),
+            1 => array(
+                'label' => 'Second label',
+                'content' => 'Second content'
+            ),
+            2 => array(
+                'label' => 'Third label',
+                'content' => 'Third content'
+            )
+        );
+        $tabs = $doc->getDynTabMenu($menuItems, 'ident');
 
-		$menuItems = array(
-			0 => array(
-				'label' => 'First label',
-				'content' => 'First content'
-			),
-			1 => array(
-				'label' => 'Second label',
-				'content' => 'Second content'
-			),
-			2 => array(
-				'label' => 'Third label',
-				'content' => 'Third content'
-			)
-		);
-		$tabs = $doc->getDynTabMenu($menuItems, 'ident');
-
-		$this->view->assign('tabs', $tabs);
-	}
-
+        $this->view->assign('tabs', $tabs);
+    }
 }

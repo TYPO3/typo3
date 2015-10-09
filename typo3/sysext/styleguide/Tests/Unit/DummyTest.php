@@ -19,12 +19,13 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 /**
  * Dummy test
  */
-class DummyTest extends UnitTestCase {
-
-	/**
-	 * @test
-	 */
-	public function alwaysTrue() {
-		$this->assertTrue(TRUE);
-	}
+class DummyTest extends UnitTestCase
+{
+    /**
+     * @test
+     */
+    public function alwaysTrue()
+    {
+        $this->assertTrue(true);
+    }
 }

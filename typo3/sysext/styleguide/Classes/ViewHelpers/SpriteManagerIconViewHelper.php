@@ -19,17 +19,17 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
-class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
-
-	/**
-	 * Prints sprite icon html for $iconName key
-	 *
-	 * @param string $iconName
-	 * @param array $options
-	 * @return string
-	 */
-	public function render($iconName, $options = array()) {
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
-	}
-
+class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
+    /**
+     * Prints sprite icon html for $iconName key
+     *
+     * @param string $iconName
+     * @param array $options
+     * @return string
+     */
+    public function render($iconName, $options = array())
+    {
+        return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
+    }
 }
