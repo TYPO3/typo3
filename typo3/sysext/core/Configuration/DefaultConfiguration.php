@@ -623,6 +623,29 @@ return array(
                         ),
                     ),
                 ),
+                'inlineParentRecord' => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

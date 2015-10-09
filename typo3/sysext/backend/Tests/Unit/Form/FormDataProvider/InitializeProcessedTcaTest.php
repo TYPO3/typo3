@@ -81,28 +81,6 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTypesHasNoShowitem()
-    {
-        $input = [
-            'recordTypeValue' => 'aType',
-            'vanillaTableTca' => [
-                'columns' => [
-                    'aField' => [
-                        'type' => 'aType',
-                    ],
-                ],
-                'types' => [
-                    'aType' => [],
-                ],
-            ],
-        ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438614542);
-        $this->subject->addData($input);
-    }
-
-    /**
-     * @test
-     */
     public function addDataThrowsExceptionIfTcaColumnsHasNoTypeSet()
     {
         $this->markTestIncomplete('skipped for now, this is not save');

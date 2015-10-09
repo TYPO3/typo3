@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\InlineParentRecord;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -62,25 +63,31 @@ class FormInlineAjaxController
         if (MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
             $command = 'edit';
             $vanillaUid = (int)$parent['uid'];
+            $databaseRow = [
+                // TcaInlineExpandCollapseState needs the record uid
+                'uid' => (int)$parent['uid'],
+            ];
         } else {
             $command = 'new';
+            $databaseRow = [];
             $vanillaUid = (int)$inlineFirstPid;
         }
         $formDataCompilerInputForParent = [
             'vanillaUid' => $vanillaUid,
             'command' => $command,
             'tableName' => $parent['table'],
+            'databaseRow' => $databaseRow,
             'inlineFirstPid' => $inlineFirstPid,
+            'columnsToProcess' => [
+                $parentFieldName
+            ],
             // @todo: still needed?
             'inlineStructure' => $inlineStackProcessor->getStructure(),
             // Do not resolve existing children, we don't need them now
             'inlineResolveExistingChildren' => false,
         ];
-        // @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
-        // @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
-        // @todo: Improving this area would significantly speed up this parsing!
         /** @var TcaDatabaseRecord $formDataGroup */
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+        $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
         /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
@@ -275,17 +282,21 @@ class FormInlineAjaxController
             'vanillaUid' => (int)$parent['uid'],
             'command' => 'edit',
             'tableName' => $parent['table'],
+            'databaseRow' => [
+                // TcaInlineExpandCollapseState needs this
+                'uid' => (int)$parent['uid'],
+            ],
             'inlineFirstPid' => $inlineFirstPid,
+            'columnsToProcess' => [
+                $parentFieldName
+            ],
             // @todo: still needed?
             'inlineStructure' => $inlineStackProcessor->getStructure(),
             // Do not resolve existing children, we don't need them now
             'inlineResolveExistingChildren' => false,
         ];
-        // @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
-        // @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
-        // @todo: Improving this area would significantly speed up this parsing!
         /** @var TcaDatabaseRecord $formDataGroup */
-        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+        $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
         /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
@@ -371,17 +382,21 @@ class FormInlineAjaxController
                 'vanillaUid' => (int)$parent['uid'],
                 'command' => 'edit',
                 'tableName' => $parent['table'],
+                'databaseRow' => [
+                    // TcaInlineExpandCollapseState needs this
+                    'uid' => (int)$parent['uid'],
+                ],
                 'inlineFirstPid' => $inlineFirstPid,
+                'columnsToProcess' => [
+                    $parentFieldName
+                ],
                 // @todo: still needed?
                 'inlineStructure' => $inlineStackProcessor->getStructure(),
                 // Do not compile existing children, we don't need them now
                 'inlineCompileExistingChildren' => false,
             ];
-            // @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
-            // @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
-            // @todo: Improving this area would significantly speed up this parsing!
             /** @var TcaDatabaseRecord $formDataGroup */
-            $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+            $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
             /** @var FormDataCompiler $formDataCompiler */
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
@@ -514,7 +529,7 @@ class FormInlineAjaxController
     /**
      * Compile a full child record
      *
-     * @param array $result Result array of parent
+     * @param array $parentData Result array of parent
      * @param string $parentFieldName Name of parent field
      * @param int $childUid Uid of child to compile
      * @return array Full result array
@@ -523,9 +538,9 @@ class FormInlineAjaxController
      * @todo: Find something around that, eg. some option to force TcaInline provider to calculate a
      * @todo: specific forced-open element only :)
      */
-    protected function compileChild(array $result, $parentFieldName, $childUid)
+    protected function compileChild(array $parentData, $parentFieldName, $childUid)
     {
-        $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
+        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
         $overruleTypesArray = [];
         if (isset($parentConfig['foreign_types'])) {
@@ -539,7 +554,7 @@ class FormInlineAjaxController
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
-            'inlineFirstPid' => $result['inlineFirstPid'],
+            'inlineFirstPid' => $parentData['inlineFirstPid'],
             'overruleTypesArray' => $overruleTypesArray,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record

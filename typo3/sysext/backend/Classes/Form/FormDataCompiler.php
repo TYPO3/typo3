@@ -177,6 +177,7 @@ class FormDataCompiler
             // If set to TRUE, no wizards are calculated and rendered later
             'disabledWizards' => false,
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
+            // @todo: better documentation of nesting behaviour and bug fixing in this area
             'inlineExpandCollapseStateArray' => array(),
             // The "entry" pid for inline records. Nested inline records can potentially hang around on different
             // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes place on the page structure.

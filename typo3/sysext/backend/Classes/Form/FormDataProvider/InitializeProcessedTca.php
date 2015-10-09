@@ -46,13 +46,6 @@ class InitializeProcessedTca implements FormDataProviderInterface
             );
         }
 
-        if (!isset($result['vanillaTableTca']['types'][$result['recordTypeValue']]['showitem'])) {
-            throw new \UnexpectedValueException(
-                'No showitem definition in TCA table ' . $result['tableName'] . ' for type ' . $result['recordTypeValue'],
-                1438614542
-            );
-        }
-
         /**
          * @todo: This does not work for "default" fields like "hidden", those don't have a type set - fix in bootstrap??
         foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {

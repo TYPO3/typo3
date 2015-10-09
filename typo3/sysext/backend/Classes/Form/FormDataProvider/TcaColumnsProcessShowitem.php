@@ -32,11 +32,18 @@ class TcaColumnsProcessShowitem implements FormDataProviderInterface
     public function addData(array $result)
     {
         $recordTypeValue = $result['recordTypeValue'];
-        if (empty($result['processedTca']['types'][$recordTypeValue]['showitem'])
+
+        if (!isset($result['processedTca']['types'][$recordTypeValue]['showitem'])
             || !is_string($result['processedTca']['types'][$recordTypeValue]['showitem'])
-            || empty($result['processedTca']['columns'])
-            || !is_array($result['processedTca']['columns'])
         ) {
+            throw new \UnexpectedValueException(
+                'No or invalid showitem definition in TCA table ' . $result['tableName'] . ' for type ' . $recordTypeValue,
+                1438614542
+            );
+        }
+
+        if (empty($result['processedTca']['columns'])) {
+            // We are sure this is an array by InitializeProcessedTca data provider
             return $result;
         }
 
