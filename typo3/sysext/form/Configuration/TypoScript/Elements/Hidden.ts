@@ -52,32 +52,11 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
 					200 = type
-					210 = accept
-					220 = autocomplete
-					230 = alt
-					240 = autofocus
-					250 = checked
-					260 = disabled
-					270 = height
-					280 = inputmode
-					290 = list
-					300 = max
-					310 = maxlength
-					320 = min
-					330 = minlength
-					340 = multiple
-					350 = name
-					360 = pattern
-					370 = placeholder
-					380 = readonly
-					390 = required
-					400 = size
-					410 = src
-					420 = step
-					430 = value
-					440 = width
+					210 = name
+					220 = value
 				}
 
 					# fixedHtmlAttributeValues
@@ -119,8 +98,8 @@ plugin.tx_form {
 					70 = accesskey
 					80 = tabindex
 					90 = onclick
-					150 = name
-					160 = value
+					100 = name
+					110 = value
 				}
 
 					# partialPath

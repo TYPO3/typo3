@@ -52,6 +52,7 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
 					200 = autofocus
 					210 = disabled
@@ -91,8 +92,8 @@ plugin.tx_form {
 					70 = accesskey
 					80 = tabindex
 					90 = onclick
-					150 = name
-					160 = value
+					100 = name
+					110 = value
 						# SelectViewHelper
 					120 = multiple
 					130 = size

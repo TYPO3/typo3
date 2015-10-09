@@ -80,15 +80,17 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
 					200 = action
-					210 = accept-charset
-					220 = autocomplete
-					230 = enctype
-					240 = method
-					250 = name
-					260 = novalidate
-					270 = target
+					210 = accept
+					220 = accept-charset
+					230 = autocomplete
+					240 = enctype
+					250 = method
+					260 = name
+					270 = novalidate
+					280 = target
 				}
 
 					# defaultHtmlAttributeValues
@@ -137,13 +139,10 @@ plugin.tx_form {
 					60 = title
 					70 = accesskey
 					80 = tabindex
-					90 = onclick
 						# FormViewHelper
-					200 = enctype
-					210 = method
-					220 = name
-					230 = onreset
-					240 = onsubmit
+					90 = enctype
+					100 = method
+					110 = name
 				}
 
 					# partialPath

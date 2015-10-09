@@ -52,11 +52,12 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
-					200 = autocomplete
-					210 = autofocus
-					220 = cols
-					230 = disabled
+					200 = autofocus
+					210 = cols
+					220 = disabled
+					230 = inputmode
 					240 = maxlength
 					250 = minlength
 					260 = name
@@ -100,13 +101,13 @@ plugin.tx_form {
 					70 = accesskey
 					80 = tabindex
 					90 = onclick
-					150 = name
-					160 = value
+					100 = name
+					110 = value
 						# TextareaViewHelper
-					200 = autofocus
-					210 = rows
-					220 = cols
-					230 = placeholder
+					120 = autofocus
+					130 = rows
+					140 = cols
+					150 = placeholder
 				}
 
 					# partialPath

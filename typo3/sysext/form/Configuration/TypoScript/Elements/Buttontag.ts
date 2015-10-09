@@ -52,12 +52,13 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
-					160 = autofocus
-					170 = disabled
-					180 = name
-					190 = type
-					200 = value
+					200 = autofocus
+					210 = disabled
+					220 = name
+					230 = type
+					240 = value
 				}
 
 					# htmlAttributesUsedByTheViewHelperDirectly

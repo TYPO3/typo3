@@ -52,32 +52,13 @@ plugin.tx_form {
 					130 = tabindex
 					140 = title
 					150 = data-*
+					160 = translate
 						# element specific attributes
 					200 = type
-					210 = accept
-					220 = autocomplete
-					230 = alt
-					240 = autofocus
-					250 = checked
-					260 = disabled
-					270 = height
-					280 = inputmode
-					290 = list
-					300 = max
-					310 = maxlength
-					320 = min
-					330 = minlength
-					340 = multiple
-					350 = name
-					360 = pattern
-					370 = placeholder
-					380 = readonly
-					390 = required
-					400 = size
-					410 = src
-					420 = step
-					430 = value
-					440 = width
+					210 = autofocus
+					220 = disabled
+					230 = name
+					240 = value
 				}
 
 					# fixedHtmlAttributeValues
@@ -110,17 +91,16 @@ plugin.tx_form {
 					# Therefore it is held in the htmlAttributes array and the code removes this attribute if its value is set to 0.
 				htmlAttributesUsedByTheViewHelperDirectly {
 						# generic attributes
-					10 = class
-					20 = dir
-					30 = id
-					40 = lang
-					50 = style
-					60 = title
-					70 = accesskey
-					80 = tabindex
-					90 = onclick
-					150 = name
-					160 = value
+					10 = dir
+					20 = id
+					30 = lang
+					40 = style
+					50 = title
+					60 = accesskey
+					70 = tabindex
+					80 = onclick
+					90 = name
+					100 = value
 				}
 
 					# partialPath

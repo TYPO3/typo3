@@ -120,16 +120,16 @@ plugin.tx_form {
 					70 = accesskey
 					80 = tabindex
 					90 = onclick
-					150 = name
-					160 = value
+					100 = name
+					110 = value
 						# TextfieldViewHelper
-					200 = autofocus
-					210 = maxlength
-					220 = size
-					230 = placeholder
-					240 = pattern
-					250 = required
-					260 = type
+					120 = autofocus
+					130 = maxlength
+					140 = size
+					150 = placeholder
+					160 = pattern
+					170 = required
+					180 = type
 				}
 
 					# partialPath
