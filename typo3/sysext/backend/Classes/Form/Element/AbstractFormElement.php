@@ -387,15 +387,6 @@ abstract class AbstractFormElement extends AbstractNode
                         'tableName' => 'dummySelectWizard',
                         'command' => 'edit',
                         'pageTsConfig' => $pageTsConfig,
-                        'vanillaTableTca' => [
-                            'ctrl' => [],
-                            'columns' => [
-                                $wizardIdentifier => [
-                                    'type' => 'select',
-                                    'config' => $wizardConfiguration,
-                                ],
-                            ],
-                        ],
                         'processedTca' => [
                             'ctrl' => [],
                             'columns' => [

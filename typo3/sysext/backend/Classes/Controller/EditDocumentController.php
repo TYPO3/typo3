@@ -997,11 +997,11 @@ class EditDocumentController
                                     } elseif (!empty($formData['parentPageRow']['uid'])) {
                                         $this->viewId = $formData['parentPageRow']['uid'];
                                         // Adding "&L=xx" if the record being edited has a languageField with a value larger than zero!
-                                        if (!empty($formData['vanillaTableTca']['ctrl']['languageField'])
-                                            && is_array($formData['databaseRow'][$formData['vanillaTableTca']['ctrl']['languageField']])
-                                            && $formData['databaseRow'][$formData['vanillaTableTca']['ctrl']['languageField']][0] > 0
+                                        if (!empty($formData['processedTca']['ctrl']['languageField'])
+                                            && is_array($formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']])
+                                            && $formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']][0] > 0
                                         ) {
-                                            $this->viewId_addParams = '&L=' . $formData['databaseRow'][$formData['vanillaTableTca']['ctrl']['languageField']][0];
+                                            $this->viewId_addParams = '&L=' . $formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']][0];
                                         }
                                     }
                                 }

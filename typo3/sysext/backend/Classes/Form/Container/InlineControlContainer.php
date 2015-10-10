@@ -351,12 +351,6 @@ class InlineControlContainer extends AbstractContainer
                 'tableName' => 'dummyTable',
                 'command' => 'edit',
                 'pageTsConfig' => $pageTsConfig,
-                'vanillaTableTca' => [
-                    'ctrl' => [],
-                    'columns' => [
-                        'dummyField' => $PA['fieldConf'],
-                    ],
-                ],
                 'processedTca' => [
                     'ctrl' => [],
                     'columns' => [

@@ -307,12 +307,6 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                                             // It is currently not possible to have pageTsConfig for section container
                                             'pageTsConfig' => [],
                                             'databaseRow' => $valueArray,
-                                            'vanillaTableTca' => [
-                                                'ctrl' => [],
-                                                'columns' => [
-                                                    $singleFieldName => $singleFieldConfiguration,
-                                                ],
-                                            ],
                                             'processedTca' => [
                                                 'ctrl' => [],
                                                 'columns' => [
@@ -357,12 +351,6 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                                         'pageTsConfig' => [],
                                         'databaseRow' => [
                                             'uid' => $result['databaseRow']['uid'],
-                                        ],
-                                        'vanillaTableTca' => [
-                                            'ctrl' => [],
-                                            'columns' => [
-                                                $singleFieldName => $singleFieldConfiguration,
-                                            ],
                                         ],
                                         'processedTca' => [
                                             'ctrl' => [],
@@ -413,12 +401,6 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
                         'command' => $command,
                         'pageTsConfig' => $pageTsConfig,
                         'databaseRow' => $valueArray,
-                        'vanillaTableTca' => [
-                            'ctrl' => [],
-                            'columns' => [
-                                $dataStructureSheetElementName => $dataStructureSheetElementDefinition,
-                            ],
-                        ],
                         'processedTca' => [
                             'ctrl' => [],
                             'columns' => [

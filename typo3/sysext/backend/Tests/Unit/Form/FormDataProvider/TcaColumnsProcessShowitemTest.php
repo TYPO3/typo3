@@ -39,7 +39,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     {
         $input = [
             'recordTypeValue' => 'aType',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'type' => 'aType',

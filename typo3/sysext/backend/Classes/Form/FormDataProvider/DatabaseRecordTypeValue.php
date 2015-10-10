@@ -36,9 +36,9 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (!isset($result['vanillaTableTca']['types'])
-            || !is_array($result['vanillaTableTca']['types'])
-            || empty($result['vanillaTableTca']['types'])
+        if (!isset($result['processedTca']['types'])
+            || !is_array($result['processedTca']['types'])
+            || empty($result['processedTca']['types'])
         ) {
             throw new \UnexpectedValueException(
                 'At least one "types" array must be defined for table ' . $result['tableName'] . ', preferred "0"',
@@ -47,8 +47,8 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         }
 
         $recordTypeValue = '0';
-        if (!empty($result['vanillaTableTca']['ctrl']['type'])) {
-            $tcaTypeField = $result['vanillaTableTca']['ctrl']['type'];
+        if (!empty($result['processedTca']['ctrl']['type'])) {
+            $tcaTypeField = $result['processedTca']['ctrl']['type'];
 
             if (strpos($tcaTypeField, ':') === false) {
                 // $tcaTypeField is the name of a field in database row
@@ -67,12 +67,12 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 // used as type field. This was introduced for some FAL scenarios.
                 list($pointerField, $foreignTableTypeField) = explode(':', $tcaTypeField);
 
-                $relationType = $result['vanillaTableTca']['columns'][$pointerField]['config']['type'];
+                $relationType = $result['processedTca']['columns'][$pointerField]['config']['type'];
                 if ($relationType !== 'select' && $relationType !== 'group') {
                     throw new \UnexpectedValueException(
                         'TCA foreign field pointer fields are only allowed to be used with group or select field types.'
                         . ' Handling field ' . $pointerField . ' with type configured as ' . $tcaTypeField,
-                        1325862240
+                        1325862241
                     );
                 }
 
@@ -81,9 +81,9 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 if (!empty($foreignUid)) {
                     // Determine table name to fetch record from
                     if ($relationType === 'select') {
-                        $foreignTable = $result['vanillaTableTca']['columns'][$pointerField]['config']['foreign_table'];
+                        $foreignTable = $result['processedTca']['columns'][$pointerField]['config']['foreign_table'];
                     } else {
-                        $allowedTables = explode(',', $result['vanillaTableTca']['columns'][$pointerField]['config']['allowed']);
+                        $allowedTables = explode(',', $result['processedTca']['columns'][$pointerField]['config']['allowed']);
                         // Always take the first configured table.
                         $foreignTable = $allowedTables[0];
                     }
@@ -113,9 +113,9 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         }
 
         // Throw another exception if determined value and '0' and '1' do not exist
-        if (empty($result['vanillaTableTca']['types'][$recordTypeValue])
-            && empty($result['vanillaTableTca']['types']['0'])
-            && empty($result['vanillaTableTca']['types']['1'])
+        if (empty($result['processedTca']['types'][$recordTypeValue])
+            && empty($result['processedTca']['types']['0'])
+            && empty($result['processedTca']['types']['1'])
         ) {
             throw new \UnexpectedValueException(
                 'Type value ' . $recordTypeValue . ' from database record not defined in TCA of table '
@@ -125,8 +125,8 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         }
 
         // Check the determined value actually exists as types key, otherwise fall back to 0 or 1, 1 for "historical reasons"
-        if (empty($result['vanillaTableTca']['types'][$recordTypeValue])) {
-            $recordTypeValue = !empty($result['vanillaTableTca']['types']['0']) ? '0' : '1';
+        if (empty($result['processedTca']['types'][$recordTypeValue])) {
+            $recordTypeValue = !empty($result['processedTca']['types']['0']) ? '0' : '1';
         }
 
         $result['recordTypeValue'] = (string)$recordTypeValue;
@@ -147,16 +147,16 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         $value = $result['databaseRow'][$field];
         if (
             // is a localized record
-            !empty($result['vanillaTableTca']['ctrl']['languageField'])
-            && $result['databaseRow'][$result['vanillaTableTca']['ctrl']['languageField']] > 0
+            !empty($result['processedTca']['ctrl']['languageField'])
+            && $result['databaseRow'][$result['processedTca']['ctrl']['languageField']] > 0
             // l10n_mode for field is configured
-            && !empty($result['vanillaTableTca']['columns'][$field]['l10n_mode'])
+            && !empty($result['processedTca']['columns'][$field]['l10n_mode'])
             && (
                 // is exclude -> fall back to value of default record
-                $result['vanillaTableTca']['columns'][$field]['l10n_mode'] === 'exclude'
+                $result['processedTca']['columns'][$field]['l10n_mode'] === 'exclude'
                 // is mergeIfNotBlank and own value is empty -> fall back to value of default record
                 || (
-                    $result['vanillaTableTca']['columns'][$field]['l10n_mode'] === 'mergeIfNotBlank'
+                    $result['processedTca']['columns'][$field]['l10n_mode'] === 'mergeIfNotBlank'
                     // 0 means "not empty"
                     && $result['databaseRow'][$field] === ''
                 )

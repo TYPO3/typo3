@@ -319,14 +319,14 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
                         ),
                     ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => array(
@@ -334,7 +334,7 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
                         ),
                     ),
@@ -350,7 +350,7 @@ return array(
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
                         ),
@@ -396,17 +396,9 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ),
                     ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
-                        'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class
-                        ),
-                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => array(
@@ -564,35 +556,31 @@ return array(
                 ),
                 'tcaInputPlaceholderRecord' => array(
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
-                        ),
-                    ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
-                        'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
@@ -629,12 +617,7 @@ return array(
                     ),
                 ),
                 'inlineParentRecord' => array(
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
-                        'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
-                        ),
-                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,

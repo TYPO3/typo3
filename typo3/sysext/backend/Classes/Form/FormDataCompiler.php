@@ -164,8 +164,6 @@ class FormDataCompiler
             // of handled record was determined, record type specific settings [TCEFORM.][tableName.][field.][types.][type.]
             // are merged into [TCEFORM.][tableName.][field.]. Array keys still contain the concatenation dots.
             'pageTsConfig' => [],
-            // Not changed TCA of handled table
-            'vanillaTableTca' => [],
             // Not changed TCA of parent page row if record is edited or added below a page and not root node
             'vanillaParentPageTca' => null,
             // List of available system languages. Array key is the system language uid, value array

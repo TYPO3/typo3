@@ -35,7 +35,7 @@ class TcaGroup implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
+        foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             if (empty($fieldConfig['config']['type'])
                 || $fieldConfig['config']['type'] !== 'group'
                 || empty($fieldConfig['config']['internal_type'])

@@ -45,7 +45,7 @@ class TcaGroupTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -65,7 +65,7 @@ class TcaGroupTest extends UnitTestCase
     public function addDataThrowsExceptionWithTypeGroupAndNoValiInternalType()
     {
         $input = [
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -89,7 +89,7 @@ class TcaGroupTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => '/aDir/aFile.txt,/anotherDir/anotherFile.css',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -122,7 +122,7 @@ class TcaGroupTest extends UnitTestCase
                 'uid' => 42,
                 'aField' => '1,2',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => $aFieldConfig,

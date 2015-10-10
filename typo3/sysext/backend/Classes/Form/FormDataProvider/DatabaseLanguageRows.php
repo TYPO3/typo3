@@ -36,19 +36,19 @@ class DatabaseLanguageRows implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (!empty($result['vanillaTableTca']['ctrl']['languageField'])
-            && !empty($result['vanillaTableTca']['ctrl']['transOrigPointerField'])
+        if (!empty($result['processedTca']['ctrl']['languageField'])
+            && !empty($result['processedTca']['ctrl']['transOrigPointerField'])
         ) {
-            $languageField = $result['vanillaTableTca']['ctrl']['languageField'];
-            $fieldWithUidOfDefaultRecord = $result['vanillaTableTca']['ctrl']['transOrigPointerField'];
+            $languageField = $result['processedTca']['ctrl']['languageField'];
+            $fieldWithUidOfDefaultRecord = $result['processedTca']['ctrl']['transOrigPointerField'];
 
             if (isset($result['databaseRow'][$languageField]) && $result['databaseRow'][$languageField] > 0
                 && isset($result['databaseRow'][$fieldWithUidOfDefaultRecord]) && $result['databaseRow'][$fieldWithUidOfDefaultRecord] > 0
             ) {
                 // Table pages has its overlays in pages_language_overlay, this is accounted here
                 $tableNameWithDefaultRecords = $result['tableName'];
-                if (!empty($result['vanillaTableTca']['ctrl']['transOrigPointerTable'])) {
-                    $tableNameWithDefaultRecords = $result['vanillaTableTca']['ctrl']['transOrigPointerTable'];
+                if (!empty($result['processedTca']['ctrl']['transOrigPointerTable'])) {
+                    $tableNameWithDefaultRecords = $result['processedTca']['ctrl']['transOrigPointerTable'];
                 }
 
                 // Default language record of localized record
@@ -66,10 +66,10 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 $result['defaultLanguageRow'] = $defaultLanguageRow;
 
                 // Unserialize the "original diff source" if given
-                if (!empty($result['vanillaTableTca']['ctrl']['transOrigDiffSourceField'])
-                    && !empty($result['databaseRow'][$result['vanillaTableTca']['ctrl']['transOrigDiffSourceField']])
+                if (!empty($result['processedTca']['ctrl']['transOrigDiffSourceField'])
+                    && !empty($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']])
                 ) {
-                    $result['defaultLanguageDiffRow'] = unserialize($result['databaseRow'][$result['vanillaTableTca']['ctrl']['transOrigDiffSourceField']]);
+                    $result['defaultLanguageDiffRow'] = unserialize($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']]);
                 }
 
                 // Add language overlays from further localizations if requested

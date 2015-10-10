@@ -39,7 +39,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -66,7 +66,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -92,11 +92,11 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = 256;
         $expected['databaseRow']['anotherField'] = 13;
-        $expected['vanillaTableTca']['columns']['aField']['config'] = [
+        $expected['processedTca']['columns']['aField']['config'] = [
             'type' => 'hidden',
             'renderType' => 'hidden',
         ];
-        $expected['vanillaTableTca']['columns']['anotherField']['config'] = [
+        $expected['processedTca']['columns']['anotherField']['config'] = [
             'type' => 'hidden',
             'renderType' => 'hidden',
         ];

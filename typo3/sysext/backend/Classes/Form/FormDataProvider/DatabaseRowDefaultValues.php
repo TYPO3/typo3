@@ -36,7 +36,7 @@ class DatabaseRowDefaultValues implements FormDataProviderInterface
         $databaseRow = $result['databaseRow'];
 
         $newRow = $databaseRow;
-        foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
+        foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             // Keep current value if it can be resolved to "the is something" directly
             if (isset($databaseRow[$fieldName])) {
                 $newRow[$fieldName] = $databaseRow[$fieldName];

@@ -35,63 +35,63 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVanillaTableTcaIsNotSet()
-    {
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438505113);
-        $this->subject->addData([]);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataSetsProcessedTcaToVanillaTableTca()
-    {
-        $input = [
-            'recordTypeValue' => 'aType',
-            'vanillaTableTca' => [
-                'columns' => [
-                    'aField' => [
-                        'type' => 'aType',
-                    ],
-                ],
-                'types' => [
-                    'aType' => [
-                        'showitem' => '',
-                    ],
-                ],
-            ],
-        ];
-        $expected = $input;
-        $expected['processedTca'] = $input['vanillaTableTca'];
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionIfColumnsIsMissing()
-    {
-        $input = [
-            'vanillaTableTca' => [],
-        ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438594406);
-        $this->subject->addData($input);
-    }
-
-    /**
-     * @test
-     */
     public function addDataThrowsExceptionIfTcaColumnsHasNoTypeSet()
     {
         $this->markTestIncomplete('skipped for now, this is not save');
         $input = [
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
             ],
         ];
         $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438594044);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataSetsTableTcaFromGlobalsInResult()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
+        $expected = [
+            'columns' => []
+        ];
+        $GLOBALS['TCA'][$input['tableName']] = $expected;
+        $result = $this->subject->addData($input);
+        $this->assertEquals($expected, $result['processedTca']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
+
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(),
+            1437914223);
+
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray()
+    {
+        $input = [
+            'tableName' => 'aTable',
+        ];
+        $GLOBALS['TCA'][$input['tableName']] = 'foo';
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(),
+            1437914223);
+
         $this->subject->addData($input);
     }
 }

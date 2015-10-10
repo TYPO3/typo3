@@ -64,7 +64,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $tableName = 'aTable';
         $input = [
             'tableName' => $tableName,
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [],
             ],
         ];
@@ -79,7 +79,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -102,7 +102,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -127,7 +127,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -156,7 +156,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [

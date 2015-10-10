@@ -32,7 +32,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
     public function addData(array $result)
     {
         $dateTimeFormats = $this->getDatabase()->getDateTimeFormats($result['tableName']);
-        foreach ($result['vanillaTableTca']['columns'] as $column => $columnConfig) {
+        foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
             if (isset($columnConfig['config']['dbType'])
                 && GeneralUtility::inList('date,datetime', $columnConfig['config']['dbType'])
             ) {

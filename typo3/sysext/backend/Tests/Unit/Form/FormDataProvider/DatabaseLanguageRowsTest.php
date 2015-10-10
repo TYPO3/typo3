@@ -56,7 +56,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'uid' => 42,
                 'text' => 'bar',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => array(),
                 'columns' => array(),
             ],
@@ -77,7 +77,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'sys_language_uid' => 2,
                 'l10n_parent' => 23,
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => array(
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
@@ -107,7 +107,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'sys_language_uid' => 2,
                 'l10n_parent' => 23,
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => array(
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
@@ -149,7 +149,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'l10n_parent' => 23,
                 'l10n_diffsource' => serialize($diffSource),
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
@@ -188,7 +188,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'sys_language_uid' => 2,
                 'l10n_parent' => 23,
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',
@@ -271,7 +271,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'sys_language_uid' => 2,
                 'l10n_parent' => 23,
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'languageField' => 'sys_language_uid',
                     'transOrigPointerField' => 'l10n_parent',

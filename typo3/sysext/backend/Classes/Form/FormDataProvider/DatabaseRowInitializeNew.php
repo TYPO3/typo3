@@ -70,7 +70,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
             && is_array($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot])
         ) {
             foreach ($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot] as $fieldName => $fieldValue) {
-                if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
+                if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
             }
@@ -91,7 +91,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
             && is_array($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot])
         ) {
             foreach ($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot] as $fieldName => $fieldValue) {
-                if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
+                if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
             }
@@ -109,11 +109,11 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
     protected function setDefaultsFromNeighborRow(array $result)
     {
         if (is_array($result['neighborRow'])
-            && !empty($result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'])
+            && !empty($result['processedTca']['ctrl']['useColumnsForDefaultValues'])
         ) {
-            $defaultColumns = GeneralUtility::trimExplode(',', $result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'], true);
+            $defaultColumns = GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['useColumnsForDefaultValues'], true);
             foreach ($defaultColumns as $fieldName) {
-                if (isset($result['vanillaTableTca']['columns'][$fieldName])
+                if (isset($result['processedTca']['columns'][$fieldName])
                     && isset($result['neighborRow'][$fieldName])
                 ) {
                     $result['databaseRow'][$fieldName] = $result['neighborRow'][$fieldName];
@@ -141,7 +141,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
             && is_array($defaultValuesFromGetPost[$tableName])
         ) {
             foreach ($defaultValuesFromGetPost[$tableName] as $fieldName => $fieldValue) {
-                if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
+                if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
             }
@@ -177,9 +177,9 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
             );
         }
         $selectorFieldName = $result['inlineParentConfig']['foreign_selector'];
-        if (!isset($result['vanillaTableTca']['columns'][$selectorFieldName]['config']['type'])
-            || ($result['vanillaTableTca']['columns'][$selectorFieldName]['config']['type'] !== 'select'
-                && $result['vanillaTableTca']['columns'][$selectorFieldName]['config']['type'] !== 'group'
+        if (!isset($result['processedTca']['columns'][$selectorFieldName]['config']['type'])
+            || ($result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'select'
+                && $result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'group'
             )
         ) {
             throw new \UnexpectedValueException(

@@ -31,9 +31,9 @@ class DatabaseRecordOverrideValues implements FormDataProviderInterface
     public function addData(array $result)
     {
         foreach ($result['overrideValues'] as $fieldName => $fieldValue) {
-            if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
+            if (isset($result['processedTca']['columns'][$fieldName])) {
                 $result['databaseRow'][$fieldName] = $fieldValue;
-                $result['vanillaTableTca']['columns'][$fieldName]['config'] = array(
+                $result['processedTca']['columns'][$fieldName]['config'] = array(
                     'type' => 'hidden',
                     'renderType' => 'hidden',
                 );

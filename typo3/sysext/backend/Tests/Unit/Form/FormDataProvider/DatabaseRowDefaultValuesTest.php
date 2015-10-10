@@ -41,7 +41,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
             'databaseRow' => [
                 'aDefinedField' => 'aValue',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aDefinedField' => [],
                 ],
@@ -60,7 +60,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => null,
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -81,7 +81,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -104,7 +104,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [
@@ -127,7 +127,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [
                         'config' => [

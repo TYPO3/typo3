@@ -103,7 +103,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -134,7 +134,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [],
             ]
         ];
@@ -162,7 +162,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -193,7 +193,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [],
             ]
         ];
@@ -228,7 +228,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -255,7 +255,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'neighborRow' => [
                 'aField' => 'valueFromNeighbor',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'useColumnsForDefaultValues' => 'aField',
                 ],
@@ -299,7 +299,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'useColumnsForDefaultValues' => 'aField',
                 ],
@@ -326,7 +326,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'tableName' => 'aTable',
             'vanillaUid' => 23,
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -357,7 +357,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'tableName' => 'aTable',
             'vanillaUid' => 23,
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -388,7 +388,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'tableName' => 'aTable',
             'vanillaUid' => 23,
             'databaseRow' => [],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'aField' => [],
                 ],
@@ -433,7 +433,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [],
             ]
         ];
@@ -485,7 +485,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                     ],
                 ],
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'ctrl' => [
                     'useColumnsForDefaultValues' => 'aField',
                 ],
@@ -550,7 +550,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'inlineParentConfig' => [
                 'foreign_selector' => 'theForeignSelectorField',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'theForeignSelectorField' => [
                         'config' => [
@@ -579,7 +579,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'inlineParentConfig' => [
                 'foreign_selector' => 'theForeignSelectorField',
             ],
-            'vanillaTableTca' => [
+            'processedTca' => [
                 'columns' => [
                     'theForeignSelectorField' => [
                         'config' => [

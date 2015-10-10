@@ -30,16 +30,18 @@ class InitializeProcessedTca implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (!isset($result['vanillaTableTca'])
-            || !is_array($result['vanillaTableTca'])
+        if (
+            !isset($GLOBALS['TCA'][$result['tableName']])
+            || !is_array($GLOBALS['TCA'][$result['tableName']])
         ) {
             throw new \UnexpectedValueException(
-                'vanillaTableTca must be initialized before',
-                1438505113
+                'TCA for table ' . $result['tableName'] . ' not found',
+                1437914223
             );
         }
+        $result['processedTca'] = $GLOBALS['TCA'][$result['tableName']];
 
-        if (!is_array($result['vanillaTableTca']['columns'])) {
+        if (!is_array($result['processedTca']['columns'])) {
             throw new \UnexpectedValueException(
                 'No columns definition in TCA table ' . $result['tableName'],
                 1438594406
@@ -48,7 +50,7 @@ class InitializeProcessedTca implements FormDataProviderInterface
 
         /**
          * @todo: This does not work for "default" fields like "hidden", those don't have a type set - fix in bootstrap??
-        foreach ($result['vanillaTableTca']['columns'] as $fieldName => $fieldConfig) {
+        foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             if (!isset($fieldConfig['type'])) {
                 throw new \UnexpectedValueException(
                     'Field ' . $fieldName . ' of TCA table ' . $result['tableName'] . ' has no type set',
@@ -58,7 +60,6 @@ class InitializeProcessedTca implements FormDataProviderInterface
         }
          */
 
-        $result['processedTca'] = $result['vanillaTableTca'];
         return $result;
     }
 }
