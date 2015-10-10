@@ -20,13 +20,16 @@ define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
 
 		// Remove document.editform.submit from save and close onclick
 		// Form will be submitted by the new on click handler
-		var onClick = $('.t3js-fileedit-save-close').attr('onclick');
-		$('.t3js-fileedit-save-close').attr('onclick', onClick.replace('document.editform.submit();', ''));
+		var $saveAndCloseButton = $('[data-name="_saveandclose"], [name="_saveandclose"]'),
+			$saveButton = $('[data-name="_save"], [name="_save"]');
+
+		var onClick = $saveAndCloseButton.attr('onclick');
+		$saveAndCloseButton.attr('onclick', onClick.replace('document.editform.submit();', ''));
 
 		// Remove onclick for save icon, saving is done by an AJAX-call
-		$('.t3js-fileedit-save').removeAttr('onclick');
+		$saveButton.removeAttr('onclick');
 
-		$('.t3js-fileedit-save').on('click', function(e) {
+		$saveButton.on('click', function(e) {
 			e.preventDefault();
 
 			if (!T3editor || !T3editor.instances[0]) {
@@ -38,7 +41,7 @@ define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
 			return false;
 		});
 
-		$('.t3js-fileedit-save-close').on('click', function(e) {
+		$saveAndCloseButton.on('click', function(e) {
 			e.preventDefault();
 
 			if (!T3editor || !T3editor.instances[0]) {

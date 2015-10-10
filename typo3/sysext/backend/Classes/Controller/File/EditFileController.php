@@ -14,9 +14,14 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +29,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Script Class for rendering the file editing screen
  */
-class EditFileController
+class EditFileController extends AbstractModule
 {
     /**
      * Module content accumulated.
@@ -41,7 +46,7 @@ class EditFileController
     /**
      * Document template object
      *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @var DocumentTemplate
      */
     public $doc;
 
@@ -74,15 +79,11 @@ class EditFileController
     protected $fileObject;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $GLOBALS['SOBE'] = $this;
         $this->init();
@@ -91,8 +92,9 @@ class EditFileController
     /**
      * Initialize script class
      *
-     * @return void
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
+     * @throws InsufficientFileAccessPermissionsException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     protected function init()
     {
@@ -101,7 +103,8 @@ class EditFileController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         // create the file object
         if ($fileIdentifier) {
-            $this->fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileIdentifier);
+            $this->fileObject = ResourceFactory::getInstance()
+                ->retrieveFileOrFolderObject($fileIdentifier);
         }
         // Cleaning and checking target directory
         if (!$this->fileObject) {
@@ -110,22 +113,33 @@ class EditFileController
             throw new \RuntimeException($title . ': ' . $message, 1294586841);
         }
         if ($this->fileObject->getStorage()->getUid() === 0) {
-            throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889832);
+            throw new InsufficientFileAccessPermissionsException(
+                'You are not allowed to access files outside your storages',
+                1375889832
+            );
         }
 
         // Setting the title and the icon
         $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
-        $this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
+        $this->title = $icon
+            . htmlspecialchars(
+                $this->fileObject->getStorage()->getName()
+            ) . ': ' . htmlspecialchars(
+                $this->fileObject->getIdentifier()
+            );
 
         // Setting template object
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_edit.html');
-        $this->doc->JScode = $this->doc->wrapScriptTags('
-			function backToList() {
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->moduleTemplate->addJavaScriptCode(
+            'FileEditBackToList',
+            'function backToList() {
 				top.goToModule("file_FilelistList");
-			}
-		');
-        $this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
+			}'
+        );
+        $this->moduleTemplate->setForm(
+            '<form action="'
+            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">'
+        );
     }
 
     /**
@@ -135,8 +149,7 @@ class EditFileController
      */
     public function main()
     {
-        $docHeaderButtons = $this->getButtons();
-        $this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle'));
+        $this->getButtons();
         // Hook	before compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
             $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
@@ -150,41 +163,44 @@ class EditFileController
                 }
             }
         }
-        $pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle') . ' ' . htmlspecialchars($this->fileObject->getName()));
-        $pageContent .= $this->doc->spacer(2);
+
+        $pageContent = '<h1>'
+            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle')
+            . ' ' . htmlspecialchars($this->fileObject->getName()) . '</h1>';
+
         $code = '';
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
             if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
                 throw new \Exception('Files with that extension are not editable.');
             }
+
             // Read file content to edit:
             $fileContent = $this->fileObject->getContents();
+
             // Making the formfields
             $hValue = BackendUtility::getModuleUrl('file_edit', array(
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
             ));
-            // Edit textarea:
             $code .= '
-				<div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off" ' . $this->doc->formWidth(48, true, 'width:98%;height:80%') . ' class="text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
+                <div id="c-edit">
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off"  class="text-monospace t3js-enable-tab">' . htmlspecialchars($fileContent) . '</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
 				</div>
 				<br />';
-            // Make shortcut:
-            if ($this->getBackendUser()->mayMakeShortcut()) {
-                $docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target', '', 'file_edit', 1);
-            } else {
-                $docHeaderButtons['shortcut'] = '';
-            }
+
         } catch (\Exception $e) {
-            $code .= sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'), $extList);
+            $code .= sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'),
+                $extList
+            );
         }
+
         // Ending of section and outputting editing form:
-        $pageContent .= $this->doc->sectionEnd();
         $pageContent .= $code;
+
         // Hook	after compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
             $postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
@@ -198,17 +214,9 @@ class EditFileController
                 }
             }
         }
-        // Add the HTML as a section:
-        $markerArray = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => '',
-            'BUTTONS' => $docHeaderButtons,
-            'PATH' => $this->title,
-            'CONTENT' => $pageContent
-        );
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+        $this->content = $pageContent;
+
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -222,20 +230,8 @@ class EditFileController
     {
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /**
@@ -245,20 +241,57 @@ class EditFileController
      */
     public function getButtons()
     {
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
         $lang = $this->getLanguageService();
-        $buttons = array();
         // CSH button
-        $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit');
+        $helpButton = $buttonBar->makeHelpButton()
+            ->setFieldName('file_edit')
+            ->setModuleName('xMOD_csh_corebe');
+        $buttonBar->addButton($helpButton);
+
         // Save button
-        $theIcon = $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render();
-        $buttons['SAVE'] = '<a href="#" class="t3js-fileedit-save" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', true)) . '">' . $theIcon . '</a>';
+        $saveButton = $buttonBar->makeInputButton()
+            ->setName('_save')
+            ->setValue('1')
+            ->setOnClick('document.editform.submit();')
+            ->setTitle($lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', true)))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+
         // Save and Close button
-        $theIcon = $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render();
-        $buttons['SAVE_CLOSE'] = '<a href="#" class="t3js-fileedit-save-close" onclick="document.editform.redirect.value=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', true)) . '">' . $theIcon . '</a>';
+        $saveAndCloseButton = $buttonBar->makeInputButton()
+            ->setName('_saveandclose')
+            ->setValue('1')
+            ->setOnClick(
+                'document.editform.redirect.value='
+                . GeneralUtility::quoteJSvalue($this->returnUrl)
+                . '; document.editform.submit();'
+            )
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', true))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                'actions-document-save-close',
+                Icon::SIZE_SMALL
+            ));
+
+        $splitButton = $buttonBar->makeSplitButton()
+            ->addItem($saveButton)
+            ->addItem($saveAndCloseButton);
+        $buttonBar->addButton($splitButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+
         // Cancel button
-        $theIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render();
-        $buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true)) . '">' . $theIcon . '</a>';
-        return $buttons;
+        $closeButton = $buttonBar->makeLinkButton()
+            ->setHref('#')
+            ->setOnClick('backToList(); return false;')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
+        $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+
+        // Make shortcut:
+        $shortButton = $buttonBar->makeShortcutButton()
+            ->setModuleName('file_edit')
+            ->setGetVariables(['target']);
+        $buttonBar->addButton($shortButton);
+
     }
 
     /**

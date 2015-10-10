@@ -57,6 +57,8 @@ class FileEditHook
         if (!$t3editor->getMode()) {
             return;
         }
+        $t3editor->getJavascriptCode();
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
     }
 
     /**
