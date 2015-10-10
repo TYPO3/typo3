@@ -16,13 +16,16 @@ namespace TYPO3\CMS\Dbal\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script class; Backend module for DBAL extension
  */
-class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class ModuleController extends BaseScriptClass
 {
     /**
      * @var string
@@ -37,6 +40,13 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected $moduleName = 'tools_txdbalM1';
 
     /**
+     * ModuleTemplateContainer
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Initializes this module.
      *
      * @return void
@@ -48,6 +58,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
         $this->getLanguageService()->includeLLFile('EXT:dbal/Resources/Private/Language/locallang.xlf');
         parent::init();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
     /**
@@ -78,47 +89,42 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $languageService = $this->getLanguageService();
         $this->thisScript = BackendUtility::getModuleUrl($this->MCONF['name']);
         // Clean up settings:
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData(
+            $this->MOD_MENU,
+            GeneralUtility::_GP('SET'),
+            $this->MCONF['name']
+        );
         // Draw the header
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->form = '<form action="" method="post">';
         // DBAL page title:
-        $this->content .= $this->doc->startPage($languageService->getLL('title'));
-        $this->content .= $this->doc->header($languageService->getLL('title'));
-        $this->content .= $this->doc->spacer(5);
-        $this->content .= $this->doc->section('', $this->doc->funcMenu('', BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+        $this->content .= '<h1>' . $languageService->getLL('title') . '</h1>';
+        $this->generateMenu();
         // Debug log:
         switch ($this->MOD_SETTINGS['function']) {
             case 'info':
-                $this->content .= $this->doc->section($languageService->getLL('Cached_info'), $this->printCachedInfo());
+                $this->content .= $this->moduleTemplate->section(
+                    $languageService->getLL('Cached_info'),
+                    $this->printCachedInfo()
+                );
                 break;
             case 'sqlcheck':
-                $this->content .= $this->doc->section($languageService->getLL('SQL_check'), $this->printSqlCheck());
+                $this->content .= $this->moduleTemplate->section(
+                    $languageService->getLL('SQL_check'),
+                    $this->printSqlCheck()
+                );
                 break;
             case 0:
-                $this->content .= $this->doc->section($languageService->getLL('Debug_log'), $this->printLogMgm());
+                $this->content .= $this->moduleTemplate->section(
+                    $languageService->getLL('Debug_log'),
+                    $this->printLogMgm()
+                );
                 break;
         }
         // ShortCut
-        if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-            $this->content .= $this->doc->spacer(20) . $this->doc->section('', $this->doc->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
-        }
-        $this->content .= $this->doc->spacer(10);
+        $shortcutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton()
+            ->setModuleName($this->MCONF['name'])
+            ->setGetVariables(['id']);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
     }
-
-    /**
-     * Prints out the module HTML
-     *
-     * @return string HTML output
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content .= $this->doc->endPage();
-        echo $this->content;
-    }
-
 
     /**
      * Injects the request object for the current request or subrequest
@@ -133,7 +139,8 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->main();
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -240,10 +247,10 @@ updateQryForm(\'' . $input['QUERY'] . '\');
         $out .= '<tr id="tx-dbal-result" class="bgColor4"><th>Result:</th><td>';
         switch ($input['QUERY']) {
             case 'SELECT':
-                $qry = $GLOBALS['TYPO3_DB']->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
+                $qry = $this->getDatabaseConnection()->SELECTquery($input['FIELDS'], $input['FROM'], $input['WHERE'], $input['GROUP'], $input['ORDER'], $input['LIMIT']);
                 break;
             case 'INSERT':
-                $qry = $GLOBALS['TYPO3_DB']->INSERTquery($input['INTO'], $this->createFieldsValuesArray($input['INSERTVALUES']));
+                $qry = $this->getDatabaseConnection()->INSERTquery($input['INTO'], $this->createFieldsValuesArray($input['INSERTVALUES']));
                 break;
             case 'UPDATE':
                 $qry = $GLOBALS['TYPO3_DB']->UPDATEquery($input['UPDATE'], $input['WHERE'], $this->createFieldsValuesArray($input['UPDATEVALUES']));
@@ -312,13 +319,13 @@ updateQryForm(\'' . $input['QUERY'] . '\');
      * field types and primary keys. This method formats all this into a HTML
      * table to display in the BE.
      *
-     * @return string	HTML output
+     * @return string
      */
     protected function printCachedInfo()
     {
         // Get cmd:
         if ((string)GeneralUtility::_GP('cmd') === 'clear') {
-            $GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+            $this->getDatabaseConnection()->clearCachedFieldInfo();
             $GLOBALS['TYPO3_DB']->cacheFieldInfo();
         }
         $out = '<a name="autoincrement"></a><h2>auto_increment</h2>';
@@ -331,7 +338,6 @@ updateQryForm(\'' . $input['QUERY'] . '\');
             $out .= '</tr>';
         }
         $out .= '</tbody></table>';
-        $out .= $this->doc->spacer(5);
         $out .= '<a name="primarykeys"></a><h2>Primary keys</h2>';
         $out .= '<table border="1" cellspacing="0"><tbody><tr><th>Table</th><th>Field(s)</th></tr>';
         ksort($GLOBALS['TYPO3_DB']->cache_primaryKeys);
@@ -342,9 +348,20 @@ updateQryForm(\'' . $input['QUERY'] . '\');
             $out .= '</tr>';
         }
         $out .= '</tbody></table>';
-        $out .= $this->doc->spacer(5);
         $out .= '<a name="fieldtypes"></a><h2>Field types</h2>';
-        $out .= '<table border="1" cellspacing="0"><tbody><tr><th colspan="5">Table</th></tr><tr><th>Field</th><th>Type</th><th><a href="#metatypes">Metatype</a></th><th>NOT NULL</th><th>Default</th></th></tr>';
+        $out .= '
+            <table border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <th colspan="5">Table</th>
+                    </tr>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th><th>
+                        <a href="#metatypes">Metatype</a></th>
+                        <th>NOT NULL</th>
+                        <th>Default</th></th>
+                    </tr>';
         ksort($GLOBALS['TYPO3_DB']->cache_fieldType);
         foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
             $out .= '<th colspan="5">' . $table . '</th>';
@@ -359,7 +376,6 @@ updateQryForm(\'' . $input['QUERY'] . '\');
             }
         }
         $out .= '</tbody></table>';
-        $out .= $this->doc->spacer(5);
         $out .= '<a name="metatypes"></a><h2>Metatype explanation</h2>';
         $out .= '<pre>
   C:  Varchar, capped to 255 characters.
@@ -583,6 +599,36 @@ updateQryForm(\'' . $input['QUERY'] . '\');
     }
 
     /**
+     * Generate the ModuleMenu
+     */
+    protected function generateMenu()
+    {
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('DBALJumpMenu');
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    BackendUtility::getModuleUrl(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === $this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    /**
      * Returns the language service.
      *
      * @return \TYPO3\CMS\Lang\LanguageService
@@ -590,5 +636,15 @@ updateQryForm(\'' . $input['QUERY'] . '\');
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the DatabaseConnection
+     *
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
