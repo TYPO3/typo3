@@ -16,19 +16,16 @@
  *  - navigating to the documents
  *  - updating the menu
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 
 	var OpendocsMenu = {
-		$spinnerElement: $('<span>', {
-			'class': 'fa fa-circle-o-notch fa-spin'
-		}),
 		options: {
 			containerSelector: '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
 			hashDataAttributeName: 'opendocsidentifier',
 			closeSelector: '.dropdown-list-link-close',
 			menuContainerSelector: '.dropdown-menu',
 			menuItemSelector: '.dropdown-menu li a',
-			toolbarIconSelector: '.dropdown-toggle i.fa',
+			toolbarIconSelector: '.dropdown-toggle span.icon',
 			openDocumentsItemsSelector: 'li.opendoc',
 			counterSelector: '#tx-opendocs-counter'
 		}
@@ -52,10 +49,12 @@ define(['jquery'], function($) {
 	 * Displays the menu and does the AJAX call to the TYPO3 backend
 	 */
 	OpendocsMenu.updateMenu = function() {
-		var $toolbarItemIcon = $(OpendocsMenu.options.toolbarIconSelector, OpendocsMenu.options.containerSelector);
+		var $toolbarItemIcon = $(OpendocsMenu.options.toolbarIconSelector, OpendocsMenu.options.containerSelector),
+			$existingIcon = $toolbarItemIcon.clone();
 
-		var $spinnerIcon = OpendocsMenu.$spinnerElement.clone();
-		var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
+		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
+			$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+		});
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['opendocs_menu'],
@@ -64,7 +63,7 @@ define(['jquery'], function($) {
 			success: function(data) {
 				$(OpendocsMenu.options.containerSelector).find(OpendocsMenu.options.menuContainerSelector).html(data);
 				OpendocsMenu.updateNumberOfDocs();
-				$spinnerIcon.replaceWith($existingIcon);
+				$(OpendocsMenu.options.toolbarIconSelector, OpendocsMenu.options.containerSelector).replaceWith($existingIcon);
 			}
 		});
 	};

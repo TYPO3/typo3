@@ -15,15 +15,12 @@
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], function($, Modal, Icons) {
 
 	var ShortcutMenu = {
-		$spinnerElement: $('<span>', {
-			class: 'fa fa-circle-o-notch fa-spin'
-		}),
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
-			toolbarIconSelector: '.dropdown-toggle .fa',
+			toolbarIconSelector: '.dropdown-toggle span.icon',
 			toolbarMenuSelector: '.dropdown-menu',
 			shortcutItemSelector: '.dropdown-menu .shortcut',
 			shortcutDeleteSelector: '.shortcut-delete',
@@ -107,9 +104,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
 			// @todo: translations
 			Modal.confirm('Create bookmark', confirmationText)
 				.on('confirm.button.ok', function() {
- 					var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector);
-					var $spinner = ShortcutMenu.$spinnerElement.clone();
-					var $existingItem = $toolbarItemIcon.replaceWith($spinner);
+ 					var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector),
+						$existingIcon = $toolbarItemIcon.clone();
+
+					Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
+						$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+					});
 
 					$.ajax({
 						url: TYPO3.settings.ajaxUrls['shortcut_create'],
@@ -122,7 +122,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
 						cache: false
 					}).done(function() {
 						ShortcutMenu.refreshMenu();
-						$spinner.replaceWith($existingItem);
+						$(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector).replaceWith($existingIcon);
 						if (typeof shortcutButton === 'object') {
 							$(shortcutButton).addClass('active');
 							$(shortcutButton).attr('title', null);

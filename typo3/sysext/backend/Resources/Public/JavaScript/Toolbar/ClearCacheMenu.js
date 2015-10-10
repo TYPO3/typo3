@@ -15,16 +15,13 @@
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 
 	var ClearCacheMenu = {
-		$spinnerElement: $('<span>', {
-			'class': 'fa fa-circle-o-notch fa-spin'
-		}),
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
 			menuItemSelector: '.dropdown-menu a',
-			toolbarIconSelector: '.dropdown-toggle i.fa'
+			toolbarIconSelector: '.dropdown-toggle span.icon'
 		}
 	};
 
@@ -52,16 +49,19 @@ define(['jquery'], function($) {
 		// Close clear cache menu
 		$(ClearCacheMenu.options.containerSelector).removeClass('open');
 
-		var $toolbarItemIcon = $(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector);
+		var $toolbarItemIcon = $(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector),
+			$existingIcon = $toolbarItemIcon.clone();
 
-		var $spinnerIcon = ClearCacheMenu.$spinnerElement.clone();
-		var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
+		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
+			$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+		});
+
 		$.ajax({
 			url: ajaxUrl,
 			type: 'post',
 			cache: false,
 			success: function() {
-				$spinnerIcon.replaceWith($existingIcon);
+				$(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
 			}
 		});
 	};

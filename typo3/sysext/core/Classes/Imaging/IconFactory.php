@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -72,6 +74,38 @@ class IconFactory
     public function __construct(IconRegistry $iconRegistry = null)
     {
         $this->iconRegistry = $iconRegistry ? $iconRegistry : GeneralUtility::makeInstance(IconRegistry::class);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return string
+     * @internal
+     */
+    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $requestedIcons = json_decode(
+            isset($parsedBody['requestedIcons'])
+                ? $parsedBody['requestedIcons']
+                : $queryParams['requestedIcons'],
+            true
+        );
+
+        $icons = [];
+        for ($i = 0, $count = count($requestedIcons); $i < $count; ++$i) {
+            list($identifier, $size, $overlayIdentifier, $iconState) = $requestedIcons[$i];
+            if (empty($overlayIdentifier)) {
+                $overlayIdentifier = null;
+            }
+            $iconState = IconState::cast($iconState);
+            $icons[$identifier] = $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render();
+        }
+        $response->getBody()->write(
+            json_encode($icons)
+        );
+        return $response;
     }
 
     /**

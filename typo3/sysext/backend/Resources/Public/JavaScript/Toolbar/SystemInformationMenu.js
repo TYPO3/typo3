@@ -14,21 +14,18 @@
 /**
  * System information menu handler
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], function($, Icons, Storage) {
 	'use strict';
 
 	var SystemInformationMenu = {
 		identifier: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
-			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
+			toolbarIconSelector: '.dropdown-toggle span.icon',
 			menuContainerSelector: '.dropdown-menu',
 			moduleLinks: '.t3js-systeminformation-module'
 		},
 		elements: {
-			$counter: $('#t3js-systeminformation-counter'),
-			$spinnerElement: $('<span>', {
-				'class': 't3-icon fa fa-circle-o-notch spinner fa-spin'
-			})
+			$counter: $('#t3js-systeminformation-counter')
 		}
 	};
 
@@ -44,14 +41,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	 */
 	SystemInformationMenu.updateMenu = function() {
 		var $toolbarItemIcon = $(SystemInformationMenu.identifier.toolbarIconSelector, SystemInformationMenu.identifier.containerSelector),
-			$spinnerIcon = SystemInformationMenu.elements.$spinnerElement.clone(),
-			$existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon),
+			$existingIcon = $toolbarItemIcon.clone(),
 			$menuContainer = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector);
 
 		// hide the menu if it's active
 		if ($menuContainer.is(':visible')) {
 			$menuContainer.click();
 		}
+
+		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
+			$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+		});
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['systeminformation_render'],
@@ -60,7 +60,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 			success: function(data) {
 				$menuContainer.html(data);
 				SystemInformationMenu.updateCounter();
-				$spinnerIcon.replaceWith($existingIcon);
+				$(SystemInformationMenu.identifier.toolbarIconSelector, SystemInformationMenu.identifier.containerSelector).replaceWith($existingIcon);
 
 				SystemInformationMenu.initialize();
 			}

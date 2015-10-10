@@ -186,5 +186,11 @@ return [
     'online_media_create' => [
         'path' => '/online-media/create',
         'target' => Controller\OnlineMediaController::class . '::createAction'
+    ],
+
+    // Get icon from IconFactory
+    'icons_get' => [
+        'path' => '/icons/get',
+        'target' => \TYPO3\CMS\Core\Imaging\IconFactory::class . '::processAjaxRequest'
     ]
 ];
