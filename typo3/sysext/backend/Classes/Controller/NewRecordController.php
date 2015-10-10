@@ -240,8 +240,13 @@ class NewRecordController extends AbstractModule
     public function main()
     {
         // If there was a page - or if the user is admin (admins has access to the root) we proceed:
-        if ($this->pageinfo['uid'] || $this->getBackendUserAuthentication()->isAdmin()) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if (!empty($this->pageinfo['uid']) || $this->getBackendUserAuthentication()->isAdmin()) {
+            if (empty($this->pageinfo)) {
+                // Explicitly pass an empty array to the docHeader
+                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
+            } else {
+                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+            }
             // Acquiring TSconfig for this module/current page:
             $this->web_list_modTSconfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
             $this->allowedNewTables = GeneralUtility::trimExplode(
