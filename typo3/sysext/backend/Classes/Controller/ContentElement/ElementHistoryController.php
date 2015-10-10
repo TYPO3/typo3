@@ -16,15 +16,19 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\History\RecordHistory;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for showing the history module of TYPO3s backend
  * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
-class ElementHistoryController
+class ElementHistoryController extends AbstractModule
 {
     /**
      * @var string
@@ -34,7 +38,7 @@ class ElementHistoryController
     /**
      * Document template object
      *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @var DocumentTemplate
      */
     public $doc;
 
@@ -48,6 +52,7 @@ class ElementHistoryController
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
         $GLOBALS['SOBE'] = $this;
 
@@ -66,10 +71,7 @@ class ElementHistoryController
     {
         $this->main();
 
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -81,10 +83,9 @@ class ElementHistoryController
     protected function init()
     {
         // Create internal template object
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
-        // Start the page header
-        $this->content .= $this->doc->header($this->getLanguageService()->getLL('title'));
+        // This is ugly, we need to remove the dependency-wiring via GLOBALS['SOBE']
+        // In this case, RecordHistory.php depends on GLOBALS[SOBE] being set in here
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
     }
 
     /**
@@ -94,31 +95,44 @@ class ElementHistoryController
      */
     public function main()
     {
+        $this->content = '<h1>' . $this->getLanguageService()->getLL('title') . '</h1>';
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
+
         // Start history object
-        $historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
+        $historyObj = GeneralUtility::makeInstance(RecordHistory::class);
+
+        $elementData = GeneralUtility::trimExplode(':', $historyObj->element);
+        $this->setPagePath($elementData[0], $elementData[1]);
+
         // Get content:
         $this->content .= $historyObj->main();
         // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CONTENT'] = $this->content;
-        $markers['CSH'] = $docHeaderButtons['csh'];
+        $this->getButtons();
         // Build the <body> for the module
-        $this->content = $this->doc->startPage($this->getLanguageService()->getLL('title'));
-        $this->content .= $this->doc->moduleBody($this->pageInfo, $docHeaderButtons, $markers);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
-     * Outputting the accumulated content to screen
+     * Creates the correct path to the current record
      *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
+     * @param string $table
+     * @param int $uid
      */
-    public function printContent()
+    protected function setPagePath($table, $uid)
     {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-        echo $this->content;
+        $uid = (int)$uid;
+
+        if ($table === 'pages') {
+            $pageId = $uid;
+        } else {
+            $record = BackendUtility::getRecord($table, $uid, '*', '', false);
+            $pageId = $record['pid'];
+        }
+
+        $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(1));
+        if (is_array($pageAccess)) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageAccess);
+        }
     }
 
     /**
@@ -128,19 +142,22 @@ class ElementHistoryController
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'csh' => '',
-            'back' => ''
-        );
-        // CSH
-        $buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log');
-        // Get returnUrl parameter
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $helpButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('history_log');
+        $buttonBar->addButton($helpButton);
+
+         // Get returnUrl parameter
         $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         if ($returnUrl) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $buttons['back'] = '<a href="' . htmlspecialchars($returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+            $backButton = $buttonBar->makeLinkButton()
+                ->setHref($returnUrl)
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
-        return $buttons;
     }
 
     /**
@@ -152,4 +169,16 @@ class ElementHistoryController
     {
         return $GLOBALS['LANG'];
     }
+
+    /**
+     * Gets the current backend user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+
 }
