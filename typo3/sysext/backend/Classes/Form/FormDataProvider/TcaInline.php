@@ -222,6 +222,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'vanillaUid' => (int)$childUid,
             'inlineFirstPid' => $result['inlineFirstPid'],
             'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
+            'inlineParentConfig' => $parentConfig,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild

@@ -240,6 +240,7 @@ class InlineControlContainer extends AbstractContainer
         $sortableRecordUids = [];
         foreach ($this->data['parameterArray']['fieldConf']['children'] as $options) {
             $options['inlineParentUid'] = $row['uid'];
+            // @todo: this can be removed if this container no longer sets additional info to $config
             $options['inlineParentConfig'] = $config;
             $options['inlineData'] = $this->inlineData;
             $options['inlineStructure'] = $inlineStackProcessor->getStructure();

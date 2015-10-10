@@ -58,6 +58,37 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionIfDatabaseRowIsNotArray()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => 'not-an-array',
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444431128);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataKeepsGivenDefaultsIfCommandIsNew()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'databaseRow' => [
+                'aField' => 42,
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['pid'] = 23;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataSetsDefaultDataFormUserTsIfColumnIsDenfinedInTca()
     {
         $input = [
@@ -476,6 +507,90 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
         ];
         $result = $this->subject->addData($input);
         $this->assertSame($expected, $result['databaseRow']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionWithGivenChildChildUidButMissingInlineConfig()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => [],
+            'inlineChildChildUid' => 42,
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434102);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionWithGivenChildChildUidButIsNotInteger()
+    {
+        $input = [
+            'command' => 'new',
+            'databaseRow' => [],
+            'inlineChildChildUid' => '42',
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434103);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataSetsForeignSelectorFieldToValueOfChildChildUid()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'inlineChildChildUid' => 42,
+            'inlineParentConfig' => [
+                'foreign_selector' => 'theForeignSelectorField',
+            ],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'theForeignSelectorField' => [
+                        'config' => [
+                            'type' => 'group',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['theForeignSelectorField'] = 42;
+        $expected['databaseRow']['pid'] = null;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignSelectorDoesNotPointToGroupOrSelectField()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'inlineChildChildUid' => 42,
+            'inlineParentConfig' => [
+                'foreign_selector' => 'theForeignSelectorField',
+            ],
+            'vanillaTableTca' => [
+                'columns' => [
+                    'theForeignSelectorField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434104);
+        $this->subject->addData($input);
     }
 
     /**

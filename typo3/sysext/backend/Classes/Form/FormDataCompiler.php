@@ -53,6 +53,8 @@ class FormDataCompiler
      *
      * @param array $initialData Initial set of data to map into result array
      * @return array Result with data
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
     public function compile(array $initialData)
     {
@@ -120,7 +122,7 @@ class FormDataCompiler
      */
     protected function initializeResultArray()
     {
-        return array(
+        return [
             // Either "edit" or "new"
             'command' => '',
             // Table name of the handled row
@@ -145,33 +147,33 @@ class FormDataCompiler
             // For "new" this is the fully initialized row with defaults
             // The database row. For "edit" fixVersioningPid() was applied already.
             // @todo: rename to valueStructure or handledData or similar
-            'databaseRow' => array(),
+            'databaseRow' => [],
             // The "effective" page uid we're working on. This is the uid of a page if a page is edited, or the uid
             // of the parent page if a page or other record is added, or 0 if a record is added or edited below root node.
             'effectivePid' => 0,
             // Rootline of page the record that is handled is located at as created by BackendUtility::BEgetRootline()
-            'rootline' => array(),
+            'rootline' => [],
             // For "edit", this is the permission bitmask of the page that is edited, or of the page a record is located at
             // For "new", this is the permission bitmask of the page the record is added to
             // @todo: Remove if not needed on a lower level
             'userPermissionOnPage' => 0,
             // Full user TsConfig
-            'userTsConfig' => array(),
+            'userTsConfig' => [],
             // Full page TSConfig of the page that is edited or of the parent page if a record is added.
             // This includes any defaultPageTSconfig and is merged with user TsConfig page. section. After type
             // of handled record was determined, record type specific settings [TCEFORM.][tableName.][field.][types.][type.]
             // are merged into [TCEFORM.][tableName.][field.]. Array keys still contain the concatenation dots.
-            'pageTsConfig' => array(),
+            'pageTsConfig' => [],
             // Not changed TCA of handled table
-            'vanillaTableTca' => array(),
+            'vanillaTableTca' => [],
             // Not changed TCA of parent page row if record is edited or added below a page and not root node
             'vanillaParentPageTca' => null,
             // List of available system languages. Array key is the system language uid, value array
             // contains details of the record, with iso code resolved. Key is the sys_language_uid uid.
-            'systemLanguageRows' => array(),
+            'systemLanguageRows' => [],
             // If the page that is handled has "page_language_overlay" records (page has localizations in
             // different languages), then this array holds those rows.
-            'pageLanguageOverlayRows' => array(),
+            'pageLanguageOverlayRows' => [],
             // If the handled row is a localized row, this entry hold the default language row array
             'defaultLanguageRow' => null,
             // If the handled row is a localized row and a transOrigDiffSourceField is defined, this
@@ -182,25 +184,36 @@ class FormDataCompiler
             'defaultLanguageDiffRow' => null,
             // With userTS options.additionalPreviewLanguages set, field values of additional languages
             // can be shown. This array holds those additional language records, Array key is sys_language_uid.
-            'additionalLanguageRows' => array(),
+            'additionalLanguageRows' => [],
             // The tca record type value of the record. Forced to string, there can be "named" type values.
             'recordTypeValue' => '0',
             // TCA of table with processed fields. After processing, this array contains merged and resolved
             // array data, items were resolved, only used types are set, renderTypes are set.
-            'processedTca' => array(),
+            'processedTca' => [],
             // List of columns to be processed by data provider. Array value is the column name.
-            'columnsToProcess' => array(),
+            'columnsToProcess' => [],
             // If set to TRUE, no wizards are calculated and rendered later
             'disabledWizards' => false,
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
             // @todo: better documentation of nesting behaviour and bug fixing in this area
-            'inlineExpandCollapseStateArray' => array(),
+            'inlineExpandCollapseStateArray' => [],
             // The "entry" pid for inline records. Nested inline records can potentially hang around on different
             // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes place on the page structure.
             'inlineFirstPid' => null,
             // This array of fields will be set as hidden-fields instead of rendered normally!
             // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
             'overrideValues' => [],
+
+            // The "config" section of an inline parent, prepared and sanitized by TcaInlineConfiguration provider
+            'inlineParentConfig' => [],
+            // Uid of a "child-child" if a new record of an intermediate table is compiled to an existing child. This
+            // happens if foreign_selector in parent inline config is set. It will be used by default database row
+            // data providers to set this as value for the foreign_selector field on the intermediate table. One use
+            // case is FAL, where for instance a tt_content parent adds relation to an existing sys_file record and
+            // should set the uid of the existing sys_file record as uid_local - the foreign_selector of this inline
+            // configuration - of the new intermediate sys_file_reference record. Data provider that are called later
+            // will then use this relation to resolve for instance input placeholder relation values.
+            'inlineChildChildUid' => null,
             // This is the "foreign_types" section of a parent inline configuration that can be used to
             // overrule the types TCA section of a child element.
             'inlineOverruleTypesArray' => [],
@@ -213,7 +226,7 @@ class FormDataCompiler
             // child record that was not yet localized.
             'inlineIsDefaultLanguage' => false,
             // If set, inline children will be resolved. This is set to FALSE in inline ajax context where new children
-            // are created an existing children don't matter much.
+            // are created and existing children don't matter much.
             'inlineResolveExistingChildren' => true,
             // @todo - for input placeholder inline to suppress an infinite loop, this *may* become obsolete if
             // @todo compilation of certain fields is possible
@@ -226,6 +239,6 @@ class FormDataCompiler
             'inlineData' => [],
             'inlineStructure' => [],
 
-        );
+        ];
     }
 }

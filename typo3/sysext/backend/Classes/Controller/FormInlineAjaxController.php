@@ -118,7 +118,11 @@ class FormInlineAjaxController
             'vanillaUid' => $childVanillaUid,
             'inlineFirstPid' => $inlineFirstPid,
             'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
+            'inlineParentConfig' => $parentConfig,
         ];
+        if ($childChildUid) {
+            $formDataCompilerInput['inlineChildChildUid'] = $childChildUid;
+        }
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
         // Set default values for new created records
@@ -196,8 +200,8 @@ class FormInlineAjaxController
             // @todo: prepared in $childData. Otherwise fields that use this relation like for instance
             // @todo: the placeholder relation does not work for "fresh" children. This stuff here
             // @todo: probably needs to be moved somewhere after "initializeNew" data provider.
-            // There is an existing child-child, but it should not be rendered directly. Still, the intermediate
-            // record must point to the child table
+            // There is an existing child-child, but it should not be rendered directly since useCombination
+            // is off. Still, the intermediate record must point to the child table
             if ($childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['type'] === 'select') {
                 $childData['databaseRow'][$parentConfig['foreign_selector']] = [
                     $childChildUid,
@@ -211,7 +215,6 @@ class FormInlineAjaxController
         }
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
-        $childData['inlineParentConfig'] = $parentConfig;
         // @todo: needed?
         $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
         // @todo: needed?
@@ -300,10 +303,10 @@ class FormInlineAjaxController
         /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
-        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
         // Set flag in config so that only the fields are rendered
         // @todo: Solve differently / rename / whatever
-        $parentConfig['renderFieldsOnly'] = true;
+        $parentData['processedTca']['columns'][$parentFieldName]['config']['renderFieldsOnly'] = true;
+        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
@@ -311,7 +314,6 @@ class FormInlineAjaxController
         $childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid']);
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
-        $childData['inlineParentConfig'] = $parentConfig;
         // @todo: needed?
         $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
         // @todo: needed?
@@ -435,7 +437,6 @@ class FormInlineAjaxController
                 $childData = $this->compileChild($parentData, $parentFieldName, (int)$childUid);
 
                 $childData['inlineParentUid'] = (int)$parent['uid'];
-                $childData['inlineParentConfig'] = $parentConfig;
                 // @todo: needed?
                 $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
                 // @todo: needed?
@@ -555,6 +556,7 @@ class FormInlineAjaxController
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
             'inlineFirstPid' => $parentData['inlineFirstPid'],
+            'inlineParentConfig' => $parentConfig,
             'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
