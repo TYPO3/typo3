@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Template\Components;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -27,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
  */
 class MetaInformation
 {
+
     /**
      * The recordArray.
      * Typically this is a page record
@@ -55,6 +60,7 @@ class MetaInformation
     public function getPath()
     {
         $pageRecord = $this->recordArray;
+        $title = '';
         // Is this a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
             $title = substr($pageRecord['_thePathFull'], 0, -1);
@@ -63,14 +69,18 @@ class MetaInformation
             if ($pos !== false) {
                 $title = substr($title, 0, $pos);
             }
-        } else {
-            $title = '';
+        } elseif (!empty($pageRecord['combined_identifier'])) {
+            try {
+                $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
+                $title = $resourceObject->getStorage()->getName() . ':';
+                $title .= $resourceObject->getParentFolder()->getReadablePath();
+            } catch (ResourceDoesNotExistException $e) {}
         }
         // Setting the path of the page
         // crop the title to title limit (or 50, if not defined)
         $beUser = $this->getBackendUser();
         $cropLength = empty($beUser->uc['titleLen']) ? 50 : $beUser->uc['titleLen'];
-        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, - $cropLength);
+        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
         if ($croppedTitle !== $title) {
             $pagePath = '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
         } else {
@@ -82,13 +92,15 @@ class MetaInformation
     /**
      * Setting page icon with clickMenu + uid for docheader
      *
-     * @return string Page info
+     * @return string Record info
      */
     public function getRecordInformation()
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $pageRecord = $this->recordArray;
+        $uid = '';
+        $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
         // Add icon with clickMenu, etc:
         // If there IS a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
@@ -98,6 +110,23 @@ class MetaInformation
             $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
+        // If the module is about a FAL resource
+        } elseif (is_array($pageRecord) && !empty($pageRecord['combined_identifier'])) {
+            try {
+                $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
+                $title = $resourceObject->getName();
+                // If this is a folder but not in within file mount boundaries this is the root folder
+                if ($resourceObject instanceof FolderInterface && !$resourceObject->getStorage()->isWithinFileMountBoundaries($resourceObject)) {
+                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource($resourceObject,
+                            Icon::SIZE_SMALL, null, array('mount-root' => true))->render() . '</span>';
+                } else {
+                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource($resourceObject,
+                            Icon::SIZE_SMALL)->render() . '</span>';
+                }
+                $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, $pageRecord['combined_identifier']);
+            } catch (ResourceDoesNotExistException $e) {
+                $theIcon = '';
+            }
         } else {
             // On root-level of page tree
             // Make Icon
@@ -114,7 +143,9 @@ class MetaInformation
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
         // Setting icon with clickMenu + uid
-        return $theIcon . '<strong>' . htmlspecialchars($title) . '&nbsp;[' . $uid . ']</strong>';
+        return $theIcon .
+            ' <strong>' . htmlspecialchars($title) . ($uid !== '' ? '&nbsp;[' . $uid . ']' : '') . '</strong>' .
+            (!empty($additionalInfo) ? ' ' . htmlspecialchars($additionalInfo) : '');
     }
 
     /**
