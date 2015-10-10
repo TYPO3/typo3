@@ -14,7 +14,7 @@
 /**
  * JavaScript implementations for page actions
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	'use strict';
 
 	var PageActions = {
@@ -91,7 +91,7 @@ define(['jquery'], function($) {
 			$hiddenElements.slideUp();
 		}
 
-		top.TYPO3.Storage.Persistent.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? 1 : 0).done(function() {
+		Storage.Persistent.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? 1 : 0).done(function() {
 			$spinner.remove();
 			$me.show();
 		});
@@ -212,7 +212,7 @@ define(['jquery'], function($) {
 		});
 	};
 
-	$(document).ready(function() {
+	$(function() {
 		PageActions.initializeElements();
 		PageActions.initializeEvents();
 		PageActions.documentIsReady = true;

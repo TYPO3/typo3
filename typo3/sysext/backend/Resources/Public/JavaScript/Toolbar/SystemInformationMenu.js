@@ -14,7 +14,9 @@
 /**
  * System information menu handler
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+	'use strict';
+
 	var SystemInformationMenu = {
 		identifier: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
@@ -62,7 +64,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($) {
 
 				SystemInformationMenu.initialize();
 			}
-		})
+		});
 	};
 
 	/**
@@ -91,28 +93,23 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($) {
 		var storedSystemInformationSettings = {},
 			moduleStorageObject = {},
 			requestedModule = $(e.currentTarget).data('modulename'),
-			timestamp = Math.floor((new Date).getTime() / 1000);
+			timestamp = Math.floor((new Date()).getTime() / 1000);
 
-		if (TYPO3.Storage.Persistent.isset('systeminformation')) {
-			storedSystemInformationSettings = JSON.parse(TYPO3.Storage.Persistent.get('systeminformation'));
+		if (Storage.Persistent.isset('systeminformation')) {
+			storedSystemInformationSettings = JSON.parse(Storage.Persistent.get('systeminformation'));
 		}
 
 		moduleStorageObject[requestedModule] = {lastAccess: timestamp};
 		$.extend(true, storedSystemInformationSettings, moduleStorageObject);
-		TYPO3.Storage.Persistent.set('systeminformation', JSON.stringify(storedSystemInformationSettings)).done(function() {
+		var $ajax = Storage.Persistent.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
+		$ajax.done(function() {
 			// finally, open the module now
 			TYPO3.ModuleMenu.App.showModule(requestedModule);
 			SystemInformationMenu.updateMenu();
 		});
 	};
 
-	/**
-	 * Initialize and return the SystemInformationMenu object
-	 */
-	$(document).ready(function() {
-		SystemInformationMenu.updateMenu();
-	});
+	$(SystemInformationMenu.updateMenu);
 
-	TYPO3.SystemInformationMenu = SystemInformationMenu;
 	return SystemInformationMenu;
 });

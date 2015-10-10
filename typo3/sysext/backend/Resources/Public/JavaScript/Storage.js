@@ -17,6 +17,24 @@
  * available via TYPO3.Storage.Persistent
  */
 define(['jquery'], function ($) {
+	'use strict';
+
+	// fetch from opening window
+	if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Storage) {
+		return window.opener.TYPO3.Storage;
+	}
+
+	// fetch from parent
+	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Storage) {
+		return parent.window.TYPO3.Storage;
+	}
+
+	// fetch object from outer frame
+	if (top && top.TYPO3.Storage) {
+		return top.TYPO3.Storage;
+	}
+
+	// we didn't find an existing object, so create it
 	var Storage = {
 		Client: {},
 		Persistent: {
@@ -171,11 +189,8 @@ define(['jquery'], function ($) {
 		}
 	};
 
-	/**
-	 * return the Storage object, and attach it to the global TYPO3 object on the global frame
-	 */
-	return function() {
-		top.TYPO3.Storage = Storage;
-		return Storage;
-	}();
+	// attach to global frame
+	TYPO3.Storage = Storage;
+
+	return Storage;
 });

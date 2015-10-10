@@ -13,15 +13,13 @@
 /**
  * Main logic for resizing the view of the frame
  */
-define(['jquery', 'jquery-ui/resizable'], function($) {
-	"use strict";
-
-	// fetch the storage from the outer frame
-	var Storage = top.TYPO3.Storage;
+define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function($, Storage) {
+	'use strict';
 
 	var ViewPage = {
 		resizableContainerIdentifier: '#resizeable',
 		widthSelectorIdentifier: '#width',
+		moduleBodySelector: '.t3js-module-body',
 		storagePrefix: 'moduleData.web_view.States.'
 	};
 
@@ -124,7 +122,8 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 
 	ViewPage.calculateContainerMaxHeight = function() {
 		ViewPage.$resizableContainer.hide();
-		var padding = $('.t3js-module-body').outerHeight() - $('.t3js-module-body').height(),
+		var $moduleBody = $(ViewPage.moduleBodySelector);
+		var padding = $moduleBody.outerHeight() - $moduleBody.height(),
 			controlsHeight = ViewPage.$widthSelector.parents('form:first').height(),
 			documentHeight = $(document).height();
 		ViewPage.$resizableContainer.show();
