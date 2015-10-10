@@ -14,10 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -29,19 +28,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  */
-class CreateFolderController
+class CreateFolderController extends AbstractModule
 {
     /**
      * @var int
      */
     public $folderNumber = 10;
-
-    /**
-     * document template object
-     *
-     * @var DocumentTemplate
-     */
-    public $doc;
 
     /**
      * Name of the filemount
@@ -77,6 +69,11 @@ class CreateFolderController
     public $returnUrl;
 
     /**
+     * @var array
+     */
+    protected $pathInfo;
+
+    /**
      * Accumulating content
      *
      * @var string
@@ -84,25 +81,18 @@ class CreateFolderController
     public $content;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $GLOBALS['SOBE'] = $this;
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->init();
     }
 
     /**
-     * Initialize
-     *
      * @throws InsufficientFolderAccessPermissionsException
-     * @return void
+     * @throws \RuntimeException
      */
     protected function init()
     {
@@ -112,7 +102,8 @@ class CreateFolderController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         // create the folder object
         if ($combinedIdentifier) {
-            $this->folderObject = ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+            $this->folderObject = ResourceFactory::getInstance()
+                ->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
         }
         // Cleaning and checking target directory
         if (!$this->folderObject) {
@@ -121,30 +112,36 @@ class CreateFolderController
             throw new \RuntimeException($title . ': ' . $message, 1294586845);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
-            throw new InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages', 1375889838);
+            throw new InsufficientFolderAccessPermissionsException(
+                'You are not allowed to access folders outside your storages',
+                1375889838
+            );
         }
 
-        // Setting the title and the icon
-        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
-        $this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
-        // Setting template object
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_newfolder.html');
-        $this->doc->JScode = $this->doc->wrapScriptTags('
-			var path = "' . $this->target . '";
-
-			function reload(a) {
-				if (!changed || (changed && confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')) . '))) {
-					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
-					window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('file_newfolder')) . '+params;
-				}
-			}
-			function backToList() {
-				top.goToModule("file_FilelistList");
-			}
-
-			var changed = 0;
-		');
+        $pathInfo = [
+            'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
+        ];
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->addJavaScriptCode(
+            'CreateFolderInlineJavaScript',
+            'var path = "' . $this->target . '";
+            function reload(a) {
+            if (!changed || (changed && confirm(' .
+            GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw'))
+            . '))) {
+                    var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl='
+            . rawurlencode($this->returnUrl)
+            . '";
+                    window.location.href = '
+            . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('file_newfolder')) . '+params;
+                }
+            }
+            function backToList() {
+                top.goToModule("file_FilelistList");
+            }
+            var changed = 0;'
+        );
     }
 
     /**
@@ -155,10 +152,8 @@ class CreateFolderController
     public function main()
     {
         $lang = $this->getLanguageService();
-        // Start content compilation
-        $this->content .= $this->doc->startPage($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
-        // Make page header:
-        $pageContent = $this->doc->header($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
+        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle') . '</h1>';
+
         if ($this->folderObject->checkActionPermission('add')) {
             $code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
             // Making the selector box for the number of concurrent folder-creations
@@ -201,9 +196,15 @@ class CreateFolderController
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
+
             // Switching form tags:
-            $pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders'), $code);
-            $pageContent .= $this->doc->sectionEnd() . '</form>';
+            $pageContent .= $this->moduleTemplate->section(
+                $lang->sL(
+                    'LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders'
+                ),
+                $code
+            );
+            $pageContent .= '</form>';
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
@@ -242,8 +243,13 @@ class CreateFolderController
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
-            $pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true), $code);
-            $pageContent .= $this->doc->sectionEnd();
+            $pageContent .= $this->moduleTemplate->section(
+                $lang->sL(
+                    'LLL:EXT:lang/locallang_core.xlf:online_media.new_media',
+                    true
+                ),
+                $code
+            );
             $pageContent .= '</form>';
 
             $pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform3">';
@@ -279,29 +285,29 @@ class CreateFolderController
 					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', true) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
-				';
-            $pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile', true), $code);
-            $pageContent .= $this->doc->sectionEnd();
+			';
+            $pageContent .= $this->moduleTemplate->section(
+                $lang->sL(
+                    'LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile',
+                    true
+                ),
+                $code
+            );
             $pageContent .= '</form>';
         }
 
-        $docHeaderButtons = array(
-            'back' => ''
-        );
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Back
         if ($this->returnUrl) {
-            $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+            $backButton = $buttonBar->makeLinkButton()
+               ->setHref(GeneralUtility::linkThisUrl($this->returnUrl))
+               ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+               ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton);
         }
-        // Add the HTML as a section:
-        $markerArray = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => '',
-            'CONTENT' => $pageContent,
-            'PATH' => $this->title
-        );
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+
+        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -314,21 +320,8 @@ class CreateFolderController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
-
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /**
