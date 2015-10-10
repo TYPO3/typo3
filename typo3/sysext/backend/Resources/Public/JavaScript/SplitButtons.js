@@ -25,7 +25,13 @@ define('TYPO3/CMS/Backend/SplitButtons', ['jquery'], function($) {
 	 * Initializes the save handling
 	 */
 	SplitButtons.initializeSaveHandling = function() {
-		$(document).on('click', 'button[name^="_save"], a[data-name^="_save"]', function(e) {
+		var elements = [
+			'button[name^="_save"]',
+			'a[data-name^="_save"]',
+			'button[name="CMD"][value^="save"]',
+			'a[data-name="CMD"][data-value^="save"]'
+		].join(',');
+		$(document).on('click', elements, function(e) {
 			var $me = $(this),
 				$form = $me.closest('form'),
 				name = $me.data('name') || this.name,
