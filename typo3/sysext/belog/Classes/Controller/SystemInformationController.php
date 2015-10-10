@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Belog\Controller;
  */
 
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -27,9 +28,9 @@ class SystemInformationController extends AbstractController
     /**
      * Modifies the SystemInformation array
      *
-     * @return NULL|array
+     * @param SystemInformationToolbarItem $systemInformationToolbarItem
      */
-    public function appendMessage()
+    public function appendMessage(SystemInformationToolbarItem $systemInformationToolbarItem)
     {
         $constraint = $this->getConstraintFromBeUserData();
         if ($constraint === null) {
@@ -50,16 +51,13 @@ class SystemInformationController extends AbstractController
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $timestamp . ' AND error IN(-1,1,2)');
 
         if ($count > 0) {
-            return array(
-                array(
-                    'module' => 'system_BelogLog',
-                    'count' => $count,
-                    'status' => InformationStatus::STATUS_ERROR,
-                    'text' => sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog'))
-                )
+            $systemInformationToolbarItem->addSystemMessage(
+                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog')),
+                InformationStatus::STATUS_ERROR,
+                $count,
+                'system_BelogLog'
             );
         }
-        return null;
     }
 
     /**

@@ -278,11 +278,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function emitGetSystemInformation()
     {
-        // @internal This API is subject to be rebuilt from scratch anytime. Do not use in extensions!
-        list($systemInformation) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'getSystemInformation', array(array()));
-        if (!empty($systemInformation)) {
-            $this->systemInformation[] = $systemInformation;
-        }
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'getSystemInformation', array($this));
     }
 
     /**
@@ -292,25 +288,52 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function emitLoadMessages()
     {
-        // @internal This API is subject to be rebuilt from scratch anytime. Do not use in extensions!
-        list($message) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'loadMessages', array(array()));
-        if (empty($message)) {
-            return;
-        }
+        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'loadMessages', array($this));
+    }
 
-        // increase counter
-        if (isset($message['count']) && $this->totalCount < $this->maximumCountInBadge) {
-            $this->totalCount += (int)$message['count'];
-        }
+    /**
+     * Add a system message.
+     * This is a callback method for signal receivers.
+     *
+     * @param string $text The text to be displayed
+     * @param string $status The status of this system message
+     * @param int $count Will be added to the total count
+     * @param string $module The associated module
+     */
+    public function addSystemMessage($text, $status = InformationStatus::STATUS_OK, $count = 0, $module = '')
+    {
+        $this->totalCount += (int)$count;
 
         /** @var InformationStatus $messageSeverity */
-        $messageSeverity = InformationStatus::cast($message['status']);
+        $messageSeverity = InformationStatus::cast($status);
         // define the severity for the badge
         if ($messageSeverity->isGreaterThan($this->highestSeverity)) {
             $this->highestSeverity = $messageSeverity;
         }
 
-        $this->systemMessages[] = $message;
+        $this->systemMessages[] = array(
+            'module' => $module,
+            'count' => (int)$count,
+            'status' => $messageSeverity,
+            'text' => $text
+        );
+    }
+
+    /**
+     * Add a system information.
+     * This is a callback method for signal receivers.
+     *
+     * @param string $title The title of this system information
+     * @param string $value The associated value
+     * @param string $icon The icon html
+     */
+    public function addSystemInformation($title, $value, $icon)
+    {
+        $this->systemInformation[] = array(
+            'title' => $title,
+            'value' => $value,
+            'icon' => $icon
+        );
     }
 
     /**
