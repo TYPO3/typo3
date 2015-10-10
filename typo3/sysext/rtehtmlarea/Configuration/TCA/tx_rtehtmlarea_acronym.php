@@ -112,7 +112,8 @@ return array(
                 ),
                 'foreign_table' => 'static_languages',
                 'foreign_table_where' => 'ORDER BY static_languages.lg_name_en',
-                'itemsProcFunc' => 'SJBR\\StaticInfoTables\\Hook\\Backend\\Form\\ElementRenderingHelper->translateLanguagesSelector',
+                'itemsProcFunc' => SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaSelectItemsProcessor::class. '->translateLanguagesSelector',
+                'noIconsBelowSelect' => 1,
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
@@ -120,7 +121,7 @@ return array(
                     'suggest' => array(
                         'type' => 'suggest',
                         'default' => array(
-                            'receiverClass' => 'SJBR\\StaticInfoTables\\Hook\\Backend\\Form\\SuggestReceiver'
+                            'receiverClass' => SJBR\StaticInfoTables\Hook\Backend\Form\Wizard\SuggestReceiver::class
                         )
                     )
                 )
