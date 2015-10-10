@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 /**
  * Script Class for grid wizard
  */
-class BackendLayoutWizardController
+class BackendLayoutWizardController extends AbstractModule
 {
     // GET vars:
     // Wizard parameters, coming from TCEforms linking to the wizard.
@@ -36,13 +36,6 @@ class BackendLayoutWizardController
      * @var array
      */
     public $P;
-
-    /**
-     * Document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
 
     // Accumulated content.
     /**
@@ -65,6 +58,7 @@ class BackendLayoutWizardController
      */
     public function __construct()
     {
+        parent::__construct();
         $this->init();
     }
 
@@ -88,18 +82,26 @@ class BackendLayoutWizardController
             throw new \InvalidArgumentException('Hmac Validation failed for backend_layout wizard', 1385811397);
         }
         $uid = (int)$this->P['uid'];
-        // Initialize document object:
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadExtJS();
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/grideditor.js');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend')
+            . 'Resources/Public/JavaScript/grideditor.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', array(
-            'tx_cshmanual_help_cshmanualcshmanual' => array(
-                'controller' => 'Help',
-                'action' => 'detail'
+        $pageRenderer->addInlineSetting(
+            'ContextHelp',
+            'moduleUrl',
+            BackendUtility::getModuleUrl(
+                'help_CshmanualCshmanual',
+                array (
+                    'tx_cshmanual_help_cshmanualcshmanual' => array (
+                        'controller' => 'Help',
+                        'action' => 'detail'
+                    )
+                )
             )
-        )));
+        );
         $pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {
@@ -122,7 +124,11 @@ class BackendLayoutWizardController
         );
         $pageRenderer->addInlineLanguageLabelArray($languageLabels);
         // Select record
-        $record = $this->getDatabaseConnection()->exec_SELECTgetRows($this->P['field'], $this->P['table'], 'uid=' . (int)$this->P['uid']);
+        $record = $this->getDatabaseConnection()->exec_SELECTgetRows(
+            $this->P['field'],
+            $this->P['table'],
+            'uid=' . (int)$this->P['uid']
+        );
         if (trim($record[0][$this->P['field']]) == '') {
             $rows = array(array(array('colspan' => 1, 'rowspan' => 1, 'spanned' => false, 'name' => '')));
             $colCount = 1;
@@ -202,7 +208,9 @@ class BackendLayoutWizardController
 			});
 			t3Grid.drawTable();
 			');
-        $this->doc->styleSheetFile_post = ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Css/grideditor.css';
+
+        $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('backend')
+            . 'Resources/Public/Css/grideditor.css');
     }
 
     /**
@@ -216,8 +224,37 @@ class BackendLayoutWizardController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
-        $response->getBody()->write($this->doc->render('Grid wizard', $this->content));
+
+        $this->setPagePath($this->P['table'], $this->P['uid']);
+
+
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
+    }
+
+
+    /**
+     * Creates the correct path to the current record
+     *
+     * @param string $table
+     * @param int $uid
+     */
+    protected function setPagePath($table, $uid)
+    {
+        $uid = (int)$uid;
+
+        if ($table === 'pages') {
+            $pageId = $uid;
+        } else {
+            $record = BackendUtility::getRecord($table, $uid, '*', '', false);
+            $pageId = $record['pid'];
+        }
+
+        $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(1));
+        if (is_array($pageAccess)) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageAccess);
+        }
     }
 
     /**
@@ -227,15 +264,42 @@ class BackendLayoutWizardController
      */
     public function main()
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
-        $resourcePath = ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/BackendLayoutWizard/';
-        $content = '<a href="#" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '" onclick="storeData(t3Grid.export2LayoutRecord());return true;">' . $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</a>';
-        $content .= '<a href="#" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '" onclick="storeData(t3Grid.export2LayoutRecord());window.close();return true;">' . $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render() . '</a>';
-        $content .= '<a href="#" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true) . '" onclick="window.close();return true;">' . $iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
-        $content .= $this->doc->spacer(10);
-        $content .= '
+
+        $resourcePath = ExtensionManagementUtility::extRelPath('backend')
+            . 'Resources/Public/Images/BackendLayoutWizard/';
+
+        $saveButton = $buttonBar->makeInputButton()
+            ->setName('_savedok')
+            ->setValue('1')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+            ->setOnClick('storeData(t3Grid.export2LayoutRecord());return true;')
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+
+        $saveAndCloseButton = $buttonBar->makeInputButton()
+            ->setName('_savedokandclose')
+            ->setValue('1')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+            ->setOnClick('storeData(t3Grid.export2LayoutRecord());window.close();return true;')
+            ->setIcon(
+                $this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+            );
+
+        $splitButton = $buttonBar->makeSplitButton()
+            ->addItem($saveButton)
+            ->addItem($saveAndCloseButton);
+        $buttonBar->addButton($splitButton);
+
+        $closeButton = $buttonBar->makeLinkButton()
+            ->setHref('#')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+            ->setOnClick('window.close();return true;')
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
+        $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
+
+
+        $this->content .= '
 		<table border="0" width="90%" height="90%" id="outer_container">
 			<tr>
 				<td class="editor_cell">
@@ -263,19 +327,6 @@ class BackendLayoutWizardController
 			</tr>
 		</table>
 		';
-        $this->content = $content;
-    }
-
-    /**
-     * Returns the sourcecode to the browser
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->doc->render('Grid wizard', $this->content);
     }
 
     /**
@@ -296,5 +347,15 @@ class BackendLayoutWizardController
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * Gets the current backend user.
+     *
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
