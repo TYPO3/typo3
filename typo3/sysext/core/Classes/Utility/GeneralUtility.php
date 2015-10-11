@@ -141,7 +141,13 @@ class GeneralUtility
         if (empty($var)) {
             return;
         }
-        $value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
+        if (isset($_POST[$var])) {
+            $value = $_POST[$var];
+        } elseif (isset($_GET[$var])) {
+            $value = $_GET[$var];
+        } else {
+            $value = null;
+        }
         // This is there for backwards-compatibility, in order to avoid NULL
         if (isset($value) && !is_array($value)) {
             $value = (string)$value;
@@ -959,7 +965,7 @@ class GeneralUtility
         }
         // @todo find out which locale is used for current BE user to cover the BE case as well
         $oldLocale = setlocale(LC_NUMERIC, 0);
-        $newLocale = is_object($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
+        $newLocale = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
         if ($newLocale) {
             setlocale(LC_NUMERIC, $newLocale);
         }
@@ -3469,8 +3475,9 @@ Connection: close
                 }
                 break;
             case 'HTTP_HOST':
-                $retVal = $_SERVER['HTTP_HOST'];
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
+                // if it is not set we're most likely on the cli
+                $retVal = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+                if (isset($_SERVER['REMOTE_ADDR']) && static::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
                     $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
                     // Choose which host in list to use
                     if (!empty($host)) {

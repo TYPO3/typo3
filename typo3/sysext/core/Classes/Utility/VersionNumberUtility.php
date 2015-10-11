@@ -28,7 +28,15 @@ class VersionNumberUtility
     public static function convertVersionNumberToInteger($versionNumber)
     {
         $versionParts = explode('.', $versionNumber);
-        return (int)(((int)$versionParts[0] . str_pad((int)$versionParts[1], 3, '0', STR_PAD_LEFT)) . str_pad((int)$versionParts[2], 3, '0', STR_PAD_LEFT));
+        $version = $versionParts[0];
+        for ($i = 1; $i < 3; $i++) {
+            if (!empty($versionParts[$i])) {
+                $version .= str_pad((int)$versionParts[$i], 3, '0', STR_PAD_LEFT);
+            } else {
+                $version .= '000';
+            }
+        }
+        return (int)$version;
     }
 
     /**

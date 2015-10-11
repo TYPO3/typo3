@@ -35,8 +35,8 @@ class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '"1" -> 1' => array('1', 1),
             '1 -> 1' => array(1, 1),
             '1.1 -> 1' => array(1.1, 1),
-            '1+E42 -> 1' => array(1+E42, 1),
-            'a -> 0' => array(a, 0),
+            '1+E42 -> 1' => array(1+'E42', 1),
+            'a -> 0' => array('a', 0),
             'a42 -> 0' => array('a42', 0),
             '-100.00 -> -100' => array(-100.00, -100),
         );

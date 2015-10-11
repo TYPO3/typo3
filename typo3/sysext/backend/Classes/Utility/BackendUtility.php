@@ -81,7 +81,7 @@ class BackendUtility
      */
     public static function deleteClause($table, $tableAlias = '')
     {
-        if ($GLOBALS['TCA'][$table]['ctrl']['delete']) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
             return ' AND ' . ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
         } else {
             return '';
@@ -1963,10 +1963,10 @@ class BackendUtility
             if ($table == 'pages' && $row['alias']) {
                 $out .= ' / ' . $row['alias'];
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $row['pid'] < 0) {
+            if (static::isTableWorkspaceEnabled($table) && $row['pid'] < 0) {
                 $out .= ' - v#1.' . $row['t3ver_id'];
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if (static::isTableWorkspaceEnabled($table)) {
                 switch (VersionState::cast($row['t3ver_state'])) {
                     case new VersionState(VersionState::NEW_PLACEHOLDER):
                         $out .= ' - PLH WSID#' . $row['t3ver_wsid'];
@@ -2629,7 +2629,7 @@ class BackendUtility
                 $fields[] = $prefix . $fieldN;
             }
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (static::isTableWorkspaceEnabled($table)) {
             $fields[] = $prefix . 't3ver_id';
             $fields[] = $prefix . 't3ver_state';
             $fields[] = $prefix . 't3ver_wsid';
@@ -4224,7 +4224,7 @@ class BackendUtility
     {
         $realPid = 0;
         $outputRows = array();
-        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             if (is_array($row) && !$includeDeletedRecords) {
                 $row['_CURRENT_VERSION'] = true;
                 $realPid = $row['pid'];
@@ -4294,7 +4294,7 @@ class BackendUtility
             return;
         }
         // Check that the input record is an offline version from a table that supports versioning:
-        if (is_array($rr) && $rr['pid'] == -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (is_array($rr) && $rr['pid'] == -1 && static::isTableWorkspaceEnabled($table)) {
             // Check values for t3ver_oid and t3ver_wsid:
             if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
                 // If "t3ver_oid" is already a field, just set this:
@@ -4376,7 +4376,7 @@ class BackendUtility
             // If version was found, swap the default record with that one.
             if (is_array($wsAlt)) {
                 // Check if this is in move-state:
-                if ($previewMovePlaceholders && !$movePldSwap && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $unsetMovePointers) {
+                if ($previewMovePlaceholders && !$movePldSwap && static::isTableWorkspaceEnabled($table) && $unsetMovePointers) {
                     // Only for WS ver 2... (moving)
                     // If t3ver_state is not found, then find it... (but we like best if it is here...)
                     if (!isset($wsAlt['t3ver_state'])) {
@@ -4428,7 +4428,7 @@ class BackendUtility
      */
     public static function movePlhOL($table, &$row)
     {
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (static::isTableWorkspaceEnabled($table)) {
             // If t3ver_move_id or t3ver_state is not found, then find it... (but we like best if it is here...)
             if (!isset($row['t3ver_move_id']) || !isset($row['t3ver_state'])) {
                 $moveIDRec = self::getRecord($table, $row['uid'], 't3ver_move_id, t3ver_state');
@@ -4461,7 +4461,7 @@ class BackendUtility
     public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*')
     {
         if (ExtensionManagementUtility::isLoaded('version')) {
-            if ($workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if ($workspace !== 0 && $GLOBALS['TCA'][$table] && self::isTableWorkspaceEnabled($table)) {
                 // Select workspace version of record:
                 $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . (int)$uid . ' AND ' . 't3ver_wsid=' . (int)$workspace . self::deleteClause($table));
                 if (is_array($row)) {
@@ -4517,7 +4517,7 @@ class BackendUtility
      */
     public static function versioningPlaceholderClause($table)
     {
-        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             $currentWorkspace = (int)static::getBackendUserAuthentication()->workspace;
             return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
         }
@@ -4621,7 +4621,7 @@ class BackendUtility
         if ($workspace === null) {
             $workspace = static::getBackendUserAuthentication()->workspace;
         }
-        if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
             // Select workspace version of record:
             $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
                 $fields,

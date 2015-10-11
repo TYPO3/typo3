@@ -122,9 +122,11 @@ class ClassLoadingInformationGenerator
             $finalAutoloadSection = $autoloadDefinition[$section];
         }
         if ($this->isDevMode) {
-            $autoloadDefinitionDev = json_decode(json_encode($manifest->{'autoload-dev'}), true);
-            if (!empty($autoloadDefinitionDev[$section]) && is_array($autoloadDefinitionDev[$section])) {
-                $finalAutoloadSection = array_merge($finalAutoloadSection, $autoloadDefinitionDev[$section]);
+            if (isset($manifest->{'autoload-dev'})) {
+                $autoloadDefinitionDev = json_decode(json_encode($manifest->{'autoload-dev'}), true);
+                if (!empty($autoloadDefinitionDev[$section]) && is_array($autoloadDefinitionDev[$section])) {
+                    $finalAutoloadSection = array_merge($finalAutoloadSection, $autoloadDefinitionDev[$section]);
+                }
             }
         }
 

@@ -1050,7 +1050,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             return array(
                 'scope' => $this->testTableName,
                 'data' => array(
-                    'pid' => 999
+                    'pid' => 999,
+                    'uid' => 998
                 )
             );
         } else {

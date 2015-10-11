@@ -33,6 +33,7 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             array('4003003', '4.3.3'),
             array('4012003', '4.12.3'),
             array('5000000', '5.0.0'),
+            array('5000001', '5.0.1'),
             array('3008001', '3.8.1'),
             array('1012', '0.1.12')
         );

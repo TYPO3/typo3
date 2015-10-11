@@ -80,9 +80,9 @@ class NoneElement extends AbstractFormElement
         switch ($format) {
             case 'date':
                 if ($itemValue) {
-                    $option = trim($config['format.']['option']);
+                    $option = isset($config['format.']['option']) ? trim($config['format.']['option']) : '';
                     if ($option) {
-                        if ($config['format.']['strftime']) {
+                        if (isset($config['format.']['strftime']) && $config['format.']['strftime']) {
                             $value = strftime($option, $itemValue);
                         } else {
                             $value = date($option, $itemValue);
@@ -93,7 +93,7 @@ class NoneElement extends AbstractFormElement
                 } else {
                     $value = '';
                 }
-                if ($config['format.']['appendAge']) {
+                if (isset($config['format.']['appendAge']) && $config['format.']['appendAge']) {
                     $age = BackendUtility::calcAge(
                         $GLOBALS['EXEC_TIME'] - $itemValue,
                         $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
@@ -128,16 +128,20 @@ class NoneElement extends AbstractFormElement
                 break;
             case 'int':
                 $baseArr = array('dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b');
-                $base = trim($config['format.']['base']);
-                $format = $baseArr[$base] ?: 'd';
+                $base = isset($config['format.']['base']) ? trim($config['format.']['base']) : '';
+                $format = isset($baseArr[$base]) ? $baseArr[$base] : 'd';
                 $itemValue = sprintf('%' . $format, $itemValue);
                 break;
             case 'float':
-                $precision = MathUtility::forceIntegerInRange($config['format.']['precision'], 1, 10, 2);
+                // default precision
+                $precision = 2;
+                if (isset($config['format.']['precision'])) {
+                    $precision = MathUtility::forceIntegerInRange($config['format.']['precision'], 1, 10, $precision);
+                }
                 $itemValue = sprintf('%.' . $precision . 'f', $itemValue);
                 break;
             case 'number':
-                $format = trim($config['format.']['option']);
+                $format = isset($config['format.']['option']) ? trim($config['format.']['option']) : '';
                 $itemValue = sprintf('%' . $format, $itemValue);
                 break;
             case 'md5':
@@ -147,7 +151,7 @@ class NoneElement extends AbstractFormElement
                 // We need to cast to int here, otherwise empty values result in empty output,
                 // but we expect zero.
                 $value = GeneralUtility::formatSize((int)$itemValue);
-                if ($config['format.']['appendByteSize']) {
+                if (!empty($config['format.']['appendByteSize'])) {
                     $value .= ' (' . $itemValue . ')';
                 }
                 $itemValue = $value;
