@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
@@ -52,6 +53,7 @@ class EditController extends AbstractWizardController
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
@@ -87,7 +89,8 @@ class EditController extends AbstractWizardController
 
     /**
      * Main function
-     * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will just close.
+     * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will
+     * just close.
      *
      * @return string
      */
@@ -107,13 +110,25 @@ class EditController extends AbstractWizardController
         );
 
         // Detecting the various allowed field type setups and acting accordingly.
-        if (is_array($config) && $config['type'] === 'select' && !$config['MM'] && $config['maxitems'] <= 1 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['currentValue']) && $this->P['currentValue'] && $fTable) {
+        if (is_array($config)
+            && $config['type'] === 'select'
+            && !$config['MM']
+            && $config['maxitems'] <= 1 && MathUtility::canBeInterpretedAsInteger($this->P['currentValue'])
+            && $this->P['currentValue'] && $fTable
+        ) {
             // SINGLE value
             $urlParameters['edit[' . $fTable . '][' . $this->P['currentValue'] . ']'] = 'edit';
             // Redirect to FormEngine
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             HttpUtility::redirect($url);
-        } elseif (is_array($config) && $this->P['currentSelectedValues'] && ($config['type'] === 'select' && $config['foreign_table'] || $config['type'] === 'group' && $config['internal_type'] === 'db')) {
+        } elseif (is_array($config)
+            && $this->P['currentSelectedValues']
+            && ($config['type'] === 'select'
+                && $config['foreign_table']
+                || $config['type'] === 'group'
+                && $config['internal_type'] === 'db'
+            )
+        ) {
             // MULTIPLE VALUES:
             // Init settings:
             $allowedTables = $config['type'] === 'group' ? $config['allowed'] : $config['foreign_table'];
