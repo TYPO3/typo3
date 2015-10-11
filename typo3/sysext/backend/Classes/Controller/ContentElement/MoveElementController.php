@@ -16,15 +16,17 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
+use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for rendering the move-element wizard display
  */
-class MoveElementController
+class MoveElementController extends AbstractModule
 {
     /**
      * @var int
@@ -62,13 +64,6 @@ class MoveElementController
     public $makeCopy;
 
     /**
-     * Document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * Pages-select clause
      *
      * @var string
@@ -83,15 +78,11 @@ class MoveElementController
     public $content;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
         $GLOBALS['SOBE'] = $this;
         $this->init();
@@ -114,14 +105,7 @@ class MoveElementController
         $this->makeCopy = GeneralUtility::_GP('makeCopy');
         // Select-pages where clause for read-access:
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
-        // Starting the document template object:
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/move_el.html');
-        $this->doc->JScode = '';
-        // Starting document content (header):
-        $this->content = '';
-        $this->content .= $this->doc->header($this->getLanguageService()->getLL('movingElement'));
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->content = '<h1>' . $this->getLanguageService()->getLL('movingElement') . '</h1>';
     }
 
     /**
@@ -136,7 +120,8 @@ class MoveElementController
     {
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -153,16 +138,13 @@ class MoveElementController
             // Get record for element:
             $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
             // Headerline: Icon, record title:
-            $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($elRow, $this->table) . '">' . $this->iconFactory->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
+            $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($elRow, $this->table) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
             $headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-            $headerLine .= $this->doc->spacer(5);
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . ';';
-            $headerLine .= $this->doc->spacer(5);
             $headerLine .= '<input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $lang->getLL('makeCopy', 1) . '</label>';
             // Add the header-content to the module content:
-            $this->content .= $this->doc->section('', $headerLine, false, true);
-            $this->content .= $this->doc->spacer(20);
+            $this->content .= $this->moduleTemplate->section('', $headerLine, false, true);
             // Reset variable to pick up the module content in:
             $code = '';
             // IF the table is "pages":
@@ -171,16 +153,16 @@ class MoveElementController
                 $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
                 if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
                     // Initialize the position map:
-                    $posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap::class);
+                    $posMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
                     if ($pageInfo['pid']) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
                             } else {
-                                $code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
+                                $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
                             }
                         }
                     }
@@ -200,11 +182,16 @@ class MoveElementController
                 $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
                 if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
                     // Initialize the position map:
-                    $posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap::class);
+                    $posMap = GeneralUtility::makeInstance(ContentMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
                     $posMap->cur_sys_language = $this->sys_language;
                     // Headerline for the parent page: Icon, record title:
-                    $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($pageInfo, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $pageInfo, Icon::SIZE_SMALL)->render() . '</span>';
+                    $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($pageInfo, 'pages') . '">'
+                        . $this->moduleTemplate->getIconFactory()->getIconForRecord(
+                            'pages',
+                            $pageInfo,
+                            Icon::SIZE_SMALL
+                        )->render() . '</span>';
                     $headerLine .= BackendUtility::getRecordTitle('pages', $pageInfo, true);
                     // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
                     // SHARED page-TSconfig settings.
@@ -228,9 +215,9 @@ class MoveElementController
                                 $code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
                                     'uid' => (int)$pageInfo['pid'],
                                     'moveUid' => $this->moveUid
-                                ))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
+                                ))) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '</a><br />';
                             } else {
-                                $code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
+                                $code .= $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, true) . '<br />';
                             }
                         }
                     }
@@ -239,17 +226,17 @@ class MoveElementController
                 }
             }
             // Add the $code content as a new section to the module:
-            $this->content .= $this->doc->section($lang->getLL('selectPositionOfElement'), $code, false, true);
+            $this->content .= $this->moduleTemplate->section(
+                $lang->getLL('selectPositionOfElement'),
+                $code,
+                false,
+                true
+            );
         }
         // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['CONTENT'] = $this->content;
+        $this->getButtons();
         // Build the <body> for the module
-        $this->content = $this->doc->startPage($lang->getLL('movingElement'));
-        $this->content .= $this->doc->moduleBody($pageInfo, $docHeaderButtons, $markers);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+        $this->moduleTemplate->setTitle($lang->getLL('movingElement'));
     }
 
     /**
@@ -266,26 +253,34 @@ class MoveElementController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'csh' => '',
-            'back' => ''
-        );
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
             if ((string)$this->table == 'pages') {
-                $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages');
+                $cshButton = $buttonBar->makeHelpButton()
+                    ->setModuleName('xMOD_csh_corebe')
+                    ->setFieldName('move_el_pages');
+                $buttonBar->addButton($cshButton);
             } elseif ((string)$this->table == 'tt_content') {
-                $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs');
+                $cshButton = $buttonBar->makeHelpButton()
+                    ->setModuleName('xMOD_csh_corebe')
+                    ->setFieldName('move_el_cs');
+                $buttonBar->addButton($cshButton);
             }
+
             if ($this->R_URI) {
-                $buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+                $backButton = $buttonBar->makeLinkButton()
+                    ->setHref($this->R_URI)
+                    ->setTitle($this->getLanguageService()->getLL('goBack', true))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                        'actions-view-go-back',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($backButton);
             }
         }
-        return $buttons;
     }
 
     /**
