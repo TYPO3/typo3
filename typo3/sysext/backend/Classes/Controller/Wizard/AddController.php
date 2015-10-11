@@ -86,6 +86,7 @@ class AddController extends AbstractWizardController
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
@@ -107,7 +108,10 @@ class AddController extends AbstractWizardController
         // Set table:
         $this->table = $this->P['params']['table'];
         // Get TSconfig for it.
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig($this->P['table'], is_array($record) ? $record : array('pid' => $this->P['pid']));
+        $TSconfig = BackendUtility::getTCEFORM_TSconfig(
+            $this->P['table'],
+            is_array($record) ? $record : array('pid' => $this->P['pid'])
+        );
         // Set [params][pid]
         if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
             $keyword = substr($this->P['params']['pid'], 3, -3);
@@ -132,8 +136,14 @@ class AddController extends AbstractWizardController
                 reset($editConfiguration[$this->table]);
                 $this->id = (int)key($editConfiguration[$this->table]);
                 $cmd = current($editConfiguration[$this->table]);
-                // ... and if everything seems OK we will register some classes for inclusion and instruct the object to perform processing later.
-                if ($this->P['params']['setValue'] && $cmd === 'edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid']) {
+                // ... and if everything seems OK we will register some classes for inclusion and instruct the object
+                // to perform processing later.
+                if ($this->P['params']['setValue']
+                    && $cmd === 'edit'
+                    && $this->id
+                    && $this->P['table']
+                    && $this->P['field'] && $this->P['uid']
+                ) {
                     $liveRecord = BackendUtility::getLiveVersionOfRecord($this->table, $this->id, 'uid');
                     if ($liveRecord) {
                         $this->id = $liveRecord['uid'];
@@ -168,7 +178,6 @@ class AddController extends AbstractWizardController
     {
         if ($this->returnEditConf) {
             if ($this->processDataFlag) {
-
                 // This data processing is done here to basically just get the current record. It can be discussed
                 // if this isn't overkill here. In case this construct does not work out well, it would be less
                 // overhead to just BackendUtility::fetchRecord the current parent here.
@@ -185,7 +194,8 @@ class AddController extends AbstractWizardController
                 $result = $formDataCompiler->compile($input);
                 $currentParentRow = $result['databaseRow'];
 
-                // If that record was found (should absolutely be...), then init DataHandler and set, prepend or append the record
+                // If that record was found (should absolutely be...), then init DataHandler and set, prepend or append
+                // the record
                 if (is_array($currentParentRow)) {
                     /** @var DataHandler $dataHandler */
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -199,7 +209,10 @@ class AddController extends AbstractWizardController
                         $currentFlexFormData = GeneralUtility::xml2array($currentParentRow[$this->P['field']]);
                         /** @var FlexFormTools $flexFormTools */
                         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                        $currentFlexFormValue = $flexFormTools->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
+                        $currentFlexFormValue = $flexFormTools->getArrayValueByPath(
+                            $this->P['flexFormPath'],
+                            $currentFlexFormData
+                        );
                         $insertValue = '';
                         switch ((string)$this->P['params']['setValue']) {
                             case 'set':
@@ -214,7 +227,11 @@ class AddController extends AbstractWizardController
                         }
                         $insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, true));
                         $data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
-                        $flexFormTools->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
+                        $flexFormTools->setArrayValueByPath(
+                            $this->P['flexFormPath'],
+                            $data[$this->P['table']][$this->P['uid']][$this->P['field']],
+                            $insertValue
+                        );
                     } else {
                         switch ((string)$this->P['params']['setValue']) {
                             case 'set':
@@ -227,7 +244,14 @@ class AddController extends AbstractWizardController
                                 $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentParentRow[$this->P['field']];
                                 break;
                         }
-                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], true));
+                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(
+                            ',',
+                            GeneralUtility::trimExplode(
+                                ',',
+                                $data[$this->P['table']][$this->P['uid']][$this->P['field']],
+                                true
+                            )
+                        );
                     }
                     // Submit the data:
                     $dataHandler->start($data, array());
