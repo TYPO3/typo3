@@ -43,7 +43,7 @@ class HelpButton implements ButtonInterface, PositionInterface
     /**
      * @var string
      */
-    protected $fieldName;
+    protected $fieldName = '';
 
     /**
      * Gets the name of the module.
@@ -127,10 +127,7 @@ class HelpButton implements ButtonInterface, PositionInterface
      */
     public function isValid()
     {
-        return (
-            !empty($this->moduleName)
-            && !empty($this->fieldName)
-        );
+        return (!empty($this->moduleName));
     }
 
     /**
