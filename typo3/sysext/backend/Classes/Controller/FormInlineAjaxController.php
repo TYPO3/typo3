@@ -190,23 +190,6 @@ class FormInlineAjaxController
                 ];
                 $childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput);
             }
-        } elseif ($parentConfig['foreign_selector'] && $childChildUid) {
-            // @todo: Setting these values here is too late, it should happen before single fields are
-            // @todo: prepared in $childData. Otherwise fields that use this relation like for instance
-            // @todo: the placeholder relation does not work for "fresh" children. This stuff here
-            // @todo: probably needs to be moved somewhere after "initializeNew" data provider.
-            // There is an existing child-child, but it should not be rendered directly since useCombination
-            // is off. Still, the intermediate record must point to the child table
-            if ($childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['type'] === 'select') {
-                $childData['databaseRow'][$parentConfig['foreign_selector']] = [
-                    $childChildUid,
-                ];
-            }
-            // This is the case for fal, uid_local is a group field in sys_file_reference
-            if ($childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['type'] === 'group') {
-                $childData['databaseRow'][$parentConfig['foreign_selector']]
-                    = $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['allowed'] . '_' . $childChildUid;
-            }
         }
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
