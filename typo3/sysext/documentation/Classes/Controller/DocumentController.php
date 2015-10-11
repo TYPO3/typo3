@@ -73,37 +73,41 @@ class DocumentController extends ActionController
      */
     protected function initializeView(ViewInterface $view)
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
+        if ($view instanceof BackendTemplateView) {
+            /** @var BackendTemplateView $view */
+            parent::initializeView($view);
+            $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+            $uriBuilder = $this->objectManager->get(UriBuilder::class);
+            $uriBuilder->setRequest($this->request);
 
-        $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Documentation/Main');
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('DocumentationModuleMenu');
+            $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Documentation/Main');
+            $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+            $menu->setIdentifier('DocumentationModuleMenu');
 
-        $isListActive = $this->request->getControllerActionName() === 'list' ? true : false;
-        $uri = $uriBuilder->reset()->uriFor('list', array(), 'Document');
-        $listMenuItem = $menu->makeMenuItem()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:showDocumentation'))
-            ->setHref($uri)
-            ->setActive($isListActive);
-        $menu->addMenuItem($listMenuItem);
-
-        if ($this->getBackendUser()->isAdmin()) {
-            $isDownloadActive = $this->request->getControllerActionName() ===
-            'download' ? true : false;
-            $uri =
-                $uriBuilder->reset()->uriFor('download', array(), 'Document');
-            $downloadMenuItem = $menu->makeMenuItem()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:downloadDocumentation'))
+            $isListActive = $this->request->getControllerActionName() === 'list' ? true : false;
+            $uri = $uriBuilder->reset()->uriFor('list', array(), 'Document');
+            $listMenuItem = $menu->makeMenuItem()
+                ->setTitle($this->getLanguageService()
+                    ->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:showDocumentation'))
                 ->setHref($uri)
-                ->setActive($isDownloadActive);
-            $menu->addMenuItem($downloadMenuItem);
-        }
+                ->setActive($isListActive);
+            $menu->addMenuItem($listMenuItem);
 
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+            if ($this->getBackendUser()->isAdmin()) {
+                $isDownloadActive = $this->request->getControllerActionName() ===
+                'download' ? true : false;
+                $uri =
+                    $uriBuilder->reset()->uriFor('download', array(), 'Document');
+                $downloadMenuItem = $menu->makeMenuItem()
+                    ->setTitle($this->getLanguageService()
+                        ->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:downloadDocumentation'))
+                    ->setHref($uri)
+                    ->setActive($isDownloadActive);
+                $menu->addMenuItem($downloadMenuItem);
+            }
+
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        }
     }
 
     /**
