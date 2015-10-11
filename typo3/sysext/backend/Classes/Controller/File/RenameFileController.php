@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,15 +24,8 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Script Class for the rename-file form.
  */
-class RenameFileController
+class RenameFileController extends AbstractModule
 {
-    /**
-     * Document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @internal
-     */
-    public $doc;
 
     /**
      * Name of the filemount
@@ -72,17 +65,12 @@ class RenameFileController
     public $content;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $GLOBALS['SOBE'] = $this;
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->init();
     }
 
@@ -117,20 +105,27 @@ class RenameFileController
             $parsedUrl = parse_url($this->returnUrl);
             $queryParts = GeneralUtility::explodeUrl2Array(urldecode($parsedUrl['query']));
             if ($queryParts['id'] === $this->fileOrFolderObject->getCombinedIdentifier()) {
-                $this->returnUrl = str_replace(urlencode($queryParts['id']), urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()), $this->returnUrl);
+                $this->returnUrl = str_replace(urlencode($queryParts['id']),
+                    urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()),
+                    $this->returnUrl);
             }
         }
-        // Setting icon and title
-        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
-        $this->title = $icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
-        // Setting template object
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_rename.html');
-        $this->doc->JScode = $this->doc->wrapScriptTags('
-			function backToList() {
-				top.goToModule("file_FilelistList");
-			}
-		');
+
+        // building pathInfo for metaInformation
+        $pathInfo = [
+            'combined_identifier' => $this->fileOrFolderObject->getCombinedIdentifier(),
+        ];
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+
+        // Setting up the context sensitive menu
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+
+        // Add javaScript
+        $this->moduleTemplate->addJavaScriptCode(
+            'RenameFileInlineJavaScript',
+            'function backToList() {top.goToModule("file_FilelistList");}'
+        );
+
     }
 
     /**
@@ -140,15 +135,12 @@ class RenameFileController
      */
     public function main()
     {
-        // Make page header:
-        $this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
-        $pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
         if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
             $fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
         } else {
             $fileIdentifier = $this->fileOrFolderObject->getUid();
         }
-        $pageContent .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" role="form">';
+        $pageContent = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" role="form">';
         // Making the formfields for renaming:
         $pageContent .= '
 
@@ -160,30 +152,40 @@ class RenameFileController
         // Making submit button:
         $pageContent .= '
 			<div class="form-group">
-				<input class="btn btn-primary" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', true) . '" />
-				<input class="btn btn-danger" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true) . '" onclick="backToList(); return false;" />
+				<input class="btn btn-primary" type="submit" value="' .
+                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', true) . '" />
+				<input class="btn btn-danger" type="submit" value="' .
+                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true) .
+                '" onclick="backToList(); return false;" />
 				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 			</div>
 		';
         $pageContent .= '</form>';
-        $docHeaderButtons = array(
-            'back' => ''
-        );
-        $docHeaderButtons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_rename');
-        // Back
+
+        // Create buttons
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        // csh button
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('file_rename');
+        $buttonBar->addButton($cshButton);
+
+        // back button
         if ($this->returnUrl) {
-            $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+            $backButton = $buttonBar->makeLinkButton()
+                ->sethref(GeneralUtility::linkThisUrl($this->returnUrl))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton);
         }
-        // Add the HTML as a section:
-        $markerArray = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => '',
-            'CONTENT' => $pageContent,
-            'PATH' => $this->title
-        );
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+
+        // set header
+        $this->content = '<h1>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle') . '</h1>';
+
+        // add section
+        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -196,21 +198,8 @@ class RenameFileController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
-
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /**
