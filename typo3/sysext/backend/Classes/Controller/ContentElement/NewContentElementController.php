@@ -16,18 +16,23 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Script Class for the New Content element wizard
  */
-class NewContentElementController
+class NewContentElementController extends AbstractModule
 {
     /**
      * Page id
@@ -72,7 +77,7 @@ class NewContentElementController
     /**
      * Internal backend template object
      *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @var DocumentTemplate
      */
     public $doc;
 
@@ -118,15 +123,11 @@ class NewContentElementController
     protected $MCONF;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $GLOBALS['SOBE'] = $this;
         $this->init();
     }
@@ -142,7 +143,7 @@ class NewContentElementController
         $lang->includeLLFile('EXT:lang/locallang_misc.xlf');
         $LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
         $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
+        ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
         $GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
 
         // Setting internal vars:
@@ -156,18 +157,17 @@ class NewContentElementController
         $config = BackendUtility::getPagesTSconfig($this->id);
         $this->config = $config['mod.']['wizards.']['newContentElement.'];
         // Starting the document template object:
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new_content_el.html');
-        $this->doc->JScode = '';
-        $this->doc->form = '<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
+        // We keep this here in case somebody relies on it in a hook or alike
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->moduleTemplate->setForm(
+            '<form action="" name="editForm"><input type="hidden" name="defValues" value="" />'
+        );
         // Setting up the context sensitive menu:
-        $this->doc->getContextMenuCode();
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         // Getting the current page and receiving access information (used in main())
         $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $this->access = is_array($this->pageInfo) ? 1 : 0;
-
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -181,14 +181,15 @@ class NewContentElementController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
-
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
     /**
      * Creating the module output.
      *
+     * @throws \UnexpectedValueException
      * @return void
      */
     public function main()
@@ -206,14 +207,20 @@ class NewContentElementController
                 } else {
                     $row = '';
                 }
-                $this->onClickEvent = $posMap->onClickInsertRecord($row, $this->colPos, '', $this->uid_pid, $this->sys_language);
+                $this->onClickEvent = $posMap->onClickInsertRecord(
+                    $row,
+                    $this->colPos,
+                    '',
+                    $this->uid_pid,
+                    $this->sys_language
+                );
             } else {
                 $this->onClickEvent = '';
             }
             // ***************************
             // Creating content
             // ***************************
-            $this->content .= $this->doc->header($lang->getLL('newContentElement'));
+            $this->content .= '<h1>' . $lang->getLL('newContentElement') . '</h1>';
             // Wizard
             $wizardItems = $this->wizardArray();
             // Wrapper for wizards
@@ -222,14 +229,19 @@ class NewContentElementController
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
                     $hookObject = GeneralUtility::getUserObj($classData);
-                    if (!$hookObject instanceof \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface) {
-                        throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface::class, 1227834741);
+                    if (!$hookObject instanceof NewContentElementWizardHookInterface) {
+                        throw new \UnexpectedValueException(
+                            '$hookObject must implement interface ' . NewContentElementWizardHookInterface::class,
+                            1227834741
+                        );
                     }
                     $hookObject->manipulateWizardItems($wizardItems, $this);
                 }
             }
             // Add document inline javascript
-            $this->doc->JScode = $this->doc->wrapScriptTags('
+            $this->moduleTemplate->addJavaScriptCode(
+                'NewContentElementWizardInlineJavascript',
+                '
 				function goToalt_doc() {	//
 					' . $this->onClickEvent . '
 				}
@@ -238,8 +250,8 @@ class NewContentElementController
 					top.refreshMenu();
 				} else {
 					top.TYPO3ModuleMenu.refreshMenu();
-				}
-			');
+				}'
+            );
 
             $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
@@ -271,8 +283,7 @@ class NewContentElementController
                         GeneralUtility::deprecationLog('The PageTS-Config: mod.wizards.newContentElement.wizardItems.*.elements.*.icon'
                             . ' is deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.'
                             . ' Register your icon in IconRegistry::registerIcon and use the new setting:'
-                            . ' mod.wizards.newContentElement.wizardItems.*.elements.*.iconIdentifier'
-                        );
+                            . ' mod.wizards.newContentElement.wizardItems.*.elements.*.iconIdentifier');
                         $wInfo['iconIdentifier'] = 'content-' . $k;
                         $icon = $wInfo['icon'];
                         if (StringUtility::beginsWith($icon, '../typo3conf/ext/')) {
@@ -285,7 +296,7 @@ class NewContentElementController
                             'source' => $icon
                         ));
                     }
-                    $icon = $this->iconFactory->getIcon($wInfo['iconIdentifier'])->render();
+                    $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
                     $menuItems[$key]['content'] .= '
 						<div class="media">
 							<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
@@ -308,73 +319,64 @@ class NewContentElementController
                 $menuItems[$key]['content'] .= $this->elementWrapper['section'][1];
             }
             // Add the wizard table to the content, wrapped in tabs
-            $code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->doc->getDynamicTabMenu($menuItems, 'new-content-element-wizard');
+            $code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->moduleTemplate->getDynamicTabMenu(
+                $menuItems,
+                'new-content-element-wizard'
+            );
 
-            $this->content .= $this->doc->section(!$this->onClickEvent ? $lang->getLL('1_selectType') : '', $code, 0, 1);
+            $this->content .= $this->moduleTemplate->section(
+                !$this->onClickEvent ? $lang->getLL('1_selectType') : '',
+                $code,
+                0,
+                1
+            );
             // If the user must also select a column:
             if (!$this->onClickEvent) {
                 // Add anchor "sel2"
-                $this->content .= $this->doc->section('', '<a name="sel2"></a>');
+                $this->content .= $this->moduleTemplate->section('', '<a name="sel2"></a>');
                 // Select position
                 $code = '<p>' . $lang->getLL('sel2', 1) . '</p>';
 
                 // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-                $colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
+                $colPosArray = GeneralUtility::callUserFunction(
+                    BackendLayoutView::class . '->getColPosListItemsParsed',
+                    $this->id,
+                    $this
+                );
                 $colPosIds = array_column($colPosArray, 1);
                 // Removing duplicates, if any
                 $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
                 // Finally, add the content of the column selector to the content:
                 $code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
-                $this->content .= $this->doc->section($lang->getLL('2_selectPosition'), $code, 0, 1);
+                $this->content .= $this->moduleTemplate->section($lang->getLL('2_selectPosition'), $code, 0, 1);
             }
         } else {
             // In case of no access:
             $this->content = '';
-            $this->content .= $this->doc->header($lang->getLL('newContentElement'));
-            $this->content .= $this->doc->spacer(5);
+            $this->content .= '<h1>' . $lang->getLL('newContentElement') . '</h1>';
         }
         // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['CONTENT'] = $this->content;
-        // Build the <body> for the module
-        $this->content = $this->doc->startPage($lang->getLL('newContentElement'));
-        $this->content .= $this->doc->moduleBody($this->pageInfo, $docHeaderButtons, $markers);
-        $this->content .= $this->doc->sectionEnd();
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-    }
-
-    /**
-     * Print out the accumulated content:
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
+        $this->getButtons();
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'csh' => '',
-            'back' => ''
-        );
-        if ($this->id && $this->access) {
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
-            if ($this->R_URI) {
-                $buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
-            }
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        if ($this->R_URI) {
+            $backButton = $buttonBar->makeLinkButton()
+                ->setHref($this->R_URI)
+                ->setTitle($this->getLanguageService()->getLL('goBack', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                    'actions-view-go-back',
+                    Icon::SIZE_SMALL
+                ));
+            $buttonBar->addButton($backButton);
         }
-        return $buttons;
+        $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_ce');
+        $buttonBar->addButton($cshButton);
     }
 
     /***************************
@@ -494,7 +496,8 @@ class NewContentElementController
 
     /**
      * Checks the array for elements which might contain unallowed default values and will unset them!
-     * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check.
+     * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname /
+     * value pairs and check.
      * The values will be added to the "params" key of the array (which should probably be unset or empty by default).
      *
      * @param array $wizardItems Wizard items, passed by reference
@@ -517,9 +520,7 @@ class NewContentElementController
                 // (in case remaining parameters are around).
                 if (is_array($tempGetVars['defVals']['tt_content'])) {
                     $wizardItems[$key]['tt_content_defValues'] = array_merge(
-                        is_array($wizardItems[$key]['tt_content_defValues'])
-                            ? $wizardItems[$key]['tt_content_defValues']
-                            : array(),
+                        is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(),
                         $tempGetVars['defVals']['tt_content']
                     );
                     unset($tempGetVars['defVals']['tt_content']);
@@ -538,10 +539,18 @@ class NewContentElementController
                             && !$backendUser->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
                         // explode TSconfig keys only as needed
                         if (!isset($removeItems[$fN])) {
-                            $removeItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['removeItems'], true);
+                            $removeItems[$fN] = GeneralUtility::trimExplode(
+                                ',',
+                                $TCEFORM_TSconfig[$fN]['removeItems'],
+                                true
+                            );
                         }
                         if (!isset($keepItems[$fN])) {
-                            $keepItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['keepItems'], true);
+                            $keepItems[$fN] = GeneralUtility::trimExplode(
+                                ',',
+                                $TCEFORM_TSconfig[$fN]['keepItems'],
+                                true
+                            );
                         }
                         $isNotInKeepItems = !empty($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
                         if ($authModeDeny || $fN === 'CType' && in_array($fV, $removeItems[$fN]) || $isNotInKeepItems) {

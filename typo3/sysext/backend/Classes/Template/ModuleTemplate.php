@@ -395,6 +395,57 @@ class ModuleTemplate
         }
     }
 
+    /**
+     * Creates a DYNAMIC tab-menu where the tabs or collapsible are rendered with bootstrap markup
+     *
+     * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label"
+     *                         contains the label for the TAB, "content" contains the HTML content that goes into the
+     *                         div-layer of the tabs content. "description" contains description text to be shown in the
+     *                         layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over
+     *                         text of tab). "stateIcon" indicates a standard status icon (see ->icon(),
+     *                         values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
+     * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
+     * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1
+     *                             (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing
+     *                             will result in no default tab open.
+     * @param bool $collapsible If set, the tabs are rendered as headers instead over each sheet. Effectively this means
+     *                          there is no tab menu, but rather a foldout/fold-in menu.
+     * @param bool $wrapContent If set, the content is wrapped in div structure which provides a padding and border
+     *                          style. Set this FALSE to get unstyled content pane with fullsize content area.
+     * @param bool $storeLastActiveTab If set, the last open tab is stored in local storage and will be re-open again.
+     *                                 If you don't need this feature, e.g. for wizards like import/export you can
+     *                                 disable this behaviour.
+     * @return string
+     */
+    public function getDynamicTabMenu(array $menuItems, $identString, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
+    {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
+        $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapsible ? 'Collapse.html' : 'Tabs.html');
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+        $view->assignMultiple(array(
+            'id' => $this->getDynTabMenuId($identString),
+            'items' => $menuItems,
+            'defaultTabIndex' => $defaultTabIndex,
+            'wrapContent' => $wrapContent,
+            'storeLastActiveTab' => $storeLastActiveTab,
+            'BACK_PATH' => $GLOBALS['BACK_PATH']
+        ));
+        return $view->render();
+    }
+
+    /**
+     * Creates the id for dynTabMenus.
+     *
+     * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
+     * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a
+     */
+    public function getDynTabMenuId($identString)
+    {
+        $id = 'DTM-' . GeneralUtility::shortMD5($identString);
+        return $id;
+    }
+
 
 
     /*******************************************
@@ -602,9 +653,8 @@ class ModuleTemplate
      */
     public function getVersionSelector($id, $noAction = false)
     {
-        if (
-            ExtensionManagementUtility::isLoaded('version') &&
-            !ExtensionManagementUtility::isLoaded('workspaces')
+        if (ExtensionManagementUtility::isLoaded('version')
+            && !ExtensionManagementUtility::isLoaded('workspaces')
         ) {
             /**
              * For Code Completion
