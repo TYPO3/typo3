@@ -31,13 +31,13 @@ class VersionView
      *
      * @param int $id Page id to create selector for.
      * @param bool $noAction If set, there will be no button for swapping page.
-     * @return void
+     * @return string
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public function getVersionSelector($id, $noAction = false)
     {
         if ($id <= 0) {
-            return;
+            return '';
         }
         if ($GLOBALS['BE_USER']->workspace == 0) {
             // Get Current page record:
