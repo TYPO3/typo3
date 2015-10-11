@@ -18,6 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in FormEngine
@@ -55,6 +56,7 @@ class ListController extends AbstractWizardController
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
         $this->P = GeneralUtility::_GP('P');
@@ -87,7 +89,10 @@ class ListController extends AbstractWizardController
         // Get this record
         $origRow = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
         // Get TSconfig for it.
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig($this->table, is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
+        $TSconfig = BackendUtility::getTCEFORM_TSconfig(
+            $this->table,
+            is_array($origRow) ? $origRow : array('pid' => $this->P['pid'])
+        );
         // Set [params][pid]
         if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
             $keyword = substr($this->P['params']['pid'], 3, -3);
@@ -111,6 +116,6 @@ class ListController extends AbstractWizardController
             $urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
             $redirectUrl = BackendUtility::getModuleUrl('web_list', $urlParameters);
         }
-        \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
+        HttpUtility::redirect($redirectUrl);
     }
 }
