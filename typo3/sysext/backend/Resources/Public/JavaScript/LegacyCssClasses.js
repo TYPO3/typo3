@@ -15,6 +15,8 @@
  * JavaScript replacement for Legacy CSS Classes
  */
 define(['jquery'], function($) {
+	'use strict';
+
 	var LegacyCssClasses = {
 		replacements: [
 			{
@@ -25,12 +27,12 @@ define(['jquery'], function($) {
 		]
 	};
 
-	LegacyCssClasses.initialize = function() {
+	$(function() {
 		$.each(LegacyCssClasses.replacements, function(key, replacement) {
-			$items = $(replacement.selector);
+			var $items = $(replacement.selector);
 			if ($items.length > 0) {
 				$items.each(function() {
-					$item = $(this);
+					var $item = $(this);
 					if (replacement.remove.length > 0) {
 						$.each(replacement.remove, function(oldClassId, oldClassName) {
 							$item.removeClass(oldClassName);
@@ -44,14 +46,7 @@ define(['jquery'], function($) {
 				});
 			}
 		});
-	};
+	});
 
-	/**
-	 * initialize function
-	 */
-	return function() {
-		LegacyCssClasses.initialize();
-		return LegacyCssClasses;
-	}();
-
+	return LegacyCssClasses;
 });

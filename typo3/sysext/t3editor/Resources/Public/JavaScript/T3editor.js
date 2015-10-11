@@ -12,6 +12,7 @@
  */
 
 define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) {
+	'use strict';
 
 	var T3editor = {
 		instances: {}
@@ -149,8 +150,7 @@ define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) 
 	 * Resize the editor
 	 */
 	T3editor.resize = function(codemirror, w, h) {
-		var height = (h - 1),
-			width = (w + 11),
+		var width = (w + 11),
 			$outerDiv = codemirror.options.originalTextarea.prev('.t3e_wrap'),
 			$mirrorWrap = codemirror.options.originalTextarea.parents('div.t3editor').find('.t3e_iframe_wrap');
 
@@ -181,7 +181,7 @@ define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) 
 		}
 
 		T3editor.resize(codemirror, w, h);
-	}
+	};
 
 	/**
 	 * Convert all textareas to enable tab
@@ -220,11 +220,10 @@ define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) 
 	/**
 	 * Initialize and return the T3editor object
 	 */
-	$(document).ready(function() {
+	$(function() {
 		T3editor.findAndInitializeEditors();
 		T3editor.convertTextareasEnableTab();
 	});
 
-	TYPO3.T3editor = T3editor;
 	return T3editor;
 });

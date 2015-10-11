@@ -15,7 +15,7 @@
  * ElementBrowser communication with parent windows
  */
 define(['jquery'], function($) {
-	"use strict";
+	'use strict';
 
 	var ElementBrowser = {
 		thisScriptUrl: '',

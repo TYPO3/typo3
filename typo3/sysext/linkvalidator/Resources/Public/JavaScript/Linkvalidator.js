@@ -12,18 +12,19 @@
  */
 
 define(['jquery'], function($) {
+	'use strict';
 
 	var Linkvalidator = {};
 
 	Linkvalidator.toggleActionButton = function(prefix) {
 		var buttonDisable = true;
-		$('.' + prefix).each(function(index) {
+		$('.' + prefix).each(function() {
 			if ($(this).prop('checked')) {
 				buttonDisable = false;
 			}
 		});
 
-		if (prefix == 'check') {
+		if (prefix === 'check') {
 			$('#updateLinkList').prop('disabled', buttonDisable);
 		} else {
 			$('#refreshLinkList').prop('disabled', buttonDisable);
@@ -43,13 +44,7 @@ define(['jquery'], function($) {
 		});
 	};
 
-	// intialize and return the Linkvalidator object
-	return function() {
-		$(document).ready(function() {
-			Linkvalidator.initializeEvents();
-		});
+	$(Linkvalidator.initializeEvents);
 
-		TYPO3.Linkvalidator = Linkvalidator;
-		return Linkvalidator;
-	}();
+	return Linkvalidator;
 });

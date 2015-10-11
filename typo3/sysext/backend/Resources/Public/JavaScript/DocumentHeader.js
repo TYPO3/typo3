@@ -15,7 +15,7 @@
  * Calculates the height of the docHeader and hides it upon scrolling
  */
 define(['jquery'], function($) {
-	"use strict";
+	'use strict';
 
 	var DocumentHeader = {
 		$documentHeader: null,

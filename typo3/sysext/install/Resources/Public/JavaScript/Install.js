@@ -43,8 +43,9 @@ TYPO3.Install.Scrolling = {
 		return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 	},
 	handleButtonScrolling: function() {
-		if ($('#fixed-footer-handler').length > 0) {
-			if (!this.isScrolledIntoView($('#fixed-footer-handler'))) {
+		var $fixedFooterHandler = $('#fixed-footer-handler');
+		if ($fixedFooterHandler.length > 0) {
+			if (!this.isScrolledIntoView($fixedFooterHandler)) {
 				$('#fixed-footer').addClass('fixed');
 			} else {
 				$('#fixed-footer').removeClass('fixed');
@@ -102,8 +103,10 @@ TYPO3.Install.ExtensionChecker = {
 	 */
 	handleCheckExtensionsSuccess: function() {
 		var self = this;
+		var $checkExtensions = $('#checkExtensions');
+
 		$.ajax({
-			url: $('#checkExtensions').data('protocolurl'),
+			url: $checkExtensions.data('protocolurl'),
 			cache: false,
 			success: function(data) {
 				if (data) {
@@ -116,15 +119,18 @@ TYPO3.Install.ExtensionChecker = {
 						var extension = extensions[i];
 						var unloadButton = $('<button />', {
 							text: 'Uninstall '+ $.trim(extension),
-							"class": $.trim(extension),
-							click: function(e) {
-								self.uninstallExtension($(this).attr('class'));
-								e.preventDefault();
-								return false;
-							}
+							'class': 't3-js-uninstallSingle',
+							'data-extension': $.trim(extension)
 						});
 						var fullButton = unloadButtonWrapper.append(unloadButton);
 						$('.message-error .message-body', '#checkExtensions').append(fullButton);
+					}
+					if (extensions.length) {
+						$(document).on('click', 't3-js-uninstallSingle', function(e) {
+							self.uninstallExtension($(this).data('extension'));
+							e.preventDefault();
+							return false;
+						});
 					}
 					var unloadAllButton = $('<button />', {
 						text: 'Uninstall all incompatible extensions: '+ data,
@@ -153,11 +159,11 @@ TYPO3.Install.ExtensionChecker = {
 			}
 		});
 		$.getJSON(
-			$('#checkExtensions').data('errorprotocolurl'),
+			$checkExtensions.data('errorprotocolurl'),
 			function(data) {
 				$.each(data, function(i, error) {
 					var messageToDisplay = error.message + ' in ' + error.file + ' on line ' + error.line;
-					$('#checkExtensions .typo3-message.message-error').before($(
+					$checkExtensions.find('.typo3-message.message-error').before($(
 						'<div class="typo3-message message-warning"><div class="header-container"><div class="message-header">' +
 						'<strong>' + error.type + '</strong></div><div class="message-body">' +
 						messageToDisplay + '</div></div></div><p></p>'
@@ -213,7 +219,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-folderStructure a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
+					$('#t3-install-menu-folderStructure').find('a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
 				}
 			}
 		});
@@ -225,7 +231,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-systemEnvironment a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
+					$('#t3-install-menu-systemEnvironment').find('a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
 				}
 			}
 		});
@@ -346,22 +352,22 @@ TYPO3.Install.coreUpdate = {
 	 */
 	callAction: function(actionName, type) {
 		var self = this;
-		var arguments = {
+		var data = {
 			install: {
 				controller: 'ajax',
 				action: actionName
 			}
 		};
 		if (type !== undefined) {
-			arguments.install["type"] = type;
+			data.install["type"] = type;
 		}
 		this.addLoadingMessage(this.actionQueue[actionName].loadingMessage);
 		$.ajax({
 			url: location.href,
-			data: arguments,
+			data: data,
 			cache: false,
 			success: function(result) {
-				canContinue = self.handleResult(result, self.actionQueue[actionName].finishMessage);
+				var canContinue = self.handleResult(result, self.actionQueue[actionName].finishMessage);
 				if (canContinue === true && (self.actionQueue[actionName].nextActionName !== undefined)) {
 					self.callAction(self.actionQueue[actionName].nextActionName, type);
 				}
@@ -427,7 +433,7 @@ TYPO3.Install.coreUpdate = {
 	 * Remove an enabled loading message
 	 */
 	removeLoadingMessage: function() {
-		$('#coreUpdate .message-loading').closest('.typo3-message').remove();
+		$('#coreUpdate').find('.message-loading').closest('.typo3-message').remove();
 	},
 
 	/**
@@ -500,7 +506,7 @@ TYPO3.Install.coreUpdate = {
 	}
 };
 
-$(document).ready(function() {
+$(function() {
 	// Used in database compare section to select/deselect checkboxes
 	$('.checkall').on('click', function() {
 		$(this).closest('fieldset').find(':checkbox').prop('checked', this.checked);
@@ -508,15 +514,15 @@ $(document).ready(function() {
 
 	// Toggle open/close
 	$('.toggleButton').on('click', function() {
-		$toggleGroup = $(this).closest('.toggleGroup');
+		var $toggleGroup = $(this).closest('.toggleGroup');
 		$toggleGroup.toggleClass('expanded');
 		$toggleGroup.find('.toggleData').toggle();
 		TYPO3.Install.Scrolling.handleButtonScrolling();
 	});
 
 	$('.toggleAll').on('click', function() {
-		$toggleAll = $('.toggleGroup');
-		if ($toggleAll.not('.expanded').length == 0) {
+		var $toggleAll = $('.toggleGroup');
+		if ($toggleAll.not('.expanded').length === 0) {
 			// all elements are open, close them
 			$toggleAll.removeClass('expanded');
 			$toggleAll.find('.toggleData').hide();
@@ -528,11 +534,11 @@ $(document).ready(function() {
 	});
 
 	$('.item-description').find('a').on('click', function() {
-		targetToggleGroupId = $(this.hash);
+		var targetToggleGroupId = $(this.hash);
 		if (targetToggleGroupId) {
-			$currentToggleGroup = $(this).closest('.toggleGroup');
-			$targetToggleGroup = $(targetToggleGroupId).closest('.toggleGroup');
-			if ($targetToggleGroup != $currentToggleGroup) {
+			var $currentToggleGroup = $(this).closest('.toggleGroup');
+			var $targetToggleGroup = $(targetToggleGroupId).closest('.toggleGroup');
+			if ($targetToggleGroup !== $currentToggleGroup) {
 				$currentToggleGroup.removeClass('expanded');
 				$currentToggleGroup.find('.toggleData').hide();
 				$targetToggleGroup.addClass('expanded');
@@ -549,9 +555,9 @@ $(document).ready(function() {
 		var mediumRegex = new RegExp('^(?=.{8,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g');
 		var enoughRegex = new RegExp('(?=.{8,}).*', 'g');
 
-		if (value.length == 0) {
+		if (value.length === 0) {
 			$(this).attr('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
-		} else if (false == enoughRegex.test(value)) {
+		} else if (!enoughRegex.test(value)) {
 			$(this).attr('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
 		} else if (strongRegex.test(value)) {
 			$(this).attr('style', 'background-color:#CDEACA; border:1px solid #58B548');

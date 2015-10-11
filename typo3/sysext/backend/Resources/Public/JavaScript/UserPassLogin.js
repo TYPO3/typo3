@@ -15,6 +15,8 @@
  * JavaScript module for the UsernamePasswordLoginProvider
  */
 define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
+	'use strict';
+
 	var UserPassLogin = {
 		options: {
 			usernameField: '.t3js-login-username-field',
@@ -51,8 +53,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
 	 * Reset user password field to prevent it from being submitted
 	 */
 	UserPassLogin.resetPassword = function() {
-		"use strict";
-
 		var $passwordField = $(UserPassLogin.options.passwordField);
 		if ($passwordField.val()) {
 			$(Login.options.useridentField).val($passwordField.val());
@@ -68,7 +68,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
 	};
 
 	// initialize and return the UserPassLogin object
-	$(document).ready(function() {
+	$(function() {
 		// register submit handler
 		Login.options.submitHandler = UserPassLogin.resetPassword;
 
@@ -86,7 +86,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
 			}
 		} catch (error) {} // continue
 
-		if ($usernameField.val() == '') {
+		if ($usernameField.val() === '') {
 			$usernameField.focus();
 		} else {
 			$passwordField.focus();

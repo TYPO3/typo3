@@ -15,7 +15,7 @@
  * Toggle the search toolbox
  */
 define(['jquery', 'TYPO3/CMS/Backend/DocumentHeader', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DocumentHeader) {
-	"use strict";
+	'use strict';
 
 	$(function() {
 		var $toolbar = $('#db_list-searchbox-toolbar');

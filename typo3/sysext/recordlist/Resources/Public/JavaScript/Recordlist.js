@@ -15,7 +15,7 @@
  * Usability improvements for the record list
  */
 define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
-	"use strict";
+	'use strict';
 
 	var Recordlist = {
 		identifier: {

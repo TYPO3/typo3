@@ -15,7 +15,7 @@
  * Database record selection
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
-	"use strict";
+	'use strict';
 
 	$(function() {
 		$('[data-close]').on('click', function(event) {

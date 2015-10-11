@@ -16,6 +16,7 @@
  * based on jQuery UI
  */
 define(['jquery', 'jquery-ui/sortable'], function ($) {
+	'use strict';
 
 	var DragDrop = {
 		contentIdentifier: '.t3js-page-ce',
@@ -113,11 +114,12 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 	 */
 	DragDrop.onSortUpdate = function($container, ui) {
 		var $selectedItem = $(ui.item),
-			contentElementUid = parseInt($selectedItem.data('uid'));
+			contentElementUid = parseInt($selectedItem.data('uid')),
+			parameters = {};
 
 		// send an AJAX requst via the AjaxDataHandler
 		if (contentElementUid > 0) {
-			var parameters = {};
+
 			// add the information about a possible column position change
 			parameters['data'] = {tt_content: {}};
 			parameters['data']['tt_content'][contentElementUid] = {colPos: parseInt($container.data('colpos'))};
@@ -145,11 +147,7 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 		});
 	};
 
-	/**
-	 * initialize function
-	 */
-	return function() {
-		DragDrop.initialize();
-		return DragDrop;
-	}();
+	$(DragDrop.initialize);
+
+	return DragDrop;
 });

@@ -15,7 +15,7 @@
  * Check-all / uncheck-all for the Database Recordlist fieldSelectBox
  */
 define(['jquery'], function($) {
-	"use strict";
+	'use strict';
 
 	$(function() {
 		$('.fieldSelectBox .checkAll').change(function() {

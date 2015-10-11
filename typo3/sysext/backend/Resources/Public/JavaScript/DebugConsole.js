@@ -15,6 +15,8 @@
  * The debug console shown at the bottom of the backend
  */
 define(['jquery'], function ($) {
+	'use strict';
+
 	var DebugConsole = {
 		$consoleDom: null,
 		settings: {
@@ -255,11 +257,11 @@ define(['jquery'], function ($) {
 		DebugConsole.$consoleDom = null;
 	};
 
-	return function () {
-		$(document).ready(function() {
-			DebugConsole.initialize();
-		});
-		TYPO3.DebugConsole = DebugConsole;
-		return DebugConsole;
-	}();
+	$(DebugConsole.initialize);
+
+	// expose as global object
+	TYPO3.DebugConsole = DebugConsole;
+
+	return DebugConsole;
+
 });

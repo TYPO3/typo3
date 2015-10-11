@@ -15,7 +15,7 @@
  * LinkBrowser communication with parent window
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
-	"use strict";
+	'use strict';
 
 	var RteLinkBrowser = {
 		plugin: null,

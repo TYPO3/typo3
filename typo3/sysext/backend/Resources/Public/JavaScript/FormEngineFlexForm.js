@@ -212,7 +212,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 	};
 
 	// Initialization Code
-	$(document).ready(function() {
+	$(function() {
 		// run the flexform functions on all containers (which contains one or more sections)
 		$('.t3-flex-container').t3FormEngineFlexFormElement();
 	});

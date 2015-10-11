@@ -15,6 +15,8 @@
  * Language module class
  */
 define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment) {
+	'use strict';
+
 	var LanguageModule = {
 		me: this,
 		context: null,
@@ -64,7 +66,7 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 		LanguageModule.table = LanguageModule.buildLanguageTable(tableElement);
 		LanguageModule.initializeSearchField();
 		LanguageModule.initializeEventHandler();
-	}
+	};
 
 	/**
 	 * Initialize translation table
@@ -492,7 +494,9 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 		$link.addClass(action + 'Link');
 		$link.attr('data-action', action);
 		for (var name in parameters) {
-			$link.attr('data-' + name, parameters[name]);
+			if (parameters.hasOwnProperty(name)) {
+				$link.attr('data-' + name, parameters[name]);
+			}
 		}
 		$link.html(content);
 		return $link.wrap('<span>').parent().html();
@@ -574,16 +578,13 @@ define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'],
 		return vars;
 	};
 
-	return function() {
-		$(document).ready(function() {
-			if ($('div.typo3-module-lang #typo3-language-list').length) {
-				LanguageModule.initializeLanguageTable('div.typo3-module-lang', '#typo3-language-list');
-			} else if ($('div.typo3-module-lang #typo3-translation-list').length) {
-				LanguageModule.initializeTranslationTable('div.typo3-module-lang', '#typo3-translation-list');
-			}
-		});
+	$(function() {
+		if ($('#typo3-language-list').length) {
+			LanguageModule.initializeLanguageTable('div.typo3-module-lang', '#typo3-language-list');
+		} else if ($('#typo3-translation-list').length) {
+			LanguageModule.initializeTranslationTable('div.typo3-module-lang', '#typo3-translation-list');
+		}
+	});
 
-		TYPO3.LanguageModule = LanguageModule;
-		return LanguageModule;
-	}();
+	return LanguageModule;
 });

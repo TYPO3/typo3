@@ -1022,7 +1022,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	};
 
 	FormEngineValidation.registerReady = function() {
-		$(document).ready(function() {
+		$(function() {
 			FormEngineValidation.initialize();
 			// Start first validation after one second, because all fields are initial empty (typo3form.fieldSet)
 			window.setTimeout(function() {
@@ -1031,11 +1031,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		});
 	};
 
-	/**
-	 * Initialize function
-	 */
-
-
 	FormEngine.Validation = FormEngineValidation;
+
 	return FormEngine.Validation;
 });

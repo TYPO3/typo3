@@ -15,7 +15,7 @@
  * Javascript for show the online media dialog
  */
 define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang'], function($, NProgress, Modal) {
-	"use strict";
+	'use strict';
 
 	var OnlineMediaPlugin = function(element) {
 		var me = this;

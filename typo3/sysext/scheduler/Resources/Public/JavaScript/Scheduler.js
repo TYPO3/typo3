@@ -49,20 +49,21 @@ define(['jquery'], function($) {
 	 */
 	Scheduler.actOnChangeSchedulerTableGarbageCollectionAllTables = function(theCheckbox) {
 		var $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
+		var $taskTableGarbageCollectionTable = $('#task_tableGarbageCollection_table');
 		if (theCheckbox.prop('checked')) {
-			$('#task_tableGarbageCollection_table').prop('disabled', true);
+			$taskTableGarbageCollectionTable.prop('disabled', true);
 			$numberOfDays.prop('disabled', true);
 		} else {
 			// Get number of days for selected table
 			var numberOfDays = parseInt($numberOfDays.val());
 			if (numberOfDays < 1) {
-				var selectedTable = $('#task_tableGarbageCollection_table').val();
-				if (typeof(defaultNumberOfDays[selectedTable]) != 'undefined') {
+				var selectedTable = $taskTableGarbageCollectionTable.val();
+				if (typeof(defaultNumberOfDays[selectedTable]) !== 'undefined') {
 					numberOfDays = defaultNumberOfDays[selectedTable];
 				}
 			}
 
-			$('#task_tableGarbageCollection_table').prop('disabled', false);
+			$taskTableGarbageCollectionTable.prop('disabled', false);
 			if (numberOfDays > 0) {
 				$numberOfDays.prop('disabled', false);
 			}
@@ -118,13 +119,7 @@ define(['jquery'], function($) {
 		});
 	};
 
-	// initialize and return the Scheduler object
-	return function() {
-		$(document).ready(function() {
-			Scheduler.initializeEvents();
-		});
+	$(Scheduler.initializeEvents);
 
-		TYPO3.Scheduler = Scheduler;
-		return Scheduler;
-	}();
+	return Scheduler;
 });

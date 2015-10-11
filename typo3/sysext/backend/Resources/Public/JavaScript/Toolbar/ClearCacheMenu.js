@@ -16,6 +16,7 @@
  * reloading the clear cache icon
  */
 define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
+	'use strict';
 
 	var ClearCacheMenu = {
 		options: {
@@ -66,15 +67,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 		});
 	};
 
-	/**
-	 * initialize and return the ClearCacheMenu object
-	 */
-	return function() {
-		$(document).ready(function() {
-			ClearCacheMenu.initializeEvents();
-		});
+	$(ClearCacheMenu.initializeEvents);
 
-		TYPO3.ClearCacheMenu = ClearCacheMenu;
-		return ClearCacheMenu;
-	}();
+	return ClearCacheMenu;
 });

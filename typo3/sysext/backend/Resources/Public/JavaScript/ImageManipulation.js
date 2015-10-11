@@ -314,8 +314,5 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		});
 	};
 
-	return function() {
-		TYPO3.ImageManipulation = ImageManipulation;
-		return ImageManipulation;
-	}();
+	return ImageManipulation;
 });

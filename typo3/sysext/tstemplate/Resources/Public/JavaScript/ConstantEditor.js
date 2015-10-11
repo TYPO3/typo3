@@ -16,6 +16,7 @@
  * e.g. updating the field and working with colors
  */
 define(['jquery'], function($) {
+	'use strict';
 
 	var ConstantEditor = {
 		options: {
@@ -75,6 +76,7 @@ define(['jquery'], function($) {
 	 * Registers listeners
 	 */
 	ConstantEditor.initializeEvents = function() {
+		// no DOMready needed since only events for document are registered
 		$(document).on('click', ConstantEditor.options.editIconSelector, function() {
 			ConstantEditor.changeProperty($(this));
 		}).on('click', ConstantEditor.options.colorSelectSelector, function() {
@@ -84,13 +86,7 @@ define(['jquery'], function($) {
 		});
 	};
 
-	/**
-	 * initialize and return the ConstantEditor object
-	 */
-	return function() {
-		$(document).ready(function() {
-			ConstantEditor.initializeEvents();
-		});
-		return ConstantEditor;
-	}();
+	ConstantEditor.initializeEvents();
+
+	return ConstantEditor;
 });

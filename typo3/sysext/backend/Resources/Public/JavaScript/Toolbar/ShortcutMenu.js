@@ -16,6 +16,7 @@
  * and edit a shortcut
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], function($, Modal, Icons) {
+	'use strict';
 
 	var ShortcutMenu = {
 		options: {
@@ -171,15 +172,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 		});
 	};
 
-	/**
-	 * initialize and return the ShortcutMenu object
-	 */
-	return function() {
-		$(document).ready(function() {
-			ShortcutMenu.initializeEvents();
-		});
+	$(ShortcutMenu.initializeEvents);
 
-		TYPO3.ShortcutMenu = ShortcutMenu;
-		return ShortcutMenu;
-	}();
+	// expose as global object
+	TYPO3.ShortcutMenu = ShortcutMenu;
+
+	return ShortcutMenu;
 });

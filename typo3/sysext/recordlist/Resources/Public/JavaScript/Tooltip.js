@@ -15,15 +15,17 @@
  * API for tooltip windows powered by Twitter Bootstrap.
  */
 define(['TYPO3/CMS/Backend/Tooltip'], function(Tooltip) {
-	"use strict";
+	'use strict';
 
-	Tooltip.initialize('.table-fit a[title]', {
-		delay: {
-			show: 500,
-			hide: 100
-		},
-		trigger: 'hover',
-		container: 'body'
+	$(function() {
+		Tooltip.initialize('.table-fit a[title]', {
+			delay: {
+				show: 500,
+				hide: 100
+			},
+			trigger: 'hover',
+			container: 'body'
+		});
 	});
 
 });

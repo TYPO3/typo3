@@ -15,7 +15,7 @@
  * Initializes global handling of split buttons.
  */
 define(['jquery'], function($) {
-	"use strict";
+	'use strict';
 
 	var SplitButtons = {
 		preSubmitCallbacks: []

@@ -15,6 +15,8 @@
  * JavaScript module for the backend login form
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($) {
+	'use strict';
+
 	var BackendLogin = {
 		options: {
 			loginForm: '#typo3-login-form',
@@ -44,8 +46,6 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	 * @param event
 	 */
 	BackendLogin.handleSubmit = function(event) {
-		"use strict";
-
 		BackendLogin.showLoginProcess();
 
 		if (BackendLogin.options.submitHandler) {
@@ -68,11 +68,11 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	BackendLogin.checkForInterfaceCookie = function() {
 		if ($(options.interfaceField).length) {
 			var posStart = document.cookie.indexOf('typo3-login-interface=');
-			if (posStart != -1) {
+			if (posStart !== -1) {
 				var selectedInterface = document.cookie.substr(posStart + 22);
 				selectedInterface = selectedInterface.substr(0, selectedInterface.indexOf(';'));
+				$(options.interfaceField).val(selectedInterface);
 			}
-			$(options.interfaceField).val(selectedInterface);
 		}
 	};
 
@@ -140,15 +140,15 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	};
 
 	// initialize and return the BackendLogin object
-	$(document).ready(function() {
+	$(function() {
 		BackendLogin.checkCookieSupport();
 		BackendLogin.checkForInterfaceCookie();
 		BackendLogin.initializeEvents();
 	});
 
 	// prevent opening the login form in the backend frameset
-	if (top.location.href != self.location.href) {
-		top.location.href = self.location.href;
+	if (top.location.href !== location.href) {
+		top.location.href = location.href;
 	}
 
 	return BackendLogin;

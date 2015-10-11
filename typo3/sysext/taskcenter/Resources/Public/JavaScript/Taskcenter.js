@@ -12,6 +12,7 @@
  */
 
 define(['jquery', 'jquery-ui/sortable'], function($) {
+	'use strict';
 
 	var Taskcenter = {};
 
@@ -85,12 +86,7 @@ define(['jquery', 'jquery-ui/sortable'], function($) {
 		Taskcenter.initializeSorting();
 	};
 
-	return function() {
-		$(document).ready(function() {
-			Taskcenter.initializeEvents();
-		});
+	$(Taskcenter.initializeEvents);
 
-		TYPO3.Taskcenter = Taskcenter;
-		return Taskcenter;
-	}();
+	return Taskcenter;
 });

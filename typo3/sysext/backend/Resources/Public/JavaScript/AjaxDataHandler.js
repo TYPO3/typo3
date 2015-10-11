@@ -242,13 +242,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 		$iconElement.removeClass('fa-spin fa-circle-o-notch');
 	};
 
-	/**
-	 * initialize and return the object
-	 */
-	return function() {
-		AjaxDataHandler.initialize();
+	$(AjaxDataHandler.initialize);
 
-		// return the object in the global space
-		return AjaxDataHandler;
-	}();
+	return AjaxDataHandler;
 });

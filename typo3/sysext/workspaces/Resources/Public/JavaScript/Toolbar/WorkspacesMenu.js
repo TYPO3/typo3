@@ -16,6 +16,7 @@
  * and jump to the workspaces module
  */
 define(['jquery'], function($) {
+	'use strict';
 
 	var WorkspacesMenu = {
 		options: {
@@ -149,16 +150,13 @@ define(['jquery'], function($) {
 		}
 	};
 
-	/**
-	 * initialize and return the WorkspacesMenu object
-	 */
-	return function() {
-		$(document).ready(function() {
-			WorkspacesMenu.initializeEvents();
-			WorkspacesMenu.updateBackendContext();
-		});
+	$(function() {
+		WorkspacesMenu.initializeEvents();
+		WorkspacesMenu.updateBackendContext();
+	});
 
-		TYPO3.WorkspacesMenu = WorkspacesMenu;
-		return WorkspacesMenu;
-	}();
+	// expose the module in a global object
+	TYPO3.WorkspacesMenu = WorkspacesMenu;
+
+	return WorkspacesMenu;
 });

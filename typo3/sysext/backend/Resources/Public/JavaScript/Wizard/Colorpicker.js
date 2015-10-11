@@ -15,6 +15,7 @@
  * Colorpicker JavaScript
  */
 define(['jquery'], function ($) {
+	'use strict';
 
 	var Colorpicker = {
 		options: {}
@@ -56,9 +57,7 @@ define(['jquery'], function ($) {
 		});
 	};
 
-	$(document).ready(function() {
-		Colorpicker.initializeEvents();
-	});
+	$(Colorpicker.initializeEvents);
 
 	return Colorpicker;
 });

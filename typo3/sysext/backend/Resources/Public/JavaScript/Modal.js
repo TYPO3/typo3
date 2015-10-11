@@ -16,7 +16,7 @@
  * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
 define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
-	"use strict";
+	'use strict';
 
 	// fetch from parent
 	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {

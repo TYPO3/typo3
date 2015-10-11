@@ -15,7 +15,7 @@
  * File selection
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
-	"use strict";
+	'use strict';
 
 	var BrowseFiles = {
 		elements: {}

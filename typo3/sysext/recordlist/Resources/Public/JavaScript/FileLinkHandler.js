@@ -15,7 +15,7 @@
  * File link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
-	"use strict";
+	'use strict';
 
 	var FileLinkHandler = {
 		currentLink: ''

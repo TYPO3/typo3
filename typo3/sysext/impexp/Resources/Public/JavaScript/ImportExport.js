@@ -15,7 +15,7 @@
  * JavaScript to handle confirm windows in the Import/Export module
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
-	"use strict";
+	'use strict';
 
 	$(function() {
 		$(document).on('click', '.t3js-confirm-trigger', function() {

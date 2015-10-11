@@ -17,6 +17,7 @@
  *  - updating the menu
  */
 define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
+	'use strict';
 
 	var OpendocsMenu = {
 		options: {
@@ -80,7 +81,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	/**
 	 * Closes an open document
 	 *
-	 * @param string md5sum
+	 * @param {string} md5sum
 	 */
 	OpendocsMenu.closeDocument = function(md5sum) {
 		$.ajax({
@@ -106,16 +107,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 		$(OpendocsMenu.options.containerSelector).toggleClass('open');
 	};
 
-	/**
-	 * initialize and return the Opendocs object
-	 */
-	return function() {
-		$(document).ready(function() {
-			OpendocsMenu.initializeEvents();
-			OpendocsMenu.updateMenu();
-		});
+	$(function() {
+		OpendocsMenu.initializeEvents();
+		OpendocsMenu.updateMenu();
+	});
 
-		TYPO3.OpendocsMenu = OpendocsMenu;
-		return OpendocsMenu;
-	}();
+	// expose to global
+	TYPO3.OpendocsMenu = OpendocsMenu;
+
+	return OpendocsMenu;
 });

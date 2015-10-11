@@ -16,6 +16,7 @@
  */
 
 define(['jquery'], function ($) {
+	'use strict';
 
 	/**
 	 * Severity object
@@ -156,7 +157,7 @@ define(['jquery'], function ($) {
 		if (Notification.messageContainer === null) {
 			Notification.messageContainer = $('<div id="alert-container"></div>').appendTo('body');
 		}
-		$box = $(
+		var $box = $(
 			'<div class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
 				'<button type="button" class="close" data-dismiss="alert">' +
 					'<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
@@ -204,22 +205,18 @@ define(['jquery'], function ($) {
 		}
 	};
 
-	/**
-	 * return the Notification object
-	 */
-	return function () {
-		if (typeof TYPO3.Severity === 'undefined') {
-			TYPO3.Severity = Severity;
-		}
-		if (typeof top.TYPO3.Severity === 'undefined') {
-			top.TYPO3.Severity = Severity;
-		}
-		if (typeof TYPO3.Notification === 'undefined') {
-			TYPO3.Notification = Notification;
-		}
-		if (typeof top.TYPO3.Notification === 'undefined') {
-			top.TYPO3.Notification = Notification;
-		}
-		return Notification;
-	}();
+	if (typeof TYPO3.Severity === 'undefined') {
+		TYPO3.Severity = Severity;
+	}
+	if (typeof top.TYPO3.Severity === 'undefined') {
+		top.TYPO3.Severity = Severity;
+	}
+	if (typeof TYPO3.Notification === 'undefined') {
+		TYPO3.Notification = Notification;
+	}
+	if (typeof top.TYPO3.Notification === 'undefined') {
+		top.TYPO3.Notification = Notification;
+	}
+
+	return Notification;
 });

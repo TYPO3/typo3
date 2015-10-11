@@ -15,8 +15,9 @@
  * File edit for ext:t3editor
  */
 define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
+	'use strict';
 
-	$(document).ready(function() {
+	$(function() {
 
 		// Remove document.editform.submit from save and close onclick
 		// Form will be submitted by the new on click handler

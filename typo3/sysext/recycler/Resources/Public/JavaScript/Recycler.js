@@ -15,6 +15,8 @@
  * RequireJS module for Recycler
  */
 define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
+	'use strict';
+
 	var Recycler = {
 		identifiers: {
 			searchForm: '#recycler-form',
@@ -388,7 +390,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 			messageText = Recycler.createMessage(messageText, [recordTitle, '[' + records + ']']);
 		}
 
-		var $message;
+		var $message = null;
 		if (recoverPages) {
 			$message = $('<div />').append(
 				$('<p />').text(messageText),
@@ -559,9 +561,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		$(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />'));
 	};
 
-	$(document).ready(function() {
-		Recycler.initialize();
-	});
+	$(Recycler.initialize);
 
 	return Recycler;
 });

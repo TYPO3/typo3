@@ -15,6 +15,7 @@
  * API for tooltip windows powered by Twitter Bootstrap.
  */
 define(['jquery', 'bootstrap'], function($) {
+	'use strict';
 
 	/**
 	 * The main tooltip object
@@ -52,7 +53,12 @@ define(['jquery', 'bootstrap'], function($) {
 		$element.tooltip('hide');
 	};
 
-	Tooltip.initialize('[data-toggle="tooltip"]');
+	$(function () {
+		Tooltip.initialize('[data-toggle="tooltip"]');
+	});
+
+	// expose as global object
 	TYPO3.Tooltip = Tooltip;
+
 	return Tooltip;
 });

@@ -42,7 +42,7 @@ define(['jquery'], function($) {
 		var res = 0;
 		for (var a = 1; a <= 5; a++) {
 			if (document.editform[checknames + '[' + a + ']'].checked) {
-				res|=Math.pow(2,a-1);
+				res |= Math.pow(2,a-1);
 			}
 		}
 		document.editform[varname].value = res | (checknames === 'tx_beuser_system_beusertxpermission[check][perms_user]' ? 1 : 0);
@@ -300,15 +300,10 @@ define(['jquery'], function($) {
 		});
 	};
 
-	/**
-	 * initialize and return the Permissions object
-	 */
-	return function() {
-		$(document).ready(function() {
-			Permissions.initializeEvents();
-		});
+	$(Permissions.initializeEvents);
 
-		TYPO3.Permissions = Permissions;
-		return Permissions;
-	}();
+	// expose to global
+	TYPO3.Permissions = Permissions;
+
+	return Permissions;
 });

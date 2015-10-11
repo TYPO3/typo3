@@ -15,7 +15,7 @@
  * Folder selection
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal'], function ($, ElementBrowser, Modal) {
-	"use strict";
+	'use strict';
 
 	$(function() {
 		$('[data-folder-id]').on('click', function (event) {

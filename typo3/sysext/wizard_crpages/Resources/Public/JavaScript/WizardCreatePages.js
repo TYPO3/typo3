@@ -15,6 +15,7 @@
  * JavaScript functions for creating multiple pages
  */
 define(['jquery'], function($) {
+	'use strict';
 
 	var WizardCreatePages = {
 		lineCounter: 5,
@@ -24,7 +25,7 @@ define(['jquery'], function($) {
 	};
 
 	WizardCreatePages.createNewFormFields = function() {
-		for (i = 0; i < 5; i++) {
+		for (var i = 0; i < 5; i++) {
 			var label = this.lineCounter + i + 1;
 			var line = tpl
 				.replace(/\{0\}/g, (this.lineCounter + i))
@@ -54,12 +55,7 @@ define(['jquery'], function($) {
 		});
 	};
 
-	return function() {
-		$(document).ready(function() {
-			WizardCreatePages.initializeEvents();
-		});
+	$(WizardCreatePages.initializeEvents);
 
-		TYPO3.WizardCreatePages = WizardCreatePages;
-		return WizardCreatePages;
-	}();
+	return WizardCreatePages;
 });

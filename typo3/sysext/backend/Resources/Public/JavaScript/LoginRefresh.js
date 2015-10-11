@@ -426,20 +426,20 @@ define(['jquery', 'bootstrap'], function($) {
 	};
 
 	// initialize and return the LoginRefresh object
-	return function() {
-		$(document).ready(function() {
-			LoginRefresh.initializeTimeoutModal();
-			LoginRefresh.initializeBackendLockedModal();
-			LoginRefresh.initializeLoginForm();
+	$(function() {
+		LoginRefresh.initializeTimeoutModal();
+		LoginRefresh.initializeBackendLockedModal();
+		LoginRefresh.initializeLoginForm();
 
-			LoginRefresh.startTask();
+		LoginRefresh.startTask();
 
-			if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-				Notification.requestPermission();
-			}
-		});
+		if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+			Notification.requestPermission();
+		}
+	});
 
-		TYPO3.LoginRefresh = LoginRefresh;
-		return LoginRefresh;
-	}();
+	// expose to global
+	TYPO3.LoginRefresh = LoginRefresh;
+
+	return LoginRefresh;
 });

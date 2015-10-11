@@ -15,7 +15,7 @@
  * LinkBrowser communication with parent window
  */
 define(['jquery'], function($) {
-	"use strict";
+	'use strict';
 
 	var LinkBrowser = {
 		thisScriptUrl: '',

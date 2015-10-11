@@ -15,13 +15,14 @@
  * Global search to deal with everything in the backend that is search-related
  */
 define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
+	'use strict';
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
 	var category = '';
 
-	var initialize = function() {
+	$(function() {
 		$(searchFieldSelector).autocomplete({
 			// ajax options
 			serviceUrl: url,
@@ -93,16 +94,11 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 		});
 
-		$(searchFieldSelector).clearable(
-			{
+		$(searchFieldSelector).clearable({
 				onClear: function() {
 					$(containerSelector).removeClass('open');
 				}
-			}
-		);
-	};
-
-	$(document).ready(function() {
-		initialize();
+		});
 	});
+
 });

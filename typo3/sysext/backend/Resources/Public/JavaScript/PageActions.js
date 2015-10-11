@@ -41,7 +41,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	 */
 	PageActions.initializePageTitleRenaming = function() {
 		if (!PageActions.documentIsReady) {
-			$(document).ready(function() {
+			$(function() {
 				PageActions.initializePageTitleRenaming();
 			});
 			return;

@@ -127,7 +127,7 @@ define(['jquery', './RsaLibrary'], function($) {
 		}
 	};
 
-	$(document).ready(RsaEncryption.initialize);
+	$(RsaEncryption.initialize);
 
 	return RsaEncryption;
 });

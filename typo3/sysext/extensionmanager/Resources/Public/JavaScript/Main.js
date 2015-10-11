@@ -648,66 +648,66 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
-	return function() {
-		$(document).ready(function() {
-			var dataTable = ExtensionManager.manageExtensionListing();
+	$(function() {
+		var dataTable = ExtensionManager.manageExtensionListing();
 
-			$(document).on('click', '.onClickMaskExtensionManager', function() {
-				$(ExtensionManager.identifier.extensionManager).mask();
-				NProgress.start();
-			}).on('click', 'a[data-action=update-extension]', function(e) {
-				e.preventDefault();
-				$.ajax({
-					url: $(this).attr('href'),
-					dataType: 'json',
-					beforeSend: function() {
-						$(ExtensionManager.identifier.extensionManager).mask();
-						NProgress.start();
-					},
-					success: ExtensionManager.updateExtension
-				});
-			}).on('change', 'input[name=unlockDependencyIgnoreButton]', function() {
-				var $actionButton = TYPO3.jQuery('.t3js-dependencies');
-				$actionButton.toggleClass('disabled', !$(this).prop('checked'));
-			});
-
-			$(ExtensionManager.identifier.searchField).clearable({
-				onClear: function() {
-					dataTable.search('').draw();
-				}
-			});
-
-			$('.expandable').expander({
-				expandEffect: 'slideDown',
-				collapseEffect: 'slideUp',
-				beforeExpand: function() {
-					$(this).parent().css('z-index', 199);
+		$(document).on('click', '.onClickMaskExtensionManager', function() {
+			$(ExtensionManager.identifier.extensionManager).mask();
+			NProgress.start();
+		}).on('click', 'a[data-action=update-extension]', function(e) {
+			e.preventDefault();
+			$.ajax({
+				url: $(this).attr('href'),
+				dataType: 'json',
+				beforeSend: function() {
+					$(ExtensionManager.identifier.extensionManager).mask();
+					NProgress.start();
 				},
-				afterCollapse: function() {
-					$(this).parent().css('z-index', 1);
-				}
+				success: ExtensionManager.updateExtension
 			});
-
-			$(document).on('click', '.t3-button-action-installdistribution', function() {
-				$(ExtensionManager.identifier.extensionManager).mask();
-			});
-
-			ExtensionManager.configurationFieldSupport();
-			var $validate = $('.validate');
-			$validate.validate();
-			$(document).on('click', '.t3js-save-close', function() {
-				$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'})).submit();
-			});
-
-			// initialize the repository
-			Repository.initDom();
-
-			ExtensionManager.Update.initializeEvents();
-			ExtensionManager.UploadForm.initializeEvents();
+		}).on('change', 'input[name=unlockDependencyIgnoreButton]', function() {
+			var $actionButton = TYPO3.jQuery('.t3js-dependencies');
+			$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 		});
 
-		if (typeof TYPO3.ExtensionManager === 'undefined') {
-			TYPO3.ExtensionManager = ExtensionManager;
-		}
-	}();
+		$(ExtensionManager.identifier.searchField).clearable({
+			onClear: function() {
+				dataTable.search('').draw();
+			}
+		});
+
+		$('.expandable').expander({
+			expandEffect: 'slideDown',
+			collapseEffect: 'slideUp',
+			beforeExpand: function() {
+				$(this).parent().css('z-index', 199);
+			},
+			afterCollapse: function() {
+				$(this).parent().css('z-index', 1);
+			}
+		});
+
+		$(document).on('click', '.t3-button-action-installdistribution', function() {
+			$(ExtensionManager.identifier.extensionManager).mask();
+		});
+
+		ExtensionManager.configurationFieldSupport();
+		var $validate = $('.validate');
+		$validate.validate();
+		$(document).on('click', '.t3js-save-close', function() {
+			$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'})).submit();
+		});
+
+		// initialize the repository
+		Repository.initDom();
+
+		ExtensionManager.Update.initializeEvents();
+		ExtensionManager.UploadForm.initializeEvents();
+	});
+
+	if (typeof TYPO3.ExtensionManager === 'undefined') {
+		TYPO3.ExtensionManager = ExtensionManager;
+	}
+
+	return ExtensionManager;
 });

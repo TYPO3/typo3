@@ -15,13 +15,14 @@
  * JavaScript module for ext:documentation
  */
 define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
+	'use strict';
 
 	var Documentation = {
 		dataTable: null,
 		searchField: null,
 		identifier: {
 			documentationList: '.t3js-documentation-list',
-			searchField: '.t3js-documentation-searchfield',
+			searchField: '.t3js-documentation-searchfield'
 		}
 	};
 
@@ -63,7 +64,7 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 		return vars;
 	};
 
-	$(document).ready(function() {
+	$(function() {
 		// Initialize the view
 		Documentation.initializeView();
 
@@ -73,6 +74,7 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 				Documentation.dataTable.search('').draw();
 			}
 		});
-
 	});
+
+	return Documentation;
 });
