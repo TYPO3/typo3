@@ -1934,8 +1934,39 @@ return array(
                 )
             ), $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'])
         ),
-
-
+        'inline_5' => array(
+            'exclude' => 1,
+            'label' => 'IRRE: 5 tt_content child with foreign_record_defaults',
+            'config' => array(
+                'type' => 'inline',
+                'allowed' => 'tt_content',
+                'foreign_table' => 'tt_content',
+                'foreign_record_defaults' => array(
+                    'CType' => 'text'
+                ),
+                'minitems' => 0,
+                'maxitems' => 1,
+                'appearance' => array(
+                    'collapseAll' => 0,
+                    'expandSingle' => 1,
+                    'levelLinksPosition' => 'bottom',
+                    'useSortable' => 1,
+                    'showPossibleLocalizationRecords' => 1,
+                    'showRemovedLocalizationRecords' => 1,
+                    'showAllLocalizationLink' => 1,
+                    'showSynchronizationLink' => 1,
+                    'enabledControls' => array(
+                        'info' => false,
+                        'new' => false,
+                        'dragdrop' => true,
+                        'sort' => false,
+                        'hide' => true,
+                        'delete' => true,
+                        'localize' => true,
+                    ),
+                ),
+            ),
+        ),
         'palette_1_1' => array(
             'exclude' => 0,
             'label' => 'checkbox is type check',
@@ -2635,7 +2666,7 @@ return array(
 			passthrough_1,
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
-			inline_1, inline_2, inline_3, inline_4,
+			inline_1, inline_2, inline_3, inline_4, inline_5,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
@@ -2679,7 +2710,7 @@ return array(
 				--div--;Flex,
 					flex_1, flex_2, flex_3, flex_4, flex_5,
 				--div--;Inline,
-					inline_1, inline_2, inline_3, inline_4,
+					inline_1, inline_2, inline_3, inline_4, inline_5,
 				--div--;Palettes,
 					--palette--;Palettes 1;palettes_1,
 					--palette--;Palettes 2;palettes_2,
