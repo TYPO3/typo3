@@ -38,10 +38,12 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
     public function addDataOverrulesShowitemsByGivenInlineOverruleTypes()
     {
         $input = [
-            'inlineOverruleTypesArray' => [
-                'aType' => [
-                    'showitem' => 'keepMe'
-                ]
+            'inlineParentConfig' => [
+                'foreign_types' => [
+                    'aType' => [
+                        'showitem' => 'keepMe',
+                    ],
+                ],
             ],
             'processedTca' => [
                 'types' => [
@@ -52,7 +54,7 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
                         'showitem' => 'keepMe, aField',
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -67,12 +69,14 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
     public function addDataAddsTypeShowitemsByGivenInlineOverruleTypes()
     {
         $input = [
-            'inlineOverruleTypesArray' => [
-                'aType' => [
-                    'showitem' => 'keepMe'
-                ],
-                'cType' => [
-                    'showitem' => 'keepMe'
+            'inlineParentConfig' => [
+                'foreign_types' => [
+                    'aType' => [
+                        'showitem' => 'keepMe',
+                    ],
+                    'cType' => [
+                        'showitem' => 'keepMe',
+                    ],
                 ],
             ],
             'processedTca' => [
@@ -84,7 +88,7 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
                         'showitem' => 'keepMe, aField',
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -93,5 +97,4 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
 
         $this->assertSame($expected, $this->subject->addData($input));
     }
-
 }

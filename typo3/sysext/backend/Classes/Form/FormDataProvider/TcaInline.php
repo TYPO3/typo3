@@ -208,10 +208,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     {
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
-        $inlineOverruleTypesArray = [];
-        if (isset($parentConfig['foreign_types'])) {
-            $inlineOverruleTypesArray = $parentConfig['foreign_types'];
-        }
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         /** @var FormDataCompiler $formDataCompiler */
@@ -221,7 +217,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
             'inlineFirstPid' => $result['inlineFirstPid'],
-            'inlineOverruleTypesArray' => $inlineOverruleTypesArray,
             'inlineParentConfig' => $parentConfig,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record

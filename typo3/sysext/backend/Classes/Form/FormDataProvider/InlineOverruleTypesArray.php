@@ -32,8 +32,8 @@ class InlineOverruleTypesArray implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (!empty($result['inlineOverruleTypesArray'])) {
-            foreach ($result['inlineOverruleTypesArray'] as $type => $config) {
+        if (isset($result['inlineParentConfig']['foreign_types'])) {
+            foreach ($result['inlineParentConfig']['foreign_types'] as $type => $config) {
                 $result['processedTca']['types'][$type] = $config;
             }
         }

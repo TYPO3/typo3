@@ -34,7 +34,6 @@ class FormDataCompiler
      * @var array
      */
     protected $removeKeysFromFinalResultArray = [
-        'inlineOverruleTypesArray',
     ];
 
     /**
@@ -212,9 +211,6 @@ class FormDataCompiler
             // configuration - of the new intermediate sys_file_reference record. Data provider that are called later
             // will then use this relation to resolve for instance input placeholder relation values.
             'inlineChildChildUid' => null,
-            // This is the "foreign_types" section of a parent inline configuration that can be used to
-            // overrule the types TCA section of a child element.
-            'inlineOverruleTypesArray' => [],
             // Inline scenario: A localized parent record is handled and localizationMode is set to "select", so inline
             // parents can have localized children. This value is set to TRUE if this array represents a localized child
             // overlay record that has no default language record.
