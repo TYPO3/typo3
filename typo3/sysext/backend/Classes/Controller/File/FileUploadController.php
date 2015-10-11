@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,15 +26,8 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Script Class for display up to 10 upload fields
  */
-class FileUploadController
+class FileUploadController extends AbstractModule
 {
-    /**
-     * Document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
     /**
      * Name of the filemount
      *
@@ -69,17 +64,12 @@ class FileUploadController
     protected $folderObject;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
         $GLOBALS['SOBE'] = $this;
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
         $this->init();
     }
@@ -87,7 +77,7 @@ class FileUploadController
     /**
      * Initialize
      *
-     * @return void
+     * @throws InsufficientFolderAccessPermissionsException
      */
     protected function init()
     {
@@ -95,14 +85,20 @@ class FileUploadController
         $this->target = GeneralUtility::_GP('target');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         if (!$this->returnUrl) {
-            $this->returnUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . BackendUtility::getModuleUrl('file_list') . '&id=' . rawurlencode($this->target);
+            $this->returnUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
+                . TYPO3_mainDir . BackendUtility::getModuleUrl('file_list')
+                . '&id=' . rawurlencode($this->target);
         }
         // Create the folder object
         if ($this->target) {
-            $this->folderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->target);
+            $this->folderObject = ResourceFactory::getInstance()
+                ->retrieveFileOrFolderObject($this->target);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
-            throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages', 1375889834);
+            throw new InsufficientFolderAccessPermissionsException(
+                'You are not allowed to access folders outside your storages',
+                1375889834
+            );
         }
 
         // Cleaning and checking target directory
@@ -111,13 +107,20 @@ class FileUploadController
             $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', true);
             throw new \RuntimeException($title . ': ' . $message, 1294586843);
         }
-        // Setting the title and the icon
-        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
-        $this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
-        // Setting template object
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_upload.html');
-        $this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" enctype="multipart/form-data">';
+
+        // Setting up the context sensitive menu
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+
+        // building pathInfo for metaInformation
+        $pathInfo = [
+            'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
+        ];
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+
+        // set form tag
+        $this->moduleTemplate->setForm('<form action="'
+            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
+            . '" method="post" name="editform" enctype="multipart/form-data">');
     }
 
     /**
@@ -127,28 +130,35 @@ class FileUploadController
      */
     public function main()
     {
+        $lang = $this->getLanguageService();
+
+        // set page title
+        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
+
         // Make page header:
-        $this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
-        $form = $this->renderUploadForm();
-        $pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . $this->doc->section('', $form);
+        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
+        $pageContent .= $this->renderUploadForm();
+
         // Header Buttons
-        $docHeaderButtons = array(
-            'csh' => BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload'),
-            'back' => ''
-        );
-        $markerArray = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'FUNC_MENU' => '',
-            'CONTENT' => $pageContent,
-            'PATH' => $this->title
-        );
-        // Back
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        // csh button
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('file_upload');
+        $buttonBar->addButton($cshButton);
+
+        // back button
         if ($this->returnUrl) {
-            $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+            $backButton = $buttonBar->makeLinkButton()
+                ->setHref(GeneralUtility::linkThisUrl($this->returnUrl))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+            $buttonBar->addButton($backButton);
         }
-        $this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+
+        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->moduleTemplate->setContent($this->content);
     }
 
     /**
@@ -172,7 +182,7 @@ class FileUploadController
 		';
         // Adding 'size="50" ' for the sake of Mozilla!
         $content .= '
-				<input type="file" multiple="true" name="upload_1[]" />
+				<input type="file" multiple="multiple" name="upload_1[]" />
 				<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
 				<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 			';
@@ -199,21 +209,9 @@ class FileUploadController
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->main();
+        $response->getBody()->write($this->moduleTemplate->renderContent());
 
-        $response->getBody()->write($this->content);
         return $response;
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /**
