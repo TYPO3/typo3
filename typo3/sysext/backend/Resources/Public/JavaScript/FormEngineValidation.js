@@ -58,6 +58,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 			// Bind to datepicker change event, but wait some milliseconds, because the init is not so fast
 			window.setTimeout(function() {
+				//noinspection JSUnusedLocalSymbols
 				$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
 					FormEngineValidation.validate();
 					var $paletteField = $(this).closest('.t3js-formengine-palette-field');
@@ -223,21 +224,23 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 			var evalList = FormEngineValidation.trimExplode(',', config.evalList);
 			var origValue = $humanReadableField.val();
 			var newValue = $humanReadableField.val();
+			var i;
 
-			for (var i = 0; i < evalList.length; i++) {
+			for (i = 0; i < evalList.length; i++) {
 				newValue = FormEngineValidation.processValue(evalList[i], newValue, config);
 			}
-			var typeConfig = $field.data('formengine-validation-rules');
-			var type = '';
-			if (typeof typeConfig !== 'undefined' && typeConfig.length) {
-				type = typeConfig[0].type;
+
+			var formattedValue = newValue;
+			for (i = 0; i < evalList.length; i++) {
+				formattedValue = FormEngineValidation.formatValue(evalList[i], formattedValue, config);
 			}
+
 			if ($.inArray('password', evalList) !== -1) {
 				$mainField.val(origValue);
 				$humanReadableField.val(newValue);
 			} else {
 				$mainField.val(newValue);
-				$humanReadableField.val(newValue);
+				$humanReadableField.val(formattedValue);
 			}
 		}
 	};
@@ -246,7 +249,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * Run validation for field
 	 *
 	 * @param {object} $field
-	 * @param {string} value
+	 * @param {string=} [value=$field.val()]
 	 * @returns {string}
 	 */
 	FormEngineValidation.validateField = function($field, value) {
@@ -256,6 +259,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		var markParent = false;
 		var selected = 0;
 		var returnValue = value;
+		var $relatedField;
 		$.each(rules, function(k, rule) {
 			switch (rule.type) {
 				case 'required':
@@ -280,12 +284,11 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 									markParent = true;
 									$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 								}
-
 							}
 						}
 						if (rule.config.lower || rule.config.upper) {
-							minValue = rule.config.lower || 0;
-							maxValue = rule.config.upper || Number.MAX_VALUE;
+							var minValue = rule.config.lower || 0;
+							var maxValue = rule.config.upper || Number.MAX_VALUE;
 							if (value < minValue || value > maxValue) {
 								markParent = true;
 								$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
@@ -308,7 +311,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 								markParent = true;
 								$field.closest(FormEngineValidation.markerSelector).addClass(FormEngineValidation.errorClass);
 							}
-
 						}
 					}
 					break;
@@ -538,7 +540,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse value to integer
 	 *
-	 * @param {string} value
+	 * @param {(number|string)} value
 	 * @returns {number}
 	 */
 	FormEngineValidation.parseInt = function(value) {
@@ -625,22 +627,21 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 */
 	FormEngineValidation.parseDateTime = function(value, command) {
 		var today = new Date();
-		var lastTime;
 		var values = FormEngineValidation.split(value);
-		var add;
+		var add = 0;
 		switch (command) {
 			case 'd':
 			case 't':
 			case 'n':
-				lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
+				FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
 				if (values.valPol[1]) {
 					add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
 				}
 				break;
 			case '+':
 			case '-':
-				if (lastTime == 0) {
-					lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
+				if (FormEngineValidation.lastTime == 0) {
+					FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
 				}
 				if (values.valPol[1]) {
 					add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
@@ -649,17 +650,17 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 			default:
 				var index = value.indexOf(' ');
 				if (index != -1) {
-					var dateVal = FormEngineValidation.parseDate(value, value.substr(index,value.length));
+					var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
 					// set refDate so that evalFunc_input on time will work with correct DST information
 					FormEngineValidation.refDate = new Date(dateVal * 1000);
-					lastTime = dateVal + FormEngineValidation.parseTime(value, value.substr(0,index));
+					FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0,index), value.substr(0, 1), 'time');
 				} else {
 					// only date, no time
-					lastTime = FormEngineValidation.parseDate(value, value);
+					FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
 				}
 		}
-		lastTime += add * 24 * 60 * 60;
-		return lastTime;
+		FormEngineValidation.lastTime += add * 24 * 60 * 60;
+		return FormEngineValidation.lastTime;
 	};
 
 	/**
@@ -671,14 +672,13 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 */
 	FormEngineValidation.parseDate = function(value, command) {
 		var today = new Date();
-		var lastDate;
 		var values = FormEngineValidation.split(value);
-		var add;
+		var add = 0;
 		switch (command) {
 			case 'd':
 			case 't':
 			case 'n':
-				lastDate = FormEngineValidation.getTimestamp(today);
+				FormEngineValidation.lastDate = FormEngineValidation.getTimestamp(today);
 				if (values.valPol[1]) {
 					add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
 				}
@@ -718,10 +718,10 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				var theTime = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
 
 				// Substract timezone offset from client
-				lastDate = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 0);
+				FormEngineValidation.lastDate = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 0);
 		}
-		lastDate += add * 24 * 60 * 60;
-		return lastDate;
+		FormEngineValidation.lastDate += add * 24 * 60 * 60;
+		return FormEngineValidation.lastDate;
 	};
 
 	/**
@@ -729,26 +729,26 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 *
 	 * @param {string} value
 	 * @param {string} command
+	 * @param {string} type
 	 * @returns {*}
 	 */
 	FormEngineValidation.parseTime = function(value, command, type) {
 		var today = new Date();
-		var lastTime;
 		var values = FormEngineValidation.split(value);
-		var add;
+		var add = 0;
 		switch (command) {
 			case 'd':
 			case 't':
 			case 'n':
-				lastTime = FormEngineValidation.getTimeSecs(today);
+				FormEngineValidation.lastTime = FormEngineValidation.getTimeSecs(today);
 				if (values.valPol[1]) {
 					add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
 				}
 				break;
 			case '+':
 			case '-':
-				if (lastTime == 0) {
-					lastTime = FormEngineValidation.getTimeSecs(today);
+				if (FormEngineValidation.lastTime == 0) {
+					FormEngineValidation.lastTime = FormEngineValidation.getTimeSecs(today);
 				}
 				if (values.valPol[1]) {
 					add = FormEngineValidation.pol(values.valPol[1], FormEngineValidation.parseInt(values.values[1]));
@@ -782,13 +782,13 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				var theTime = new Date(FormEngineValidation.getYear(FormEngineValidation.refDate), FormEngineValidation.refDate.getUTCMonth(), FormEngineValidation.refDate.getUTCDate(), hour, min, (( type == 'timesec' ) ? sec : 0));
 
 				// Substract timezone offset from client
-				lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 1);
+				FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 1);
 		}
-		lastTime += add * 60;
-		if (lastTime < 0) {
-			lastTime += 24 * 60 * 60;
+		FormEngineValidation.lastTime += add * 60;
+		if (FormEngineValidation.lastTime < 0) {
+			FormEngineValidation.lastTime += 24 * 60 * 60;
 		}
-		return lastTime;
+		return FormEngineValidation.lastTime;
 	};
 
 	/**
@@ -839,11 +839,11 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * Get year from date object
 	 *
 	 * @param {Date} timeObj
-	 * @returns {number}
+	 * @returns {?number}
 	 */
 	FormEngineValidation.getYear = function(timeObj) {
 		if (timeObj === null) {
-			return;
+			return null;
 		}
 		return timeObj.getUTCFullYear();
 	};
@@ -891,7 +891,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse date string or object and return unix timestamp
 	 *
-	 * @param {string} timeObj
+	 * @param {(string|Date)} timeObj
 	 * @returns {number}
 	 */
 	FormEngineValidation.getTimestamp = function(timeObj) {
@@ -970,17 +970,17 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	FormEngineValidation.splitStr = function(theStr1, delim, index) {
 		var theStr = '' + theStr1;
 		var lengthOfDelim = delim.length;
-		sPos = -lengthOfDelim;
+		var sPos = -lengthOfDelim;
 		if (index < 1) {
 			index = 1;
 		}
-		for (a = 1; a < index; a++) {
+		for (var a = 1; a < index; a++) {
 			sPos = theStr.indexOf(delim, sPos + lengthOfDelim);
 			if (sPos == -1) {
 				return null;
 			}
 		}
-		ePos = theStr.indexOf(delim, sPos + lengthOfDelim);
+		var ePos = theStr.indexOf(delim, sPos + lengthOfDelim);
 		if (ePos == -1) {
 			ePos = theStr.length;
 		}
