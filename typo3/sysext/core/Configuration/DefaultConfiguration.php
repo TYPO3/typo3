@@ -324,9 +324,14 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                        ),
+                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => array(
@@ -416,11 +421,6 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
                         ),
                     ),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverruleTypesArray::class => array(
-                        'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
-                        ),
-                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
@@ -431,7 +431,7 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverruleTypesArray::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
                         ),
                     ),
@@ -618,9 +618,14 @@ return array(
                 ),
                 'inlineParentRecord' => array(
                     \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(),
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => array(
                         'depends' => array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                        )
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(

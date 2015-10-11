@@ -120,37 +120,6 @@ class FormInlineAjaxController
         }
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
-        // Set default values for new created records
-        // @todo: This should be moved over to some data provider? foreign_record_defaults is currently not handled
-        // @todo: at all, but also not used in core itself. Bonus question: There is "foreign_types", there is this
-        // @todo: default setting stuff ... why can't just "all" TCA be overwritten by parent similar to TCA type
-        // @todo: related columnsOverrides? Another gem: foreign_selector_fieldTcaOverride overwrites TCA of foreign_selector
-        // @todo: depending on parent ...
-        /**
-        if (isset($config['foreign_record_defaults']) && is_array($config['foreign_record_defaults'])) {
-            $foreignTableConfig = $GLOBALS['TCA'][$child['table']];
-            // The following system relevant fields can't be set by foreign_record_defaults
-            $notSettableFields = [
-                'uid', 'pid', 't3ver_oid', 't3ver_id', 't3ver_label', 't3ver_wsid', 't3ver_state', 't3ver_stage',
-                't3ver_count', 't3ver_tstamp', 't3ver_move_id'
-            ];
-            $configurationKeysForNotSettableFields = [
-                'crdate', 'cruser_id', 'delete', 'origUid', 'transOrigDiffSourceField', 'transOrigPointerField',
-                'tstamp'
-            ];
-            foreach ($configurationKeysForNotSettableFields as $configurationKey) {
-                if (isset($foreignTableConfig['ctrl'][$configurationKey])) {
-                    $notSettableFields[] = $foreignTableConfig['ctrl'][$configurationKey];
-                }
-            }
-            foreach ($config['foreign_record_defaults'] as $fieldName => $defaultValue) {
-                if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSettableFields)) {
-                    $record[$fieldName] = $defaultValue;
-                }
-            }
-        }
-         */
-
         // Set language of new child record to the language of the parent record:
         // @todo: To my understanding, the below case can't happen: With localizationMode select, lang overlays
         // @todo: of children are only created with the "synchronize" button that will trigger a different ajax action.

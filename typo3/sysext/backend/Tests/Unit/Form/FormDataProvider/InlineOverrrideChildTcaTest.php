@@ -13,29 +13,30 @@ namespace typo3\sysext\backend\Tests\Unit\Form\FormDataProvider;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverruleTypesArray;
+
+use TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
- * InlineOverruleTypesArray Test file
+ * InlineOverrideChildTca Test file
  */
-class InlineOverruleTypesArrayTest extends UnitTestCase
+class InlineOverrrideChildTcaTest extends UnitTestCase
 {
 
     /**
-     * @var InlineOverruleTypesArray
+     * @var InlineOverrideChildTca
      */
     protected $subject;
 
     protected function setUp()
     {
-        $this->subject = new InlineOverruleTypesArray();
+        $this->subject = new InlineOverrideChildTca();
     }
 
     /**
      * @test
      */
-    public function addDataOverrulesShowitemsByGivenInlineOverruleTypes()
+    public function addDataOverrulesShowitemByGivenInlineOverruleTypes()
     {
         $input = [
             'inlineParentConfig' => [
@@ -66,7 +67,7 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsTypeShowitemsByGivenInlineOverruleTypes()
+    public function addDataAddsTypeShowitemByGivenInlineOverruleTypes()
     {
         $input = [
             'inlineParentConfig' => [
@@ -94,6 +95,61 @@ class InlineOverruleTypesArrayTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['types']['aType']['showitem'] = 'keepMe';
         $expected['processedTca']['types']['cType']['showitem'] = 'keepMe';
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataSetsDefaultValueForChildRecordColumn()
+    {
+        $GLOBALS['TCA']['aTable']['columns']['aType'] = [];
+        $input = [
+            'inlineParentConfig' => [
+                'foreign_table' => 'aTable',
+                'foreign_record_defaults' => [
+                    'aType' => '42',
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aType' => [
+                        'config' => [],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aType']['config']['default'] = '42';
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataIgnoresDefaultValueForRestrictedField()
+    {
+        $GLOBALS['TCA']['aTable']['columns']['pid'] = [];
+        $input = [
+            'inlineParentConfig' => [
+                'foreign_table' => 'aTable',
+                'foreign_record_defaults' => [
+                    'pid' => '42',
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aType' => [
+                        'config' => [],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
 
         $this->assertSame($expected, $this->subject->addData($input));
     }
