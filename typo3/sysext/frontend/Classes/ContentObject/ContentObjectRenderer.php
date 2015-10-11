@@ -3902,12 +3902,19 @@ class ContentObjectRenderer {
 		$replacementForEllipsis = trim($options[1]);
 		$crop2space = trim($options[2]) === '1' ? TRUE : FALSE;
 		// Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
-		$tags = 'a|b|blockquote|body|div|em|font|form|h1|h2|h3|h4|h5|h6|i|li|map|ol|option|p|pre|sub|sup|select|span|strong|table|thead|tbody|tfoot|td|textarea|tr|u|ul|br|hr|img|input|area|link';
-		// TODO We should not crop inside <script> tags.
+		$tags = 'a|abbr|address|area|article|aside|audio|b|bdi|bdo|blockquote|body|br|button|caption|cite|code|col|colgroup|data|datalist|dd|del|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|h1|h2|h3|h4|h5|h6|header|hr|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|meter|nav|object|ol|optgroup|option|output|p|param|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|section|select|small|source|span|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|tr|track|u|ul|ut|var|video|wbr';
 		$tagsRegEx = '
 			(
 				(?:
 					<!--.*?-->					# a comment
+					|
+					<canvas[^>]*>.*?</canvas>   # a canvas tag
+					|
+					<script[^>]*>.*?</script>   # a script tag
+					|
+					<noscript[^>]*>.*?</noscript> # a noscript tag
+					|
+					<template[^>]*>.*?</template> # a template tag
 				)
 				|
 				</?(?:' . $tags . ')+			# opening tag (\'<tag\') or closing tag (\'</tag\')
