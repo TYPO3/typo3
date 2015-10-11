@@ -456,8 +456,7 @@ class FormInlineAjaxController
                 $jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', ' . GeneralUtility::quoteJSvalue($childUid) . ', null, ' . $selectedValue . ');';
                 // Remove possible virtual records in the form which showed that a child records could be localized:
                 $transOrigPointerFieldName = $GLOBALS['TCA'][$childData['table']]['ctrl']['transOrigPointerField'];
-                $transOrigPointerField = false;
-                if (isset($childData['databaseRow'][$transOrigPointerFieldName]) && $childData['dataabaseRow'][$transOrigPointerFieldName]) {
+                if (isset($childData['databaseRow'][$transOrigPointerFieldName]) && $childData['databaseRow'][$transOrigPointerFieldName]) {
                     $transOrigPointerField = $childData['databaseRow'][$transOrigPointerFieldName];
                     if (is_array($transOrigPointerField)) {
                         $transOrigPointerField = $transOrigPointerField[0];
