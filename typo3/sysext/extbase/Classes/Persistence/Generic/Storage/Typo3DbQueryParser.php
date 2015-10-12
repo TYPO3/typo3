@@ -654,7 +654,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				if (empty($storagePageIds)) {
 					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
 				}
-				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(',', $this->databaseHandle->cleanIntArray($storagePageIds)) . ')';
 			}
 		}
 	}
