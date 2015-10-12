@@ -577,17 +577,22 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             } else {
                 // Lookup the title of this page and use it as default description
                 $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
+                $page = FALSE;
                 if ($pageId) {
                     $page = BackendUtility::getRecord('pages', $pageId);
-
-                    if (!empty($page)) {
-                        // Set the name to the title of the page
-                        if ($shortcut['type'] === 'other') {
-                            $shortcutName = $page['title'];
-                        } else {
-                            $shortcutName = $shortcutNamePrepend . ' ' . $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) . ' (' . $page['title'] . ')';
-                        }
+                }
+                if (!empty($page)) {
+                    // Set the name to the title of the page
+                    if ($shortcut['type'] === 'other') {
+                        $shortcutName = $page['title'];
+                    } else {
+                        $shortcutName = $shortcutNamePrepend . ' ' .
+                            $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) .
+                            ' (' . $page['title'] . ')';
                     }
+                } elseif ($shortcut['table'] !== '' && $shortcut['type'] !== 'other') {
+                    $shortcutName = $shortcutNamePrepend . ' ' .
+                        $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']);
                 }
             }
 
