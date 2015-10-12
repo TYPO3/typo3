@@ -145,4 +145,56 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
         $expected['columnsToProcess'] = ['l18n_diffsource'];
         $this->assertSame($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataRegistersSingleSubtypesAddlistFields()
+    {
+        $input = [
+            'columnsToProcess' => [],
+            'processedTca' => [
+                'types' => [
+                    'list' => [
+                        'subtypes_addlist' => [
+                            'aType' => 'aField',
+                        ]
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'list_type' => 'aType',
+            ],
+        ];
+
+        $expected = $input;
+        $expected['columnsToProcess'] = ['aField'];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataRegistersMultipleSubtypesAddlistFields()
+    {
+        $input = [
+            'columnsToProcess' => [],
+            'processedTca' => [
+                'types' => [
+                    'list' => [
+                        'subtypes_addlist' => [
+                            'aType' => 'aField, bField',
+                        ]
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'list_type' => 'aType',
+            ],
+        ];
+
+        $expected = $input;
+        $expected['columnsToProcess'] = ['aField', 'bField'];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

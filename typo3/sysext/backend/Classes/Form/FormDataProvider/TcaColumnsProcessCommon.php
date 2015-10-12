@@ -22,12 +22,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TcaColumnsProcessCommon implements FormDataProviderInterface
 {
+
     /**
      * Determine which common fields are in use and add those to the list of
      * columns that must be processed by the next data providers. Common fields
      * are for example uid, transOrigPointerField or transOrigDiffSourceField.
      *
      * @param array $result
+     *
      * @return array
      */
     public function addData(array $result)
@@ -58,6 +60,18 @@ class TcaColumnsProcessCommon implements FormDataProviderInterface
         // field that contains the value of the original language record
         if (!empty($tableProperties['transOrigDiffSourceField'])) {
             $result['columnsToProcess'][] = $tableProperties['transOrigDiffSourceField'];
+        }
+
+        // fields added to subtypes_addlist (can be pi_flexform)
+        if (!empty($result['processedTca']['types']['list']['subtypes_addlist'][$result['databaseRow']['list_type']])) {
+            $fields = GeneralUtility::trimExplode(
+                ',',
+                $result['processedTca']['types']['list']['subtypes_addlist'][$result['databaseRow']['list_type']],
+                true
+            );
+            foreach ($fields as $field) {
+                $result['columnsToProcess'][] = $field;
+            }
         }
 
         return $result;
