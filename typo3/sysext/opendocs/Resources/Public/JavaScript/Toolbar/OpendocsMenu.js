@@ -85,7 +85,7 @@ define(['jquery'], function($) {
 	 */
 	OpendocsMenu.closeDocument = function(md5sum) {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['opendocs_close'],
+			url: TYPO3.settings.ajaxUrls['opendocs_closedoc'],
 			type: 'post',
 			cache: false,
 			data: {
