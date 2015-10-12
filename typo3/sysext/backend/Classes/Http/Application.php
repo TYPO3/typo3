@@ -72,14 +72,6 @@ class Application implements ApplicationInterface
             $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
         }
 
-        $this->request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
-        // see below when this option is set
-        if ($GLOBALS['TYPO3_AJAX']) {
-            $this->request = $this->request->withAttribute('isAjaxRequest', true);
-        } elseif (isset($this->request->getQueryParams()['M'])) {
-            $this->request = $this->request->withAttribute('isModuleRequest', true);
-        }
-
         $this->bootstrap->configure();
     }
 
@@ -91,6 +83,14 @@ class Application implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
+        $this->request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
+        // see below when this option is set and Bootstrap::defineTypo3RequestTypes() for more details
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+            $this->request = $this->request->withAttribute('isAjaxRequest', true);
+        } elseif (isset($this->request->getQueryParams()['M'])) {
+            $this->request = $this->request->withAttribute('isModuleRequest', true);
+        }
+
         $this->bootstrap->handleRequest($this->request);
 
         if ($execute !== null) {
