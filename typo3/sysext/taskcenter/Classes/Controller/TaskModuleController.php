@@ -70,9 +70,6 @@ class TaskModuleController extends BaseScriptClass
             'name' => $this->moduleName
         );
         parent::init();
-        // Initialize document
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('taskcenter') . 'Resources/Private/Templates/mod_template.html');
     }
 
     /**
@@ -423,15 +420,12 @@ class TaskModuleController extends BaseScriptClass
      * Create the panel of buttons for submitting the form or otherwise
      * perform operations.
      *
-     * @return array All available buttons as an assoc. array
+     * @return void
      */
     protected function getButtons()
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $buttons = array(
-            'shortcut' => '',
-            'open_new_window' => $this->openInNewWindow()
-        );
+
         // Fullscreen Button
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
@@ -448,9 +442,7 @@ class TaskModuleController extends BaseScriptClass
             $shortCutButton = $buttonBar->makeFullyRenderedButton()
                 ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
             $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
         }
-        return $buttons;
     }
 
     /**
