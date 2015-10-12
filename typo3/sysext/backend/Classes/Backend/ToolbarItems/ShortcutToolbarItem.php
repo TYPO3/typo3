@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Database\PreparedStatement;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -565,27 +567,27 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $shortcut['recordid'] = 0;
             }
 
-            // Lookup the title of this page and use it as default description
-            $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
-            if ($pageId) {
-                $page = BackendUtility::getRecord('pages', $pageId);
-
-                if (!empty($page)) {
-                    // Set the name to the title of the page
-                    if ($shortcut['type'] === 'other') {
-                        $shortcutName = $page['title'];
-                    } else {
-                        $shortcutName = $shortcutNamePrepend . ' ' . $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) . ' (' . $page['title'] . ')';
-                    }
-                }
+            // Check if given id is a combined identifier
+            if (!empty($queryParameters['id']) && preg_match('/^[0-9]+:/', $queryParameters['id'])) {
+                try {
+                    $resourceFactory = ResourceFactory::getInstance();
+                    $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
+                    $shortcutName = trim($shortcutNamePrepend . ' ' . $resource->getName());
+                } catch (ResourceDoesNotExistException $e) {}
             } else {
-                $dirName = urldecode($pageId);
+                // Lookup the title of this page and use it as default description
+                $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
+                if ($pageId) {
+                    $page = BackendUtility::getRecord('pages', $pageId);
 
-                if (preg_match('/\\/$/', $dirName)) {
-                    // If $pageId is a string and ends with a slash,
-                    // assume it is a fileadmin reference and set
-                    // the description to the basename of that path
-                    $shortcutName .= ' ' . basename($dirName);
+                    if (!empty($page)) {
+                        // Set the name to the title of the page
+                        if ($shortcut['type'] === 'other') {
+                            $shortcutName = $page['title'];
+                        } else {
+                            $shortcutName = $shortcutNamePrepend . ' ' . $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) . ' (' . $page['title'] . ')';
+                        }
+                    }
                 }
             }
 
