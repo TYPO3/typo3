@@ -14,7 +14,7 @@
 /**
  * Javascript for show the online media dialog
  */
-define(['jquery', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, NProgress) {
+define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang'], function($, NProgress, Modal) {
 	"use strict";
 
 	var OnlineMediaPlugin = function(element) {
@@ -49,13 +49,13 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal']
 							'file'
 						);
 					} else {
-						var $confirm = top.TYPO3.Modal.confirm(
+						var $confirm = Modal.confirm(
 							'ERROR',
 							data.error,
 							top.TYPO3.Severity.error,
 							[{
 								text: TYPO3.lang['button.ok'] || 'OK',
-								btnClass: 'btn-' + top.TYPO3.Modal.getSeverityClass(top.TYPO3.Severity.error),
+								btnClass: 'btn-' + Modal.getSeverityClass(top.TYPO3.Severity.error),
 								name: 'ok'
 							}]
 						).on('confirm.button.ok', function() {
@@ -71,7 +71,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal']
 		me.$btn.on('click', function(evt) {
 			evt.preventDefault();
 
-			var $modal = top.TYPO3.Modal.show(
+			var $modal = Modal.show(
 				me.$btn.attr('title'),
 				'<div class="form-control-wrap">' +
 					'<input type="text" class="form-control online-media-url" placeholder="' + me.placeholder + '" />' +

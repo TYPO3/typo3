@@ -28,7 +28,8 @@ var setFormValueOpenBrowser
 	,setFormValue_getFObj;
 
 
-define(['jquery'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
+
 
 	// main options
 	var FormEngine = {
@@ -596,7 +597,7 @@ define(['jquery'], function ($) {
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
 			var $anchorElement = $(this);
-			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
@@ -610,10 +611,10 @@ define(['jquery'], function ($) {
 			]);
 			$modal.on('button.clicked', function(e) {
 				if (e.target.name === 'no') {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				} else if (e.target.name === 'yes') {
 					deleteRecord($anchorElement.data('table'), $anchorElement.data('uid'), $anchorElement.data('return-url'));
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			});
 		});
@@ -623,7 +624,7 @@ define(['jquery'], function ($) {
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
 			var $anchorElement = $(this);
-			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
@@ -637,11 +638,11 @@ define(['jquery'], function ($) {
 			]);
 			$modal.on('button.clicked', function(e) {
 				if (e.target.name === 'no') {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				} else if (e.target.name === 'yes') {
 					var objectId = $anchorElement.data('objectid');
 					inline.deleteRecord(objectId);
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			});
 		});
@@ -836,7 +837,7 @@ define(['jquery'], function ($) {
 		if ($('.has-change').length > 0) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
-			$modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			$modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
 					active: true,
@@ -850,9 +851,9 @@ define(['jquery'], function ($) {
 			]);
 			$modal.on('button.clicked', function(e) {
 				if (e.target.name === 'no') {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				} else if (e.target.name === 'yes') {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 					FormEngine.closeDocument();
 				}
 			});
@@ -868,7 +869,7 @@ define(['jquery'], function ($) {
 		if ($('.has-error').length > 0) {
 			var title = TYPO3.lang['label.alert.save_with_error.title'] || 'You have errors in your form!';
 			var content = TYPO3.lang['label.alert.save_with_error.content'] || 'Please check the form, there is at least one error in your form.';
-			$modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.error, [
+			$modal = Modal.confirm(title, content, top.TYPO3.Severity.error, [
 				{
 					text: TYPO3.lang['buttons.alert.save_with_error.ok'] || 'OK',
 					btnClass: 'btn-danger',
@@ -877,7 +878,7 @@ define(['jquery'], function ($) {
 			]);
 			$modal.on('button.clicked', function(e) {
 				if (e.target.name === 'ok') {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			});
 			return false;

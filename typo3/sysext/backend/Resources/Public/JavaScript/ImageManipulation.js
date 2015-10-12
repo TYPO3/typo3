@@ -14,7 +14,7 @@
 /**
  * contains all logic for the image crop GUI
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 	var ImageManipulation = {
 		margin: 20,
@@ -53,7 +53,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($) {
 	 * Open modal with image to crop
 	 */
 	ImageManipulation.show = function() {
-		ImageManipulation.currentModal = top.TYPO3.Modal.loadUrl(
+		ImageManipulation.currentModal = Modal.loadUrl(
 			ImageManipulation.$trigger.data('image-name'),
 			TYPO3.Severity.notice,
 			[],
@@ -107,7 +107,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($) {
 						$modal.css({marginLeft: 'auto', marginRight: 'auto'});
 
 						// Center modal vertical
-						top.TYPO3.Modal.center();
+						Modal.center();
 
 						// Wait a few microseconds to let the modal resize
 						setTimeout(ImageManipulation.initializeCropper, 100);

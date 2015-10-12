@@ -14,18 +14,18 @@
 /**
  * JavaScript to handle confirm windows in the task center module
  */
-define(['jquery'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	$(function() {
 		$(document).on('click', '.t3js-confirm-trigger', function(e) {
 			e.preventDefault();
 			var $link = $(this);
-			top.TYPO3.Modal.confirm($link.data('title'), $link.data('message'))
+			Modal.confirm($link.data('title'), $link.data('message'))
 				.on('confirm.button.ok', function() {
 					self.location.href = $link.attr('href');
-					top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					Modal.currentModal.trigger('modal-dismiss');
 				})
 				.on('confirm.button.cancel', function() {
-					top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					Modal.currentModal.trigger('modal-dismiss');
 				});
 			return false;
 		});

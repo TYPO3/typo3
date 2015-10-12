@@ -14,19 +14,21 @@
 /**
  * JavaScript to handle confirm windows in the Import/Export module
  */
-define(['jquery'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
+	"use strict";
+
 	$(function() {
 		$(document).on('click', '.t3js-confirm-trigger', function() {
-			$button = $(this);
-			top.TYPO3.Modal.confirm($button.data('title'), $button.data('message'))
+			var $button = $(this);
+			Modal.confirm($button.data('title'), $button.data('message'))
 				.on('confirm.button.ok', function() {
 					$('#t3js-submit-field')
 						.attr('name', $button.attr('name'))
 						.closest('form').submit();
-					top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					Modal.currentModal.trigger('modal-dismiss');
 				})
 				.on('confirm.button.cancel', function() {
-					top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					Modal.currentModal.trigger('modal-dismiss');
 				});
 		});
 	});

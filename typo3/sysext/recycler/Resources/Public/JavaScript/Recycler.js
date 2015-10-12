@@ -14,7 +14,7 @@
 /**
  * RequireJS module for Recycler
  */
-define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress) {
+define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
 	var Recycler = {
 		identifiers: {
 			searchForm: '#recycler-form',
@@ -333,23 +333,24 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 		var $tr = $(this).parents('tr'),
 			isMassDelete = $tr.parent().prop('tagName') !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
 
+		var records, message;
 		if (isMassDelete) {
-			var records = Recycler.markedRecordsForMassAction,
-				message = TYPO3.lang['modal.massdelete.text'];
+			records = Recycler.markedRecordsForMassAction;
+			message = TYPO3.lang['modal.massdelete.text'];
 		} else {
 			var uid = $tr.data('uid'),
 				table = $tr.data('table'),
-				records = table + ':' + uid,
-				recordTitle = $tr.data('recordtitle'),
-				message = table === 'pages' ? TYPO3.lang['modal.deletepage.text'] : TYPO3.lang['modal.deletecontent.text'];
-				message = Recycler.createMessage(message, [recordTitle, '[' + records + ']']);
+				recordTitle = $tr.data('recordtitle');
+			records = table + ':' + uid;
+			message = table === 'pages' ? TYPO3.lang['modal.deletepage.text'] : TYPO3.lang['modal.deletecontent.text'];
+			message = Recycler.createMessage(message, [recordTitle, '[' + records + ']']);
 		}
 
-		top.TYPO3.Modal.confirm(TYPO3.lang['modal.delete.header'], message, top.TYPO3.Severity.error, [
+		Modal.confirm(TYPO3.lang['modal.delete.header'], message, top.TYPO3.Severity.error, [
 			{
 				text: TYPO3.lang['button.cancel'],
 				trigger: function() {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			}, {
 				text: TYPO3.lang['button.delete'],
@@ -365,21 +366,23 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 		var $tr = $(this).parents('tr'),
 			isMassUndo = $tr.parent().prop('tagName') !== 'TBODY'; // undoRecord() was invoked by the mass delete button
 
+		var records, messageText, recoverPages;
 		if (isMassUndo) {
-			var records = Recycler.markedRecordsForMassAction,
-				messageText = TYPO3.lang['modal.massundo.text'],
-				recoverPages = true;
+			records = Recycler.markedRecordsForMassAction;
+			messageText = TYPO3.lang['modal.massundo.text'];
+			recoverPages = true;
 		} else {
 			var uid = $tr.data('uid'),
 				table = $tr.data('table'),
-				records = table + ':' + uid,
-				recordTitle = $tr.data('recordtitle'),
-				$message = null,
-				recoverPages = table === 'pages',
-				messageText = recoverPages ? TYPO3.lang['modal.undopage.text'] : TYPO3.lang['modal.undocontent.text'];
-				messageText = Recycler.createMessage(messageText, [recordTitle, '[' + records + ']']);
+				recordTitle = $tr.data('recordtitle');
+
+			records = table + ':' + uid;
+			recoverPages = table === 'pages';
+			messageText = recoverPages ? TYPO3.lang['modal.undopage.text'] : TYPO3.lang['modal.undocontent.text'];
+			messageText = Recycler.createMessage(messageText, [recordTitle, '[' + records + ']']);
 		}
 
+		var $message;
 		if (recoverPages) {
 			$message = $('<div />').append(
 				$('<p />').text(messageText),
@@ -391,11 +394,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 			$message = messageText;
 		}
 
-		top.TYPO3.Modal.confirm(TYPO3.lang['modal.undo.header'], $message, top.TYPO3.Severity.ok, [
+		Modal.confirm(TYPO3.lang['modal.undo.header'], $message, top.TYPO3.Severity.ok, [
 			{
 				text: TYPO3.lang['button.cancel'],
 				trigger: function() {
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			}, {
 				text: TYPO3.lang['button.undo'],
@@ -457,7 +460,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 				Recycler.allToggled = false;
 			},
 			complete: function() {
-				top.TYPO3.Modal.dismiss();
+				Modal.dismiss();
 				NProgress.done();
 			}
 		});
@@ -548,15 +551,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 		$(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />'));
 	};
 
-	/**
-	 * return the main Recycler object
-	 * initialize once on document ready
-	 */
-	return function() {
-		$(document).ready(function() {
-			Recycler.initialize();
-		});
+	$(document).ready(function() {
+		Recycler.initialize();
+	});
 
-		return Recycler;
-	}();
+	return Recycler;
 });

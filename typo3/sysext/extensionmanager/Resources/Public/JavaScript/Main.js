@@ -17,7 +17,7 @@
  * ExtensionManager.Update => Various AJAX functions to display updates
  * ExtensionManager.uploadForm => helper to show the upload form
  */
-define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress) {
+define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
 	var ExtensionManager = {
 		identifier: {
 			extensionlist: '#typo3-extension-list',
@@ -73,7 +73,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 			$me.attr('href', '#');
 			$me.addClass('transformed');
 			$me.click(function() {
-				top.TYPO3.Modal.confirm(
+				Modal.confirm(
 					TYPO3.lang['extensionList.removalConfirmation.title'],
 					TYPO3.lang['extensionList.removalConfirmation.question'],
 					top.TYPO3.Severity.error,
@@ -82,14 +82,14 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 							text: TYPO3.lang['button.cancel'],
 							active: true,
 							trigger: function() {
-								top.TYPO3.Modal.dismiss();
+								Modal.dismiss();
 							}
 						}, {
 							text: TYPO3.lang['button.remove'],
 							btnClass: 'btn-danger',
 							trigger: function() {
 								ExtensionManager.removeExtensionFromDisk($me);
-								top.TYPO3.Modal.dismiss();
+								Modal.dismiss();
 							}
 						}
 					]
@@ -189,7 +189,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 		NProgress.done();
 		$extManager.unmask();
 
-		top.TYPO3.Modal.confirm(
+		Modal.confirm(
 			TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
 			message,
 			top.TYPO3.Severity.warning,
@@ -198,7 +198,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 					text: TYPO3.lang['button.cancel'],
 					active: true,
 					trigger: function() {
-						top.TYPO3.Modal.dismiss();
+						Modal.dismiss();
 					}
 				}, {
 					text: TYPO3.lang['button.updateExtension'],
@@ -208,7 +208,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 							url: data.url,
 							data: {
 								tx_extensionmanager_tools_extensionmanagerextensionmanager: {
-									version: $('input:radio[name=version]:checked', top.TYPO3.Modal.currentModal).val()
+									version: $('input:radio[name=version]:checked', Modal.currentModal).val()
 								}
 							},
 							dataType: 'json',
@@ -220,7 +220,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 								location.reload();
 							}
 						});
-						top.TYPO3.Modal.dismiss();
+						Modal.dismiss();
 					}
 				}
 			]
@@ -382,19 +382,19 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 		NProgress.done();
 		$extManager.unmask();
 		if (data.hasDependencies) {
-			top.TYPO3.Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
+			Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
 				{
 					text: TYPO3.lang['button.cancel'],
 					active: true,
 					trigger: function() {
-						top.TYPO3.Modal.dismiss();
+						Modal.dismiss();
 					}
 				}, {
 					text: TYPO3.lang['button.resolveDependencies'],
 					btnClass: 'btn-info',
 					trigger: function() {
 						Repository.getResolveDependenciesAndInstallResult(data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath);
-						top.TYPO3.Modal.dismiss();
+						Modal.dismiss();
 					}
 				}
 			]);
@@ -419,24 +419,24 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 			},
 			success: function (data) {
 				if (data.errorCount > 0) {
-					top.TYPO3.Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.error, [
+					Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.error, [
 						{
 							text: TYPO3.lang['button.cancel'],
 							active: true,
 							trigger: function() {
-								top.TYPO3.Modal.dismiss();
+								Modal.dismiss();
 							}
 						}, {
 							text: TYPO3.lang['button.resolveDependenciesIgnore'],
 							btnClass: 'btn-danger disabled t3js-dependencies',
 							trigger: function() {
 								Repository.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
-								top.TYPO3.Modal.dismiss();
+								Modal.dismiss();
 							}
 						}
 					]);
-					top.TYPO3.Modal.currentModal.on('shown.bs.modal', function() {
-						var $actionButton = top.TYPO3.Modal.currentModal.find('.t3js-dependencies');
+					Modal.currentModal.on('shown.bs.modal', function() {
+						var $actionButton = Modal.currentModal.find('.t3js-dependencies');
 						top.TYPO3.jQuery('input[name=unlockDependencyIgnoreButton]').on('change', function() {
 							$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 						});

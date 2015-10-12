@@ -15,7 +15,7 @@
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function($, Modal) {
 
 	var ShortcutMenu = {
 		$spinnerElement: $('<span>', {
@@ -76,7 +76,7 @@ define(['jquery'], function($) {
 	 */
 	ShortcutMenu.deleteShortcut = function($shortcutRecord) {
 		// @todo: translations
-		top.TYPO3.Modal.confirm('Delete bookmark', 'Do you really want to remove this bookmark?')
+		Modal.confirm('Delete bookmark', 'Do you really want to remove this bookmark?')
 			.on('confirm.button.ok', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['shortcut_remove'],
@@ -105,7 +105,7 @@ define(['jquery'], function($) {
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton) {
 		if (typeof confirmationText !== 'undefined') {
 			// @todo: translations
-			top.TYPO3.Modal.confirm('Create bookmark', confirmationText)
+			Modal.confirm('Create bookmark', confirmationText)
 				.on('confirm.button.ok', function() {
  					var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector);
 					var $spinner = ShortcutMenu.$spinnerElement.clone();

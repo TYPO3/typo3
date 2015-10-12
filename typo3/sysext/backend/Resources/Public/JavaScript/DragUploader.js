@@ -15,7 +15,7 @@
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/DragUploader"
  *
  */
-define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, moment, NProgress) {
+define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang'], function($, moment, NProgress, Modal) {
 
 	/**
 	 * Array of files which are asked for being overridden
@@ -284,7 +284,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backe
 				$modalContent.find('table').append($record);
 			}
 
-			var $modal = top.TYPO3.Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, top.TYPO3.Severity.warning, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
 					active: true,
@@ -333,7 +333,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backe
 			}).on('button.clicked', function(e) {
 				if (e.target.name === 'cancel') {
 					askForOverride = [];
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				} else if (e.target.name === 'continue') {
 					$.each(askForOverride, function(key, fileInfo) {
 						if (fileInfo.action === actions.USE_EXISTING) {
@@ -346,7 +346,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backe
 						}
 					});
 					askForOverride = [];
-					top.TYPO3.Modal.dismiss();
+					Modal.dismiss();
 				}
 			}).on('hidden.bs.modal', function() {
 				askForOverride = [];
@@ -580,10 +580,12 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backe
 				if (typeof option === 'string') {
 					data[option]();
 				}
-			})
+			});
 		};
 
-		$('.t3js-drag-uploader').dragUploader();
+		$(function() {
+			$('.t3js-drag-uploader').dragUploader();
+		});
 	};
 
 

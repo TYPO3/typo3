@@ -16,6 +16,17 @@
  * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
 define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
+	"use strict";
+
+	// fetch from parent
+	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {
+		return parent.window.TYPO3.Modal;
+	}
+
+	// fetch object from outer frame
+	if (top && top.TYPO3.Modal) {
+		return top.TYPO3.Modal;
+	}
 
 	/**
 	 * The main object of the modal API
@@ -102,7 +113,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 				}
 			];
 		additionalCssClasses = additionalCssClasses || [];
-		$modal = Modal.show(title, content, severity, buttons, additionalCssClasses);
+		var $modal = Modal.show(title, content, severity, buttons, additionalCssClasses);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'cancel') {
 				$(this).trigger('confirm.button.cancel');
@@ -148,13 +159,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * @param {array} additionalCssClasses additional css classes to add to the modal
 	 */
 	Modal.show = function(title, content, severity, buttons, additionalCssClasses) {
+		var i;
+
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
 		buttons = buttons || [];
 		additionalCssClasses = additionalCssClasses || [];
 
 		var currentModal = Modal.template.clone();
 		if (additionalCssClasses.length) {
-			for (var i=0; i < additionalCssClasses.length; i++) {
+			for (i = 0; i < additionalCssClasses.length; i++) {
 				currentModal.addClass(additionalCssClasses[i]);
 			}
 		}
@@ -176,7 +189,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 
 		currentModal.addClass('t3-modal-' + Modal.getSeverityClass(severity));
 		if (buttons.length > 0) {
-			for (var i=0; i<buttons.length; i++) {
+			for (i = 0; i<buttons.length; i++) {
 				var button = buttons[i];
 				var $button = $('<button />', {class: 'btn'});
 				$button.html(button.text);
@@ -283,22 +296,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 					active: true,
 					btnClass: 'btn-default',
 					trigger: function() {
-						if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
-							top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
-						} else {
-							Modal.trigger('modal-dismiss');
-						}
+						Modal.trigger('modal-dismiss');
 					}
 				},
 				{
 					text: $element.data('button-ok-text') || 'OK',
 					btnClass: 'btn-' + Modal.getSeverityClass(severity),
 					trigger: function() {
-						if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
-							top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
-						} else {
-							Modal.trigger('modal-dismiss');
-						}
+						Modal.trigger('modal-dismiss');
 						self.location.href = $element.data('href') || $element.attr('href');
 					}
 				}
@@ -306,17 +311,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 			if (url !== null) {
 				var separator = (url.indexOf('?') > -1) ? '&' : '?';
 				var params = $.param({data: $element.data()});
-				if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
-					top.TYPO3.Modal.loadUrl(title, severity, buttons, url + separator + params);
-				} else {
-					Modal.loadUrl(title, severity, buttons, url + separator + params);
-				}
+				Modal.loadUrl(title, severity, buttons, url + separator + params);
 			} else {
-				if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
-					top.TYPO3.Modal.show(title, content, severity, buttons);
-				} else {
-					Modal.show(title, content, severity, buttons);
-				}
+				Modal.show(title, content, severity, buttons);
 			}
 		});
 	};
@@ -326,12 +323,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 */
 	$(document).on('modal-dismiss', Modal.dismiss);
 
-	/**
-	 * Return the Modal object
-	 */
-	return function() {
-		Modal.initializeMarkupTrigger();
-		TYPO3.Modal = Modal;
-		return Modal;
-	}();
+	Modal.initializeMarkupTrigger();
+
+	// expose as global object
+	TYPO3.Modal = Modal;
+
+	return Modal;
 });
