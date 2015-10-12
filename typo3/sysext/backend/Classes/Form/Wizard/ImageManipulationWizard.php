@@ -75,11 +75,9 @@ class ImageManipulationWizard
     {
         $parameters = [
             'zoom'   => $request->getQueryParams()['zoom'] ? '1' : '0',
-            'ratios' => $request->getQueryParams()['ratios'] ?: ''
+            'ratios' => $request->getQueryParams()['ratios'] ?: '',
+            'file'   => $request->getQueryParams()['file'] ?: '',
         ];
-        if ($request->getQueryParams()['file']) {
-            $parameters['file'] = $request->getQueryParams()['file'];
-        }
 
         $token = GeneralUtility::hmac(implode('|', $parameters), 'ImageManipulationWizard');
         return $token === $request->getQueryParams()['token'];

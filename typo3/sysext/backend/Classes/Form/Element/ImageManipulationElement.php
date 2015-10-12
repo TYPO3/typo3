@@ -100,9 +100,9 @@ class ImageManipulationElement extends AbstractFormElement
 
             $formFieldId = StringUtility::getUniqueId('formengine-image-manipulation-');
             $wizardData = array(
-                'file' => $file->getUid(),
                 'zoom' => $config['enableZoom'] ? '1' : '0',
                 'ratios' => json_encode($config['ratios']),
+                'file' => $file->getUid(),
             );
             $wizardData['token'] = GeneralUtility::hmac(implode('|', $wizardData), 'ImageManipulationWizard');
 
