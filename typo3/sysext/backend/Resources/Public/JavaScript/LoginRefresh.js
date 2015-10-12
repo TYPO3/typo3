@@ -105,7 +105,7 @@ define(['jquery', 'bootstrap'], function($) {
 		);
 		LoginRefresh.$timeoutModal.find('.modal-footer').append(
 			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_login_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
+				top.location.href = LoginRefresh.logoutUrl;
 			}),
 			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
 				$.ajax({
