@@ -39,6 +39,7 @@ class InfoModuleController extends BaseScriptClass
      * Document Template Object
      *
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @deprecated
      */
     public $doc;
 
@@ -115,7 +116,8 @@ class InfoModuleController extends BaseScriptClass
 					window.location.href = URL;
 					return false;
 				}
-				');
+				'
+            );
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
             $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
@@ -179,24 +181,36 @@ class InfoModuleController extends BaseScriptClass
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
-        $cshButton = $buttonBar->makeFullyRenderedButton()
-            ->setHtmlSource(BackendUtility::cshItem('_MOD_web_info', ''));
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_web_info')
+            ->setFieldName('');
         $buttonBar->addButton($cshButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
         // View page
         $viewButton = $buttonBar->makeLinkButton()
             ->setHref('#')
-            ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+            ->setOnClick(BackendUtility::viewOnClick(
+                $this->pageinfo['uid'],
+                '',
+                BackendUtility::BEgetRootLine($this->pageinfo['uid'])
+            ))
             ->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
             ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         // Shortcut
-        if ($this->backendUser->mayMakeShortcut()) {
-            $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon(
-                    'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-                    implode(',', array_keys($this->MOD_MENU)), $this->moduleName));
-            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
+        $shortCutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setGetVariables([
+                'M',
+                'id',
+                'edit_record',
+                'pointer',
+                'new_unique_uid',
+                'search_field',
+                'search_levels',
+                'showLimit'
+            ])
+            ->setSetVariables(array_keys($this->MOD_MENU));
+        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -227,5 +241,16 @@ class InfoModuleController extends BaseScriptClass
             $menu->addMenuItem($item);
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    /**
+     * Returns the ModuleTemplate container
+     * This is used by PageLayoutView.php
+     *
+     * @return ModuleTemplate
+     */
+    public function getModuleTemplate()
+    {
+        return $this->moduleTemplate;
     }
 }
