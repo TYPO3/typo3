@@ -14,7 +14,7 @@
 /**
  * Javascript for show the online media dialog
  */
-define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, NProgress) {
+define(['jquery', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, NProgress) {
 	"use strict";
 
 	var OnlineMediaPlugin = function(element) {

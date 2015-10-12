@@ -14,7 +14,7 @@
 /**
  * JavaScript for TypoScript Object Browser
  */
-define('TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
 	var $searchFields = $('input[name="search_field"]');
 	var searchResultShown = ('' !== $searchFields.first().val());

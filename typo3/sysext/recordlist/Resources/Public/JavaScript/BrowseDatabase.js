@@ -14,7 +14,7 @@
 /**
  * Database record selection
  */
-define('TYPO3/CMS/Recordlist/BrowseDatabase', ['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
 	"use strict";
 
 	$(function() {

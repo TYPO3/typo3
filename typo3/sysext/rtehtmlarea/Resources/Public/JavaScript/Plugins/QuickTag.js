@@ -14,8 +14,7 @@
 /**
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/Plugins/QuickTag',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ColorPaletteField'],
 	function (Plugin, Util, ColorPaletteField) {

@@ -14,7 +14,7 @@
 /**
  * JavaScript module for ext:documentation
  */
-define('TYPO3/CMS/Documentation/Main', ['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
+define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
 	var Documentation = {
 		dataTable: null,

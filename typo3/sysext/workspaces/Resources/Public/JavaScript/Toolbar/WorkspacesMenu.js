@@ -15,7 +15,7 @@
  * toolbar menu for the workspaces functionality to switch between the workspaces
  * and jump to the workspaces module
  */
-define('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var WorkspacesMenu = {
 		options: {

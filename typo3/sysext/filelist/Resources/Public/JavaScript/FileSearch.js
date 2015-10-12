@@ -14,7 +14,7 @@
 /**
  *  JavaScript for file search
  */
-define('TYPO3/CMS/Filelist/FileSearch', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
 	var $searchFields = $('input[name="tx_filelist_file_filelistlist[searchWord]"]');
 	var searchResultShown = ('' !== $searchFields.first().val());

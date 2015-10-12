@@ -14,7 +14,7 @@
 /**
  * Identify the current user agent
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent', [], function () {
+define([], function () {
 
 	var userAgent = navigator.userAgent.toLowerCase();
 	var documentMode = document.documentMode,

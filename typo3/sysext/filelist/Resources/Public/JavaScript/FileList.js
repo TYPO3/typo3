@@ -15,7 +15,7 @@
  * JavaScript RequireJS module called "TYPO3/CMS/Filelist/FileList"
  *
  */
-define('TYPO3/CMS/Filelist/FileList', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	$('a.filelist-file-title').click(function(event) {
 		event.preventDefault();

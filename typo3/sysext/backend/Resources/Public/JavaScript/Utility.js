@@ -14,7 +14,7 @@
 /**
  * Utility helper
  */
-define('TYPO3/CMS/Backend/Utility', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	/**
 	 * The main Utility object

@@ -14,7 +14,7 @@
 /**
  * File edit for ext:t3editor
  */
-define('TYPO3/CMS/T3editor/FileEdit', ['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
+define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
 
 	$(document).ready(function() {
 

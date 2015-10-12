@@ -14,7 +14,7 @@
 /**
  * Colorpicker JavaScript
  */
-define('TYPO3/CMS/Backend/Wizard/Colorpicker', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 
 	var Colorpicker = {
 		options: {}

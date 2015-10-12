@@ -14,7 +14,7 @@
 /**
  * Initializes global handling of split buttons.
  */
-define('TYPO3/CMS/Backend/SplitButtons', ['jquery'], function($) {
+define(['jquery'], function($) {
 	"use strict";
 
 	var SplitButtons = {

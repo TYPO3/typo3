@@ -14,7 +14,7 @@
 /**
  * Javascript functions regarding the permissions module
  */
-define('TYPO3/CMS/Beuser/Permissions', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var Permissions = {
 		options: {

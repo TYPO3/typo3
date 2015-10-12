@@ -14,7 +14,7 @@
 /**
  * ElementBrowser communication with parent windows
  */
-define('TYPO3/CMS/Recordlist/ElementBrowser', ['jquery'], function($) {
+define(['jquery'], function($) {
 	"use strict";
 
 	var ElementBrowser = {

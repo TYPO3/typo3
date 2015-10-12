@@ -14,7 +14,7 @@
 /**
  * Global search to deal with everything in the backend that is search-related
  */
-define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
+define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';

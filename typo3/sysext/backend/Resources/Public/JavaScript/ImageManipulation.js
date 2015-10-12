@@ -14,7 +14,7 @@
 /**
  * contains all logic for the image crop GUI
  */
-define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Modal'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($) {
 
 	var ImageManipulation = {
 		margin: 20,

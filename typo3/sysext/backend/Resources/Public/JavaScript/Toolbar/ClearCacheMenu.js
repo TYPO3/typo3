@@ -15,7 +15,7 @@
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon
  */
-define('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var ClearCacheMenu = {
 		$spinnerElement: $('<span>', {

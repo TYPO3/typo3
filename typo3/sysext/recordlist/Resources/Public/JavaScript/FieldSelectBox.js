@@ -14,7 +14,7 @@
 /**
  * Check-all / uncheck-all for the Database Recordlist fieldSelectBox
  */
-define('TYPO3/CMS/Recordlist/FieldSelectBox', ['jquery'], function($) {
+define(['jquery'], function($) {
 	"use strict";
 
 	$(function() {

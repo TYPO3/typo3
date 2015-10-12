@@ -14,7 +14,7 @@
 /**
  * Page link interaction
  */
-define('TYPO3/CMS/Recordlist/PageLinkHandler', ['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	"use strict";
 
 	var PageLinkHandler = {

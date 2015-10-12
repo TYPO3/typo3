@@ -14,8 +14,7 @@
 /**
  * TYPO3Image plugin for htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],

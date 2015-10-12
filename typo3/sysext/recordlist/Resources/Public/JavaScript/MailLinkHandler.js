@@ -14,7 +14,7 @@
 /**
  * Mail link interaction
  */
-define('TYPO3/CMS/Recordlist/MailLinkHandler', ['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	"use strict";
 
 	var MailLinkHandler = {};

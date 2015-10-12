@@ -13,8 +13,7 @@
 /***************************************************
  *  HTMLArea.DOM.Selection: Selection object
  ***************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],

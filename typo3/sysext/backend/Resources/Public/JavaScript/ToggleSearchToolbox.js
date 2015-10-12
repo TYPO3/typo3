@@ -14,7 +14,7 @@
 /**
  * Toggle the search toolbox
  */
-define('TYPO3/CMS/Backend/ToggleSearchToolbox', ['jquery', 'TYPO3/CMS/Backend/DocumentHeader', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DocumentHeader) {
+define(['jquery', 'TYPO3/CMS/Backend/DocumentHeader', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DocumentHeader) {
 	"use strict";
 
 	$(function() {

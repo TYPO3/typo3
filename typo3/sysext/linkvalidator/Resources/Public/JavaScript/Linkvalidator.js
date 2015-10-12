@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-define('TYPO3/CMS/Linkvalidator/Linkvalidator', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var Linkvalidator = {};
 

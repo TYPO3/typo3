@@ -14,8 +14,7 @@
 /**
  * The editor iframe
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',

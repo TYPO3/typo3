@@ -14,8 +14,7 @@
 /**
  * Editor extends Ext.util.Observable
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Ajax/Ajax',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',

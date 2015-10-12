@@ -17,8 +17,7 @@
  * Every plugin should be a subclass of this class
  *
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	function (UserAgent, Util, Event) {

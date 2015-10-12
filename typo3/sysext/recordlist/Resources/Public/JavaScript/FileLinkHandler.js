@@ -14,7 +14,7 @@
 /**
  * File link interaction
  */
-define('TYPO3/CMS/Recordlist/FileLinkHandler', ['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
+define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
 	"use strict";
 
 	var FileLinkHandler = {

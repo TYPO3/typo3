@@ -14,8 +14,7 @@
 /**
  * Abbreviation plugin for htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/Plugins/Abbreviation',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function (Plugin, Util) {
 

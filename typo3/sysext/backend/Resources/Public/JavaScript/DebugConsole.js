@@ -14,7 +14,7 @@
 /**
  * The debug console shown at the bottom of the backend
  */
-define('TYPO3/CMS/Backend/DebugConsole', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	var DebugConsole = {
 		$consoleDom: null,
 		settings: {

@@ -14,7 +14,7 @@
 /**
  * JavaScript implementations for page actions
  */
-define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
+define(['jquery'], function($) {
 	'use strict';
 
 	var PageActions = {

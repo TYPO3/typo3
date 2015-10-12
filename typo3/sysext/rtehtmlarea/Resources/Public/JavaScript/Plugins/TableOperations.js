@@ -14,8 +14,7 @@
 /**
  * Table Operations Plugin for TYPO3 htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',

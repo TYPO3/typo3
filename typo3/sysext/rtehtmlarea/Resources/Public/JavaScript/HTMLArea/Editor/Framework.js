@@ -14,8 +14,7 @@
 /**
  * Framework is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Resizable',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',

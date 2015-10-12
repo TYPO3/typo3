@@ -14,7 +14,7 @@
 /**
  * JavaScript functions for creating multiple pages
  */
-define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var WizardCreatePages = {
 		lineCounter: 5,

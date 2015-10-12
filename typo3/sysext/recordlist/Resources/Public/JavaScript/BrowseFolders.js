@@ -14,7 +14,7 @@
 /**
  * Folder selection
  */
-define('TYPO3/CMS/Recordlist/BrowseFolders', ['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal'], function ($, ElementBrowser, Modal) {
+define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal'], function ($, ElementBrowser, Modal) {
 	"use strict";
 
 	$(function() {

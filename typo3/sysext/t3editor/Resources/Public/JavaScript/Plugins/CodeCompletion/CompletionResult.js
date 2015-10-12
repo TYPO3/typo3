@@ -14,7 +14,7 @@
 /**
  * Contains the CompletionResult class
  */
-define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/CompletionResult', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	var CompletionResult = {
 		tsRef: null,
 		tsTreeNode: null

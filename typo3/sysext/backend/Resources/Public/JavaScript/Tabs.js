@@ -15,7 +15,7 @@
  * This class handle the tabs in the TYPO3 backend.
  * It stores the last active tab and open it again after a reload,
  */
-define('TYPO3/CMS/Backend/Tabs', ['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($) {
 
 	/**
 	 * Tabs helper

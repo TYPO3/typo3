@@ -15,7 +15,7 @@
  * API for modal windows powered by Twitter Bootstrap.
  * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
-define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 
 	/**
 	 * The main object of the modal API

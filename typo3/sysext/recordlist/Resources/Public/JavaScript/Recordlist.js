@@ -14,7 +14,7 @@
 /**
  * Usability improvements for the record list
  */
-define('TYPO3/CMS/Recordlist/Recordlist', ['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	"use strict";
 
 	var Recordlist = {

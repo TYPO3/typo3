@@ -14,7 +14,7 @@
 /**
  * Object that handles RSA encryption and submission of the form
  */
-define('TYPO3/CMS/Rsaauth/RsaEncryptionModule', ['jquery', './RsaLibrary'], function($) {
+define(['jquery', './RsaLibrary'], function($) {
 	'use strict';
 
 	var RsaEncryption = {

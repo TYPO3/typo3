@@ -14,8 +14,7 @@
 /**
  * Ajax object
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Ajax/Ajax',
-	['jquery',
+define(['jquery',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function($, Util) {
 

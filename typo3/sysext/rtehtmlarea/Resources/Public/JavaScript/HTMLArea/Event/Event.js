@@ -13,8 +13,7 @@
 /*****************************************************************
  * HTMLArea.Event: Utility functions for dealing with events     *
  *****************************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	['jquery',
+define(['jquery',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function ($, UserAgent, Util) {

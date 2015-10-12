@@ -14,7 +14,7 @@
 /**
  * JavaScript module for the UsernamePasswordLoginProvider
  */
-define('TYPO3/CMS/Backend/UserPassLogin', ['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
+define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
 	var UserPassLogin = {
 		options: {
 			usernameField: '.t3js-login-username-field',

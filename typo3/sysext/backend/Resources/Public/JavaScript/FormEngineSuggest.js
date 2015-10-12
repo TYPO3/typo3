@@ -14,7 +14,7 @@
 /**
  * Functionality to load suggest functionality
  */
-define('TYPO3/CMS/Backend/FormEngineSuggest', ['jquery', 'jquery/autocomplete'], function ($) {
+define(['jquery', 'jquery/autocomplete'], function ($) {
 	var initialize = function($searchField) {
 		var $containerElement = $searchField.closest('.t3-form-suggest-container');
 		var table = $searchField.data('table'),

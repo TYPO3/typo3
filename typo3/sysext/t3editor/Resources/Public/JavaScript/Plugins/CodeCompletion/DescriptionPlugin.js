@@ -15,7 +15,7 @@
  * Descriptionbox plugin for the t3editor-codecompletion which displays the datatype
  * and the desciption for each property displayed in the completionbox
  **/
-define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/DescriptionPlugin', [
+define([
 	'jquery',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsParser'

@@ -14,8 +14,7 @@
 /**
  * BlockElements Plugin for TYPO3 htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',

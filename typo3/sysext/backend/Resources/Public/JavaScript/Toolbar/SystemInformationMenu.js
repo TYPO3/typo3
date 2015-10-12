@@ -14,7 +14,7 @@
 /**
  * System information menu handler
  */
-define('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu', ['jquery', 'TYPO3/CMS/Backend/Storage'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($) {
 	var SystemInformationMenu = {
 		identifier: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',

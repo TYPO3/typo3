@@ -14,7 +14,7 @@
 /**
  * API for tooltip windows powered by Twitter Bootstrap.
  */
-define('TYPO3/CMS/Backend/Tooltip', ['jquery', 'bootstrap'], function($) {
+define(['jquery', 'bootstrap'], function($) {
 
 	/**
 	 * The main tooltip object

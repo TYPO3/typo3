@@ -13,8 +13,7 @@
 /***************************************************
  *  Color utilities
  ***************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/String',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
 	function (UserAgent) {
 
 	// Create the ruler

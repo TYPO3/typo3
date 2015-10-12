@@ -13,8 +13,7 @@
 /********************************************************************
  * HTMLArea.KeyMap: Utility functions for dealing with key events   *
  ********************************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/KeyMap',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	function (Event) {
 
 	/**

@@ -13,7 +13,7 @@
 /***************************************************
  *  Color utilities
  ***************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color', [], function () {
+define([], function () {
 
 	return {
 

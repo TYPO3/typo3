@@ -14,7 +14,7 @@
 /**
  * JavaScript to handle confirm windows in the task center module
  */
-define('TYPO3/CMS/SysAction/ActionTask', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	$(function() {
 		$(document).on('click', '.t3js-confirm-trigger', function(e) {
 			e.preventDefault();

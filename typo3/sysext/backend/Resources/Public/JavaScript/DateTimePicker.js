@@ -15,7 +15,7 @@
  * contains all logic for the date time picker used in FormEngine
  * and EXT:belog and EXT:scheduler
  */
-define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 
 	var DateTimePicker = {
 		options: {

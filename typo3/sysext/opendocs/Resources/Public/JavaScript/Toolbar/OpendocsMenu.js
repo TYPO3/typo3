@@ -16,7 +16,7 @@
  *  - navigating to the documents
  *  - updating the menu
  */
-define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var OpendocsMenu = {
 		$spinnerElement: $('<span>', {

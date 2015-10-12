@@ -14,7 +14,7 @@
 /**
  * Contains the TsCodeCompletion class
  */
-define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
+define([
 	'jquery',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsParser',

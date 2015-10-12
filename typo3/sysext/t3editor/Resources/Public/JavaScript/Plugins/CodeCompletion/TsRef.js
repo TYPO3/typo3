@@ -14,7 +14,7 @@
 /**
  * Contains the TsCodeCompletion class
  */
-define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	var TsRef = {
 		typeId: null,
 		properties: null,

@@ -14,8 +14,7 @@
 /**
  * Initialization script of TYPO3 htmlArea RTE
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor'],

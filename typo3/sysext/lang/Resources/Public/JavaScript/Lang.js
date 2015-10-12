@@ -16,7 +16,7 @@
  *
  * `TYPO3.lang.foo[0].target = 'blah'` becomes `TYPO3.lang['foo'] = 'blah'`
  */
-define('TYPO3/CMS/Lang/Lang', ['jquery'], function($) {
+define(['jquery'], function($) {
 	var Lang = {};
 
 	Lang.convertToOneDimension = function() {

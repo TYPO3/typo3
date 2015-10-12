@@ -15,7 +15,7 @@
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
-define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var ShortcutMenu = {
 		$spinnerElement: $('<span>', {

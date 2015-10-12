@@ -14,7 +14,7 @@
 /**
  * JavaScript to handle confirm windows in the Import/Export module
  */
-define('TYPO3/CMS/Impexp/ImportExport', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	$(function() {
 		$(document).on('click', '.t3js-confirm-trigger', function() {
 			$button = $(this);

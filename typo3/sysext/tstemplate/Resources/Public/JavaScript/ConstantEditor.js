@@ -15,7 +15,7 @@
  * Various functions related to the Constant Editor
  * e.g. updating the field and working with colors
  */
-define('TYPO3/CMS/Tstemplate/ConstantEditor', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var ConstantEditor = {
 		options: {

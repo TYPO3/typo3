@@ -14,7 +14,7 @@
 /**
  * API for context help.
  */
-define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 
 	/**
 	 * The main ContextHelp object

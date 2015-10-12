@@ -15,7 +15,7 @@
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/DragUploader"
  *
  */
-define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, moment, NProgress) {
+define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Lang/Lang', 'TYPO3/CMS/Backend/Modal'], function($, moment, NProgress) {
 
 	/**
 	 * Array of files which are asked for being overridden

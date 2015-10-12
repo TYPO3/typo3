@@ -5,8 +5,7 @@
  * Intercept Ext.form.Field.afterRender in order to provide tips on form fields and menu items
  * Adapted from: http://www.extjs.com/forum/showthread.php?t=36642
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Tips',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
+define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
 	function (UserAgent) {
 
 	Tips = {

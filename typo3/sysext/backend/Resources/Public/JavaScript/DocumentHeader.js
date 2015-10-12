@@ -14,7 +14,7 @@
 /**
  * Calculates the height of the docHeader and hides it upon scrolling
  */
-define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
+define(['jquery'], function($) {
 	"use strict";
 
 	var DocumentHeader = {

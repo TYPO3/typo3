@@ -15,7 +15,7 @@
  * Javascript container used to load the clickmenu via AJAX
  * to render the result in a layer next to the mouse cursor
  */
-define('TYPO3/CMS/Backend/ClickMenu', ['jquery'], function($) {
+define(['jquery'], function($) {
 
 	var ClickMenu = {
 		mousePos: {

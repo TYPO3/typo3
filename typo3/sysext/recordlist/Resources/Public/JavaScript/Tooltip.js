@@ -14,7 +14,7 @@
 /**
  * API for tooltip windows powered by Twitter Bootstrap.
  */
-define('TYPO3/CMS/Recordlist/Tooltip', ['TYPO3/CMS/Backend/Tooltip'], function(Tooltip) {
+define(['TYPO3/CMS/Backend/Tooltip'], function(Tooltip) {
 	"use strict";
 
 	Tooltip.initialize('.table-fit a[title]', {

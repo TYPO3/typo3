@@ -14,7 +14,7 @@
 /**
  * Language module class
  */
-define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment) {
+define(['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment) {
 	var LanguageModule = {
 		me: this,
 		context: null,

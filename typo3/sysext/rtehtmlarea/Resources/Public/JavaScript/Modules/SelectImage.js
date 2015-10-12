@@ -14,7 +14,7 @@
 /**
  * This module is used by the RTE SelectImage module
  */
-define('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', function () {
+define(function () {
 	'use strict';
 
 	var SelectImage = {

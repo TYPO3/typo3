@@ -20,7 +20,7 @@
  * which can contain one ore more sections
  */
 
-define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 
 	TYPO3.FormEngine.FlexFormElement = function(el, options) {
 		var me = this;	// avoid scope issues

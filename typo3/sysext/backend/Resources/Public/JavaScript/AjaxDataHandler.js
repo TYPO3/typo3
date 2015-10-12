@@ -14,7 +14,7 @@
 /**
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
-define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/Modal'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/Modal'], function ($) {
 	'use strict';
 
 	var AjaxDataHandler = {};

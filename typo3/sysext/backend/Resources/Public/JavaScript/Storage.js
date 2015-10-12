@@ -16,7 +16,7 @@
  * TYPO3.Storage.Client and the Backend Users "uc",
  * available via TYPO3.Storage.Persistent
  */
-define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 	var Storage = {
 		Client: {},
 		Persistent: {

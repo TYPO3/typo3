@@ -14,7 +14,7 @@
 /**
  * LinkBrowser communication with parent window
  */
-define('TYPO3/CMS/Rtehtmlarea/RteLinkBrowser', ['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	"use strict";
 
 	var RteLinkBrowser = {

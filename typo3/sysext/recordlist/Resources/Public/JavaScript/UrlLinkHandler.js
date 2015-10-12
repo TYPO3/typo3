@@ -14,7 +14,7 @@
 /**
  * URL link interaction
  */
-define('TYPO3/CMS/Recordlist/UrlLinkHandler', ['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	"use strict";
 
 	var UrlLinkHandler = {};

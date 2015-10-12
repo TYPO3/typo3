@@ -28,7 +28,7 @@ var setFormValueOpenBrowser
 	,setFormValue_getFObj;
 
 
-define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 
 	// main options
 	var FormEngine = {

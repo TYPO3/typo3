@@ -14,7 +14,7 @@
 /**
  * JavaScript replacement for Legacy CSS Classes
  */
-define('TYPO3/CMS/Backend/LegacyCssClasses', ['jquery'], function($) {
+define(['jquery'], function($) {
 	var LegacyCssClasses = {
 		replacements: [
 			{

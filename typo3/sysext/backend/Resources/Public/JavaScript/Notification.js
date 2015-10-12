@@ -15,7 +15,7 @@
  * Notification API for the TYPO3 backend
  */
 
-define('TYPO3/CMS/Backend/Notification', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 
 	/**
 	 * Severity object

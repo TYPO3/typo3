@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-define('TYPO3/CMS/T3editor/T3editor', ['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) {
+define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) {
 
 	var T3editor = {
 		instances: {}

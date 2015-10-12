@@ -13,8 +13,7 @@
 /***************************************************
  *  Make resizable
  ***************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Resizable',
-	['jquery',
+define(['jquery',
 	'jquery-ui/resizable'],
 	function ($, Resizable) {
 

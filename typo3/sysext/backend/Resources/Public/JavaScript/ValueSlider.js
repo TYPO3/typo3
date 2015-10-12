@@ -14,7 +14,7 @@
 /**
  * ValueSlider
  */
-define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], function($) {
+define(['jquery', 'twbs/bootstrap-slider'], function($) {
 	/**
 	 * ValueSlider object
 	 *

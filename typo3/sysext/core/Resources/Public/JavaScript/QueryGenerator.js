@@ -14,7 +14,7 @@
 /**
  * This module handle the QueryGenerator forms.
  */
-define('TYPO3/CMS/Core/QueryGenerator', ['jquery', 'TYPO3/CMS/Backend/DateTimePicker', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/DateTimePicker', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
 
 	/**
 	 * The QueryGenerator AMD module
