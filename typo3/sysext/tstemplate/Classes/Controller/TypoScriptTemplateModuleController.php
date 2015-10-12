@@ -119,6 +119,15 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->MCONF = array(
             'name' => $this->moduleName
         );
+        $this->moduleTemplate->addJavaScriptCode(
+            'jumpToUrl',
+            '
+            function jumpToUrl(URL) {
+                window.location.href = URL;
+                return false;
+            }
+            '
+        );
     }
 
     /**
