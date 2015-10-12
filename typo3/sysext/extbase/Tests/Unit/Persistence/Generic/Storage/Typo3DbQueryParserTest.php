@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+
 class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
@@ -359,12 +362,12 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'set Pid to given Pids if rootLevel = 0' => array(
                 '0',
                 $table,
-                $table . '.pid IN (42, 27)'
+                $table . '.pid IN (42,27)'
             ),
             'add 0 to given Pids if rootLevel = -1' => array(
                 '-1',
                 $table,
-                $table . '.pid IN (42, 27, 0)'
+                $table . '.pid IN (42,27,0)'
             ),
             'set Pid to zero if rootLevel = -1 and no further pids given' => array(
                 '-1',
@@ -391,6 +394,9 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, array('dummy'), array(), '', false);
         $mockFrontendVariableCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class, array(), array(), '', false);
+        $mockDatabaseHandle = $this->prophesize(DatabaseConnection::class);
+        $mockDatabaseHandle->cleanIntArray(Argument::cetera())->willReturnArgument(0);
+        $mockTypo3DbQueryParser->_set('databaseHandle', $mockDatabaseHandle->reveal());
         $mockTypo3DbQueryParser->_set('tableColumnCache', $mockFrontendVariableCache);
         $mockFrontendVariableCache->expects($this->once())->method('get')->will($this->returnValue(array('pid' => '42')));
         $sql = $mockTypo3DbQueryParser->_callRef('getPageIdStatement', $table, $table, $storagePageIds);

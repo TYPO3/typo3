@@ -782,7 +782,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 default:
                     return '';
             }
-            $pageIdStatement = $tableAlias . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+            $pageIdStatement = $tableAlias . '.pid IN (' . implode(',', $this->databaseHandle->cleanIntArray($storagePageIds)) . ')';
         }
         return $pageIdStatement;
     }
