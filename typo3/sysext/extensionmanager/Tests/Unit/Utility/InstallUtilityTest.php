@@ -59,6 +59,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'reloadCaches',
                 'processCachingFrameworkUpdates',
                 'saveDefaultConfiguration',
+                'getExtensionArray',
                 'enrichExtensionWithDetails',
                 'ensureConfiguredDirectoriesExist',
                 'importInitialFiles',
@@ -70,6 +71,10 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
+        $this->installMock->expects($this->any())
+            ->method('getExtensionArray')
+            ->with($this->extensionKey)
+            ->will($this->returnCallback(array($this, 'getExtensionData')));
         $this->installMock->expects($this->any())
             ->method('enrichExtensionWithDetails')
             ->with($this->extensionKey)

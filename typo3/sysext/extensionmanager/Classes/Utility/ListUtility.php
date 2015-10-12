@@ -56,6 +56,11 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected $signalSlotDispatcher;
 
     /**
+     * @var array
+     */
+    protected $availableExtensions = NULL;
+
+    /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
      */
     public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility)
@@ -102,18 +107,20 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getAvailableExtensions()
     {
-        $this->emitPackagesMayHaveChangedSignal();
-        $extensions = array();
-        foreach ($this->packageManager->getAvailablePackages() as $package) {
-            $installationType = $this->getInstallTypeForPackage($package);
-            $extensions[$package->getPackageKey()] = array(
-                'siteRelPath' => str_replace(PATH_site, '', $package->getPackagePath()),
-                'type' => $installationType,
-                'key' => $package->getPackageKey(),
-                'ext_icon' => ExtensionManagementUtility::getExtensionIcon($package->getPackagePath()),
-            );
+        if ($this->availableExtensions === NULL) {
+            $this->emitPackagesMayHaveChangedSignal();
+            foreach ($this->packageManager->getAvailablePackages() as $package) {
+                $installationType = $this->getInstallTypeForPackage($package);
+                $this->availableExtensions[$package->getPackageKey()] = array(
+                    'siteRelPath' => str_replace(PATH_site, '', $package->getPackagePath()),
+                    'type' => $installationType,
+                    'key' => $package->getPackageKey(),
+                    'ext_icon' => ExtensionManagementUtility::getExtensionIcon($package->getPackagePath()),
+                );
+            }
         }
-        return $extensions;
+
+        return $this->availableExtensions;
     }
 
     /**

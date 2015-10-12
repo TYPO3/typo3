@@ -14,8 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
@@ -187,13 +188,21 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             $this->cacheManager->flushCachesInGroup('system');
         }
         $this->reloadCaches();
+        $this->processExtensionSetup($extensionKey);
 
+        $this->emitAfterExtensionInstallSignal($extensionKey);
+    }
+
+    /**
+     * @param string $extensionKey
+     */
+    public function processExtensionSetup($extensionKey)
+    {
+        $extension = $this->getExtensionArray($extensionKey);
         $this->importInitialFiles($extension['siteRelPath'], $extensionKey);
         $this->processDatabaseUpdates($extension);
         $this->processRuntimeDatabaseUpdates($extensionKey);
-        $this->saveDefaultConfiguration($extension['key']);
-
-        $this->emitAfterExtensionInstallSignal($extensionKey);
+        $this->saveDefaultConfiguration($extensionKey);
     }
 
     /**
@@ -313,12 +322,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function enrichExtensionWithDetails($extensionKey)
     {
-        $availableExtensions = $this->listUtility->getAvailableExtensions();
-        if (isset($availableExtensions[$extensionKey])) {
-            $extension = $availableExtensions[$extensionKey];
-        } else {
-            throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
-        }
+        $extension = $this->getExtensionArray($extensionKey);
         $availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
 
         if (!isset($availableAndInstalledExtensions[$extensionKey])) {
@@ -329,6 +333,21 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $availableAndInstalledExtensions[$extensionKey];
+    }
+
+    /**
+     * @param string $extensionKey
+     * @return array
+     * @throws ExtensionManagerException
+     */
+    protected function getExtensionArray($extensionKey)
+    {
+        $availableExtensions = $this->listUtility->getAvailableExtensions();
+        if (isset($availableExtensions[$extensionKey])) {
+            return $availableExtensions[$extensionKey];
+        } else {
+            throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
+        }
     }
 
     /**
