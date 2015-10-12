@@ -317,7 +317,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             // Shortcut
             if ($backendUser->mayMakeShortcut()) {
                 $buttons['shortcut'] = $this->getDocumentTemplate()->makeShortcutIcon(
-                    'id, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
+                    'id, M, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
                     implode(',', array_keys($this->MOD_MENU)),
                     'web_list'
                 );
@@ -454,6 +454,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setModuleName('web_list')
                     ->setGetVariables([
                         'id',
+                        'M',
                         'imagemode',
                         'pointer',
                         'table',
