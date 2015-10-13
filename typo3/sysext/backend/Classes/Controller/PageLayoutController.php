@@ -536,8 +536,7 @@ class PageLayoutController
                 BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
                 '',
                 '',
-                '',
-                'sys_language_uid'
+                ''
             );
             return $overlayRecord['title'];
         } else {
@@ -1110,8 +1109,7 @@ class PageLayoutController
                         BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
                         '',
                         '',
-                        '',
-                        'sys_language_uid'
+                        ''
                     );
                     $editLanguageButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
