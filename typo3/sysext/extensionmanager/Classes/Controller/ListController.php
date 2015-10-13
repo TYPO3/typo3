@@ -102,6 +102,9 @@ class ListController extends AbstractController
         if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
             $this->settings['offlineMode'] = true;
         }
+        if (Bootstrap::usesComposerClassLoading()) {
+            $this->settings['composerMode'] = true;
+        }
     }
 
     /**

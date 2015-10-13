@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Connection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
@@ -53,7 +54,10 @@ class TerUtility
      */
     public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl)
     {
-        if (!empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])) {
+        if (
+            !empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])
+            || Bootstrap::usesComposerClassLoading()
+        ) {
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
         }
         $extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);

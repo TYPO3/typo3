@@ -4,11 +4,15 @@
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<div id="upload-button-wrap">
-		<a href="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" title="{f:translate(key:'extensionList.uploadExtension')}">
-			<core:icon identifier="actions-edit-upload" />
-		</a>
-	</div>
+	<f:if condition="{settings.composerMode} == 0">
+		<f:then>
+			<div id="upload-button-wrap">
+				<a href="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" title="{f:translate(key:'extensionList.uploadExtension')}">
+					<core:icon identifier="actions-edit-upload" />
+				</a>
+			</div>
+		</f:then>
+	</f:if>
 </f:section>
 
 <f:section name="module-headline">

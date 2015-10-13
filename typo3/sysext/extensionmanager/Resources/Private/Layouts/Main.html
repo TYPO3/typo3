@@ -19,14 +19,18 @@
 		<div class="typo3-docheader-functions">
 			<f:be.menus.actionMenu>
 				<f:be.menus.actionMenuItem label="{f:translate(key: 'installedExtensions')}" controller="List" action="index" />
-				<f:if condition="{settings.offlineMode}">
-					<f:else>
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'getExtensions')}" controller="List" action="ter" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'distributions')}" controller="List" action="distributions" />
-						<f:if condition="{actionName} == 'showAllVersions'">
-							<f:be.menus.actionMenuItem label="{f:translate(key: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
+				<f:if condition="{settings.offlineMode} == 0">
+					<f:then>
+						<f:if condition="{settings.composerMode} == 0">
+							<f:then>
+								<f:be.menus.actionMenuItem label="{f:translate(key: 'getExtensions')}" controller="List" action="ter" />
+								<f:be.menus.actionMenuItem label="{f:translate(key: 'distributions')}" controller="List" action="distributions" />
+								<f:if condition="{actionName} == 'showAllVersions'">
+									<f:be.menus.actionMenuItem label="{f:translate(key: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
+								</f:if>
+							</f:then>
 						</f:if>
-					</f:else>
+					</f:then>
 				</f:if>
 			</f:be.menus.actionMenu>
 		</div>

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
@@ -115,6 +116,12 @@ class UploadExtensionFileController extends AbstractController
      */
     public function formAction()
     {
+        if (Bootstrap::usesComposerClassLoading()) {
+            throw new ExtensionManagerException(
+                'Composer mode is active. You are not allowed to upload any extension file.',
+                1444725828821
+            );
+        }
     }
 
     /**
@@ -126,6 +133,12 @@ class UploadExtensionFileController extends AbstractController
      */
     public function extractAction($overwrite = false)
     {
+        if (Bootstrap::usesComposerClassLoading()) {
+            throw new ExtensionManagerException(
+                'Composer mode is active. You are not allowed to upload any extension file.',
+                1444725853814
+            );
+        }
         $file = $_FILES['tx_extensionmanager_tools_extensionmanagerextensionmanager'];
         $fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
         try {
