@@ -105,7 +105,7 @@ class MetaInformation
         // If there IS a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
             $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-            $iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => $altText));
+            $iconImg = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
             $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
@@ -117,11 +117,17 @@ class MetaInformation
                 $title = $resourceObject->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder
                 if ($resourceObject instanceof FolderInterface && !$resourceObject->getStorage()->isWithinFileMountBoundaries($resourceObject)) {
-                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource($resourceObject,
-                            Icon::SIZE_SMALL, null, array('mount-root' => true))->render() . '</span>';
+                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
+                        $resourceObject,
+                        Icon::SIZE_SMALL,
+                        null,
+                        array('mount-root' => true)
+                    )->render() . '</span>';
                 } else {
-                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource($resourceObject,
-                            Icon::SIZE_SMALL)->render() . '</span>';
+                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
+                        $resourceObject,
+                        Icon::SIZE_SMALL
+                    )->render() . '</span>';
                 }
                 $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, $pageRecord['combined_identifier']);
             } catch (ResourceDoesNotExistException $e) {
