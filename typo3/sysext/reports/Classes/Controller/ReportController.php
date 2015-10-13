@@ -175,16 +175,15 @@ class ReportController extends ActionController
         $moduleName = $this->request->getPluginName();
         $getVars = $this->request->hasArgument('getVars') ? $this->request->getArgument('getVars') : [];
         $setVars = $this->request->hasArgument('setVars') ? $this->request->getArgument('setVars') : [];
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            if (count($getVars) === 0) {
-                $modulePrefix = strtolower('tx_' . $this->request->getControllerExtensionName() . '_' . $moduleName);
-                $getVars = array('id', 'M', $modulePrefix);
-            }
-            $shortcutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon(implode(',',
-                    $getVars), implode(',', $setVars), $moduleName));
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 99);
+        if (count($getVars) === 0) {
+            $modulePrefix = strtolower('tx_' . $this->request->getControllerExtensionName() . '_' . $moduleName);
+            $getVars = array('id', 'M', $modulePrefix);
         }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars)
+            ->setSetVariables($setVars);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /**

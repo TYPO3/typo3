@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,10 +50,10 @@ class ReviewController extends AbstractController
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
             $getVars = array('id', 'M', $modulePrefix);
         }
-        $getList = implode(',', $getVars);
-        $shortcutButton = $buttonBar->makeFullyRenderedButton()
-            ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /**

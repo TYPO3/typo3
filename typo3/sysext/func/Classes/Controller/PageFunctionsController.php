@@ -201,8 +201,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
-        $cshButton = $buttonBar->makeFullyRenderedButton()
-            ->setHtmlSource(BackendUtility::cshItem('_MOD_web_func', ''));
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_web_func')
+            ->setFieldName('');
         $buttonBar->addButton($cshButton);
         if ($this->id && is_array($this->pageinfo)) {
             // View page
@@ -213,15 +214,11 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 ->setHref('#');
             $buttonBar->addButton($viewButton);
             // Shortcut
-            if ($this->getBackendUser()->mayMakeShortcut()) {
-                $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                    ->setHtmlSource($this->moduleTemplate->makeShortcutIcon(
-                        'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-                        implode(',', array_keys($this->MOD_MENU)),
-                        $this->moduleName
-                    ));
-                $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-            }
+            $shortcutButton = $buttonBar->makeShortcutButton()
+                ->setModuleName($this->moduleName)
+                ->setGetVariables(['id', 'edit_record', 'pointer', 'new_unique_uid', 'search_field', 'search_levels', 'showLimit'])
+                ->setSetVariables(array_keys($this->MOD_MENU));
+            $buttonBar->addButton($shortcutButton);
         }
     }
 

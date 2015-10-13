@@ -148,19 +148,16 @@ class RecyclerModuleController extends ActionController
         $moduleName = $currentRequest->getPluginName();
         $getVars = $this->request->getArguments();
 
-        $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
-
-        if ($mayMakeShortcut) {
-            $extensionName = $currentRequest->getControllerExtensionName();
-            if (count($getVars) === 0) {
-                $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = array('id', 'M', $modulePrefix);
-            }
-            $getList = implode(',', $getVars);
-            $shortcutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $extensionName = $currentRequest->getControllerExtensionName();
+        if (count($getVars) === 0) {
+            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+            $getVars = array('id', 'M', $modulePrefix);
         }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars);
+        $buttonBar->addButton($shortcutButton);
+
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setDataAttributes(['action' => 'reload'])

@@ -1658,11 +1658,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
         // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
-            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setSetVariables(['function']);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /**

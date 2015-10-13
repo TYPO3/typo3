@@ -510,9 +510,10 @@ class SetupModuleController extends AbstractModule
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $cshButton = $buttonBar->makeFullyRenderedButton()
-            ->setHtmlSource(BackendUtility::cshItem('_MOD_user_setup', ''));
-        $buttonBar->addButton($cshButton, ButtonBar::BUTTON_POSITION_RIGHT, 99);
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_user_setup')
+            ->setFieldName('');
+        $buttonBar->addButton($cshButton);
 
         $saveButton = $buttonBar->makeInputButton()
             ->setName('data[save]')
@@ -522,11 +523,9 @@ class SetupModuleController extends AbstractModule
             ->setIcon($iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($saveButton);
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', '', $this->moduleName));
-            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /******************************

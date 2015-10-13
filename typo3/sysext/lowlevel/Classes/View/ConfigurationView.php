@@ -205,11 +205,10 @@ class ConfigurationView extends BaseScriptClass
         // Setting up the shortcut button for docheader
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
-            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setSetVariables(['function']);
+        $buttonBar->addButton($shortcutButton);
 
         $this->getModuleMenu();
 

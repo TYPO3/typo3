@@ -78,9 +78,9 @@ class ViewModuleController extends ActionController
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
             $getVars = array('id', 'M', $modulePrefix);
         }
-        $getList = implode(',', $getVars);
-        $shortcutButton = $buttonBar->makeFullyRenderedButton()
-            ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
     }
 
@@ -259,8 +259,8 @@ class ViewModuleController extends ActionController
         }
         $languages = array(
             0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
-                    ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
-                    : $this->getLanguageService()->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage')
+                    ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
+                    : $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage')
         );
         $excludeHidden = $this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0';
         $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(

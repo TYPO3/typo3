@@ -161,10 +161,10 @@ class HelpController extends ActionController
                 $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
                 $getVars = array('id', 'M', $modulePrefix);
             }
-            $getList = implode(',', $getVars);
-            $shortcutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            $shortcutButton = $buttonBar->makeShortcutButton()
+                ->setModuleName($moduleName)
+                ->setGetVariables($getVars);
+            $buttonBar->addButton($shortcutButton);
         }
         if (isset($getVars['action']) && $getVars['action'] !== 'index') {
             $backButton = $buttonBar->makeLinkButton()

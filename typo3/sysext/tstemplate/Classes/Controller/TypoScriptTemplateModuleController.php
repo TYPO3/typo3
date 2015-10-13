@@ -414,11 +414,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             }
         }
         // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortcutButton = $buttonBar->makeFullyRenderedButton()
-                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('id', '', $this->MCONF['name']));
-            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 99);
-        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->MCONF['name'])
+            ->setGetVariables(['id']);
+        $buttonBar->addButton($shortcutButton);
     }
 
     // OTHER FUNCTIONS:
