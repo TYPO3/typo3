@@ -71,15 +71,6 @@ plugin.tx_form {
 					340 = value
 				}
 
-					# fixedHtmlAttributeValues
-					# Used by: frontend, wizard (not implemented right now)
-					# Overwritable by user: FALSE
-					#
-					# The following values are automatically set as attributes.
-				fixedHtmlAttributeValues {
-					type = text
-				}
-
 					# htmlAttributesUsedByTheViewHelperDirectly
 					# Used by: frontend
 					# Overwritable by user: FALSE

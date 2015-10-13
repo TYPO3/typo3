@@ -94,7 +94,7 @@ TYPO3.Form.Wizard.Elements.Basic.Button = Ext.extend(TYPO3.Form.Wizard.Elements,
 				},
 				filters: {},
 				label: {
-					value: ''
+					value: TYPO3.l10n.localize('elements_label')
 				},
 				layout: 'front',
 				validation: {}

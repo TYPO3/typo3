@@ -306,7 +306,7 @@ class JsonToTypoScript
             if ($key === 'name' && $value === '' && !$childrenWithParentName) {
                 $value = $this->elementId;
             }
-            if ($value != '' && $key != 'type') {
+            if ($value != '') {
                 $parent[$elementCounter . '.'][$key] = $value;
             }
         }

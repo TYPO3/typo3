@@ -25,10 +25,12 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 	 * An Ext.Template, Ext.XTemplate or an array of strings to form an
 	 * Ext.XTemplate. Used in conjunction with the data and tplWriteMode
 	 * configurations.
+	 *
+	 * Adding novalidate attribute avoids HTML5 validation of elements.
 	 */
 	tpl: new Ext.XTemplate(
-		'<form {[this.getAttributes(values.attributes)]}>',
-		'<ol></ol>',
+		'<form {[this.getAttributes(values.attributes)]} novalidate="novalidate">',
+			'<ol></ol>',
 		'</form>',
 		{
 			compiled: true,

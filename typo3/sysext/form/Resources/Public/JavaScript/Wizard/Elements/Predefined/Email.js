@@ -14,7 +14,8 @@ TYPO3.Form.Wizard.Elements.Predefined.Email = Ext.extend(TYPO3.Form.Wizard.Eleme
 		var config = {
 			configuration: {
 				attributes: {
-					name: 'email'
+					name: 'email',
+					type: 'email'
 				},
 				label: {
 					value: TYPO3.l10n.localize('elements_label_email')
