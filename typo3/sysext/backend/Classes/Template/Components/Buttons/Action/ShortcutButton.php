@@ -168,8 +168,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $this->preProcess();
 
         return (
-            $this->getBackendUser()->mayMakeShortcut()
-            && !empty($this->moduleName)
+            !empty($this->moduleName)
         );
     }
 
@@ -190,15 +189,19 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      */
     public function render()
     {
-        /** @var DocumentTemplate $documentTemplate */
-        $documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $shortcutMarkup = $documentTemplate->makeShortcutIcon(
-            implode(',', $this->getVariables),
-            implode(',', $this->setVariables),
-            $this->moduleName,
-            '',
-            'btn btn-sm btn-default'
-        );
+        if ($this->getBackendUser()->mayMakeShortcut()) {
+            /** @var DocumentTemplate $documentTemplate */
+            $documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
+            $shortcutMarkup = $documentTemplate->makeShortcutIcon(
+                implode(',', $this->getVariables),
+                implode(',', $this->setVariables),
+                $this->moduleName,
+                '',
+                'btn btn-sm btn-default'
+            );
+        } else {
+            $shortcutMarkup = '';
+        }
 
         return $shortcutMarkup;
     }
