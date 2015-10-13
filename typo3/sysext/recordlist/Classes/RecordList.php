@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -563,7 +564,7 @@ class RecordList extends AbstractModule
             ->setClasses('t3js-toggle-search-toolbox')
             ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', true))
             ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
-        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton);
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton, ButtonBar::BUTTON_POSITION_LEFT, 90);
 
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         // Build the <body> for the module

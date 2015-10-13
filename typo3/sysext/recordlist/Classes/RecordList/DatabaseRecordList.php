@@ -293,8 +293,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $buttons['cache'] = '<a href="' . htmlspecialchars(($this->listURL() . '&clear_cache=1')) . '" title="'
                 . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true) . '">'
                 . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
-            if (
-                $this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
+            if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
                 || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
                     && !$module->modTSconfig['properties']['noExportRecordsLinks']))
             ) {
@@ -349,14 +348,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         // Get users permissions for this page record:
         $localCalcPerms = $backendUser->calcPerms($this->pageRow);
         // CSH
-        $cshButton = $buttonBar->makeFullyRenderedButton();
         if ((string)$this->id === '') {
-            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId'));
+            $fieldName = 'list_module_noId';
         } elseif (!$this->id) {
-            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root'));
+            $fieldName = 'list_module_root';
         } else {
-            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module'));
+            $fieldName = 'list_module';
         }
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName($fieldName);
         $buttonBar->addButton($cshButton);
         if (isset($this->id)) {
             // View Exclude doktypes 254,255 Configuration:
@@ -378,7 +379,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setOnClick($onClick)
                     ->setTitle($lang->getLL('newRecordGeneral', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
-                $buttonBar->addButton($newRecordButton);
+                $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
             if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
                 $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id));
@@ -387,7 +388,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setOnClick($onClick)
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
-                $buttonBar->addButton($viewButton);
+                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -400,7 +401,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setOnClick($onClick)
                     ->setTitle($lang->getLL('editPage', true))
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
-                $buttonBar->addButton($editButton);
+                $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // Paste
             if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
@@ -412,7 +413,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         ->setOnClick($onClick)
                         ->setTitle($lang->getLL('clip_paste', true))
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
-                    $buttonBar->addButton($pasteButton);
+                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 }
             }
             // Cache
@@ -421,8 +422,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
-            if (
-                $this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
+            if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
                 || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
                     && !$module->modTSconfig['properties']['noExportRecordsLinks']))
             ) {
@@ -431,7 +431,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setHref($this->listURL() . '&csv=1')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL));
-                $buttonBar->addButton($csvButton);
+                $buttonBar->addButton($csvButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
                     $url = BackendUtility::getModuleUrl('xMOD_tximpexp', array('tx_impexp[action]' => 'export'));
@@ -439,7 +439,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.export', true))
                         ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL));
-                    $buttonBar->addButton($exportButton);
+                    $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 }
             }
             // Reload
@@ -450,12 +450,20 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
             // Shortcut
             if ($backendUser->mayMakeShortcut()) {
-                $shortCutButton = $buttonBar->makeFullyRenderedButton()
-                    ->setHtmlSource($moduleTemplate->makeShortcutIcon(
-                        'id, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
-                        implode(',', array_keys($this->MOD_MENU)),
-                        'web_list'
-                    ));
+                $shortCutButton = $buttonBar->makeShortcutButton()
+                    ->setModuleName('web_list')
+                    ->setGetVariables([
+                        'id',
+                        'imagemode',
+                        'pointer',
+                        'table',
+                        'search_field',
+                        'search_levels',
+                        'showLimit',
+                        'sortField',
+                        'sortRev'
+                    ])
+                    ->setSetVariables(array_keys($this->MOD_MENU));
                 $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
             }
             // Back
@@ -922,8 +930,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 ) {
                     $theData[$fCol] .= '<br />' . $this->thumbCode($row, $table, $thumbsCol);
                 }
-                if (
-                    isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+                if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
                     && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0
                     && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0
                 ) {
@@ -974,8 +981,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
         // Create element in table cells:
         $theData['uid'] = $row['uid'];
-        if (
-            isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
             && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
             && !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])
         ) {
