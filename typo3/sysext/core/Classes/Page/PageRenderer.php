@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * TYPO3 pageRender class (new in TYPO3 4.3.0)
@@ -1313,13 +1314,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         // Add language labels for ExtDirect
         if (TYPO3_MODE === 'FE') {
             $this->addInlineLanguageLabelArray(array(
-                'extDirect_timeoutHeader' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
-                'extDirect_timeoutMessage' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
+                'extDirect_timeoutHeader' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
+                'extDirect_timeoutMessage' => $this->getTypoScriptFrontendController()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
             ));
         } else {
             $this->addInlineLanguageLabelArray(array(
-                'extDirect_timeoutHeader' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
-                'extDirect_timeoutMessage' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
+                'extDirect_timeoutHeader' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
+                'extDirect_timeoutMessage' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
             ));
         }
 
@@ -1693,7 +1694,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         if ($parseWithLanguageService === true) {
             foreach ($array as $key => $value) {
-                $array[$key] = $this->getLanguageService()->sL($value);
+                if (TYPO3_MODE === 'FE') {
+                    $array[$key] = $this->getTypoScriptFrontendController()->sL($value);
+                } else {
+                    $array[$key] = $this->getLanguageService()->sL($value);
+                }
             }
         }
 
@@ -2700,6 +2705,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 break;
         }
         return $filename;
+    }
+
+    /**
+     * Returns global frontend controller
+     *
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 
     /**
