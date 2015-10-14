@@ -170,7 +170,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
 
         try {
             $path = ExtensionManagementUtility::extPath($extensionPath);
-            if (strpos($path, DIRECTORY_SEPARATOR . 'sysext' . DIRECTORY_SEPARATOR) !== false) {
+            if (strpos($path, '/sysext/') !== false) {
                 // This is a system extension and the package URL should be adapted
                 list($majorVersion, ) = explode('.', TYPO3_branch);
                 // Typical non sysext path, mind the additional version part, French
