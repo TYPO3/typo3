@@ -29,6 +29,6 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 
 // Set up the application for the Frontend
 call_user_func(function () {
-    $classLoader = require __DIR__ . '/typo3/../vendor/autoload.php';
+    $classLoader = require rtrim(realpath(__DIR__ . '/typo3'), '\\/') . '/../vendor/autoload.php';
     (new \TYPO3\CMS\Frontend\Http\Application($classLoader))->run();
 });
