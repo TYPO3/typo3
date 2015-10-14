@@ -1772,31 +1772,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/wales.png'
             )
         ),
-
-        'tcarecords-sys_domain-default' => array(
-            'provider' => SvgIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-translated.svg'
-            )
-        ),
-        'tcarecords-sys_template-default' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template.png'
-            )
-        ),
-        'tcarecords-sys_workspace-default' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_workspace.png'
-            )
-        ),
-        'tcarecords-sys_workspace_stage-default' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_workspace.png'
-            )
-        ),
     );
 
     /**

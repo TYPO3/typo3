@@ -7,7 +7,6 @@ return array(
         'adminOnly' => 1,
         'rootLevel' => 1,
         'delete' => 'deleted',
-        'iconfile' => 'mimetypes-x-sys_workspace',
         'typeicon_classes' => array(
             'default' => 'mimetypes-x-sys_workspace'
         ),

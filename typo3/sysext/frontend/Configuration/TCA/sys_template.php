@@ -12,9 +12,8 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
-        'adminOnly' => 1,
         // Only admin, if any
-        'iconfile' => 'tcarecords-sys_template-default',
+        'adminOnly' => 1,
         'enablecolumns' => array(
             'disabled' => 'hidden',
             'starttime' => 'starttime',

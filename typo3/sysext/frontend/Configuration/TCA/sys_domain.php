@@ -7,7 +7,6 @@ return array(
         'cruser_id' => 'cruser_id',
         'sortby' => 'sorting',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain',
-        'iconfile' => 'tcarecords-sys_domain-default',
         'enablecolumns' => array(
             'disabled' => 'hidden'
         ),

@@ -9,7 +9,6 @@ return array(
         'rootLevel' => 1,
         'hideTable' => true,
         'delete' => 'deleted',
-        'iconfile' => 'mimetypes-x-sys_workspace',
         'typeicon_classes' => array(
             'default' => 'mimetypes-x-sys_workspace'
         ),
