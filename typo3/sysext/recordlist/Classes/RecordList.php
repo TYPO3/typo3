@@ -425,6 +425,10 @@ class RecordList extends AbstractModule
 					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
+				function jumpToUrl(URL) {
+					window.location.href = URL;
+					return false;
+				}
 
 				function setHighlight(id) {	//
 					top.fsMod.recentIds["web"]=id;
