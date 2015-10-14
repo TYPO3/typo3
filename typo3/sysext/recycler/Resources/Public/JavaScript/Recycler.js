@@ -93,8 +93,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 		// changing "depth"
 		Recycler.elements.$depthSelector.on('change', function() {
-			Recycler.loadAvailableTables();
-			Recycler.loadDeletedElements();
+			$.when(Recycler.loadAvailableTables()).done(function() {
+				Recycler.loadDeletedElements();
+			});
 		});
 
 		// changing "table"
@@ -111,8 +112,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 		Recycler.elements.$reloadAction.on('click', function(e) {
 			e.preventDefault();
-			Recycler.loadAvailableTables();
-			Recycler.loadDeletedElements();
+			$.when(Recycler.loadAvailableTables()).done(function() {
+				Recycler.loadDeletedElements();
+			});
 		});
 
 		// clicking an action in the paginator
@@ -195,8 +197,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		if (TYPO3.settings.Recycler.depthSelection > 0) {
 			Recycler.elements.$depthSelector.val(TYPO3.settings.Recycler.depthSelection).trigger('change');
 		} else {
-			Recycler.loadAvailableTables();
-			Recycler.loadDeletedElements();
+			$.when(Recycler.loadAvailableTables()).done(function() {
+				Recycler.loadDeletedElements();
+			});
 		}
 	};
 
@@ -249,14 +252,14 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 	};
 
 	/**
-	 * Loads all tables which contain deleted records. This call is not asynchronous
-	 * due to settings the stored table before loading the deleted records.
+	 * Loads all tables which contain deleted records.
+	 *
+	 * @returns {Promise}
 	 */
 	Recycler.loadAvailableTables = function() {
-		$.ajax({
+		return $.ajax({
 			url: TYPO3.settings.ajaxUrls['recycler'],
 			dataType: 'json',
-			async: false,
 			data: {
 				action: 'getTables',
 				startUid: TYPO3.settings.Recycler.startUid,
@@ -297,9 +300,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 	/**
 	 * Loads the deleted elements, based on the filters
+	 *
+	 * @returns {Promise}
 	 */
 	Recycler.loadDeletedElements = function() {
-		$.ajax({
+		return $.ajax({
 			url: TYPO3.settings.ajaxUrls['recycler'],
 			dataType: 'json',
 			data: {
@@ -447,19 +452,20 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 				// reload recycler data
 				Recycler.paging.currentPage = 1;
-				Recycler.loadAvailableTables();
-				Recycler.loadDeletedElements();
 
-				if (isMassAction) {
-					Recycler.resetMassActionButtons();
-				}
+				$.when(Recycler.loadAvailableTables()).done(function() {
+					Recycler.loadDeletedElements();
+					if (isMassAction) {
+						Recycler.resetMassActionButtons();
+					}
 
-				if (reloadPageTree) {
-					Recycler.refreshPageTree();
-				}
+					if (reloadPageTree) {
+						Recycler.refreshPageTree();
+					}
 
-				// Reset toggle state
-				Recycler.allToggled = false;
+					// Reset toggle state
+					Recycler.allToggled = false;
+				});
 			},
 			complete: function() {
 				Modal.dismiss();
