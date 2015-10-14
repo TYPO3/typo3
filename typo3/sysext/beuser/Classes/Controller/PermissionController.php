@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -66,6 +69,20 @@ class PermissionController extends ActionController
     protected $pageInfo = array();
 
     /**
+     * Backend Template Container
+     *
+     * @var string
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * BackendTemplateContainer
+     *
+     * @var BackendTemplateView
+     */
+    protected $view;
+
+    /**
      * Initialize action
      *
      * @return void
@@ -99,6 +116,8 @@ class PermissionController extends ActionController
      */
     protected function initializeView(ViewInterface $view)
     {
+        /** @var BackendTemplateView $view */
+        parent::initializeView($view);
         $view->assign(
             'previewUrl',
             BackendUtility::viewonclick(
@@ -106,6 +125,54 @@ class PermissionController extends ActionController
                 BackendUtility::BEgetRootLine($this->pageInfo['uid'])
             )
         );
+        $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
+        $this->view->getModuleTemplate()->addJavaScriptCode(
+            'jumpToUrl',
+            '
+            function jumpToUrl(URL) {
+                window.location.href = URL;
+                return false;
+            }
+            '
+        );
+        $this->registerDocheaderButtons();
+    }
+
+    /**
+     * Registers the Icons into the docheader
+     *
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    protected function registerDocheaderButtons()
+    {
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $currentRequest = $this->request;
+        $moduleName = $currentRequest->getPluginName();
+        $getVars = $this->request->getArguments();
+
+        $extensionName = $currentRequest->getControllerExtensionName();
+        if (empty($getVars)) {
+            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+            $getVars = array('id', 'M', $modulePrefix);
+        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars);
+        $buttonBar->addButton($shortcutButton);
+
+        if ($this->id > 0) {
+            $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
+            $viewButton = $buttonBar->makeLinkButton()
+                ->setOnClick(htmlspecialchars(BackendUtility::viewOnClick($this->pageInfo['uid'], '',
+                    BackendUtility::BEgetRootLine($this->pageInfo['uid']))))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                ->setIcon($iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
+                ->setHref('#');
+
+            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        }
     }
 
     /**
@@ -313,5 +380,15 @@ class PermissionController extends ActionController
             }
         }
         return $options;
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

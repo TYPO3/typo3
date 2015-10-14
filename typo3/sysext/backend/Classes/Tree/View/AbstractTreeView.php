@@ -659,7 +659,7 @@ abstract class AbstractTreeView
     /**
      * Get icon for the row.
      *
-     * @param array $row Item row.
+     * @param array|int $row Item row or uid
      * @return string Image tag.
      */
     public function getIcon($row)
