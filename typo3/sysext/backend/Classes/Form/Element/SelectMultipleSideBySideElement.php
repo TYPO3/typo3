@@ -63,7 +63,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         // Get "removeItems":
         $removeItems = GeneralUtility::trimExplode(',', $parameterArray['fieldTSConfig']['removeItems'], true);
         // Get the array with selected items:
-        $itemsArray = $parameterArray['itemFormElValue'];
+        $itemsArray = $parameterArray['itemFormElValue'] ?: [];
 
         // Perform modification of the selected items array:
         // @todo: this part should probably be moved to TcaSelectItems provider?!
