@@ -67,7 +67,8 @@ define(['jquery'], function($) {
 	 */
 	Icons.fetch = function(icons) {
 		var promises = [],
-			requestedIcons = {};
+			requestedIcons = {},
+			cachedRequestedIcons = {};
 
 		for (var i = 0; i < icons.length; ++i) {
 			/**
@@ -84,13 +85,17 @@ define(['jquery'], function($) {
 
 			var cacheIdentifier = icon.join('_');
 			if (Icons.isCached(cacheIdentifier)) {
-				promises.push(Icons.getFromCache(cacheIdentifier));
+				$.extend(cachedRequestedIcons, Icons.getFromCache(cacheIdentifier));
 			} else {
 				requestedIcons[icon[0]] = {
 					cacheIdentifier: cacheIdentifier,
 					icon: icon
 				};
 			}
+		}
+
+		if (Object.keys(cachedRequestedIcons).length > 0) {
+			promises.push(cachedRequestedIcons);
 		}
 
 		if (Object.keys(requestedIcons).length > 0) {
