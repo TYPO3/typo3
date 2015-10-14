@@ -116,7 +116,6 @@ class PermissionController extends ActionController
      */
     protected function initializeView(ViewInterface $view)
     {
-        /** @var BackendTemplateView $view */
         parent::initializeView($view);
         $view->assign(
             'previewUrl',
@@ -125,17 +124,21 @@ class PermissionController extends ActionController
                 BackendUtility::BEgetRootLine($this->pageInfo['uid'])
             )
         );
-        $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
-        $this->view->getModuleTemplate()->addJavaScriptCode(
-            'jumpToUrl',
-            '
-            function jumpToUrl(URL) {
-                window.location.href = URL;
-                return false;
-            }
-            '
-        );
-        $this->registerDocheaderButtons();
+
+        // the view of the update action has a different view class
+        if ($view instanceof BackendTemplateView) {
+            $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
+            $view->getModuleTemplate()->addJavaScriptCode(
+                'jumpToUrl',
+                '
+                function jumpToUrl(URL) {
+                    window.location.href = URL;
+                    return false;
+                }
+                '
+            );
+            $this->registerDocHeaderButtons();
+        }
     }
 
     /**
@@ -144,7 +147,7 @@ class PermissionController extends ActionController
      * @return void
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocHeaderButtons()
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
