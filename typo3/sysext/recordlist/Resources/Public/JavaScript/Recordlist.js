@@ -14,17 +14,15 @@
 /**
  * Usability improvements for the record list
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], function($, Storage, Icons) {
 	'use strict';
 
 	var Recordlist = {
 		identifier: {
-			toggle: '.t3js-toggle-recordlist'
-		},
-		classes: {
-			toggleIconState: {
-				collapsed: 'fa-chevron-down',
-				expanded: 'fa-chevron-up'
+			toggle: '.t3js-toggle-recordlist',
+			icons: {
+				collapse: 'actions-view-list-collapse',
+				expand: 'actions-view-list-expand'
 			}
 		}
 	};
@@ -35,9 +33,16 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 		var $me = $(this),
 			table = $me.data('table'),
 			$target = $($me.data('target')),
-			isExpanded = $target.data('state') === 'expanded';
+			isExpanded = $target.data('state') === 'expanded',
+			$collapseIcon = $me.find('.collapseIcon'),
+			toggleIcon = isExpanded ? Recordlist.identifier.icons.expand : Recordlist.identifier.icons.collapse;
 
-		$me.find('.collapseIcon .icon-unify .fa').toggleClass(Recordlist.classes.toggleIconState.collapsed).toggleClass(Recordlist.classes.toggleIconState.expanded);
+		Icons.getIcons([
+			[Recordlist.identifier.icons.expand, Icons.sizes.small],
+			[Recordlist.identifier.icons.collapse, Icons.sizes.small]
+		]).done(function(icons) {
+			$collapseIcon.html(icons[toggleIcon]);
+		});
 
 		// Store collapse state in UC
 		var storedModuleDataList = {};
