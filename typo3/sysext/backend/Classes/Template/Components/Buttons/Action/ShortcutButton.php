@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
@@ -44,6 +44,11 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      * @var string
      */
     protected $moduleName;
+
+    /**
+     * @var string
+     */
+    protected $displayName;
 
     /**
      * @var array
@@ -79,6 +84,28 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     public function setModuleName($moduleName)
     {
         $this->moduleName = $moduleName;
+        return $this;
+    }
+
+    /**
+     * Gets the display name of the module.
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * Sets the display name of the module.
+     *
+     * @param string $displayName
+     * @return ShortcutButton
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
         return $this;
     }
 
@@ -190,14 +217,14 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     public function render()
     {
         if ($this->getBackendUser()->mayMakeShortcut()) {
-            /** @var DocumentTemplate $documentTemplate */
-            $documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $shortcutMarkup = $documentTemplate->makeShortcutIcon(
+            /** @var ModuleTemplate $moduleTemplate */
+            $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+            $shortcutMarkup = $moduleTemplate->makeShortcutIcon(
                 implode(',', $this->getVariables),
                 implode(',', $this->setVariables),
                 $this->moduleName,
                 '',
-                'btn btn-sm btn-default'
+                $this->displayName
             );
         } else {
             $shortcutMarkup = '';

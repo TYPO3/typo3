@@ -118,7 +118,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	 * @param {String} motherModule
 	 * @param {Object} shortcutButton
 	 */
-	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton) {
+	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton, displayName) {
 		if (typeof confirmationText !== 'undefined') {
 			// @todo: translations
 			Modal.confirm('Create bookmark', confirmationText)
@@ -136,7 +136,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 						data: {
 							module: moduleName,
 							url: url,
-							motherModName: motherModule
+							motherModName: motherModule,
+							displayName: displayName
 						},
 						cache: false
 					}).done(function() {

@@ -543,6 +543,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $shortcutNamePrepend = '';
         $url = isset($parsedBody['url']) ? $parsedBody['url'] : $queryParams['url'];
 
+        // Use given display name
+        if (!empty($parsedBody['displayName'])) {
+            $shortcutName = $parsedBody['displayName'];
+        }
+
         // Determine shortcut type
         $url = rawurldecode($url);
         $queryParts = parse_url($url);

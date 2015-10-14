@@ -492,13 +492,17 @@ class ModuleTemplate
      * is sent to the shortcut script (so - not a fixed value!) - that is used
      * in file_edit and wizard_rte modules where those are really running as
      * a part of another module.
+     * @param string $displayName When given this name is used instead of the
+     * module name.
+     * @param string $classes Additional CSS classes for the link around the icon
      *
      * @return string HTML content
      * @todo Make this thing return a button object
      * @internal
      */
-    public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '')
+    public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '', $displayName = '', $classes = 'btn btn-default btn-sm')
     {
+        $gvList = 'route,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
         $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
         // Fallback for alt_mod. We still pass in the old xMOD... stuff,
@@ -525,15 +529,15 @@ class ModuleTemplate
         $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
 
         if ($shortcutExist) {
-            return '<a class="active" title="">' .
+            return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .
             $this->iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
         $url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
         $onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) .
-            ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
+            ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this, ' . GeneralUtility::quoteJSvalue($displayName) . ');return false;';
 
-        return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' .
+        return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
         $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
