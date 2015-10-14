@@ -679,6 +679,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
     {
+        if ($this->bootstrap->usesComposerClassLoading()) {
+            return;
+        }
         ClassLoadingInformation::registerTransientClassLoadingInformationForPackage($package);
     }
 
