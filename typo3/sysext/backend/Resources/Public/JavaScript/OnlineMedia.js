@@ -56,7 +56,8 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 							[{
 								text: TYPO3.lang['button.ok'] || 'OK',
 								btnClass: 'btn-' + Modal.getSeverityClass(top.TYPO3.Severity.error),
-								name: 'ok'
+								name: 'ok',
+								active: true
 							}]
 						).on('confirm.button.ok', function() {
 							$confirm.modal('hide');
@@ -91,9 +92,13 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 				}]
 			);
 
-			$modal.on('shown.bs.modal', function(e) {
+			$modal.on('shown.bs.modal', function() {
 				// focus the input field
-				$(this).find('input.online-media-url').first().focus();
+				$(this).find('input.online-media-url').first().focus().on('keydown', function(e) {
+					if (e.keyCode === 13) {
+						$modal.find('button[name="ok"]').trigger('click');
+					}
+				});
 			});
 		});
 	};
