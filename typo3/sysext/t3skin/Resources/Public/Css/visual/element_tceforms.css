@@ -25,7 +25,7 @@ table#typo3-altdoc-header input,
 
 .t3-tceforms-widget-null-wrapper {
 	display: inline-block;
-	float: right;
+	float: left;
 	position: relative;
 	width: 20px;
 	max-width: 20px;
