@@ -892,7 +892,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $iconImg = '<span title="' . $altText . '" ' . $additionalStyle . '>'
             . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
             . '</span>';
-        $theIcon = $this->clickMenuEnabled ? $this->getModule()->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
+        $theIcon = $this->clickMenuEnabled ? $this->getModule()->getModuleTemplate()->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
         // Preparing and getting the data-array
         $theData = array();
         $localizationMarkerClass = '';
@@ -1477,7 +1477,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     // Up
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
                     $moveUpAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
+                        . htmlspecialchars('return jumpToUrl(' . $module->getModuleTemplate()->issueCommand($params, -1) . ');')
                         . '" title="' . $this->getLanguageService()->getLL('moveUp', true) . '">'
                         . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
@@ -1489,7 +1489,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     // Down
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
                     $moveDownAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
+                        . htmlspecialchars('return jumpToUrl(' . $module->getModuleTemplate()->issueCommand($params, -1) . ');')
                         . '" title="' . $this->getLanguageService()->getLL('moveDown', true) . '">'
                         . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
@@ -1571,7 +1571,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 if ($this->calcPerms & Permission::PAGE_NEW) {
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
                     $moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
+                        . htmlspecialchars('return jumpToUrl(' . $module->getModuleTemplate()->issueCommand($params, -1) . ');')
                         . '" title="' . $this->getLanguageService()->getLL('prevLevel', true) . '">'
                         . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
                     $this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
@@ -1582,7 +1582,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     if ($localCalcPerms & Permission::PAGE_NEW) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
                         $moveRightAction = '<a class="btn btn-default" href="#" onclick="'
-                            . htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
+                            . htmlspecialchars('return jumpToUrl(' . $module->getModuleTemplate()->issueCommand($params, -1) . ');')
                             . '" title="' . $this->getLanguageService()->getLL('nextLevel', true) . '">'
                             . $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
@@ -1814,7 +1814,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
                 if ($this->isEditable($table) && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
                     $url = $this->listURL();
-                    $href = $this->getModule()->doc->issueCommand(
+                    $href = $this->getModule()->getModuleTemplate()->issueCommand(
                         '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
                         $url . '&justLocalized=' . rawurlencode($table . ':' . $row['uid'] . ':' . $lUid_OnPage)
                     );

@@ -480,4 +480,16 @@ class DatabaseIntegrityView extends BaseScriptClass
             'group_db' => $admin->testDBRefs($admin->checkGroupDBRefs)
         ));
     }
+
+    /**
+     * Returns the ModuleTemplate container
+     *
+     * @return ModuleTemplate
+     */
+    public function getModuleTemplate()
+    {
+        return $this->moduleTemplate;
+    }
+
+
 }

@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -605,6 +606,14 @@ class RecordList extends AbstractModule
     {
         GeneralUtility::logDeprecatedFunction();
         echo $this->content;
+    }
+
+    /**
+     * @return ModuleTemplate
+     */
+    public function getModuleTemplate()
+    {
+        return $this->moduleTemplate;
     }
 
     /**
