@@ -104,6 +104,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'cancel'
 				},
 				{

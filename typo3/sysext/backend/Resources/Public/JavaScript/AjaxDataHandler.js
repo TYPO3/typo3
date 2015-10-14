@@ -70,6 +70,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'cancel'
 				},
 				{

@@ -601,6 +601,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'no'
 				},
 				{
@@ -628,6 +629,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'no'
 				},
 				{
@@ -837,10 +839,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		if ($('.has-change').length > 0) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
-			$modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'no'
 				},
 				{

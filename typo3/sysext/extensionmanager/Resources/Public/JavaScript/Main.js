@@ -81,6 +81,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 						{
 							text: TYPO3.lang['button.cancel'],
 							active: true,
+							btnClass: 'btn-default',
 							trigger: function() {
 								Modal.dismiss();
 							}
@@ -197,6 +198,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 				{
 					text: TYPO3.lang['button.cancel'],
 					active: true,
+					btnClass: 'btn-default',
 					trigger: function() {
 						Modal.dismiss();
 					}
@@ -386,6 +388,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 				{
 					text: TYPO3.lang['button.cancel'],
 					active: true,
+					btnClass: 'btn-default',
 					trigger: function() {
 						Modal.dismiss();
 					}
@@ -423,6 +426,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 						{
 							text: TYPO3.lang['button.cancel'],
 							active: true,
+							btnClass: 'btn-default',
 							trigger: function() {
 								Modal.dismiss();
 							}

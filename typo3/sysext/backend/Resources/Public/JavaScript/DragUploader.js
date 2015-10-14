@@ -288,6 +288,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/L
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
 					active: true,
+					btnClass: 'btn-default',
 					name: 'cancel'
 				},
 				{

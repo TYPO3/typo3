@@ -349,6 +349,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		Modal.confirm(TYPO3.lang['modal.delete.header'], message, top.TYPO3.Severity.error, [
 			{
 				text: TYPO3.lang['button.cancel'],
+				btnClass: 'btn-default',
 				trigger: function() {
 					Modal.dismiss();
 				}
@@ -397,6 +398,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		Modal.confirm(TYPO3.lang['modal.undo.header'], $message, top.TYPO3.Severity.ok, [
 			{
 				text: TYPO3.lang['button.cancel'],
+				btnClass: 'btn-default',
 				trigger: function() {
 					Modal.dismiss();
 				}
