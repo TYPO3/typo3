@@ -96,7 +96,7 @@ define(['jquery'], function($) {
 		if (Object.keys(requestedIcons).length > 0) {
 			promises.push(
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['icons_get'],
+					url: TYPO3.settings.ajaxUrls['icons'],
 					data: {
 						requestedIcons: JSON.stringify(
 							$.map(requestedIcons, function(o) {
