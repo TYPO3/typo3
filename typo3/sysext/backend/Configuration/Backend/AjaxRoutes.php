@@ -189,8 +189,8 @@ return [
     ],
 
     // Get icon from IconFactory
-    'icons_get' => [
-        'path' => '/icons/get',
+    'icons' => [
+        'path' => '/icons',
         'target' => \TYPO3\CMS\Core\Imaging\IconFactory::class . '::processAjaxRequest'
     ]
 ];
