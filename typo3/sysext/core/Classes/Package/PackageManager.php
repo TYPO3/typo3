@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Package;
  */
 
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +34,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected $dependencyResolver;
 
     /**
-     * @var \TYPO3\CMS\Core\Core\Bootstrap
+     * @var Bootstrap
      */
     protected $bootstrap;
 
@@ -142,10 +143,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Initializes the package manager
      *
-     * @param \TYPO3\CMS\Core\Core\Bootstrap $bootstrap The current bootstrap
+     * @param Bootstrap $bootstrap The current bootstrap
+     *
      * @return void
      */
-    public function initialize(\TYPO3\CMS\Core\Core\Bootstrap $bootstrap)
+    public function initialize(Bootstrap $bootstrap)
     {
         $this->bootstrap = $bootstrap;
 
@@ -679,7 +681,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
     {
-        if ($this->bootstrap->usesComposerClassLoading()) {
+        if (Bootstrap::usesComposerClassLoading()) {
             return;
         }
         ClassLoadingInformation::registerTransientClassLoadingInformationForPackage($package);

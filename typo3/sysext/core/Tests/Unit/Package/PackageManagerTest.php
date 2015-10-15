@@ -11,6 +11,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\DependencyResolver;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -34,9 +37,14 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         vfsStream::setup('Test');
-        $mockBootstrap = $this->getMock(\TYPO3\CMS\Core\Core\Bootstrap::class, array(), array(), '', false);
-        $mockCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
-        $mockCacheBackend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class, array('has', 'set', 'getBackend'), array(), '', false);
+
+        /** @var Bootstrap|\PHPUnit_Framework_MockObject_MockObject $mockBootstrap */
+        $mockBootstrap = $this->getMock(Bootstrap::class, array(), array(), '', false);
+        $mockBootstrap->method('usesComposerClassLoading')->will($this->returnValue(FALSE));
+
+        /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
+        $mockCache = $this->getMock(PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
+        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend'), array(), '', false);
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
@@ -199,6 +207,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             file_put_contents($packagePath . 'ext_emconf.php', '');
         }
 
+        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
         $packageManager->_set('packagesBasePaths', array('local' => 'vfs://Test/Packages/Application'));
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
