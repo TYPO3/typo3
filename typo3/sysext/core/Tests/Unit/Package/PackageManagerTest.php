@@ -38,10 +38,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         vfsStream::setup('Test');
 
-        /** @var Bootstrap|\PHPUnit_Framework_MockObject_MockObject $mockBootstrap */
-        $mockBootstrap = $this->getMock(Bootstrap::class, array(), array(), '', false);
-        $mockBootstrap->method('usesComposerClassLoading')->will($this->returnValue(FALSE));
-
         /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
         $mockCache = $this->getMock(PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
         $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend'), array(), '', false);
@@ -49,7 +45,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
         $mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-        $this->packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerAutoloadInformationInClassLoader'));
+        $this->packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'));
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');
@@ -63,7 +59,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
         $this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $this->packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
-        $this->packageManager->initialize($mockBootstrap);
     }
 
     /**
