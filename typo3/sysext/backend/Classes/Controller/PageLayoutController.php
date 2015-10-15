@@ -315,8 +315,8 @@ class PageLayoutController
      */
     public function init()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->iconFactory = $this->moduleTemplate->getIconFactory();
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         // Setting module configuration / page select clause
@@ -343,7 +343,6 @@ class PageLayoutController
         $this->getBackendUser()->setAndSaveSessionData(RecordList::class, $sessionData);
         // Load page info array:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         // Initialize menu
         $this->menuConfig();
         // Setting sys language from session var:
@@ -505,8 +504,8 @@ class PageLayoutController
         if ($this->pageinfo['content_from_pid']) {
             $contentPage = BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
             $linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
-            $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
+            $link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $message = sprintf($lang->getLL('content_from_pid_title'), $link);
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
@@ -580,6 +579,8 @@ class PageLayoutController
             // Initialize permission settings:
             $this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
             $this->EDIT_CONTENT = $this->pageIsNotLockedForEditors();
+
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 
             // override the default jumpToUrl
             $this->moduleTemplate->addJavaScriptCode('jumpToUrl', '
@@ -733,8 +734,6 @@ class PageLayoutController
         $this->R_URI = $R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $R_URL_getvars);
 
         // Creating editing form:
-        $content = '';
-
         if ($edit_record) {
             // Splitting uid parts for special features, if new:
             list($uidVal, $neighborRecordUid, $ex_colPos) = explode('/', $this->eRParts[1]);
@@ -900,7 +899,6 @@ class PageLayoutController
         // also fills $dbList->activeTables
         $dbList->getTableMenu($this->id);
         // Initialize other variables:
-        $h_func = '';
         $tableOutput = array();
         $tableJSOutput = array();
         $CMcounter = 0;
@@ -974,7 +972,6 @@ class PageLayoutController
             // Reset variables after operation:
             $dbList->HTMLcode = '';
             $dbList->JScode = '';
-            $h_func = '';
         }
         // END: traverse tables
         // For Context Sensitive Menus:
@@ -1057,29 +1054,28 @@ class PageLayoutController
             $this->buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
         // Shortcut
-        if ($this->getBackendUser()->mayMakeShortcut()) {
-            $shortcutButton = $this->buttonBar->makeShortcutButton()
-                ->setModuleName($this->moduleName)
-                ->setGetVariables([
-                    'id',
-                    'M',
-                    'edit_record',
-                    'pointer',
-                    'new_unique_uid',
-                    'search_field',
-                    'search_levels',
-                    'showLimit'
-                ])
-                ->setSetVariables(array_keys($this->MOD_MENU));
-            $this->buttonBar->addButton($shortcutButton);
-        }
+        $shortcutButton = $this->buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setGetVariables([
+                'id',
+                'M',
+                'edit_record',
+                'pointer',
+                'new_unique_uid',
+                'search_field',
+                'search_levels',
+                'showLimit'
+            ])
+            ->setSetVariables(array_keys($this->MOD_MENU));
+        $this->buttonBar->addButton($shortcutButton);
+
         // Cache
         if (!$this->modTSconfig['properties']['disableAdvanced']) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
-            $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1, array($shortcutButton));
+            $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
         if (!$this->modTSconfig['properties']['disableIconToolbar']) {
             // Move record
@@ -1214,7 +1210,6 @@ class PageLayoutController
 
             }
         }
-        return $buttons;
     }
 
     /*******************************
