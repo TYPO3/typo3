@@ -173,6 +173,7 @@ class SelectTreeElement extends AbstractFormElement
 				onChange: ' . GeneralUtility::quoteJSvalue($onChange) . ',
 				countSelectedNodes: ' . count($selectedNodes) . ',
 				width: ' . (int)$width . ',
+				rendering: false,
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
@@ -188,24 +189,26 @@ class SelectTreeElement extends AbstractFormElement
 					},
 					checkchange: TYPO3.Components.Tree.TcaCheckChangeHandler,
 					collapsenode: function(node) {
-						if (node.id !== "root") {
+						if (node.id !== "root" && !this.rendering) {
 							top.TYPO3.Storage.Persistent.removeFromList("tcaTrees." + this.ucId, node.attributes.uid);
 						}
 					},
 					expandnode: function(node) {
-						if (node.id !== "root") {
+						if (node.id !== "root" && !this.rendering) {
 							top.TYPO3.Storage.Persistent.addToList("tcaTrees." + this.ucId, node.attributes.uid);
 						}
 					},
 					beforerender: function(treeCmp) {
+					    this.rendering = true;
 						// Check if that tree element is already rendered. It is appended on the first tceforms_inline call.
 						if (Ext.fly(treeCmp.getId())) {
 							return false;
 						}
-					}' . ($expanded ? ',
+					},
 					afterrender: function(treeCmp) {
-						treeCmp.expandAll();
-					}' : '') . '
+					    ' . ($expanded ? 'treeCmp.expandAll();' : '') . '
+					    this.rendering = false;
+					}
 				},
 				tcaMaxItems: ' . ($config['maxitems'] ? (int)$config['maxitems'] : 99999) . ',
 				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false') . ',
