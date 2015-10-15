@@ -20,7 +20,7 @@
 				<tbody>
 					<f:for each="{compareUserList}" as="compareUser">
 						<tr>
-							<td class="col-icon">
+							<td>
 								<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
 									<be:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
 								</a>
@@ -57,7 +57,7 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th class="col-icon"></th>
+						<th></th>
 						<th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
 						<th><f:translate key="lastLogin" /></th>
 						<th class="col-control"></th>
