@@ -14,7 +14,7 @@
 /**
  * API for tooltip windows powered by Twitter Bootstrap.
  */
-define(['TYPO3/CMS/Backend/Tooltip'], function(Tooltip) {
+define(['jquery', 'TYPO3/CMS/Backend/Tooltip'], function($, Tooltip) {
 	'use strict';
 
 	$(function() {
