@@ -443,15 +443,24 @@ class PageLayoutController
         $actionMenu->setIdentifier('actionMenu');
         $actionMenu->setLabel('');
 
+        $defaultKey = null;
         foreach ($availableActionArray as $key => $action) {
             $menuItem = $actionMenu
                 ->makeMenuItem()
                 ->setTitle($action)
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&SET[function]=' . $key);
+
+            if (!isset($defaultKey)) {
+                $defaultKey = $key;
+            }
             if ((int)$this->MOD_SETTINGS['function'] === $key) {
                 $menuItem->setActive(true);
+                $defaultKey = null;
             }
             $actionMenu->addMenuItem($menuItem);
+        }
+        if (isset($defaultKey)) {
+            $this->MOD_SETTINGS['function'] = $defaultKey;
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
