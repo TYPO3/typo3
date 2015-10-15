@@ -1016,7 +1016,7 @@ class SetupModuleController extends AbstractModule
      */
     protected function addAvatarButtonJs($fieldName)
     {
-        $this->doc->JScodeArray['avatar-button'] = '
+        $this->moduleTemplate->addJavaScriptCode('avatar-button', '
             var browserWin="";
 
             function openFileBrowser() {
@@ -1038,7 +1038,7 @@ class SetupModuleController extends AbstractModule
 
                 browserWin.close();
             }
-        ';
+        ');
     }
 
     /**
