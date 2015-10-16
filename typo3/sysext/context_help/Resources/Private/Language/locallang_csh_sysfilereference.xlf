@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1445000814" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+		<header/>
+		<body>
+			<trans-unit id="alternative.description">
+				<source>Sets the alternative text of this asset.</source>
+			</trans-unit>
+			<trans-unit id="alternative.details">
+				<source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+			</trans-unit>
+			<trans-unit id="link.description">
+				<source>Sets a link on this asset.</source>
+			</trans-unit>
+			<trans-unit id="link.details">
+				<source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+			</trans-unit>
+			<trans-unit id="title.description">
+				<source>Sets the title text of this asset.</source>
+			</trans-unit>
+			<trans-unit id="title.details">
+				<source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+			</trans-unit>
+			<trans-unit id="description.description">
+				<source>Sets the image-caption-text of this asset.</source>
+			</trans-unit>
+			<trans-unit id="description.details">
+				<source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+			</trans-unit>
+			<trans-unit id="crop.description">
+				<source>Click "Open Editor" to start up the image editor.</source>
+			</trans-unit>
+			<trans-unit id="autoplay.description">
+				<source>Check to let embedded media play once loaded.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
