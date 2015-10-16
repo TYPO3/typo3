@@ -60,5 +60,14 @@ class BackendUserGroupController extends BackendUserActionController
     public function indexAction()
     {
         $this->view->assign('backendUserGroups', $this->backendUserGroupRepository->findAll());
+        $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl(
+            'system_BeuserTxBeuser',
+            [
+                'tx_beuser_system_beusertxbeuser' => [
+                    'action' => 'index',
+                    'controller' => 'BackendUserGroup'
+                ]
+            ]
+        )));
     }
 }
