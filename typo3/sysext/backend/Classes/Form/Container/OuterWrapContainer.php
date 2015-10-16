@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -85,11 +85,7 @@ class OuterWrapContainer extends AbstractContainer
                 $pageTitle = sprintf($label, $tableTitle, $pageTitle);
             }
         } else {
-            // DocumentTemplate is needed for wrapClickMenuOnIcon(), the method has no state, simply use fresh instance
-            /** @var DocumentTemplate $documentTemplate */
-            $documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $icon = $documentTemplate->wrapClickMenuOnIcon($icon, $table, $row['uid'], 1, '', '+copy,info,edit,view');
-
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'], 1, '', '+copy,info,edit,view');
             $newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
             // @todo: getRecordTitlePrep applies an htmlspecialchars here

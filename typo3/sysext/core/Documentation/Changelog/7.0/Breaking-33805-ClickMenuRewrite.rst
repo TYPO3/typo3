@@ -34,7 +34,7 @@ Migration
 
 Any use of "Clickmenu.show()" etc should be avoided and channelled through the according DocumentTemplate methods.
 
-- DocumentTemplate->wrapClickMenuOnIcon()
+- BackendUtility::wrapClickMenuOnIcon()
 - DocumentTemplate->getContextMenuCode()
 
 If a backend module without a DocumentTemplate (with e.g. Extbase/Fluid) is used, this is done with a separate class

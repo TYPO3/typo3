@@ -100,7 +100,6 @@ class MetaInformation
     public function getRecordInformation()
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $pageRecord = $this->recordArray;
         $uid = '';
         $title = '';
@@ -111,7 +110,7 @@ class MetaInformation
             $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
             $iconImg = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
-            $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
         // If the module is about a FAL resource
@@ -134,7 +133,7 @@ class MetaInformation
                         Icon::SIZE_SMALL
                     )->render() . '</span>';
                 }
-                $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, $pageRecord['combined_identifier']);
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, $pageRecord['combined_identifier']);
             } catch (ResourceDoesNotExistException $e) {
                 $theIcon = '';
             }
@@ -146,7 +145,7 @@ class MetaInformation
                 '">' .
                 $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
             if ($this->getBackendUser()->isAdmin()) {
-                $theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', 0);
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', 0);
             } else {
                 $theIcon = $iconImg;
             }

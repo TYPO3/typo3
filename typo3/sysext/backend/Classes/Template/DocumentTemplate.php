@@ -518,23 +518,12 @@ function jumpToUrl(URL) {
      * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
      * @param bool $returnTagParameters If set, will return only the onclick JavaScript, not the whole link.
      * @return string The link-wrapped input string.
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use BackendUtility::wrapClickMenuOnIcon() instead
      */
     public function wrapClickMenuOnIcon($content, $table, $uid = 0, $listFr = true, $addParams = '', $enDisItems = '', $returnTagParameters = false)
     {
-        $tagParameters = array(
-            'class'           => 't3-js-clickmenutrigger',
-            'data-table'      => $table,
-            'data-uid'        => (int)$uid !== 0 ? (int)$uid : '',
-            'data-listframe'  => $listFr,
-            'data-iteminfo'   => str_replace('+', '%2B', $enDisItems),
-            'data-parameters' => $addParams,
-        );
-
-        if ($returnTagParameters) {
-            return $tagParameters;
-        } else {
-            return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
-        }
+        GeneralUtility::logDeprecatedFunction();
+        return BackendUtility::wrapClickMenuOnIcon($content, $table, $uid, $listFr, $addParams, $enDisItems, $returnTagParameters);
     }
 
     /**
@@ -613,7 +602,7 @@ function jumpToUrl(URL) {
         }
 
         if ($enableClickMenu) {
-            $iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']);
+            $iconImgTag = BackendUtility::wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']);
         }
 
         return '<span class="typo3-moduleHeader">' . $iconImgTag . $viewPage . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . $tWrap[1] . '</span>';
@@ -639,7 +628,7 @@ function jumpToUrl(URL) {
 
         if ($enableClickMenu && ($resource instanceof \TYPO3\CMS\Core\Resource\File)) {
             $metaData = $resource->_getMetaData();
-            $iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, 'sys_file_metadata', $metaData['uid']);
+            $iconImgTag = BackendUtility::wrapClickMenuOnIcon($iconImgTag, 'sys_file_metadata', $metaData['uid']);
         }
 
         return '<span class="typo3-moduleHeader">' . $iconImgTag . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($resource->getName(), 45)) . $tWrap[1] . '</span>';
@@ -1921,7 +1910,7 @@ function jumpToUrl(URL) {
             $alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
             $iconImg = '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
-            $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
         } else {
@@ -1929,7 +1918,7 @@ function jumpToUrl(URL) {
             // Make Icon
             $iconImg = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
             if ($GLOBALS['BE_USER']->user['admin']) {
-                $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', 0);
             } else {
                 $theIcon = $iconImg;
             }

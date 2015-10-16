@@ -38,7 +38,7 @@ class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      * @param string $table
      *
      * @return string
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate->wrapClickMenuOnIcon()
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::wrapClickMenuOnIcon()
      */
     public function render($table)
     {

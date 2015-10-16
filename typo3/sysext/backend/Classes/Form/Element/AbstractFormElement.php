@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Lang\LanguageService;
@@ -694,12 +693,12 @@ abstract class AbstractFormElement extends AbstractNode
 						<tr>
 							<td class="col-icon">
 								' . ($config['internal_type'] === 'db'
-                            ? $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($thumbnail['image'], $thumbnail['table'], $thumbnail['uid'], 1, '', '+copy,info,edit,view')
+                            ? BackendUtility::wrapClickMenuOnIcon($thumbnail['image'], $thumbnail['table'], $thumbnail['uid'], 1, '', '+copy,info,edit,view')
                             : $thumbnail['image']) . '
 							</td>
 							<td class="col-title">
 								' . ($config['internal_type'] === 'db'
-                            ? $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($thumbnail['name'], $thumbnail['table'], $thumbnail['uid'], 1, '', '+copy,info,edit,view')
+                            ? BackendUtility::wrapClickMenuOnIcon($thumbnail['name'], $thumbnail['table'], $thumbnail['uid'], 1, '', '+copy,info,edit,view')
                             : $thumbnail['name']) . '
 								' . ($config['internal_type'] === 'db' ? ' <span class="text-muted">[' . $thumbnail['uid'] . ']</span>' : '') . '
 							</td>
@@ -860,15 +859,5 @@ abstract class AbstractFormElement extends AbstractNode
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return DocumentTemplate
-     */
-    protected function getControllerDocumentTemplate()
-    {
-        // $GLOBALS['SOBE'] might be any kind of PHP class (controller most of the times)
-        // These classes do not inherit from any common class, but they all seem to have a "doc" member
-        return $GLOBALS['SOBE']->doc;
     }
 }

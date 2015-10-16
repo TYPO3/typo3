@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 
 /**
  * Abstract container has various methods used by the container classes
@@ -114,7 +114,7 @@ abstract class AbstractContainer extends AbstractNode
                         'thumbs.php',
                         $config['config']['uploadfolder'], 0, ' align="middle"'
                     ) .
-                    ($absFilePath ? $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($fileIcon, $absFilePath, 0, 1, '', '+copy,info,edit,view') : $fileIcon) .
+                    ($absFilePath ? BackendUtility::wrapClickMenuOnIcon($fileIcon, $absFilePath, 0, 1, '', '+copy,info,edit,view') : $fileIcon) .
                     $imgPath .
                     '</span>';
             }
@@ -122,13 +122,5 @@ abstract class AbstractContainer extends AbstractNode
         } else {
             return nl2br(htmlspecialchars($value));
         }
-    }
-
-    /**
-     * @return DocumentTemplate
-     */
-    protected function getControllerDocumentTemplate()
-    {
-        return $GLOBALS['SOBE']->doc;
     }
 }

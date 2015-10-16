@@ -117,7 +117,7 @@ class BrowseTreeView extends AbstractTreeView
         // Wrap icon in click-menu link.
         $theIcon = '';
         if (!$this->ext_IconMode) {
-            $theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $this->treeName, $this->getId($row), 0);
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($icon, $this->treeName, $this->getId($row), 0);
         } elseif ($this->ext_IconMode === 'titlelink') {
             $aOnClick = 'return jumpTo(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $this->bank . ');';
             $theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';

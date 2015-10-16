@@ -727,7 +727,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
                     BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
                     $params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
-                    $lPLabel = $this->getPageLayoutController()->getModuleTemplate()->wrapClickMenuOnIcon(
+                    $lPLabel = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),
                         'pages_language_overlay',
                         $lpRecord['uid']
@@ -739,7 +739,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         ) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
                 } else {
                     $params = '&edit[pages][' . $this->id . ']=edit';
-                    $lPLabel = $this->getPageLayoutController()->getModuleTemplate()->wrapClickMenuOnIcon(
+                    $lPLabel = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
                         'pages',
                         $this->id
@@ -1468,7 +1468,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
                             if (is_array($shortcutRecord)) {
                                 $icon = $this->iconFactory->getIconForRecord($tableName, $shortcutRecord, Icon::SIZE_SMALL)->render();
-                                $icon = $this->getPageLayoutController()->getModuleTemplate()->wrapClickMenuOnIcon(
+                                $icon = BackendUtility::wrapClickMenuOnIcon(
                                     $icon,
                                     $tableName,
                                     $shortcutRecord['uid'],
@@ -2111,7 +2111,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $this->counter++;
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
-            $icon = $this->getPageLayoutController()->getModuleTemplate()->wrapClickMenuOnIcon($icon, $table, $row['uid']);
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         return $icon;
     }

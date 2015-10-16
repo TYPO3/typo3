@@ -271,7 +271,7 @@ class FileList extends AbstractRecordList
             $otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
 
             if ($this->clickMenus) {
-                $otherMarkers['PAGE_ICON'] = $this->fileListController->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
+                $otherMarkers['PAGE_ICON'] = BackendUtility::wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
             }
             // Add paste button if clipboard is initialized
             if ($this->clipObj instanceof Clipboard && $folderObject->checkActionPermission('write')) {
@@ -536,7 +536,7 @@ class FileList extends AbstractRecordList
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
             if (!$isLocked && $this->clickMenus) {
-                $theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
             }
 
             // Preparing and getting the data-array
@@ -684,7 +684,7 @@ class FileList extends AbstractRecordList
             $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
                 . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
             if ($this->clickMenus) {
-                $theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
             }
             // Preparing and getting the data-array
             $theData = array();

@@ -892,7 +892,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $iconImg = '<span title="' . $altText . '" ' . $additionalStyle . '>'
             . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
             . '</span>';
-        $theIcon = $this->clickMenuEnabled ? $this->getModule()->getModuleTemplate()->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
+        $theIcon = $this->clickMenuEnabled ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
         // Preparing and getting the data-array
         $theData = array();
         $localizationMarkerClass = '';

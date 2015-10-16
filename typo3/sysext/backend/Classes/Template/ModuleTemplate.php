@@ -463,58 +463,6 @@ class ModuleTemplate
      *******************************************/
 
     /**
-     * Makes click menu link (context sensitive menu)
-     * Returns $str (possibly an <|img> tag/icon) wrapped in a link which will
-     * activate the context sensitive menu for the record ($table/$uid) or
-     * file ($table = file)
-     * The link will load the top frame with the parameter "&item" which is
-     * the table,uid and listFr arguments imploded
-     * by "|": rawurlencode($table.'|'.$uid.'|'.$listFr)
-     *
-     * @param string $content String to be wrapped in link, typ. image tag.
-     * @param string $table Table name/File path. If the icon is for a database
-     * record, enter the tablename from $GLOBALS['TCA']. If a file then enter
-     * the absolute filepath
-     * @param int $uid If icon is for database record this is the UID for the
-     * record from $table
-     * @param bool $listFr Tells the top frame script that the link is coming
-     * from a "list" frame which means a frame from within the backend content frame.
-     * @param string $addParams Additional GET parameters for the link to the
-     * ClickMenu AJAX request
-     * @param string $enDisItems Enable / Disable click menu items.
-     * Example: "+new,view" will display ONLY these two items (and any spacers
-     * in between), "new,view" will display all BUT these two items.
-     * @param bool $returnTagParameters If set, will return only the onclick
-     * JavaScript, not the whole link.
-     *
-     * @return string The link-wrapped input string.
-     * @internal
-     */
-    public function wrapClickMenuOnIcon(
-        $content,
-        $table,
-        $uid = 0,
-        $listFr = true,
-        $addParams = '',
-        $enDisItems = '',
-        $returnTagParameters = false
-    ) {
-        $tagParameters = array(
-            'class'           => 't3-js-clickmenutrigger',
-            'data-table'      => $table,
-            'data-uid'        => (int)$uid !== 0 ? (int)$uid : '',
-            'data-listframe'  => $listFr,
-            'data-iteminfo'   => str_replace('+', '%2B', $enDisItems),
-            'data-parameters' => $addParams,
-        );
-
-        if ($returnTagParameters) {
-            return $tagParameters;
-        }
-        return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
-    }
-
-    /**
      * Includes a javascript library that exists in the core /typo3/ directory
      *
      * @param string $lib Library name. Call it with the full path like

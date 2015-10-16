@@ -87,7 +87,7 @@ class PageTreeView extends BrowseTreeView
         }
         // Wrap icon in click-menu link.
         if (!$this->ext_IconMode) {
-            $thePageIcon = $this->getDocumentTemplate()->wrapClickMenuOnIcon($thePageIcon, 'pages', $row['uid'], 0, '&bank=' . $this->bank);
+            $thePageIcon = BackendUtility::wrapClickMenuOnIcon($thePageIcon, 'pages', $row['uid'], 0, '&bank=' . $this->bank);
         } elseif ($this->ext_IconMode === 'titlelink') {
             $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->treeName) . ');';
             $thePageIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $thePageIcon . '</a>';
@@ -130,7 +130,7 @@ class PageTreeView extends BrowseTreeView
             unset($_params);
         }
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
-        $clickMenuParts = $this->getDocumentTemplate()->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', true);
+        $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', true);
 
         $thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
         // Wrap title in a drag/drop span.
@@ -339,13 +339,4 @@ class PageTreeView extends BrowseTreeView
         return $this->printTree($treeArr);
     }
 
-    /**
-     * Returns an instance of DocumentTemplate
-     *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
-    }
 }

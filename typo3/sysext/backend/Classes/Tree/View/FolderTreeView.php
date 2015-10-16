@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -174,7 +175,7 @@ class FolderTreeView extends AbstractTreeView
         if (!$this->ext_IconMode) {
             // Check storage access to wrap with click menu
             if (!$folderObject instanceof InaccessibleFolder) {
-                $theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
+                $theFolderIcon = BackendUtility::wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
             }
         } elseif ($this->ext_IconMode === 'titlelink') {
             $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ',' . $this->bank . ');';
@@ -199,7 +200,7 @@ class FolderTreeView extends AbstractTreeView
             return $title;
         }
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
-        $clickMenuParts = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', true);
+        $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', true);
 
         return '<a href="#" title="' . htmlspecialchars(strip_tags($title)) . '" onclick="' . htmlspecialchars($aOnClick) . '" ' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
     }

@@ -133,7 +133,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             // Page icons / titles etc.
             $tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
                 ($data['depthData'] ?: '') .
-                $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
+                BackendUtility::wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
                 '<a href="#" onclick="' . htmlspecialchars(
                     'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;'
                 ) . '" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' .
