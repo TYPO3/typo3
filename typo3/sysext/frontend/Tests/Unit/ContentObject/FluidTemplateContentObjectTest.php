@@ -151,22 +151,21 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->contentObjectRenderer
             ->expects($this->at(0))
             ->method('stdWrap')
-            ->with('FILE', array('file' => 'dummyPath5/'));
+            ->with('dummyPath', array('wrap' => '|5/'));
         $this->contentObjectRenderer
             ->expects($this->at(1))
             ->method('stdWrap')
-            ->with('FILE', array('file' => 'dummyPath25/'));
+            ->with('', array('field' => 'someField'));
         $this->subject->render(array(
                 'templateName' => 'foobar',
                 'templateRootPaths.' => array(
-                    10 => 'FILE',
+                    10 => 'dummyPath',
                     '10.' => array(
-                        'file' => 'dummyPath5/',
+                        'wrap' => '|5/',
                     ),
                     15 => 'dummyPath6/',
-                    25 => 'FILE',
                     '25.' => array(
-                        'file' => 'dummyPath25/',
+                        'field' => 'someField',
                     ),
                 )
             )

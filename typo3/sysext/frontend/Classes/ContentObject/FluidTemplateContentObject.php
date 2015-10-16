@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -130,14 +131,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     {
         // Fetch the Fluid template by templateName
         if (!empty($conf['templateName']) && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])) {
-            $templateRootPaths = array();
-            foreach ($conf['templateRootPaths.'] as $key => $path) {
-                if (strpos($key, '.') === false) {
-                    $templateRootPaths[$key] = isset($conf['templateRootPaths.'][$key . '.']) ?
-                            GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['templateRootPaths.'][$key], $conf['templateRootPaths.'][$key . '.'])) :
-                            GeneralUtility::getFileAbsFileName($path);
-                }
-            }
+            $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
             $this->view->setTemplateRootPaths($templateRootPaths);
             $templateName = isset($conf['templateName.']) ? $this->cObj->stdWrap($conf['templateName'], $conf['templateName.']) : $conf['templateName'];
             $this->view->setTemplate($templateName);
@@ -172,13 +166,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
         }
         if (isset($conf['layoutRootPaths.'])) {
-            foreach ($conf['layoutRootPaths.'] as $key => $path) {
-                if (strpos($key, '.') === false) {
-                    $layoutPaths[$key] = isset($conf['layoutRootPaths.'][$key . '.']) ?
-                        GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['layoutRootPaths.'][$key], $conf['layoutRootPaths.'][$key . '.'])) :
-                        GeneralUtility::getFileAbsFileName($path);
-                }
-            }
+            $layoutPaths = array_replace($layoutPaths, $this->applyStandardWrapToFluidPaths($conf['layoutRootPaths.']));
         }
         if (!empty($layoutPaths)) {
             $this->view->setLayoutRootPaths($layoutPaths);
@@ -201,13 +189,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
         }
         if (isset($conf['partialRootPaths.'])) {
-            foreach ($conf['partialRootPaths.'] as $key => $path) {
-                if (strpos($key, '.') === false) {
-                    $partialPaths[$key] = isset($conf['partialRootPaths.'][$key . '.']) ?
-                        GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['partialRootPaths.'][$key], $conf['partialRootPaths.'][$key . '.'])) :
-                        GeneralUtility::getFileAbsFileName($path);
-                }
-            }
+            $partialPaths = array_replace($partialPaths, $this->applyStandardWrapToFluidPaths($conf['partialRootPaths.']));
         }
         if (!empty($partialPaths)) {
             $this->view->setPartialRootPaths($partialPaths);
@@ -326,5 +308,29 @@ class FluidTemplateContentObject extends AbstractContentObject
             $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
         return $content;
+    }
+
+    /**
+     * Applies stdWrap on Fluid path definitions
+     *
+     * @param array $paths
+     *
+     * @return array
+     */
+    protected function applyStandardWrapToFluidPaths(array $paths)
+    {
+        $finalPaths = [];
+        foreach ($paths as $key => $path) {
+            if (StringUtility::endsWith($key, '.')) {
+                if (isset($paths[substr($key, 0, -1)])) {
+                    continue;
+                }
+                $path = $this->cObj->stdWrap('', $path);
+            } elseif (isset($paths[$key . '.'])) {
+                $path = $this->cObj->stdWrap($path, $paths[$key . '.']);
+            }
+            $finalPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+        }
+        return $finalPaths;
     }
 }
