@@ -91,6 +91,13 @@ class NoneElementTest extends UnitTestCase
                 '',
                 ''
             ),
+            'format to datetime with null value' => array(
+                array(
+                    'format' => 'datetime',
+                ),
+                null,
+                ''
+            ),
             'format to time' => array(
                 array(
                     'format' => 'time',
@@ -103,6 +110,13 @@ class NoneElementTest extends UnitTestCase
                     'format' => 'time',
                 ),
                 '',
+                ''
+            ),
+            'format to time with null value' => array(
+                array(
+                    'format' => 'time',
+                ),
+                null,
                 ''
             ),
             'format to timesec' => array(
@@ -119,12 +133,33 @@ class NoneElementTest extends UnitTestCase
                 '',
                 ''
             ),
+            'format to timesec with null value' => array(
+                array(
+                    'format' => 'timesec',
+                ),
+                null,
+                ''
+            ),
             'format to year' => array(
                 array(
                     'format' => 'year',
                 ),
                 '1412358894',
                 '2014'
+            ),
+            'format to year with empty value' => array(
+                array(
+                    'format' => 'year',
+                ),
+                '',
+                ''
+            ),
+            'format to year with null value' => array(
+                array(
+                    'format' => 'year',
+                ),
+                null,
+                ''
             ),
             'format to int' => array(
                 array(

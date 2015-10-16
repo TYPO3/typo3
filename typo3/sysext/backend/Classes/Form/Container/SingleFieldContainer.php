@@ -60,20 +60,29 @@ class SingleFieldContainer extends AbstractContainer
         $parameterArray = array();
         $parameterArray['fieldConf'] = $this->data['processedTca']['columns'][$fieldName];
 
-        $languageField = $this->data['processedTca']['ctrl']['languageField'];
+        $isOverlay = false;
+
+        // This field decides whether the current record is an overlay (as opposed to being a standalone record)
+        // Based on this decision we need to trigger field exclusion or special rendering (like readOnly)
+        if (isset($this->data['processedTca']['ctrl']['transOrigPointerField'])
+            && is_array($this->data['processedTca']['columns'][$this->data['processedTca']['ctrl']['transOrigPointerField']])
+            && is_array($row[$this->data['processedTca']['ctrl']['transOrigPointerField']])
+            && $row[$this->data['processedTca']['ctrl']['transOrigPointerField']][0] > 0
+        ) {
+            $isOverlay = true;
+        }
 
         // A couple of early returns in case the field should not be rendered
         // Check if this field is configured and editable according to exclude fields and other configuration
-        if (
-            // Return if BE-user has no access rights to this field, @todo: another user access rights check!
+        if (// Return if BE-user has no access rights to this field, @todo: another user access rights check!
             $parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
             || $parameterArray['fieldConf']['config']['type'] === 'passthrough'
             // @todo: Drop option "showIfRTE" ?
             || !$backendUser->isRTE() && $parameterArray['fieldConf']['config']['showIfRTE']
             // Return if field should not be rendered in translated records
-            || $languageField && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude' && is_array($row[$languageField]) && $row[$languageField][0] > 0
+            || $isOverlay && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
             // @todo: localizationMode still needs handling!
-            || $languageField && $this->data['localizationMode'] && $this->data['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']
+            || $isOverlay && $this->data['localizationMode'] && $this->data['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']
             || $this->inlineFieldShouldBeSkipped()
         ) {
             return $resultArray;
@@ -100,7 +109,7 @@ class SingleFieldContainer extends AbstractContainer
         // Set field to read-only if configured for translated records to show default language content as readonly
         if ($parameterArray['fieldConf']['l10n_display']
             && GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'defaultAsReadonly')
-            && is_array($row[$languageField]) && $row[$languageField][0] > 0
+            && $isOverlay
         ) {
             $parameterArray['fieldConf']['config']['readOnly'] = true;
             $parameterArray['itemFormElValue'] = $this->data['defaultLanguageData'][$table . ':' . $row['uid']][$fieldName];
@@ -113,8 +122,7 @@ class SingleFieldContainer extends AbstractContainer
         }
         // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
         // This is used for eg. "type" fields and others configured with "requestUpdate"
-        if (
-            !empty($this->data['processedTca']['ctrl']['type'])
+        if (!empty($this->data['processedTca']['ctrl']['type'])
             && $fieldName === $typeField
             || !empty($this->data['processedTca']['ctrl']['requestUpdate'])
             && GeneralUtility::inList(str_replace(' ', '', $this->data['processedTca']['ctrl']['requestUpdate']), $fieldName)
@@ -176,8 +184,7 @@ class SingleFieldContainer extends AbstractContainer
 
         // Add language + diff
         $renderLanguageDiff = true;
-        if (
-            $parameterArray['fieldConf']['l10n_display'] && (GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'hideDiff')
+        if ($parameterArray['fieldConf']['l10n_display'] && (GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'hideDiff')
             || GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'defaultAsReadonly'))
         ) {
             $renderLanguageDiff = false;
@@ -494,15 +501,15 @@ class SingleFieldContainer extends AbstractContainer
      * A request could look like the following:
      *
      * $searchArray = array(
-     *   '%AND'	=> array(
-     *     'key1'	=> 'value1',
-     *     'key2'	=> 'value2',
-     *     '%OR'	=> array(
+     *   '%AND' => array(
+     *     'key1' => 'value1',
+     *     'key2' => 'value2',
+     *     '%OR' => array(
      *       'subarray' => array(
      *         'subkey' => 'subvalue'
      *       ),
-     *       'key3'	=> 'value3',
-     *       'key4'	=> 'value4'
+     *       'key3' => 'value3',
+     *       'key4' => 'value4'
      *     )
      *   )
      * );
