@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 /**
- * Migrate backend shorcut urls
+ * Migrate backend shortcut urls
  */
 class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
 {
@@ -37,13 +37,13 @@ class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate
             return false;
         }
 
-        $description = 'Migrate old shorcut urls to the new module urls.';
+        $description = 'Migrate old shortcut urls to the new module urls.';
 
         return true;
     }
 
     /**
-     * Performs the database update if shorcuts are available
+     * Performs the database update if shortcuts are available
      *
      * @param array &$databaseQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
