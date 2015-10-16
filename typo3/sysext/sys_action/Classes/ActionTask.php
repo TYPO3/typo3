@@ -796,7 +796,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $content = '';
         $this->id = (int)$record['t3_listPid'];
         $this->table = $record['t3_tables'];
-        if ($this->id == 0 || $this->table == '') {
+        if ($this->id == 0) {
             $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('action_notReady', true), $this->getLanguageService()->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
             $content .= '<br />' . $flashMessage->render();
             return $content;

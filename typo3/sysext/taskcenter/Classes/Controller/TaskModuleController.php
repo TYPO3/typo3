@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -273,11 +272,11 @@ class TaskModuleController extends BaseScriptClass
      * Render a list of items as a nicely formated definition list including a
      * link, icon, title and description.
      * The keys of a single item are:
-     * - title:				Title of the item
-     * - link:					Link to the task
-     * - icon: 				Path to the icon or Icon as HTML if it begins with <img
-     * - description:	Description of the task, using htmlspecialchars()
-     * - descriptionHtml:	Description allowing HTML tags which will override the
+     * - title:             Title of the item
+     * - link:              Link to the task
+     * - icon:              Path to the icon or Icon as HTML if it begins with <img
+     * - description:       Description of the task, using htmlspecialchars()
+     * - descriptionHtml:   Description allowing HTML tags which will override the
      * description
      *
      * @param array $items List of items to be displayed in the definition list.
@@ -310,7 +309,7 @@ class TaskModuleController extends BaseScriptClass
                 // Check for custom icon
                 if (!empty($item['icon'])) {
                     if (strpos($item['icon'], '<img ') === false) {
-                        $absIconPath = GeneralUtility::getFileAbsFilename($item['icon']);
+                        $absIconPath = GeneralUtility::getFileAbsFileName($item['icon']);
                         // If the file indeed exists, assemble relative path to it
                         if (file_exists($absIconPath)) {
                             $icon = '../' . str_replace(PATH_site, '', $absIconPath);
@@ -384,7 +383,7 @@ class TaskModuleController extends BaseScriptClass
                     $taskDescriptionHtml = '';
                     // Check for custom icon
                     if (!empty($task['icon'])) {
-                        $icon = GeneralUtility::getFileAbsFilename($task['icon']);
+                        $icon = GeneralUtility::getFileAbsFileName($task['icon']);
                     }
                     if (class_exists($taskClass)) {
                         $taskInstance = GeneralUtility::makeInstance($taskClass, $this);
@@ -477,10 +476,9 @@ class TaskModuleController extends BaseScriptClass
      * Returns HTML code to dislay an url in an iframe at the right side of the taskcenter
      *
      * @param string $url Url to display
-     * @param int $max
      * @return string Code that inserts the iframe (HTML)
      */
-    public function urlInIframe($url, $max = 0)
+    public function urlInIframe($url)
     {
         return '<iframe scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no"></iframe>';
     }
