@@ -47,6 +47,7 @@ if (TYPO3_MODE === 'FE') {
 	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
 	options.saveDocNew.sys_file = 0
+	options.saveDocNew.sys_file_metadata = 0
 	options.disableDelete.sys_file = 1
 ');
 
