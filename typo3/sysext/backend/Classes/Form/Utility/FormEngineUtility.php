@@ -159,66 +159,6 @@ class FormEngineUtility
     }
 
     /**
-     * Determine the configuration and the type of a record selector.
-     * This is a helper method for inline / IRRE handling
-     *
-     * @param array $conf TCA configuration of the parent(!) field
-     * @param string $field Field name
-     * @return array Associative array with the keys 'PA' and 'type', both are FALSE if the selector was not valid.
-     * @internal
-     */
-    public static function getInlinePossibleRecordsSelectorConfig($conf, $field = '')
-    {
-        $foreign_table = $conf['foreign_table'];
-        $foreign_selector = $conf['foreign_selector'];
-        $PA = false;
-        $type = false;
-        $table = false;
-        $selector = false;
-        if ($field) {
-            $PA = array();
-            $PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$field];
-            if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
-                ArrayUtility::mergeRecursiveWithOverrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
-            }
-            $PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($foreign_table, array(), $field);
-            $config = $PA['fieldConf']['config'];
-            // Determine type of Selector:
-            $type = static::getInlinePossibleRecordsSelectorType($config);
-            // Return table on this level:
-            $table = $type === 'select' ? $config['foreign_table'] : $config['allowed'];
-            // Return type of the selector if foreign_selector is defined and points to the same field as in $field:
-            if ($foreign_selector && $foreign_selector == $field && $type) {
-                $selector = $type;
-            }
-        }
-        return array(
-            'PA' => $PA,
-            'type' => $type,
-            'table' => $table,
-            'selector' => $selector
-        );
-    }
-
-    /**
-     * Determine the type of a record selector, e.g. select or group/db.
-     *
-     * @param array $config TCE configuration of the selector
-     * @return mixed The type of the selector, 'select' or 'groupdb' - FALSE not valid
-     * @internal
-     */
-    protected static function getInlinePossibleRecordsSelectorType($config)
-    {
-        $type = false;
-        if ($config['type'] === 'select') {
-            $type = 'select';
-        } elseif ($config['type'] === 'group' && $config['internal_type'] === 'db') {
-            $type = 'groupdb';
-        }
-        return $type;
-    }
-
-    /**
      * Update expanded/collapsed states on new inline records if any.
      *
      * @param array $uc The uc array to be processed and saved (by reference)
@@ -259,27 +199,6 @@ class FormEngineUtility
             $backendUser->uc['inlineView'] = serialize($inlineView);
             $backendUser->writeUC();
         }
-    }
-
-    /**
-     * Gets an array with the uids of related records out of a list of items.
-     * This list could contain more information than required. This methods just
-     * extracts the uids.
-     *
-     * @param string $itemList The list of related child records
-     * @return array An array with uids
-     * @internal
-     */
-    public static function getInlineRelatedRecordsUidArray($itemList)
-    {
-        $itemArray = GeneralUtility::trimExplode(',', $itemList, true);
-        // Perform modification of the selected items array:
-        foreach ($itemArray as &$value) {
-            $parts = explode('|', $value, 2);
-            $value = $parts[0];
-        }
-        unset($value);
-        return $itemArray;
     }
 
     /**

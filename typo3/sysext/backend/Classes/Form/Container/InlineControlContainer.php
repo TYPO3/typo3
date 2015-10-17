@@ -167,27 +167,48 @@ class InlineControlContainer extends AbstractContainer
         );
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];
 
-        // If relations are required to be unique, get the uids that have already been used on the foreign side of the relation
         $uniqueMax = 0;
-        $possibleRecords = [];
         $uniqueIds = [];
+
         if ($config['foreign_unique']) {
-            // If uniqueness *and* selector are set, they should point to the same field - so, get the configuration of one:
-            $selConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($config, $config['foreign_unique']);
-            // Get the used unique ids:
-            $uniqueIds = $this->getUniqueIds($this->data['parameterArray']['fieldConf']['children'], $config, $selConfig['type'] == 'groupdb');
-            $possibleRecords = $this->getPossibleRecords($table, $field, $row, $config, 'foreign_unique');
-            $uniqueMax = $config['appearance']['useCombination'] || $possibleRecords === false ? -1 : count($possibleRecords);
+            // Add inlineData['unique'] with JS unique configuration
+            $type = $config['selectorOrUniqueConfiguration']['config']['type'] === 'select' ? 'select' : 'groupdb';
+            foreach ($parameterArray['fieldConf']['children'] as $child) {
+                // Determine used unique ids, skip not localized records
+                if (!$child['inlineIsDefaultLanguage']) {
+                    $value = $child['databaseRow'][$config['foreign_unique']];
+                    // We're assuming there is only one connected value here for both select and group
+                    if ($type === 'select') {
+                        // A resolved select field is an array - take first value
+                        $value = $value['0'];
+                    } else {
+                        // A group field is still a list with pipe separated uid|tableName
+                        $valueParts = GeneralUtility::trimExplode('|', $value);
+                        $itemParts = explode('_', $valueParts[0]);
+                        $value = array(
+                            'uid' => array_pop($itemParts),
+                            'table' => implode('_', $itemParts)
+                        );
+                    }
+                    // @todo: This is weird, $value has different structure for group and select fields?
+                    $uniqueIds[$child['databaseRow']['uid']] = $value;
+                }
+            }
+            $possibleRecords = $config['selectorOrUniquePossibleRecords'];
+            $possibleRecordsUidToTitle = [];
+            foreach ($possibleRecords as $possibleRecord) {
+                $possibleRecordsUidToTitle[$possibleRecord[1]] = $possibleRecord[0];
+            }
+            $uniqueMax = $config['appearance']['useCombination'] || empty($possibleRecords) ? -1 : count($possibleRecords);
             $this->inlineData['unique'][$nameObject . '-' . $foreign_table] = array(
                 'max' => $uniqueMax,
                 'used' => $uniqueIds,
-                'type' => $selConfig['type'],
-                'table' => $config['foreign_table'],
-                'elTable' => $selConfig['table'],
-                // element/record table (one step down in hierarchy)
+                'type' => $type,
+                'table' => $foreign_table,
+                'elTable' => $config['selectorOrUniqueConfiguration']['foreignTable'],
                 'field' => $config['foreign_unique'],
-                'selector' => $selConfig['selector'],
-                'possible' => $this->getPossibleRecordsFlat($possibleRecords)
+                'selector' => $config['selectorOrUniqueConfiguration']['isSelector'] ? $type : false,
+                'possible' => $possibleRecordsUidToTitle,
             );
         }
 
@@ -230,12 +251,11 @@ class InlineControlContainer extends AbstractContainer
 
         // If it's required to select from possible child records (reusable children), add a selector box
         if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== false) {
-            // If not already set by the foreign_unique, set the possibleRecords here and the uniqueIds to an empty array
-            if (!$config['foreign_unique']) {
-                $possibleRecords = $this->getPossibleRecords($table, $field, $row, $config);
-                $uniqueIds = array();
+            if ($config['selectorOrUniqueConfiguration']['config']['type'] === 'select') {
+                $selectorBox = $this->renderPossibleRecordsSelectorTypeSelect($config, $uniqueIds);
+            } else {
+                $selectorBox = $this->renderPossibleRecordsSelectorTypeGroupDB($config);
             }
-            $selectorBox = $this->renderPossibleRecordsSelector($possibleRecords, $config, $uniqueIds);
             $html .= $selectorBox . $localizationLinks;
         }
 
@@ -298,105 +318,6 @@ class InlineControlContainer extends AbstractContainer
 
         $resultArray['html'] = $html;
         return $resultArray;
-    }
-
-    /**
-     * Gets the uids of a select/selector that should be unique and have already been used.
-     *
-     * @param array $children All inline records on this level
-     * @param array $conf The TCA field configuration of the inline field to be rendered
-     * @param bool $splitValue For usage with group/db, values come like "tx_table_123|Title%20abc", but we need "tx_table" and "123
-     * @return array The uids, that have been used already and should be used unique
-     */
-    protected function getUniqueIds($children, $conf = array(), $splitValue = false)
-    {
-        $uniqueIds = array();
-        if (isset($conf['foreign_unique']) && $conf['foreign_unique'] && !empty($children)) {
-            foreach ($children as $child) {
-                // Skip virtual records (e.g. shown in localization mode):
-                if (!$child['inlineIsDefaultLanguage']) {
-                    $value = $child[$conf['foreign_unique']];
-                    if (is_array($value)) {
-                        $value = $value['0'];
-                    }
-                    // Split the value and extract the table and uid:
-                    if ($splitValue) {
-                        $valueParts = GeneralUtility::trimExplode('|', $value);
-                        $itemParts = explode('_', $valueParts[0]);
-                        $value = array(
-                            'uid' => array_pop($itemParts),
-                            'table' => implode('_', $itemParts)
-                        );
-                    }
-                    $uniqueIds[$child['uid']] = $value;
-                }
-            }
-        }
-        return $uniqueIds;
-    }
-
-    /**
-     * Get possible records.
-     * Copied from FormEngine and modified.
-     *
-     * @param string $table The table name of the record
-     * @param string $field The field name which this element is supposed to edit
-     * @param array $row The record data array where the value(s) for the field can be found
-     * @param array $conf An array with additional configuration options.
-     * @param string $checkForConfField For which field in the foreign_table the possible records should be fetched
-     * @return mixed Array of possible record items; FALSE if type is "group/db", then everything could be "possible
-     */
-    protected function getPossibleRecords($table, $field, $row, $conf, $checkForConfField = 'foreign_selector')
-    {
-        // Field configuration from TCA:
-        $foreign_check = $conf[$checkForConfField];
-        $foreignConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($conf, $foreign_check);
-        $PA = $foreignConfig['PA'];
-        if ($foreignConfig['type'] == 'select') {
-            $pageTsConfig['TCEFORM.']['dummyTable.']['dummyField.'] = $PA['fieldTSConfig'];
-            $selectDataInput = [
-                'tableName' => 'dummyTable',
-                'command' => 'edit',
-                'pageTsConfig' => $pageTsConfig,
-                'processedTca' => [
-                    'ctrl' => [],
-                    'columns' => [
-                        'dummyField' => $PA['fieldConf'],
-                    ],
-                ],
-            ];
-
-            /** @var OnTheFly $formDataGroup */
-            $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
-            $formDataGroup->setProviderList([ TcaSelectItems::class ]);
-            /** @var FormDataCompiler $formDataCompiler */
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-            $compilerResult = $formDataCompiler->compile($selectDataInput);
-            $selItems = $compilerResult['processedTca']['columns']['dummyField']['config']['items'];
-        } else {
-            $selItems = false;
-        }
-        return $selItems;
-    }
-
-    /**
-     * Makes a flat array from the $possibleRecords array.
-     * The key of the flat array is the value of the record,
-     * the value of the flat array is the label of the record.
-     *
-     * @param array $possibleRecords The possibleRecords array (for select fields)
-     * @return mixed A flat array with key=uid, value=label; if $possibleRecords isn't an array, FALSE is returned.
-     */
-    protected function getPossibleRecordsFlat($possibleRecords)
-    {
-        $flat = false;
-        if (is_array($possibleRecords)) {
-            $flat = array();
-            foreach ($possibleRecords as $record) {
-                $flat[$record[1]] = $record[0];
-            }
-        }
-        return $flat;
     }
 
     /**
@@ -477,73 +398,50 @@ class InlineControlContainer extends AbstractContainer
     }
 
     /**
-     * Get a selector as used for the select type, to select from all available
-     * records and to create a relation to the embedding record (e.g. like MM).
-     *
-     * @param array $selItems Array of all possible records
-     * @param array $conf TCA configuration of the parent(!) field
-     * @param array $uniqueIds The uids that have already been used and should be unique
-     * @return string A HTML <select> box with all possible records
-     */
-    protected function renderPossibleRecordsSelector($selItems, $conf, $uniqueIds = array())
-    {
-        $foreign_selector = $conf['foreign_selector'];
-        $selConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($conf, $foreign_selector);
-        $item  = '';
-        if ($selConfig['type'] === 'select') {
-            $item = $this->renderPossibleRecordsSelectorTypeSelect($selItems, $conf, $selConfig['PA'], $uniqueIds);
-        } elseif ($selConfig['type'] === 'groupdb') {
-            $item = $this->renderPossibleRecordsSelectorTypeGroupDB($conf, $selConfig['PA']);
-        }
-        return $item;
-    }
-
-    /**
      * Generate a link that opens an element browser in a new window.
      * For group/db there is no way to use a "selector" like a <select>|</select>-box.
      *
-     * @param array $conf TCA configuration of the parent(!) field
-     * @param array $PA An array with additional configuration options
+     * @param array $inlineConfiguration TCA inline configuration of the parent(!) field
      * @return string A HTML link that opens an element browser in a new window
      */
-    protected function renderPossibleRecordsSelectorTypeGroupDB($conf, &$PA)
+    protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineConfiguration)
     {
         $backendUser = $this->getBackendUserAuthentication();
         $languageService = $this->getLanguageService();
 
-        $config = $PA['fieldConf']['config'];
-        ArrayUtility::mergeRecursiveWithOverrule($config, $conf);
-        $foreign_table = $config['foreign_table'];
-        $allowed = $config['allowed'];
+        $groupFieldConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config'];
+
+        $foreign_table = $inlineConfiguration['foreign_table'];
+        $allowed = $groupFieldConfiguration['allowed'];
         $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $foreign_table;
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         $mode = 'db';
         $showUpload = false;
-        if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
-            $createNewRelationText = $languageService->sL($config['appearance']['createNewRelationLinkTitle'], true);
+        if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
+            $createNewRelationText = $languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle'], true);
         } else {
             $createNewRelationText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', true);
         }
-        if (is_array($config['appearance'])) {
-            if (isset($config['appearance']['elementBrowserType'])) {
-                $mode = $config['appearance']['elementBrowserType'];
+        if (is_array($groupFieldConfiguration['appearance'])) {
+            if (isset($groupFieldConfiguration['appearance']['elementBrowserType'])) {
+                $mode = $groupFieldConfiguration['appearance']['elementBrowserType'];
             }
             if ($mode === 'file') {
                 $showUpload = true;
             }
-            if (isset($config['appearance']['fileUploadAllowed'])) {
-                $showUpload = (bool)$config['appearance']['fileUploadAllowed'];
+            if (isset($inlineConfiguration['appearance']['fileUploadAllowed'])) {
+                $showUpload = (bool)$inlineConfiguration['appearance']['fileUploadAllowed'];
             }
-            if (isset($config['appearance']['elementBrowserAllowed'])) {
-                $allowed = $config['appearance']['elementBrowserAllowed'];
+            if (isset($groupFieldConfiguration['appearance']['elementBrowserAllowed'])) {
+                $allowed = $groupFieldConfiguration['appearance']['elementBrowserAllowed'];
             }
         }
         $browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
         $onClick = 'setFormValueOpenBrowser(' . GeneralUtility::quoteJSvalue($mode) . ', ' . GeneralUtility::quoteJSvalue($browserParams) . '); return false;';
 
         $buttonStyle = '';
-        if (isset($config['inline']['inlineNewRelationButtonStyle'])) {
-            $buttonStyle = ' style="' . $config['inline']['inlineNewRelationButtonStyle'] . '"';
+        if (isset($inlineConfiguration['inline']['inlineNewRelationButtonStyle'])) {
+            $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineNewRelationButtonStyle'] . '"';
         }
 
         $item = '
@@ -619,68 +517,54 @@ class InlineControlContainer extends AbstractContainer
      * Get a selector as used for the select type, to select from all available
      * records and to create a relation to the embedding record (e.g. like MM).
      *
-     * @param array $selItems Array of all possible records
-     * @param array $conf TCA configuration of the parent(!) field
-     * @param array $PA An array with additional configuration options
+     * @param array $config TCA inline configuration of the parent(!) field
      * @param array $uniqueIds The uids that have already been used and should be unique
      * @return string A HTML <select> box with all possible records
      */
-    protected function renderPossibleRecordsSelectorTypeSelect($selItems, $conf, &$PA, $uniqueIds = array())
+    protected function renderPossibleRecordsSelectorTypeSelect(array $config, array $uniqueIds)
     {
-        $foreign_table = $conf['foreign_table'];
-        $foreign_selector = $conf['foreign_selector'];
-        $PA = array();
-        $PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector];
-        $PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($foreign_table, array(), $foreign_selector);
-        $config = $PA['fieldConf']['config'];
-        $item = '';
-        // @todo $disabled is not present - should be read from config?
-        $disabled = false;
-        if (!$disabled) {
-            $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-            ;
-            // Create option tags:
-            $opt = array();
-            foreach ($selItems as $p) {
-                if (!in_array($p[1], $uniqueIds)) {
-                    $opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
-                }
+        $possibleRecords = $config['selectorOrUniquePossibleRecords'];
+        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        // Create option tags:
+        $opt = [];
+        foreach ($possibleRecords as $p) {
+            if (!in_array($p[1], $uniqueIds)) {
+                $opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
             }
-            // Put together the selector box:
-            $itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : '';
-            $size = (int)$conf['size'];
-            $size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
-            $onChange = 'return inline.importNewRecord(' . GeneralUtility::quoteJSvalue($nameObject . '-' . $conf['foreign_table']) . ')';
-            $item = '
-				<select id="' . $nameObject . '-' . $conf['foreign_table'] . '_selector" class="form-control"' . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
-					' . implode('', $opt) . '
-				</select>';
-
-            if ($size <= 1) {
-                // Add a "Create new relation" link for adding new relations
-                // This is necessary, if the size of the selector is "1" or if
-                // there is only one record item in the select-box, that is selected by default
-                // The selector-box creates a new relation on using an onChange event (see some line above)
-                if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
-                    $createNewRelationText = $this->getLanguageService()->sL($conf['appearance']['createNewRelationLinkTitle'], true);
-                } else {
-                    $createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', true);
-                }
-                $item .= '
-				<span class="input-group-btn">
-					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText . '">
-						' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
-					</a>
-				</span>';
-            } else {
-                $item .= '
-				<span class="input-group-btn btn"></span>';
-            }
-
-            // Wrap the selector and add a spacer to the bottom
-
-            $item = '<div class="input-group form-group t3js-formengine-validation-marker ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
         }
+        // Put together the selector box:
+        $size = (int)$config['size'];
+        $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($possibleRecords) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
+        $onChange = 'return inline.importNewRecord(' . GeneralUtility::quoteJSvalue($nameObject . '-' . $config['foreign_table']) . ')';
+        $item = '
+            <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-control"' . ($size ? ' size="' . $size . '"' : '')
+            . ' onchange="' . htmlspecialchars($onChange) . '"' . ($config['foreign_unique'] ? ' isunique="isunique"' : '') . '>
+                ' . implode('', $opt) . '
+            </select>';
+
+        if ($size <= 1) {
+            // Add a "Create new relation" link for adding new relations
+            // This is necessary, if the size of the selector is "1" or if
+            // there is only one record item in the select-box, that is selected by default
+            // The selector-box creates a new relation on using an onChange event (see some line above)
+            if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
+                $createNewRelationText = $this->getLanguageService()->sL($config['appearance']['createNewRelationLinkTitle'], true);
+            } else {
+                $createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', true);
+            }
+            $item .= '
+            <span class="input-group-btn">
+                <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText . '">
+                    ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
+                </a>
+            </span>';
+        } else {
+            $item .= '
+            <span class="input-group-btn btn"></span>';
+        }
+
+        // Wrap the selector and add a spacer to the bottom
+        $item = '<div class="input-group form-group t3js-formengine-validation-marker ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
         return $item;
     }
 

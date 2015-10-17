@@ -395,7 +395,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'foreign_table' => 'aForeignTableName',
-                            'foreign_selector' => 'foo',
+                            'foreign_selector' => 'aField',
                             'appearance' => [
                                 'levelLinksPosition' => 'both',
                             ],
@@ -404,8 +404,22 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'foreign_table' => 'anotherForeignTableName',
+        ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'foo';
+        $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
+        $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
+            'fieldName' => 'aField',
+            'isSelector' => true,
+            'isUnique' => false,
+            'config' => [
+                'type' => 'select',
+                'foreign_table' => 'anotherForeignTableName',
+            ],
+            'foreignTable' => 'anotherForeignTableName',
+        ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
         $this->assertEquals($expected, $this->subject->addData($input));
     }
@@ -422,7 +436,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'foreign_table' => 'aForeignTableName',
-                            'foreign_selector' => 'foo',
+                            'foreign_selector' => 'aField',
                             'appearance' => [
                                 'useCombination' => true,
                                 'levelLinksPosition' => 'both',
@@ -432,8 +446,22 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'foreign_table' => 'anotherForeignTableName',
+        ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'foo';
+        $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
+        $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
+            'fieldName' => 'aField',
+            'isSelector' => true,
+            'isUnique' => false,
+            'config' => [
+                'type' => 'select',
+                'foreign_table' => 'anotherForeignTableName',
+            ],
+            'foreignTable' => 'anotherForeignTableName',
+        ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['useCombination'] = true;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -536,6 +564,283 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = false;
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignSelectorAndForeignUniquePointToDifferentFields()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_selector' => 'aField',
+                            'foreign_unique' => 'aDifferentField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444995464);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignSelectorPointsToANotExistingField()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_selector' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignUniquePointsToANotExistingField()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignUniqueTargetIsNotTypeSelectOrGroup()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'notSelectOrGroup',
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInternalTypeDb()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'internal_type' => 'notDb'
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444999130);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'select',
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1445078627);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionIfForeignUniqueGroupDoesNotDefineForeignTable()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'internal_type' => 'db',
+        ];
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1445078628);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataAddsSelectorOrUniqueConfigurationForForeignUnique()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_unique' => 'aField',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'foreign_table' => 'anotherForeignTableName',
+        ];
+        $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
+        $expected['processedTca']['columns']['aField']['config']['foreign_unique'] = 'aField';
+        $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
+            'fieldName' => 'aField',
+            'isSelector' => false,
+            'isUnique' => true,
+            'config' => [
+                'type' => 'select',
+                'foreign_table' => 'anotherForeignTableName',
+            ],
+            'foreignTable' => 'anotherForeignTableName',
+        ];
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataMergesForeignSelectorFieldTcaOverride()
+    {
+        $input = [
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'aForeignTableName',
+                            'foreign_selector' => 'aField',
+                            'foreign_selector_fieldTcaOverride' => [
+                                'config' => [
+                                    'aGivenSetting' => 'aOverrideValue',
+                                    'aNewSetting' => 'aNewSetting',
+                                    'appearance' => [
+                                        'elementBrowserType' => 'file',
+                                        'elementBrowserAllowed' => 'jpg,png',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'internal_type' => 'db',
+            'allowed' => 'anotherForeignTableName',
+            'doNotChangeMe' => 'doNotChangeMe',
+            'aGivenSetting' => 'aGivenValue',
+        ];
+
+        $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
+        $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
+        $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
+        $expected['processedTca']['columns']['aField']['config']['foreign_selector_fieldTcaOverride'] = [
+            'config' => [
+                'aGivenSetting' => 'aOverrideValue',
+                'aNewSetting' => 'aNewSetting',
+                'appearance' => [
+                    'elementBrowserType' => 'file',
+                    'elementBrowserAllowed' => 'jpg,png',
+                ],
+            ],
+        ];
+
+        $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
+            'fieldName' => 'aField',
+            'isSelector' => true,
+            'isUnique' => false,
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'anotherForeignTableName',
+                'doNotChangeMe' => 'doNotChangeMe',
+                'aGivenSetting' => 'aOverrideValue',
+                'aNewSetting' => 'aNewSetting',
+                'appearance' => [
+                    'elementBrowserType' => 'file',
+                    'elementBrowserAllowed' => 'jpg,png',
+                ],
+            ],
+            'foreignTable' => 'anotherForeignTableName',
+        ];
         $this->assertEquals($expected, $this->subject->addData($input));
     }
 }

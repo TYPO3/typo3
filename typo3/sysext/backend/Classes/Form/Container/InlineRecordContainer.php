@@ -346,9 +346,12 @@ class InlineRecordContainer extends AbstractContainer
             $recTitle = $params['title'];
         } elseif ($hasForeignLabel || $hasSymmetricLabel) {
             $titleCol = $hasForeignLabel ? $config['foreign_label'] : $config['symmetric_label'];
-            $foreignConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($config, $titleCol);
             // Render title for everything else than group/db:
-            if ($foreignConfig['type'] !== 'groupdb') {
+            if (isset($this->data['processedTca']['columns'][$titleCol]['config']['type'])
+                && $this->data['processedTca']['columns'][$titleCol]['config']['type'] === 'group'
+                && isset($this->data['processedTca']['columns'][$titleCol]['config']['internal_type'])
+                && $this->data['processedTca']['columns'][$titleCol]['config']['internal_type'] === 'db'
+            ) {
                 $recTitle = BackendUtility::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol], 0, 0, false);
             } else {
                 // $recTitle could be something like: "tx_table_123|...",

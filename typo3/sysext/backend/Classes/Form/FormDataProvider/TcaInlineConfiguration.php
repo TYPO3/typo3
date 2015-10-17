@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -47,6 +48,7 @@ class TcaInlineConfiguration extends AbstractItemProvider implements FormDataPro
             $result = $this->initializeMinMaxItems($result, $fieldName);
             $result = $this->initializeLocalizationMode($result, $fieldName);
             $result = $this->initializeAppearance($result, $fieldName);
+            $result = $this->addInlineSelectorAndUniqueConfiguration($result, $fieldName);
         }
         return $result;
     }
@@ -151,7 +153,6 @@ class TcaInlineConfiguration extends AbstractItemProvider implements FormDataPro
         $parentConfig = $result['processedTca']['columns'][$fieldName]['config'];
 
         $isChildTableLocalizable = false;
-        // @todo: Direct $globals access here, but no good idea yet how to get rid of this
         if (isset($GLOBALS['TCA'][$childTableName]['ctrl']) && is_array($GLOBALS['TCA'][$childTableName]['ctrl'])
             && isset($GLOBALS['TCA'][$childTableName]['ctrl']['languageField'])
             && $GLOBALS['TCA'][$childTableName]['ctrl']['languageField']
@@ -190,6 +191,127 @@ class TcaInlineConfiguration extends AbstractItemProvider implements FormDataPro
         }
 
         $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = $mode;
+        return $result;
+    }
+
+    /**
+     * If foreign_selector or foreign_unique is set, this points to a field configuration of the child
+     * table. The InlineControlContainer may render a drop down field or an element browser later from this.
+     *
+     * Fetch configuration from child table configuration, sanitize and merge with
+     * foreign_selector_fieldTcaOverride that allows overriding this field definition again.
+     *
+     * Final configuration is written to selectorOrUniqueConfiguration of inline config section.
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @return array Modified item array
+     * @throws \UnexpectedValueException If configuration is broken
+     */
+    protected function addInlineSelectorAndUniqueConfiguration(array $result, $fieldName)
+    {
+        $config = $result['processedTca']['columns'][$fieldName]['config'];
+
+        // Early return if neither foreign_unique nor foreign_selector are set
+        if (!isset($config['foreign_unique']) && !isset($config['foreign_selector'])) {
+            return $result;
+        }
+
+        // If both are set, they must point to the same field
+        if (isset($config['foreign_unique']) && isset($config['foreign_selector'])
+            && $config['foreign_unique'] !== $config['foreign_selector']
+        ) {
+            throw new \UnexpectedValueException(
+                'Table ' . $result['tableName'] . ' field ' . $fieldName . ': If both foreign_unique and'
+                . ' foreign_selector are set, they must point to the same field',
+                1444995464
+            );
+        }
+
+        if (isset($config['foreign_unique'])) {
+            $fieldNameInChildConfiguration = $config['foreign_unique'];
+        } else {
+            $fieldNameInChildConfiguration = $config['foreign_selector'];
+        }
+
+        // Throw if field name in globals does not exist or is not of type select or group
+        if (!isset($GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config']['type'])
+            || ($GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config']['type'] !== 'select'
+                && $GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config']['type'] !== 'group')
+        ) {
+            throw new \UnexpectedValueException(
+                'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
+                . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . ', but this field'
+                . ' is either not defined or is not of type select or group',
+                1444996537
+            );
+        }
+
+        $selectorOrUniqueConfiguration = [
+            'config' => $GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config'],
+        ];
+
+        // Throw if field is type group, but not internal_type db
+        if ($selectorOrUniqueConfiguration['config']['type'] === 'group'
+            && (!isset($selectorOrUniqueConfiguration['config']['internal_type']) ||  $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db')) {
+            throw new \UnexpectedValueException(
+                'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
+                . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'
+                . ' is of type group and must be of internal_type db, which is not the case',
+                1444999130
+            );
+        }
+
+        // Merge foreign_selector_fieldTcaOverride if given
+        if (isset($config['foreign_selector'])
+            && isset($config['foreign_selector_fieldTcaOverride']['config'])
+            && is_array($config['foreign_selector_fieldTcaOverride']['config'])
+        ) {
+            ArrayUtility::mergeRecursiveWithOverrule($selectorOrUniqueConfiguration['config'], $config['foreign_selector_fieldTcaOverride']['config']);
+        }
+
+        // Add field name to config for easy access later
+        $selectorOrUniqueConfiguration['fieldName'] = $fieldNameInChildConfiguration;
+
+        // Add remote table name for easy access later
+        if ($selectorOrUniqueConfiguration['config']['type'] === 'select') {
+            if (!isset($selectorOrUniqueConfiguration['config']['foreign_table'])) {
+                throw new \UnexpectedValueException(
+                    'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
+                    . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'
+                    . ' is of type select and must define foreign_table',
+                    1445078627
+                );
+            }
+            $foreignTable = $selectorOrUniqueConfiguration['config']['foreign_table'];
+        } else {
+            if (!isset($selectorOrUniqueConfiguration['config']['allowed'])) {
+                throw new \UnexpectedValueException(
+                    'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
+                    . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'
+                    . ' is of type select and must define allowed',
+                    1445078628
+                );
+            }
+            $foreignTable = $selectorOrUniqueConfiguration['config']['allowed'];
+        }
+        $selectorOrUniqueConfiguration['foreignTable'] = $foreignTable;
+
+        // If this is a foreign_selector field, mark it as such for data fetching later
+        $selectorOrUniqueConfiguration['isSelector'] = false;
+        if (isset($config['foreign_selector'])) {
+            $selectorOrUniqueConfiguration['isSelector'] = true;
+        }
+
+        // If this is a foreign_unique field, mark it a such for unique data fetching later
+        $selectorOrUniqueConfiguration['isUnique'] = false;
+        if (isset($config['foreign_unique'])) {
+            $selectorOrUniqueConfiguration['isUnique'] = true;
+        }
+
+        // Add field configuration to inline configuration
+        $result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'] = $selectorOrUniqueConfiguration;
+
         return $result;
     }
 }

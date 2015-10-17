@@ -370,8 +370,8 @@ class FormInlineAjaxController
             $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
             $nameObjectForeignTable = $nameObject . '-' . $child['table'];
 
-            $oldItems = FormEngineUtility::getInlineRelatedRecordsUidArray($oldItemList);
-            $newItems = FormEngineUtility::getInlineRelatedRecordsUidArray($newItemList);
+            $oldItems = $this->getInlineRelatedRecordsUidArray($oldItemList);
+            $newItems = $this->getInlineRelatedRecordsUidArray($newItemList);
 
             // Set the items that should be removed in the forms view:
             $removedItems = array_diff($oldItems, $newItems);
@@ -517,7 +517,6 @@ class FormInlineAjaxController
      * @param array $intermediate Full data array of "mm" record
      * @param array $parentConfig TCA configuration of "parent"
      * @return array Full data array of child
-     * @todo: probably foreign_selector_fieldTcaOverride should be merged over here before
      */
     protected function compileCombinationChild(array $intermediate, array $parentConfig)
     {
@@ -580,6 +579,26 @@ class FormInlineAjaxController
             }
         }
         return $jsonResult;
+    }
+
+    /**
+     * Gets an array with the uids of related records out of a list of items.
+     * This list could contain more information than required. This methods just
+     * extracts the uids.
+     *
+     * @param string $itemList The list of related child records
+     * @return array An array with uids
+     */
+    protected function getInlineRelatedRecordsUidArray($itemList)
+    {
+        $itemArray = GeneralUtility::trimExplode(',', $itemList, true);
+        // Perform modification of the selected items array:
+        foreach ($itemArray as &$value) {
+            $parts = explode('|', $value, 2);
+            $value = $parts[0];
+        }
+        unset($value);
+        return $itemArray;
     }
 
     /**

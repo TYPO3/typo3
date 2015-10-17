@@ -102,6 +102,59 @@ class InlineOverrrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataMergesForeignSelectorFieldTcaOverride()
+    {
+        $input = [
+            'inlineParentConfig' => [
+                'foreign_selector' => 'uid_local',
+                'foreign_selector_fieldTcaOverride' => [
+                    'label' => 'aDifferentLabel',
+                    'config' => [
+                        'aGivenSetting' => 'overrideValue',
+                        'aNewSetting' => 'anotherNewValue',
+                        'appearance' => [
+                            'elementBrowserType' => 'file',
+                            'elementBrowserAllowed' => 'jpg,png'
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'uid_local' => [
+                        'label' => 'aLabel',
+                        'config' => [
+                            'aGivenSetting' => 'aValue',
+                            'doNotChangeMe' => 'doNotChangeMe',
+                            'appearance' => [
+                                'elementBrowserType' => 'db',
+                            ],
+                        ],
+                    ]
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['uid_local'] = [
+            'label' => 'aDifferentLabel',
+            'config' => [
+                'aGivenSetting' => 'overrideValue',
+                'doNotChangeMe' => 'doNotChangeMe',
+                'appearance' => [
+                    'elementBrowserType' => 'file',
+                    'elementBrowserAllowed' => 'jpg,png',
+                ],
+                'aNewSetting' => 'anotherNewValue',
+            ],
+        ];
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataSetsDefaultValueForChildRecordColumn()
     {
         $GLOBALS['TCA']['aTable']['columns']['aType'] = [];

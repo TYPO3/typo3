@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Override some child TCA in an inline parent child relation.
@@ -35,6 +36,20 @@ class InlineOverrideChildTca implements FormDataProviderInterface
             foreach ($result['inlineParentConfig']['foreign_types'] as $type => $config) {
                 $result['processedTca']['types'][$type] = $config;
             }
+        }
+
+        // Override config section of foreign_selector field pointer if given
+        if (isset($result['inlineParentConfig']['foreign_selector'])
+            && is_string($result['inlineParentConfig']['foreign_selector'])
+            && isset($result['inlineParentConfig']['foreign_selector_fieldTcaOverride'])
+            && is_array($result['inlineParentConfig']['foreign_selector_fieldTcaOverride'])
+            && isset($result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']])
+            && is_array($result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']])
+        ) {
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']],
+                $result['inlineParentConfig']['foreign_selector_fieldTcaOverride']
+            );
         }
 
         // Set default values for (new) child if foreign_record_defaults is defined in inlineParentConfig
@@ -70,7 +85,7 @@ class InlineOverrideChildTca implements FormDataProviderInterface
                 }
             }
             foreach ($result['inlineParentConfig']['foreign_record_defaults'] as $fieldName => $defaultValue) {
-                if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSetableFields, TRUE)) {
+                if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSetableFields, true)) {
                     $result['processedTca']['columns'][$fieldName]['config']['default'] = $defaultValue;
                 }
             }

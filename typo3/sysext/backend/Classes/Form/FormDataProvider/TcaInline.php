@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -45,6 +46,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             $result['processedTca']['columns'][$fieldName]['children'] = [];
             if ($result['inlineResolveExistingChildren']) {
                 $result = $this->resolveRelatedRecords($result, $fieldName);
+                $result = $this->addForeignSelectorAndUniquePossibleRecords($result, $fieldName);
             }
         }
 
@@ -197,6 +199,57 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     }
 
     /**
+     * If there is a foreign_selector or foreign_unique configuration, fetch
+     * the list of possible records that can be connected and attach the to the
+     * inline configuration.
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @return array Modified item array
+     */
+    protected function addForeignSelectorAndUniquePossibleRecords(array $result, $fieldName)
+    {
+        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'])) {
+            return $result;
+        }
+
+        $selectorOrUniqueConfiguration = $result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'];
+        $foreignFieldName = $selectorOrUniqueConfiguration['fieldName'];
+        $selectorOrUniquePossibleRecords = [];
+
+        if ($selectorOrUniqueConfiguration['config']['type'] === 'select') {
+            // Compile child table data for this field only
+            $selectDataInput = [
+                'tableName' => $result['processedTca']['columns'][$fieldName]['config']['foreign_table'],
+                'command' => 'new',
+                // Since there is no existing record that may have a type, it does not make sense to
+                // do extra handling of pageTsConfig merged here. Just provide "parent" pageTS as is
+                'pageTsConfig' => $result['pageTsConfig'],
+                'userTsConfig' => $result['userTsConfig'],
+                'processedTca' => [
+                    'ctrl' => [],
+                    'columns' => [
+                        $foreignFieldName => [
+                            'config' => $selectorOrUniqueConfiguration['config'],
+                        ],
+                    ],
+                ],
+            ];
+            /** @var OnTheFly $formDataGroup */
+            $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
+            $formDataGroup->setProviderList([ TcaSelectItems::class ]);
+            /** @var FormDataCompiler $formDataCompiler */
+            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+            $compilerResult = $formDataCompiler->compile($selectDataInput);
+            $selectorOrUniquePossibleRecords = $compilerResult['processedTca']['columns'][$foreignFieldName]['config']['items'];
+        }
+
+        $result['processedTca']['columns'][$fieldName]['config']['selectorOrUniquePossibleRecords'] = $selectorOrUniquePossibleRecords;
+
+        return $result;
+    }
+
+    /**
      * Compile a full child record
      *
      * @param array $result Result array of parent
@@ -236,7 +289,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      * @param array $intermediate Full data array of "mm" record
      * @param array $parentConfig TCA configuration of "parent"
      * @return array Full data array of child
-     * @todo: probably foreign_selector_fieldTcaOverride should be merged over here before
      */
     protected function compileCombinationChild(array $intermediate, array $parentConfig)
     {
