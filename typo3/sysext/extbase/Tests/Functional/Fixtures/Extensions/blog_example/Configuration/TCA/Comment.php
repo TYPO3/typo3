@@ -20,7 +20,6 @@ $TCA['tx_blogexample_domain_model_comment'] = array(
             'config' => array(
                 'type' => 'input',
                 'size' => 12,
-                'checkbox' => 1,
                 'eval' => 'datetime, required',
                 'default' => time()
             )

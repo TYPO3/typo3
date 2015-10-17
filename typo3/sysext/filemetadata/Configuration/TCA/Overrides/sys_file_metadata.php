@@ -317,7 +317,6 @@ $tca = array(
                 'size' => 12,
                 'max' => 20,
                 'eval' => 'date',
-                'checkbox' => 1,
                 'default' => time()
             ),
         ),
@@ -331,7 +330,6 @@ $tca = array(
                 'size' => 12,
                 'max' => 20,
                 'eval' => 'date',
-                'checkbox' => 1,
                 'default' => time()
             ),
         ),

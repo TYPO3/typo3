@@ -94,7 +94,6 @@ return array(
                 'max' => '20',
                 'eval' => 'date',
                 'default' => '0',
-                'checkbox' => '0'
             )
         ),
         'endtime' => array(
@@ -105,7 +104,6 @@ return array(
                 'size' => '8',
                 'max' => '20',
                 'eval' => 'date',
-                'checkbox' => '0',
                 'default' => '0',
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),

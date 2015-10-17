@@ -102,7 +102,6 @@ return array(
                 'size' => '8',
                 'eval' => 'datetime',
                 'default' => '0',
-                'checkbox' => '0'
             )
         ),
         'unpublish_time' => array(
@@ -111,7 +110,6 @@ return array(
                 'type' => 'input',
                 'size' => '8',
                 'eval' => 'datetime',
-                'checkbox' => '0',
                 'default' => '0',
                 'range' => array(
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)

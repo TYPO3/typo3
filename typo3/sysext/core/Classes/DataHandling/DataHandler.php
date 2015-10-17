@@ -1830,6 +1830,7 @@ class DataHandler
             $value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, (string)$value, 0, (int)$tcaFieldConf['max']);
         }
         // Checking range of value:
+        // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
         if ($tcaFieldConf['range'] && $value != $tcaFieldConf['checkbox'] && (int)$value !== (int)$tcaFieldConf['default']) {
             if (isset($tcaFieldConf['range']['upper']) && (int)$value > (int)$tcaFieldConf['range']['upper']) {
                 $value = $tcaFieldConf['range']['upper'];

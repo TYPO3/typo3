@@ -32,8 +32,6 @@ class RsaInputElement extends AbstractFormElement
      */
     public function render()
     {
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
         $row = $this->data['databaseRow'];

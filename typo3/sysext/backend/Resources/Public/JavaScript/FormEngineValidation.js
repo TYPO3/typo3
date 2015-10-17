@@ -111,7 +111,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	FormEngineValidation.initializeInputField = function(fieldName) {
 		var $field = $('[name="' + fieldName + '"]');
 		var $humanReadableField = $('[data-formengine-input-name="' + fieldName + '"]');
-		var $checkboxField = $('[name="' + fieldName + '_cb"]');
 		var $mainField = $('[name="' + $field.data('main-field') + '"]');
 		if ($mainField.length === 0) {
 			$mainField = $field;
@@ -122,22 +121,12 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 			var evalList = FormEngineValidation.trimExplode(',', config.evalList);
 			var value = $field.val();
 
-			if (config.checkbox && value == config.checkboxValue) {
-				$field.val('');
-				if ($checkboxField.length) {
-					$checkboxField.attr('checked', '');
-				}
-			} else {
-				for (var i = 0; i < evalList.length; i++) {
-					value = FormEngineValidation.formatValue(evalList[i], value, config)
-				}
-				// Prevent password fields to be overwritten with original value
-				if (value.length && $humanReadableField.attr('type') != 'password') {
-					$humanReadableField.val(value);
-				}
-				if ($checkboxField.length) {
-					$checkboxField.attr('checked', 'checked');
-				}
+			for (var i = 0; i < evalList.length; i++) {
+				value = FormEngineValidation.formatValue(evalList[i], value, config)
+			}
+			// Prevent password fields to be overwritten with original value
+			if (value.length && $humanReadableField.attr('type') != 'password') {
+				$humanReadableField.val(value);
 			}
 		}
 
@@ -147,12 +136,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 			FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
 		});
 		$humanReadableField.on('keyup', FormEngineValidation.validate);
-
-		$checkboxField.data('main-field', fieldName);
-		$checkboxField.data('config', config);
-		$checkboxField.on('click', function() {
-			FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
-		});
 	};
 
 	/**
@@ -196,9 +179,6 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				break;
 			case 'password':
 				theString = (value) ? FormEngineValidation.passwordDummy : '';
-				break;
-			case 'int':
-				theString = (config.checkbox && value == config.checkboxValue) ? '' : value;
 				break;
 			default:
 				theString = value;

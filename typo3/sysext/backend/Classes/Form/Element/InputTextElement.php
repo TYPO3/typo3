@@ -51,13 +51,6 @@ class InputTextElement extends AbstractFormElement
         $classes = array();
         $attributes = array();
 
-        if (!isset($config['checkbox'])) {
-            $config['checkbox'] = '0';
-            $checkboxIsset = false;
-        } else {
-            $checkboxIsset = true;
-        }
-
         // set all date times available
         $dateFormats = array(
             'date' => '%d-%m-%Y',
@@ -125,10 +118,6 @@ class InputTextElement extends AbstractFormElement
             $isDateField = true;
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'timesec';
-        } else {
-            if ($checkboxIsset === false) {
-                $config['checkbox'] = '';
-            }
         }
 
         // @todo: The whole eval handling is a mess and needs refactoring
@@ -158,8 +147,6 @@ class InputTextElement extends AbstractFormElement
             'field' => $parameterArray['itemFormElName'],
             'evalList' => implode(',', $evalList),
             'is_in' => trim($config['is_in']),
-            'checkbox' => ($config['checkbox'] ? 1 : 0),
-            'checkboxValue' => $config['checkbox'],
         );
         // set classes
         $classes[] = 'form-control';

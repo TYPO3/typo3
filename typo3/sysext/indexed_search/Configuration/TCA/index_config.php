@@ -36,7 +36,6 @@ return array(
                 'max' => '20',
                 'eval' => 'date',
                 'default' => '0',
-                'checkbox' => '0'
             )
         ),
         'title' => array(
@@ -196,7 +195,6 @@ return array(
                 'size' => '12',
                 'eval' => 'datetime',
                 'default' => '0',
-                'checkbox' => '0'
             )
         ),
         'timer_offset' => array(
@@ -232,7 +230,6 @@ return array(
                 'max' => '20',
                 'eval' => 'int',
                 'default' => '0',
-                'checkbox' => '0'
             )
         ),
         'set_id' => array(
