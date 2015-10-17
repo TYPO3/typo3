@@ -86,7 +86,6 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 				layout: 'back',
 				validation: {
 					required: {
-						breakOnError: 0,
 						showMessage: true,
 						message: '*',
 						error: 'Required'
@@ -126,7 +125,6 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 				layout: 'back',
 				validation: {
 					required: {
-						breakOnError: 0,
 						showMessage: true,
 						message: '*',
 						error: 'Required'

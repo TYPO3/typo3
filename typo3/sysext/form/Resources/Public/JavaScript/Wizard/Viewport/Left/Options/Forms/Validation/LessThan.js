@@ -23,7 +23,6 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.LessThan = Ext.extend(T
 	constructor: function(config) {
 		Ext.apply(this, {
 			configuration: {
-				breakOnError: 0,
 				showMessage: 1,
 				message: TYPO3.l10n.localize('tx_form_system_validate_lessthan.message'),
 				error: TYPO3.l10n.localize('tx_form_system_validate_lessthan.error'),

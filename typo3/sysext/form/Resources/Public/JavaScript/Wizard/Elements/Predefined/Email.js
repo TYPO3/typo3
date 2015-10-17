@@ -22,13 +22,11 @@ TYPO3.Form.Wizard.Elements.Predefined.Email = Ext.extend(TYPO3.Form.Wizard.Eleme
 				},
 				validation: {
 					required: {
-						breakOnError: 0,
 						showMessage: 1,
 						message: TYPO3.l10n.localize('tx_form_system_validate_required.message'),
 						error: TYPO3.l10n.localize('tx_form_system_validate_required.error')
 					},
 					email: {
-						breakOnError: 0,
 						showMessage: 1,
 						message: TYPO3.l10n.localize('tx_form_system_validate_email.message'),
 						error: TYPO3.l10n.localize('tx_form_system_validate_email.error')

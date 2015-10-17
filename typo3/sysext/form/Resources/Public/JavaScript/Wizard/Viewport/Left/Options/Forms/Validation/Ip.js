@@ -23,7 +23,6 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Ip = Ext.extend(TYPO3.F
 	constructor: function(config) {
 		Ext.apply(this, {
 			configuration: {
-				breakOnError: 0,
 				showMessage: 1,
 				message: TYPO3.l10n.localize('tx_form_system_validate_ip.message'),
 				error: TYPO3.l10n.localize('tx_form_system_validate_ip.error')

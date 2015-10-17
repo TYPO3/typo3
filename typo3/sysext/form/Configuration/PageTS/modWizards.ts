@@ -53,83 +53,83 @@ prefix = tx_form
 
 							rules {
 								alphabetic {
-									showProperties = message, error, breakOnError, showMessage, allowWhiteSpace
+									showProperties = message, error, showMessage, allowWhiteSpace
 								}
 
 								alphanumeric {
-									showProperties = message, error, breakOnError, showMessage, allowWhiteSpace
+									showProperties = message, error, showMessage, allowWhiteSpace
 								}
 
 								between {
-									showProperties = message, error, breakOnError, showMessage, minimum, maximum, inclusive
+									showProperties = message, error, showMessage, minimum, maximum, inclusive
 								}
 
 								date {
-									showProperties = message, error, breakOnError, showMessage, format
+									showProperties = message, error, showMessage, format
 								}
 
 								digit {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								email {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								equals {
-									showProperties = message, error, breakOnError, showMessage, field
+									showProperties = message, error, showMessage, field
 								}
 
 								fileallowedtypes {
-									showProperties = message, error, breakOnError, showMessage, types
+									showProperties = message, error, showMessage, types
 								}
 
 								filemaximumsize {
-									showProperties = message, error, breakOnError, showMessage, maximum
+									showProperties = message, error, showMessage, maximum
 								}
 
 								fileminimumsize {
-									showProperties = message, error, breakOnError, showMessage, minimum
+									showProperties = message, error, showMessage, minimum
 								}
 
 								float {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								greaterthan {
-									showProperties = message, error, breakOnError, showMessage, minimum
+									showProperties = message, error, showMessage, minimum
 								}
 
 								inarray {
-									showProperties = message, error, breakOnError, showMessage, array, strict
+									showProperties = message, error, showMessage, array, strict
 								}
 
 								integer {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								ip {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								length {
-									showProperties = message, error, breakOnError, showMessage, minimum, maximum
+									showProperties = message, error, showMessage, minimum, maximum
 								}
 
 								lessthan {
-									showProperties = message, error, breakOnError, showMessage, maximum
+									showProperties = message, error, showMessage, maximum
 								}
 
 								regexp {
-									showProperties = message, error, breakOnError, showMessage, expression
+									showProperties = message, error, showMessage, expression
 								}
 
 								required {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 
 								uri {
-									showProperties = message, error, breakOnError, showMessage
+									showProperties = message, error, showMessage
 								}
 							}
 						}

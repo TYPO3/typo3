@@ -675,9 +675,6 @@
 			<trans-unit id="validation_properties_error">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_breakonerror">
-				<source>Break on error</source>
-			</trans-unit>
 			<trans-unit id="validation_properties_showmessage">
 				<source>Show message in label</source>
 			</trans-unit>
