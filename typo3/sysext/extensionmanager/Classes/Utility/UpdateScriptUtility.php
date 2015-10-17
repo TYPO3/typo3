@@ -115,7 +115,7 @@ class UpdateScriptUtility {
 		} else {
 			$className = $matches[1] . '\ext_update';
 		}
-		@include_once $updateScript;
+		include_once $updateScript;
 		if (!class_exists($className, FALSE)) {
 			throw new ExtensionManagerException(
 				sprintf('class.ext_update.php of extension "%s" did not declare ext_update class', $extensionKey),
