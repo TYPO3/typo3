@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Template\Components;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
@@ -74,7 +75,9 @@ class MetaInformation
                 $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $title = $resourceObject->getStorage()->getName() . ':';
                 $title .= $resourceObject->getParentFolder()->getReadablePath();
-            } catch (ResourceDoesNotExistException $e) {}
+            } catch (ResourceDoesNotExistException $e) {
+            } catch (InsufficientFolderAccessPermissionsException $e) {
+            }
         }
         // Setting the path of the page
         // crop the title to title limit (or 50, if not defined)
@@ -100,6 +103,7 @@ class MetaInformation
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $pageRecord = $this->recordArray;
         $uid = '';
+        $title = '';
         $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
         // Add icon with clickMenu, etc:
         // If there IS a real page
@@ -114,7 +118,8 @@ class MetaInformation
         } elseif (is_array($pageRecord) && !empty($pageRecord['combined_identifier'])) {
             try {
                 $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
-                $title = $resourceObject->getName();
+                $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'];
+                $title = $fileMountTitle ?: $resourceObject->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder
                 if ($resourceObject instanceof FolderInterface && !$resourceObject->getStorage()->isWithinFileMountBoundaries($resourceObject)) {
                     $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
