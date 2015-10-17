@@ -67,8 +67,10 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->registerFieldNameForFormTokenGeneration($name);
 
         $this->tag->addAttribute('type', 'submit');
-        $this->tag->addAttribute('name', $name);
         $this->tag->addAttribute('value', $this->getValueAttribute());
+        if (!empty($name)) {
+            $this->tag->addAttribute('name', $name);
+        }
 
         return $this->tag->render();
     }
