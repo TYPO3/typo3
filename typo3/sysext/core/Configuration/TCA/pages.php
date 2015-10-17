@@ -810,6 +810,7 @@ return array(
             )
         ),
         'tsconfig_includes' => array(
+            'exclude' => 1,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
             'config' => array(
                 'type' => 'select',
