@@ -116,11 +116,26 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         );
         $imageService = $this->getImageService();
         $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
+        $tagWidthAttribute = (int)$processedImage->getProperty('width');
+        $tagHeightAttribute = (int)$processedImage->getProperty('height');
+        $trimmedWidthAttribute = (int)trim($width, 'cm');
+        $trimmedHeightAttribute = (int)trim($height, 'cm');
+
+        if ($trimmedWidthAttribute !== $tagWidthAttribute) {
+            $tagWidthAttribute = $trimmedWidthAttribute;
+        }
+        if ($trimmedHeightAttribute !== $tagHeightAttribute) {
+            $tagHeightAttribute = $trimmedHeightAttribute;
+        }
         $imageUri = $imageService->getImageUri($processedImage);
 
         $this->tag->addAttribute('src', $imageUri);
-        $this->tag->addAttribute('width', $processedImage->getProperty('width'));
-        $this->tag->addAttribute('height', $processedImage->getProperty('height'));
+        if (!empty($tagWidthAttribute)) {
+            $this->tag->addAttribute('width', $tagWidthAttribute);
+        }
+        if (!empty($tagHeightAttribute)) {
+            $this->tag->addAttribute('height', $tagHeightAttribute);
+        }
 
         $alt = $image->getProperty('alternative');
         $title = $image->getProperty('title');
