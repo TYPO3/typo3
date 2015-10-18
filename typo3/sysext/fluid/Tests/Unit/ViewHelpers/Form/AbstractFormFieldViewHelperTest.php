@@ -565,4 +565,31 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
         $actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function getPropertyValueReturnsArrayValueByPropertyPath()
+    {
+        $formFieldViewHelper = $this->getAccessibleMock(
+            \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper::class,
+            ['renderHiddenIdentityField'],
+            [],
+            '',
+            false
+        );
+
+        $this->injectDependenciesIntoViewHelper($formFieldViewHelper);
+        $formFieldViewHelper->_set('arguments', ['property' => 'key1.key2']);
+
+        $this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with(
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+        )->will($this->returnValue(true));
+        $this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with(
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+        )->will($this->returnValue(['key1' => ['key2' => 'valueX']]));
+
+        $actual = $formFieldViewHelper->_call('getPropertyValue');
+        $this->assertEquals('valueX', $actual);
+    }
 }
