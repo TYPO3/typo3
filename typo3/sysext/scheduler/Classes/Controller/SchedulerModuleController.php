@@ -1653,6 +1653,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
+            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setSetVariables(['function']);
         $buttonBar->addButton($shortcutButton);
     }

@@ -127,10 +127,7 @@ class BackendUserActionController extends ActionController
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
             $getVars = array('id', 'M', $modulePrefix);
         }
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
-        $buttonBar->addButton($shortcutButton);
+        $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUsers');
         if ($this->request->getControllerName() === 'BackendUser') {
             if ($this->request->getControllerActionName() === 'index') {
                 $returnUrl = rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser'));
@@ -154,8 +151,12 @@ class BackendUserActionController extends ActionController
                     ->setIcon($icon);
                 $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT);
             }
+            if ($this->request->getControllerActionName() === 'online') {
+                $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:onlineUsers');
+            }
         }
         if ($this->request->getControllerName() === 'BackendUserGroup') {
+            $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUserGroupsMenu');
             $returnUrl = rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser', array(
                 'tx_beuser_system_beusertxbeuser' => array(
                     'action' => 'index',
@@ -172,6 +173,11 @@ class BackendUserActionController extends ActionController
                 ->setIcon($icon);
             $buttonBar->addButton($addUserGroupButton, ButtonBar::BUTTON_POSITION_LEFT);
         }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setDisplayName($shortcutName)
+            ->setGetVariables($getVars);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /**
