@@ -553,6 +553,11 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+                        )
+                    )
                 ),
                 'tcaInputPlaceholderRecord' => array(
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(),

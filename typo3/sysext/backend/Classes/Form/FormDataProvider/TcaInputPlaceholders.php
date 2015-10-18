@@ -57,9 +57,15 @@ class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProvi
                 $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getPlaceholderValue($fieldNameArray, $result);
             }
 
+            // Resolve placeholders from language files
+            if (StringUtility::beginsWith($fieldConfig['config']['placeholder'], 'LLL:')) {
+                $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getLanguageService()->sl($fieldConfig['config']['placeholder']);
+            }
+
             // Remove empty placeholders
             if (empty($fieldConfig['config']['placeholder'])) {
                 unset($result['processedTca']['columns'][$fieldName]['config']['placeholder']);
+                continue;
             }
         }
 

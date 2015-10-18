@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
@@ -400,6 +401,38 @@ class TcaInputPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataProphecyResult['databaseRow']['title'];
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataCallsLanguageServiceForLocalizedPlaceholders()
+    {
+        $labelString = 'LLL:EXT:some_ext/Resources/Private/Language/locallang.xlf:my_placeholder';
+        $localizedString = 'My Placeholder';
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'placeholder' => $labelString,
+                        ]
+                    ]
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['placeholder'] = $localizedString;
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL($labelString)->shouldBeCalled()->willReturn($localizedString);
 
         $this->assertSame($expected, $this->subject->addData($input));
     }
