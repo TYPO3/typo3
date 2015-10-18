@@ -90,11 +90,11 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \InvalidArgumentException
 	 */
-	public function setLogFileRefusesIllegalPath() {
+	public function setLogFileAcceptsAbsolutePath() {
 		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter');
 		$writer->setLogFile('/tmp/typo3.log');
+		$this->assertAttributeEquals('/tmp/typo3.log', 'logFile', $writer);
 	}
 
 	/**
