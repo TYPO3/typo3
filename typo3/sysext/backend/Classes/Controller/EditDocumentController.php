@@ -969,7 +969,9 @@ class EditDocumentController extends AbstractModule
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if ($this->pageinfo) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
         // Setting up the buttons and markers for docheader
         $this->getButtons();
         $this->languageSwitch($this->firstEl['table'], $this->firstEl['uid'], $this->firstEl['pid']);
