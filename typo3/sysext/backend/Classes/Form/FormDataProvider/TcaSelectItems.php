@@ -245,6 +245,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 }
             }
         } elseif ($special === 'languages') {
+            // @todo: This should probably use the data provided by DatabaseSystemLanguageRows sitting in $result['systemLanguageRows']
             /** @var TranslationConfigurationProvider $translationConfigurationProvider */
             $translationConfigurationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
             $languages = $translationConfigurationProvider->getSystemLanguages();

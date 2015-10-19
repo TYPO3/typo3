@@ -206,20 +206,15 @@ return array(
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'special' => 'languages',
                 'items' => array(
                     array(
                         'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
-                        -1
+                        -1,
+                        'flags-multiple'
                     ),
-                    array(
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-                        0
-                    )
                 ),
                 'default' => 0,
-                'showIconTable' => true,
             )
         ),
         'l18n_parent' => array(
