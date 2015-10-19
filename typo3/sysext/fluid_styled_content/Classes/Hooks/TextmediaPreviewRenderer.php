@@ -47,7 +47,7 @@ class TextmediaPreviewRenderer implements PageLayoutViewDrawItemHookInterface
             }
 
             if ($row['media']) {
-                $itemContent .= $parentObject->thumbCode($row, 'tt_content', 'media') . '<br />';
+                $itemContent .= $parentObject->linkEditContent($parentObject->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br />';
 
                 $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'media', $row);
 
