@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -27,8 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 
 /**
@@ -307,7 +302,7 @@ class InlineControlContainer extends AbstractContainer
         if (count($sortableRecordUids) > 1 && $config['appearance']['useSortable']) {
             $resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records' . '");';
         }
-        $resultArray['requireJsModules'] = $this->requireJsModules;
+        $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
