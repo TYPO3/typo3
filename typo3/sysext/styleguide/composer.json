@@ -24,6 +24,13 @@
       "TYPO3\\CMS\\Styleguide\\": "Classes/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+    }
+  },
   "require": {
     "typo3/cms-core": ">=7.4.0,<8.0"
   }
