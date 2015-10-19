@@ -322,6 +322,7 @@ class ModuleTemplate
 
         $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
         $renderedPage .= $this->view->render();
+        $renderedPage .= $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
         $renderedPage .= $this->pageRenderer->render(PageRenderer::PART_FOOTER);
 
         return $renderedPage;
