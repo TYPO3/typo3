@@ -14,10 +14,16 @@
 /**
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], function ($, Modal) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], function ($, Modal, Icons) {
 	'use strict';
 
-	var AjaxDataHandler = {};
+	var AjaxDataHandler = {
+		identifier: {
+			hide: '.t3js-record-hide',
+			delete: '.t3js-record-delete',
+			icon: '.t3js-icon'
+		}
+	};
 
 	/**
 	 * generic function to call from the outside the script and validate directly showing errors
@@ -35,26 +41,21 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 	AjaxDataHandler.initialize = function() {
 
 		// HIDE/UNHIDE: click events for all action icons to hide/unhide
-		$(document).on('click', '.t3js-record-hide', function(evt) {
+		$(document).on('click', AjaxDataHandler.identifier.hide, function(evt) {
 			evt.preventDefault();
 			var $anchorElement   = $(this);
-			var $iconElement     = $anchorElement.find('i');
+			var $iconElement     = $anchorElement.find(AjaxDataHandler.identifier.icon);
 			var $rowElement      = $anchorElement.closest('tr[data-uid]');
 			var params           = $anchorElement.data('params');
-			var removeClass      = $anchorElement.data('state') === 'visible' ? 'fa-toggle-on' : 'fa-toggle-off';
 
 			// add a spinner
-			$iconElement.removeClass(removeClass);
 			AjaxDataHandler._showSpinnerIcon($iconElement);
 
 			// make the AJAX call to toggle the visibility
 			AjaxDataHandler._call(params).done(function(result) {
-				AjaxDataHandler._hideSpinnerIcon($iconElement);
 				// print messages on errors
 				if (result.hasErrors) {
 					AjaxDataHandler.handleErrors(result);
-					// revert to the old class
-					$iconElement.addClass(removeClass);
 				} else {
 					// adjust overlay icon
 					AjaxDataHandler.toggleRow($rowElement);
@@ -63,7 +64,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 		});
 
 		// DELETE: click events for all action icons to delete
-		$(document).on('click', '.t3js-record-delete', function(evt) {
+		$(document).on('click', AjaxDataHandler.identifier.delete, function(evt) {
 			evt.preventDefault();
 			var $anchorElement = $(this);
 			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), top.TYPO3.Severity.warning, [
@@ -96,19 +97,19 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 	 * @param $rowElement
 	 */
 	AjaxDataHandler.toggleRow = function($rowElement) {
-		var $anchorElement = $rowElement.find('.t3js-record-hide');
+		var $anchorElement = $rowElement.find(AjaxDataHandler.identifier.hide);
 		var table = $anchorElement.closest('table[data-table]').data('table');
 		var params = $anchorElement.data('params');
-		var nextParams, nextState, className;
+		var nextParams, nextState, iconName;
 
 		if ($anchorElement.data('state') === 'hidden') {
 			nextState = 'visible';
 			nextParams = params.replace('=0', '=1');
-			className = 'fa-toggle-on';
+			iconName = 'actions-edit-hide';
 		} else {
 			nextState = 'hidden';
 			nextParams = params.replace('=1', '=0');
-			className = 'fa-toggle-off';
+			iconName = 'actions-edit-unhide';
 		}
 		$anchorElement.data('state', nextState).data('params', nextParams);
 
@@ -122,15 +123,19 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 				.tooltip('show');
 		});
 
-		var $iconElement = $anchorElement.find('i');
-		$iconElement.addClass(className);
+		var $iconElement = $anchorElement.find(AjaxDataHandler.identifier.icon);
+		Icons.getIcon(iconName, Icons.sizes.small).done(function(icons) {
+			$iconElement.replaceWith(icons[iconName]);
+		});
 
-		var $icon = $rowElement.find('td.col-icon span.t3-icon');
-		var $overlayIcon = $icon.find('span.t3-icon');
-		if ($overlayIcon.length) {
-			$overlayIcon.remove();
+		// Set overlay for the record icon
+		var $recordIcon = $rowElement.find('.col-icon ' + AjaxDataHandler.identifier.icon);
+		if (nextState === 'hidden') {
+			Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').done(function(icons) {
+				$recordIcon.append($(icons['miscellaneous-placeholder']).find('.icon-overlay'));
+			});
 		} else {
-			$icon.append('<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>');
+			$recordIcon.find('.icon-overlay').remove();
 		}
 
 		$rowElement.fadeTo('fast', 0.4, function() {
@@ -149,19 +154,18 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 	 */
 	AjaxDataHandler.deleteRecord = function(element) {
 		var $anchorElement = $(element);
-		var elementClass = 'fa-trash';
 		var params = $anchorElement.data('params');
-		var $iconElement = $anchorElement.find('span');
+		var $iconElement = $anchorElement.find(AjaxDataHandler.identifier.icon);
 
 		// add a spinner
-		$iconElement.removeClass(elementClass);
 		AjaxDataHandler._showSpinnerIcon($iconElement);
 
 		// make the AJAX call to toggle the visibility
 		AjaxDataHandler._call(params).done(function(result) {
-			AjaxDataHandler._hideSpinnerIcon($iconElement);
 			// revert to the old class
-			$iconElement.addClass(elementClass);
+			Icons.getIcon('actions-edit-delete', Icons.sizes.small).done(function(icons) {
+				$iconElement.replaceWith(icons['actions-edit-delete']);
+			});
 			// print messages on errors
 			if (result.hasErrors) {
 				AjaxDataHandler.handleErrors(result);
@@ -231,15 +235,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification'], 
 	 * @private
 	 */
 	AjaxDataHandler._showSpinnerIcon = function($iconElement) {
-		$iconElement.addClass('fa-spin fa-circle-o-notch');
-	};
-
-	/**
-	 * Removes the spinner icon classes
-	 * @private
-	 */
-	AjaxDataHandler._hideSpinnerIcon = function($iconElement) {
-		$iconElement.removeClass('fa-spin fa-circle-o-notch');
+		Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(icons) {
+			$iconElement.replaceWith(icons['spinner-circle-dark']);
+		});
 	};
 
 	$(AjaxDataHandler.initialize);
