@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Child class for rendering of Web > List (not the final class)
@@ -549,8 +550,22 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         }
         // Make level selector:
         $opt = array();
-        $parts = explode('|', $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels'));
-        foreach ($parts as $kv => $label) {
+
+        // "New" generation of search levels ... based on TS config
+        $config = BackendUtility::getPagesTSconfig($this->id);
+        $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
+        $searchLevelItems = array();
+
+        // get translated labels for search levels from pagets
+        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured ) {
+            $label = $lang->sL('LLL:' . $labelConfigured, false);
+            if ($label === '') {
+                $label = $labelConfigured;
+            }
+            $searchLevelItems[$keySearchLevel] = $label;
+        }
+
+        foreach ($searchLevelItems as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
         }
         $lMenu = '<select class="form-control" name="search_levels" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels', true) . '" id="search_levels">' . implode('', $opt) . '</select>';

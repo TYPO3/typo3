@@ -91,7 +91,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 		// set up the events
 		$(containerSelector).on('click', '.t3js-live-search-show-all', function(evt) {
 			evt.preventDefault();
-			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
+			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 		});
 		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();

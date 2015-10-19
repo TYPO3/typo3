@@ -66,6 +66,24 @@
 			<trans-unit id="labels.enterSearchLevels">
 				<source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
 			</trans-unit>
+			<trans-unit id="labels.searchLevel.0">
+				<source>This page</source>
+			</trans-unit>
+			<trans-unit id="labels.searchLevel.1">
+				<source>1 level down</source>
+			</trans-unit>
+			<trans-unit id="labels.searchLevel.2">
+				<source>2 levels down</source>
+			</trans-unit>
+			<trans-unit id="labels.searchLevel.3">
+				<source>3 levels down</source>
+			</trans-unit>
+			<trans-unit id="labels.searchLevel.4">
+				<source>4 levels down</source>
+			</trans-unit>
+			<trans-unit id="labels.searchLevel.infinite">
+				<source>Infinite levels</source>
+			</trans-unit>
 			<trans-unit id="labels.noEditPermission">
 				<source>Sorry, you didn't have proper permissions to perform this change.</source>
 			</trans-unit>

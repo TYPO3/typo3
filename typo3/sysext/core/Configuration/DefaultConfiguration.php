@@ -1022,6 +1022,14 @@ return array(
 				tt_content.after = pages,backend_layout,sys_template
 				sys_category.after = tt_content
 			}
+			mod.web_list.searchLevel.items {
+				-1 = EXT:lang/locallang_core.xlf:labels.searchLevel.infinite
+				0 = EXT:lang/locallang_core.xlf:labels.searchLevel.0
+				1 = EXT:lang/locallang_core.xlf:labels.searchLevel.1
+				2 = EXT:lang/locallang_core.xlf:labels.searchLevel.2
+				3 = EXT:lang/locallang_core.xlf:labels.searchLevel.3
+				4 = EXT:lang/locallang_core.xlf:labels.searchLevel.4
+			}
 			mod.wizards.newRecord.pages.show.pageInside=1
 			mod.wizards.newRecord.pages.show.pageAfter=1
 			mod.wizards.newRecord.pages.show.pageSelectPosition=1
