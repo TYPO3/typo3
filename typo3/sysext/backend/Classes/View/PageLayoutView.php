@@ -495,7 +495,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $content[$key] .= '">';
                 // Add new content at the top most position
                 $link = '';
-                if ($this->getPageLayoutController()->pageIsNotLockedForEditors()) {
+                if ($this->getPageLayoutController()->pageIsNotLockedForEditors()
+                    && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                ) {
                     $link = '<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
                         . '" title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" class="btn btn-default btn-sm">'
                         . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
@@ -540,8 +542,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $row,
                             $this->tt_contentConfig['showInfo'] ? 15 : 5,
                             $disableMoveAndNewButtons,
-                            true,
-                            !$this->tt_contentConfig['languageMode']
+                            !$this->tt_contentConfig['languageMode'],
+                            $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
                         );
                         $innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
                             . $this->tt_content_drawItem($row) . '</div>';
@@ -559,7 +561,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id .
                             '-' . StringUtility::getUniqueId() . '">';
                         // Add icon "new content element below"
-                        if (!$disableMoveAndNewButtons && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
+                        if (!$disableMoveAndNewButtons
+                            && $this->getPageLayoutController()->pageIsNotLockedForEditors()
+                            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                        ) {
                             // New content element:
                             if ($this->option_newWizard) {
                                 $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $row['pid']
@@ -861,7 +866,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     // Get values:
                     $Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
                     // Attach edit icon
-                    if ($this->doEdit) {
+                    if ($this->doEdit && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
                         $Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
                             . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
                             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1135,7 +1140,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // Create command links:
         if ($this->tt_contentConfig['showCommands']) {
             // Edit whole of column:
-            if ($editParams) {
+            if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
                 $iconsArr['edit'] = '<a href="#" onclick="'
                     . htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
                     . $this->getLanguageService()->getLL('editColumn', true) . '">'
@@ -1267,8 +1272,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
                     . ' title="' . $this->getLanguageService()->getLL('deleteItem', true) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
-                if ($out) {
+                if ($out && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
                     $out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
+                } else {
+                    $out = '';
                 }
                 if (!$disableMoveAndNewButtons) {
                     $moveButtonContent = '';
@@ -1323,11 +1330,28 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         // Wrap the whole header
         // NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
-        return '<div class="t3-page-ce-header ' . ($this->getBackendUser()->user['admin'] || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)  ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
+        return '<div class="t3-page-ce-header ' . ($this->isDragAndDropAllowed($row) ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
 					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
 					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' .$out . '</div>' : '') . '</div>
 				</div>
 				<div class="t3-page-ce-body">';
+    }
+
+    /**
+     * Determine whether Drag & Drop should be allowed
+     *
+     * @param array $row
+     * @return bool
+     */
+    protected function isDragAndDropAllowed(array $row)
+    {
+        if ($this->getBackendUser()->user['admin']
+            || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
+            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+        ) {
+            return true;
+        }
+        return false;
     }
 
     /**
