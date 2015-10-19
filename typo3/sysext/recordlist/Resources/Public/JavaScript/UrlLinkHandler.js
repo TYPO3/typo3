@@ -12,13 +12,23 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/UrlLinkHandler
  * URL link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Recordlist/UrlLinkHandler
+	 */
 	var UrlLinkHandler = {};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	UrlLinkHandler.link = function(event) {
 		event.preventDefault();
 

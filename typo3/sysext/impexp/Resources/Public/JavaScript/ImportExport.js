@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Impexp/ImportExport
  * JavaScript to handle confirm windows in the Import/Export module
+ * @exports TYPO3/CMS/Impexp/ImportExport
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	'use strict';

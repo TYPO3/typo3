@@ -12,17 +12,22 @@
  */
 
 /**
- * contains all logic for the image crop GUI
+ * Module: TYPO3/CMS/Backend/ImageManipulation
+ * Contains all logic for the image crop GUI
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
+	/**
+	 *
+	 * @type {{margin: number, currentModal: null, cropperSelector: string, $trigger: null}}
+	 * @exports TYPO3/CMS/Backend/ImageManipulation
+	 */
 	var ImageManipulation = {
 		margin: 20,
 		currentModal: null,
 		cropperSelector: '.t3js-cropper-image-container > img',
 		$trigger: null
 	};
-
 
 	/**
 	 * Initialize triggers
@@ -38,7 +43,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * Functions that should be bind to the trigger button
 	 *
-	 * @param e click event
+	 * @param {Event} e click event
 	 */
 	ImageManipulation.buttonClick = function(e) {
 		e.preventDefault();
@@ -176,7 +181,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * Get image to be cropped
 	 *
-	 * @returns jQuery object
+	 * @returns {Object} jQuery object
 	 */
 	ImageManipulation.getCropper = function() {
 		return ImageManipulation.currentModal.find(ImageManipulation.cropperSelector);
@@ -199,7 +204,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * Change the aspect ratio of the crop box
 	 *
-	 * @param aspectRatio Number
+	 * @param {Number} aspectRatio
 	 */
 	ImageManipulation.setAspectRatio = function(aspectRatio) {
 		var $cropper = ImageManipulation.getCropper();
@@ -212,7 +217,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * Zoom in: requires a positive number (ratio > 0)
 	 * Zoom out: requires a negative number (ratio < 0)
 	 *
-	 * @param ratio Number
+	 * @param {Number} ratio
 	 */
 	ImageManipulation.zoom = function(ratio) {
 		var $cropper = ImageManipulation.getCropper();

@@ -12,10 +12,16 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/LoginRefresh
  * Task that periodically checks if a blocking event in the backend occurred and
  * displays a proper dialog to the user.
  */
 define(['jquery', 'bootstrap'], function($) {
+	/**
+	 *
+	 * @type {{identifier: {loginrefresh: string, lockedModal: string, loginFormModal: string}, options: {modalConfig: {backdrop: string}}, webNotification: null, intervalId: null, backendIsLocked: boolean, isTimingOut: boolean, $timeoutModal: string, $backendLockedModal: string, $loginForm: string, loginFramesetUrl: string, logoutUrl: string}}
+	 * @exports TYPO3/CMS/Backend/LoginRefresh
+	 */
 	var LoginRefresh = {
 		identifier: {
 			loginrefresh: 't3-modal-loginrefresh',
@@ -61,6 +67,9 @@ define(['jquery', 'bootstrap'], function($) {
 
 	/**
 	 * Generates a modal dialog as template.
+	 *
+	 * @param {String} identifier
+	 * @returns {Object}
 	 */
 	LoginRefresh.generateModal = function(identifier) {
 		return TYPO3.jQuery('<div />', {id: identifier, class: 't3-modal t3-blr-modal ' + identifier + ' modal fade'}).append(
@@ -78,6 +87,8 @@ define(['jquery', 'bootstrap'], function($) {
 
 	/**
 	 * Set logout url
+	 *
+	 * @param {String} logoutUrl
 	 */
 	LoginRefresh.setLogoutUrl = function(logoutUrl) {
 		LoginRefresh.logoutUrl = logoutUrl;
@@ -296,6 +307,8 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Creates additional data based on the security level and "submits" the form
 	 * via an AJAX request.
+	 *
+	 * @param {Event} event
 	 */
 	LoginRefresh.submitForm = function(event) {
 		event.preventDefault();
@@ -345,6 +358,9 @@ define(['jquery', 'bootstrap'], function($) {
 	 * the interval check starts again.
 	 * This method is not invoked for the backend locked modal, because we still
 	 * need to check if the backend gets unlocked again.
+	 *
+	 * @param {Object} $modal
+	 * @returns {Object}
 	 */
 	LoginRefresh.registerDefaultModalEvents = function($modal) {
 		$modal.on('hidden.bs.modal', function() {

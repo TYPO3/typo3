@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/Tooltip
  * API for tooltip windows powered by Twitter Bootstrap.
+ * @exports TYPO3/CMS/Recordlist/Tooltip
  */
 define(['jquery', 'TYPO3/CMS/Backend/Tooltip'], function($, Tooltip) {
 	'use strict';

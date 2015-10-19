@@ -12,9 +12,15 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/CodeCompletion/TsRef
  * Contains the TsCodeCompletion class
  */
 define(['jquery'], function ($) {
+	/**
+	 *
+	 * @type {{typeId: null, properties: null, typeTree: Array, doc: null}}
+	 * @exports TYPO3/CMS/T3editor/CodeCompletion/TsRef
+	 */
 	var TsRef = {
 		typeId: null,
 		properties: null,
@@ -39,9 +45,10 @@ define(['jquery'], function ($) {
 	/**
 	 * Prototypes a TS reference property object
 	 *
-	 * @param {String} typeId
+	 * @param {String} parentType
 	 * @param {String} name
 	 * @param {String} value
+	 * @constructor
 	 */
 	TsRef.TsRefProperty = function(parentType, name, value) {
 		this.parentType = parentType;

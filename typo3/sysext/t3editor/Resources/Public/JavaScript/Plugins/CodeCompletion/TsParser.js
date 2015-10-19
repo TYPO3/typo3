@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/CodeCompletion/TsParser
  * Contains the TsCodeCompletion class
  */
 define([
 	'jquery', 'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef'
 ], function ($) {
+	/**
+	 *
+	 * @type {{typeId: null, properties: null, typeTree: Array, doc: null, tsRef: null, extTsObjTree: Array, tsTree: null}}
+	 * @exports TYPO3/CMS/T3editor/CodeCompletion/TsParser
+	 */
 	var TsParser = {
 		typeId: null,
 		properties: null,
@@ -27,6 +33,12 @@ define([
 		tsTree: null
 	};
 
+	/**
+	 *
+	 * @param {Object} tsRef
+	 * @param {Object} extTsObjTree
+	 * @returns {{typeId: null, properties: null, typeTree: Array, doc: null, tsRef: null, extTsObjTree: Array, tsTree: null}}
+	 */
 	TsParser.init = function(tsRef, extTsObjTree) {
 		TsParser.tsRef = tsRef;
 		TsParser.extTsObjTree = extTsObjTree;
@@ -35,6 +47,10 @@ define([
 		return TsParser;
 	};
 
+	/**
+	 *
+	 * @param {String} nodeName
+	 */
 	TsParser.treeNode = function(nodeName) {
 		this.name = nodeName;
 		this.childNodes = [];
@@ -373,7 +389,8 @@ define([
 	 * Iterates through the object tree, and creates treenodes
 	 * along the path, if necessary
 	 *
-	 * @return {Object}
+	 * @param {String} path
+	 * @returns {Object}
 	 */
 	TsParser.getTreeNode = function(path) {
 		path = $.trim(path);
@@ -414,6 +431,9 @@ define([
 	/**
 	 * Navigates to the respecting treenode,
 	 * create nodes in the path, if necessary, and sets the value
+	 *
+	 * @param {String} path
+	 * @param {String} value
 	 */
 	TsParser.setTreeNodeValue = function(path, value) {
 		var treeNode = TsParser.getTreeNode(path);
@@ -434,6 +454,8 @@ define([
 	/**
 	 * Navigates to the respecting treenode,
 	 * creates nodes if necessary, empties the value and childNodes-Array
+	 *
+	 * @param {String} path
 	 */
 	TsParser.deleteTreeNodeValue = function(path) {
 		var treeNode = TsParser.getTreeNode(path);
@@ -446,6 +468,9 @@ define([
 	/**
 	 * Copies a reference of the treeNode specified by path2
 	 * to the location specified by path1
+	 *
+	 * @param {String} path1
+	 * @param {String} path2
 	 */
 	TsParser.setReference = function(path1, path2) {
 		var path1arr = path1.split('.'),
@@ -463,6 +488,9 @@ define([
 	/**
 	 * copies a treeNode specified by path2
 	 * to the location specified by path1
+	 *
+	 * @param {String} path1
+	 * @param {String} path2
 	 */
 	TsParser.setCopy = function(path1, path2) {
 		this.clone = function(myObj) {

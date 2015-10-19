@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/DateTimePicker
  * contains all logic for the date time picker used in FormEngine
  * and EXT:belog and EXT:scheduler
  */
 define(['jquery'], function ($) {
 
+	/**
+	 *
+	 * @type {{options: {fieldSelector: string, format: *}}}
+	 * @exports TYPO3/CMS/Backend/DateTimePicker
+	 */
 	var DateTimePicker = {
 		options: {
 			fieldSelector: '.t3js-datetimepicker',

@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Popover
  * API for popover windows powered by Twitter Bootstrap.
  */
 define(['jquery', 'bootstrap'], function($) {
@@ -20,6 +21,7 @@ define(['jquery', 'bootstrap'], function($) {
 	 * the main popover object
 	 *
 	 * @type {{}}
+	 * @exports TYPO3/CMS/Backend/Popover
 	 */
 	var Popover = {
 	};
@@ -33,9 +35,9 @@ define(['jquery', 'bootstrap'], function($) {
 	};
 
 	/**
-	 * popover wrapper function
+	 * Popover wrapper function
 	 *
-	 * @param $element
+	 * @param {Object} $element
 	 */
 	Popover.popover = function($element) {
 		$element.popover();
@@ -44,8 +46,8 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Set popover options on $element
 	 *
-	 * @param {object} $element
-	 * @param {object} options
+	 * @param {Object} $element
+	 * @param {Object} options
 	 */
 	Popover.setOptions = function($element, options) {
 		options = options || {};
@@ -61,7 +63,7 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Show popover with title and content on $element
 	 *
-	 * @param {object} $element
+	 * @param {Object} $element
 	 */
 	Popover.show = function($element) {
 		$element.popover('show');
@@ -70,7 +72,7 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Hide popover on $element
 	 *
-	 * @param $element
+	 * @param {Object} $element
 	 */
 	Popover.hide = function($element) {
 		$element.popover('hide');
@@ -79,7 +81,7 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Destroy popover on $element
 	 *
-	 * @param $element
+	 * @param {Object} $element
 	 */
 	Popover.destroy = function($element) {
 		$element.popover('destroy');
@@ -88,7 +90,7 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Toggle popover on $element
 	 *
-	 * @param $element
+	 * @param {Object} $element
 	 */
 	Popover.toggle = function($element) {
 		$element.popover('toggle');

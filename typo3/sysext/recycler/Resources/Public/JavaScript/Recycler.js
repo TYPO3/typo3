@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recycler/Recycler
  * RequireJS module for Recycler
  */
 define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{identifiers: {searchForm: string, searchText: string, searchSubmitBtn: string, depthSelector: string, tableSelector: string, recyclerTable: string, paginator: string, reloadAction: string, massUndo: string, massDelete: string, toggleAll: string}, elements: {}, paging: {currentPage: number, totalPages: number, totalItems: number, itemsPerPage: number}, markedRecordsForMassAction: Array, allToggled: boolean}}
+	 * @exports TYPO3/CMS/Recycler/Recycler
+	 */
 	var Recycler = {
 		identifiers: {
 			searchForm: '#recycler-form',
@@ -332,6 +338,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		});
 	};
 
+	/**
+	 *
+	 */
 	Recycler.deleteRecord = function() {
 		if (TYPO3.settings.Recycler.deleteDisable) {
 			return;
@@ -370,6 +379,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 		]);
 	};
 
+	/**
+	 *
+	 */
 	Recycler.undoRecord = function() {
 		var $tr = $(this).parents('tr'),
 			isMassUndo = $tr.parent().prop('tagName') !== 'TBODY'; // undoRecord() was invoked by the mass delete button
@@ -420,7 +432,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 	};
 
 	/**
-	 * Method that really calls the action via AJAX
+	 *
+	 * @param {String} action
+	 * @param {Object} records
+	 * @param {Boolean} isMassAction
 	 */
 	Recycler.callAjaxAction = function(action, records, isMassAction) {
 		var data = {
@@ -478,6 +493,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 	/**
 	 * Replaces the placeholders with actual values
+	 *
+	 * @param {String} message
+	 * @param {Array} placeholders
+	 * @returns {*}
 	 */
 	Recycler.createMessage = function(message, placeholders) {
 		if (typeof message === 'undefined') {
@@ -503,6 +522,8 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 
 	/**
 	 * Build the paginator
+	 *
+	 * @param {Number} totalItems
 	 */
 	Recycler.buildPaginator = function(totalItems) {
 		if (totalItems === 0) {

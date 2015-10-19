@@ -10,12 +10,18 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  UTILITY FUNCTIONS
- ***************************************************/
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util
+ * UTILITY FUNCTIONS
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
 	function (UserAgent) {
 
+	/**
+	 *
+	 * @type {{htmlDecode: Function, htmlEncode: Function, emptyFunction: Function, apply: Function, applyIf: Function, inherit: Function, scrollBarWidth: null, getScrollBarWidth: Function, testCssPropertySupport: Function}}
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util
+	 */
 	var Util = {
 
 		/**

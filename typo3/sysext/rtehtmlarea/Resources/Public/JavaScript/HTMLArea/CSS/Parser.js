@@ -10,9 +10,10 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  HTMLArea.CSS.Parser: CSS Parser
- ***************************************************/
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser
+ * HTMLArea.CSS.Parser: CSS Parser
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
@@ -20,6 +21,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 
 	/**
 	 * Parser constructor
+	 *
+	 * @param config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser
 	 */
 	var Parser = function (config) {
 		var configDefaults = {

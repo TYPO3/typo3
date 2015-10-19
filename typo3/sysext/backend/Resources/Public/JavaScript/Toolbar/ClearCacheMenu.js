@@ -12,12 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Toolbar/ClearCacheMenu
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon
  */
 define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {containerSelector: string, menuItemSelector: string, toolbarIconSelector: string}}}
+	 * @exports TYPO3/CMS/Backend/Toolbar/ClearCacheMenu
+	 */
 	var ClearCacheMenu = {
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
@@ -44,7 +50,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	 * calls TYPO3 to clear a cache, then changes the topbar icon
 	 * to a spinner. Once done, restores the original topbar icon
 	 *
-	 * @param ajaxUrl the URL to load
+	 * @param {String} ajaxUrl the URL to load
 	 */
 	ClearCacheMenu.clearCache = function(ajaxUrl) {
 		// Close clear cache menu

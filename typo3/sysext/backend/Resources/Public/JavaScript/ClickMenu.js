@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/ClickMenu
  * Javascript container used to load the clickmenu via AJAX
  * to render the result in a layer next to the mouse cursor
  */
 define(['jquery'], function($) {
 
+	/**
+	 *
+	 * @type {{mousePos: {X: null, Y: null}, delayClickMenuHide: boolean}}
+	 * @exports TYPO3/CMS/Backend/ClickMenu
+	 */
 	var ClickMenu = {
 		mousePos: {
 			X: null,
@@ -25,6 +31,9 @@ define(['jquery'], function($) {
 		delayClickMenuHide: false
 	};
 
+	/**
+	 * Initialize events
+	 */
 	ClickMenu.initializeEvents = function() {
 		$(document).on('click contextmenu', '.t3-js-clickmenutrigger', function(event) {
 			// if there is an other "inline" onclick setting, clickmenu is not triggered
@@ -47,13 +56,13 @@ define(['jquery'], function($) {
 	};
 
 	/**
-	 * main function, called from most clickmenu links
+	 * Main function, called from most clickmenu links
 	 *
-	 * @param table Table from where info should be fetched
-	 * @param uid The UID of the item
-	 * @param listFr list Frame?
-	 * @param enDisItems Items to disable / enable
-	 * @param addParams Additional params
+	 * @param {String} table Table from where info should be fetched
+	 * @param {(String|Number)} uid The UID of the item
+	 * @param {String} listFr list Frame?
+	 * @param {String} enDisItems Items to disable / enable
+	 * @param {String} addParams Additional params
 	 * @return void
 	 */
 	ClickMenu.show = function(table, uid, listFr, enDisItems, addParams) {
@@ -78,9 +87,9 @@ define(['jquery'], function($) {
 	};
 
 	/**
-	 * make the AJAX request
+	 * Make the AJAX request
 	 *
-	 * @param array parameters Parameters sent to the server
+	 * @param {array} parameters Parameters sent to the server
 	 * @return void
 	 */
 	ClickMenu.fetch = function(parameters) {
@@ -108,8 +117,9 @@ define(['jquery'], function($) {
 	/**
 	 * fills the clickmenu with content and displays it correctly
 	 * depending on the mouse position
-	 * @param data The data that will be put in the menu
-	 * @param level The depth of the clickmenu
+	 *
+	 * @param {String} data The data that will be put in the menu
+	 * @param {Number} level The depth of the clickmenu
 	 */
 	ClickMenu.populateData = function(data, level) {
 		this.initializeClickMenuContainer();
@@ -166,7 +176,8 @@ define(['jquery'], function($) {
 	 * event handler function that saves the
 	 * actual position of the mouse
 	 * in the Clickmenu object
-	 * @param event The event object
+	 *
+	 * @param {Event} event The event object
 	 */
 	ClickMenu.storeMousePositionEvent = function(event) {
 		ClickMenu.mousePos.X = event.pageX;
@@ -178,8 +189,8 @@ define(['jquery'], function($) {
 	/**
 	 * hides a visible menu if the mouse has moved outside
 	 * of the object
-	 * @param obj The object to hide
-	 * @result void
+	 *
+	 * @param {Object} obj The object to hide
 	 */
 	ClickMenu.mouseOutFromMenu = function(obj) {
 		var $element = $(obj);
@@ -191,6 +202,13 @@ define(['jquery'], function($) {
 		}
 	};
 
+	/**
+	 *
+	 * @param {Object} $element
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {Boolean}
+	 */
 	ClickMenu.within = function($element, x, y) {
 		var offset = $element.offset();
 	    return (y >= offset.top &&
@@ -202,8 +220,7 @@ define(['jquery'], function($) {
 	/**
 	 * hides a clickmenu
 	 *
-	 * @param obj The clickmenu object to hide
-	 * @result void
+	 * @param {Object} obj The clickmenu object to hide
 	 */
 	ClickMenu.hide = function(obj) {
 		this.delayClickMenuHide = false;
@@ -224,8 +241,6 @@ define(['jquery'], function($) {
 
 	/**
 	 * manipulates the DOM to add the divs needed for clickmenu at the bottom of the <body>-tag
-	 *
-	 * @return void
 	 */
 	ClickMenu.initializeClickMenuContainer = function() {
 		if ($('#contentMenu0').length === 0) {

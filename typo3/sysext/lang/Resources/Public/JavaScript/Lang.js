@@ -12,13 +12,22 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Lang/Lang
  * Transforms the TYPO3.lang object into a flat object
  *
  * `TYPO3.lang.foo[0].target = 'blah'` becomes `TYPO3.lang['foo'] = 'blah'`
  */
 define(['jquery'], function($) {
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Lang/Lang
+	 */
 	var Lang = {};
 
+	/**
+	 *
+	 */
 	Lang.convertToOneDimension = function() {
 		var originalLangObject = $.extend(true, {}, TYPO3.lang);
 		TYPO3.lang = [];

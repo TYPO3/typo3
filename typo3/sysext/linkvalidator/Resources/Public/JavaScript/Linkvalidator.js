@@ -11,11 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * Module: TYPO3/CMS/Linkvalidator/Linkvalidator
+ */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Linkvalidator/Linkvalidator
+	 */
 	var Linkvalidator = {};
 
+	/**
+	 *
+	 * @param {String} prefix
+	 */
 	Linkvalidator.toggleActionButton = function(prefix) {
 		var buttonDisable = true;
 		$('.' + prefix).each(function() {

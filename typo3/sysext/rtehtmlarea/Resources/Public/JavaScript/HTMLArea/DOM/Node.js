@@ -10,9 +10,10 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  HTMLArea.DOM.Node: Node object
- ***************************************************/
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Node
+ * HTMLArea.DOM.Node: Node object
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
@@ -21,9 +22,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	/**
 	 * Constructor method
 	 *
-	 * @param object config: an object with property "editor" giving reference to the parent object
-	 *
-	 * @return void
+	 * @param {Object} config: an object with property "editor" giving reference to the parent object
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Node
 	 */
 	var Node = function (config) {
 

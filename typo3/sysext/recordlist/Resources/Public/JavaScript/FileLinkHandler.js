@@ -12,15 +12,25 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/FileLinkHandler
  * File link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, LinkBrowser, Tree) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{currentLink: string}}
+	 * @exports TYPO3/CMS/Recordlist/FileLinkHandler
+	 */
 	var FileLinkHandler = {
 		currentLink: ''
 	};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	FileLinkHandler.linkFile = function(event) {
 		event.preventDefault();
 
@@ -29,6 +39,10 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 		close();
 	};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	FileLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
 

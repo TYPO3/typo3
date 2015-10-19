@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/FormEngineSuggest
  * Functionality to load suggest functionality
  */
 define(['jquery', 'jquery/autocomplete'], function ($) {
@@ -92,7 +93,8 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 	};
 
 	/**
-	 * return a function that gets DOM elements that are checked if suggest is already initialized
+	 * Return a function that gets DOM elements that are checked if suggest is already initialized
+	 * @exports TYPO3/CMS/Backend/FormEngineSuggest
 	 */
 	return function(selectorElements) {
 		$(selectorElements).each(function(key, el) {

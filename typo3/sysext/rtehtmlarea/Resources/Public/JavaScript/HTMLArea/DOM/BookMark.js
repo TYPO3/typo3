@@ -10,9 +10,10 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  HTMLArea.DOM.BookMark: BookMark object
- ***************************************************/
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark
+ * HTMLArea.DOM.BookMark: BookMark object
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
@@ -21,9 +22,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	/**
 	 * Constructor method
 	 *
-	 * @param object config: an object with property "editor" giving reference to the parent object
-	 *
-	 * @return void
+	 * @param {Object} config: an object with property "editor" giving reference to the parent object
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark
 	 */
 	var BookMark = function (config) {
 
@@ -48,10 +49,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	/**
 	 * Get a bookMark
 	 *
-	 * @param	object		range: the range to bookMark
-	 * @param	boolean		nonIntrusive: if true, a non-intrusive bookmark is requested
+	 * @param {Object} range: the range to bookMark
+	 * @param {Boolean} nonIntrusive: if true, a non-intrusive bookmark is requested
 	 *
-	 * @return	object		the bookMark
+	 * @return {Object} the bookMark
 	 */
 	BookMark.prototype.get = function (range, nonIntrusive) {
 		var bookMark;
@@ -70,9 +71,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	 * in the range boundaries. The advantage of it is that it is possible to
 	 * handle DOM mutations when moving back to the bookMark.
 	 *
-	 * @param	object		range: the range to bookMark
+	 * @param {Object} range: the range to bookMark
 	 *
-	 * @return	object		the bookMark
+	 * @return {Object} the bookMark
 	 */
 	BookMark.prototype.getIntrusiveBookMark = function (range) {
 		// Create the bookmark info (random IDs).
@@ -119,10 +120,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	 * Get a non-intrusive bookMark
 	 * Adapted from FCKeditor
 	 *
-	 * @param	object		range: the range to bookMark
-	 * @param	boolean		normalized: if true, normalized enpoints are calculated
+	 * @param {Object} range: the range to bookMark
+	 * @param {Boolean} normalized: if true, normalized enpoints are calculated
 	 *
-	 * @return	object		the bookMark
+	 * @return {Object} the bookMark
 	 */
 	BookMark.prototype.getNonIntrusiveBookMark = function (range, normalized) {
 		var startContainer = range.startContainer,

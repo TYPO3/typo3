@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar
  * The editor toolbar
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
@@ -24,6 +25,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 
 	/**
 	 * Editor toolbar constructor
+	 *
+	 * @param {Object} config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar
 	 */
 	var Toolbar = function (config) {
 		Util.apply(this, config);

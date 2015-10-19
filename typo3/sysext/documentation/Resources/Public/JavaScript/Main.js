@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Documentation/Main
  * JavaScript module for ext:documentation
  */
 define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{dataTable: null, searchField: null, identifier: {documentationList: string, searchField: string}}}
+	 * @exports TYPO3/CMS/Documentation/Main
+	 */
 	var Documentation = {
 		dataTable: null,
 		searchField: null,
@@ -26,7 +32,9 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 		}
 	};
 
-	// Initializes the data table, depending on the current view
+	/**
+	 *  Initializes the data table, depending on the current view
+	 */
 	Documentation.initializeView = function() {
 		var getVars = Documentation.getUrlVars();
 		// init datatable
@@ -52,7 +60,11 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 		}
 	};
 
-	// Utility method to retrieve query parameters
+	/**
+	 * Utility method to retrieve query parameters
+	 *
+	 * @returns {Array}
+	 */
 	Documentation.getUrlVars = function getUrlVars() {
 		var vars = [], hash;
 		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');

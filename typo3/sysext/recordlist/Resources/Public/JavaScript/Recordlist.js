@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/Recordlist
  * Usability improvements for the record list
  */
 define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], function($, Storage, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{identifier: {toggle: string, icons: {collapse: string, expand: string}}}}
+	 * @exports TYPO3/CMS/Recordlist/Recordlist
+	 */
 	var Recordlist = {
 		identifier: {
 			toggle: '.t3js-toggle-recordlist',
@@ -27,6 +33,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], funct
 		}
 	};
 
+	/**
+	 *
+	 * @param {Event} e
+	 */
 	Recordlist.toggleClick = function(e) {
 		e.preventDefault();
 

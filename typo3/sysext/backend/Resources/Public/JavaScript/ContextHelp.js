@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/ContextHelp
  * API for context help.
  */
 define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
@@ -19,7 +20,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	/**
 	 * The main ContextHelp object
 	 *
-	 * @type {{ajaxUrl: *, localCache: {}, openContext: null}}
+	 * @type {{ajaxUrl: *, localCache: {}, helpModuleUrl: string, trigger: string, placement: string, selector: string}}
+	 * @exports TYPO3/CMS/Backend/ContextHelp
 	 */
 	var ContextHelp = {
 		ajaxUrl: TYPO3.settings.ajaxUrls['context_help'],
@@ -96,7 +98,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	/**
 	 * Open the help popup
 	 *
-	 * @param {object} $trigger
+	 * @param {Object} $trigger
 	 */
 	ContextHelp.showHelpPopup = function($trigger) {
 		var configuration = top.TYPO3.configuration.ContextHelpWindows || top.TYPO3.configuration.PopupWindow;
@@ -119,7 +121,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	/**
 	 * Load help data
 	 *
-	 * @param {object} $trigger
+	 * @param {Object} $trigger
 	 */
 	ContextHelp.loadHelp = function($trigger) {
 		var table = $trigger.data('table');

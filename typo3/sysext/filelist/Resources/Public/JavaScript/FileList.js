@@ -12,8 +12,8 @@
  */
 
 /**
- * JavaScript RequireJS module called "TYPO3/CMS/Filelist/FileList"
- *
+ * Module: TYPO3/CMS/Filelist/Filelist
+ * @exports TYPO3/CMS/Filelist/Filelist
  */
 define(['jquery'], function($) {
 

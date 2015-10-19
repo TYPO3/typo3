@@ -11,11 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
+ * Module: TYPO3/CMS/Viewpage/Main
  * Main logic for resizing the view of the frame
  */
 define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function($, Storage) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{resizableContainerIdentifier: string, widthSelectorIdentifier: string, moduleBodySelector: string, storagePrefix: string, $iframe: null, $languageSelector: null, $resizableContainer: null, $widthSelector: null}}
+	 * @exports TYPO3/CMS/Viewpage/Main
+	 */
 	var ViewPage = {
 		resizableContainerIdentifier: '#resizeable',
 		widthSelectorIdentifier: '#width',
@@ -27,6 +33,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function(
 		$widthSelector: null
 	};
 
+	/**
+	 *
+	 */
 	ViewPage.initialize = function() {
 		ViewPage.$iframe = $('#tx_viewpage_iframe');
 		ViewPage.$languageSelector = $('#language');
@@ -123,6 +132,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function(
 		});
 	};
 
+	/**
+	 *
+	 * @returns {Number}
+	 */
 	ViewPage.calculateContainerMaxHeight = function() {
 		ViewPage.$resizableContainer.hide();
 		var $moduleBody = $(ViewPage.moduleBodySelector);
@@ -133,15 +146,29 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function(
 		return documentHeight - (controlsHeight + padding);
 	};
 
+	/**
+	 *
+	 * @param {String} value
+	 */
 	ViewPage.addCustomWidthOption = function(value) {
 		ViewPage.$widthSelector.prepend('<option id="customOption" value="' + value + '">' + ViewPage.getOptionLabel(value) + '</option>');
 	};
 
+	/**
+	 *
+	 * @param {String} data
+	 * @returns {String}
+	 */
 	ViewPage.getOptionLabel = function(data) {
 		data = data.split('|');
 		return data[0] + 'px ' + (data[1] ? '× ' + data[1] + 'px ' : '') + TYPO3.lang['customWidth'];
 	};
 
+	/**
+	 *
+	 * @param {String} url
+	 * @returns {{}}
+	 */
 	ViewPage.getUrlVars = function(url) {
 		var vars = {};
 		var hash;

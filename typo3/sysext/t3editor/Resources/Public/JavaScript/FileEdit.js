@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/FileEdit
  * File edit for ext:t3editor
+ * @exports TYPO3/CMS/T3editor/FileEdit
  */
 define(['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
 	'use strict';

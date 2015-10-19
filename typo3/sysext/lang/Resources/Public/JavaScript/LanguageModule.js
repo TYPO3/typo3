@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Lang/LanguageModule
  * Language module class
  */
 define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{me: *, context: null, table: null, topMenu: null, currentRequest: null, settings: {}, icons: {}, labels: {}, identifiers: {searchField: string, topMenu: string, activateIcon: string, deactivateIcon: string, downloadIcon: string, loadingIcon: string, completeIcon: string, progressBar: string, progressBarText: string, progressBarInner: string, lastUpdate: string, languagePrefix: string, extensionPrefix: string}, classes: {enabled: string, disabled: string, processing: string, complete: string, extension: string, actions: string, progressBar: string, loading: string, lastUpdate: string}}}
+	 * @exports TYPO3/CMS/Lang/LanguageModule
+	 */
 	var LanguageModule = {
 		me: this,
 		context: null,
@@ -61,6 +67,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Initialize language table
+	 *
+	 * @param {HTMLElement} contextElement
+	 * @param {HTMLElement} tableElement
 	 */
 	LanguageModule.initializeLanguageTable = function(contextElement, tableElement) {
 		LanguageModule.context = $(contextElement);
@@ -76,6 +85,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Initialize translation table
+	 *
+	 * @param {HTMLElement} contextElement
+	 * @param {HTMLElement} tableElement
 	 */
 	LanguageModule.initializeTranslationTable = function(contextElement, tableElement) {
 		LanguageModule.context = $(contextElement);
@@ -90,6 +102,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Activate a language
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.activateLanguageAction = function(triggerElement, parameters) {
 		var $row = $(triggerElement).closest('tr'),
@@ -110,6 +125,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Deactivate a language
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.deactivateLanguageAction = function(triggerElement, parameters) {
 		var $row = $(triggerElement).closest('tr'),
@@ -130,6 +148,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Update a language
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.updateLanguageAction = function(triggerElement, parameters) {
 		var $row = $(triggerElement).closest('tr'),
@@ -154,6 +175,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Update all active languages
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.updateActiveLanguagesAction = function(triggerElement, parameters) {
 		var $activeRows = $('tr.' + LanguageModule.classes.enabled, LanguageModule.table.table().container());
@@ -181,6 +205,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Cancel language update
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.cancelLanguageUpdateAction = function(triggerElement, parameters) {
 		var $activeRows = $('tr.' + LanguageModule.classes.enabled, LanguageModule.table.table().container());
@@ -192,6 +219,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Update an extension translation
+	 *
+	 * @param {HTMLElement} triggerElement
+	 * @param {Object} parameters
 	 */
 	LanguageModule.updateTranslationAction = function(triggerElement, parameters) {
 		var $row = $(triggerElement).closest('tr'),
@@ -212,6 +242,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build icons
+	 *
+	 * @returns {{activate: (*|jQuery), deactivate: (*|jQuery), download: (*|jQuery), loading: (*|jQuery), complete: (*|jQuery), progressBar: (*|jQuery)}}
 	 */
 	LanguageModule.buildIcons = function() {
 		return {
@@ -226,6 +258,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build labels
+	 *
+	 * @returns {{processing: *, search: *, loadingRecords: *, zeroRecords: *, emptyTable: *, dateFormat: *, errorHeader: *, infoHeader: *, successHeader: *, languageActivated: *, errorOccurred: *, languageDeactivated: *, updateComplete: *}}
 	 */
 	LanguageModule.buildLabels = function() {
 		return {
@@ -248,6 +282,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build language table
+	 *
+	 * @param {HTMLElement} tableElement
+	 * @returns {Object}
 	 */
 	LanguageModule.buildLanguageTable = function(tableElement) {
 		return $(tableElement).DataTable({
@@ -264,6 +301,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Initialize translation table
+	 *
+	 * @param {HTMLElement} tableElement
+	 * @returns {Object}
 	 */
 	LanguageModule.buildTranslationTable = function(tableElement) {
 		var languageCount = $(tableElement).data('languageCount'),
@@ -368,7 +408,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 	/**
 	 * Update buttons in top menu
 	 *
-	 * @param {string} action
+	 * @param {String} action
 	 */
 	LanguageModule.updateButtonStatus = function(action) {
 		switch (action) {
@@ -391,6 +431,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Handler for "action" events
+	 *
+	 * @param {Object} element
+	 * @param {Event} event
 	 */
 	LanguageModule.handleActionEvent = function(element, event) {
 		event.preventDefault();
@@ -403,6 +446,10 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Load translations for all extensions by given locale
+	 *
+	 * @param {String} locale
+	 * @param {function} callback
+	 * @param {Number} counter
 	 */
 	LanguageModule.loadTranslationsByLocale = function(locale, callback, counter) {
 		counter = counter || 0;
@@ -424,6 +471,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Load translations for all extensions by given rows
+	 *
+	 * @param {Object} rows
+	 * @param {function} callback
 	 */
 	LanguageModule.loadTranslationsByRows = function(rows, callback) {
 		if (rows) {
@@ -446,6 +496,10 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Load translation for one extension by given locale
+	 *
+	 * @param {String} extension
+	 * @param {String} locale
+	 * @param {function} callback
 	 */
 	LanguageModule.loadTranslationByExtensionAndLocale = function(extension, locale, callback) {
 		var data = {extension: extension, locale: locale};
@@ -460,6 +514,10 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Execute AJAX request
+	 *
+	 * @param {String} uri
+	 * @param {Object} data
+	 * @param {function} callback
 	 */
 	LanguageModule.executeAjaxRequest = function(uri, data, callback) {
 		var newData = {};
@@ -497,6 +555,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Display error flash message
+	 *
+	 * @param {String} label
 	 */
 	LanguageModule.displayError = function(label) {
 		if (LanguageModule.userAbortRequest) {
@@ -508,6 +568,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Display information flash message
+	 *
+	 * @param {String} label
 	 */
 	LanguageModule.displayInformation = function(label) {
 		if (typeof label === 'string' && label !== '') {
@@ -517,6 +579,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Display success flash message
+	 *
+	 * @param {String} label
 	 */
 	LanguageModule.displaySuccess = function(label) {
 		if (typeof label === 'string' && label !== '') {
@@ -526,6 +590,11 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build action link
+	 *
+	 * @param {String} action
+	 * @param {Object} parameters
+	 * @param {String} content
+	 * @returns {Object}
 	 */
 	LanguageModule.buildActionLink = function(action, parameters, content) {
 		var $link = $('<a>');
@@ -543,6 +612,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build progress bar
+	 *
+	 * @returns {Object}
 	 */
 	LanguageModule.buildProgressBar = function() {
 		var $span = $('<span>');
@@ -553,6 +624,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build loading indicator
+	 *
+	 * @returns {Object}
 	 */
 	LanguageModule.buildLoadingIndicator = function() {
 		var $span = $('<span>');
@@ -563,6 +636,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build complete state indicator
+	 *
+	 * @returns {Object}
 	 */
 	LanguageModule.buildCompleteIndicator = function() {
 		var $span = $('<span>');
@@ -573,6 +648,13 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Build image
+	 *
+	 * @param {String} uri
+	 * @param {String} alt
+	 * @param {String} title
+	 * @param {Number} width
+	 * @param {Number} heigth
+	 * @returns {Object}
 	 */
 	LanguageModule.buildImage = function(uri, alt, title, width, heigth) {
 		var $image = $('<img>');
@@ -589,6 +671,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Format date
+	 *
+	 * @param {Number} timestamp
+	 * @returns {*}
 	 */
 	LanguageModule.formatDate = function(timestamp) {
 		return moment.unix(timestamp).format(LanguageModule.labels.dateFormat);
@@ -596,6 +681,9 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 
 	/**
 	 * Set progress bar progress
+	 *
+	 * @param {Object} progressBar
+	 * @param {String} progress
 	 */
 	LanguageModule.setProgress = function(progressBar, progress) {
 		var $inner = $(LanguageModule.identifiers.progressBarInner, progressBar),
@@ -605,7 +693,11 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 		$text.text(Math.round(progress) + '%');
 	};
 
-	// Utility method to retrieve query parameters
+	/**
+	 * Utility method to retrieve query parameters
+	 *
+	 * @returns {Array}
+	 */
 	LanguageModule.getUrlVars = function getUrlVars() {
 		var vars = [], hash;
 		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');

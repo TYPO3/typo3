@@ -27,11 +27,16 @@ var setFormValueOpenBrowser
 	,setFormValueManipulate
 	,setFormValue_getFObj;
 
-
+/**
+ * Module: TYPO3/CMS/Backend/FormEngine
+ */
 define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
-
-	// main options
+	/**
+	 *
+	 * @type {{formName: *, backPath: *, openedPopupWindow: null, legacyFieldChangedCb: Function, browserUrl: string}}
+	 * @exports TYPO3/CMS/Backend/FormEngine
+	 */
 	var FormEngine = {
 		formName: TYPO3.settings.FormEngine.formName
 		,backPath: TYPO3.settings.FormEngine.backPath
@@ -40,6 +45,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		,browserUrl: ''
 	};
 
+	/**
+	 *
+	 * @param {String} browserUrl
+	 */
 	FormEngine.setBrowserUrl = function(browserUrl) {
 		FormEngine.browserUrl = browserUrl;
 	};
@@ -49,10 +58,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * opens a popup window with the element browser (browser.php)
 	 *
-	 * @param mode can be "db" or "file"
-	 * @param params additional params for the browser window
-	 * @param width width of the window
-	 * @param height height of the window
+	 * @param {String} mode can be "db" or "file"
+	 * @param {String} params additional params for the browser window
+	 * @param {Number} width width of the window
+	 * @param {Number} height height of the window
 	 */
 	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params, width, height) {
 		var url = FormEngine.backPath + FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params;
@@ -68,11 +77,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * or from a multi-select (two selects side-by-side)
 	 * previously known as "setFormValueFromBrowseWin"
 	 *
-	 * @param fieldName formerly known as "fName" name of the field, like [tt_content][2387][header]
-	 * @param value the value to fill in (could be an integer)
-	 * @param label the visible name in the selector
-	 * @param title the title when hovering over it
-	 * @param exclusiveValues if the select field has exclusive options that are not combine-able
+	 * @param {String} fieldName formerly known as "fName" name of the field, like [tt_content][2387][header]
+	 * @param {(String|Number)} value the value to fill in (could be an integer)
+	 * @param {String} label the visible name in the selector
+	 * @param {String} title the title when hovering over it
+	 * @param {String} exclusiveValues if the select field has exclusive options that are not combine-able
 	 */
 	FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues) {
 		exclusiveValues = String(exclusiveValues);
@@ -182,8 +191,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * sets the value of the hidden field, from the select list, always executed after the select field was updated
 	 * previously known as global function setHiddenFromList()
 	 *
-	 * @param selectFieldEl the select field
-	 * @param originalFieldEl the hidden form field
+	 * @param {HTMLElement} selectFieldEl the select field
+	 * @param {HTMLElement} originalFieldEl the hidden form field
 	 */
 	FormEngine.updateHiddenFieldValueFromSelect = setHiddenFromList = function(selectFieldEl, originalFieldEl) {
 		var selectedValues = [];
@@ -196,7 +205,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		$(originalFieldEl).val(selectedValues.join(','));
 	};
 
-	// legacy function, can be removed once this function is not in use anymore
+	/**
+	 * legacy function, can be removed once this function is not in use anymore
+	 *
+	 * @param {String} fName
+	 * @param {String} type
+	 * @param {Number} maxLength
+	 */
 	setFormValueManipulate = function(fName, type, maxLength) {
 		var $formEl = FormEngine.getFormElement(fName);
 		if ($formEl.length > 0) {
@@ -362,12 +377,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 
 	/**
-	 * legacy function
+	 * Legacy function
 	 * returns the DOM object for the given form name of the current form,
 	 * but only if the given field name is valid, legacy function, use "getFormElement" instead
 	 *
-	 * @param fieldName the name of the field name
-	 * @returns {*|DOMElement}
+	 * @param {String} fieldName the name of the field name
+	 * @returns {*|HTMLElement}
 	 */
 	setFormValue_getFObj = function(fieldName) {
 		var $formEl = FormEngine.getFormElement(fieldName);
@@ -384,7 +399,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * if the parameter "fieldName" is given, then the form element is only returned if the field name is available
 	 * the latter behaviour mirrors the one of the function "setFormValue_getFObj"
 	 *
-	 * @param fieldName the field name to check for, optional
+	 * @param {String} fieldName the field name to check for, optional
 	 * @returns {*|HTMLElement}
 	 */
 	FormEngine.getFormElement = function(fieldName) {
@@ -412,12 +427,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 
 	/**
-	 * returns a jQuery object of the field DOM element of the current form, can also be used to
+	 * Returns a jQuery object of the field DOM element of the current form, can also be used to
 	 * request an alternative field like "_hr", "_list" or "_mul"
 	 *
-	 * @param fieldName the name of the field (<input name="fieldName">)
-	 * @param appendix optional
-	 * @param noFallback if set, then the appendix value is returned no matter if it exists or not
+	 * @param {String} fieldName the name of the field (<input name="fieldName">)
+	 * @param {String} appendix optional
+	 * @param {Boolean} noFallback if set, then the appendix value is returned no matter if it exists or not
 	 * @returns {*|HTMLElement}
 	 */
 	FormEngine.getFieldElement = function(fieldName, appendix, noFallback) {
@@ -450,10 +465,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 **************************************************/
 
 	/**
-	 * moves currently selected options from a select field to the very top,
+	 * Moves currently selected options from a select field to the very top,
 	 * can be multiple entries as well
 	 *
-	 * @param $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $fieldEl a jQuery object, containing the select field
 	 */
 	FormEngine.moveOptionToTop = function($fieldEl) {
 		// remove the selected options
@@ -467,7 +482,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * moves currently selected options from a select field up by one position,
 	 * can be multiple entries as well
 	 *
-	 * @param $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $fieldEl a jQuery object, containing the select field
 	 */
 	FormEngine.moveOptionUp = function($fieldEl) {
 		// remove the selected options and add it before the previous sibling
@@ -489,7 +504,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 * moves currently selected options from a select field down one position,
 	 * can be multiple entries as well
 	 *
-	 * @param $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $fieldEl a jQuery object, containing the select field
 	 */
 	FormEngine.moveOptionDown = function($fieldEl) {
 		// remove the selected options and add it after the next sibling
@@ -514,7 +529,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * moves currently selected options from a select field as the very last entries
 	 *
-	 * @param $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $fieldEl a jQuery object, containing the select field
 	 */
 	FormEngine.moveOptionToBottom = function($fieldEl) {
 		// remove the selected options
@@ -526,7 +541,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	/**
 	 * removes currently selected options from a select field
 	 *
-	 * @param $fieldEl a jQuery object, containing the select field
+	 * @param {Object} $fieldEl a jQuery object, containing the select field
 	 */
 	FormEngine.removeOption = function($fieldEl) {
 		// remove the selected options
@@ -695,6 +710,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 	/**
 	 * Get the properties required for proper rendering of the character counter
+	 *
+	 * @param {Object} $field
+	 * @returns {{remainingCharacters: number, labelClass: string}}
 	 */
 	FormEngine.getCharacterCounterProperties = function($field) {
 		var fieldText = $field.val(),
@@ -720,7 +738,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	};
 
 	/**
-	 * select field filter functions, see TCA option "enableMultiSelectFilterTextfield"
+	 * Select field filter functions, see TCA option "enableMultiSelectFilterTextfield"
 	 * and "multiSelectFilterItems"
 	 */
 	FormEngine.SelectBoxFilter = {
@@ -734,7 +752,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	};
 
 	/**
-	 * make sure that all selectors and input filters are recognized
+	 * Make sure that all selectors and input filters are recognized
 	 * note: this also works on elements that are loaded asynchronously via AJAX, no need to call this method
 	 * after an AJAX load.
 	 */
@@ -749,7 +767,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	};
 
 	/**
-	 * fetch the "itemstoselect" select element where a filter item is attached to
+	 * Fetch the "itemstoselect" select element where a filter item is attached to
+	 *
+	 * @param {Object} $relativeElement
+	 * @returns {*}
 	 */
 	FormEngine.SelectBoxFilter.getSelectElement = function($relativeElement) {
 		var $containerElement = $relativeElement.closest(FormEngine.SelectBoxFilter.options.fieldContainerSelector);
@@ -757,7 +778,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	};
 
 	/**
-	 * filter the actual items
+	 * Filter the actual items
+	 *
+	 * @param {Object} $selectElement
+	 * @param {String} filterText
 	 */
 	FormEngine.SelectBoxFilter.filter = function($selectElement, filterText) {
 		var $allOptionElements;

@@ -12,8 +12,8 @@
  */
 
 /**
- * JavaScript RequireJS module called "TYPO3/CMS/Backend/FileListLocalisation"
- *
+ * Module: TYPO3/CMS/Filelist/FileListLocalisation
+ * @exports TYPO3/CMS/Filelist/FileListLocalisation
  */
 define(['jquery'], function($) {
 

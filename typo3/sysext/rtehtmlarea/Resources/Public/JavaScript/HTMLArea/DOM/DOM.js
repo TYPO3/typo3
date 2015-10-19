@@ -10,13 +10,19 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/*****************************************************************
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
- *****************************************************************/
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function (UserAgent, Util) {
 
+	/**
+	 *
+	 * @type {{ELEMENT_NODE: number, ATTRIBUTE_NODE: number, TEXT_NODE: number, CDATA_SECTION_NODE: number, ENTITY_REFERENCE_NODE: number, ENTITY_NODE: number, PROCESSING_INSTRUCTION_NODE: number, COMMENT_NODE: number, DOCUMENT_NODE: number, DOCUMENT_TYPE_NODE: number, DOCUMENT_FRAGMENT_NODE: number, NOTATION_NODE: number, RE_blockTags: RegExp, RE_noClosingTag: RegExp, RE_bodyTag: RegExp, isBlockElement: Function, needsClosingTag: Function, getClassNames: Function, hasClass: Function, addClass: Function, removeClass: Function, isRequiredClass: Function, getInnerText: Function, getBlockAncestors: Function, getFirstAncestorOfType: Function, getPositionWithinParent: Function, hasAllowedAttributes: Function, removeFromParent: Function, convertNode: Function, rangeIntersectsNode: Function, makeUrlsAbsolute: Function, makeImageSourceAbsolute: Function, makeLinkHrefAbsolute: Function, addBaseUrl: Function, getPosition: Function, getSize: Function, setSize: Function, setStyle: Function}}
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM
+	 */
 	var Dom = {
 
 		/***************************************************

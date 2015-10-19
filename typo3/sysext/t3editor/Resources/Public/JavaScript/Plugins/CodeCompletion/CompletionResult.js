@@ -12,14 +12,25 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/CodeCompletion/CompletionResult
  * Contains the CompletionResult class
  */
 define(['jquery'], function ($) {
+	/**
+	 *
+	 * @type {{tsRef: null, tsTreeNode: null}}
+	 * @exports TYPO3/CMS/T3editor/CodeCompletion/CompletionResult
+	 */
 	var CompletionResult = {
 		tsRef: null,
 		tsTreeNode: null
 	};
 
+	/**
+	 *
+	 * @param {Object} config
+	 * @returns {{tsRef: null, tsTreeNode: null}}
+	 */
 	CompletionResult.init = function(config) {
 		CompletionResult.tsRef = config.tsRef;
 		CompletionResult.tsTreeNode = config.tsTreeNode;
@@ -29,6 +40,8 @@ define(['jquery'], function ($) {
 
 	/**
 	 * returns the type of the currentTsTreeNode
+	 *
+	 * @returns {*}
 	 */
 	CompletionResult.getType = function() {
 		var val = CompletionResult.tsTreeNode.getValue();

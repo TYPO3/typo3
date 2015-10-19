@@ -12,12 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Toolbar/ShortcutMenu
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], function($, Modal, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {containerSelector: string, toolbarIconSelector: string, toolbarMenuSelector: string, shortcutItemSelector: string, shortcutDeleteSelector: string, shortcutEditSelector: string, shortcutFormTitleSelector: string, shortcutFormGroupSelector: string, shortcutFormSaveSelector: string, shortcutFormCancelSelector: string}}}
+	 * @exports TYPO3/CMS/Backend/Toolbar/ShortcutMenu
+	 */
 	var ShortcutMenu = {
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
@@ -35,6 +41,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 
 	/**
 	 * build the in-place-editor for a shortcut
+	 *
+	 * @param {Object} $shortcutRecord
 	 */
 	ShortcutMenu.editShortcut = function($shortcutRecord) {
 		// load the form
@@ -51,7 +59,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	};
 
 	/**
-	 * save the data from the in-place-editor for a shortcut
+	 * Save the data from the in-place-editor for a shortcut
+	 *
+	 * @param {Object} $shortcutRecord
 	 */
 	ShortcutMenu.saveShortcutForm = function($shortcutRecord) {
 		$.ajax({
@@ -71,6 +81,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 
 	/**
 	 * removes an existing short by sending an AJAX call
+	 *
+	 * @param {Object} $shortcutRecord
 	 */
 	ShortcutMenu.deleteShortcut = function($shortcutRecord) {
 		// @todo: translations
@@ -99,6 +111,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	/**
 	 * makes a call to the backend class to create a new shortcut,
 	 * when finished it reloads the menu
+	 *
+	 * @param {String} moduleName
+	 * @param {String} url
+	 * @param {String} confirmationText
+	 * @param {String} motherModule
+	 * @param {Object} shortcutButton
 	 */
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton) {
 		if (typeof confirmationText !== 'undefined') {

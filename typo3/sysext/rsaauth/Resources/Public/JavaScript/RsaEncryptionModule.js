@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rsaauth/RsaEncryptionModule
  * Object that handles RSA encryption and submission of the form
  */
 define(['jquery', './RsaLibrary'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{$currentForm: null, fetchedRsaKey: boolean, initialize: Function, handleFormSubmitRequest: Function, handlePublicKeyResponse: Function}}
+	 * @exports TYPO3/CMS/Rsaauth/RsaEncryptionModule
+	 */
 	var RsaEncryption = {
 
 		/**
@@ -53,7 +59,7 @@ define(['jquery', './RsaLibrary'], function($) {
 		/**
 		 * Fetches a new public key by Ajax and encrypts the password for transmission
 		 *
-		 * @param event
+		 * @param {Event} event
 		 */
 		handleFormSubmitRequest: function(event) {
 			if (!RsaEncryption.fetchedRsaKey) {
@@ -79,7 +85,7 @@ define(['jquery', './RsaLibrary'], function($) {
 		/**
 		 * Parses the Json response and triggers submission of the form
 		 *
-		 * @param response Ajax response object
+		 * @param {Object} response Ajax response object
 		 */
 		handlePublicKeyResponse: function(response) {
 			var publicKey = response.split(':');

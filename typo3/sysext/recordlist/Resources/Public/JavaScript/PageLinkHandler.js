@@ -12,15 +12,25 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/PageLinkHandler
  * Page link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{currentLink: string}}
+	 * @exports TYPO3/CMS/Recordlist/PageLinkHandler
+	 */
 	var PageLinkHandler = {
 		currentLink: ''
 	};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	PageLinkHandler.linkPage = function(event) {
 		event.preventDefault();
 
@@ -31,6 +41,10 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 		close();
 	};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	PageLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
 

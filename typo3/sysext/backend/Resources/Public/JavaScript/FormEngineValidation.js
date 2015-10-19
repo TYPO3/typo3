@@ -12,7 +12,8 @@
  */
 
 /**
- * contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
+ * Module: TYPO3/CMS/Backend/FormEngineValidation
+ * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
 define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
@@ -21,6 +22,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * The main FormEngineValidation object
 	 *
 	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, passwordDummy: string}}
+	 * @exports TYPO3/CMS/Backend/FormEngineValidation
 	 */
 	var FormEngineValidation = {
 		rulesSelector: '[data-formengine-validation-rules]',
@@ -76,9 +78,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	};
 
 	/**
-	 * initialize all input fields
+	 * Initialize all input fields
 	 *
-	 * @returns {*|jQuery}
+	 * @returns {Object}
 	 */
 	FormEngineValidation.initializeInputFields = function() {
 		return $(document).find(FormEngineValidation.inputSelector).each(function() {
@@ -97,7 +99,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 	/**
 	 *
-	 * @param {number} mode
+	 * @param {Number} mode
 	 */
 	FormEngineValidation.setUsMode = function(mode) {
 		FormEngineValidation.USmode = mode;
@@ -106,7 +108,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Initialize field by name
 	 *
-	 * @param {string} fieldName
+	 * @param {String} fieldName
 	 */
 	FormEngineValidation.initializeInputField = function(fieldName) {
 		var $field = $('[name="' + fieldName + '"]');
@@ -141,10 +143,10 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Format field value
 	 *
-	 * @param {string} type
-	 * @param {string} value
+	 * @param {String} type
+	 * @param {String} value
 	 * @param {array} config
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	FormEngineValidation.formatValue = function(type, value, config) {
 		var theString = '';
@@ -189,7 +191,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Update input field after change
 	 *
-	 * @param {string} fieldName
+	 * @param {String} fieldName
 	 */
 	FormEngineValidation.updateInputField = function(fieldName) {
 		var $field = $('[name="' + fieldName + '"]');
@@ -228,9 +230,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Run validation for field
 	 *
-	 * @param {object} $field
-	 * @param {string=} [value=$field.val()]
-	 * @returns {string}
+	 * @param {Object} $field
+	 * @param {String} [value=$field.val()]
+	 * @returns {String}
 	 */
 	FormEngineValidation.validateField = function($field, value) {
 		value = value || FormEngineValidation.ltrim($field.val());
@@ -328,10 +330,10 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Process a value by given command and config
 	 *
-	 * @param {string} command
-	 * @param {string} value
-	 * @param {array} config
-	 * @returns {string}
+	 * @param {String} command
+	 * @param {String} value
+	 * @param {Array} config
+	 * @returns {String}
 	 */
 	FormEngineValidation.processValue = function(command, value, config) {
 		var newString = '';
@@ -480,6 +482,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 	/**
 	 * Set the caret position in a text field
+	 *
+	 * @param {Object} $element
+	 * @param {Number} caretPos
 	 */
 	FormEngineValidation.setCaretPosition = function($element, caretPos) {
 		var elem = $element.get(0);
@@ -501,8 +506,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Helper function to get clean trimmed array from comma list
 	 *
-	 * @param {string} delimiter
-	 * @param {string} string
+	 * @param {String} delimiter
+	 * @param {String} string
 	 * @returns {Array}
 	 */
 	FormEngineValidation.trimExplode = function(delimiter, string) {
@@ -520,8 +525,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse value to integer
 	 *
-	 * @param {(number|string)} value
-	 * @returns {number}
+	 * @param {(Number|String)} value
+	 * @returns {Number}
 	 */
 	FormEngineValidation.parseInt = function(value) {
 		var theVal = '' + value;
@@ -539,8 +544,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse value to double
 	 *
-	 * @param {string} value
-	 * @returns {string}
+	 * @param {String} value
+	 * @returns {String}
 	 */
 	FormEngineValidation.parseDouble = function(value) {
 		var theVal = '' + value;
@@ -564,8 +569,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 	/**
 	 *
-	 * @param {string} value
-	 * @returns {string}
+	 * @param {String} value
+	 * @returns {String}
 	 */
 	FormEngineValidation.ltrim = function(value) {
 		var theVal = '' + value;
@@ -582,8 +587,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 	/**
 	 *
-	 * @param {string} value
-	 * @returns {string}
+	 * @param {String} value
+	 * @returns {String}
 	 */
 	FormEngineValidation.btrim = function(value) {
 		var theVal = '' + value;
@@ -601,8 +606,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse datetime value
 	 *
-	 * @param {string} value
-	 * @param {string} command
+	 * @param {String} value
+	 * @param {String} command
 	 * @returns {*}
 	 */
 	FormEngineValidation.parseDateTime = function(value, command) {
@@ -646,8 +651,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse date value
 	 *
-	 * @param {string} value
-	 * @param {string} command
+	 * @param {String} value
+	 * @param {String} command
 	 * @returns {*}
 	 */
 	FormEngineValidation.parseDate = function(value, command) {
@@ -707,9 +712,9 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse time value
 	 *
-	 * @param {string} value
-	 * @param {string} command
-	 * @param {string} type
+	 * @param {String} value
+	 * @param {String} command
+	 * @param {String} type
 	 * @returns {*}
 	 */
 	FormEngineValidation.parseTime = function(value, command, type) {
@@ -774,8 +779,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse year value
 	 *
-	 * @param {string} value
-	 * @param {string} command
+	 * @param {String} value
+	 * @param {String} command
 	 * @returns {*}
 	 */
 	FormEngineValidation.parseYear = function(value, command) {
@@ -832,7 +837,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * Get date as timestamp from Date object
 	 *
 	 * @param {Date} timeObj
-	 * @returns {number}
+	 * @returns {Number}
 	 */
 	FormEngineValidation.getDate = function(timeObj) {
 		var theTime = new Date(FormEngineValidation.getYear(timeObj), timeObj.getUTCMonth(), timeObj.getUTCDate());
@@ -841,8 +846,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 	/**
 	 *
-	 * @param {string} foreign
-	 * @param {string} value
+	 * @param {String} foreign
+	 * @param {String} value
 	 * @returns {Object}
 	 */
 	FormEngineValidation.pol = function(foreign, value) {
@@ -852,8 +857,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Substract timezone offset from client to a timestamp to get UTC-timestamp to be send to server
 	 *
-	 * @param {number} timestamp
-	 * @param {number} timeonly
+	 * @param {Number} timestamp
+	 * @param {Number} timeonly
 	 * @returns {*}
 	 */
 	FormEngineValidation.convertClientTimestampToUTC = function(timestamp, timeonly) {
@@ -871,8 +876,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Parse date string or object and return unix timestamp
 	 *
-	 * @param {(string|Date)} timeObj
-	 * @returns {number}
+	 * @param {(String|Date)} timeObj
+	 * @returns {Number}
 	 */
 	FormEngineValidation.getTimestamp = function(timeObj) {
 		return Date.parse(timeObj)/1000;
@@ -891,7 +896,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 *
 	 * @param timeObj
-	 * @returns {number}
+	 * @returns {Number}
 	 */
 	FormEngineValidation.getSecs = function(timeObj) {
 		return timeObj.getUTCSeconds();
@@ -900,7 +905,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 *
 	 * @param timeObj
-	 * @returns {number}
+	 * @returns {Number}
 	 */
 	FormEngineValidation.getTimeSecs = function(timeObj) {
 		return timeObj.getHours() * 60 * 60 + timeObj.getMinutes() * 60 + timeObj.getSeconds();
@@ -909,7 +914,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	/**
 	 * Find tab by field and mark it as has-validation-error
 	 *
-	 * @param {object} $element
+	 * @param {Object} $element
 	 */
 	FormEngineValidation.markParentTab = function($element) {
 		var $panes = $element.parents('.tab-pane');

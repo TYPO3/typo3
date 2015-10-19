@@ -184,24 +184,43 @@ TYPO3.Windows = function() {
 
  */
 TYPO3.Dialog = function() {
-	/** @private functions */
+	/**
+	 *
+	 * @type {{buttons: (Ext.MessageBox.OK|{ok}), icon: string, fn: (emptyFn|Function)}}
+	 * @private
+	 */
 	var informationDialogConfiguration = {
 		buttons: Ext.MessageBox.OK,
 		icon: Ext.MessageBox.INFO,
 		fn: Ext.emptyFn
 	};
 
+	/**
+	 *
+	 * @type {{buttons: (Ext.MessageBox.YESNO|{yes, no}), icon: string}}
+	 * @private
+	 */
 	var questionDialogConfiguration = {
 		buttons: Ext.MessageBox.YESNO,
 		icon: Ext.MessageBox.QUESTION
 	};
 
+	/**
+	 *
+	 * @type {{buttons: (Ext.MessageBox.OK|{ok}), icon: string, fn: (emptyFn|Function)}}
+	 * @private
+	 */
 	var warningDialogConfiguration = {
 		buttons: Ext.MessageBox.OK,
 		icon: Ext.MessageBox.WARNING,
 		fn: Ext.emptyFn
 	};
 
+	/**
+	 *
+	 * @type {{buttons: (Ext.MessageBox.OK|{ok}), icon: string, fn: (emptyFn|Function)}}
+	 * @private
+	 */
 	var errorDialogConfiguration = {
 		buttons: Ext.MessageBox.OK,
 		icon: Ext.MessageBox.ERROR,
@@ -209,7 +228,11 @@ TYPO3.Dialog = function() {
 	};
 
 	return {
-		/** @public functions */
+		/**
+		 *
+		 * @param configuration
+		 * @constructor
+		 */
 		InformationDialog: function(configuration) {
 			configuration = configuration || {};
 			configuration = Ext.apply(
@@ -219,6 +242,11 @@ TYPO3.Dialog = function() {
 			Ext.Msg.show(configuration);
 		},
 
+		/**
+		 *
+		 * @param configuration
+		 * @constructor
+		 */
 		QuestionDialog: function(configuration) {
 			configuration = configuration || {};
 			configuration = Ext.apply(
@@ -228,6 +256,11 @@ TYPO3.Dialog = function() {
 			Ext.Msg.show(configuration);
 		},
 
+		/**
+		 *
+		 * @param configuration
+		 * @constructor
+		 */
 		WarningDialog: function(configuration) {
 			configuration = configuration || {};
 			configuration = Ext.apply(
@@ -237,6 +270,11 @@ TYPO3.Dialog = function() {
 			Ext.Msg.show(configuration);
 		},
 
+		/**
+		 * 
+		 * @param configuration
+		 * @constructor
+		 */
 		ErrorDialog: function(configuration) {
 			configuration = configuration || {};
 			configuration = Ext.apply(

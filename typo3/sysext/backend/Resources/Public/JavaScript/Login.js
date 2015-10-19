@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Login
  * JavaScript module for the backend login form
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {loginForm: string, interfaceField: string, useridentField: string, submitButton: string, error: string, errorNoCookies: string, formFields: string, submitHandler: null}}}
+	 * @exports TYPO3/CMS/Backend/Login
+	 */
 	var BackendLogin = {
 		options: {
 			loginForm: '#typo3-login-form',
@@ -43,7 +49,7 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	/**
 	 * Pass on to registered submit handler
 	 *
-	 * @param event
+	 * @param {Event} event
 	 */
 	BackendLogin.handleSubmit = function(event) {
 		BackendLogin.showLoginProcess();

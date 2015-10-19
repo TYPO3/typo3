@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/LinkBrowser
  * LinkBrowser communication with parent window
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{thisScriptUrl: string, urlParameters: {}, parameters: {}, addOnParams: string, linkAttributeFields: Array, updateFunctions: null}}
+	 * @exports TYPO3/CMS/Recordlist/LinkBrowser
+	 */
 	var LinkBrowser = {
 		thisScriptUrl: '',
 		urlParameters: {},
@@ -43,7 +49,7 @@ define(['jquery'], function($) {
 	/**
 	 * Collect the link attributes values as object
 	 *
-	 * @returns {object}
+	 * @returns {Object}
 	 */
 	LinkBrowser.getLinkAttributeValues = function() {
 		var attributeValues = {};
@@ -59,7 +65,7 @@ define(['jquery'], function($) {
 	/**
 	 * Save the current link back to the opener
 	 *
-	 * @param input
+	 * @param {String} input
 	 */
 	LinkBrowser.updateValueInMainForm = function(input) {
 		var field = LinkBrowser.checkReference();
@@ -88,6 +94,9 @@ define(['jquery'], function($) {
 		}
 	};
 
+	/**
+	 *
+	 */
 	LinkBrowser.loadTarget = function() {
 		$('#linkTarget').val($(this).val());
 		this.selectedIndex = 0;
@@ -96,10 +105,10 @@ define(['jquery'], function($) {
 	/**
 	 * Encode objects to GET parameter arrays in PHP notation
 	 *
-	 * @param {object} obj
-	 * @param {string} prefix
-	 * @param {string} url
-	 * @returns {string}
+	 * @param {Object} obj
+	 * @param {String} prefix
+	 * @param {String} url
+	 * @returns {String}
 	 */
 	LinkBrowser.encodeGetParameters = function(obj, prefix, url) {
 		var str = [];
@@ -135,9 +144,9 @@ define(['jquery'], function($) {
 	 *
 	 * Used by tree implementation
 	 *
-	 * @param {string} URL
-	 * @param {string} anchor
-	 * @returns {boolean}
+	 * @param {String} URL
+	 * @param {String} anchor
+	 * @returns {Boolean}
 	 */
 	window.jumpToUrl = function(URL, anchor) {
 		if (URL.charAt(0) === '?') {

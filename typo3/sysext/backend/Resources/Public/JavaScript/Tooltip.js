@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Tooltip
  * API for tooltip windows powered by Twitter Bootstrap.
  */
 define(['jquery', 'bootstrap'], function($) {
@@ -19,6 +20,9 @@ define(['jquery', 'bootstrap'], function($) {
 
 	/**
 	 * The main tooltip object
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Backend/Tooltip
 	 */
 	var Tooltip = {
 	};
@@ -34,8 +38,8 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Show tooltip on $element
 	 *
-	 * @param {object} $element
-	 * @param {string} title
+	 * @param {Object} $element
+	 * @param {String} title
 	 */
 	Tooltip.show = function($element, title) {
 		$element
@@ -47,7 +51,7 @@ define(['jquery', 'bootstrap'], function($) {
 	/**
 	 * Hide tooltip on $element
 	 *
-	 * @param $element
+	 * @param {Object} $element
 	 */
 	Tooltip.hide = function($element) {
 		$element.tooltip('hide');

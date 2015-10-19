@@ -12,14 +12,23 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement
  * Logic for SelectSingleElement
  */
 define(['jquery'], function ($) {
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement
+	 */
 	var SelectSingleElement = {};
 
 	/**
 	 * Initializes the SelectSingleEleemnt
+	 *
+	 * @param {String} selector
+	 * @param {Object} options
 	 */
 	SelectSingleElement.initialize = function(selector, options) {
 

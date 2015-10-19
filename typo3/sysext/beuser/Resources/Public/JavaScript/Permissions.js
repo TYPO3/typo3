@@ -12,10 +12,16 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Beuser/Permissons
  * Javascript functions regarding the permissions module
  */
 define(['jquery'], function($) {
 
+	/**
+	 *
+	 * @type {{options: {containerSelector: string}}}
+	 * @exports TYPO3/CMS/Beuser/Permissons
+	 */
 	var Permissions = {
 		options: {
 			containerSelector: '#typo3-permissionList'
@@ -24,7 +30,10 @@ define(['jquery'], function($) {
 	var ajaxUrl = TYPO3.settings.ajaxUrls['user_access_permissions'];
 
 	/**
-	 * changes the value of the permissions in the form
+	 * Changes the value of the permissions in the form
+	 *
+	 * @param {String} checknames
+	 * @param {String} varname
 	 */
 	Permissions.setCheck = function(checknames, varname) {
 		if (document.editform[varname]) {
@@ -37,6 +46,9 @@ define(['jquery'], function($) {
 
 	/**
 	 * checks for a change of the permissions in the form
+	 *
+	 * @param {String} checknames
+	 * @param {String} varname
 	 */
 	Permissions.checkChange = function(checknames, varname) {
 		var res = 0;
@@ -58,6 +70,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * changes permissions by sending an AJAX request to the server
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.setPermissions = function($element) {
 		var page = $element.data('page');
@@ -83,6 +97,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * changes the flag to lock the editing on a page by sending an AJAX request
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.toggleEditLock = function($element) {
 		var page = $element.data('page');
@@ -105,6 +121,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * Owner-related: Set the new owner of a page by executing an ajax call
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.changeOwner = function($element) {
 		var page = $element.data('page');
@@ -129,6 +147,8 @@ define(['jquery'], function($) {
 	/**
 	 * Owner-related: load the selector for selecting
 	 * the owner of a page by executing an ajax call
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.showChangeOwnerSelector = function($element) {
 		var page = $element.data('page');
@@ -152,6 +172,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * Owner-related: Update the HTML view and show the original owner
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.restoreOwner = function($element) {
 		var page = $element.data('page');
@@ -184,6 +206,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * Group-related: Set the new group by executing an ajax call
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.changeGroup = function($element) {
 		var page = $element.data('page');
@@ -207,6 +231,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * Group-related: Load the selector by executing an ajax call
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.showChangeGroupSelector = function($element) {
 		var page = $element.data('page');
@@ -230,6 +256,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * Group-related: Update the HTML view and show the original group
+	 *
+	 * @param {Object} $element
 	 */
 	Permissions.restoreGroup = function($element) {
 		var page = $element.data('page');

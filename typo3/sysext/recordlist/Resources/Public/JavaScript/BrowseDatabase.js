@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/BrowseDatabase
  * Database record selection
+ * @exports TYPO3/CMS/Recordlist/BrowseDatabase
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
 	'use strict';

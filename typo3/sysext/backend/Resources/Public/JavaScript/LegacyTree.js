@@ -11,14 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+var Tree, DragDrop;
+
 /**
+ * Module: TYPO3/CMS/Backend/LegacyTree
  * JavaScript RequireJS module in use for legacy trees, used
  * in FolderTree, Element Browser PageTree and
  * Element Browser FolderTree
  * note that this should not be used (thus, declared as anonymous
  * UMD module)
+ * @exports TYPO3/CMS/Backend/LegacyTree
  */
-var Tree, DragDrop;
 define(['jquery'], function($) {
 
 	DragDrop = {

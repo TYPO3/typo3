@@ -12,16 +12,25 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/RteLinkBrowser
  * LinkBrowser communication with parent window
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{plugin: null, HTMLArea: null}}
+	 * @exports TYPO3/CMS/Rtehtmlarea/RteLinkBrowser
+	 */
 	var RteLinkBrowser = {
 		plugin: null,
 		HTMLArea: null
 	};
 
+	/**
+	 *
+	 */
 	RteLinkBrowser.initialize = function() {
 		RteLinkBrowser.plugin = window.parent.RTEarea[LinkBrowser.urlParameters.editorNo].editor.getPlugin("TYPO3Link");
 		RteLinkBrowser.HTMLArea = window.parent.HTMLArea;

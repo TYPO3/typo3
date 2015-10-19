@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Icons
  * Uses the icon API of the core to fetch icons via AJAX.
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{cache: {}, sizes: {small: string, default: string, large: string, overlay: string}, states: {default: string, disabled: string}}}
+	 * @exports TYPO3/CMS/Backend/Icons
+	 */
 	var Icons = {
 		cache: {},
 		sizes: {
@@ -34,10 +40,10 @@ define(['jquery'], function($) {
 	/**
 	 * Get the icon by its identifier.
 	 *
-	 * @param {string} identifier
-	 * @param {string} size
-	 * @param {string} overlayIdentifier
-	 * @param {string} state
+	 * @param {String} identifier
+	 * @param {String} size
+	 * @param {String} overlayIdentifier
+	 * @param {String} state
 	 * @return {Promise<Array>}
 	 */
 	Icons.getIcon = function(identifier, size, overlayIdentifier, state) {

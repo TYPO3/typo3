@@ -12,13 +12,23 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/MailLinkHandler
  * Mail link interaction
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Recordlist/MailLinkHandler
+	 */
 	var MailLinkHandler = {};
 
+	/**
+	 *
+	 * @param {Event} event
+	 */
 	MailLinkHandler.link = function(event) {
 		event.preventDefault();
 

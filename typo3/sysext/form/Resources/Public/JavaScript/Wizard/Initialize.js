@@ -7,7 +7,7 @@
  *
  * @param {Function} fn The method the event invokes.
  * @param {Object} scope (optional) The scope (this reference) in which the handler function executes. Defaults to the browser window.
- * @param {boolean} options (optional) Options object as passed to {@link Ext.Element#addListener}. It is recommended that the options
+ * @param {Boolean} options (optional) Options object as passed to {@link Ext.Element#addListener}. It is recommended that the options
  * {single: true} be used so that the handler is removed on first invocation.
  *
  * @return void

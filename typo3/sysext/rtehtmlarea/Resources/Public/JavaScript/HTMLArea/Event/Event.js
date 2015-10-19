@@ -10,14 +10,20 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/*****************************************************************
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event
  * HTMLArea.Event: Utility functions for dealing with events     *
- *****************************************************************/
+ */
 define(['jquery',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function ($, UserAgent, Util) {
 
+	/**
+	 *
+	 * @type {{NAMESPACE: string, BACKSPACE: number, TAB: number, ENTER: number, ESC: number, SPACE: number, LEFT: number, UP: number, RIGHT: number, DOWN: number, DELETE: number, F11: number, NON_BREAKING_SPACE: number, domLevel3Keys: {Backspace: number, Tab: number, Enter: number, Esc: number, Escape: number, Spacebar: number,  : number, Left: number, ArrowLeft: number, Up: number, ArrowUp: number, Right: number, ArrowRight: number, Down: number, ArrowDown: number, Del: number, Delete: number, 0: number, 1: number, 2: number, 3: number, 4: number, 5: number, 6: number, 7: number, 8: number, 9: number, F11: number}, safariKeys: {3: number, 63234: number, 63235: number, 63232: number, 63233: number, 63276: number, 63277: number, 63272: number, 63273: number, 63275: number}, on: Function, one: Function, off: Function, stopEvent: Function, trigger: Function, getKey: Function, normalizeKey: Function, getBrowserEvent: Function}}
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event
+	 */
 	var Event = {
 
 		NAMESPACE: '.htmlarea',

@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent
  * Identify the current user agent
+ * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent
  */
 define([], function () {
 

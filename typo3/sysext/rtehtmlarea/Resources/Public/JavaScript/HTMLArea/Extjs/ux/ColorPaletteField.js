@@ -12,8 +12,10 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette/ColorPaletteField
  * Color palette trigger field
  * Based on http://www.extjs.com/forum/showthread.php?t=89312
+ * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette/ColorPaletteField
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ColorMenu'],
 	function (ColorMenu) {

@@ -11,11 +11,22 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * Module: TYPO3/CMS/Taskcenter/Taskcenter
+ */
 define(['jquery', 'jquery-ui/sortable'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports  TYPO3/CMS/Taskcenter/Taskcenter
+	 */
 	var Taskcenter = {};
 
+	/**
+	 *
+	 */
 	Taskcenter.resizeIframe = function() {
 		var $listFrame = $('#list_frame');
 		if ($listFrame.length > 0) {
@@ -32,6 +43,10 @@ define(['jquery', 'jquery-ui/sortable'], function($) {
 		}
 	};
 
+	/**
+	 *
+	 * @param {Object} element
+	 */
 	Taskcenter.doCollapseOrExpand = function(element) {
 		var itemParent = element.parent();
 		var item = element.next('div').next('div').next('div').next('div');
@@ -56,6 +71,9 @@ define(['jquery', 'jquery-ui/sortable'], function($) {
 		});
 	};
 
+	/**
+	 *
+	 */
 	Taskcenter.initializeSorting = function() {
 		$('#task-list').sortable({
 			update: function(event, ui) {

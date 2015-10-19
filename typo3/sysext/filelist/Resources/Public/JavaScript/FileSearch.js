@@ -12,7 +12,9 @@
  */
 
 /**
- *  JavaScript for file search
+ * Module: TYPO3/CMS/Filelist/FileSearch
+ * JavaScript for file search
+ * @exports TYPO3/CMS/Filelist/FileSearch
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 

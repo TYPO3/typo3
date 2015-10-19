@@ -12,20 +12,21 @@
  */
 
 /**
- * ValueSlider
+ * Module: TYPO3/CMS/Backend/ValueSlider
  */
 define(['jquery', 'twbs/bootstrap-slider'], function($) {
 	/**
 	 * ValueSlider object
 	 *
 	 * @type {{selector: string}}
+	 * @exports TYPO3/CMS/Backend/ValueSlider
 	 */
 	var ValueSlider = {
 		selector: '[data-slider-id]'
 	};
 
 	/**
-	 * initialize all slider elements
+	 * Initialize all slider elements
 	 */
 	ValueSlider.initializeSlider = function() {
 		var $sliders = $(ValueSlider.selector);
@@ -38,7 +39,7 @@ define(['jquery', 'twbs/bootstrap-slider'], function($) {
 	};
 
 	/**
-	 * update value of slider element
+	 * Update value of slider element
 	 *
 	 * @param {Event} e
 	 */

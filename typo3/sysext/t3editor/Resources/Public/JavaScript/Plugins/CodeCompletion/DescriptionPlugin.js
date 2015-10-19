@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/CodeCompletion/DescriptionPlugin
  * Descriptionbox plugin for the t3editor-codecompletion which displays the datatype
  * and the desciption for each property displayed in the completionbox
  **/
@@ -20,12 +21,21 @@ define([
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsParser'
 ], function ($, TsRef, TsParser) {
+	/**
+	 *
+	 * @type {{codeCompleteBox: null, codemirror: null, $descriptionBox: (*|jQuery)}}
+	 * @exports TYPO3/CMS/T3editor/CodeCompletion/DescriptionPlugin
+	 */
 	var DescriptionPlugin = {
 		codeCompleteBox: null,
 		codemirror: null,
 		$descriptionBox: $('<div />', {class: 't3e_descriptionBox'}).hide()
 	};
 
+	/**
+	 *
+	 * @param pluginContext
+	 */
 	DescriptionPlugin.init = function(pluginContext) {
 		DescriptionPlugin.codeCompleteBox = pluginContext.codeCompleteBox;
 		DescriptionPlugin.codemirror = pluginContext.codemirror;
@@ -35,30 +45,62 @@ define([
 		}
 	};
 
+	/**
+	 *
+	 * @param {Object} currWordObj
+	 * @param {Object} compResult
+	 */
 	DescriptionPlugin.afterMouseOver = function(currWordObj, compResult) {
 		DescriptionPlugin.refreshBox(currWordObj, compResult);
 	};
 
+	/**
+	 *
+	 * @param {Object} currWordObj
+	 * @param {Object} compResult
+	 */
 	DescriptionPlugin.afterKeyDown = function(currWordObj, compResult) {
 		DescriptionPlugin.refreshBox(currWordObj, compResult);
 	};
 
+	/**
+	 *
+	 * @param {Object} currWordObj
+	 * @param {Object} compResult
+	 */
 	DescriptionPlugin.afterKeyUp = function(currWordObj, compResult) {
 		DescriptionPlugin.refreshBox(currWordObj, compResult);
 	};
 
+	/**
+	 *
+	 * @param {Object} currWordObj
+	 * @param {Object} compResult
+	 */
 	DescriptionPlugin.afterCCRefresh = function(currWordObj, compResult) {
 		DescriptionPlugin.refreshBox(currWordObj, compResult);
 	};
 
+	/**
+	 *
+	 * @param {String} desc
+	 */
 	DescriptionPlugin.descriptionLoaded = function(desc) {
 		$('#TSREF_description').html(desc);
 	};
 
+	/**
+	 *
+	 */
 	DescriptionPlugin.endCodeCompletion = function() {
 		DescriptionPlugin.$descriptionBox.hide();
 	};
 
+	/**
+	 *
+	 * @param {Object} proposalObj
+	 * @param {Object} compResult
+	 */
 	DescriptionPlugin.refreshBox = function(proposalObj, compResult) {
 		var type = compResult.getType();
 

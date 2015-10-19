@@ -10,8 +10,9 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  HTMLArea.DOM.Selection: Selection object
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection
+ * HTMLArea.DOM.Selection: Selection object
  ***************************************************/
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
@@ -22,9 +23,8 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	/**
 	 * Constructor method
 	 *
-	 * @param object config: an object with property "editor" giving reference to the parent object
-	 *
-	 * @return void
+	 * @param {Object} config: an object with property "editor" giving reference to the parent object
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection
 	 */
 	var Selection = function (config) {
 

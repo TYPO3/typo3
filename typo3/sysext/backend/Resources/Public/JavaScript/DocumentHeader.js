@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/DocumentHeader
  * Calculates the height of the docHeader and hides it upon scrolling
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{$documentHeader: null, $documentHeaderBars: null, $documentHeaderNavigationBar: null, $documentHeaderSearchBar: null, $moduleBody: null, direction: string, reactionRange: number, lastPosition: number, currentPosition: number, changedPosition: number, settings: {margin: number, offset: number, selectors: {moduleDocumentHeader: string, moduleDocheaderBar: string, moduleNavigationBar: string, moduleButtonBar: string, moduleSearchBar: string, moduleBody: string}}}}
+	 * @exports TYPO3/CMS/Backend/DocumentHeader
+	 */
 	var DocumentHeader = {
 		$documentHeader: null,
 		$documentHeaderBars: null,

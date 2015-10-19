@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/DebugConsole
  * The debug console shown at the bottom of the backend
  */
 define(['jquery'], function ($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{$consoleDom: null, settings: {autoscroll: boolean}}}
+	 * @exports TYPO3/CMS/Backend/DebugConsole
+	 */
 	var DebugConsole = {
 		$consoleDom: null,
 		settings: {
@@ -100,6 +106,10 @@ define(['jquery'], function ($) {
 
 	/**
 	 * Adds a button and it's callback to the console's toolbar
+	 *
+	 * @param {Object} $button
+	 * @param {function} callback
+	 * @returns {{$consoleDom: null, settings: {autoscroll: boolean}}}
 	 */
 	DebugConsole.addButton = function($button, callback) {
 		$button.on('click', callback);
@@ -120,6 +130,10 @@ define(['jquery'], function ($) {
 
 	/**
 	 * Add the debug message to the console
+	 *
+	 * @param {String} message
+	 * @param {String} header
+	 * @param {String} [group=Debug]
 	 */
 	DebugConsole.add = function(message, header, group) {
 		DebugConsole.attachToViewport();
@@ -178,6 +192,8 @@ define(['jquery'], function ($) {
 
 	/**
 	 * Gets a proper console icon depending on the amount of tabs
+	 *
+	 * @param {Object} $tabs
 	 */
 	DebugConsole.identifyTabLengthPresentationIcon = function($tabs) {
 		var terminalIcon1 = true,
@@ -195,6 +211,8 @@ define(['jquery'], function ($) {
 
 	/**
 	 * Increment the counter of unread messages in the given tab
+	 *
+	 * @param {Object} $tab
 	 */
 	DebugConsole.incrementInactiveTabCounter = function($tab) {
 		if (!$tab.hasClass('active')) {

@@ -10,9 +10,11 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3
  * HTMLArea.util.TYPO3: Utility functions for dealing with tabs and inline elements in TYPO3 forms
- ***************************************************/
+ * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
 	function (UserAgent, Dom) {

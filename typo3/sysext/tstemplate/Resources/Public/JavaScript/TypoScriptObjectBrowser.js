@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
  * JavaScript for TypoScript Object Browser
+ * @exports TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 

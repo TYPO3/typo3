@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/AjaxDataHandler
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], function ($, Modal, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{identifier: {hide: string, delete: string, icon: string}}}
+	 * @exports TYPO3/CMS/Backend/AjaxDataHandler
+	 */
 	var AjaxDataHandler = {
 		identifier: {
 			hide: '.t3js-record-hide',
@@ -27,8 +33,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 
 	/**
 	 * generic function to call from the outside the script and validate directly showing errors
-	 * @param parameters
-	 * @return a jQuery deferred object (promise)
+	 *
+	 * @param {Object} parameters
+	 * @return {Promise<Object>} a jQuery deferred object (promise)
 	 */
 	AjaxDataHandler.process = function(parameters) {
 		return AjaxDataHandler._call(parameters).done(function(result) {
@@ -38,6 +45,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 */
 	AjaxDataHandler.initialize = function() {
 
 		// HIDE/UNHIDE: click events for all action icons to hide/unhide
@@ -94,7 +104,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	/**
 	 * Toggle row visibility after record has been changed
 	 *
-	 * @param $rowElement
+	 * @param {Object} $rowElement
 	 */
 	AjaxDataHandler.toggleRow = function($rowElement) {
 		var $anchorElement = $rowElement.find(AjaxDataHandler.identifier.hide);
@@ -150,7 +160,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	 * delete record by given element (icon in table)
 	 * don't call it directly!
 	 *
-	 * @param element
+	 * @param {HTMLElement} element
 	 */
 	AjaxDataHandler.deleteRecord = function(element) {
 		var $anchorElement = $(element);
@@ -202,7 +212,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	/**
 	 * handle the errors from result object
 	 *
-	 * @param result
+	 * @param {Object} result
 	 * @private
 	 */
 	AjaxDataHandler.handleErrors = function(result) {
@@ -224,6 +234,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	/**
 	 * AJAX call to tce_db.php
 	 * returns a jQuery Promise to work with
+	 *
+	 * @param {Object} params
+	 * @returns {Object}
 	 * @private
 	 */
 	AjaxDataHandler._call = function(params) {
@@ -232,6 +245,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 
 	/**
 	 * Replace the given icon with a spinner icon
+	 *
+	 * @param {Object} $iconElement
 	 * @private
 	 */
 	AjaxDataHandler._showSpinnerIcon = function($iconElement) {

@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework
  * Framework is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
@@ -24,6 +25,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 
 	/**
 	 * Framework constructor
+	 * @param {Object} config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework
 	 */
 	var Framework = function (config) {
 		Util.apply(this, config);

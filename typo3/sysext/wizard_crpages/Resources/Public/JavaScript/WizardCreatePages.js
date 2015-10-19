@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/WizardCrpages/WizardCreatePages
  * JavaScript functions for creating multiple pages
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{lineCounter: number, containerSelector: string, addMoreFieldsButtonSelector: string, doktypeSelector: string}}
+	 * @exports TYPO3/CMS/WizardCrpages/WizardCreatePages
+	 */
 	var WizardCreatePages = {
 		lineCounter: 5,
 		containerSelector: '.t3js-wizardcrpages-container',
@@ -24,6 +30,9 @@ define(['jquery'], function($) {
 		doktypeSelector: '.t3js-wizardcrpages-select-doktype'
 	};
 
+	/**
+	 *
+	 */
 	WizardCreatePages.createNewFormFields = function() {
 		for (var i = 0; i < 5; i++) {
 			var label = WizardCreatePages.lineCounter + i + 1;
@@ -36,6 +45,10 @@ define(['jquery'], function($) {
 		WizardCreatePages.lineCounter += 5;
 	};
 
+	/**
+	 *
+	 * @param {Object} $selectElement
+	 */
 	WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
 		var $optionElement = $selectElement.find(':selected');
 		var $target = $($selectElement.data('target'));

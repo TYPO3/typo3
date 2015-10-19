@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer
  * The container of the textarea within the editor framework
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
@@ -21,6 +22,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 
 	/**
 	 * Status bar constructor
+	 *
+	 * @param {Object} config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer
 	 */
 	var TextAreaContainer = function (config) {
 		Util.apply(this, config);

@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/FieldSelectBox
  * Check-all / uncheck-all for the Database Recordlist fieldSelectBox
+ * @exports TYPO3/CMS/Recordlist/FieldSelectBox
  */
 define(['jquery'], function($) {
 	'use strict';

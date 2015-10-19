@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Tabs
  * This class handle the tabs in the TYPO3 backend.
  * It stores the last active tab and open it again after a reload,
  */
@@ -22,6 +23,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($, Storag
 	 * Tabs helper
 	 *
 	 * @type {{storage: (Storage.Client|*), cacheTimeInSeconds: number, storeLastActiveTab: bool}}
+	 * @exports TYPO3/CMS/Backend/Tabs
 	 */
 	var Tabs = {
 		storage: Storage.Client,
@@ -31,10 +33,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($, Storag
 	};
 
 	/**
-	 * receive active tab from storage
+	 * Receive active tab from storage
 	 *
-	 * @param id
-	 * @returns {string}
+	 * @param {String} id
+	 * @returns {String}
 	 */
 	Tabs.receiveActiveTab = function(id) {
 		var target = Tabs.storage.get(id) || '';
@@ -46,10 +48,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($, Storag
 	};
 
 	/**
-	 * store active tab in storage
+	 * Store active tab in storage
 	 *
-	 * @param id
-	 * @param target
+	 * @param {String} id
+	 * @param {String} target
 	 */
 	Tabs.storeActiveTab = function(id, target) {
 		Tabs.storage.set(id, target);
@@ -57,9 +59,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'bootstrap'], function ($, Storag
 	};
 
 	/**
-	 * get unixtimestamp
+	 * Get unixtimestamp
 	 *
-	 * @returns {number}
+	 * @returns {Number}
 	 */
 	Tabs.getTimestamp = function() {
 		return Math.round((new Date()).getTime() / 1000);

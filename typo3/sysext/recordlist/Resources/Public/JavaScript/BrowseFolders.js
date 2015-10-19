@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/BrowseFolders
  * Folder selection
+ * @exports TYPO3/CMS/Recordlist/BrowseFolders
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal'], function ($, ElementBrowser, Modal) {
 	'use strict';

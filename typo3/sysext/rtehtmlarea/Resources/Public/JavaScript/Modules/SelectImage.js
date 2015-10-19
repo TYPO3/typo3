@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Modules/SelectImage
  * This module is used by the RTE SelectImage module
  */
 define(function () {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{editorNo: string, act: string, sys_language_content: string, RTEtsConfigParams: string, bparams: string, classesImage: boolean, labels: {}, initEventListeners: Function, jumpToUrl: Function}}
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Modules/SelectImage
+	 */
 	var SelectImage = {
 		// The id of the current editor
 		editorNo: '',
@@ -223,7 +229,7 @@ define(function () {
 		/**
 		 * Build the form and append it to the body of the document
 		 *
-		 * @param {string} classesImageJSOptions options of the class selector
+		 * @param {String} classesImageJSOptions options of the class selector
 		 * @param {array} removedProperties array of properties configured to be rmoved
 		 * @param {bool} lockPlainWidth true if the plain image width is locked
 		 * @param {bool} lockPlainHeight true if the plain image height is locked

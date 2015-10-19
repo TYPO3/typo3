@@ -502,7 +502,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 *
 	 * This must be done to prevent the calling of the moveNode event.
 	 *
-	 * @param {object} dragElement
+	 * @param {Object} dragElement
 	 */
 	beforeDropNode: function(dragElement) {
 		if (dragElement.data && dragElement.data.item && dragElement.data.item.shouldCreateNewNode) {

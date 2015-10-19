@@ -12,7 +12,9 @@
  */
 
 /**
- *  JavaScript for backend user listing
+ * Module: TYPO3/CMS/Beuser/BackendUserListing
+ * JavaScript for backend user listing
+ * @exports TYPO3/CMS/Beuser/BackendUserListing
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 

@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/ToggleSearchToolbox
  * Toggle the search toolbox
+ * @exports TYPO3/CMS/Backend/ToggleSearchToolbox
  */
 define(['jquery', 'TYPO3/CMS/Backend/DocumentHeader', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DocumentHeader) {
 	'use strict';

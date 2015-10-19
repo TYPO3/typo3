@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette
  * Intercept Ext.ColorPalette.prototype.select
+ * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color'],
 	function (Color) {

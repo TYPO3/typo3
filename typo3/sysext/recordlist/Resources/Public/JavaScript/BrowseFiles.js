@@ -12,16 +12,26 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/BrowseFiles
  * File selection
  */
 define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, ElementBrowser, Tree) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{elements: {}}}
+	 * @exports TYPO3/CMS/Recordlist/BrowseFiles
+	 */
 	var BrowseFiles = {
 		elements: {}
 	};
 
-	// when selecting one or multiple files, this action is called
+	/**
+	 * when selecting one or multiple files, this action is called
+	 *
+	 * @type {{insertElement: Function, insertElementMultiple: Function}}
+	 */
 	BrowseFiles.File = {
 		insertElement: function(index, close) {
 			var result = false;

@@ -12,9 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Notification
  * Notification API for the TYPO3 backend
  */
-
 define(['jquery'], function ($) {
 	'use strict';
 
@@ -22,6 +22,7 @@ define(['jquery'], function ($) {
 	 * Severity object
 	 *
 	 * @type {{notice: number, information: number, info: number, ok: number, warning: number, error: number}}
+	 * @exports TYPO3/CMS/Backend/Severity
 	 */
 	var Severity = {
 		notice: -2,
@@ -37,6 +38,7 @@ define(['jquery'], function ($) {
 	 * The main Notification object
 	 *
 	 * @type {{NOTICE: number, INFO: number, OK: number, WARNING: number, ERROR: number, messageContainer: null}}
+	 * @exports TYPO3/CMS/Backend/Notification
 	 */
 	var Notification = {
 		NOTICE: -2,
@@ -50,8 +52,8 @@ define(['jquery'], function ($) {
 	/**
 	 * Show a notice notification
 	 *
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 5, 0 = sticky
 	 *
 	 * @public
@@ -63,8 +65,8 @@ define(['jquery'], function ($) {
 	/**
 	 * Show an info notification
 	 *
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 5, 0 = sticky
 	 *
 	 * @public
@@ -76,8 +78,8 @@ define(['jquery'], function ($) {
 	/**
 	 * Show an ok notification
 	 *
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 5, 0 = sticky
 	 *
 	 * @public
@@ -89,8 +91,8 @@ define(['jquery'], function ($) {
 	/**
 	 * Show a warning notification
 	 *
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 5, 0 = sticky
 	 *
 	 * @public
@@ -101,9 +103,9 @@ define(['jquery'], function ($) {
 
 	/**
 	 * Show an error notification
-	 *, duration
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 *
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 0, 0 = sticky
 	 *
 	 * @public
@@ -116,8 +118,8 @@ define(['jquery'], function ($) {
 	/**
 	 * Show message
 	 *
-	 * @param {string} title The title for the notification
-	 * @param {string} message The message for the notification
+	 * @param {String} title The title for the notification
+	 * @param {String} message The message for the notification
 	 * @param {int} severity See constants in this object
 	 * @param {float} duration Time in seconds to show notification before it disappears, default 5, 0 = sticky
 	 *

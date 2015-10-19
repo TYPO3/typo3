@@ -12,11 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/OnlineMedia
  * Javascript for show the online media dialog
  */
 define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang'], function($, NProgress, Modal) {
 	'use strict';
 
+	/**
+	 *
+	 * @param element
+	 * @constructor
+	 * @exports TYPO3/CMS/Backend/OnlineMedia
+	 */
 	var OnlineMediaPlugin = function(element) {
 		var me = this;
 		me.$btn = $(element);
@@ -26,6 +33,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 		me.btnSubmit = me.$btn.data('data-btn-submit') || 'Add';
 		me.placeholder = me.$btn.data('placeholder') || 'Paste media url here...';
 
+		/**
+		 *
+		 * @param {String} url
+		 */
 		me.addOnlineMedia = function(url) {
 			NProgress.start();
 			$.post(TYPO3.settings.ajaxUrls['online_media_create'],
@@ -62,6 +73,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 			);
 		};
 
+		/**
+		 * Trigger the modal
+		 */
 		me.triggerModal = function() {
 			var $modal = Modal.show(
 				me.$btn.attr('title'),

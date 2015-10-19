@@ -10,18 +10,20 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/********************************************************************
+/**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/KeyMap
  * HTMLArea.KeyMap: Utility functions for dealing with key events   *
- ********************************************************************/
+ */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	function (Event) {
 
 	/**
 	 * Constructor method
 	 *
-	 * @param object element: the element to which the key map is attached
-	 * @param string eventName: the event name
-	 * @return void
+	 * @param {Object} element: the element to which the key map is attached
+	 * @param {String} eventName: the event name
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/KeyMap
 	 */
 	var KeyMap = function (element, eventName) {
 
@@ -36,7 +38,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	/**
 	 * Add an event handler to the keymap for a given combination of keys
 	 *
-	 * @param object options: options for the binding; possible keys:
+	 * @param {Object} options: options for the binding; possible keys:
 	 *	key: a key or an array of keys
 	 *	ctrl: boolean,
 	 *	shift: boolean,
@@ -70,7 +72,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 
 	/**
 	 * Key map handler
-	 * @return boolean false if the event was handled
+	 * @return {Boolean} false if the event was handled
 	 */
 	KeyMap.prototype.handler = function (event) {
 		var key = Event.getKey(event);

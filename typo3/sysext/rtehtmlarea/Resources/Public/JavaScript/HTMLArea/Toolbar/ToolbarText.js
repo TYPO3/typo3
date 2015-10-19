@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText
  * A text item in the toolbar
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
@@ -21,6 +22,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 
 	/**
 	 * Toolbar text item constructor
+	 *
+	 * @param {Object} config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText
 	 */
 	var ToolbarText = function (config) {
 		Util.apply(this, config);

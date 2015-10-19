@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Recordlist/ElementBrowser
  * ElementBrowser communication with parent windows
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{thisScriptUrl: string, mode: string, formFieldName: string, hasActionMultipleCode: boolean, fieldReference: string, fieldReferenceSlashed: string, rte: {parameters: string, configuration: string}, irre: {objectId: number, checkUniqueAction: string, addAction: string, insertAction: string}}}
+	 * @exports TYPO3/CMS/Recordlist/ElementBrowser
+	 */
 	var ElementBrowser = {
 		thisScriptUrl: '',
 		mode: '',
@@ -36,6 +42,10 @@ define(['jquery'], function($) {
 		}
 	};
 
+	/**
+	 *
+	 * @returns {Boolean}
+	 */
 	ElementBrowser.setReferences = function() {
 		if (
 			window.opener && window.opener.content && window.opener.content.document.editform
@@ -52,8 +62,8 @@ define(['jquery'], function($) {
 	/**
 	 * Dynamically calls a function on a given context object.
 	 *
-	 * @param {string} functionName e.g. "inline.somefunc"
-	 * @param {object} context e.g. window
+	 * @param {String} functionName e.g. "inline.somefunc"
+	 * @param {Object} context e.g. window
 	 * @returns {*}
 	 */
 	ElementBrowser.executeFunctionByName = function(functionName, context /*, args */) {
@@ -66,6 +76,19 @@ define(['jquery'], function($) {
 		return context[func].apply(context, args);
 	};
 
+	/**
+	 *
+	 * @param {String} table
+	 * @param {Number} uid
+	 * @param {String} type
+	 * @param {String} filename
+	 * @param {String} fp
+	 * @param {String} filetype
+	 * @param {String} imagefile
+	 * @param {String} action
+	 * @param {String} close
+	 * @returns {Boolean}
+	 */
 	ElementBrowser.insertElement = function(table, uid, type, filename, fp, filetype, imagefile, action, close) {
 		var performAction = true;
 		// Call a check function in the opener window (e.g. for uniqueness handling):
@@ -132,6 +155,12 @@ define(['jquery'], function($) {
 		return false;
 	};
 
+	/**
+	 *
+	 * @param {String} table
+	 * @param {Number} uid
+	 * @returns {Boolean}
+	 */
 	ElementBrowser.insertMultiple = function(table, uid) {
 		var type = "";
 		if (ElementBrowser.irre.objectId && ElementBrowser.irre.insertAction) {
@@ -146,6 +175,13 @@ define(['jquery'], function($) {
 		return false;
 	};
 
+	/**
+	 *
+	 * @param {String} elName
+	 * @param {String} elValue
+	 * @param {String} altElValue
+	 * @param {String} close
+	 */
 	ElementBrowser.addElement = function(elName, elValue, altElValue, close) {
 		if (window.opener && window.opener.setFormValueFromBrowseWin) {
 			window.opener.setFormValueFromBrowseWin(ElementBrowser.fieldReference, altElValue ? altElValue : elValue, elName);
@@ -158,6 +194,9 @@ define(['jquery'], function($) {
 		}
 	};
 
+	/**
+	 *
+	 */
 	ElementBrowser.focusOpenerAndClose = function() {
 		window.opener.focus();
 		close();
@@ -185,9 +224,9 @@ define(['jquery'], function($) {
 	 *
 	 * Used by tree implementation
 	 *
-	 * @param {string} URL
-	 * @param {string} anchor
-	 * @returns {boolean}
+	 * @param {String} URL
+	 * @param {String} anchor
+	 * @returns {Boolean}
 	 */
 	window.jumpToUrl = function(URL, anchor) {
 		if (URL.charAt(0) === '?') {

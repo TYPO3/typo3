@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/LegacyCssClasses
  * JavaScript replacement for Legacy CSS Classes
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{replacements: Array}}
+	 * @exports TYPO3/CMS/Backend/LegacyCssClasses
+	 */
 	var LegacyCssClasses = {
 		replacements: [
 			{

@@ -12,16 +12,23 @@
  */
 
 /**
- * contains all JS functions related to TYPO3 Flexforms
+ * Module: TYPO3/CMS/Backend/FormEngineFlexForm
+ * Contains all JS functions related to TYPO3 Flexforms
  * available under the latest jQuery version
  * can be used by $('myflexform').t3FormEngineFlexFormElement({options});, all .t3-flex-form containers will be called on load
  *
  * currently TYPO3.FormEngine.FlexFormElement represents one Flexform element
  * which can contain one ore more sections
  */
-
 define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 
+	/**
+	 *
+	 * @param {HTMLElement} el
+	 * @param {Object} options
+	 * @constructor
+	 * @exports TYPO3/CMS/Backend/FormEngineFlexForm
+	 */
 	TYPO3.FormEngine.FlexFormElement = function(el, options) {
 		var me = this;	// avoid scope issues
 		var opts;	// shorthand options notation

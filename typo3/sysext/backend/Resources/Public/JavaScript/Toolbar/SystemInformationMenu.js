@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Toolbar/SystemInformationMenu
  * System information menu handler
  */
 define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], function($, Icons, Storage) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{identifier: {containerSelector: string, toolbarIconSelector: string, menuContainerSelector: string, moduleLinks: string}, elements: {$counter: (*|jQuery|HTMLElement)}}}
+	 * @exports TYPO3/CMS/Backend/Toolbar/SystemInformationMenu
+	 */
 	var SystemInformationMenu = {
 		identifier: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
@@ -85,6 +91,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 
 	/**
 	 * Updates the UC and opens the linked module
+	 *
+	 * @param {Event} e
 	 */
 	SystemInformationMenu.openModule = function(e) {
 		e.preventDefault();

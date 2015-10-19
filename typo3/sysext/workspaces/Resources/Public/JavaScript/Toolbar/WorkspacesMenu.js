@@ -12,12 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu
  * toolbar menu for the workspaces functionality to switch between the workspaces
  * and jump to the workspaces module
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {containerSelector: string, menuItemSelector: string, activeMenuItemSelector: string, toolbarItemSelector: string, workspaceBodyClass: string, workspacesTitleInToolbarClass: string, workspaceModuleLinkSelector: string}}}
+	 * @exports TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu
+	 */
 	var WorkspacesMenu = {
 		options: {
 			containerSelector: '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
@@ -51,6 +57,8 @@ define(['jquery'], function($) {
 	/**
 	 * switches the workspace via AJAX (which returns the new data, as JSON),
 	 * then reloads the module menu, and the content frame
+	 *
+	 * @param {String} workspaceId
 	 */
 	WorkspacesMenu.switchWorkspace = function(workspaceId) {
 		$.ajax({
@@ -96,8 +104,8 @@ define(['jquery'], function($) {
 	/**
 	 * changes the data in the module menu and the updates the backend context
 	 *
-	 * @param id the workspace ID
-	 * @param title the workspace title
+	 * @param {String} id the workspace ID
+	 * @param {String} title the workspace title
 	 */
 	WorkspacesMenu.performWorkspaceSwitch = function(id, title) {
 		top.TYPO3.Workspaces.workspaceTitle = title;
@@ -122,6 +130,8 @@ define(['jquery'], function($) {
 	/**
 	 * checks if the TYPO3 backend is within a backend context and adds a class
 	 * also updates the workspaces title
+	 *
+	 * @param {String} title
 	 */
 	WorkspacesMenu.updateBackendContext = function(title) {
 
@@ -137,7 +147,7 @@ define(['jquery'], function($) {
 	/**
 	 * adds the workspace title to the toolbar next to the username
 	 *
-	 * @param workspaceTitle
+	 * @param {String} workspaceTitle
 	 */
 	WorkspacesMenu.updateTopBar = function(workspaceTitle) {
 		$('.' + WorkspacesMenu.options.workspacesTitleInToolbarClass, WorkspacesMenu.options.containerSelector).remove();

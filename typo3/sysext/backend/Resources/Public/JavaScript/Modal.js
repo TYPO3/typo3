@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/Modal
  * API for modal windows powered by Twitter Bootstrap.
  * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
@@ -32,6 +33,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * The main object of the modal API
 	 *
 	 * @type {{instances: Array, currentModal: null, template: (*|jQuery|HTMLElement)}}
+	 * @exports TYPO3/CMS/Backend/Modal
 	 */
 	var Modal = {
 		instances: [],
@@ -59,7 +61,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * Get the correct css class for given severity
 	 *
 	 * @param {int} severity use constants from top.TYPO3.Severity.*
-	 * @returns {string}
+	 * @returns {String}
 	 * @private
 	 */
 	Modal.getSeverityClass = function(severity) {
@@ -92,8 +94,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * - confirm.button.cancel
 	 * - confirm.button.ok
 	 *
-	 * @param {string} title the title for the confirm modal
-	 * @param {string} content the content for the conform modal, e.g. the main question
+	 * @param {String} title the title for the confirm modal
+	 * @param {String} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default top.TYPO3.Severity.warning
 	 * @param {array} buttons an array with buttons, default no buttons
 	 * @param {array} additionalCssClasses additional css classes to add to the modal
@@ -129,11 +131,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * load URL with AJAX, append the content to the modal-body
 	 * and trigger the callback
 	 *
-	 * @param {string} title
+	 * @param {String} title
 	 * @param {int} severity
 	 * @param {array} buttons
-	 * @param {string} url
-	 * @param {string} target
+	 * @param {String} url
+	 * @param {String} target
 	 * @param {function} callback
 	 */
 	Modal.loadUrl = function(title, severity, buttons, url, callback, target) {
@@ -153,8 +155,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 * Events:
 	 * - button.clicked
 	 *
-	 * @param {string} title the title for the confirm modal
-	 * @param {string} content the content for the conform modal, e.g. the main question
+	 * @param {String} title the title for the confirm modal
+	 * @param {String} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default top.TYPO3.Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
 	 * @param {array} additionalCssClasses additional css classes to add to the modal

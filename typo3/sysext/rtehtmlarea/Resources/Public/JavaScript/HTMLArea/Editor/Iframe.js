@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe
  * The editor iframe
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
@@ -25,6 +26,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 
 	/**
 	 * Editor iframe constructor
+	 *
+	 * @param {Object} config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe
 	 */
 	var Iframe = function (config) {
 		Util.apply(this, config);

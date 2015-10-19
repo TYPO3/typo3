@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/Ajax/Ajax
  * Ajax object
  */
 define(['jquery',
@@ -20,6 +21,10 @@ define(['jquery',
 
 	/**
 	 * Constructor method
+	 *
+	 * @param config
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/Ajax/Ajax
 	 */
 	var Ajax = function (config) {
 		Util.apply(this, config);

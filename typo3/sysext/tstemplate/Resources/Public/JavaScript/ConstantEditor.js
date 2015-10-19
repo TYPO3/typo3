@@ -12,12 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Tstemplate/ConstantEditor
  * Various functions related to the Constant Editor
  * e.g. updating the field and working with colors
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {editIconSelector: string, colorSelectSelector: string, colorInputSelector: string}}}
+	 * @exports TYPO3/CMS/Tstemplate/ConstantEditor
+	 */
 	var ConstantEditor = {
 		options: {
 			editIconSelector: '.typo3-tstemplate-ceditor-control',
@@ -28,6 +34,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * initially register event listeners
+	 *
+	 * @param {Object} $editIcon
 	 */
 	ConstantEditor.changeProperty = function($editIcon) {
 		var constantName = $editIcon.attr('rel');
@@ -50,6 +58,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * updates the color from a dropdown
+	 *
+	 * @param {Object} $colorSelect
 	 */
 	ConstantEditor.updateColorFromSelect = function($colorSelect) {
 		var constantName = $colorSelect.attr('rel');
@@ -61,6 +71,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * updates the color from an input field
+	 *
+	 * @param {Object} $colorInput
 	 */
 	ConstantEditor.updateColorFromInput = function($colorInput) {
 		var constantName = $colorInput.attr('rel');

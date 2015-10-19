@@ -10,9 +10,11 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/***************************************************
- *  Color utilities
- ***************************************************/
+/**
+ * AND-Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color
+ * Color utilities
+ * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color
+ */
 define([], function () {
 
 	return {

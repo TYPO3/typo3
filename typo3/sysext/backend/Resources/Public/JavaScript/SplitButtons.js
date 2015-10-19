@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/SplitButtons
  * Initializes global handling of split buttons.
  */
 define(['jquery'], function($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{preSubmitCallbacks: Array}}
+	 * @exports TYPO3/CMS/Backend/SplitButtons
+	 */
 	var SplitButtons = {
 		preSubmitCallbacks: []
 	};
@@ -55,7 +61,7 @@ define(['jquery'], function($) {
 	/**
 	 * Adds a callback being executed before submit
 	 *
-	 * @param callback
+	 * @param {function} callback
 	 */
 	SplitButtons.addPreSubmitCallback = function(callback) {
 		if (typeof callback !== 'function') {

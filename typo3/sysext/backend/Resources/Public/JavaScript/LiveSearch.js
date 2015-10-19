@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/LiveSearch
  * Global search to deal with everything in the backend that is search-related
+ * @exports TYPO3/CMS/Backend/LiveSearch
  */
 define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], function ($) {
 	'use strict';

@@ -12,12 +12,18 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/LayoutModule/DragDrop
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  * based on jQuery UI
  */
 define(['jquery', 'jquery-ui/sortable'], function ($) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{contentIdentifier: string, dragIdentifier: string, dropZoneAvailableIdentifier: string, dropPossibleClass: string, sortableItemsIdentifier: string, columnIdentifier: string, columnHolderIdentifier: string, addContentIdentifier: string, langClassPrefix: string}}
+	 * @exports TYPO3/CMS/Backend/LayoutModule/DragDrop
+	 */
 	var DragDrop = {
 		contentIdentifier: '.t3js-page-ce',
 		dragIdentifier: '.t3js-page-ce-draghandle',
@@ -67,6 +73,9 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	/**
 	 * Called when an item is about to be moved
+	 *
+	 * @param {Object} $container
+	 * @param {Object} ui
 	 */
 	DragDrop.onSortStart = function($container, ui) {
 		var $item = $(ui.item),
@@ -83,6 +92,9 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	/**
 	 * Called when the sorting stopped
+	 *
+	 * @param {Object} $container
+	 * @param {Object} ui
 	 */
 	DragDrop.onSortStop = function($container, ui) {
 		var $allColumns = $container.parents(DragDrop.columnHolderIdentifier);
@@ -92,12 +104,20 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	/**
 	 * Called when the index of the element in the sortable list has changed
+	 *
+	 * @param {Object} $container
+	 * @param {Object} ui
 	 */
 	DragDrop.onSortChange = function($container, ui) {
 		var $placeholder = $(ui.placeholder);
 		DragDrop.changeDropzoneVisibility($container, $placeholder);
 	};
 
+	/**
+	 *
+	 * @param {Object} $container
+	 * @param {Object} $subject
+	 */
 	DragDrop.changeDropzoneVisibility = function($container, $subject) {
 		var $prev = $subject.prev(':visible'),
 			droppableClassName = DragDrop.langClassPrefix + $container.data('language-uid');
@@ -111,6 +131,9 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	/**
 	 * Called when the new position of the element gets stored
+	 *
+	 * @param {Object} $container
+	 * @param {Object} ui
 	 */
 	DragDrop.onSortUpdate = function($container, ui) {
 		var $selectedItem = $(ui.item),

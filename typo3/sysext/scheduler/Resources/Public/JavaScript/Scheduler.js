@@ -11,8 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * Module: TYPO3/CMS/Scheduler/Scheduler
+ */
 define(['jquery'], function($) {
 
+	/**
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Scheduler/Scheduler
+	 */
 	var Scheduler = {};
 
 	var allCheckedStatus = false;
@@ -20,6 +28,8 @@ define(['jquery'], function($) {
 	/**
 	 * This method reacts on changes to the task class
 	 * It switches on or off the relevant extra fields
+	 *
+	 * @param {Object} theSelector
 	 */
 	Scheduler.actOnChangedTaskClass = function(theSelector) {
 		var taskClass = theSelector.val();
@@ -34,6 +44,8 @@ define(['jquery'], function($) {
 	/**
 	 * This method reacts on changes to the type of a task, i.e. single or recurring,
 	 * by showing or hiding the relevant form fields
+	 *
+	 * @param {Object} theSelector
 	 */
 	Scheduler.actOnChangedTaskType = function(theSelector) {
 		// Get task type from selected value, or set default value
@@ -46,6 +58,8 @@ define(['jquery'], function($) {
 
 	/**
 	 * This method reacts on field changes of all table field for table garbage collection task
+	 *
+	 * @param {Object} theCheckbox
 	 */
 	Scheduler.actOnChangeSchedulerTableGarbageCollectionAllTables = function(theCheckbox) {
 		var $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
@@ -73,6 +87,8 @@ define(['jquery'], function($) {
 	/**
 	 * This methods set the 'number of days' field to the default expire period
 	 * of the selected table
+	 *
+	 * @param {Object} theSelector
 	 */
 	Scheduler.actOnChangeSchedulerTableGarbageCollectionTable = function(theSelector) {
 		var $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
@@ -87,6 +103,9 @@ define(['jquery'], function($) {
 
 	/**
 	 * Check or uncheck all checkboxes
+	 *
+	 * @param {Object} theSelector
+	 * @returns {Boolean}
 	 */
 	Scheduler.checkOrUncheckAllCheckboxes = function(theSelector) {
 		theSelector.parents('.tx_scheduler_mod1').find(':checkbox').prop('checked', !allCheckedStatus);

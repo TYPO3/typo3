@@ -12,7 +12,9 @@
  */
 
 /**
+ * Module: TYPO3/CMS/SysAction/ActionTask
  * JavaScript to handle confirm windows in the task center module
+ * @exports TYPO3/CMS/SysAction/ActionTask
  */
 define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	$(function() {

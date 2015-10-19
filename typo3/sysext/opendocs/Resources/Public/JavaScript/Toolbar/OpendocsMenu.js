@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Opendocs/OpendocsMenu
  * main JS part taking care of
  *  - navigating to the documents
  *  - updating the menu
@@ -19,6 +20,11 @@
 define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{options: {containerSelector: string, hashDataAttributeName: string, closeSelector: string, menuContainerSelector: string, menuItemSelector: string, toolbarIconSelector: string, openDocumentsItemsSelector: string, counterSelector: string}}}
+	 * @exports TYPO3/CMS/Opendocs/OpendocsMenu
+	 */
 	var OpendocsMenu = {
 		options: {
 			containerSelector: '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
@@ -81,7 +87,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	/**
 	 * Closes an open document
 	 *
-	 * @param {string} md5sum
+	 * @param {String} md5sum
 	 */
 	OpendocsMenu.closeDocument = function(md5sum) {
 		$.ajax({

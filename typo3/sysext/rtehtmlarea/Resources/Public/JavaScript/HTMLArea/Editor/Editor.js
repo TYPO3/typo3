@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor
  * Editor extends Ext.util.Observable
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
@@ -33,7 +34,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	/**
 	 * Editor constructor method
 	 *
-	 * @param object config: editor configuration object
+	 * @param {Object} config: editor configuration object
+	 * @constructor
+	 * @exports TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor
 	 */
 	var Editor = function (config) {
 		// Save the config

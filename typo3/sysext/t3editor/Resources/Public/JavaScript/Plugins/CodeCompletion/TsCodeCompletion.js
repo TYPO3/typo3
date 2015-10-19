@@ -12,6 +12,7 @@
  */
 
 /**
+ * Module: TYPO3/CMS/T3editor/CodeCompletion/TsCodeCompletion
  * Contains the TsCodeCompletion class
  */
 define([
@@ -20,6 +21,11 @@ define([
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsParser',
 	'TYPO3/CMS/T3editor/Plugins/CodeCompletion/CompletionResult'
 ], function ($, TsRef, TsParser, CompletionResult) {
+	/**
+	 *
+	 * @type {{tsRef: *, outerDiv: null, options: {ccWords: number}, index: number, currWord: number, cc_up: null, cc_down: null, mousePos: {x: number, y: number}, proposals: null, compResult: null, cc: number, linefeedsPrepared: boolean, currentCursorPosition: null, extTsObjTree: {}, latestCursorNode: null, codemirror: null, parser: null, plugins: string[], $codeCompleteBox: (*|jQuery)}}
+	 * @exports TYPO3/CMS/T3editor/CodeCompletion/TsCodeCompletion
+	 */
 	var TsCodeCompletion = {
 		tsRef: TsRef,
 		outerDiv: null,
@@ -108,7 +114,7 @@ define([
 	/**
 	 * Get the value of a given GET parameter
 	 *
-	 * @param name
+	 * @param {String} name
 	 * @return {String}
 	 */
 	TsCodeCompletion.getGetVar = function(name) {
@@ -148,6 +154,8 @@ define([
 	/**
 	 * Since the references are not resolved server side we have to do it client-side
 	 * Benefit: less loading time due to less data which has to be transmitted
+	 *
+	 * @param {Array} childNodes
 	 */
 	TsCodeCompletion.resolveExtReferencesRec = function(childNodes) {
 		for (var key in childNodes) {
@@ -175,7 +183,7 @@ define([
 	/**
 	 * Get the child node of given path
 	 *
-	 * @param path
+	 * @param {String} path
 	 * @returns {Object}
 	 */
 	TsCodeCompletion.getExtChildNode = function(path) {
@@ -214,10 +222,18 @@ define([
 		TsCodeCompletion.linefeedsPrepared = true;
 	};
 
+	/**
+	 *
+	 */
 	TsCodeCompletion.click = function() {
 		TsCodeCompletion.endAutoCompletion();
 	};
 
+	/**
+	 *
+	 * @param cursorNode
+	 * @returns {*}
+	 */
 	TsCodeCompletion.getFilter = function(cursorNode) {
 		if (cursorNode.currentText) {
 			var filter = cursorNode.currentText.replace('.', '');
@@ -226,6 +242,9 @@ define([
 		return '';
 	};
 
+	/**
+	 * @returns {*}
+	 */
 	TsCodeCompletion.getCursorNode = function() {
 		var cursorNode = TsCodeCompletion.codemirror.win.select.selectionTopNode(TsCodeCompletion.codemirror.win.document.body, false);
 		// cursorNode is null if the cursor is positioned at the beginning of the first line
@@ -238,6 +257,11 @@ define([
 		return cursorNode;
 	};
 
+	/**
+	 *
+	 * @param {Object} cursor
+	 * @returns {String}
+	 */
 	TsCodeCompletion.getCurrentLine = function(cursor) {
 		var line = '',
 			currentNode = cursor.start.node.parentNode;
@@ -262,7 +286,7 @@ define([
 	 * Eventhandler function executed after keystroke release
 	 * triggers CC on pressed dot and typing on
 	 *
-	 * @param e fired prototype event object
+	 * @param {Event} e fired prototype event object
 	 * @type void
 	 */
 	TsCodeCompletion.keyUp = function(e) {
@@ -290,7 +314,7 @@ define([
 	/**
 	 * Highlights entry in codecomplete box by id
 	 *
-	 * @param {Integer} id
+	 * @param {Number} id
 	 */
 	TsCodeCompletion.mouseOver = function(id) {
 		TsCodeCompletion.highlightCurrWord(id);
@@ -316,7 +340,7 @@ define([
 	 * Eventhandler function executed after keystroke release
 	 * triggers CC on pressed dot and typing on
 	 *
-	 * @param e fired prototype event object
+	 * @param {Event} e fired prototype event object
 	 */
 	TsCodeCompletion.keyDown = function(e) {
 		if (!TsCodeCompletion.linefeedsPrepared) {
@@ -540,7 +564,7 @@ define([
 	/**
 	 * Highlight the active word in the code completion list
 	 *
-	 * @param {Integer} id
+	 * @param {Number} id
 	 */
 	TsCodeCompletion.highlightCurrWord = function(id) {
 		if (TsCodeCompletion.currWord !== -1) {

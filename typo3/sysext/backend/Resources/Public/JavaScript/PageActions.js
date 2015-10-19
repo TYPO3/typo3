@@ -12,11 +12,17 @@
  */
 
 /**
+ * Module: TYPO3/CMS/Backend/PageActions
  * JavaScript implementations for page actions
  */
 define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	'use strict';
 
+	/**
+	 *
+	 * @type {{settings: {pageId: number, canEditPage: boolean, language: {pageOverlayId: number}}, identifier: {pageTitle: string, hiddenElements: string}, elements: {$pageTitle: null, $showHiddenElementsCheckbox: null}, documentIsReady: boolean}}
+	 * @exports TYPO3/CMS/Backend/PageActions
+	 */
 	var PageActions = {
 		settings: {
 			pageId: 0,
@@ -62,6 +68,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 			.append($editActionLink);
 	};
 
+	/**
+	 * Initialize elements
+	 */
 	PageActions.initializeElements = function() {
 		PageActions.elements.$pageTitle = $(PageActions.identifier.pageTitle + ':first');
 		PageActions.elements.$showHiddenElementsCheckbox = $('#checkTt_content_showHidden');
@@ -157,6 +166,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 
 	/**
 	 * Set the page id (used in the RequireJS callback)
+	 *
+	 * @param {Number} pageId
 	 */
 	PageActions.setPageId = function(pageId) {
 		PageActions.settings.pageId = pageId;
@@ -164,6 +175,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 
 	/**
 	 * Set if user can edit the page properties
+	 *
+	 * @param {Boolean} allowed
 	 */
 	PageActions.setCanEditPage = function(allowed) {
 		PageActions.settings.canEditPage = allowed;
@@ -171,6 +184,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 
 	/**
 	 * Set the overlay id
+	 *
+	 * @param {Number} overlayId
 	 */
 	PageActions.setLanguageOverlayId = function(overlayId) {
 		PageActions.settings.language.pageOverlayId = overlayId;
@@ -178,6 +193,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 
 	/**
 	 * Save the changes and reload the page tree
+	 *
+	 * @param {Object} $field
 	 */
 	PageActions.saveChanges = function($field) {
 		var $inputFieldWrap = $field.parents('form');

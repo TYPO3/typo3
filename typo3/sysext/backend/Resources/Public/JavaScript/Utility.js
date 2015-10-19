@@ -12,12 +12,15 @@
  */
 
 /**
- * Utility helper
+ * Module: TYPO3/CMS/Backend/Utility
  */
 define(['jquery'], function($) {
 
 	/**
 	 * The main Utility object
+	 *
+	 * @type {{}}
+	 * @exports TYPO3/CMS/Backend/Utility
 	 */
 	var Utility = {
 	};
@@ -28,7 +31,7 @@ define(['jquery'], function($) {
 	 * Taken from:
 	 * http://dl.dropbox.com/u/35146/js/tests/isNumber.html
 	 *
-	 * @param {string} number
+	 * @param {String} number
 	 * @returns {boolean|*}
 	 */
 	Utility.isNumber = function(number) {
@@ -38,9 +41,9 @@ define(['jquery'], function($) {
 	/**
 	 * Gets a parameter from a given url
 	 *
-	 * @param {string} url
-	 * @param {string} parameter
-	 * @returns {string}
+	 * @param {String} url
+	 * @param {String} parameter
+	 * @returns {String}
 	 */
 	Utility.getParameterFromUrl = function(url, parameter) {
 		var parts = url.split('?'),

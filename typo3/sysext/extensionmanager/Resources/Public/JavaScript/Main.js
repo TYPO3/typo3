@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
+ * Module: TYPO3/CMS/Extensionmanager/Main
  * main logic holding everything together, consists of multiple parts
  * ExtensionManager => Various functions for displaying the extension list / sorting
  * Repository => Various AJAX functions for TER downloads
@@ -18,6 +19,12 @@
  * ExtensionManager.uploadForm => helper to show the upload form
  */
 define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
+
+	/**
+	 *
+	 * @type {{identifier: {extensionlist: string, searchField: string, extensionManager: string}}}
+	 * @exports TYPO3/CMS/Extensionmanager/Main
+	 */
 	var ExtensionManager = {
 		identifier: {
 			extensionlist: '#typo3-extension-list',
@@ -26,6 +33,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		}
 	};
 
+	/**
+	 *
+	 * @returns {Object}
+	 */
 	ExtensionManager.manageExtensionListing = function() {
 		var $searchField = $(this.identifier.searchField),
 			dataTable = $(this.identifier.extensionlist).DataTable({
@@ -66,6 +77,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		return dataTable;
 	};
 
+	/**
+	 *
+	 */
 	ExtensionManager.bindExtensionListActions = function() {
 		$('.removeExtension').not('.transformed').each(function() {
 			var $me = $(this);
@@ -99,6 +113,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 * @param {Object} $extension
+	 */
 	ExtensionManager.removeExtensionFromDisk = function($extension) {
 		var $extManager = $(Repository.identifier.extensionManager);
 		$extManager.mask();
@@ -119,6 +137,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 * @returns {Array}
+	 */
 	ExtensionManager.getUrlVars = function() {
 		var vars = [], hash;
 		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -139,6 +161,12 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		return ExtensionManager.compare(a, b);
 	};
 
+	/**
+	 *
+	 * @param {String} a
+	 * @param {String} b
+	 * @returns {Number}
+	 */
 	ExtensionManager.compare = function(a, b) {
 		if (a === b) {
 			return 0;
@@ -174,6 +202,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		return 0;
 	};
 
+	/**
+	 *
+	 * @param {Object} data
+	 */
 	ExtensionManager.updateExtension = function(data) {
 		var message = '<h1>' + TYPO3.lang['extensionList.updateConfirmation.title'] + '</h1>';
 		message += '<h2>' + TYPO3.lang['extensionList.updateConfirmation.message'] + '</h2>';
@@ -302,6 +334,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 * @type {{downloadPath: string, identifier: {extensionManager: string}}}
+	 */
 	var Repository = {
 		downloadPath: '',
 		identifier: {
@@ -309,6 +345,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		}
 	};
 
+	/**
+	 *
+	 */
 	Repository.initDom = function() {
 		NProgress.configure({parent: '#typo3-docheader', showSpinner: false});
 
@@ -360,6 +399,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		Repository.bindSearchFieldResetter();
 	};
 
+	/**
+	 *
+	 */
 	Repository.bindDownload = function() {
 		var installButtons = $('.downloadFromTer form.download button[type=submit]');
 		installButtons.off('click');
@@ -379,6 +421,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 * @param {Object} data
+	 * @returns {Boolean}
+	 */
 	Repository.getDependencies = function(data) {
 		var $extManager = $(Repository.identifier.extensionManager);
 		NProgress.done();
@@ -411,6 +458,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		return false;
 	};
 
+	/**
+	 *
+	 * @param {String} url
+	 */
 	Repository.getResolveDependenciesAndInstallResult = function(url) {
 		var $extManager = $(Repository.identifier.extensionManager);
 		$.ajax({
@@ -466,6 +517,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 */
 	Repository.bindSearchFieldResetter = function() {
 		var $searchFields = $('.typo3-extensionmanager-searchTerForm input[type="text"]');
 		var searchResultShown = ('' !== $searchFields.first().val());
@@ -481,6 +535,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		);
 	};
 
+	/**
+	 *
+	 * @type {{identifier: {extensionTable: string, terUpdateAction: string, pagination: string, splashscreen: string, terTableWrapper: string, terTableDataTableWrapper: string}}}
+	 */
 	ExtensionManager.Update = {
 		identifier: {
 			extensionTable: '#terTable',
@@ -492,7 +550,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		}
 	};
 
-	// Register "update from ter" action
+	/**
+	 * Register "update from ter" action
+	 */
 	ExtensionManager.Update.initializeEvents = function() {
 		$(ExtensionManager.Update.identifier.terUpdateAction).each(function() {
 
@@ -516,6 +576,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 * @param {String} url
+	 * @param {Number} forceUpdate
+	 */
 	ExtensionManager.Update.updateFromTer = function(url, forceUpdate) {
 		if (forceUpdate == 1) {
 			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
@@ -591,6 +656,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		});
 	};
 
+	/**
+	 *
+	 */
 	ExtensionManager.Update.transformPaginatorToAjax = function () {
 		$(ExtensionManager.Update.identifier.pagination + ' a').each(function() {
 			var $me = $(this);
@@ -623,6 +691,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		expandedUploadFormClass: 'transformed'
 	};
 
+	/**
+	 *
+	 */
 	ExtensionManager.UploadForm.initializeEvents = function() {
 		// Show upload form
 		$(document).on('click', '#upload-button-wrap > a', function(event) {
