@@ -717,6 +717,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-template-new.svg'
             )
         ),
+        'actions-unlock' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'unlock',
+            )
+        ),
         'actions-unmarkstate' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1986,7 +1992,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:t3skin/images/icons/status/status-edit-read-only.png',
             )
         ),
-
 
         // Extensions
         'extensions-extensionmanager-update-script' => array(
