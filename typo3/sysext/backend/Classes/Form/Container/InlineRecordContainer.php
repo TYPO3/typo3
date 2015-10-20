@@ -591,7 +591,7 @@ class InlineRecordContainer extends AbstractContainer
             if ($enabledControls['localize'] && $data['inlineIsDefaultLanguage']) {
                 $onClick = 'inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ', ' . GeneralUtility::quoteJSvalue($rec['uid']) . ');';
                 $cells['localize'] = '
-					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . 'title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', true) . '">
+					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', true) . '">
 						' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
 					</a>';
             }
