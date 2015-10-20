@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,11 +60,6 @@ class InfoModuleController extends BaseScriptClass
     protected $moduleName = 'web_info';
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * ModuleTemplate Container
      *
      * @var ModuleTemplate
@@ -77,7 +71,6 @@ class InfoModuleController extends BaseScriptClass
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->languageService = $GLOBALS['LANG'];
         $this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
@@ -194,7 +187,7 @@ class InfoModuleController extends BaseScriptClass
                 BackendUtility::BEgetRootLine($this->pageinfo['uid'])
             ))
             ->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
-            ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Version\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -108,11 +107,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $recIndex = array();
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * The name of the module
      *
      * @var string
@@ -124,7 +118,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $GLOBALS['SOBE'] = $this;
         $GLOBALS['LANG']->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf');
     }
@@ -250,7 +243,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // View page
             $buttons['view'] = '
 				<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">
-					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
+					' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
 				</a>';
             // Shortcut
             if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
@@ -375,11 +368,11 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 				<tr' . ($row['uid'] != $this->uid ? '' : ' class="active"') . '>
 					<td class="col-icon">' .
                         ($row['uid'] != $this->uid ?
-                            '<a href="' . $this->doc->issueCommand('&cmd[' . $this->table . '][' . $this->uid . '][version][swapWith]=' . $row['uid'] . '&cmd[' . $this->table . '][' . $this->uid . '][version][action]=swap') . '" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', true) . '">' . $this->iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '</a>' :
-                            '<span title="' . $GLOBALS['LANG']->getLL('currentOnlineVersion', true) . '">' . $this->iconFactory->getIcon('status-status-current', Icon::SIZE_SMALL)->render() . '</span>'
+                            '<a href="' . $this->doc->issueCommand('&cmd[' . $this->table . '][' . $this->uid . '][version][swapWith]=' . $row['uid'] . '&cmd[' . $this->table . '][' . $this->uid . '][version][action]=swap') . '" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '</a>' :
+                            '<span title="' . $GLOBALS['LANG']->getLL('currentOnlineVersion', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('status-status-current', Icon::SIZE_SMALL)->render() . '</span>'
                         ) . '
 					</td>
-					<td class="col-icon">' . $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render() . '</td>
+					<td class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render() . '</td>
 					<td>' . htmlspecialchars(BackendUtility::getRecordTitle($this->table, $row, true)) . '</td>
 					<td>' . $row['uid'] . '</td>
 					<td>' . $row['t3ver_oid'] . '</td>
@@ -391,7 +384,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 					<td>' . $row['pid'] . '</td>
 					<td>
 						<a href="' . htmlspecialchars($editUrl) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', true) . '">
-							' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
+							' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
 						</a>' . htmlspecialchars($row['t3ver_label']) . '
 					</td>
 					<td class="col-control">' . $adminLinks . '</td>
@@ -461,7 +454,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $content .= '
 					<table class="table">
 						<tr>
-							<th class="col-icon">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</th>
+							<th class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</th>
 							<th class="col-title">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], true) . '</th>
 							<th></th>
 							<th></th>
@@ -470,7 +463,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                     $ownVer = $this->lookForOwnVersions($table, $subrow['uid']);
                     $content .= '
 						<tr>
-							<td class="col-icon">' . $this->iconFactory->getIconForRecord($table, $subrow, Icon::SIZE_SMALL)->render() . '</td>
+							<td class="col-icon">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($table, $subrow, Icon::SIZE_SMALL)->render() . '</td>
 							<td class="col-title">' . htmlspecialchars(BackendUtility::getRecordTitle($table, $subrow, true)) . '</td>
 							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $subrow['uid']))) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
 							<td class="col-control">' . $this->adminLinks($table, $subrow) . '</td>
@@ -529,9 +522,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             ],
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ]);
-        $adminLink = '<a class="btn btn-default" href="' . htmlspecialchars($editUrl) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', true) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+        $adminLink = '<a class="btn btn-default" href="' . htmlspecialchars($editUrl) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         // Delete link:
-        $adminLink .= '<a class="btn btn-default" href="' . htmlspecialchars($this->doc->issueCommand('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+        $adminLink .= '<a class="btn btn-default" href="' . htmlspecialchars($this->doc->issueCommand('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
         if ($table === 'pages') {
             // If another page module was specified, replace the default Page module with the new one
             $newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -540,16 +533,16 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
             $a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
             $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">'
-                . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
+                . $this->moduleTemplate->getIconFactory()->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
                 . '</a>';
-            $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'web_list\'); return false;">' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</a>';
+            $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'web_list\'); return false;">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</a>';
             // "View page" icon is added:
-            $adminLink .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']))) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+            $adminLink .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']))) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             if ($row['pid'] == -1) {
                 $getVars = '&ADMCMD_vPrev[' . rawurlencode(($table . ':' . $row['t3ver_oid'])) . ']=' . $row['uid'];
                 // "View page" icon is added:
-                $adminLink .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['_REAL_PID'], '', BackendUtility::BEgetRootLine($row['_REAL_PID']), '', '', $getVars)) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $adminLink .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['_REAL_PID'], '', BackendUtility::BEgetRootLine($row['_REAL_PID']), '', '', $getVars)) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
             }
         }
         return '<div class="btn-group btn-group-sm" role="group">' . $adminLink . '</div>';

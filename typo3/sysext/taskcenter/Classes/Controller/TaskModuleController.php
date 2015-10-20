@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -53,18 +52,12 @@ class TaskModuleController extends BaseScriptClass
     protected $moduleName = 'user_task';
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Initializes the Module
      */
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
         $this->MCONF = array(
             'name' => $this->moduleName
@@ -433,7 +426,7 @@ class TaskModuleController extends BaseScriptClass
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', true))
             ->setOnClick($onClick)
             ->setHref('#')
-            ->setIcon($this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))
             ;
         $buttonBar->addButton($fullscreenButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
@@ -507,7 +500,7 @@ class TaskModuleController extends BaseScriptClass
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
         $content = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', true) . '">'
-            . $this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL)->render()
+            . $this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL)->render()
         . '</a>';
         return $content;
     }

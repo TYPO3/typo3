@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -508,8 +507,6 @@ class SetupModuleController extends AbstractModule
     protected function getButtons()
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('_MOD_user_setup')
             ->setFieldName('');
@@ -520,7 +517,7 @@ class SetupModuleController extends AbstractModule
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
             ->setValue('1')
             ->setShowLabelText(true)
-            ->setIcon($iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()

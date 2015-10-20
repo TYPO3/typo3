@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -96,11 +95,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     protected $moduleName = 'web_ts';
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * ModuleTemplate Container
      *
      * @var ModuleTemplate
@@ -112,7 +106,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     public function __construct()
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
@@ -347,7 +340,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 ->setHref('#')
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
-                ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
                 // NEW button
@@ -361,14 +354,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $saveButton = $buttonBar->makeInputButton()
                         ->setName('_savedok')
                         ->setValue('1')
-                        ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
 
                     $saveAndCloseButton = $buttonBar->makeInputButton()
                         ->setName('_saveandclosedok')
                         ->setValue('1')
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
-                        ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
 
                     $splitButtonElement = $buttonBar->makeSplitButton()
                         ->addItem($saveButton)
@@ -380,13 +373,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $closeButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', array('id' => $this->id)))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
-                        ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL));
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
                     $buttonBar->addButton($closeButton);
                 } else {
                     $newButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', true))
-                        ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
                     $buttonBar->addButton($newButton);
                 }
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
@@ -395,7 +388,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     ->setName('_savedok')
                     ->setValue('1')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
-                    ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
@@ -408,7 +401,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                         ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
                         ->setClasses('typo3-goBack')
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
-                        ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                     $buttonBar->addButton($backButton);
                 }
             }
@@ -651,19 +644,19 @@ page.10.value = HELLO WORLD!
             return $lines;
         }
 
-        $statusCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
+        $statusCheckedIcon = $this->moduleTemplate->getIconFactory()->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
         foreach ($pArray as $k => $v) {
             if (MathUtility::canBeInterpretedAsInteger($k)) {
                 if (isset($pArray[$k . '_'])) {
                     $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
+						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 						<td>' . $pArray[($k . '_')]['count'] . '</td>
 						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						</tr>';
                 } else {
                     $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
+						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
 						<td></td>
 						<td></td>
 						<td></td>

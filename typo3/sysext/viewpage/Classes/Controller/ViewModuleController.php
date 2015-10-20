@@ -55,19 +55,18 @@ class ViewModuleController extends ActionController
      */
     protected function registerButtons()
     {
-        $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($this->getTargetUrl())
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
-            ->setIcon($iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref('javascript:document.getElementById(\'tx_viewpage_iframe\').contentWindow.location.reload(true);')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
-            ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         $currentRequest = $this->request;
