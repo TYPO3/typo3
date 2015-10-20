@@ -37,11 +37,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], funct
 			$collapseIcon = $me.find('.collapseIcon'),
 			toggleIcon = isExpanded ? Recordlist.identifier.icons.expand : Recordlist.identifier.icons.collapse;
 
-		Icons.getIcons([
-			[Recordlist.identifier.icons.expand, Icons.sizes.small],
-			[Recordlist.identifier.icons.collapse, Icons.sizes.small]
-		]).done(function(icons) {
-			$collapseIcon.html(icons[toggleIcon]);
+		Icons.getIcon(toggleIcon, Icons.sizes.small).done(function(toggleIcon) {
+			$collapseIcon.html(toggleIcon);
 		});
 
 		// Store collapse state in UC

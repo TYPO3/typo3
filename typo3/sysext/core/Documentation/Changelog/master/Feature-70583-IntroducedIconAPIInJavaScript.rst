@@ -40,9 +40,6 @@ A single icon can be fetched by ``getIcon()`` which takes four parameters:
          The state of the icon. Please use the properties of the ``Icons.states`` object.
 
 
-Multiple icons can be fetched by ``getIcons()``. This function takes a multidimensional array as parameter,
-holding the parameters used by ``getIcon()`` for each icon.
-
 To use the fetched icons, chain the ``done()`` method to the promise.
 
 Examples
@@ -51,17 +48,6 @@ Examples
 .. code-block:: javascript
 
 	// Get a single icon
-	Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
-		$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
-	});
-
-	// Get multiple icons
-	Icons.getIcons([
-		['apps-filetree-folder-default', Icons.sizes.large],
-		['actions-edit-delete', Icons.sizes.small, null, Icons.states.disabled],
-		['actions-system-cache-clear-impact-medium']
-	]).done(function(icons) {
-		// icons['apps-filetree-folder-default']
-		// icons['actions-edit-delete']
-		// icons['actions-system-cache-clear-impact-medium']
+	Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+		$toolbarItemIcon.replaceWith(spinner);
 	});

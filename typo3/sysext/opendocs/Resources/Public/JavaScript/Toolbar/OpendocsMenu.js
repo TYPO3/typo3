@@ -53,8 +53,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 		var $toolbarItemIcon = $(OpendocsMenu.options.toolbarIconSelector, OpendocsMenu.options.containerSelector),
 			$existingIcon = $toolbarItemIcon.clone();
 
-		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
-			$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+			$toolbarItemIcon.replaceWith(spinner);
 		});
 
 		$.ajax({

@@ -41,88 +41,48 @@ define(['jquery'], function($) {
 	 * @return {Promise<Array>}
 	 */
 	Icons.getIcon = function(identifier, size, overlayIdentifier, state) {
-		return $.when.apply($, Icons.fetch([[identifier, size, overlayIdentifier, state]]));
-	};
-
-	/**
-	 * Fetches multiple icons by passing the parameters of getIcon() for each requested
-	 * icon as array.
-	 *
-	 * @param {Array} icons
-	 * @return {Promise<Array>}
-	 */
-	Icons.getIcons = function(icons) {
-		if (!icons instanceof Array) {
-			throw 'Icons must be an array of multiple definitions.';
-		}
-		return $.when.apply($, Icons.fetch(icons));
+		return $.when(Icons.fetch(identifier, size, overlayIdentifier, state));
 	};
 
 	/**
 	 * Performs the AJAX request to fetch the icon.
 	 *
-	 * @param {Array} icons
-	 * @return {Array}
+	 * @param {string} identifier
+	 * @param {string} size
+	 * @param {string} overlayIdentifier
+	 * @param {string} state
+	 * @return {String|Promise}
 	 * @private
 	 */
-	Icons.fetch = function(icons) {
-		var promises = [],
-			requestedIcons = {},
-			cachedRequestedIcons = {};
+	Icons.fetch = function(identifier, size, overlayIdentifier, state) {
+		/**
+		 * Icon keys:
+		 *
+		 * 0: identifier
+		 * 1: size
+		 * 2: overlayIdentifier
+		 * 3: state
+		 */
+		size = size || Icons.sizes.default;
+		state = state || Icons.states.default;
 
-		for (var i = 0; i < icons.length; ++i) {
-			/**
-			 * Icon keys:
-			 *
-			 * 0: identifier
-			 * 1: size
-			 * 2: overlayIdentifier
-			 * 3: state
-			 */
-			var icon = icons[i];
-			icon[1] = icon[1] || Icons.sizes.default;
-			icon[3] = icon[3] || Icons.states.default;
+		var icon = [identifier, size, overlayIdentifier, state],
+			cacheIdentifier = icon.join('_');
 
-			var cacheIdentifier = icon.join('_');
-			if (Icons.isCached(cacheIdentifier)) {
-				$.extend(cachedRequestedIcons, Icons.getFromCache(cacheIdentifier));
-			} else {
-				requestedIcons[icon[0]] = {
-					cacheIdentifier: cacheIdentifier,
-					icon: icon
-				};
+		if (Icons.isCached(cacheIdentifier)) {
+			return Icons.getFromCache(cacheIdentifier);
+		}
+
+		return $.ajax({
+			url: TYPO3.settings.ajaxUrls['icons'],
+			dataType: 'html',
+			data: {
+				icon: JSON.stringify(icon)
+			},
+			success: function(markup) {
+				Icons.putInCache(cacheIdentifier, markup);
 			}
-		}
-
-		if (Object.keys(cachedRequestedIcons).length > 0) {
-			promises.push(cachedRequestedIcons);
-		}
-
-		if (Object.keys(requestedIcons).length > 0) {
-			promises.push(
-				$.ajax({
-					url: TYPO3.settings.ajaxUrls['icons'],
-					data: {
-						requestedIcons: JSON.stringify(
-							$.map(requestedIcons, function(o) {
-								return [o['icon']];
-							})
-						)
-					},
-					success: function(data) {
-						$.each(data, function(identifier, markup) {
-							var cacheIdentifier = requestedIcons[identifier].cacheIdentifier,
-								cacheEntry = {};
-
-							cacheEntry[identifier] = markup;
-							Icons.putInCache(cacheIdentifier, cacheEntry);
-						});
-					}
-				})
-			);
-		}
-
-		return promises;
+		});
 	};
 
 	/**

@@ -86,25 +86,22 @@ class IconFactory
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $requestedIcons = json_decode(
-            isset($parsedBody['requestedIcons'])
-                ? $parsedBody['requestedIcons']
-                : $queryParams['requestedIcons'],
+        $requestedIcon = json_decode(
+            isset($parsedBody['icon'])
+                ? $parsedBody['icon']
+                : $queryParams['icon'],
             true
         );
 
-        $icons = [];
-        for ($i = 0, $count = count($requestedIcons); $i < $count; ++$i) {
-            list($identifier, $size, $overlayIdentifier, $iconState) = $requestedIcons[$i];
-            if (empty($overlayIdentifier)) {
-                $overlayIdentifier = null;
-            }
-            $iconState = IconState::cast($iconState);
-            $icons[$identifier] = $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render();
+        list($identifier, $size, $overlayIdentifier, $iconState) = $requestedIcon;
+        if (empty($overlayIdentifier)) {
+            $overlayIdentifier = null;
         }
+        $iconState = IconState::cast($iconState);
         $response->getBody()->write(
-            json_encode($icons)
+            $this->getIcon($identifier, $size, $overlayIdentifier, $iconState)->render()
         );
+        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
         return $response;
     }
 

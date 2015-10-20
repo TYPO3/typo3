@@ -375,15 +375,15 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 			case 'update':
 				LanguageModule.buttons.update.data('action', 'cancelLanguageUpdate');
 				LanguageModule.buttons.cancel.removeClass('disabled');
-				Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(icons) {
-					LanguageModule.buttons.update.find('span.icon').replaceWith(icons['spinner-circle-dark']);
+				Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(spinner) {
+					LanguageModule.buttons.update.find('span.icon').replaceWith(spinner);
 				});
 				break;
 			case 'cancel':
 				LanguageModule.buttons.update.data('action', 'updateActiveLanguages');
 				LanguageModule.buttons.cancel.addClass('disabled');
-				Icons.getIcon('actions-system-extension-download', Icons.sizes.small).done(function(icons) {
-					LanguageModule.buttons.update.find('span.icon').replaceWith(icons['actions-system-extension-download']);
+				Icons.getIcon('actions-system-extension-download', Icons.sizes.small).done(function(download) {
+					LanguageModule.buttons.update.find('span.icon').replaceWith(download);
 				});
 				break;
 		}

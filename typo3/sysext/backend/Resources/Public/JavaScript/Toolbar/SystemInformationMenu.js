@@ -49,8 +49,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 			$menuContainer.click();
 		}
 
-		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(icons) {
-			$toolbarItemIcon.replaceWith(icons['spinner-circle-light']);
+		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+			$toolbarItemIcon.replaceWith(spinner);
 		});
 
 		$.ajax({
