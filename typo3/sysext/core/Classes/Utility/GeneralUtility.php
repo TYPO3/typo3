@@ -1523,22 +1523,24 @@ class GeneralUtility
     }
 
     /**
-     * Explodes a string and trims all values for whitespace in the ends.
+     * Explodes a string and trims all values for whitespace in the end.
      * If $onlyNonEmptyValues is set, then all blank ('') values are removed.
      *
      * @param string $delim Delimiter string to explode with
      * @param string $string The string to explode
      * @param bool $removeEmptyValues If set, all empty values will be removed in output
-     * @param int $limit If positive, the result will contain a maximum of
+     * @param int $limit If limit is set and positive, the returned array will contain a maximum of limit elements with
+     *                   the last element containing the rest of string. If the limit parameter is negative, all components
+     *                   except the last -limit are returned.
      * @return array Exploded values
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0)
     {
-        $result = array_map('trim', explode($delim, $string));
+        $result = explode($delim, $string);
         if ($removeEmptyValues) {
             $temp = array();
             foreach ($result as $value) {
-                if ($value !== '') {
+                if (trim($value) !== '') {
                     $temp[] = $value;
                 }
             }
@@ -1550,6 +1552,7 @@ class GeneralUtility
         } elseif ($limit < 0) {
             $result = array_slice($result, 0, $limit);
         }
+        $result = array_map('trim', $result);
         return $result;
     }
 

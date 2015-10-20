@@ -1364,14 +1364,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ' a , b , c , , d,, ,e ',
                 false,
                 3,
-                ['a', 'b', 'c,,d,,,e']
+                ['a', 'b', 'c , , d,, ,e']
             ],
-            'keeps remaining Results without empty items after reaching limit with positive parameter' => [
+            'keeps remaining results without empty items after reaching limit with positive parameter' => [
                 ',',
                 ' a , b , c , , d,, ,e ',
                 true,
                 3,
-                ['a', 'b', 'c,d,e']
+                ['a', 'b', 'c , d,e']
             ],
             'keeps remaining results with empty items after reaching limit with negative parameter' => [
                 ',',
@@ -1448,21 +1448,21 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Hello all   together     all      there all       all   are  all    none',
                 false,
                 5,
-                ['Hello', 'together', 'there', '', 'are all   none']
+                ['Hello', 'together', 'there', '', 'are  all    none']
             ],
             'can use word with appended and prepended spaces as delimiter, do not remove empty, limit and multiple delimiter in last' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 false,
                 4,
-                ['Hello', 'together', 'there', ' all   are all   none']
+                ['Hello', 'together', 'there', 'all   are  all    none']
             ],
             'can use word with appended and prepended spaces as delimiter, remove empty and limit' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 true,
                 4,
-                ['Hello', 'together', 'there', 'are all   none']
+                ['Hello', 'together', 'there', 'are  all    none']
             ],
             'can use word with appended and prepended spaces as delimiter, remove empty and limit and multiple delimiter in last' => [
                 ' all   ',
@@ -1483,14 +1483,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 false,
                 4,
-                ['Hello', 'together', '', 'areall  therenone']
+                ['Hello', 'together', '', 'are   all  there     none']
             ],
             'can use words as delimiter, do not remove empty, limit and multiple delimiter in last' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 false,
                 3,
-                ['Hello', 'together', 'all  thereareall  therenone']
+                ['Hello', 'together', 'all  there    are   all  there     none']
             ],
             'can use words as delimiter, remove empty' => [
                 'all  there',
@@ -1504,7 +1504,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 true,
                 3,
-                ['Hello', 'together', 'areall  therenone']
+                ['Hello', 'together', 'are   all  there     none']
             ],
             'can use words as delimiter, remove empty and limit and multiple delimiter in last' => [
                 'all  there',
@@ -1532,7 +1532,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 false,
                 4,
-                ['a  b', 'c', '', "d\te\tu j\ts"]
+                ['a  b', 'c', '', "d  \t  e     \t u j   \t s"]
             ],
             'works with whitespace separator and remove empty' => [
                 "\t",
@@ -1546,7 +1546,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 true,
                 3,
-                ['a  b', 'c', "d\te\tu j\ts"]
+                ['a  b', 'c', "d  \t  e     \t u j   \t s"]
             ],
         ];
     }
