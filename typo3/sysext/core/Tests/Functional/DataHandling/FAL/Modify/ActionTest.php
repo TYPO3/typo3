@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/modifyContentRecord.csv
+     * @see DataSet/modifyContent.csv
      */
     public function modifyContent()
     {
@@ -47,7 +47,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/deleteContentRecord.csv
+     * @see DataSet/deleteContent.csv
      */
     public function deleteContent()
     {
@@ -63,7 +63,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/copyContentRecord.csv
+     * @see DataSet/copyContent.csv
      */
     public function copyContent()
     {
@@ -80,7 +80,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/localizeContentRecord.csv
+     * @see DataSet/localizeContent.csv
      */
     public function localizeContent()
     {
@@ -101,7 +101,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/changeContentRecordSorting.csv
+     * @see DataSet/changeContentSorting.csv
      */
     public function changeContentSorting()
     {
@@ -121,7 +121,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
+     * @see DataSet/moveContentToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -144,7 +144,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
 
     /**
      * @test
-     * @see DataSet/Assertion/moveContentRecordToDifferentPageAndChangeSorting.csv
+     * @see DataSet/moveContentToDifferentPageNChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
@@ -247,4 +247,5 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
     }
+
 }

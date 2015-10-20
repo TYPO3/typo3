@@ -63,7 +63,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/Assertion/modifyContentRecord.csv
+     * @see Modify/DataSet/modifyContent.csv
      */
     public function modifyContent()
     {
@@ -71,7 +71,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/deleteContentRecord.csv
+     * @see Modify/DataSet/deleteContent.csv
      */
     public function deleteContent()
     {
@@ -79,7 +79,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/copyContentRecord.csv
+     * @see Modify/DataSet/copyContent.csv
      */
     public function copyContent()
     {
@@ -88,7 +88,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/localizeContentRecord.csv
+     * @see Modify/DataSet/localizeContent.csv
      */
     public function localizeContent()
     {
@@ -97,7 +97,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/changeContentRecordSorting.csv
+     * @see Modify/DataSet/changeContentSorting.csv
      */
     public function changeContentSorting()
     {
@@ -105,7 +105,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
+     * @see Modify/DataSet/moveContentToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -113,7 +113,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/Assertion/moveContentRecordToDifferentPageAndChangeSorting.csv
+     * @see Modify/DataSet/moveContentToDifferentPageNChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
@@ -125,6 +125,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      * File references
      */
 
+    /**
+     * @see Modify/DataSet/createContentWFileReference.csv
+     */
     public function createContentWithFileReference()
     {
         $newTableIds = $this->actionService->createNewRecords(
@@ -137,6 +140,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
+    /**
+     * @see Modify/DataSet/modifyContentWFileReference.csv
+     */
     public function modifyContentWithFileReference()
     {
         $this->actionService->modifyRecords(
@@ -148,6 +154,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         );
     }
 
+    /**
+     * @see Modify/DataSet/modifyContentNAddFileReference.csv
+     */
     public function modifyContentAndAddFileReference()
     {
         $this->actionService->modifyRecords(
@@ -159,6 +168,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         );
     }
 
+    /**
+     * @see Modify/DataSet/modifyContentNDeleteFileReference.csv
+     */
     public function modifyContentAndDeleteFileReference()
     {
         $this->actionService->modifyRecord(
@@ -169,6 +181,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         );
     }
 
+    /**
+     * @see Modify/DataSet/modifyContentNDeleteAllFileReference.csv
+     */
     public function modifyContentAndDeleteAllFileReference()
     {
         $this->actionService->modifyRecord(
