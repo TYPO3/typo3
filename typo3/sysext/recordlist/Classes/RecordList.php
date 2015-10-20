@@ -571,7 +571,10 @@ class RecordList extends AbstractModule
             ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
         $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton, ButtonBar::BUTTON_POSITION_LEFT, 90);
 
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if ($this->pageinfo) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
+
         // Build the <body> for the module
         $this->content .= $this->body;
     }
