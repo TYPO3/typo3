@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -384,7 +383,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$storagePageIds = array(42,27);
 		$mockTypo3DbQueryParser = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbQueryParser', array('dummy'), array(), '', FALSE);
 		$mockFrontendVariableCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
-		$mockDatabaseHandle = $this->prophesize(DatabaseConnection::class);
+		$mockDatabaseHandle = $this->prophesize('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$mockDatabaseHandle->cleanIntArray(Argument::cetera())->willReturnArgument(0);
 		$mockTypo3DbQueryParser->_set('databaseHandle', $mockDatabaseHandle->reveal());
 		$mockTypo3DbQueryParser->_set('tableColumnCache', $mockFrontendVariableCache);
