@@ -265,6 +265,7 @@ class Icon
     protected function wrappedIcon($alternativeMarkupIdentifier = null)
     {
         $classes = array();
+        $classes[] = 't3js-icon';
         $classes[] = 'icon';
         $classes[] = 'icon-size-' . $this->size;
         $classes[] = 'icon-state-' . htmlspecialchars((string)$this->state);
@@ -274,7 +275,7 @@ class Icon
         }
 
         $markup = array();
-        $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '">';
+        $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '" data-identifier="' . htmlspecialchars($this->getIdentifier()) . '">';
         $markup[] = '	<span class="icon-markup">';
         $markup[] = $this->getMarkup($alternativeMarkupIdentifier);
         $markup[] = '	</span>';

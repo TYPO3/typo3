@@ -83,7 +83,7 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertTrue($this->fileController->_call('flattenResultDataValue', true));
         $this->assertSame(array(), $this->fileController->_call('flattenResultDataValue', array()));
         $result = $this->fileController->_call('flattenResultDataValue', $this->fileResourceMock);
-        $this->assertContains('<span class="icon icon-size-small icon-state-default icon-mimetypes-text-html">', $result['icon']);
+        $this->assertContains('<span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-html" data-identifier="mimetypes-text-html">', $result['icon']);
         unset($result['icon']);
         $this->assertSame(
             array(
