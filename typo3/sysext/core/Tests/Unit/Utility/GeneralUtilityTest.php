@@ -1389,7 +1389,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function checkTrimExplodeKeepsRemainingResultsWithEmptyItemsAfterReachingLimitWithPositiveParameter() {
 		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c,,d,,,e');
+		$expectedArray = array('a', 'b', 'c , , d,, ,e');
 		// Limiting returns the rest of the string as the last element
 		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, FALSE, 3);
 		$this->assertEquals($expectedArray, $actualArray);
@@ -1400,7 +1400,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function checkTrimExplodeKeepsRemainingResultsWithoutEmptyItemsAfterReachingLimitWithPositiveParameter() {
 		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c,d,e');
+		$expectedArray = array('a', 'b', 'c , d,e');
 		// Limiting returns the rest of the string as the last element
 		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE, 3);
 		$this->assertEquals($expectedArray, $actualArray);
