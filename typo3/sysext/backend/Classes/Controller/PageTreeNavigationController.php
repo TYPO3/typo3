@@ -333,7 +333,7 @@ class PageTreeNavigationController
         $this->init();
         $tree = $this->pagetree->getBrowsableTree();
         if (!$this->pagetree->ajaxStatus) {
-            $response->withStatus(500);
+            $response = $response->withStatus(500);
         } else {
             $response->getBody()->write(json_encode($tree));
         }

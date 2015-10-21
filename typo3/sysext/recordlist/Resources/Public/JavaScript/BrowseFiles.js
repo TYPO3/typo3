@@ -14,7 +14,7 @@
 /**
  * File selection
  */
-define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBrowser) {
+define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/LegacyTree'], function($, ElementBrowser, Tree) {
 	'use strict';
 
 	var BrowseFiles = {
@@ -84,6 +84,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser'], function($, ElementBro
 			return $('#typo3-filelist').find('.typo3-bulk-item');
 		}
 	};
+
+	Tree.ajaxID = 'sc_alt_file_navframe_expandtoggle';
 
 	$(function() {
 		$.extend(BrowseFiles.elements, $('body').data('elements'));
