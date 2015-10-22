@@ -42,6 +42,7 @@ $tca = array(
 					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.gps;30,
+					color_space,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
 			',
         ),
@@ -79,7 +80,9 @@ $tca = array(
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
 					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
-					language, --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60, pages
+					language, pages,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60
 			',
         ),
     ),
@@ -100,7 +103,7 @@ $tca = array(
             'showitem' => 'location_country, location_region, location_city',
         ),
         '50' => array(
-            'showitem' => 'width, height, unit, color_space',
+            'showitem' => 'width, height, unit',
         ),
         '60' => array(
             'showitem' => 'content_creation_date, content_modification_date',
