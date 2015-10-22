@@ -42,6 +42,7 @@ $tca = array(
 					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.gps;30,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.camera,
 					color_space,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
 			',
@@ -54,8 +55,9 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					duration,
-					creator, creator_tool, publisher, source, copyright, language
+					creator, creator_tool, publisher, source, copyright, language,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.audio,
+				    duration
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
@@ -66,8 +68,9 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					duration,
-					creator, creator_tool, publisher, source, copyright, language
+					creator, creator_tool, publisher, source, copyright, language,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.video,
+					duration
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
