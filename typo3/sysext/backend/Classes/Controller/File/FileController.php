@@ -227,11 +227,7 @@ class FileController
                     }
                 }
             }
-            $content = ['result' => $flatResult];
-            if ($this->redirect) {
-                $content['redirect'] = $this->redirect;
-            }
-            $response->getBody()->write(json_encode($content));
+            $response->getBody()->write(json_encode($flatResult));
         }
         return $response;
     }

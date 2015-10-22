@@ -416,7 +416,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/L
 				me.$progressBar.outerWidth('100%');
 
 				// replace file icon
-				if (data.result.upload[0].icon) {
+				if (data.upload[0].icon) {
 					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.upload[0].id + '" data-listframe="1">' + data.upload[0].icon + '&nbsp;</span></a>');
 				}
 
