@@ -8,70 +8,76 @@ $tca = array(
     'types' => array(
         TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, --palette--;;20,
+					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, --palette--;;20,
+					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
 					language
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;20,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, --palette--;;20,
+					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
-					--palette--;;30,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.gps;30,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
 					duration,
-					creator, --palette--;;20, language
+					creator, creator_tool, publisher, source, copyright, language
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
 					duration,
-					creator, --palette--;;20, language
+					creator, creator_tool, publisher, source, copyright, language
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
             'showitem' => '
-				fileinfo, title, description, alternative, keywords, caption, download_name,
+				fileinfo, title, description, ranking, keywords,
+				    --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.accessibility;25,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, --palette--;;20,
+					creator, creator_tool, publisher, source, copyright,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
 					language, --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60, pages
 			',
@@ -79,10 +85,13 @@ $tca = array(
     ),
     'palettes' => array(
         '10' => array(
-            'showitem' => 'visible, status, ranking',
+            'showitem' => 'visible, status',
         ),
         '20' => array(
-            'showitem' => 'creator_tool, publisher, source, copyright',
+            'showitem' => 'alternative, --linebreak--, caption, --linebreak--, download_name',
+        ),
+        '25' => array(
+            'showitem' => 'caption, --linebreak--, download_name',
         ),
         '30' => array(
             'showitem' => 'latitude, longitude',
@@ -137,10 +146,10 @@ $tca = array(
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.keywords',
             'config' => array(
-                'placeholder' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:placeholder.keywords',
-                'type' => 'input',
-                'size' => 255,
-                'eval' => 'trim'
+                'type' => 'text',
+                'cols' => '40',
+                'rows' => '3',
+                'placeholder' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:placeholder.keywords'
             ),
         ),
         'caption' => array(

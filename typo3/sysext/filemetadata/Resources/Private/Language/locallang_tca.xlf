@@ -124,7 +124,7 @@
 
 			<!-- sys_file_metadata placeholder -->
 			<trans-unit id="placeholder.keywords">
-				<source>Keywords1, keywords2, ...</source>
+				<source>Keyword #1, keyword #2, ...</source>
 			</trans-unit>
 
 			<!-- sys_file_metadata palette -->
@@ -139,6 +139,12 @@
 			</trans-unit>
 			<trans-unit id="palette.content_date">
 				<source>Content Date</source>
+			</trans-unit>
+			<trans-unit id="palette.accessibility">
+				<source>Accessibility</source>
+			</trans-unit>
+			<trans-unit id="palette.gps">
+				<source>GPS</source>
 			</trans-unit>
 
 			<!-- fe_groups fields -->

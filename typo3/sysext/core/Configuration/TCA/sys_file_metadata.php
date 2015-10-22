@@ -119,9 +119,8 @@ return array(
             'exclude' => 0,
             'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.alternative',
             'config' => array(
-                'type' => 'text',
-                'cols' => '40',
-                'rows' => '3'
+                'type' => 'input',
+                'size' => '30',
             )
         ),
         'width' => array(
