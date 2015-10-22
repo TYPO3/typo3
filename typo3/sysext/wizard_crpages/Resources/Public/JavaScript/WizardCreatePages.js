@@ -26,12 +26,12 @@ define(['jquery'], function($) {
 
 	WizardCreatePages.createNewFormFields = function() {
 		for (var i = 0; i < 5; i++) {
-			var label = this.lineCounter + i + 1;
+			var label = WizardCreatePages.lineCounter + i + 1;
 			var line = tpl
-				.replace(/\{0\}/g, (this.lineCounter + i))
+				.replace(/\{0\}/g, (WizardCreatePages.lineCounter + i))
 				.replace(/\{1\}/g, label);
 
-			$(line).appendTo(this.containerSelector);
+			$(line).appendTo(WizardCreatePages.containerSelector);
 		}
 		WizardCreatePages.lineCounter += 5;
 	};
@@ -46,11 +46,11 @@ define(['jquery'], function($) {
 	 * Register listeners
 	 */
 	WizardCreatePages.initializeEvents = function() {
-		$(this.addMoreFieldsButtonSelector).on('click', function() {
+		$(WizardCreatePages.addMoreFieldsButtonSelector).on('click', function() {
 			WizardCreatePages.createNewFormFields();
 		});
 
-		$(document).on('change', this.doktypeSelector, function() {
+		$(document).on('change', WizardCreatePages.doktypeSelector, function() {
 			WizardCreatePages.actOnTypeSelectChange($(this));
 		});
 	};
