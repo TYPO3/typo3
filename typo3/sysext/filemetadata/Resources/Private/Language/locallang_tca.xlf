@@ -101,6 +101,27 @@
 			<trans-unit id="sys_file_metadata.color_space">
 				<source>Color Space</source>
 			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.RGB">
+				<source>RGB</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.sRGB">
+				<source>sRGB</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.CMYK">
+				<source>CMYK</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.CMY">
+				<source>CMY</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.YUV">
+				<source>YUV</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.grey">
+				<source>Grey</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.color_space.indx">
+				<source>Indexed</source>
+			</trans-unit>
 			<trans-unit id="sys_file_metadata.pages">
 				<source>Number of Pages</source>
 			</trans-unit>
