@@ -382,14 +382,6 @@ return array(
                 'maxitems' => 9999
             )
         ),
-        'description' => array(
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
-            'config' => array(
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30
-            )
-        )
     ),
     'types' => array(
         '0' => array('showitem' => 'disable, username, password, description, avatar, usergroup, admin, realName, email, lang, lastlogin,
