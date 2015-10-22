@@ -2872,17 +2872,18 @@ class DataHandler
      * @param array $dataStructArray Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
+     * @param array $workspaceOptions
      * @return array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
      */
-    public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructArray, $pParams, $callBackFunc = '')
+    public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructArray, $pParams, $callBackFunc = '', array $workspaceOptions = array())
     {
         if (is_array($dataPart)) {
             foreach ($dataPart as $sKey => $sheetDef) {
                 list($dataStruct, $actualSheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sKey);
                 if (is_array($dataStruct) && $actualSheet == $sKey && is_array($sheetDef)) {
                     foreach ($sheetDef as $lKey => $lData) {
-                        $this->checkValue_flex_procInData_travDS($dataPart[$sKey][$lKey], $dataPart_current[$sKey][$lKey], $uploadedFiles[$sKey][$lKey], $dataStruct['ROOT']['el'], $pParams, $callBackFunc, $sKey . '/' . $lKey . '/');
+                        $this->checkValue_flex_procInData_travDS($dataPart[$sKey][$lKey], $dataPart_current[$sKey][$lKey], $uploadedFiles[$sKey][$lKey], $dataStruct['ROOT']['el'], $pParams, $callBackFunc, $sKey . '/' . $lKey . '/', $workspaceOptions);
                     }
                 }
             }
@@ -2901,10 +2902,11 @@ class DataHandler
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
      * @param string $structurePath
+     * @param array $workspaceOptions
      * @return void
      * @see checkValue_flex_procInData()
      */
-    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath)
+    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = array())
     {
         if (!is_array($DSelements)) {
             return;
@@ -2933,7 +2935,7 @@ class DataHandler
                             continue;
                         }
 
-                        $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : array(), $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/');
+                        $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : array(), $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/', $workspaceOptions);
                         // If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
                         // The fact that the order changes is not important since order is controlled by a separately submitted index.
                         if (substr($ik, 0, 3) == 'ID-') {
@@ -2950,7 +2952,7 @@ class DataHandler
                     if (!isset($dataValues[$key]['el'])) {
                         $dataValues[$key]['el'] = array();
                     }
-                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/');
+                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
                 }
             } else {
                 if (!is_array($dsConf['TCEforms']['config']) || !is_array($dataValues[$key])) {
@@ -2960,9 +2962,9 @@ class DataHandler
                 foreach ($dataValues[$key] as $vKey => $data) {
                     if ($callBackFunc) {
                         if (is_object($this->callBackObj)) {
-                            $res = $this->callBackObj->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
+                            $res = $this->callBackObj->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
                         } else {
-                            $res = $this->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
+                            $res = $this->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
                         }
                     } else {
                         // Default
@@ -3668,7 +3670,7 @@ class DataHandler
             $currentValueArray = GeneralUtility::xml2array($value);
             // Traversing the XML structure, processing files:
             if (is_array($currentValueArray)) {
-                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $realDestPid), 'copyRecord_flexFormCallBack');
+                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $realDestPid), 'copyRecord_flexFormCallBack', $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
                 $value = $currentValueArray;
             }
@@ -3827,12 +3829,14 @@ class DataHandler
      * @param array $pParams Array of parameters in num-indexes: table, uid, field
      * @param array $dsConf TCA field configuration (from Data Structure XML)
      * @param string $dataValue The value of the flexForm field
-     * @param string $dataValue_ext1 Not used.
-     * @param string $dataValue_ext2 Not used.
+     * @param string $_1 Not used.
+     * @param string $_2 Not used.
+     * @param string $_3 Not used.
+     * @param array $workspaceOptions
      * @return array Result array with key "value" containing the value of the processing.
      * @see copyRecord(), checkValue_flex_procInData_travDS()
      */
-    public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
+    public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $_3, $workspaceOptions)
     {
         // Extract parameters:
         list($table, $uid, $field, $realDestPid) = $pParams;
@@ -3840,7 +3844,7 @@ class DataHandler
         $dataValue = $this->copyRecord_procFilesRefs($dsConf, $uid, $dataValue);
         // If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
         if (($this->isReferenceField($dsConf) || $this->getInlineFieldType($dsConf) !== false) && (string)$dataValue !== '') {
-            $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, array(), $dsConf, $realDestPid);
+            $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, array(), $dsConf, $realDestPid, 0, $workspaceOptions);
             $this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
         }
         // Return
