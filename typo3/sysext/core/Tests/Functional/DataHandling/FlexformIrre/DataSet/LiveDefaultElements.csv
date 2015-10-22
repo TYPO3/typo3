@@ -1,0 +1,16 @@
+"sys_language"
+,"uid","pid","hidden","title","flag"
+,1,0,0,"Deutsch","de"
+"sys_workspace"
+,"uid","pid","title","db_mountpoints"
+,1,0,"Test WS","88"
+tt_content
+,uid,pid,CType,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,"tx_irretutorial_flexform"
+,100,1,"",256,0,0,0,0,0,0,0,0,"Content #1","<?xml version='1.0' encoding='utf-8' standalone='yes' ?><T3FlexForms><data><sheet index='sDEF'><language index='lDEF'><field index='files'><value index='vDEF'>1</value></field></language></sheet></data></T3FlexForms>"
+# we assume the auto-generated storage 1 to exist here
+sys_file
+,uid,pid,storage,identifier,name
+,20,0,1,"/typo3-logo.png","typo3-logo.png"
+sys_file_reference
+,uid,pid,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign,table_local,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id
+,1,1,20,100,"tt_content","files",1,1,"sys_file",0,0,0,0,0
