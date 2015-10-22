@@ -343,11 +343,13 @@ $tca = array(
                 'renderType' => 'selectSingle',
                 'items' => array(
                     array('', ''),
-                    array('px', 'px'),
-                    array('mm', 'mm'),
-                    array('cm', 'cm'),
-                    array('m', 'm'),
-                    array('p', 'p'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.px', 'px'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.cm', 'cm'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.in', 'in'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.mm', 'mm'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.m', 'm'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.p', 'p'),
+                    array('LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.pt', 'pt')
                 ),
                 'default' => '',
                 'readOnly' => true,

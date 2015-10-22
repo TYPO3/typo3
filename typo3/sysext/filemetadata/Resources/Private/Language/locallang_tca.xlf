@@ -74,6 +74,27 @@
 			<trans-unit id="sys_file_metadata.unit">
 				<source>Unit</source>
 			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.px">
+				<source>Pixels</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.cm">
+				<source>Centimeters</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.in">
+				<source>Inches</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.mm">
+				<source>Millimeters</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.m">
+				<source>Meters</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.p">
+				<source>Picas</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.unit.pt">
+				<source>Points</source>
+			</trans-unit>
 			<trans-unit id="sys_file_metadata.duration">
 				<source>Duration</source>
 			</trans-unit>
