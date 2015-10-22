@@ -204,8 +204,6 @@
 			"FoT3\\Jumpurl\\Tests\\": "typo3/sysext/jumpurl/Tests/",
 			"TYPO3\\CMS\\Lang\\Tests\\": "typo3/sysext/lang/Tests/",
 			"TYPO3\\CMS\\Lowlevel\\Tests\\": "typo3/sysext/lowlevel/Tests/",
-			"FoT3\\Mediace\\": "typo3/sysext/mediace/Classes/",
-			"FoT3\\Mediace\\Tests\\": "typo3/sysext/mediace/Tests/",
 			"TYPO3\\CMS\\Recordlist\\Tests\\": "typo3/sysext/recordlist/Tests/",
 			"TYPO3\\CMS\\Reports\\Tests\\": "typo3/sysext/reports/Tests/",
 			"TYPO3\\CMS\\Rsaauth\\Tests\\": "typo3/sysext/rsaauth/Tests/",
