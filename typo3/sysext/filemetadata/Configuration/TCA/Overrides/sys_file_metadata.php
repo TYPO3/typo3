@@ -26,9 +26,8 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, creator_tool, publisher, source, copyright,
-					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
-					language
+					creator, creator_tool, publisher, source, copyright, language,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40
 			',
         ),
         TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
@@ -39,7 +38,7 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, creator_tool, publisher, source, copyright,
+					creator, creator_tool, publisher, source, copyright, language,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.gps;30,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.camera,
@@ -81,9 +80,9 @@ $tca = array(
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-					creator, creator_tool, publisher, source, copyright,
+					creator, creator_tool, publisher, source, copyright, language,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
-					language, pages,
+					pages,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60
 			',
