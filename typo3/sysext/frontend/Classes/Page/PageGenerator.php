@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -398,7 +399,7 @@ class PageGenerator
             $pageRenderer->setBaseUrl($tsfe->baseUrl);
         }
         if ($tsfe->pSetup['shortcutIcon']) {
-            $favIcon = $tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']);
+            $favIcon = ltrim($tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']), '/');
             $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, PATH_site . $favIcon);
             if ($iconFileInfo->isFile()) {
                 $iconMimeType = $iconFileInfo->getMimeType();
@@ -406,7 +407,7 @@ class PageGenerator
                     $iconMimeType = ' type="' . $iconMimeType . '"';
                     $pageRenderer->setIconMimeType($iconMimeType);
                 }
-                $pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
+                $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($tsfe->absRefPrefix . $favIcon));
             }
         }
         // Including CSS files
