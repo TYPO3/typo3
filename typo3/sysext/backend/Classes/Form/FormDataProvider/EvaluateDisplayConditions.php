@@ -299,9 +299,11 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      *
      * @param string $condition
      * @return bool
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8 - Do not use EXT:LOADED display conditions any longer
      */
     protected function matchExtensionCondition($condition)
     {
+        GeneralUtility::logDeprecatedFunction();
         $result = false;
         list($extensionKey, $operator, $operand) = explode(':', $condition, 3);
         if ($operator === 'LOADED') {
