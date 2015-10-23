@@ -345,7 +345,7 @@ class InlineRecordContainer extends AbstractContainer
                 $recTemp = BackendUtility::getRecordWSOL($itemParts[0], $itemParts[1]);
                 $recTitle = BackendUtility::getRecordTitle($itemParts[0], $recTemp, false);
             } else {
-                $recTitle = BackendUtility::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol], 0, 0, false);
+                $recTitle = BackendUtility::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol][0], 0, 0, false);
             }
             $recTitle = BackendUtility::getRecordTitlePrep($recTitle);
             if (trim($recTitle) === '') {
