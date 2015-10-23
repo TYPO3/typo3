@@ -5,15 +5,15 @@
 /* FONT PATH
  * -------------------------- */
 @font-face {
-  font-family: 'TYPO3FontAwesome';
-  src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.3.0');
-  src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),
-  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),
-  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.3.0') format('woff'),
-  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),
-  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'TYPO3FontAwesome';
+	src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.3.0');
+	src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),
+	url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),
+	url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.3.0') format('woff'),
+	url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),
+	url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
 /*!
@@ -26,72 +26,72 @@
 .frontEndEditIconLinks .fa:before,
 .typo3-editPanel .fa,
 .typo3-editPanel .fa:before{
-  display: inline-block;
-  font: normal normal normal 14px/1 TYPO3FontAwesome;
-  font-size: 15px;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translate(0, 0);
+	display: inline-block;
+	font: normal normal normal 14px/1 TYPO3FontAwesome;
+	font-size: 15px;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
 }
 #TSFE_ADMIN_PANEL_FORM .fa-pencil:before,
 .typo3-feedit-element .fa-pencil:before {
-  content: "\f040";
+	content: "\f040";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-angle-up:before,
 .typo3-editPanel .fa-angle-up:before {
-  content: "\f106";
+	content: "\f106";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-angle-down:before,
 .typo3-editPanel .fa-angle-down:before {
-  content: "\f107";
+	content: "\f107";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-toggle-off:before,
 .typo3-editPanel .fa-toggle-off:before {
-  content: "\f204";
+	content: "\f204";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-toggle-on:before,
 .typo3-editPanel .fa-toggle-on:before {
-  content: "\f205";
+	content: "\f205";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-google-plus-square:before,
 .typo3-editPanel .fa-google-plus-square:before {
-  content: "\f0d4";
+	content: "\f0d4";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-trash:before,
 .typo3-editPanel .fa-trash:before {
-  content: "\f1f8";
+	content: "\f1f8";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-history:before,
 .typo3-editPanel .fa-history:before {
-  content: "\f1da";
+	content: "\f1da";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-list-alt:before,
 .typo3-editPanel .fa-list-alt:before {
-  content: "\f022";
+	content: "\f022";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-plus-square:before,
 .typo3-feedit-element .fa-plus-square:before {
-  content: "\f0fe";
+	content: "\f0fe";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-arrows:before,
 .typo3-editPanel .fa-arrows:before{
-  content: "\f047";
+	content: "\f047";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-exclamation-circle:before {
-    content: "\f06a";
+	content: "\f06a";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-exclamation-triangle:before {
-    content: "\f071";
+	content: "\f071";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-info-circle:before {
-    content: "\f05a";
+	content: "\f05a";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-caret-down:before {
-    content: "\f0d7";
+	content: "\f0d7";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-caret-up:before {
-    content: "\f0d8";
+	content: "\f0d8";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-bolt:before {
 	content: "\f0e7";
@@ -113,6 +113,7 @@
 
 .typo3-editPanel {
 	background: #ccc;
+	padding: 5px 10px;
 }
 
 .typo3-editPanel a {
@@ -130,15 +131,12 @@
 	overflow: hidden;
 }
 
-.typo3-feedit-element .t3-icon,
-.typo3-feedit-element .fa {
-	color: #000000;
-	margin: 2px 3px;
+.typo3-feedit-element .btn-default.content-link {
+	background-color: #eee;
+	margin: 3px;
 }
 
 .typo3-feedit-element {
-	outline: 3px solid rgba(247, 144, 37, 0.8) !important;
-	outline-offset: 4px;
 }
 
 .typo3-feedit-element-hidden {

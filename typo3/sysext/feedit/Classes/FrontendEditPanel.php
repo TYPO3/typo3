@@ -125,10 +125,10 @@ class FrontendEditPanel
         // Hiding for localizations because it is unknown what should be the function in that case
         if (isset($allow['hide']) && $hideField && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
             if ($dataArr[$hideField]) {
-                $icon = $this->iconFactory->getIcon('actions-edit-unhide')->render();
+                $icon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render();
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'unhide');
             } else {
-                $icon = $this->iconFactory->getIcon('actions-edit-hide')->render();
+                $icon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render();
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'hide', '', $this->backendUser->extGetLL('p_hideConfirm'));
             }
         }
@@ -164,7 +164,9 @@ class FrontendEditPanel
 									<input type="hidden" name="TSFE_EDIT[cmd]" value="" />
 									<input type="hidden" name="TSFE_EDIT[record]" value="' . $currentRecord . '" />
 									<div class="typo3-editPanel">'
-                                        . $panel .
+                                        . '<div class="btn-group">'
+                                        . $panel
+                                        . '</div>' .
             ($labelTxt ? '<div class="typo3-editPanel-label">' . sprintf($labelTxt, htmlspecialchars(GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '</div>' : '') . '
 									</div>
 								</form>';
@@ -232,7 +234,7 @@ class FrontendEditPanel
                 'noView' => $nV
             )
         ) . $addUrlParamStr;
-        $icon = $this->editPanelLinkWrap_doWrap($iconImg, $url);
+        $icon = $this->editPanelLinkWrap_doWrap($iconImg, $url, 'content-link');
         if ($conf['beforeLastTag'] < 0) {
             $content = $icon . $content;
         } elseif ($conf['beforeLastTag'] > 0) {
@@ -285,7 +287,7 @@ class FrontendEditPanel
             } else {
                 $cf1 = ($cf2 = '');
             }
-            $out = '<a href="#" onclick="' . htmlspecialchars(($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;')) . '">' . $string . '</a>';
+            $out = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;')) . '">' . $string . '</a>';
         }
         return $out;
     }
@@ -295,13 +297,14 @@ class FrontendEditPanel
      *
      * @param string $string The string to wrap in a link, typ. and image used as button in the edit panel.
      * @param string $url The URL of the link. Should be absolute if supposed to work with <base> path set.
+     * @param string $additionalClasses Additional CSS classes
      * @return string A <a> tag wrapped string.
      * @see editPanelLinkWrap()
      */
-    protected function editPanelLinkWrap_doWrap($string, $url)
+    protected function editPanelLinkWrap_doWrap($string, $url, $additionalClasses = '')
     {
         $onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=sysext/backend/Resources/Private/Templates/Close.html') . ',\'FEquickEditWindow\',\'width=690,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
-        return '<a href="#" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
+        return '<a href="#" class="btn btn-default btn-sm ' . htmlspecialchars($additionalClasses) . '" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
     }
 
     /**
