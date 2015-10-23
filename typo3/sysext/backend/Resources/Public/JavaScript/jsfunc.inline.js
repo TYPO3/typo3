@@ -888,7 +888,7 @@ var inline = {
 		var valueObj = document.getElementsByName(elName);
 		var escapedObjectIdentifier = this.escapeObjectId(objectIdentifier);
 		var $container = TYPO3.jQuery('#' + escapedObjectIdentifier + '_div');
-		var $icon = $container.find('.t3js-' + escapedObjectIdentifier + '_disabled i');
+		var $icon = $container.find('.t3js-' + escapedObjectIdentifier + '_disabled .t3js-icon');
 
 		// It might be the case that there's no hidden field
 		if (formObj.length && valueObj.length) {
@@ -898,15 +898,23 @@ var inline = {
 		}
 
 		if ($icon.length) {
-			if ($icon.hasClass('fa-toggle-on')) {
-				$icon.removeClass('fa-toggle-on');
-				$icon.addClass('fa-toggle-off');
-				$container.addClass('t3-form-field-container-inline-hidden');
-			} else {
-				$icon.removeClass('fa-toggle-off');
-				$icon.addClass('fa-toggle-on');
-				$container.removeClass('t3-form-field-container-inline-hidden');
-			}
+			require(['TYPO3/CMS/Backend/Icons'], function(Icons) {
+				var hiddenClass = 't3-form-field-container-inline-hidden',
+					isHidden = $container.hasClass(hiddenClass),
+					toggleIcon;
+
+				if (isHidden) {
+					toggleIcon = 'actions-edit-hide';
+					$container.removeClass(hiddenClass);
+				} else {
+					toggleIcon = 'actions-edit-unhide';
+					$container.addClass(hiddenClass);
+				}
+
+				Icons.getIcon(toggleIcon, Icons.sizes.small).done(function(markup) {
+					$icon.replaceWith(markup);
+				});
+			});
 		}
 
 		return false;
