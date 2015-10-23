@@ -40,7 +40,7 @@ call_user_func(function () {
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,
 				bodytext;' . $frontendLanguageFilePrefix . 'bodytext_formlabel;;richtext:rte_transform[mode=ts_css],
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.media,
-				media,
+				assets,
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.imagelinks;imagelinks,
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.appearance,
 				layout;' . $frontendLanguageFilePrefix . 'layout_formlabel,
@@ -52,19 +52,6 @@ call_user_func(function () {
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.access;access,
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.extended
 		',
-        'columnsOverrides' => [
-            'media' => [
-                'label' => $languageFilePrefix . 'tt_content.media_references',
-                'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', [
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => $languageFilePrefix . 'tt_content.media_references.addFileReference'
-                    ],
-                    // custom configuration for displaying fields in the overlay/reference table
-                    // behaves the same as the image field.
-                    'foreign_types' => $GLOBALS['TCA']['tt_content']['columns']['image']['config']['foreign_types']
-                ], $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'])
-            ]
-        ]
     ];
 
     // Add category tab when categories column exits
@@ -117,7 +104,18 @@ call_user_func(function () {
                 ],
                 'default' => 0
             ]
-        ]
+        ],
+        'assets' => [
+            'label' => $languageFilePrefix . 'tt_content.asset_references',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('assets', [
+                'appearance' => [
+                    'createNewRelationLinkTitle' => $languageFilePrefix . 'tt_content.asset_references.addFileReference'
+                ],
+                // custom configuration for displaying fields in the overlay/reference table
+                // behaves the same as the image field.
+                'foreign_types' => $GLOBALS['TCA']['tt_content']['columns']['image']['config']['foreign_types']
+            ], $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'])
+        ],
     ];
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $additionalColumns);

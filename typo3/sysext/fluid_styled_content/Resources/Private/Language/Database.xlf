@@ -48,10 +48,10 @@
 			<trans-unit id="tt_content.palette.mediaAdjustments">
 				<source>Media Adjustments</source>
 			</trans-unit>
-			<trans-unit id="tt_content.media_references">
+			<trans-unit id="tt_content.asset_references">
 				<source>Media elements</source>
 			</trans-unit>
-			<trans-unit id="tt_content.media_references.addFileReference">
+			<trans-unit id="tt_content.asset_references.addFileReference">
 				<source>Add media file</source>
 			</trans-unit>
 		</body>

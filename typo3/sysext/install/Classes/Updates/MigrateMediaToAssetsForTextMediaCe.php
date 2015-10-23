@@ -14,17 +14,15 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 /**
- * Migrate CTypes 'text', 'image' and 'textpic' to 'textmedia' for extension 'frontend'
+ * Migrate CTypes 'textmedia' to use 'assets' field instead of 'media'
  */
-class ContentTypesToTextMediaUpdate extends AbstractUpdate
+class MigrateMediaToAssetsForTextMediaCe extends AbstractUpdate
 {
     /**
      * @var string
      */
-    protected $title = 'Migrate CTypes text, image and textpic to textmedia and move file relations from "image" to "media_references"';
+    protected $title = 'Migrate CTypes textmedia database field "media" to "assets"';
 
     /**
      * Checks if an update is needed
@@ -36,33 +34,31 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
     {
         $updateNeeded = true;
 
-        if (
-            !ExtensionManagementUtility::isLoaded('fluid_styled_content')
-            || ExtensionManagementUtility::isLoaded('css_styled_content')
-            || $this->isWizardDone()
-        ) {
+        if ($this->isWizardDone()) {
             $updateNeeded = false;
         } else {
-            $nonTextmediaCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            // No need to join the sys_file_references table here as we can rely on the reference
+            // counter to check if the wizards has any textmedia content elements to upgrade.
+            $textmediaCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
                 'uid',
                 'tt_content',
-                'CType IN (\'text\', \'image\', \'textpic\')'
+                'CType = \'textmedia\' AND media > 0'
             );
 
-            if ($nonTextmediaCount === 0) {
+            if ($textmediaCount === 0) {
                 $updateNeeded = false;
+                $this->markWizardAsDone();
             }
         }
 
-        $description = 'The extension "fluid_styled_content" is using a new CType, textmedia, ' .
-            'which replaces the CTypes text, image and textpic. ' .
-            'This update wizard migrates these old CTypes to the new one in the database.';
+        $description = 'The extension "fluid_styled_content" is using a new database field for mediafile references. ' .
+            'This update wizard migrates these old references to use the new database field.';
 
         return $updateNeeded;
     }
 
     /**
-     * Performs the database update if old CTypes are available
+     * Performs the database update if old mediafile references are available
      *
      * @param array &$databaseQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
@@ -72,37 +68,19 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
     {
         $databaseConnection = $this->getDatabaseConnection();
 
-        // Update 'text' records
+        // Update 'textmedia'
         $query = '
-			UPDATE tt_content
-			SET tt_content.CType = \'textmedia\'
-			WHERE
-			tt_content.CType = \'text\'
-		';
-        $databaseConnection->sql_query($query);
-
-        // Store last executed query
-        $databaseQueries[] = str_replace(chr(10), ' ', $query);
-        // Check for errors
-        if ($databaseConnection->sql_error()) {
-            $customMessages = 'SQL-ERROR: ' . htmlspecialchars($databaseConnection->sql_error());
-            return false;
-        }
-
-        // Update 'textpic' and 'image' records
-        $query = '
-			UPDATE tt_content
-			LEFT JOIN sys_file_reference
+			UPDATE sys_file_reference
+			LEFT JOIN tt_content
 			ON sys_file_reference.uid_foreign = tt_content.uid
 			AND sys_file_reference.tablenames =\'tt_content\'
-			AND sys_file_reference.fieldname = \'image\'
-			SET tt_content.CType = \'textmedia\',
-			tt_content.assets = image,
-			tt_content.image = 0,
+			AND sys_file_reference.fieldname = \'media\'
+			SET tt_content.assets = tt_content.media,
+			tt_content.media = 0,
 			sys_file_reference.fieldname = \'assets\'
 			WHERE
-			tt_content.CType = \'textpic\'
-			OR tt_content.CType = \'image\'
+			tt_content.CType = \'textmedia\'
+			AND tt_content.media > 0
 		';
         $databaseConnection->sql_query($query);
 

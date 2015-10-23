@@ -174,7 +174,7 @@ tt_content {
 		dataProcessing {
 			10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
 			10 {
-				references.fieldName = media
+				references.fieldName = assets
 			}
 			20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
 			20 {
@@ -187,7 +187,7 @@ tt_content {
 		}
 		stdWrap {
 			# Setup the edit icon for content element "textmedia"
-			editIcons = tt_content: header [header_layout], bodytext, media [imageorient|imagewidth|imageheight], [imagecols|imageborder], image_zoom
+			editIcons = tt_content: header [header_layout], bodytext, assets [imageorient|imagewidth|imageheight], [imagecols|imageborder], image_zoom
 			editIcons {
 				iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.textmedia
 			}
