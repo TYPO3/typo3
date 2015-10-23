@@ -139,7 +139,7 @@ module.exports = function(grunt) {
 					'cropper.min.js': 'cropper/dist/cropper.min.js',
 					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
 					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-					'autosize.js': 'autosize/dest/autosize.min.js',
+					'autosize.js': 'autosize/dist/autosize.min.js',
 					'placeholders.jquery.min.js': 'Placeholders.js/dist/placeholders.jquery.min.js',
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',

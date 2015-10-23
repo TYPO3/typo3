@@ -35,7 +35,7 @@
     "moment-timezone": "0.4.1",
     "nprogress": "0.2.0",
     "datatables": "1.10.9",
-    "autosize": "3.0.4",
+    "autosize": "3.0.13",
     "cropper": "0.9.3",
     "imagesloaded": "3.1.8",
     "Placeholders.js": "4.0.1",
