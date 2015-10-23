@@ -320,9 +320,11 @@ class SingleFieldContainer extends AbstractContainer
                 $field,
                 $this->data['defaultLanguageRow'][$field],
                 0,
-                1,
+                true,
                 false,
-                $this->data['defaultLanguageRow']['uid']
+                $this->data['defaultLanguageRow']['uid'],
+                true,
+                $this->data['defaultLanguageRow']['pid']
             );
             $fieldConfig = $this->data['processedTca']['columns'][$field];
             // Don't show content if it's for IRRE child records:
