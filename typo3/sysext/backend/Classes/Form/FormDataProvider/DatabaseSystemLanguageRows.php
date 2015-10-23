@@ -74,7 +74,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
         $dbRows = $database->exec_SELECTgetRows(
             'uid,title,language_isocode,static_lang_isocode,flag',
             'sys_language',
-            'pid=0 AND hidden=0'
+            'pid=0'
         );
 
         if ($dbRows === null) {

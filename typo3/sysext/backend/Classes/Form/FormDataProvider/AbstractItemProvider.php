@@ -248,16 +248,12 @@ abstract class AbstractItemProvider
                 }
             }
         } elseif ($special === 'languages') {
-            // @todo: This should probably use the data provided by DatabaseSystemLanguageRows sitting in $result['systemLanguageRows']
-            /** @var TranslationConfigurationProvider $translationConfigurationProvider */
-            $translationConfigurationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-            $languages = $translationConfigurationProvider->getSystemLanguages();
-            foreach ($languages as $language) {
+            foreach ($result['systemLanguageRows'] as $language) {
                 if ($language['uid'] !== -1) {
                     $items[] = [
                         0 => $language['title'] . ' [' . $language['uid'] . ']',
                         1 => $language['uid'],
-                        2 => $language['flagIcon']
+                        2 => $language['flagIconIdentifier']
                     ];
                 }
             }
