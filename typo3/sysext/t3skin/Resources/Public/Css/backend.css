@@ -12571,7 +12571,7 @@ select.icon-select option {
     white-space: nowrap;
   }
 }
-textarea.t3js-formengine-textarea {
+textarea.formengine-textarea {
   resize: none;
 }
 body#typo3-backend-php {

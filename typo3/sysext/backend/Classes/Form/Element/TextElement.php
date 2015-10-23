@@ -125,6 +125,7 @@ class TextElement extends AbstractFormElement
             $classes = array();
             $classes[] = 'form-control';
             $classes[] = 't3js-formengine-textarea';
+            $classes[] = 'formengine-textarea';
             if ($specialConfiguration['fixed-font']) {
                 $classes[] = 'text-monospace';
             }
