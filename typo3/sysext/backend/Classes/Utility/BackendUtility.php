@@ -60,14 +60,6 @@ class BackendUtility
      */
     protected static $tcaTableTypeConfigurationCache = array();
 
-    /**
-     * Cache the processed titles of records during runtime
-     *
-     * @var array
-     * @see self::getRecordTitle()
-     */
-    protected static $recordTitleCache = array();
-
     /*******************************************
      *
      * SQL-related, selecting records, searching
@@ -2165,11 +2157,6 @@ class BackendUtility
      */
     public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
     {
-        $cacheIdentifier = $table . '-' . $row['uid'] . '-prep-' . (int)$prep . '-forceResult-' . (int)$forceResult;
-        if (isset(self::$recordTitleCache[$cacheIdentifier])) {
-            return self::$recordTitleCache[$cacheIdentifier];
-        }
-
         $recordTitle = '';
         if (is_array($GLOBALS['TCA'][$table])) {
             // If configured, call userFunc
@@ -2221,7 +2208,6 @@ class BackendUtility
                 }
             }
         }
-        self::$recordTitleCache[$cacheIdentifier] = $recordTitle;
 
         return $recordTitle;
     }

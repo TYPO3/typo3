@@ -1037,28 +1037,6 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRecordTitleHavingLabelUserFuncCachesValue()
-    {
-        $table = 'tx_mytable';
-        $row = ['uid' => 1];
-
-        $mock = $this->getMock('stdClass', ['labelUserFunc']);
-        $mock->expects($this->once())->method('labelUserFunc')->willReturn('Test');
-
-        // Use wrapping closure for GeneralUtility::callUserFunction()
-        $GLOBALS['TCA'][$table]['ctrl']['label_userFunc'] = function (&$parameters) use ($mock) {
-            $parameters['title'] = $mock->labelUserFunc();
-        };
-
-        $this->assertEquals('Test', BackendUtility::getRecordTitle($table, $row));
-
-        // Call a second time to make sure labelUserFunc is not called again ($this->once())
-        $this->assertEquals('Test', BackendUtility::getRecordTitle($table, $row));
-    }
-
-    /**
-     * @test
-     */
     public function getSpecConfPartsSplitsDefaultExtras()
     {
         $defaultExtras = 'nowrap:wizards[foo|bar]:anotherDefaultExtras:some[other|setting|with|parameters]';
