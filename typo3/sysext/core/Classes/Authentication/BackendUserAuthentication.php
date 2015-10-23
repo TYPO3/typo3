@@ -2178,8 +2178,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      */
     public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0)
     {
-        if (!$userId && isset($this->user['uid'])) {
-            $userId = $this->user['uid'];
+        if (!$userId) {
+            // Use the original user's ID in case of a user switch
+            if (!empty($this->user['ses_backuserid'])) {
+                $userId = $this->user['ses_backuserid'];
+            } elseif (!empty($this->user['uid'])) {
+                $userId = $this->user['uid'];
+            }
         }
 
         $fields_values = array(
