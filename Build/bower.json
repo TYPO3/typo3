@@ -32,7 +32,7 @@
     "jquery-ui": "1.11.4",
     "eonasdan-bootstrap-datetimepicker": "4.17.37",
     "moment": "2.10.6",
-    "moment-timezone": "0.4.0",
+    "moment-timezone": "0.4.1",
     "nprogress": "0.2.0",
     "datatables": "1.10.9",
     "autosize": "3.0.4",
