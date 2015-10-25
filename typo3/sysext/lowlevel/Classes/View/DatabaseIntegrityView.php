@@ -217,6 +217,7 @@ class DatabaseIntegrityView extends BaseScriptClass
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
+            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setSetVariables(['function','search','search_query_makeQuery']);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
