@@ -12,6 +12,12 @@
 			<trans-unit id="title">
 				<source>Import / Export</source>
 			</trans-unit>
+			<trans-unit id="title_import">
+				<source>Import</source>
+			</trans-unit>
+			<trans-unit id="title_export">
+				<source>Export</source>
+			</trans-unit>
 			<trans-unit id="tableselec_configuration">
 				<source>Configuration</source>
 			</trans-unit>

@@ -99,6 +99,13 @@ class ImportExportController extends BaseScriptClass
     protected $moduleTemplate;
 
     /**
+     *  The name of the shortcut for this page
+     *
+     * @var string
+     */
+    protected $shortcutName;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -143,13 +150,14 @@ class ImportExportController extends BaseScriptClass
         );
         $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
             . '<input type="hidden" name="id" value="' . $this->id . '" />');
-        $this->content .= $this->moduleTemplate->sectionHeader($this->lang->getLL('title'));
-        $this->content .= $this->moduleTemplate->spacer(5);
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
+        $this->content .= $this->moduleTemplate->sectionHeader($this->lang->getLL('title_' . (string)$inData['action']));
+        $this->content .= $this->moduleTemplate->spacer(5);
         $this->checkUpload();
         switch ((string)$inData['action']) {
             case 'export':
+                $this->shortcutName = $this->lang->getLL('title_export');
                 // Finally: If upload went well, set the new file as the thumbnail in the $inData array:
                 if (!empty($this->uploadedFiles[0])) {
                     $inData['meta']['thumbnail'] = $this->uploadedFiles[0]->getCombinedIdentifier();
@@ -158,6 +166,7 @@ class ImportExportController extends BaseScriptClass
                 $this->exportData($inData);
                 break;
             case 'import':
+                $this->shortcutName = $this->lang->getLL('title_import');
                 // Finally: If upload went well, set the new file as the import file:
                 if (!empty($this->uploadedFiles[0])) {
                     // Only allowed extensions....
@@ -241,6 +250,7 @@ class ImportExportController extends BaseScriptClass
         if ($this->getBackendUser()->mayMakeShortcut()) {
             $shortcutButton = $buttonBar->makeShortcutButton()
                 ->setGetVariables(['tx_impexp'])
+                ->setDisplayName($this->shortcutName)
                 ->setModuleName($this->moduleName);
             $buttonBar->addButton($shortcutButton);
         }
@@ -399,6 +409,7 @@ class ImportExportController extends BaseScriptClass
                     }
                     $pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\View\ExportPageTreeView::class);
                     $this->treeHTML = $pagetree->printTree($tree->tree);
+                    $this->shortcutName .= ' (' . $sPage['title'] . ')';
                 }
             }
             // In any case we should have a multi-level array, $idH, with the page structure
@@ -1016,6 +1027,9 @@ class ImportExportController extends BaseScriptClass
             // must have trailing slash.
             $path = $this->getDefaultImportExportFolder();
             $exportFiles = $this->getExportFiles();
+
+            $this->shortcutName .= ' (' . $this->pageinfo['title'] . ')';
+
             // Configuration
             $row = array();
             $selectOptions = array('');
