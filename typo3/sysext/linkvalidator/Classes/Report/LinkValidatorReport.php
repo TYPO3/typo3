@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  */
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -224,7 +225,10 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             );
         }
 
-        return $this->doc->getDynamicTabMenu($menuItems, 'report-linkvalidator');
+        // @todo: Use $this-moduleTemplate as soon as this class extends from AbstractModule
+        /** @var ModuleTemplate $moduleTemplate */
+        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        return $moduleTemplate->getDynamicTabMenu($menuItems, 'report-linkvalidator');
     }
 
     /**

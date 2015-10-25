@@ -1613,15 +1613,17 @@ function jumpToUrl(URL) {
      * @param bool $wrapContent If set, the content is wrapped in div structure which provides a padding and border style. Set this FALSE to get unstyled content pane with fullsize content area.
      * @param bool $storeLastActiveTab If set, the last open tab is stored in local storage and will be re-open again. If you don't need this feature, e.g. for wizards like import/export you can disable this behaviour.
      * @return string
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use getDynamicTabMenu() from ModuleTemplate instead.
      */
     public function getDynamicTabMenu(array $menuItems, $identString, $defaultTabIndex = 1, $collapseable = false, $wrapContent = true, $storeLastActiveTab = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
         $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapseable ? 'Collapse.html' : 'Tabs.html');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
         $view->assignMultiple(array(
-            'id' => $this->getDynTabMenuId($identString),
+            'id' => 'DTM-' . GeneralUtility::shortMD5($identString),
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => $wrapContent,
@@ -1657,9 +1659,11 @@ function jumpToUrl(URL) {
      *
      * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
      * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
     public function getDynTabMenuId($identString)
     {
+        GeneralUtility::logDeprecatedFunction();
         $id = 'DTM-' . GeneralUtility::shortMD5($identString);
         return $id;
     }

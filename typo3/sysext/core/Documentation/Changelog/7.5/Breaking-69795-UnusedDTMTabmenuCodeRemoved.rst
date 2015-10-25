@@ -26,5 +26,5 @@ TYPO3 Installations with custom extensions that use the logic mentioned above.
 Migration
 =========
 
-Use DocumentTemplate::getDynamicTabMenu() directly to use the Bootstrap-based API
+Use ModuleTemplate::getDynamicTabMenu() directly to use the Bootstrap-based API
 shipped with the TYPO3 Core.

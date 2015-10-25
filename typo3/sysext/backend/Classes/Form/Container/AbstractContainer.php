@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Abstract container has various methods used by the container classes
@@ -68,6 +69,29 @@ abstract class AbstractContainer extends AbstractNode
             'fieldLabel' => $fieldArray[1] ?: null,
             'paletteName' => $fieldArray[2] ?: null,
         );
+    }
+
+    /**
+     * Render tabs with label and content. Used by TabsContainer and FlexFormTabsContainer.
+     * Re-uses the template Tabs.html which is also used by ModuleTemplate.php.
+     *
+     * @param array $menuItems Tab elements, each element is an array with "label" and "content"
+     * @param string $domId DOM id attribute, will be appended with an iteration number per tab.
+     * @return string
+     */
+    protected function renderTabMenu(array $menuItems, $domId, $defaultTabIndex = 1)
+    {
+        $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/Tabs.html';
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+        $view->assignMultiple(array(
+            'id' => $domId,
+            'items' => $menuItems,
+            'defaultTabIndex' => $defaultTabIndex,
+            'wrapContent' => false,
+            'storeLastActiveTab' => true,
+        ));
+        return $view->render();
     }
 
     /**

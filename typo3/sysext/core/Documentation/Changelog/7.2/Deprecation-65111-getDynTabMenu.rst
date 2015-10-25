@@ -24,4 +24,4 @@ All installations which make use of ``DocumentTemplate::getDynTabMenu()``
 Migration
 =========
 
-Use ``DocumentTemplate::getDynamicTabMenu()`` instead of ``DocumentTemplate::getDynTabMenu()``
+Use ``ModuleTemplate::getDynamicTabMenu()`` instead of ``DocumentTemplate::getDynTabMenu()``

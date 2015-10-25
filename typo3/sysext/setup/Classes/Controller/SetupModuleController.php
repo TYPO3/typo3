@@ -452,7 +452,7 @@ class SetupModuleController extends AbstractModule
 
         // Render the menu items
         $menuItems = $this->renderUserSetup();
-        $this->content .= $this->doc->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
+        $this->content .= $this->moduleTemplate->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
         $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
         $this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
             <input type="hidden" name="formToken" value="' . $formToken . '" />

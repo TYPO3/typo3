@@ -306,7 +306,6 @@ class FormResultCompiler
     /**
      * Includes a javascript library that exists in the core /typo3/ directory. The
      * backpath is automatically applied.
-     * This method acts as wrapper for $GLOBALS['SOBE']->doc->loadJavascriptLib($lib).
      *
      * @param string $lib Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
      * @return void

@@ -397,15 +397,10 @@ class ModuleTemplate
     }
 
     /**
-     * Creates a DYNAMIC tab-menu where the tabs or collapsible are rendered with bootstrap markup
+     * Creates a tab menu where the tabs or collapsible are rendered with bootstrap markup
      *
-     * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label"
-     *                         contains the label for the TAB, "content" contains the HTML content that goes into the
-     *                         div-layer of the tabs content. "description" contains description text to be shown in the
-     *                         layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over
-     *                         text of tab). "stateIcon" indicates a standard status icon (see ->icon(),
-     *                         values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
-     * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
+     * @param array $menuItems Tab elements, each element is an array with "label" and "content"
+     * @param string $domId DOM id attribute, will be appended with an iteration number per tab.
      * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1
      *                             (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing
      *                             will result in no default tab open.
@@ -418,36 +413,21 @@ class ModuleTemplate
      *                                 disable this behaviour.
      * @return string
      */
-    public function getDynamicTabMenu(array $menuItems, $identString, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
+    public function getDynamicTabMenu(array $menuItems, $domId, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
         $templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapsible ? 'Collapse.html' : 'Tabs.html');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
         $view->assignMultiple(array(
-            'id' => $this->getDynTabMenuId($identString),
+            'id' => 'DTM-' . GeneralUtility::shortMD5($domId),
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => $wrapContent,
             'storeLastActiveTab' => $storeLastActiveTab,
-            'BACK_PATH' => $GLOBALS['BACK_PATH']
         ));
         return $view->render();
     }
-
-    /**
-     * Creates the id for dynTabMenus.
-     *
-     * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
-     * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a
-     */
-    public function getDynTabMenuId($identString)
-    {
-        $id = 'DTM-' . GeneralUtility::shortMD5($identString);
-        return $id;
-    }
-
-
 
     /*******************************************
      * THE FOLLOWING METHODS ARE SUBJECT TO BE DEPRECATED / DROPPED!

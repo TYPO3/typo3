@@ -35,7 +35,6 @@ class FlexFormTabsContainer extends AbstractContainer
     public function render()
     {
         $languageService = $this->getLanguageService();
-        $docTemplate = $this->getDocumentTemplate();
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
@@ -45,12 +44,12 @@ class FlexFormTabsContainer extends AbstractContainer
         $flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];
         $flexFormRowData = $this->data['flexFormRowData'];
 
-        $tabId = 'TCEFORMS:flexform:' . $this->data['parameterArray']['itemFormElName'] . $flexFormCurrentLanguage;
-        $tabIdString = $docTemplate->getDynTabMenuId($tabId);
-        $tabCounter = 0;
-
         $resultArray = $this->initializeResultArray();
-        $tabsContent = array();
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
+
+        $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName'] . $flexFormCurrentLanguage);
+        $tabCounter = 0;
+        $tabElements = array();
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
             $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
@@ -80,12 +79,12 @@ class FlexFormTabsContainer extends AbstractContainer
             // palette and single field container to render this group
             $options['tabAndInlineStack'][] = array(
                 'tab',
-                $tabIdString . '-' . $tabCounter,
+                $domIdPrefix . '-' . $tabCounter,
             );
             $options['renderType'] = 'flexFormElementContainer';
             $childReturn = $this->nodeFactory->create($options)->render();
 
-            $tabsContent[] = array(
+            $tabElements[] = array(
                 'label' => !empty($sheetDataStructure['ROOT']['sheetTitle']) ? $languageService->sL($sheetDataStructure['ROOT']['sheetTitle']) : $sheetName,
                 'content' => $childReturn['html'],
                 'description' => $sheetDataStructure['ROOT']['sheetDescription'] ? $languageService->sL($sheetDataStructure['ROOT']['sheetDescription']) : '',
@@ -97,21 +96,8 @@ class FlexFormTabsContainer extends AbstractContainer
         }
 
         // Feed everything to document template for tab rendering
-        $resultArray['html'] = $docTemplate->getDynamicTabMenu($tabsContent, $tabId, 1, false, false);
+        $resultArray['html'] = $this->renderTabMenu($tabElements, $domIdPrefix);
         return $resultArray;
-    }
-
-    /**
-     * @throws \RuntimeException
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        $docTemplate = $GLOBALS['TBE_TEMPLATE'];
-        if (!is_object($docTemplate)) {
-            throw new \RuntimeException('No instance of DocumentTemplate found', 1427143328);
-        }
-        return $docTemplate;
     }
 
     /**

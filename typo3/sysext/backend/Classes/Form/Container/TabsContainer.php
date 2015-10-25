@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 
 /**
  * Render all tabs of a record that has tabs.
@@ -34,7 +34,6 @@ class TabsContainer extends AbstractContainer
     public function render()
     {
         $languageService = $this->getLanguageService();
-        $docTemplate = $this->getDocumentTemplate();
 
         // All the fields to handle in a flat list
         $fieldsArray = $this->data['fieldsArray'];
@@ -62,15 +61,12 @@ class TabsContainer extends AbstractContainer
             }
         }
 
-        // Iterate over the tabs and compile content in $tabsContent array together with label
-        $tabsContent = array();
         $resultArray = $this->initializeResultArray();
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
 
-        $tabId = 'TCEforms:' . $this->data['tableName'] . ':' . $this->data['databaseRow']['uid'];
-        // @todo: This duplicates parts of the docTemplate code
-        $tabIdString = $docTemplate->getDynTabMenuId($tabId);
-
+        $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['tableName'] . $this->data['databaseRow']['uid']);
         $tabCounter = 0;
+        $tabElements = array();
         foreach ($tabsArray as $tabWithLabelAndElements) {
             $tabCounter ++;
             $elements = $tabWithLabelAndElements['elements'];
@@ -80,7 +76,7 @@ class TabsContainer extends AbstractContainer
             $options = $this->data;
             $options['tabAndInlineStack'][] = array(
                 'tab',
-                $tabIdString . '-' . $tabCounter,
+                $domIdPrefix . '-' . $tabCounter,
             );
             $options['fieldsArray'] = array();
             foreach ($elements as $element) {
@@ -89,7 +85,7 @@ class TabsContainer extends AbstractContainer
             $options['renderType'] = 'paletteAndSingleContainer';
             $childArray = $this->nodeFactory->create($options)->render();
 
-            $tabsContent[] = array(
+            $tabElements[] = array(
                 'label' => $tabWithLabelAndElements['label'],
                 'content' => $childArray['html'],
             );
@@ -97,8 +93,7 @@ class TabsContainer extends AbstractContainer
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
         }
 
-        // Feed everything to document template for tab rendering
-        $resultArray['html'] = $docTemplate->getDynamicTabMenu($tabsContent, $tabId, 1, false, false);
+        $resultArray['html'] = $this->renderTabMenu($tabElements, $domIdPrefix);
         return $resultArray;
     }
 
@@ -110,16 +105,4 @@ class TabsContainer extends AbstractContainer
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @throws \RuntimeException
-     * @return DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        $docTemplate = $GLOBALS['TBE_TEMPLATE'];
-        if (!is_object($docTemplate)) {
-            throw new \RuntimeException('No instance of DocumentTemplate found', 1426459735);
-        }
-        return $docTemplate;
-    }
 }
