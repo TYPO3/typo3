@@ -98,6 +98,7 @@ class ModuleController extends BaseScriptClass
         // DBAL page title:
         $this->content .= '<h1>' . $languageService->getLL('title') . '</h1>';
         $this->generateMenu();
+        $shortcutName = $languageService->getLL('Debug_log');
         // Debug log:
         switch ($this->MOD_SETTINGS['function']) {
             case 'info':
@@ -105,12 +106,14 @@ class ModuleController extends BaseScriptClass
                     $languageService->getLL('Cached_info'),
                     $this->printCachedInfo()
                 );
+                $shortcutName = $languageService->getLL('Cached_info');
                 break;
             case 'sqlcheck':
                 $this->content .= $this->moduleTemplate->section(
                     $languageService->getLL('SQL_check'),
                     $this->printSqlCheck()
                 );
+                $shortcutName = $languageService->getLL('SQL_check');
                 break;
             case 0:
                 $this->content .= $this->moduleTemplate->section(
@@ -122,6 +125,7 @@ class ModuleController extends BaseScriptClass
         // ShortCut
         $shortcutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton()
             ->setModuleName($this->MCONF['name'])
+            ->setDisplayName($shortcutName)
             ->setSetVariables(['function']);
         $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
     }
