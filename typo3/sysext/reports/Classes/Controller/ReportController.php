@@ -41,6 +41,13 @@ class ReportController extends ActionController
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
+     * Module name for the shortcut
+     *
+     * @var string
+     */
+    protected $shortcutName;
+
+    /**
      * Redirect to the saved report
      *
      * @return void
@@ -148,6 +155,7 @@ class ReportController extends ActionController
             )
             ->setTitle($lang->getLL('reports_overview'));
         $menu->addMenuItem($menuItem);
+        $this->shortcutName = $lang->getLL('reports_overview');
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $reports) {
             foreach ($reports as $reportName => $report) {
                 $menuItem = $menu
@@ -158,6 +166,7 @@ class ReportController extends ActionController
                 if ($this->arguments->hasArgument('extension') && $this->arguments->hasArgument('report')) {
                     if ($this->arguments->getArgument('extension')->getValue() === $extKey && $this->arguments->getArgument('report')->getValue() === $reportName) {
                         $menuItem->setActive(true);
+                        $this->shortcutName = $menuItem->getTitle();
                     }
                 }
                 $menu->addMenuItem($menuItem);
@@ -182,6 +191,7 @@ class ReportController extends ActionController
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
             ->setGetVariables($getVars)
+            ->setDisplayName($this->shortcutName)
             ->setSetVariables($setVars);
         $buttonBar->addButton($shortcutButton);
     }
