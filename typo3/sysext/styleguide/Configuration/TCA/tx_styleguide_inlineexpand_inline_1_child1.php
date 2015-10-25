@@ -62,6 +62,14 @@ return array(
             )
         ),
 
+        'dummy_1' => array(
+            'exclude' => 1,
+            'label' => 'dummy 1',
+            'config' => array(
+                'type' => 'input',
+            ),
+        ),
+
         'rte_1' => array(
             'exclude' => 1,
             'label' => 'RTE 1',
@@ -180,6 +188,7 @@ return array(
         '0' => array(
             'showitem' => '
 				tree_1, fal_1, rte_1,
+				--div--;dummy, dummy_1,
 			',
         ),
     ),
