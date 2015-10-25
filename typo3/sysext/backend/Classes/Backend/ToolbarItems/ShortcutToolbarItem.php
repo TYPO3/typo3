@@ -589,7 +589,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 if (!empty($page)) {
                     // Set the name to the title of the page
                     if ($shortcut['type'] === 'other') {
-                        $shortcutName = $page['title'];
+                        if (empty($shortcutName)) {
+                            $shortcutName = $page['title'];
+                        } else {
+                            $shortcutName .= ' (' . $page['title'] . ')';
+                        }
                     } else {
                         $shortcutName = $shortcutNamePrepend . ' ' .
                             $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) .
