@@ -122,7 +122,7 @@ class ModuleController extends BaseScriptClass
         // ShortCut
         $shortcutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton()
             ->setModuleName($this->MCONF['name'])
-            ->setGetVariables(['id']);
+            ->setSetVariables(['function']);
         $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
     }
 
