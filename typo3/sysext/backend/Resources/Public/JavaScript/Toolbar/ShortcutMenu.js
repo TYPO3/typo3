@@ -117,6 +117,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	 * @param {String} confirmationText
 	 * @param {String} motherModule
 	 * @param {Object} shortcutButton
+	 * @param {String} displayName
 	 */
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton, displayName) {
 		if (typeof confirmationText !== 'undefined') {
