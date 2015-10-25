@@ -207,6 +207,7 @@ class ConfigurationView extends BaseScriptClass
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
+            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setSetVariables(['function']);
         $buttonBar->addButton($shortcutButton);
 
