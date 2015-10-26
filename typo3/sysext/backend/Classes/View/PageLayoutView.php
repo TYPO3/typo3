@@ -720,35 +720,52 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $viewLink = '';
                 if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
-                    $viewLink = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                    $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Language overlay page header:
                 if ($lP) {
                     list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
                     BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
                     $params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
-                    $lPLabel = BackendUtility::wrapClickMenuOnIcon(
+                    $recordIcon = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),
                         'pages_language_overlay',
                         $lpRecord['uid']
-                    ) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
-                            ? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
-                                . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
-                                . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
-                            : ''
-                        ) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
+                    );
+                    $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+                        ? '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+                        . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
+                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
+                        : ''
+                    );
+
+                    $lPLabel =
+                        '<div class="btn-group">'
+                            . $viewLink
+                            . $editLink
+                        . '</div>'
+                        . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
                 } else {
                     $params = '&edit[pages][' . $this->id . ']=edit';
-                    $lPLabel = BackendUtility::wrapClickMenuOnIcon(
+
+                    $recordIcon = BackendUtility::wrapClickMenuOnIcon(
                         $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
                         'pages',
                         $this->id
-                    ) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
-                            ? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
-                            . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
-                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
-                            : ''
-                        ) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
+                    );
+                    $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+                        ? '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+                        . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
+                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
+                        : ''
+                    );
+
+                    $lPLabel =
+                        '<div class="btn-group">'
+                            . $viewLink
+                            . $editLink
+                        . '</div>'
+                        . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
                 }
                 $sCont[$lP] = '
 					<td nowrap="nowrap" class="t3-page-column t3-page-lang-label">' . $lPLabel . '</td>';
