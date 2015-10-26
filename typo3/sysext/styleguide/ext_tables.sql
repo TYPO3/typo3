@@ -568,6 +568,7 @@ CREATE TABLE tx_styleguide_inlineexpand_inline_1_child1 (
 
 	rte_1 text NOT NULL,
 	tree_1 text NOT NULL,
+	dummy_1 text NOT NULL,
 	fal_1 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
