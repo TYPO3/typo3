@@ -26,11 +26,19 @@
 	<form method="post">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 		<input type="hidden" value="execute" name="install[set]" />
-		<fieldset class="t3-install-form-label-width-21 t3-install-form-label-after">
+		<fieldset class="t3-install-form-label-after">
 			<ol>
 				<li>
-					<input type="checkbox" id="load-distributions" name="install[values][loaddistributions]" value="1" checked="checked" />
+					<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
 					<label for="load-distributions">Yes, download the list of distributions.</label>
+				</li>
+				<li>
+					<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+					<label for="create-site">Yes, create a base empty page to start from.</label>
+				</li>
+				<li>
+					<input type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+					<label for="do-nothing">Do nothing, just get me to the Backend.</label>
 				</li>
 			</ol>
 		</fieldset>
