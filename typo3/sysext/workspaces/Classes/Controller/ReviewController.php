@@ -112,11 +112,19 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		$wsCur = array($activeWorkspace => TRUE);
 		$wsList = array_intersect_key($wsList, $wsCur);
+		$backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
 		$this->view->assign('showGrid', TRUE);
 		$this->view->assign('showAllWorkspaceTab', FALSE);
 		$this->view->assign('workspaceList', $wsList);
-		$this->view->assign('backendDomain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
+		$this->view->assign('backendDomain', $backendDomain);
+		// Setting the document.domain early before JavScript
+		// libraries are loaded, try to access top frame reference
+		// and possibly run into some CORS issue
+		$this->pageRenderer->addJsInlineCode(
+			'backendDomain',
+			'document.domain = ' . GeneralUtility::quoteJSvalue($backendDomain) . ';'
+		);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'singleView', '1');
 	}
 

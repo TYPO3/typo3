@@ -37,6 +37,11 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $pageId;
 
 	/**
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected $template;
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void

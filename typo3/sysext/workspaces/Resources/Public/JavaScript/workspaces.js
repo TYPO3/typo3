@@ -66,19 +66,23 @@ Ext.onReady(function() {
 		directFn : TYPO3.Workspaces.ExtDirect.getWorkspaceInfos
 	});
 
-	TYPO3.Workspaces.Tabs = new Ext.Panel({
-		renderTo: 'workspacetabs',
-		autoWidth: true,
-		layout: 'fit',
-		items: [
-			{
-				xtype: 'WorkspacesTabPanel',
-				unstyled: true,
-				items: TYPO3.settings.Workspaces.workspaceTabs,
-				activeTab: 'workspace-' + TYPO3.settings.Workspaces.activeWorkspaceId
-			}
-		]
-	});
+	// Workspace Tabs are not used in
+	// frontend list preview
+	if (Ext.get('workspacetabs')) {
+		TYPO3.Workspaces.Tabs = new Ext.Panel({
+			renderTo: 'workspacetabs',
+			autoWidth: true,
+			layout: 'fit',
+			items: [
+				{
+					xtype: 'WorkspacesTabPanel',
+					unstyled: true,
+					items: TYPO3.settings.Workspaces.workspaceTabs,
+					activeTab: 'workspace-' + TYPO3.settings.Workspaces.activeWorkspaceId
+				}
+			]
+		});
+	}
 
 	// fire grid
 	var WS = new TYPO3.Workspaces.App.init();
