@@ -13333,6 +13333,12 @@ iframe {
 .typo3-topbar-navigation-search .dropdown-list-link .typeahead-highlight {
   font-weight: normal;
 }
+#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem .dropdown-list {
+  max-height: 270px;
+  overflow: hidden;
+  overflow-y: auto;
+  padding-right: 10px;
+}
 #typo3-debug-console {
   background-color: #f5f5f5;
   width: 100%;

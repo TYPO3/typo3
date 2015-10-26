@@ -393,3 +393,13 @@
 		}
 	}
 }
+
+// Bookmark dropdown menu
+#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem {
+  .dropdown-list {
+	max-height: (10 * (18px + (@topbar-dropdown-padding / 2) + 1px)); // 18px=12px font with line-height 1.5; 1px margin-top for padding; 10 rows
+	overflow: hidden;
+	overflow-y: auto;
+	padding-right: 10px;
+  }
+}
