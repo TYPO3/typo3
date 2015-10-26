@@ -951,7 +951,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             } elseif ($fCol == '_LOCALIZATION_') {
                 list($lC1, $lC2) = $this->makeLocalizationPanel($table, $row);
                 $theData[$fCol] = $lC1;
-                $theData[$fCol . 'b'] = $lC2;
+                $theData[$fCol . 'b'] = '<div class="btn-group">' . $lC2 . '</div>';
             } elseif ($fCol == '_LOCALIZATION_b') {
                 // deliberately empty
             } else {
@@ -1825,7 +1825,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $lC = $this->languageIconTitles[$lUid_OnPage]['title'];
                     }
                     $lC = '<a href="' . htmlspecialchars($href) . '" title="'
-                        . htmlspecialchars($language['title']) . '">' . $lC . '</a> ';
+                        . htmlspecialchars($language['title']) . '" class="btn btn-default">' . $lC . '</a> ';
                     $lNew .= $lC;
                 }
             }
