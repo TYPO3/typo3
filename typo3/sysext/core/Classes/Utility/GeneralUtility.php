@@ -2673,7 +2673,7 @@ Connection: close
             }
             // Change the permissions only if the file has just been created
             if ($changePermissions) {
-                self::fixPermissions($file);
+                static::fixPermissions($file);
             }
             return true;
         }
@@ -2694,10 +2694,10 @@ Connection: close
         }
         $result = false;
         // Make path absolute
-        if (!self::isAbsPath($path)) {
-            $path = self::getFileAbsFileName($path, false);
+        if (!static::isAbsPath($path)) {
+            $path = static::getFileAbsFileName($path, false);
         }
-        if (self::isAllowedAbsPath($path)) {
+        if (static::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
                 $targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
                     ? octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
@@ -2727,9 +2727,9 @@ Connection: close
                     $recursionResult = null;
                     if ($file !== '.' && $file !== '..') {
                         if (@is_file(($path . '/' . $file))) {
-                            $recursionResult = self::fixPermissions($path . '/' . $file);
+                            $recursionResult = static::fixPermissions($path . '/' . $file);
                         } elseif (@is_dir(($path . '/' . $file))) {
-                            $recursionResult = self::fixPermissions($path . '/' . $file, true);
+                            $recursionResult = static::fixPermissions($path . '/' . $file, true);
                         }
                         if (isset($recursionResult) && !$recursionResult) {
                             $result = false;
@@ -2760,7 +2760,7 @@ Connection: close
         $fI = pathinfo($filepath);
         $fI['dirname'] .= '/';
         // Check parts:
-        if (!self::validPathStr($filepath) || !$fI['basename'] || strlen($fI['basename']) >= 60) {
+        if (!static::validPathStr($filepath) || !$fI['basename'] || strlen($fI['basename']) >= 60) {
             return 'Input filepath "' . $filepath . '" was generally invalid!';
         }
         // Setting main temporary directory name (standard)
@@ -2768,7 +2768,7 @@ Connection: close
         if (!@is_dir($dirName)) {
             return 'PATH_site + "typo3temp/" was not a directory!';
         }
-        if (!self::isFirstPartOfStr($fI['dirname'], $dirName)) {
+        if (!static::isFirstPartOfStr($fI['dirname'], $dirName)) {
             return '"' . $fI['dirname'] . '" was not within directory PATH_site + "typo3temp/"';
         }
         // Checking if the "subdir" is found:
@@ -2777,7 +2777,7 @@ Connection: close
             if (preg_match('/^[[:alnum:]_]+\\/$/', $subdir) || preg_match('/^[[:alnum:]_]+\\/[[:alnum:]_]+\\/$/', $subdir)) {
                 $dirName .= $subdir;
                 if (!@is_dir($dirName)) {
-                    self::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
+                    static::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
                 }
             } else {
                 return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
@@ -2786,7 +2786,7 @@ Connection: close
         // Checking dir-name again (sub-dir might have been created):
         if (@is_dir($dirName)) {
             if ($filepath == $dirName . $fI['basename']) {
-                self::writeFile($filepath, $content);
+                static::writeFile($filepath, $content);
                 if (!@is_file($filepath)) {
                     return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
                 }
@@ -2811,7 +2811,7 @@ Connection: close
     {
         $result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         if ($result) {
-            self::fixPermissions($newFolder);
+            static::fixPermissions($newFolder);
         }
         return $result;
     }
@@ -2837,9 +2837,9 @@ Connection: close
         // Ensure there is only one slash
         $fullPath = rtrim($directory, '/') . '/' . ltrim($deepDirectory, '/');
         if ($fullPath !== '' && !is_dir($fullPath)) {
-            $firstCreatedPath = self::createDirectoryPath($fullPath);
+            $firstCreatedPath = static::createDirectoryPath($fullPath);
             if ($firstCreatedPath !== '') {
-                self::fixPermissions($firstCreatedPath, true);
+                static::fixPermissions($firstCreatedPath, true);
             }
         }
     }
@@ -2895,7 +2895,7 @@ Connection: close
                         if ($file == '.' || $file == '..') {
                             continue;
                         }
-                        $OK = self::rmdir($path . '/' . $file, $removeNonEmpty);
+                        $OK = static::rmdir($path . '/' . $file, $removeNonEmpty);
                     }
                     closedir($handle);
                 }
@@ -2937,10 +2937,10 @@ Connection: close
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
                 }
                 if ($keepOriginalDirectory) {
-                    self::mkdir($directory);
+                    static::mkdir($directory);
                 }
                 clearstatcache();
-                $result = self::rmdir($temporaryDirectory, true);
+                $result = static::rmdir($temporaryDirectory, true);
             }
         }
 
@@ -3850,14 +3850,14 @@ Connection: close
             if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
                 $filename = ExtensionManagementUtility::extPath($extKey) . $local;
             }
-        } elseif (!self::isAbsPath($filename)) {
+        } elseif (!static::isAbsPath($filename)) {
             // relative. Prepended with $relPathPrefix
             $filename = $relPathPrefix . $filename;
-        } elseif ($onlyRelative && !self::isFirstPartOfStr($filename, $relPathPrefix)) {
+        } elseif ($onlyRelative && !static::isFirstPartOfStr($filename, $relPathPrefix)) {
             // absolute, but set to blank if not allowed
             $filename = '';
         }
-        if ((string)$filename !== '' && self::validPathStr($filename)) {
+        if ((string)$filename !== '' && static::validPathStr($filename)) {
             // checks backpath.
             return $filename;
         }
@@ -3902,9 +3902,9 @@ Connection: close
     public static function isAllowedAbsPath($path)
     {
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
-        return self::isAbsPath($path) && self::validPathStr($path)
-            && (self::isFirstPartOfStr($path, PATH_site)
-                || $lockRootPath && self::isFirstPartOfStr($path, $lockRootPath));
+        return static::isAbsPath($path) && static::validPathStr($path)
+            && (static::isFirstPartOfStr($path, PATH_site)
+                || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath));
     }
 
     /**

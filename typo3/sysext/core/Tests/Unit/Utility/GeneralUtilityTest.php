@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMinifyJavaScriptFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
@@ -66,6 +67,21 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             fclose($connected);
         }
         return $isConnected;
+    }
+
+    /**
+     * Helper method to create a random directory in the virtual file system
+     * and return the path.
+     *
+     * @param string $prefix
+     * @return string
+     */
+    protected function getVirtualTestDir($prefix = 'root_')
+    {
+        $root = vfsStream::setup();
+        $path = $root->url() . '/typo3temp/' . $this->getUniqueId($prefix);
+        GeneralUtility::mkdir_deep($path);
+        return $path;
     }
 
     ///////////////////////////
@@ -2794,13 +2810,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
         }
         // Create and prepare test file
-        $filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
-        $this->testFilesToDelete[] = $filename;
+        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         $currentGroupId = posix_getegid();
         // Set target group and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $currentGroupId;
-        GeneralUtility::fixPermissions($filename);
+        GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
         $this->assertEquals($currentGroupId, filegroup($filename));
     }
@@ -2810,17 +2825,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsToFile()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test file
-        $filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
-        $this->testFilesToDelete[] = $filename;
+        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
         $this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
@@ -2831,17 +2845,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsToHiddenFile()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test file
-        $filename = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
-        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
-        $this->testFilesToDelete[] = $filename;
+        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
         $this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
@@ -2852,17 +2865,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsToDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test directory
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
         $this->assertEquals('0770', substr(decoct(fileperms($directory)), 1));
@@ -2873,17 +2885,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsToDirectoryWithTrailingSlash()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test directory
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($directory . '/');
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory . '/');
         // Get actual permissions and clean up
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -2895,17 +2906,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsToHiddenDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test directory
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
-        GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         // Get actual permissions and clean up
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -2917,21 +2927,20 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsCorrectlySetsPermissionsRecursive()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test directory and file structure
-        $baseDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::mkdir($baseDirectory);
-        $this->testFilesToDelete[] = $baseDirectory;
+        $baseDirectory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::mkdir($baseDirectory);
         chmod($baseDirectory, 1751);
-        GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
         chmod($baseDirectory . '/file', 482);
-        GeneralUtility::mkdir($baseDirectory . '/foo');
+        GeneralUtilityFilesystemFixture::mkdir($baseDirectory . '/foo');
         chmod($baseDirectory . '/foo', 1751);
-        GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/foo/file', '42');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($baseDirectory . '/foo/file', '42');
         chmod($baseDirectory . '/foo/file', 482);
-        GeneralUtility::mkdir($baseDirectory . '/.bar');
+        GeneralUtilityFilesystemFixture::mkdir($baseDirectory . '/.bar');
         chmod($baseDirectory . '/.bar', 1751);
         // Use this if writeFileToTypo3tempDir is fixed to create hidden files in subdirectories
         // \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
@@ -2943,7 +2952,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
-        $fixPermissionsResult = GeneralUtility::fixPermissions($baseDirectory, true);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($baseDirectory, true);
         // Get actual permissions
         clearstatcache();
         $resultBaseDirectoryPermissions = substr(decoct(fileperms($baseDirectory)), 1);
@@ -2969,18 +2978,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsDoesNotSetPermissionsToNotAllowedPath()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test file
         $filename = PATH_site . 'typo3temp/../typo3temp/' . $this->getUniqueId('test_');
-        touch($filename);
-        chmod($filename, 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
-        clearstatcache();
-        $this->testFilesToDelete[] = $filename;
         $this->assertFalse($fixPermissionsResult);
     }
 
@@ -2989,7 +2994,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsPermissionsWithRelativeFileReference()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         $filename = 'typo3temp/' . $this->getUniqueId('test_');
@@ -3009,15 +3014,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsDefaultPermissionsToFile()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
-        $filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::writeFileToTypo3tempDir($filename, '42');
-        $this->testFilesToDelete[] = $filename;
+        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']);
-        $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
         $this->assertEquals('0644', substr(decoct(fileperms($filename)), 2));
@@ -3028,15 +3032,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function fixPermissionsSetsDefaultPermissionsToDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
-        $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
+        $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
         $this->assertEquals('0755', substr(decoct(fileperms($directory)), 1));
@@ -3050,9 +3053,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirCreatesDirectory()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
-        $mkdirResult = GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         $this->assertTrue($mkdirResult);
         $this->assertTrue(is_dir($directory));
@@ -3063,9 +3065,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirCreatesHiddenDirectory()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
-        $mkdirResult = GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('.test_');
+        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         $this->assertTrue($mkdirResult);
         $this->assertTrue(is_dir($directory));
@@ -3076,9 +3077,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirCreatesDirectoryWithTrailingSlash()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '/';
-        $mkdirResult = GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_') . '/';
+        $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         $this->assertTrue($mkdirResult);
         $this->assertTrue(is_dir($directory));
@@ -3089,14 +3089,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirSetsPermissionsOfCreatedDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
         }
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
-        GeneralUtility::mkdir($directory);
-        $this->testFilesToDelete[] = $directory;
+        GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
         umask($oldUmask);
@@ -3108,21 +3107,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirSetsGroupOwnershipOfCreatedDirectory()
     {
-        if (!function_exists('posix_getegid')) {
-            $this->markTestSkipped('Function posix_getegid() not available, mkdirSetsGroupOwnershipOfCreatedDirectory() tests skipped');
-        }
-        if (posix_getegid() === -1) {
-            $this->markTestSkipped('The mkdirSetsGroupOwnershipOfCreatedDirectory() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
-        }
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getUniqueId('mkdirtest_');
-            GeneralUtility::mkdir(PATH_site . 'typo3temp/' . $directory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+            $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('mkdirtest_');
+            GeneralUtilityFilesystemFixture::mkdir($directory);
             clearstatcache();
-            $resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
-            $resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+            $resultDirectoryGroup = filegroup($directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3134,31 +3125,34 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * Check if test on filesystem group ownership can be done in this environment
      * If so, return second group of webserver user
      *
-     * @param string calling method name
-     * @return mixed FALSE if test cannot be run, string name of the second group of webserver user
+     * @param string $methodName calling method name
+     * @return mixed FALSE if test cannot be run, int group id of the second group of webserver user
      */
     private function checkGroups($methodName)
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped($methodName . '() test not available on Windows.');
+            return false;
+        }
+        if (!function_exists('posix_getegid')) {
+            $this->markTestSkipped('Function posix_getegid() not available, ' . $methodName . '() tests skipped');
+            return false;
+        }
+        if (posix_getegid() === -1) {
+            $this->markTestSkipped('Function posix_getegid() returns -1, ' . $methodName . '() tests skipped');
             return false;
         }
         if (!function_exists('posix_getgroups')) {
             $this->markTestSkipped('Function posix_getgroups() not available, ' . $methodName . '() tests skipped');
+            return false;
         }
         $groups = posix_getgroups();
         if (count($groups) <= 1) {
             $this->markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
             return false;
         }
-        $uname = strtolower(php_uname());
-        $groupOffset = 1;
-        if (strpos($uname, 'darwin') !== false) {
-            // We are on OSX and it seems that the first group needs to be fetched since Mavericks
-            $groupOffset = 0;
-        }
-        $groupInfo = posix_getgrgid($groups[$groupOffset]);
-        return $groupInfo['name'];
+        $secondaryGroups = array_diff($groups, [posix_getegid()]);
+        return array_shift($secondaryGroups);
     }
 
     ///////////////////////////////
@@ -3169,10 +3163,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepCreatesDirectory()
     {
-        $directory = 'typo3temp/' . $this->getUniqueId('test_');
-        GeneralUtility::mkdir_deep(PATH_site, $directory);
-        $this->testFilesToDelete[] = PATH_site . $directory;
-        $this->assertTrue(is_dir(PATH_site . $directory));
+        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        GeneralUtility::mkdir_deep($directory);
+        $this->assertTrue(is_dir($directory));
     }
 
     /**
@@ -3180,11 +3173,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepCreatesSubdirectoriesRecursive()
     {
-        $directory = 'typo3temp/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/typo3temp/' . $this->getUniqueId('test_');
         $subDirectory = $directory . '/foo';
-        GeneralUtility::mkdir_deep(PATH_site, $subDirectory);
-        $this->testFilesToDelete[] = PATH_site . $directory;
-        $this->assertTrue(is_dir(PATH_site . $subDirectory));
+        GeneralUtility::mkdir_deep($subDirectory);
+        $this->assertTrue(is_dir($subDirectory));
     }
 
     /**
@@ -3219,7 +3211,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepFixesPermissionsOfCreatedDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('mkdirDeepFixesPermissionsOfCreatedDirectory() test not available on Windows.');
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
@@ -3237,7 +3229,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepFixesPermissionsOnNewParentDirectory()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('mkdirDeepFixesPermissionsOnNewParentDirectory() test not available on Windows.');
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
@@ -3256,7 +3248,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
         }
         $baseDirectory = PATH_site . 'typo3temp/';
@@ -3281,8 +3273,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
             clearstatcache();
-            $resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
-            $resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3300,8 +3291,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
             clearstatcache();
-            $resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
-            $resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3319,8 +3309,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
             clearstatcache();
-            $resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $subDirectory));
-            $resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -4405,7 +4394,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function syslogFixesPermissionsOnFileIfUsingFileLogging()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('syslogFixesPermissionsOnFileIfUsingFileLogging() test not available on Windows.');
         }
         // Fake all required settings
@@ -4427,7 +4416,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function deprecationLogFixesPermissionsOnLogFile()
     {
-        if (TYPO3_OS == 'WIN') {
+        if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
         }
         $filePath = PATH_site . GeneralUtilityFixture::DEPRECATION_LOG_PATH;
