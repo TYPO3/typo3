@@ -2799,7 +2799,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $filename;
         $currentGroupId = posix_getegid();
         // Set target group and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $currentGroupId;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $currentGroupId;
         GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertEquals($currentGroupId, filegroup($filename));
@@ -2819,7 +2819,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $filename;
         chmod($filename, 482);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -2840,7 +2840,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $filename;
         chmod($filename, 482);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -2861,7 +2861,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $directory;
         chmod($directory, 1551);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
         $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -2882,7 +2882,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $directory;
         chmod($directory, 1551);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
         $fixPermissionsResult = GeneralUtility::fixPermissions($directory . '/');
         // Get actual permissions and clean up
         clearstatcache();
@@ -2904,7 +2904,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = $directory;
         chmod($directory, 1551);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
         $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         // Get actual permissions and clean up
         clearstatcache();
@@ -2941,8 +2941,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         touch($baseDirectory . '/.bar/..file2', '42');
         chmod($baseDirectory . '/.bar/..file2', 482);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
         $fixPermissionsResult = GeneralUtility::fixPermissions($baseDirectory, true);
         // Get actual permissions
         clearstatcache();
@@ -2977,7 +2977,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         touch($filename);
         chmod($filename, 482);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->testFilesToDelete[] = $filename;
@@ -2997,7 +2997,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->testFilesToDelete[] = PATH_site . $filename;
         chmod(PATH_site . $filename, 482);
         // Set target permissions and run method
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -3016,7 +3016,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtility::writeFileToTypo3tempDir($filename, '42');
         $this->testFilesToDelete[] = $filename;
         chmod($filename, 482);
-        unset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']);
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -3035,7 +3035,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         GeneralUtility::mkdir($directory);
         $this->testFilesToDelete[] = $directory;
         chmod($directory, 1551);
-        unset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
         $fixPermissionsResult = GeneralUtility::fixPermissions($directory);
         clearstatcache();
         $this->assertTrue($fixPermissionsResult);
@@ -3094,7 +3094,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
         $oldUmask = umask(19);
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0772';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
         GeneralUtility::mkdir($directory);
         $this->testFilesToDelete[] = $directory;
         clearstatcache();
@@ -3116,7 +3116,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirtest_');
             GeneralUtility::mkdir(PATH_site . 'typo3temp/' . $directory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
@@ -3224,7 +3224,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
         $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
         clearstatcache();
@@ -3242,7 +3242,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $subDirectory = $directory . '/bar';
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
         $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
@@ -3276,7 +3276,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
@@ -3294,7 +3294,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
@@ -3313,7 +3313,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
@@ -3873,7 +3873,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $directoryName = $this->getUniqueId('test_') . '.com';
         $directoryPath = PATH_site . 'typo3temp/';
         $directory = $directoryPath . $directoryName;
-        mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+        mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         $fileInfo = GeneralUtility::split_fileref($directory);
         $directoryCreated = is_dir($directory);
         rmdir($directory);
@@ -4285,8 +4285,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'backslash in path' => array('path\\path'),
             'directory up in path' => array('path/../path'),
             'directory up at the beginning' => array('../path'),
-            'NUL character in path' => array('path path'),
-            'BS character in path' => array('pathpath')
+            'NUL character in path' => array('path' . chr(0) . 'path'),
+            'BS character in path' => array('path' . chr(8) . 'path')
         );
     }
 
@@ -4414,7 +4414,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
         $testLogFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.txt';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         // Call method, get actual permissions and clean up
         GeneralUtility::syslog('testLog', 'test', GeneralUtility::SYSLOG_SEVERITY_NOTICE);
         $this->testFilesToDelete[] = $testLogFilename;
@@ -4434,7 +4434,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         @mkdir(dirname($filePath));
         $this->testFilesToDelete[] = $filePath;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = true;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         GeneralUtilityFixture::deprecationLog('foo');
         clearstatcache();
         $resultFilePermissions = substr(decoct(fileperms($filePath)), 2);

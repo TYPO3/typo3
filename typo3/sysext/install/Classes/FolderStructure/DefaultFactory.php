@@ -55,8 +55,8 @@ class DefaultFactory
      */
     protected function getDefaultStructureDefinition()
     {
-        $filePermission = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'];
-        $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'];
+        $filePermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
+        $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
 
         if (Bootstrap::usesComposerClassLoading()) {
             // In composer mode the links are configurable and might even be actual files

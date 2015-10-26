@@ -214,8 +214,8 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $value = $GLOBALS['LANG']->getLL('status_ok');
         $message = '';
         $severity = \TYPO3\CMS\Reports\Status::OK;
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] % 10 & 2) {
-            $value = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'];
+        if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] % 10 & 2) {
+            $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
             $severity = \TYPO3\CMS\Reports\Status::WARNING;
             $message = $GLOBALS['LANG']->getLL('status_CreatedFilePermissions.writable');
         }
@@ -232,8 +232,8 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $value = $GLOBALS['LANG']->getLL('status_ok');
         $message = '';
         $severity = \TYPO3\CMS\Reports\Status::OK;
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] % 10 & 2) {
-            $value = $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'];
+        if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] % 10 & 2) {
+            $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
             $severity = \TYPO3\CMS\Reports\Status::WARNING;
             $message = $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions.writable');
         }

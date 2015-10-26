@@ -152,7 +152,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $instance = new Locker(999999999, Locker::LOCKING_METHOD_SIMPLE);
         $instance->setEnableLogging(false);
         $pathOfLockFile = $instance->getResource();
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         // Acquire lock, get actual file permissions and clean up
         $instance->acquireExclusiveLock();
         clearstatcache();

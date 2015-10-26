@@ -56,7 +56,7 @@ class SimpleLockStrategyTest extends UnitTestCase
 
         $pathOfLockFile = $lock->_get('filePath');
 
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
 
         // Acquire lock, get actual file permissions and clean up
         $lock->acquire();

@@ -610,7 +610,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 
         // No one will use this as his default file create mask so we hopefully don't get any false positives
         $testpattern = '0646';
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = $testpattern;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = $testpattern;
 
         $this->addToMount(
             array(

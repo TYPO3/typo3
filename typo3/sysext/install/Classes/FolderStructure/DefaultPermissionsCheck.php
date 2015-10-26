@@ -56,7 +56,7 @@ class DefaultPermissionsCheck
      */
     public function getMaskStatus($which)
     {
-        $octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
+        $octal = '0' . $GLOBALS['TYPO3_CONF_VARS']['SYS'][$which];
         $dec = octdec($octal);
         $perms = array(
             'ox' => (($dec & 001) == 001),
@@ -97,19 +97,19 @@ class DefaultPermissionsCheck
         } else {
             $permissionStatus = new Status\OkStatus();
         }
-        $permissionStatus->setTitle($this->names[$which] . ' (BE/' . $which . ')');
+        $permissionStatus->setTitle($this->names[$which] . ' (SYS/' . $which . ')');
         $message = 'Recommended: ' . $this->recommended[$which] . '.';
         $message .= ' Currently configured as ';
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE'][$which] === $this->recommended[$which]) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS'][$which] === $this->recommended[$which]) {
             $message .= 'recommended';
         } else {
-            $message .= $GLOBALS['TYPO3_CONF_VARS']['BE'][$which];
+            $message .= $GLOBALS['TYPO3_CONF_VARS']['SYS'][$which];
         }
         $message .= $extraMessage . '.';
         if ($groupPermissions) {
             $message .= ' This is fine as long as the web server\'s group only comprises trusted users.';
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])) {
-                $message .= ' Your site is configured (BE/createGroup) to write as group \'' . $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] . '\'.';
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'])) {
+                $message .= ' Your site is configured (SYS/createGroup) to write as group \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] . '\'.';
             }
         }
         $permissionStatus->setMessage($message);

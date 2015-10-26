@@ -2699,25 +2699,25 @@ Connection: close
         }
         if (self::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
-                $targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
-                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
+                $targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
+                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
                     : octdec('0644');
                 // "@" is there because file is not necessarily OWNED by the user
                 $result = @chmod($path, $targetFilePermissions);
             } elseif (@is_dir($path)) {
-                $targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
-                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
+                $targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
+                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
                     : octdec('0755');
                 // "@" is there because file is not necessarily OWNED by the user
                 $result = @chmod($path, $targetDirectoryPermissions);
             }
             // Set createGroup if not empty
             if (
-                isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
-                && $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] !== ''
+                isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'])
+                && $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] !== ''
             ) {
                 // "@" is there because file is not necessarily OWNED by the user
-                $changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
+                $changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup']);
                 $result = $changeGroupResult ? $result : false;
             }
             // Call recursive if recursive flag if set and $path is directory
@@ -2801,15 +2801,15 @@ Connection: close
 
     /**
      * Wrapper function for mkdir.
-     * Sets folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']
-     * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
+     * Sets folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']
+     * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup']
      *
      * @param string $newFolder Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
      * @return bool TRUE if @mkdir went well!
      */
     public static function mkdir($newFolder)
     {
-        $result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+        $result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         if ($result) {
             self::fixPermissions($newFolder);
         }
@@ -2859,7 +2859,7 @@ Connection: close
     {
         $currentPath = $fullDirectoryPath;
         $firstCreatedPath = '';
-        $permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+        $permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
         if (!@is_dir($currentPath)) {
             do {
                 $firstCreatedPath = $currentPath;

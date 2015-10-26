@@ -90,7 +90,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
         $targetFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
         $this->testFilesToDelete[] = $targetFilename;
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         IconUtilityFixture::imagemake($fixtureGifRessource, $targetFilename);
         clearstatcache();
         $resultFilePermissions = substr(decoct(fileperms($targetFilename)), 2);
