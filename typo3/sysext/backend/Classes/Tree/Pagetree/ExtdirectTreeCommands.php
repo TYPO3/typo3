@@ -325,16 +325,21 @@ class ExtdirectTreeCommands
     /**
      * Returns the view link of a given node
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @return string
      */
     public static function getViewLink($nodeData)
     {
         /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-        $javascriptLink = stripslashes(BackendUtility::viewOnClick($node->getId()));
-        preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match);
-        return $match[1];
+        $javascriptLink = BackendUtility::viewOnClick($node->getId());
+        $extractedLink = '';
+        if (preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match)) {
+            // Clean JSON-serialized ampersands ('&')
+            // @see GeneralUtility::quoteJSvalue()
+            $extractedLink = json_decode('"' . trim($match[1], '"') . '"', JSON_HEX_AMP);
+        };
+        return $extractedLink;
     }
 
     /**
