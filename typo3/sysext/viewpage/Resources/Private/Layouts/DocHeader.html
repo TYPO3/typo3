@@ -8,17 +8,22 @@
 		0:'TYPO3/CMS/Viewpage/Main'
 	}" />
 <div class="tx_viewpage">
-	<form>
-		<label for="width">
-			<f:translate key="width" />
-		</label>
-		<f:form.select options="{widths}" id="width" name="width" />
-		<f:if condition="{languages -> f:count()} > 1">
-			<label for="language">
-				<f:translate key="language" />
-			</label>
-			<f:form.select options="{languages}" id="language" name="language" />
-		</f:if>
-	</form>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="width"><f:translate key="width" /></label>
+					<f:form.select options="{widths}" id="width" name="width" class="form-control" />
+				</div>
+				<f:if condition="{languages -> f:count()} > 1">
+					<div class="form-group">
+						<label for="language"><f:translate key="language" /></label>
+						<f:form.select options="{languages}" id="language" name="language" class="form-control" />
+					</div>
+				</f:if>
+			</form>
+		</div>
+	</div>
+
 	<f:render section="Content" />
 </div>
