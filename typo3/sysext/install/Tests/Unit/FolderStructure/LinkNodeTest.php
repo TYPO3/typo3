@@ -338,6 +338,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
+     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget()
     {
@@ -364,6 +365,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
+     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget()
     {

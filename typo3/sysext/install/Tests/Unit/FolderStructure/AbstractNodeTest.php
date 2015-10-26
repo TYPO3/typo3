@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 /**
  * Test case
  */
-class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase
 {
     /**
      * @test
@@ -116,15 +116,14 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
+        $path = $this->getVirtualTestDir('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->_call('exists'));
     }
 
     /**
      * @test
+     * @see https://github.com/mikey179/vfsStream/wiki/Known-Issues - symlink doesn't work with vfsStream
      */
     public function existsReturnsTrueIfIsLinkAndTargetIsDead()
     {
@@ -148,7 +147,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
+        $path = $this->getVirtualTestFilePath('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertFalse($node->_call('exists'));
     }
@@ -193,12 +192,10 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
         $node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(false));
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
-        mkdir($path);
+        $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02000);
-        $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
         $node->_set('targetPermission', '2770');
         $this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $node->_call('fixPermission'));
@@ -226,12 +223,10 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
         $node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(false));
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
-        mkdir($path);
+        $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02000);
-        $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
         $node->_set('targetPermission', '2770');
         $this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $node->_call('fixPermission'));
@@ -256,12 +251,10 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
         $node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(false));
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
-        mkdir($path);
+        $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02770);
-        $this->testFilesToDelete[] = $path;
         $node->_set('targetPermission', '2770');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
         $this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $node->_call('fixPermission'));
@@ -303,9 +296,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
-        $this->testFilesToDelete[] = $path;
+        $path = $this->getVirtualTestDir('dir_');
         chmod($path, 02775);
         clearstatcache();
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -322,9 +313,8 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
-        $file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
+        $file = $this->getVirtualTestFilePath('file_');
         touch($file);
-        $this->testFilesToDelete[] = $file;
         chmod($file, 0770);
         clearstatcache();
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($file));
