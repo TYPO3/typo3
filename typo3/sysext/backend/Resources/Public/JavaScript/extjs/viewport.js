@@ -123,13 +123,6 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	ModuleMenuContainer: null,
 
 	/**
-	 * The debug console
-	 *
-	 * @var Ext.TabPanel
-	 */
-	DebugConsole: null,
-
-	/**
 	 * Initializes the ExtJS viewport with the given configuration.
 	 *
 	 * @return void

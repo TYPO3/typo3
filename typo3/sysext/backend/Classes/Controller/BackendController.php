@@ -329,10 +329,7 @@ class BackendController
         }
 
         $extOnReadyCode .= '
-			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
-			if (typeof console === "undefined") {
-				console = TYPO3.Backend.DebugConsole;
-			}';
+			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration)';
         $this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;

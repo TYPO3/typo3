@@ -109,18 +109,16 @@ class DebugUtility
 								+ "</body></html>"
 							);
 						}
-					}
+					};
 
-				if (!top.Ext) {
-					browserWindow(debugMessage, header, group);
+				if (top && typeof top.TYPO3 !== "undefined" && typeof top.TYPO3.Modal !== "undefined") {
+					top.TYPO3.Modal.show(
+						"Debug: " + header + " (" + group + ")",
+						debugMessage,
+						top.TYPO3.Severity.notice
+					);
 				} else {
-					top.Ext.onReady(function() {
-						if (top && top.TYPO3 && top.TYPO3.Backend) {
-							top.TYPO3.Backend.DebugConsole.openBrowserWindow(header, debugMessage, group);
-						} else {
-							browserWindow(debugMessage, header, group);
-						}
-					});
+					browserWindow(debugMessage, header, group);
 				}
 			})();
 		';

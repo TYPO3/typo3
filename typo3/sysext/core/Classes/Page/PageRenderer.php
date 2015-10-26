@@ -1362,16 +1362,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 			})();
 
 			var extDirectDebug = function(message, header, group) {
-				var TYPO3ViewportInstance = null;
+				var DebugConsole = null;
 
-				if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
-					TYPO3ViewportInstance = top.TYPO3.Backend;
-				} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
-					TYPO3ViewportInstance = TYPO3.Backend;
+				if (top && top.TYPO3 && typeof top.TYPO3.DebugConsole === "object") {
+					DebugConsole = top.TYPO3.DebugConsole;
+				} else if (typeof TYPO3 === "object" && typeof TYPO3.DebugConsole === "object") {
+					DebugConsole = TYPO3.DebugConsole;
 				}
 
-				if (TYPO3ViewportInstance !== null) {
-					TYPO3ViewportInstance.DebugConsole.addTab(message, header, group);
+				if (DebugConsole !== null) {
+					DebugConsole.add(message, header, group);
 				} else if (typeof console === "object") {
 					console.log(message);
 				} else {

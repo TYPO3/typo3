@@ -838,24 +838,6 @@ function jumpToUrl(URL) {
         if ($this->extDirectStateProvider) {
             $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         }
-        // Add jsCode for overriding the console with a debug panel connection
-        $this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', 'if (typeof top.Ext === "object") {
-				top.Ext.onReady(function() {
-					if (typeof console === "undefined") {
-						if (top && top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.DebugConsole) {
-							console = top.TYPO3.Backend.DebugConsole;
-						} else {
-							console = {
-								log: Ext.log,
-								info: Ext.log,
-								warn: Ext.log,
-								error: Ext.log
-							};
-						}
-					}
-				});
-			}
-			', false);
         $this->pageRenderer->addHeaderData($this->JScode);
         foreach ($this->JScodeArray as $name => $code) {
             $this->pageRenderer->addJsInlineCode($name, $code, false);
