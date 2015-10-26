@@ -151,4 +151,6 @@ return array(
 	't3lib_utility_Path' => 'TYPO3\\CMS\\Core\\Utility\\PathUtility',
 	't3lib_utility_PhpOptions' => 'TYPO3\\CMS\\Core\\Utility\\PhpOptionsUtility',
 	't3lib_utility_VersionNumber' => 'TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility',
+	// Establish an alias for Flow/Package interoperability
+	'TYPO3\\Flow\\Core\\ClassLoader' => 'TYPO3\\CMS\\Core\\Core\\ClassLoader',
 );

@@ -281,6 +281,7 @@ return array (
     't3lib_utility_path' => 'TYPO3\\CMS\\Core\\Utility\\PathUtility',
     't3lib_utility_phpoptions' => 'TYPO3\\CMS\\Core\\Utility\\PhpOptionsUtility',
     't3lib_utility_versionnumber' => 'TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility',
+    'typo3\\flow\\core\\classloader' => 'TYPO3\\CMS\\Core\\Core\\ClassLoader',
     'sc_view_help' => 'TYPO3\\CMS\\Cshmanual\\Controller\\HelpModuleController',
     'tx_extbase_command_helpcommandcontroller' => 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController',
     'tx_extbase_configuration_abstractconfigurationmanager' => 'TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager',
@@ -1413,6 +1414,7 @@ return array (
     'TYPO3\\CMS\\Core\\Core\\ClassLoader' => 
     array (
       't3lib_autoloader' => 't3lib_autoloader',
+      'typo3\\flow\\core\\classloader' => 'typo3\\flow\\core\\classloader',
     ),
     'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend' => 
     array (

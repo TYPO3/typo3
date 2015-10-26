@@ -217,6 +217,7 @@ return array(
     'typo3\\cms\\core\\datahandling\\datahandler' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/DataHandler.php',
     'typo3\\cms\\core\\datahandling\\datahandlercheckmodifyaccesslisthookinterface' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/DataHandlerCheckModifyAccessListHookInterface.php',
     'typo3\\cms\\core\\datahandling\\datahandlerprocessuploadhookinterface' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/DataHandlerProcessUploadHookInterface.php',
+    'typo3\\cms\\core\\datahandling\\plaindataresolver' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/PlainDataResolver.php',
     'typo3\\cms\\core\\datahandling\\tablecolumnsubtype' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/TableColumnSubType.php',
     'typo3\\cms\\core\\datahandling\\tablecolumntype' => $baseDir . '/typo3/sysext/core/Classes/DataHandling/TableColumnType.php',
     'typo3\\cms\\core\\database\\databaseconnection' => $baseDir . '/typo3/sysext/core/Classes/Database/DatabaseConnection.php',

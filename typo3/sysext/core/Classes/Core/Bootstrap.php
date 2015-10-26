@@ -277,8 +277,6 @@ class Bootstrap {
 	 */
 	public function initializeClassLoader() {
 		$classLoader = new ClassLoader($this->applicationContext);
-		// Establish an alias for Flow/Package interoperability
-		class_alias('TYPO3\\CMS\\Core\\Core\\ClassLoader', 'TYPO3\\Flow\\Core\\ClassLoader');
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
 		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new ClassAliasMap();
