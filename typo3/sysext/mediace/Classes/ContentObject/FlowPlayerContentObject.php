@@ -260,7 +260,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
         $flashDownloadUrl = 'http://www.adobe.com/go/getflashplayer';
         $onFail = 'function()  {
 			if (!(flashembed.getVersion()[0] > 0)) {
-				var message = "<p>" + "' . $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.needFlashPlugin') . '" + "</p>" + "<p>" + "<a href=\\"' . $flashDownloadUrl . '\\">' . $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.downloadFlash') . '</a>" + "</p>";
+				var message = "<p>" + "' . $GLOBALS['TSFE']->sL('LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.needFlashPlugin') . '" + "</p>" + "<p>" + "<a href=\\"' . $flashDownloadUrl . '\\">' . $GLOBALS['TSFE']->sL('LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.downloadFlash') . '</a>" + "</p>";
 				document.getElementById("' . $replaceElementIdString . '_flash_install_info").innerHTML = "<div class=\\"message\\">" + message + "</div>";
 			}
 		}';

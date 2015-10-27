@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1445518806" source-language="en" datatype="plaintext" original="messages" date="2015-10-22T14:22:32Z" product-name="friendsoftypo3/mediace">
+        <header/>
+        <body>
+            <trans-unit id="editIcon.multimedia">
+                <source>Edit multimedia element</source>
+            </trans-unit>
+            <trans-unit id="tt_content.CType.item.multimedia">
+                <source>Multimedia</source>
+            </trans-unit>
+            <trans-unit id="tt_content.CType.item.media">
+                <source>Media</source>
+            </trans-unit>
+            <trans-unit id="tt_content.palette.multimediafiles">
+                <source>Media</source>
+            </trans-unit>
+            <trans-unit id="tt_content.multimedia">
+                <source>Media File</source>
+            </trans-unit>
+            <trans-unit id="tt_content.multimedia_formlabel">
+                <source>Selected Media File</source>
+            </trans-unit>
+            <trans-unit id="tt_content.bodytext">
+                <source>Parameters</source>
+            </trans-unit>
+            <trans-unit id="flexform.options">
+                <source>Media Options</source>
+            </trans-unit>
+            <trans-unit id="flexform.tabAudio">
+                <source>Audio Element</source>
+            </trans-unit>
+            <trans-unit id="flexform.tabVideo">
+                <source>Video Element</source>
+            </trans-unit>
+            <trans-unit id="flexform.tabVideoAccessible">
+                <source>HTML5 Additions</source>
+            </trans-unit>
+            <trans-unit id="flexform.url">
+                <source>Path or URL</source>
+            </trans-unit>
+            <trans-unit id="flexform.fallbackUrl">
+                <source>Path or URL to fallback video source (Flash or QuickTime)</source>
+            </trans-unit>
+            <trans-unit id="flexform.previewImage">
+                <source>Preview-Image for the Video (HTML5 only)</source>
+            </trans-unit>
+            <trans-unit id="flexform.sources">
+                <source>Video sources for HTML5 &lt;video&gt; element</source>
+            </trans-unit>
+            <trans-unit id="flexform.captionUrl">
+                <source>Path or URL to captions file</source>
+            </trans-unit>
+            <trans-unit id="flexform.audioSources">
+                <source>Audio sources for HTML5 &lt;audio&gt; element</source>
+            </trans-unit>
+            <trans-unit id="flexform.audioDescription">
+                <source>audio description for videos</source>
+            </trans-unit>
+            <trans-unit id="flexform.audioFallbackUrl">
+                <source>Path or URL to fallback audio source (Flash or QuickTime)</source>
+            </trans-unit>
+            <trans-unit id="flexform.browseUrlTitle">
+                <source>Select File or URL</source>
+            </trans-unit>
+            <trans-unit id="flexform.width">
+                <source>Media Width</source>
+            </trans-unit>
+            <trans-unit id="flexform.height">
+                <source>Media Height</source>
+            </trans-unit>
+            <trans-unit id="flexform.forcePlayer">
+                <source>Use Player (Flash only)</source>
+            </trans-unit>
+            <trans-unit id="flexform.type">
+                <source>Media Type</source>
+            </trans-unit>
+            <trans-unit id="flexform.useHTML5">
+                <source>HTML5 / accessible rendering</source>
+            </trans-unit>
+            <trans-unit id="flexform.type.video">
+                <source>Video</source>
+            </trans-unit>
+            <trans-unit id="flexform.type.audio">
+                <source>Audio</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType">
+                <source>Render Type</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.auto">
+                <source>Auto</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.swf">
+                <source>Flash Browser Plugin</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.preferHtml5OverFlash">
+                <source>HTML5 video/audio tag with fallback to Flash</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.preferFlashOverHtml5">
+                <source>Flash with fallback to HTML5 video/audio tag</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.qt">
+                <source>QuickTime Browser Plugin</source>
+            </trans-unit>
+            <trans-unit id="flexform.renderType.embed">
+                <source>Native HTML Embed Element</source>
+            </trans-unit>
+            <trans-unit id="flexform.additionalOptions">
+                <source>Additional Parameters</source>
+            </trans-unit>
+            <trans-unit id="flexform.params">
+                <source>Media Parameter</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.option">
+                <source>Option</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.setTo">
+                <source>Set to</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.on">
+                <source>On</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.off">
+                <source>Off</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.valueEntry">
+                <source>Value Entry</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.value">
+                <source>Value</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.autoPlay">
+                <source>AutoPlay</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.loop">
+                <source>Loop</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.quality">
+                <source>Quality</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.preview">
+                <source>Preview Video</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.bgColor">
+                <source>Background Color</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.allowScriptAccess">
+                <source>Allow ScriptAccess</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.allowFullScreen">
+                <source>Allow Fullscreen</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.preload">
+                <source>Preload media</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.controlsBelow">
+                <source>Display controls below video</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.controlsAtStart">
+                <source>Make controls visible when page loads</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.controlsHiding">
+                <source>Hide controls when not over the video</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.defaultVolume">
+                <source>Default volume</source>
+            </trans-unit>
+            <trans-unit id="flexform.alternativeContent">
+                <source>Alternative Content</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.customEntry">
+                <source>Custom Parameters</source>
+            </trans-unit>
+            <trans-unit id="flexform.params.customEntryLabel">
+                <source>Enter flashvars, params or attributes</source>
+            </trans-unit>
+            <trans-unit id="flexform.noFile">
+                <source>ERROR: Missing URL or File!</source>
+            </trans-unit>
+            <trans-unit id="flexform.needFlashPlugin">
+                <source>You need a Flash plugin to view this content.</source>
+            </trans-unit>
+            <trans-unit id="flexform.downloadFlash">
+                <source>Click here to download the latest version.</source>
+            </trans-unit>
+            <trans-unit id="newContentElementWizard.media.title">
+                <source>Media</source>
+            </trans-unit>
+            <trans-unit id="newContentElementWizard.media.description">
+                <source>Inserts a media element like a Flash animation, audio file or video clip.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

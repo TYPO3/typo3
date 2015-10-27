@@ -63,30 +63,6 @@
 			<trans-unit id="special_filelinks_description">
 				<source>Makes a list of files for download.</source>
 			</trans-unit>
-			<trans-unit id="special_multimedia_title">
-				<source>Multimedia</source>
-			</trans-unit>
-			<trans-unit id="special_multimedia_description">
-				<source>Inserts a media element like a Flash animation, audio file or video clip.</source>
-			</trans-unit>
-			<trans-unit id="special_media_title">
-				<source>Media</source>
-			</trans-unit>
-			<trans-unit id="special_media_description">
-				<source>Inserts a media element like a Flash animation, audio file or video clip.</source>
-			</trans-unit>
-			<trans-unit id="special_swfobject_title">
-				<source>Inserts a Flash media element.</source>
-			</trans-unit>
-			<trans-unit id="special_swfobject_description">
-				<source>Inserts Flash media element, audio file or video clip.</source>
-			</trans-unit>
-			<trans-unit id="special_qtobject_title">
-				<source>Inserts a Quicktime element.</source>
-			</trans-unit>
-			<trans-unit id="special_qtobject_description">
-				<source>Inserts a Quicktime element like a Quicktime audio file or video clip (*.mov).</source>
-			</trans-unit>
 			<trans-unit id="special_sitemap_title">
 				<source>Sitemap</source>
 			</trans-unit>

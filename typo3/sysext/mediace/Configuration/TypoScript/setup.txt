@@ -13,7 +13,7 @@ tt_content.multimedia {
 
 	20.stdWrap {
 		editIcons = tt_content: multimedia, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:editIcon.multimedia
 
 		prefixComment = 2 | Multimedia element:
 	}
@@ -74,7 +74,7 @@ tt_content.swfobject {
 	}
 	20.stdWrap {
 		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:editIcon.multimedia
 
 		prefixComment = 2 | SWFobject element:
 	}
@@ -134,7 +134,7 @@ tt_content.qtobject {
 	}
 	20.stdWrap {
 		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:editIcon.multimedia
 
 		prefixComment = 2 | QTobject element:
 	}
@@ -185,7 +185,7 @@ tt_content.media {
 	}
 	20.stdWrap {
 		editIcons = tt_content: pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:editIcon.multimedia
 
 		prefixComment = 2 | Media element:
 	}

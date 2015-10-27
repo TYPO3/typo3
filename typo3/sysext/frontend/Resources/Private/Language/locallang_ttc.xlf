@@ -27,9 +27,6 @@
 			<trans-unit id="CType.I.6">
 				<source>File Links</source>
 			</trans-unit>
-			<trans-unit id="CType.I.7">
-				<source>Multimedia</source>
-			</trans-unit>
 			<trans-unit id="CType.I.8">
 				<source>Form</source>
 			</trans-unit>
@@ -59,9 +56,6 @@
 			</trans-unit>
 			<trans-unit id="CType.I.17">
 				<source>HTML</source>
-			</trans-unit>
-			<trans-unit id="CType.I.18">
-				<source>Media</source>
 			</trans-unit>
 			<trans-unit id="CType.div.standard">
 				<source>Standard</source>
@@ -762,165 +756,6 @@
 			<trans-unit id="tabs.plugin">
 				<source>Plugin</source>
 			</trans-unit>
-			<trans-unit id="media.options">
-				<source>Media Options</source>
-			</trans-unit>
-			<trans-unit id="media.tabAudio">
-				<source>Audio Element</source>
-			</trans-unit>
-			<trans-unit id="media.tabVideo">
-				<source>Video Element</source>
-			</trans-unit>
-			<trans-unit id="media.tabVideoAccessible">
-				<source>HTML5 Additions</source>
-			</trans-unit>
-			<trans-unit id="media.url">
-				<source>Path or URL</source>
-			</trans-unit>
-			<trans-unit id="media.fallbackUrl">
-				<source>Path or URL to fallback video source (Flash or QuickTime)</source>
-			</trans-unit>
-			<trans-unit id="media.previewImage">
-				<source>Preview-Image for the Video (HTML5 only)</source>
-			</trans-unit>
-			<trans-unit id="media.sources">
-				<source>Video sources for HTML5 &lt;video&gt; element</source>
-			</trans-unit>
-			<trans-unit id="media.captionUrl">
-				<source>Path or URL to captions file</source>
-			</trans-unit>
-			<trans-unit id="media.audioSources">
-				<source>Audio sources for HTML5 &lt;audio&gt; element</source>
-			</trans-unit>
-			<trans-unit id="media.audioDescription">
-				<source>audio description for videos</source>
-			</trans-unit>
-			<trans-unit id="media.audioFallbackUrl">
-				<source>Path or URL to fallback audio source (Flash or QuickTime)</source>
-			</trans-unit>
-			<trans-unit id="media.browseUrlTitle">
-				<source>Select File or URL</source>
-			</trans-unit>
-			<trans-unit id="media.width">
-				<source>Media Width</source>
-			</trans-unit>
-			<trans-unit id="media.height">
-				<source>Media Height</source>
-			</trans-unit>
-			<trans-unit id="media.forcePlayer">
-				<source>Use Player (Flash only)</source>
-			</trans-unit>
-			<trans-unit id="media.type">
-				<source>Media Type</source>
-			</trans-unit>
-			<trans-unit id="media.useHTML5">
-				<source>HTML5 / accessible rendering</source>
-			</trans-unit>
-			<trans-unit id="media.type.video">
-				<source>Video</source>
-			</trans-unit>
-			<trans-unit id="media.type.audio">
-				<source>Audio</source>
-			</trans-unit>
-			<trans-unit id="media.renderType">
-				<source>Render Type</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.auto">
-				<source>Auto</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.swf">
-				<source>Flash Browser Plugin</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.preferHtml5OverFlash">
-				<source>HTML5 video/audio tag with fallback to Flash</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.preferFlashOverHtml5">
-				<source>Flash with fallback to HTML5 video/audio tag</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.qt">
-				<source>QuickTime Browser Plugin</source>
-			</trans-unit>
-			<trans-unit id="media.renderType.embed">
-				<source>Native HTML Embed Element</source>
-			</trans-unit>
-			<trans-unit id="media.additionalOptions">
-				<source>Additional Parameters</source>
-			</trans-unit>
-			<trans-unit id="media.params">
-				<source>Media Parameter</source>
-			</trans-unit>
-			<trans-unit id="media.params.option">
-				<source>Option</source>
-			</trans-unit>
-			<trans-unit id="media.params.setTo">
-				<source>Set to</source>
-			</trans-unit>
-			<trans-unit id="media.params.on">
-				<source>On</source>
-			</trans-unit>
-			<trans-unit id="media.params.off">
-				<source>Off</source>
-			</trans-unit>
-			<trans-unit id="media.params.valueEntry">
-				<source>Value Entry</source>
-			</trans-unit>
-			<trans-unit id="media.params.value">
-				<source>Value</source>
-			</trans-unit>
-			<trans-unit id="media.params.autoPlay">
-				<source>AutoPlay</source>
-			</trans-unit>
-			<trans-unit id="media.params.loop">
-				<source>Loop</source>
-			</trans-unit>
-			<trans-unit id="media.params.quality">
-				<source>Quality</source>
-			</trans-unit>
-			<trans-unit id="media.params.preview">
-				<source>Preview Video</source>
-			</trans-unit>
-			<trans-unit id="media.params.bgColor">
-				<source>Background Color</source>
-			</trans-unit>
-			<trans-unit id="media.params.allowScriptAccess">
-				<source>Allow ScriptAccess</source>
-			</trans-unit>
-			<trans-unit id="media.params.allowFullScreen">
-				<source>Allow Fullscreen</source>
-			</trans-unit>
-			<trans-unit id="media.params.preload">
-				<source>Preload media</source>
-			</trans-unit>
-			<trans-unit id="media.params.controlsBelow">
-				<source>Display controls below video</source>
-			</trans-unit>
-			<trans-unit id="media.params.controlsAtStart">
-				<source>Make controls visible when page loads</source>
-			</trans-unit>
-			<trans-unit id="media.params.controlsHiding">
-				<source>Hide controls when not over the video</source>
-			</trans-unit>
-			<trans-unit id="media.params.defaultVolume">
-				<source>Default volume</source>
-			</trans-unit>
-			<trans-unit id="media.alternativeContent">
-				<source>Alternative Content</source>
-			</trans-unit>
-			<trans-unit id="media.params.customEntry">
-				<source>Custom Parameters</source>
-			</trans-unit>
-			<trans-unit id="media.params.customEntryLabel">
-				<source>Enter flashvars, params or attributes</source>
-			</trans-unit>
-			<trans-unit id="media.noFile">
-				<source>ERROR: Missing URL or File!</source>
-			</trans-unit>
-			<trans-unit id="media.needFlashPlugin">
-				<source>You need a Flash plugin to view this content.</source>
-			</trans-unit>
-			<trans-unit id="media.downloadFlash">
-				<source>Click here to download the latest version.</source>
-			</trans-unit>
 			<trans-unit id="sys_language_uid_formlabel">
 				<source>Language</source>
 			</trans-unit>
@@ -956,9 +791,6 @@
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.media_formlabel">
 				<source>Alternative Content</source>
-			</trans-unit>
-			<trans-unit id="bodytext.ALT.multimedia_formlabel">
-				<source>Parameters</source>
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.textbox_formlabel">
 				<source>Text</source>

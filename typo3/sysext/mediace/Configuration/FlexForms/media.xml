@@ -4,23 +4,23 @@
 		<sGeneral>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.options</sheetTitle>
+					<sheetTitle>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.options</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<mmType>
 						<TCEforms>
 							<onChange>reload</onChange>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.type</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.type</label>
 							<config>
 								<type>select</type>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.type.video</numIndex>
+										<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.type.video</numIndex>
 										<numIndex index="1">video</numIndex>
 									</numIndex>
 									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.type.audio</numIndex>
+										<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.type.audio</numIndex>
 										<numIndex index="1">audio</numIndex>
 									</numIndex>
 								</items>
@@ -29,7 +29,7 @@
 					</mmType>
 					<mmUseHTML5>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.useHTML5</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.useHTML5</label>
 							<displayCond>FIELD:mmType:!=:audio</displayCond>
 							<onChange>reload</onChange>
 							<config>
@@ -40,7 +40,7 @@
 					</mmUseHTML5>
 					<mmWidth>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.width</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.width</label>
 							<config>
 								<type>input</type>
 								<size>8</size>
@@ -51,7 +51,7 @@
 					</mmWidth>
 					<mmHeight>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.height</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.height</label>
 							<config>
 								<type>input</type>
 								<size>8</size>
@@ -62,21 +62,21 @@
 					</mmHeight>
 					<mmRenderType>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.renderType</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.renderType</label>
 							<displayCond>FIELD:mmType:!=:audio</displayCond>
 							<config>
 								<type>select</type>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.renderType.auto</numIndex>
+										<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.renderType.auto</numIndex>
 										<numIndex index="1">auto</numIndex>
 									</numIndex>
 									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.renderType.qt</numIndex>
+										<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.renderType.qt</numIndex>
 										<numIndex index="1">qt</numIndex>
 									</numIndex>
 									<numIndex index="2">
-										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.renderType.embed</numIndex>
+										<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.renderType.embed</numIndex>
 										<numIndex index="1">embed</numIndex>
 									</numIndex>
 								</items>
@@ -85,62 +85,62 @@
 						</TCEforms>
 					</mmRenderType>
 					<mmMediaOptions>
-						<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.additionalOptions</title>
+						<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.additionalOptions</title>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmMediaOptionsContainer>
 								<type>array</type>
-								<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params</title>
+								<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params</title>
 								<el>
 									<mmParamName>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.option</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.option</label>
 											<config>
 												<type>select</type>
 												<items>
 													<numIndex index="0">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.autoPlay</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.autoPlay</numIndex>
 														<numIndex index="1">autoPlay</numIndex>
 													</numIndex>
 													<numIndex index="1">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.loop</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.loop</numIndex>
 														<numIndex index="1">loop</numIndex>
 													</numIndex>
 													<numIndex index="2">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.quality</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.quality</numIndex>
 														<numIndex index="1">quality</numIndex>
 													</numIndex>
 													<numIndex index="3">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.preview</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.preview</numIndex>
 														<numIndex index="1">preview</numIndex>
 													</numIndex>
 													<numIndex index="4">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.allowScriptAccess</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.allowScriptAccess</numIndex>
 														<numIndex index="1">allowScriptAccess</numIndex>
 													</numIndex>
 													<numIndex index="5">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.allowFullScreen</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.allowFullScreen</numIndex>
 														<numIndex index="1">allowFullScreen</numIndex>
 													</numIndex>
 													<numIndex index="6">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.preload</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.preload</numIndex>
 														<numIndex index="1">preload</numIndex>
 													</numIndex>
 													<numIndex index="7">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.controlsBelow</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.controlsBelow</numIndex>
 														<numIndex index="1">controlsBelow</numIndex>
 													</numIndex>
 													<numIndex index="8">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.controlsAtStart</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.controlsAtStart</numIndex>
 														<numIndex index="1">controlsAtStart</numIndex>
 													</numIndex>
 													<numIndex index="9">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.controlsHiding</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.controlsHiding</numIndex>
 														<numIndex index="1">controlsHiding</numIndex>
 													</numIndex>
 													<numIndex index="10">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.defaultVolume</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.defaultVolume</numIndex>
 														<numIndex index="1">defaultVolume</numIndex>
 													</numIndex>
 												</items>
@@ -150,20 +150,20 @@
 									</mmParamName>
 									<mmParamSet>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.setTo</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.setTo</label>
 											<config>
 												<type>select</type>
 												<items>
 													<numIndex index="0">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.on</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.on</numIndex>
 														<numIndex index="1">1</numIndex>
 													</numIndex>
 													<numIndex index="1">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.off</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.off</numIndex>
 														<numIndex index="1">0</numIndex>
 													</numIndex>
 													<numIndex index="2">
-														<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.valueEntry</numIndex>
+														<numIndex index="0">LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.valueEntry</numIndex>
 														<numIndex index="1">2</numIndex>
 													</numIndex>
 												</items>
@@ -172,7 +172,7 @@
 									</mmParamSet>
 									<mmParamValue>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.value</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.value</label>
 											<config>
 												<type>input</type>
 												<size>16</size>
@@ -184,11 +184,11 @@
 							</mmMediaOptionsContainer>
 							<mmMediaCustomParameterContainer>
 								<type>array</type>
-								<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.customEntry</title>
+								<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.customEntry</title>
 								<el>
 									<mmParamCustomEntry>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.params.customEntryLabel</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.params.customEntryLabel</label>
 											<config>
 												<type>text</type>
 												<rows>6</rows>
@@ -206,14 +206,14 @@
 		<sVideo>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.tabVideo</sheetTitle>
+					<sheetTitle>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.tabVideo</sheetTitle>
 					<displayCond>FIELD:sGeneral.mmType:!=:audio</displayCond>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<mmFile>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.fallbackUrl</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.fallbackUrl</label>
 							<config>
 								<type>input</type>
 								<size>60</size>
@@ -222,8 +222,8 @@
 								<wizards type="array">
 									<link type="array">
 										<type>popup</type>
-										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+										<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+										<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_link_browser</name>
 											<urlParameters type="array">
@@ -246,23 +246,23 @@
 		<sVideoAccessible>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.tabVideoAccessible</sheetTitle>
+					<sheetTitle>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.tabVideoAccessible</sheetTitle>
 					<displayCond>FIELD:sGeneral.mmUseHTML5:=:1</displayCond>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<mmSources>
-						<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.sources</title>
+						<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.sources</title>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmSourcesContainer>
 								<type>array</type>
-								<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.media.url</title>
+								<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.media.url</title>
 								<el>
 									<mmSource>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.url</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.url</label>
 											<config>
 												<type>input</type>
 												<size>60</size>
@@ -271,8 +271,8 @@
 												<wizards type="array">
 													<link type="array">
 														<type>popup</type>
-														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+														<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+														<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_link_browser</name>
 															<urlParameters type="array">
@@ -295,7 +295,7 @@
 					</mmSources>
 					<mmCaption>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.captionUrl</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.captionUrl</label>
 							<config>
 								<type>input</type>
 								<size>60</size>
@@ -304,8 +304,8 @@
 								<wizards type="array">
 									<link type="array">
 										<type>popup</type>
-										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+										<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+										<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_link_browser</name>
 											<urlParameters type="array">
@@ -323,17 +323,17 @@
 						</TCEforms>
 					</mmCaption>
 					<mmAudioSources>
-						<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.audioDescription</title>
+						<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.audioDescription</title>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmAudioSourcesContainer>
 								<type>array</type>
-								<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.media.browseUrl</title>
+								<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.media.browseUrl</title>
 								<el>
 									<mmAudioSource>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrl</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrl</label>
 											<config>
 												<type>input</type>
 												<size>60</size>
@@ -342,8 +342,8 @@
 												<wizards type="array">
 													<link type="array">
 														<type>popup</type>
-														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+														<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+														<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_link_browser</name>
 															<urlParameters type="array">
@@ -371,14 +371,14 @@
 		<sAudio>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.tabAudio</sheetTitle>
+					<sheetTitle>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.tabAudio</sheetTitle>
 					<displayCond>FIELD:sGeneral.mmType:=:audio</displayCond>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<mmAudioFallback>
 						<TCEforms>
-							<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.audioFallbackUrl</label>
+							<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.audioFallbackUrl</label>
 							<config>
 								<type>input</type>
 								<size>60</size>
@@ -387,8 +387,8 @@
 								<wizards type="array">
 									<link type="array">
 										<type>popup</type>
-										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+										<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+										<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_link_browser</name>
 											<urlParameters type="array">
@@ -406,17 +406,17 @@
 						</TCEforms>
 					</mmAudioFallback>
 					<mmAudioSources>
-						<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.audioSources</title>
+						<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.audioSources</title>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmAudioSourcesContainer>
 								<type>array</type>
-								<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.media.url</title>
+								<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.media.url</title>
 								<el>
 									<mmAudioSource>
 										<TCEforms>
-											<label>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.url</label>
+											<label>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.url</label>
 											<config>
 												<type>input</type>
 												<size>60</size>
@@ -425,8 +425,8 @@
 												<wizards type="array">
 													<link type="array">
 														<type>popup</type>
-														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
-														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+														<title>LLL:EXT:mediace/Resources/Private/Language/locallang.xlf:flexform.browseUrlTitle</title>
+														<icon>EXT:mediace/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_link_browser</name>
 															<urlParameters type="array">
