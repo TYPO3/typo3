@@ -1,12 +1,13 @@
 {
-	"name": "typo3/cms-mediace",
+	"name": "friendsoftypo3/mediace",
 	"type": "typo3-cms-extension",
-	"description": "TYPO3 Core",
+	"description": "Friends of TYPO3",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": "7.5.0-7.99.99",
+		"typo3/cms-frontend": "7.5.0-7.99.99"
 	},
 	"replace": {
 		"mediace": "*"
@@ -20,12 +21,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\Mediace\\": "Classes/"
+			"FoT3\\Mediace\\": "Classes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"TYPO3\\CMS\\Mediace\\Tests\\": "Tests/"
+			"FoT3\\Mediace\\Tests\\": "Tests/"
 		}
 	}
 }

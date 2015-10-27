@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Mediace\Hooks\PageLayoutView;
+namespace FoT3\Mediace\Hooks\PageLayoutView;
 
 /*
  * This file is part of the TYPO3 CMS project.

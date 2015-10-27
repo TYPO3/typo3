@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Mediace\ContentObject;
+namespace FoT3\Mediace\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.

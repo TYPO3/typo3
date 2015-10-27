@@ -2,11 +2,11 @@
 defined('TYPO3_MODE') or die();
 
 // Register additional content objects
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MULTIMEDIA'] = \TYPO3\CMS\Mediace\ContentObject\MultimediaContentObject::class;
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MEDIA']      = \TYPO3\CMS\Mediace\ContentObject\MediaContentObject::class;
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['SWFOBJECT']  = \TYPO3\CMS\Mediace\ContentObject\ShockwaveFlashObjectContentObject::class;
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FLOWPLAYER'] = \TYPO3\CMS\Mediace\ContentObject\FlowPlayerContentObject::class;
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\Mediace\ContentObject\QuicktimeObjectContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MULTIMEDIA'] = \FoT3\Mediace\ContentObject\MultimediaContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MEDIA']      = \FoT3\Mediace\ContentObject\MediaContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['SWFOBJECT']  = \FoT3\Mediace\ContentObject\ShockwaveFlashObjectContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FLOWPLAYER'] = \FoT3\Mediace\ContentObject\FlowPlayerContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \FoT3\Mediace\ContentObject\QuicktimeObjectContentObject::class;
 
 // Register the "media" CType to the "New Content Element" wizard
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
@@ -27,11 +27,11 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\M
 
 if (TYPO3_MODE === 'FE') {
     // Register the basic media wizard provider
-    \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider::class);
+    \FoT3\Mediace\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\FoT3\Mediace\MediaWizard\MediaWizardProvider::class);
 }
 
 if (TYPO3_MODE === 'BE') {
     // Register for hook to show preview of tt_content element of CType="multimedia" in page module
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['multimedia'] =
-        \TYPO3\CMS\Mediace\Hooks\PageLayoutView\MultimediaPreviewRenderer::class;
+        \FoT3\Mediace\Hooks\PageLayoutView\MultimediaPreviewRenderer::class;
 }

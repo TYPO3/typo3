@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Mediace\Tests\Unit\MediaWizard;
+namespace FoT3\Mediace\Tests\Unit\MediaWizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Mediace\Tests\Unit\MediaWizard;
 class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\FoT3\Mediace\MediaWizard\MediaWizardProvider
      */
     protected $subject;
 
@@ -29,7 +29,7 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider::class, array('dummy'), array(), '', false);
+        $this->subject = $this->getAccessibleMock(\FoT3\Mediace\MediaWizard\MediaWizardProvider::class, array('dummy'), array(), '', false);
     }
 
     /**
