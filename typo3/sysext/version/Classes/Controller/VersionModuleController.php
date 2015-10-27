@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 
 /**
  * Versioning module, including workspace management
@@ -114,12 +115,20 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected $moduleName = 'web_txversionM1';
 
     /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Initialize language files
      */
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
         $GLOBALS['LANG']->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf');
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
     /**
