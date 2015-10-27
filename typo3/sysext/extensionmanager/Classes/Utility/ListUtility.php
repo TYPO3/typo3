@@ -107,7 +107,8 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getAvailableExtensions()
     {
-        if ($this->availableExtensions === NULL) {
+        if ($this->availableExtensions === null) {
+            $this->availableExtensions = [];
             $this->emitPackagesMayHaveChangedSignal();
             foreach ($this->packageManager->getAvailablePackages() as $package) {
                 $installationType = $this->getInstallTypeForPackage($package);
@@ -121,6 +122,14 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         return $this->availableExtensions;
+    }
+
+    /**
+     * Reset and reload the available extensions
+     */
+    public function reloadAvailableExtensions() {
+        $this->availableExtensions = null;
+        $this->getAvailableExtensions();
     }
 
     /**
