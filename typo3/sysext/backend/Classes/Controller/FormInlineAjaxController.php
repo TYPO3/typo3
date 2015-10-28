@@ -344,8 +344,9 @@ class FormInlineAjaxController
                 // Do not compile existing children, we don't need them now
                 'inlineCompileExistingChildren' => false,
             ];
+            // Full TcaDatabaseRecord is required here to have the list of connected uids $oldItemList
             /** @var TcaDatabaseRecord $formDataGroup */
-            $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
+            $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
             /** @var FormDataCompiler $formDataCompiler */
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
@@ -402,7 +403,7 @@ class FormInlineAjaxController
                 }
                 $jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', ' . GeneralUtility::quoteJSvalue($childUid) . ', null, ' . $selectedValue . ');';
                 // Remove possible virtual records in the form which showed that a child records could be localized:
-                $transOrigPointerFieldName = $GLOBALS['TCA'][$childData['table']]['ctrl']['transOrigPointerField'];
+                $transOrigPointerFieldName = $childData['processedTca']['ctrl']['transOrigPointerField'];
                 if (isset($childData['databaseRow'][$transOrigPointerFieldName]) && $childData['databaseRow'][$transOrigPointerFieldName]) {
                     $transOrigPointerField = $childData['databaseRow'][$transOrigPointerFieldName];
                     if (is_array($transOrigPointerField)) {
@@ -410,9 +411,16 @@ class FormInlineAjaxController
                     }
                     $jsonArray['scriptCall'][] = 'inline.fadeAndRemove(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $transOrigPointerField . '_div') . ');';
                 }
-                if (!empty($childResult['html'])) {
-                    array_unshift($jsonArray['scriptCall'], 'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records') . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', json.data);');
-                }
+
+            }
+            // Tell JS to add new HTML of one or multiple (localize all) records to DOM
+            if (!empty($jsonArray['data'])) {
+                array_push(
+                    $jsonArray['scriptCall'],
+                    'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records')
+                    . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable)
+                    . ', json.data);'
+                );
             }
         }
 
@@ -536,7 +544,7 @@ class FormInlineAjaxController
      */
     protected function mergeChildResultIntoJsonResult(array $jsonResult, array $childResult)
     {
-        $jsonResult['data'] = $childResult['html'];
+        $jsonResult['data'] .= $childResult['html'];
         $jsonResult['stylesheetFiles'] = $childResult['stylesheetFiles'];
         if (!empty($childResult['inlineData'])) {
             $jsonResult['scriptCall'][] = 'inline.addToDataArray(' . json_encode($childResult['inlineData']) . ');';

@@ -161,35 +161,37 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     $result['defaultLanguageRow']['uid'],
                     $result['defaultLanguageRow'][$fieldName]
                 );
+
                 $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
                 $showRemoved = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showRemovedLocalizationRecords'];
-                if ($showPossible || $showRemoved) {
-                    // Find which records are localized, which records are not localized and which are
-                    // localized but miss default language record
-                    $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
-                    foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
-                        $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
-                        $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
-                        if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord, true)) {
-                            // This localized child has a default language record. Remove this record from list of default language records
-                            $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, array($uidOfDefaultLanguageRecord));
-                            // Compile localized record
-                            $result['processedTca']['columns'][$fieldName]['children'][] = $this->compileChild($result, $fieldName, $localizedUid);
-                        } elseif ($showRemoved) {
-                            // This localized child has no default language record. Compile child and mark it as such
-                            $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
-                            $compiledChild['inlineIsDanglingLocalization'] = true;
-                            $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
-                        } // Discard child if default language is missing and no showRemoved is set
-                    }
-                    if ($showPossible) {
-                        foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
-                            // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
-                            // exist in default language, but are not localized yet. Compile and mark those
-                            $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
-                            $compiledChild['inlineIsDefaultLanguage'] = true;
-                            $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
-                        }
+
+                // Find which records are localized, which records are not localized and which are
+                // localized but miss default language record
+                $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
+                foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
+                    $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                    $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
+                    if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
+                        // This localized child has a default language record. Remove this record from list of default language records
+                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, array($uidOfDefaultLanguageRecord));
+                        // Compile localized record
+                        $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                        $compiledChild['inlineIsTranslationWithDefaultLanguage'] = true;
+                        $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+                    } elseif ($showRemoved) {
+                        // This localized child has no default language record. Compile child and mark it as such
+                        $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                        $compiledChild['inlineIsDanglingLocalization'] = true;
+                        $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+                    } // Discard child if default language is missing and no showRemoved is set
+                }
+                if ($showPossible) {
+                    foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
+                        // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
+                        // exist in default language, but are not localized yet. Compile and mark those
+                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                        $compiledChild['inlineIsDefaultLanguage'] = true;
+                        $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                     }
                 }
             }
