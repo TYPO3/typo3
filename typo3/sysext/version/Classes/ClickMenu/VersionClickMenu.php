@@ -60,7 +60,7 @@ class VersionClickMenu
             $url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
             $localItems[] = $backRef->linkItem(
                 $GLOBALS['LANG']->getLLL('title', $LL),
-                $backRef->excludeIcon($this->iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL)->render()),
+                $backRef->excludeIcon($this->iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render()),
                 $backRef->urlRefForCM($url),
                 true
             );

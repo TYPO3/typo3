@@ -64,7 +64,7 @@ class VersionView
                 // Add management link:
                 $management = '
 					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '">
-						' . $iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL)->render() . '
+						' . $iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '
 						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', true) . '
 					</a>';
                 // Create onchange handler:
