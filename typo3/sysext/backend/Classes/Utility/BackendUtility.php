@@ -2890,7 +2890,6 @@ class BackendUtility
      * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
      *
      * @return string
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
      */
     public static function editOnClick($params, $_ = '', $requestUri = '')
     {
@@ -2993,6 +2992,29 @@ class BackendUtility
             return $tagParameters;
         }
         return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
+    }
+
+    /**
+     * Returns a URL with a command to TYPO3 Datahandler
+     *
+     * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
+     * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
+     * @return string URL to BackendUtility::getModuleUrl('tce_db') + parameters
+     */
+    public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
+    {
+        $urlParameters = [
+            'prErr' => 1,
+            'uPT' => 1,
+            'vC' => static::getBackendUserAuthentication()->veriCode()
+        ];
+        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $parameters . '&redirect=';
+        if ((int)$redirectUrl === -1) {
+            $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
+        } else {
+            $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
+        }
+        return $url;
     }
 
     /**

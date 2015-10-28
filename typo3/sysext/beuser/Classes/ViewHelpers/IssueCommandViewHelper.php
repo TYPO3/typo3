@@ -22,7 +22,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
+ * Render a link to DataHandler command
  * @internal
  */
 class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface
@@ -34,7 +34,7 @@ class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInt
      * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
      *
      * @return string URL to tce_db.php + parameters
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()
      */
     public function render($parameters, $redirectUrl = '')
     {

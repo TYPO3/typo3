@@ -565,36 +565,6 @@ class ModuleTemplate
     }
 
     /**
-     * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
-     * See description of the API elsewhere.
-     *
-     * @param string $params Is a set of GET params to send to tce_db.php.
-     * Example: "&cmd[tt_content][123][move]=456" or
-     * "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-     * @param string|int $redirectUrl Redirect URL, default is to use
-     * GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate
-     * an URL for JavaScript using T3_THIS_LOCATION
-     *
-     * @return string URL to BackendUtility::getModuleUrl('tce_db') + parameters
-     * @internal
-     */
-    public function issueCommand($params, $redirectUrl = '')
-    {
-        $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
-            'vC' => $this->getBackendUserAuthentication()->veriCode()
-        ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $params . '&redirect=';
-        if ((int)$redirectUrl === -1) {
-            $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
-        } else {
-            $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
-        }
-        return $url;
-    }
-
-    /**
      * Creates the version selector for the page id inputted.
      * Requires the core version management extension, "version" to be loaded.
      *

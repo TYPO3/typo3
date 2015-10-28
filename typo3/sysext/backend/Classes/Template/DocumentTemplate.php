@@ -556,23 +556,12 @@ function jumpToUrl(URL) {
      * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
      * @return string URL to BackendUtility::getModuleUrl('tce_db') + parameters
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use BackendUtility::getLinkToDataHandlerAction() instead
      */
     public function issueCommand($params, $redirectUrl = '')
     {
-        /** @var BackendUserAuthentication $beUser */
-        $beUser = $GLOBALS['BE_USER'];
-        $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
-            'vC' => $beUser->veriCode()
-        ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $params . '&redirect=';
-        if ((int)$redirectUrl === -1) {
-            $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
-        } else {
-            $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
-        }
-        return $url;
+        GeneralUtility::logDeprecatedFunction();
+        return BackendUtility::getLinkToDataHandlerAction($params, $redirectUrl);
     }
 
     /**

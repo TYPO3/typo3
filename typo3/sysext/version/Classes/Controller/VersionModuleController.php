@@ -377,7 +377,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 				<tr' . ($row['uid'] != $this->uid ? '' : ' class="active"') . '>
 					<td class="col-icon">' .
                         ($row['uid'] != $this->uid ?
-                            '<a href="' . $this->doc->issueCommand('&cmd[' . $this->table . '][' . $this->uid . '][version][swapWith]=' . $row['uid'] . '&cmd[' . $this->table . '][' . $this->uid . '][version][action]=swap') . '" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '</a>' :
+                            '<a href="' . BackendUtility::getLinkToDataHandlerAction('&cmd[' . $this->table . '][' . $this->uid . '][version][swapWith]=' . $row['uid'] . '&cmd[' . $this->table . '][' . $this->uid . '][version][action]=swap') . '" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '</a>' :
                             '<span title="' . $GLOBALS['LANG']->getLL('currentOnlineVersion', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('status-status-current', Icon::SIZE_SMALL)->render() . '</span>'
                         ) . '
 					</td>
@@ -533,7 +533,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         ]);
         $adminLink = '<a class="btn btn-default" href="' . htmlspecialchars($editUrl) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         // Delete link:
-        $adminLink .= '<a class="btn btn-default" href="' . htmlspecialchars($this->doc->issueCommand('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+        $adminLink .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', true) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
         if ($table === 'pages') {
             // If another page module was specified, replace the default Page module with the new one
             $newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));

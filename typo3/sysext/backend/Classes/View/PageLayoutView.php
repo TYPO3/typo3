@@ -1273,7 +1273,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     }
                     $params = '&data[tt_content][' . ($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'])
                         . '][' . $hiddenField . ']=' . $value;
-                    $out .= '<a class="btn btn-default" href="' . htmlspecialchars($this->getPageLayoutController()->getModuleTemplate()->issueCommand($params))
+                    $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params))
                         . '" title="' . $this->getLanguageService()->getLL($label, true) . '">'
                         . $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL)->render() . '</a>';
                 }
@@ -1282,7 +1282,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $confirm = $this->getLanguageService()->getLL('deleteWarning')
                     . BackendUtility::translationCount('tt_content', $row['uid'], (' '
                     . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')));
-                $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->getPageLayoutController()->getModuleTemplate()->issueCommand($params)) . '"'
+                $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                     . ' data-severity="warning"'
                     . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
                     . ' data-content="' . htmlspecialchars($confirm) . '" '
@@ -1301,7 +1301,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     if ($this->tt_contentData['prev'][$row['uid']]) {
                         $params = '&cmd[tt_content][' . $row['uid'] . '][move]=' . $this->tt_contentData['prev'][$row['uid']];
                         $moveButtonContent .= '<a class="btn btn-default" href="'
-                            . htmlspecialchars($this->getPageLayoutController()->getModuleTemplate()->issueCommand($params))
+                            . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params))
                             . '" title="' . $this->getLanguageService()->getLL('moveUp', true) . '">'
                             . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
                         if (!$dragDropEnabled) {
@@ -1314,7 +1314,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     if ($this->tt_contentData['next'][$row['uid']]) {
                         $params = '&cmd[tt_content][' . $row['uid'] . '][move]= ' . $this->tt_contentData['next'][$row['uid']];
                         $moveButtonContent .= '<a class="btn btn-default" href="'
-                            . htmlspecialchars($this->getPageLayoutController()->getModuleTemplate()->issueCommand($params))
+                            . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params))
                             . '" title="' . $this->getLanguageService()->getLL('moveDown', true) . '">'
                             . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
                         if (!$dragDropEnabled) {
@@ -1656,7 +1656,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         foreach ($this->getLanguagesToCopyFrom(GeneralUtility::_GP('id'), $lP, $colPos) as $languageId => $label) {
             $elementsInColumn = $languageId === 0 ? $defLanguageCount : $this->getElementsFromColumnAndLanguage(GeneralUtility::_GP('id'), $colPos, $languageId);
             if (!empty($elementsInColumn)) {
-                $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue($this->getPageLayoutController()->getModuleTemplate()->issueCommand('&cmd[tt_content][' . implode(',', $elementsInColumn) . '][copyFromLanguage]=' . GeneralUtility::_GP('id') . ',' . $lP)) . '; return false;';
+                $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getLinkToDataHandlerAction('&cmd[tt_content][' . implode(',', $elementsInColumn) . '][copyFromLanguage]=' . GeneralUtility::_GP('id') . ',' . $lP)) . '; return false;';
                 $copyFromLanguageMenu .= '<li><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $this->languageFlag($languageId, false) . ' ' . htmlspecialchars($label) . '</a></li>' . LF;
             }
         }
@@ -1674,7 +1674,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             }
 
             // We have content in the default language, create a split button
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue($this->getPageLayoutController()->getModuleTemplate()->issueCommand($params)) . '; return false;';
+            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getLinkToDataHandlerAction($params)) . '; return false;';
             $theNewButton =
                 '<div class="btn-group">
                     <input

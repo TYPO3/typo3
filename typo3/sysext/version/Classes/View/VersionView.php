@@ -73,7 +73,7 @@ class VersionView
                 if ($id == $onlineId) {
                     $controls = '<strong class="text-success">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', true) . '</strong>';
                 } elseif (!$noAction) {
-                    $href = $GLOBALS['TBE_TEMPLATE']->issueCommand(
+                    $href = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',
                         GeneralUtility::linkThisScript(array('id' => $onlineId))
                     );

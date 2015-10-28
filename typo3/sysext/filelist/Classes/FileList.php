@@ -738,7 +738,7 @@ class FileList extends AbstractRecordList
                                         'returnUrl' => $this->listURL()
                                     ];
                                     $returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
-                                    $href = $this->fileListController->doc->issueCommand(
+                                    $href = BackendUtility::getLinkToDataHandlerAction(
                                         '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
                                         $returnUrl
                                     );

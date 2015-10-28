@@ -1556,7 +1556,7 @@ class EditDocumentController extends AbstractModule
                                     'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
                                     'returnUrl' => $this->retUrl
                                 ));
-                                $href = $this->moduleTemplate->issueCommand(
+                                $href = BackendUtility::getLinkToDataHandlerAction(
                                     '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'],
                                     $redirectUrl
                                 );
