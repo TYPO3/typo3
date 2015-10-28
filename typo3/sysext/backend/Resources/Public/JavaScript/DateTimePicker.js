@@ -26,7 +26,7 @@ define(['jquery'], function ($) {
 	var DateTimePicker = {
 		options: {
 			fieldSelector: '.t3js-datetimepicker',
-			format: (opener ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat
+			format: (opener !== null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat
 		}
 	};
 

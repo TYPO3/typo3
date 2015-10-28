@@ -231,7 +231,8 @@ class FrontendEditPanel
             array(
                 'edit[' . $table . '][' . $editUid . ']' => 'edit',
                 'columnsOnly' => $fieldList,
-                'noView' => $nV
+                'noView' => $nV,
+                'feEdit' => 1
             )
         ) . $addUrlParamStr;
         $icon = $this->editPanelLinkWrap_doWrap($iconImg, $url, 'content-link');
@@ -268,7 +269,7 @@ class FrontendEditPanel
         $nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
         if ($cmd == 'edit') {
             $rParts = explode(':', $currentRecord);
-            $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView=' . $nV)), $currentRecord);
+            $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $nV, 'feEdit' => 1)), $currentRecord);
         } elseif ($cmd == 'new') {
             $rParts = explode(':', $currentRecord);
             if ($rParts[0] == 'pages') {

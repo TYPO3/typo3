@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -740,8 +741,43 @@ class EditDocumentController extends AbstractModule
             'PopupWindow' => array(
                 'width' => $popupWindowWidth,
                 'height' => $popupWindowHeight
-            ),
+            )
         );
+
+        if (ExtensionManagementUtility::isLoaded('feedit') && (int)GeneralUtility::_GP('feEdit') === 1) {
+            // We have to load some locallang strings and push them into TYPO3.LLL if this request was
+            // triggered by feedit. Originally, this object is fed by BackendController which is not
+            // called here. This block of code is intended to be removed at a later point again.
+            $lang = $this->getLanguageService();
+            $coreLabels = array(
+                'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:csh_tooltip_loading')
+            );
+            $generatedLabels = array();
+            $generatedLabels['core'] = $coreLabels;
+            $code = 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
+            $filePath = 'typo3temp/Language/Backend-' . sha1($code) . '.js';
+            if (!file_exists(PATH_site . $filePath)) {
+                // writeFileToTypo3tempDir() returns NULL on success (please double-read!)
+                $error = GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code);
+                if ($error !== null) {
+                    throw new \RuntimeException('Locallang JS file could not be written to ' . $filePath . '. Reason: ' . $error, 1446118286);
+                }
+            }
+            $pageRenderer->addJsFile('../' . $filePath);
+
+            // define the window size of the popups within the RTE
+            $rtePopupWindowSize = trim($beUser->getTSConfigVal('options.rte.popupWindowSize'));
+            if (!empty($rtePopupWindowSize)) {
+                list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
+            }
+            $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-200);
+            $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-250);
+            $t3Configuration['RTEPopupWindow'] = [
+                'width' => $rtePopupWindowWidth,
+                'height' => $rtePopupWindowHeight
+            ];
+        }
+
         $javascript = '
 			TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 			// Object: TS:

@@ -43,9 +43,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 			$('.icon-actions-system-shortcut-new').closest('.btn').hide();
 		}
 		var title = '&nbsp;';
-		if (typeof(top.TYPO3.LLL) !== 'undefined') {
+		if (typeof top.TYPO3.LLL !== 'undefined') {
 			title = top.TYPO3.LLL.core.csh_tooltip_loading;
-		} else if (opener && typeof(opener.top.TYPO3.LLL) !== 'undefined') {
+		} else if (opener && typeof opener.top.TYPO3.LLL !== 'undefined') {
 			title = opener.top.TYPO3.LLL.core.csh_tooltip_loading;
 		}
 		var $element = $(this.selector);
