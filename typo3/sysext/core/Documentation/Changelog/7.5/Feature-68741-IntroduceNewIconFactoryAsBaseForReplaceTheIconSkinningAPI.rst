@@ -62,7 +62,8 @@ Register an icon
 	 * @param string $iconProviderClassName the icon provider class name
 	 * @param array $options provider specific options, please reference the icon provider class
 	 */
-	IconRegistry::registerIcon($identifier, $iconProviderClassName, array $options = array());
+	$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+	$iconRegistry->registerIcon($identifier, $iconProviderClassName, array $options = array());
 
 
 Use an icon

@@ -48,6 +48,8 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
     }
 
     /**
+     * Statically renders all format download links.
+     *
      * @param array $arguments
      * @param callable $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -59,6 +61,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
         /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
         $documentTranslation = $arguments['documentTranslation'];
 
+        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $emptyIcon = $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render();
         $icons = array(
@@ -74,33 +77,57 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
             $output .= '<a ';
 
             $uri = '../' . $format->getPath();
+            $documentFormat = $format->getFormat();
             $extension = substr($uri, strrpos($uri, '.') + 1);
             if (strlen($extension) < 5) {
                 // This is direct link to a file
                 $output .= 'href="' . $uri . '" class="btn btn-default"';
+                $iconHtml = static::getIconForFileExtension($extension, $iconFactory);
             } else {
-                $extension = $format->getFormat();
-                if ($extension === 'json') {
-                    $extension = 'js';
-                }
                 $output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(' . GeneralUtility::quoteJSvalue($uri) . ')" class="btn btn-default"';
+                $iconHtml = static::getIconForFileExtension($documentFormat, $iconFactory);
             }
 
             $xliff = 'LLL:EXT:documentation/Resources/Private/Language/locallang.xlf';
             $title = sprintf(
                 $GLOBALS['LANG']->sL($xliff . ':tx_documentation_domain_model_documentformat.format.title'),
-                $format->getFormat()
+                $documentFormat
             );
             $output .= ' title="' . htmlspecialchars($title) . '">';
-            $spriteIconHtml = $iconFactory->getIconForFileExtension($extension, Icon::SIZE_SMALL)->render();
-            $output .= $spriteIconHtml . '</a>' . LF;
-            $keyFormat = $format->getFormat();
-            if ($keyFormat === 'json') {
+            $output .= $iconHtml . '</a>' . LF;
+            if ($documentFormat === 'json') {
                 // It should take over the place of sxw which will then never be used
-                $keyFormat = 'sxw';
+                $documentFormat = 'sxw';
             }
-            $icons[$keyFormat] = $output;
+            $icons[$documentFormat] = $output;
         }
         return implode('', array_values($icons));
     }
+
+    /**
+     * Returns the icon associated to a given file extension (privileging black and white).
+     *
+     * @param IconFactory $iconFactory
+     * @param string $extension
+     * @return string
+     */
+    protected static function getIconForFileExtension($extension, IconFactory $iconFactory)
+    {
+        switch ($extension) {
+            case 'html':
+            case 'pdf':
+                $iconHtml = $iconFactory->getIcon('actions-file-' . $extension, Icon::SIZE_SMALL)->render();
+                break;
+            case 'sxw':
+                $iconHtml = $iconFactory->getIcon('actions-file-openoffice', Icon::SIZE_SMALL)->render();
+                break;
+            case 'json':
+                $iconHtml = $iconFactory->getIcon('actions-system-extension-documentation', Icon::SIZE_SMALL)->render();
+                break;
+            default:
+                $iconHtml = $iconFactory->getIconForFileExtension($extension, Icon::SIZE_SMALL)->render();;
+        }
+        return $iconHtml;
+    }
+
 }
