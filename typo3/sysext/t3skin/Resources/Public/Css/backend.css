@@ -12327,6 +12327,11 @@ span.typo3-moduleHeader img {
 .row > .form-group > .form-control-wrap {
   margin-bottom: 0;
 }
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  color: #737373;
+}
 .form-group.has-error label:before {
   font-family: FontAwesome;
   font-size: 12px;
