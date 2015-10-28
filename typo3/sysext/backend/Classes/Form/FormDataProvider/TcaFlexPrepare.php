@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This data provider is typically executed directly after TcaFlexFetch
  */
-class TcaFlexPrepare extends AbstractItemProvider implements FormDataProviderInterface
+class TcaFlexPrepare implements FormDataProviderInterface
 {
     /**
      * Resolve flex data structures and prepare flex data values.

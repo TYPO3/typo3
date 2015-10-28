@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Set or initialize configuration for inline fields in TCA
  */
-class TcaInlineConfiguration extends AbstractItemProvider implements FormDataProviderInterface
+class TcaInlineConfiguration implements FormDataProviderInterface
 {
     /**
      * Find all inline fields and force proper configuration

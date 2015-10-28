@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Resolve return Url if not set otherwise.
  */
-class ReturnUrl extends AbstractItemProvider implements FormDataProviderInterface
+class ReturnUrl implements FormDataProviderInterface
 {
     /**
      * Add return unl

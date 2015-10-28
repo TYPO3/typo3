@@ -110,6 +110,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => 'foo',
                             ],
@@ -138,6 +139,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'aLabel',
@@ -181,6 +183,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'aLabel',
@@ -219,6 +222,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'anUnknownValue',
                         ],
                     ],
@@ -246,6 +250,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'tables',
                             'maxitems' => 1,
                         ],
@@ -305,6 +310,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'pagetypes',
                             'items' => [],
                             'maxitems' => 1,
@@ -481,6 +487,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'exclude',
                         ],
                     ],
@@ -512,6 +519,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'exclude',
                         ],
                     ],
@@ -600,6 +608,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'explicitValues',
                         ],
                     ],
@@ -617,6 +626,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         'label' => 'aFieldTitle',
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'authMode' => 'explicitAllow',
                             'items' => [
                                 0 => [
@@ -668,6 +678,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'explicitValues',
                         ],
                     ],
@@ -685,6 +696,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         'label' => 'aFieldTitle',
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'authMode' => 'explicitDeny',
                             'items' => [
                                 0 => [
@@ -736,6 +748,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'explicitValues',
                         ],
                     ],
@@ -753,6 +766,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         'label' => 'aFieldTitle',
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'authMode' => 'individual',
                             'items' => [
                                 0 => [
@@ -825,6 +839,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'explicitValues',
                         ],
                     ],
@@ -842,6 +857,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         'label' => 'aFieldTitle',
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'authMode' => 'individual',
                             'items' => [
                                 0 => [
@@ -914,6 +930,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'languages',
                         ],
                     ],
@@ -964,6 +981,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'custom',
                         ],
                     ],
@@ -1019,6 +1037,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'special' => 'modListGroup',
                         ],
                     ],
@@ -1083,6 +1102,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'fileFolder' => $directory,
                             'fileFolder_extList' => 'gif',
                             'fileFolder_recursions' => 1,
@@ -1265,6 +1285,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
                             'foreign_table_where' => $foreignTableWhere,
                         ],
@@ -1343,6 +1364,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
                         ],
                     ],
@@ -1367,6 +1389,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
                             'foreign_table_where' => 'AND ftable.uid=1 GROUP BY groupField ORDER BY orderField LIMIT 1,2',
                         ],
@@ -1423,6 +1446,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
                             'items' => [
                                 0 => [
@@ -1493,6 +1517,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
                             'foreign_table_prefix' => 'aPrefix',
                             'items' => [],
@@ -1571,6 +1596,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'keepMe',
@@ -1626,6 +1652,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'keepMe',
@@ -1684,6 +1711,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'keepMe',
@@ -1736,6 +1764,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'authMode' => 'explicitAllow',
                             'items' => [
                                 0 => [
@@ -1789,6 +1818,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'doktype' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'keepMe',
@@ -1835,6 +1865,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'doktype' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'keepMe',
@@ -1889,6 +1920,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [],
                             'itemsProcFunc' => function (array $parameters, $pObj) {
                                 $parameters['items'] = [
@@ -1915,6 +1947,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config'] = [
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => [
                 0 => [
                     0 => 'aLabel',
@@ -1955,6 +1988,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
@@ -2024,6 +2058,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'aKey' => 'aValue',
                             'items' => [
                                 0 => [
@@ -2072,6 +2107,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'items' => [
                                 0 => [
                                     0 => 'aLabel',
@@ -2140,6 +2176,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'foreign_table' => 'foreignTable',
                             'MM' => 'aTable_foreignTable_mm',
@@ -2195,6 +2232,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'foreign_table' => 'foreignTable',
                             'items' => [],
@@ -2256,6 +2294,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'foreign_table' => 'foreignTable',
                             'maxitems' => 999,
                             'items' => [
@@ -2292,6 +2331,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
                                 ['foo', 'foo', null, null],
@@ -2331,6 +2371,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 1,
                             'items' => [],
                         ],
@@ -2366,6 +2407,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
                                 ['a', '', null, null],
@@ -2411,6 +2453,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 999,
                             'items' => [
                                 ['foo', 'foo', null, null],
@@ -2451,6 +2494,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'select',
+                            'renderType' => 'selectSingle',
                             'maxitems' => 1,
                             'items' => [
                                 ['foo', 'foo', null, null],
@@ -2489,6 +2533,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'select',
+                                    'renderType' => 'selectSingle',
                                     'maxitems' => 999,
                                     'MM' => 'mm_aTable_foreignTable',
                                     'foreign_table' => 'foreignTable',
@@ -2517,6 +2562,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'select',
+                                    'renderType' => 'selectSingle',
                                     'maxitems' => 999,
                                     'MM' => 'mm_aTable_foreignTable',
                                     'foreign_table' => 'foreignTable',
@@ -2542,6 +2588,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'select',
+                                    'renderType' => 'selectSingle',
                                     'maxitems' => 1,
                                     'MM' => 'mm_aTable_foreignTable',
                                     'foreign_table' => 'foreignTable',
@@ -2569,6 +2616,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'select',
+                                    'renderType' => 'selectSingle',
                                     'maxitems' => 1,
                                     'MM' => 'mm_aTable_foreignTable',
                                     'foreign_table' => 'foreignTable',

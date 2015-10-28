@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This is the first data provider in the chain of flex form related providers.
  */
-class TcaFlexFetch extends AbstractItemProvider implements FormDataProviderInterface
+class TcaFlexFetch implements FormDataProviderInterface
 {
     /**
      * Resolve ds pointer stuff and parse both ds and dv

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * Fetch information of user specific inline record expanded / collapsed state
  * from user->uc and put it into $result['inlineExpandCollapseStateArray']
  */
-class TcaInlineExpandCollapseState extends AbstractItemProvider implements FormDataProviderInterface
+class TcaInlineExpandCollapseState implements FormDataProviderInterface
 {
     /**
      * Add inline expand / collapse state

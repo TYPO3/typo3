@@ -20,13 +20,14 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Resolve placeholders for fields of type input or text. The placeholder value
  * in the processedTca section of the result will be replaced with the resolved
  * value.
  */
-class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProviderInterface
+class TcaInputPlaceholders implements FormDataProviderInterface
 {
     /**
      * Resolve placeholders for input/text fields. Placeholders that are simple
@@ -207,5 +208,13 @@ class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProvi
         }
 
         return $allowedTable;
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

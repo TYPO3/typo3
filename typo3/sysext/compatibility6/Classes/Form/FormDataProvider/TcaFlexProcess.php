@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This is typically the last provider, executed after TcaFlexPrepare
  */
-class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInterface
+class TcaFlexProcess implements FormDataProviderInterface
 {
     /**
      * Determine possible pageTsConfig overrides and apply them to ds.
