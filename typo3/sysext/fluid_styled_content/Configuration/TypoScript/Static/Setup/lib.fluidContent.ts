@@ -4,12 +4,15 @@ lib.fluidContent = FLUIDTEMPLATE
 lib.fluidContent {
 	templateName = Default
 	templateRootPaths {
+		0 = EXT:fluid_styled_content/Resources/Private/Templates/Content/
 		10 = {$styles.templates.templateRootPath}
 	}
 	partialRootPaths {
+		0 = EXT:fluid_styled_content/Resources/Private/Partials/
 		10 = {$styles.templates.partialRootPath}
 	}
 	layoutRootPaths {
+		0 = EXT:fluid_styled_content/Resources/Private/Layouts/
 		10 = {$styles.templates.layoutRootPath}
 	}
 	settings {

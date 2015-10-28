@@ -1,10 +1,10 @@
 styles.templates {
-	# cat=content/templates/b1; type=string; label= Default fallback path of Fluid Templates for all defined content elements
-	templateRootPath = EXT:fluid_styled_content/Resources/Private/Templates/Content/
-	# cat=content/templates/b2; type=string; label= Default fallback path of Fluid Partials for all defined content elements
-	partialRootPath = EXT:fluid_styled_content/Resources/Private/Partials/
-	# cat=content/templates/b3; type=string; label= Default fallback path of Fluid Layouts for all defined content elements
-	layoutRootPath = EXT:fluid_styled_content/Resources/Private/Layouts/
+	# cat=content/templates/b1; type=string; label= Path of Fluid Templates for all defined content elements
+	templateRootPath =
+	# cat=content/templates/b2; type=string; label= Path of Fluid Partials for all defined content elements
+	partialRootPath =
+	# cat=content/templates/b3; type=string; label= Path of Fluid Layouts for all defined content elements
+	layoutRootPath =
 }
 
 styles.content {

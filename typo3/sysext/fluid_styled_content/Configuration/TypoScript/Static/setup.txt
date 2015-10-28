@@ -1,7 +1,7 @@
-<INCLUDE_TYPOSCRIPT: source="FILE: EXT:fluid_styled_content/Configuration/TypoScript/Static/Setup/lib.parseFunc.ts">
-<INCLUDE_TYPOSCRIPT: source="FILE: EXT:fluid_styled_content/Configuration/TypoScript/Static/Setup/lib.fluidContent.ts">
-<INCLUDE_TYPOSCRIPT: source="FILE: EXT:fluid_styled_content/Configuration/TypoScript/Static/Setup/lib.stdheader.ts">
-<INCLUDE_TYPOSCRIPT: source="FILE: EXT:fluid_styled_content/Configuration/TypoScript/Static/Setup/styles.content.get.ts">
+<INCLUDE_TYPOSCRIPT: source="FILE:./Setup/lib.parseFunc.ts">
+<INCLUDE_TYPOSCRIPT: source="FILE:./Setup/lib.fluidContent.ts">
+<INCLUDE_TYPOSCRIPT: source="FILE:./Setup/lib.stdheader.ts">
+<INCLUDE_TYPOSCRIPT: source="FILE:./Setup/styles.content.get.ts">
 
 tt_content = CASE
 tt_content {
