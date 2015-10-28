@@ -171,7 +171,7 @@ class SelectTreeElement extends AbstractFormElement
 				id: "' . $id . '",
 				showHeader: ' . (int)$header . ',
 				onChange: ' . GeneralUtility::quoteJSvalue($onChange) . ',
-				countSelectedNodes: ' . count($selectedNodes) . ',
+				countSelectedNodes: ' . count($selectedNodesForApi) . ',
 				width: ' . (int)$width . ',
 				rendering: false,
 				listeners: {
