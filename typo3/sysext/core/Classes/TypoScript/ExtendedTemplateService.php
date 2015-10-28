@@ -1196,19 +1196,21 @@ class ExtendedTemplateService extends TemplateService
                     $aname = '\'' . $raname . '\'';
                     list($fN, $fV, $params, $idName) = $this->ext_fNandV($params);
                     $idName = htmlspecialchars($idName);
+                    $hint = '';
                     switch ($typeDat['type']) {
                         case 'int':
-
                         case 'int+':
-                            $p_field = '<input id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"'
-                                . $this->getDocumentTemplate()->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
                             if ($typeDat['paramstr']) {
-                                $p_field .= ' Range: ' . $typeDat['paramstr'];
-                            } elseif ($typeDat['type'] == 'int+') {
-                                $p_field .= ' Range: 0 - ';
+                                $hint = ' Range: ' . $typeDat['paramstr'];
+                            } elseif ($typeDat['type'] === 'int+') {
+                                $hint = ' Range: 0 - ';
                             } else {
-                                $p_field .= ' (Integer)';
+                                $hint = ' (Integer)';
                             }
+
+                            $p_field =
+                                '<input class="form-control" id="' . $idName . '" type="text"'
+                                . ' name="' . $fN . '" value="' . $fV . '"' . ' onChange="uFormUrl(' . $aname . ')" />';
                             break;
                         case 'color':
                             $colorNames = explode(',', ',' . $this->HTMLcolorList);
@@ -1220,14 +1222,14 @@ class ExtendedTemplateService extends TemplateService
                                 }
                                 $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $val . '</option>';
                             }
-                            $p_field = '<select id="select-' . $idName . '" rel="' . $idName . '" name="C' . $fN . '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' . $aname . ');">' . $p_field . '</select>';
-                            $p_field .= '<input type="text" id="input-' . $idName . '" rel="' . $idName . '" name="' . $fN . '" class="typo3-tstemplate-ceditor-color-input" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<select class="form-control t3js-color-select" id="select-' . $idName . '" rel="' . $idName . '" name="C' . $fN . '" onChange="uFormUrl(' . $aname . ');"' . $this->getDocumentTemplate()->formWidth(7) . '>' . $p_field . '</select>';
+                            $p_field .= '<input class="form-control t3js-color-input" type="text" id="input-' . $idName . '" rel="' . $idName . '" name="' . $fN . '" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
                             break;
                         case 'wrap':
                             $wArr = explode('|', $fV);
-                            $p_field = '<input type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $this->getDocumentTemplate()->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<input class="form-control" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $this->getDocumentTemplate()->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
                             $p_field .= ' | ';
-                            $p_field .= '<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $this->getDocumentTemplate()->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field .= '<input class="form-control" type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $this->getDocumentTemplate()->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
                             break;
                         case 'offset':
                             $wArr = explode(',', $fV);
@@ -1253,34 +1255,36 @@ class ExtendedTemplateService extends TemplateService
                                     $val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
                                     // option tag:
                                     $sel = '';
-                                    if ($val == $params['value']) {
+                                    if ($val === $params['value']) {
                                         $sel = ' selected';
                                     }
                                     $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $this->getLanguageService()->sL($label) . '</option>';
                                 }
-                                $p_field = '<select id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+                                $p_field = '<select class="form-control" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
                             }
                             break;
                         case 'boolean':
-                            $p_field = '<input type="hidden" name="' . $fN . '" value="0" />';
-                            $sel = '';
-                            if ($fV) {
-                                $sel = ' checked';
-                            }
-                            $p_field .= '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
+                            $sel = $fV ? 'checked' : '';
+                            $p_field =
+                                '<label class="btn btn-default btn-checkbox">'
+                                    . '<input type="hidden" name="' . $fN . '" value="0" />'
+                                    . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                    . '<span class="t3-icon fa"></span>'
+                                . '</label>';
                             break;
                         case 'comment':
-                            $p_field = '<input type="hidden" name="' . $fN . '" value="#" />';
-                            $sel = '';
-                            if (!$fV) {
-                                $sel = ' checked';
-                            }
-                            $p_field .= '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value=""' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
+                            $sel = $fV ? 'checked' : '';
+                            $p_field =
+                                '<label class="btn btn-default btn-checkbox">'
+                                . '<input type="hidden" name="' . $fN . '" value="#" />'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<span class="t3-icon fa"></span>'
+                                . '</label>';
                             break;
                         case 'file':
                             // extensionlist
                             $extList = $typeDat['paramstr'];
-                            if ($extList == 'IMAGE_EXT') {
+                            if ($extList === 'IMAGE_EXT') {
                                 $extList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
                             }
                             $p_field = '<option value="">(' . $extList . ')</option>';
@@ -1289,7 +1293,7 @@ class ExtendedTemplateService extends TemplateService
                                 $p_field .= '<option value=""></option>';
                                 $p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
                             }
-                            $p_field = '<select id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+                            $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
                             break;
                         case 'user':
                             $userFunction = $typeDat['paramstr'];
@@ -1299,9 +1303,8 @@ class ExtendedTemplateService extends TemplateService
                         case 'small':
 
                         default:
-                            $fwidth = $typeDat['type'] == 'small' ? 10 : 46;
-                            $p_field = '<input id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"'
-                                . $this->getDocumentTemplate()->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"'
+                                . ' onChange="uFormUrl(' . $aname . ')" />';
                     }
                     // Define default names and IDs
                     $userTyposcriptID = 'userTS-' . $idName;
@@ -1309,10 +1312,10 @@ class ExtendedTemplateService extends TemplateService
                     $checkboxName = 'check[' . $params['name'] . ']';
                     $checkboxID = 'check-' . $idName;
                     // Handle type=color specially
-                    if ($typeDat['type'] == 'color' && substr($params['value'], 0, 2) != '{$') {
-                        $color = '<div id="colorbox-' . $idName . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';">&nbsp;</div>';
+                    if ($typeDat['type'] === 'color' && substr($params['value'], 0, 2) != '{$') {
+                        $appendedGroupAddon = '<span class="input-group-addon colorbox" id="colorbox-' . $idName . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';"></span>';
                     } else {
-                        $color = '';
+                        $appendedGroupAddon = '';
                     }
                     $userTyposcriptStyle = '';
                     $deleteIconHTML = '';
@@ -1330,37 +1333,63 @@ class ExtendedTemplateService extends TemplateService
                         }
                         $deleteTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.deleteTitle', true);
                         $deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
-                        $deleteIconHTML = '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '"'
-                            . ' class="typo3-tstemplate-ceditor-control undoIcon" rel="' . $idName . '">'
-                            . $deleteIcon . '</span>';
+                        $deleteIconHTML =
+                            '<button type="button" class="btn btn-default t3js-toggle" data-toggle="undo" rel="' . $idName . '">'
+                                . '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '">'
+                                    . $deleteIcon
+                                . '</span>'
+                            . '</button>';
                         $editTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.editTitle', true);
-                        $editIcon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-                        $editIconHTML = '<span title="' . $editTitle . '" alt="' . $editTitle . '"'
-                            . ' class="typo3-tstemplate-ceditor-control editIcon" rel="' . $idName . '">'
-                            . $editIcon . '</span>';
+                        $editIcon = $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
+                        $editIconHTML =
+                            '<button type="button" class="btn btn-default t3js-toggle" data-toggle="edit"  rel="' . $idName . '">'
+                                . '<span title="' . $editTitle . '" alt="' . $editTitle . '">'
+                                    . $editIcon
+                                . '</span>'
+                            . '</button>';
                         $constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
                         // If there's no default value for the field, use a static label.
                         if (!$params['default_value']) {
                             $params['default_value'] = '[Empty]';
                         }
-                        $constantDefaultRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $defaultTyposcriptID . '" '
-                            . $defaultTyposcriptStyle . '>' . $editIconHTML . htmlspecialchars($params['default_value'])
-                            . $color . '</div>';
+                        $constantDefaultRow =
+                            '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
+                                . '<span class="input-group-btn">' . $editIconHTML . '</span>'
+                                . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
+                                . $appendedGroupAddon
+                            . '</div>';
                     }
-                    $constantEditRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $userTyposcriptID . '" '
-                        . $userTyposcriptStyle . '>' . $deleteIconHTML . $p_field . $color . '</div>';
-                    $constantLabel = '<dt class="typo3-tstemplate-ceditor-label">' . htmlspecialchars($head) . '</dt>';
-                    $constantName = '<dt class="text-muted">[' . $params['name'] . ']</dt>';
-                    $constantDescription = $body ? '<dd>' . htmlspecialchars($body) . '</dd>' : '';
-                    $constantData = '<dd>' . $constantCheckbox . $constantEditRow . $constantDefaultRow . '</dd>';
-                    $output .= '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']];
-                    $output .= '<dl class="typo3-tstemplate-ceditor-constant">' . $constantLabel . $constantName . $constantDescription . $constantData . '</dl>';
+                    $constantEditRow =
+                        '<div class="input-group userTS" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>'
+                            . '<span class="input-group-btn">' . $deleteIconHTML . '</span>'
+                            . $p_field
+                            . $appendedGroupAddon
+                        . '</div>';
+                    $constantLabel = '<label class="t3js-formengine-label"><span>' . htmlspecialchars($head) . '</span></label>';
+                    $constantName = '<span class="help-block">[' . $params['name'] . ']</span>';
+                    $constantDescription = $body ? '<p class="help-block">' . htmlspecialchars($body) . '</p>' : '';
+                    $constantData = '';
+                    if ($hint !== '') {
+                        $constantData .= '<span class="help-block">' . $hint . '</span>';
+                    }
+                    $constantData .=
+                        $constantCheckbox
+                        . $constantEditRow
+                        . $constantDefaultRow;
+
+                    $output .=
+                        '<fieldset class="form-section">'
+                            . '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']]
+                            . '<div class="form-group">'
+                                . $constantLabel . $constantName . $constantDescription . $constantData
+                            . '</div>'
+                        . '</fieldset>';
                 } else {
                     debug('Error. Constant did not exist. Should not happen.');
                 }
             }
         }
-        return $output;
+        return '<div class="tstemplate-constanteditor">' . $output . '</div>';
     }
 
     /***************************

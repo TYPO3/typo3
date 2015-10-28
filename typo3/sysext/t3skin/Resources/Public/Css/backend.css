@@ -12803,6 +12803,11 @@ iframe {
   white-space: normal;
   color: #737373;
 }
+.tstemplate-constanteditor .input-group.userTS .input-group-addon.colorbox {
+  display: inline-block;
+  height: 100%;
+  position: absolute;
+}
 .t3-grid-table {
   border-collapse: separate;
   border-spacing: 10px 0;

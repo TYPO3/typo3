@@ -26,9 +26,9 @@ define(['jquery'], function($) {
 	 */
 	var ConstantEditor = {
 		options: {
-			editIconSelector: '.typo3-tstemplate-ceditor-control',
-			colorSelectSelector: '.typo3-tstemplate-ceditor-color-select',
-			colorInputSelector: '.typo3-tstemplate-ceditor-color-input'
+			editIconSelector: '.t3js-toggle',
+			colorSelectSelector: '.t3js-color-select',
+			colorInputSelector: '.t3js-color-input'
 		}
 	};
 
@@ -42,14 +42,14 @@ define(['jquery'], function($) {
 		var $defaultDiv = $('#defaultTS-' + constantName);
 		var $userDiv = $('#userTS-' + constantName);
 		var $checkBox = $('#check-' + constantName);
+		var toggleState = $editIcon.data('toggle');
 
-		if ($editIcon.hasClass('editIcon')) {
+		if (toggleState === 'edit') {
 			$defaultDiv.hide();
-			$userDiv.show().css({background: '#fdf8bd'});
+			$userDiv.show();
+			$userDiv.find('input').css({background: '#fdf8bd'});
 			$checkBox.attr('disabled', false).attr('checked', true);
-		}
-
-		if ($editIcon.hasClass('undoIcon')) {
+		} else if (toggleState === 'undo') {
 			$userDiv.hide();
 			$defaultDiv.show();
 			$checkBox.val('').attr('disabled', true);
@@ -91,9 +91,9 @@ define(['jquery'], function($) {
 		// no DOMready needed since only events for document are registered
 		$(document).on('click', ConstantEditor.options.editIconSelector, function() {
 			ConstantEditor.changeProperty($(this));
-		}).on('click', ConstantEditor.options.colorSelectSelector, function() {
+		}).on('change', ConstantEditor.options.colorSelectSelector, function() {
 			ConstantEditor.updateColorFromSelect($(this));
-		}).on('click', ConstantEditor.options.colorInputSelector, function() {
+		}).on('blur', ConstantEditor.options.colorInputSelector, function() {
 			ConstantEditor.updateColorFromInput($(this));
 		});
 	};
