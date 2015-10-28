@@ -170,7 +170,7 @@ class FrontendController extends ActionController
      * Handles show action, presenting the actual form.
      *
      * @param \TYPO3\CMS\Form\Domain\Model\ValidationElement $incomingData
-     * @dontvalidate $incomingData
+     * @ignorevalidation $incomingData
      * @return void
      */
     public function showAction(ValidationElement $incomingData = null)

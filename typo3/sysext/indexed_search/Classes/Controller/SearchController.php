@@ -216,7 +216,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param array $search the search parameters, an associative array
      * @return void
-     * @dontvalidate $search
+     * @ignorevalidation $search
      */
     public function searchAction($search = array())
     {
@@ -879,7 +879,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param array $search The search data / params
      * @return void
-     * @dontvalidate $search
+     * @ignorevalidation $search
      */
     public function formAction($search = array())
     {
