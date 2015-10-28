@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Jumpurl\Tests\Unit;
+namespace FoT3\Jumpurl\Tests\Unit;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Jumpurl\Tests\Unit;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Jumpurl\JumpUrlProcessor;
+use FoT3\Jumpurl\JumpUrlProcessor;
 
 /**
  * Testcase for handling jump URLs when given with a test parameter

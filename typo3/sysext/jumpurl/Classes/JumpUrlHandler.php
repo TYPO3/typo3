@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Jumpurl;
+namespace FoT3\Jumpurl;
 
 /*
  * This file is part of the TYPO3 CMS project.

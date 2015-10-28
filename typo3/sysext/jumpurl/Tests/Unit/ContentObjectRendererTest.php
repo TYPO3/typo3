@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Jumpurl\Tests\Unit;
+namespace FoT3\Jumpurl\Tests\Unit;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Jumpurl\JumpUrlHandler;
-use TYPO3\CMS\Jumpurl\JumpUrlProcessor;
+use FoT3\Jumpurl\JumpUrlHandler;
+use FoT3\Jumpurl\JumpUrlProcessor;
 
 /**
  * Testcase for the jumpurl processing in TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer.

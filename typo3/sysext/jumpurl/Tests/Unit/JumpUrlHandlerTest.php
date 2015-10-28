@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Jumpurl\Tests\Unit;
+namespace FoT3\Jumpurl\Tests\Unit;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Jumpurl\JumpUrlHandler;
+use FoT3\Jumpurl\JumpUrlHandler;
 
 /**
  * Testcase for handling jump URLs when given with a test parameter
@@ -334,7 +334,7 @@ class JumpUrlHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->will($this->returnValue(true));
 
 
-        $hash = \TYPO3\CMS\Jumpurl\JumpUrlUtility::calculateHashSecure($path, '', '');
+        $hash = \FoT3\Jumpurl\JumpUrlUtility::calculateHashSecure($path, '', '');
 
         $_GET['jumpurl'] = $path;
         $_GET['juSecure'] = '1';

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Jumpurl\Tests\Unit;
+namespace FoT3\Jumpurl\Tests\Unit;
 
 /*
  * This file is part of the TYPO3 CMS project.

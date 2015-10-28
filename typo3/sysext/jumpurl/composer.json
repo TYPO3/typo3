@@ -1,24 +1,25 @@
 {
-	"name": "typo3/cms-jumpurl",
+	"name": "friendsoftypo3/jumpurl",
 	"type": "typo3-cms-extension",
 	"description": "TYPO3 Jump URL handling",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": "~7.5",
+		"typo3/cms-frontend": "~7.5"
 	},
 	"replace": {
 		"jumpurl": "*"
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\Jumpurl\\": "Classes/"
+			"FoT3\\Jumpurl\\": "Classes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"TYPO3\\CMS\\Jumpurl\\Tests\\": "Tests/"
+			"FoT3\\Jumpurl\\Tests\\": "Tests/"
 		}
 	}
 }
