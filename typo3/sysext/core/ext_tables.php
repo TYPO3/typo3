@@ -301,6 +301,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
     'apps-pagetree-page-backend-users-hideinmenu',
     'apps-pagetree-page-backend-users-root',
     'apps-pagetree-page-content-from-page',
+    'apps-pagetree-page-content-from-page-root',
     'apps-pagetree-page-content-from-page-hideinmenu',
     'apps-pagetree-page-default',
     'apps-pagetree-page-domain',

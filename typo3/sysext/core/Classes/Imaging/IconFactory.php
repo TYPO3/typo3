@@ -203,7 +203,11 @@ class IconFactory
                     $recordType[4] = 'contains-' . $row['module'];
                 }
                 if ((int)$row['content_from_pid'] > 0) {
-                    $recordType[4] = (int)$row['nav_hide'] === 0 ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
+                    if ($row['is_siteroot']) {
+                        $recordType[4] = 'page-contentFromPid-root';
+                    } else {
+                        $recordType[4] = (int)$row['nav_hide'] === 0 ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
+                    }
                 }
             }
             if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {

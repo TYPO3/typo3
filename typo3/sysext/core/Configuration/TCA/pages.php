@@ -53,6 +53,7 @@ return array(
             'contains-board' => 'apps-pagetree-folder-contains-board',
             'contains-news' => 'apps-pagetree-folder-contains-news',
             'page-contentFromPid' => 'apps-pagetree-page-content-from-page',
+            'page-contentFromPid-root' => 'apps-pagetree-page-content-from-page-root',
             'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
             'default' => 'apps-pagetree-page-default'
         ),
