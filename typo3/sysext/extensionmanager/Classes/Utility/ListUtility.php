@@ -129,6 +129,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function reloadAvailableExtensions() {
         $this->availableExtensions = null;
+        $this->packageManager->scanAvailablePackages();
         $this->getAvailableExtensions();
     }
 

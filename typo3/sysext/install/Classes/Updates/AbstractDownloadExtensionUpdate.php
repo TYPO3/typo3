@@ -88,10 +88,7 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
             $extensionFileHandlingUtility = $objectManager->get(FileHandlingUtility::class);
             $extensionFileHandlingUtility->unpackExtensionFromExtensionDataArray($t3xExtracted);
 
-            // the list utility now needs to have the regenerated list of packages
-            /** @var PackageManager $packageManager */
-            $packageManager = $objectManager->get(PackageManager::class);
-            $packageManager->scanAvailablePackages();
+            // The listUtility now needs to have the regenerated list of packages
             $extensionListUtility->reloadAvailableExtensions();
         }
 
