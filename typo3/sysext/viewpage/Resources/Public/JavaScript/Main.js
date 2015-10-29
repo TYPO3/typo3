@@ -121,13 +121,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function(
 
 		// Add event to language selector
 		ViewPage.$languageSelector.on('change',function() {
-			var iframeUrl = ViewPage.$ifraViewPage.attr('src');
+			var iframeUrl = ViewPage.$iframe.attr('src');
 			var iframeParameters = ViewPage.getUrlVars(iframeUrl);
 			// change language
 			iframeParameters.L = ViewPage.$languageSelector.val();
 			var newIframeUrl = iframeUrl.slice(0, iframeUrl.indexOf('?') + 1) + $.param(iframeParameters);
 			// load new url into iframe
-			ViewPage.$ifraViewPage.attr('src', newIframeUrl);
+			ViewPage.$iframe.attr('src', newIframeUrl);
 			Storage.Persistent.set(ViewPage.storagePrefix + 'languageSelectorValue', ViewPage.$languageSelector.val());
 		});
 	};
