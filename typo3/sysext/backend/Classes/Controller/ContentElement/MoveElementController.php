@@ -135,10 +135,11 @@ class MoveElementController extends AbstractModule
         $lang = $this->getLanguageService();
         if ($this->page_id) {
             $backendUser = $this->getBackendUser();
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             // Get record for element:
             $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
             // Headerline: Icon, record title:
-            $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($elRow, $this->table) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
+            $headerLine = '<span ' . BackendUtility::getRecordToolTip($elRow, $this->table) . '>' . $this->moduleTemplate->getIconFactory()->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
             $headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . ';';
@@ -186,7 +187,7 @@ class MoveElementController extends AbstractModule
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
                     $posMap->cur_sys_language = $this->sys_language;
                     // Headerline for the parent page: Icon, record title:
-                    $headerLine = '<span title="' . BackendUtility::getRecordIconAltText($pageInfo, 'pages') . '">'
+                    $headerLine = '<span ' . BackendUtility::getRecordToolTip($pageInfo, 'pages') . '>'
                         . $this->moduleTemplate->getIconFactory()->getIconForRecord(
                             'pages',
                             $pageInfo,

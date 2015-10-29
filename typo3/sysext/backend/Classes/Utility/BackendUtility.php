@@ -1929,13 +1929,27 @@ class BackendUtility
     }
 
     /**
+     * Returns the combined markup for Bootstraps tooltips
+     *
+     * @param array $row
+     * @param string $table
+     * @return string
+     */
+    public static function getRecordToolTip(array $row, $table = 'pages')
+    {
+        $toolTipText = self::getRecordIconAltText($row, $table);
+        $toolTipCode = 'data-toggle="tooltip" data-title=" ' . str_replace(' - ', '<br>', $toolTipText) . '" data-html="true" data-placement="right"';
+        return $toolTipCode;
+    }
+
+    /**
      * Returns title-attribute information for ANY record (from a table defined in TCA of course)
      * The included information depends on features of the table, but if hidden, starttime, endtime and fe_group fields are configured for, information about the record status in regard to these features are is included.
      * "pages" table can be used as well and will return the result of ->titleAttribForPages() for that page.
      *
      * @param array $row Table row; $row is a row from the table, $table
      * @param string $table Table name
-     * @return 	string
+     * @return string
      */
     public static function getRecordIconAltText($row, $table = 'pages')
     {
@@ -1945,7 +1959,7 @@ class BackendUtility
             $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'])) ? $row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] . ' ' : '';
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
             // Uid is added
-            $out .= '(id=' . $row['uid'] . ')';
+            $out .= 'id=' . $row['uid'];
             if ($table == 'pages' && $row['alias']) {
                 $out .= ' / ' . $row['alias'];
             }

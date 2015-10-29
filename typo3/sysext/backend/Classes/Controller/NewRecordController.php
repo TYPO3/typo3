@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -179,6 +178,7 @@ class NewRecordController extends AbstractModule
         $this->pagesOnly = GeneralUtility::_GP('pagesOnly');
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'

@@ -208,6 +208,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+
     }
 
     /*****************************************
@@ -2124,8 +2127,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function getIcon($table, $row)
     {
         // Initialization
-        $altText = BackendUtility::getRecordIconAltText($row, $table);
-        $icon = '<span title="' . $altText . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
+        $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
         $this->counter++;
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {

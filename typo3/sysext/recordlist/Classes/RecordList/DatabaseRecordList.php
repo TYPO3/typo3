@@ -887,9 +887,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         // Incr. counter.
         $this->counter++;
         // The icon with link
-        $altText = BackendUtility::getRecordIconAltText($row, $table);
+        $toolTip = BackendUtility::getRecordToolTip($row, $table);
         $additionalStyle = $indent ? ' style="margin-left: ' . $indent . 'px;"' : '';
-        $iconImg = '<span title="' . $altText . '" ' . $additionalStyle . '>'
+        $iconImg = '<span ' . $toolTip . ' ' . $additionalStyle . '>'
             . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
             . '</span>';
         $theIcon = $this->clickMenuEnabled ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;

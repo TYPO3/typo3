@@ -111,8 +111,8 @@ class MetaInformation
         // Add icon with clickMenu, etc:
         // If there IS a real page
         if (is_array($pageRecord) && $pageRecord['uid']) {
-            $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-            $iconImg = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
+            $iconImg = '<span ' . $toolTip . '>' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
             $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];

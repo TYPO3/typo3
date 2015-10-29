@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records.
@@ -103,6 +106,11 @@ class PagePositionMap
     protected $pageTreeClassName = ElementBrowserPageTreeView::class;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor allowing to set pageTreeImplementation
      *
      * @param string $pageTreeClassName
@@ -112,6 +120,7 @@ class PagePositionMap
         if ($pageTreeClassName !== null) {
             $this->pageTreeClassName = $pageTreeClassName;
         }
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /*************************************
@@ -141,7 +150,6 @@ class PagePositionMap
         // Create page tree, in $this->depth levels.
         $pageTree->getTree($pageinfo['pid'], $this->depth);
         // Initialize variables:
-        $saveBlankLineState = array();
         $saveLatestUid = array();
         $latestInvDepth = $this->depth;
         // Traverse the tree:
@@ -186,7 +194,10 @@ class PagePositionMap
                 $lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
             }
             // The line with the icon and title:
-            $lines[] = '<span class="text-nowrap">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
+            $toolTip = BackendUtility::getRecordToolTip($dat['row'], 'pages');
+            $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord('pages', $dat['row'], Icon::SIZE_SMALL)->render() . '</span>';
+
+            $lines[] = '<span class="text-nowrap">' . $icon . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $this->getBackendUser()->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
         }
         // If the current page was the last in the tree:
         $prev_dat = end($pageTree->tree);
@@ -259,7 +270,7 @@ class PagePositionMap
      */
     public function insertlabel()
     {
-        return $GLOBALS['LANG']->getLL($this->l_insertNewPageHere, 1);
+        return $this->getLanguageService()->getLL($this->l_insertNewPageHere, 1);
     }
 
     /**
@@ -285,7 +296,7 @@ class PagePositionMap
     {
         if (!isset($this->checkNewPageCache[$pid])) {
             $pidInfo = BackendUtility::getRecord('pages', $pid);
-            $this->checkNewPageCache[$pid] = $GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->doesUserHaveAccess($pidInfo, 8);
+            $this->checkNewPageCache[$pid] = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->doesUserHaveAccess($pidInfo, 8);
         }
         return $this->checkNewPageCache[$pid];
     }
@@ -328,17 +339,17 @@ class PagePositionMap
         $colPosArray = GeneralUtility::trimExplode(',', $colPosList, true);
         $lines = array();
         foreach ($colPosArray as $kk => $vv) {
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$pid . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . (int)$vv . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . (int)$this->cur_sys_language : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+            $res = $this->getDatabase()->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$pid . ($showHidden ? '' : BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . (int)$vv . ((string)$this->cur_sys_language !== '' ? ' AND sys_language_uid=' . (int)$this->cur_sys_language : '') . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
             $lines[$vv] = array();
             $lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 if (is_array($row)) {
                     $lines[$vv][] = $this->wrapRecordHeader($this->getRecordHeader($row), $row);
                     $lines[$vv][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
                 }
             }
-            $GLOBALS['TYPO3_DB']->sql_free_result($res);
+            $this->getDatabase()->sql_free_result($res);
         }
         return $this->printRecordMap($lines, $colPosArray, $pid);
     }
@@ -356,7 +367,7 @@ class PagePositionMap
         $count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
         $backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $pid, $this);
         if (isset($backendLayout['__config']['backend_layout.'])) {
-            $GLOBALS['LANG']->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+            $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
             $table = '<div class="table-fit"><table class="table table-condensed table-bordered table-vertical-top">';
             $colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
             $rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
@@ -384,7 +395,7 @@ class PagePositionMap
                     $head = '';
                     foreach ($tcaItems as $item) {
                         if ($item[1] == $columnKey) {
-                            $head = $GLOBALS['LANG']->sL($item[0], true);
+                            $head = $this->getLanguageService()->sL($item[0], true);
                         }
                     }
                     // Render the grid cell
@@ -399,9 +410,9 @@ class PagePositionMap
                     if (isset($columnConfig['colPos']) && $head) {
                         $table .= '<strong>' . $this->wrapColumnHeader($head, '', '') . '</strong>';
                     } elseif ($columnConfig['colPos']) {
-                        $table .= '<em>' . $this->wrapColumnHeader($GLOBALS['LANG']->getLL('noAccess'), '', '') . '</em>';
+                        $table .= '<em>' . $this->wrapColumnHeader($this->getLanguageService()->getLL('noAccess'), '', '') . '</em>';
                     } else {
-                        $table .= '<em>' . $this->wrapColumnHeader(($columnConfig['name']?: '') . ' (' . $GLOBALS['LANG']->getLL('notAssigned') . ')', '', '') . '</em>';
+                        $table .= '<em>' . $this->wrapColumnHeader(($columnConfig['name']?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '') . '</em>';
                     }
                     $table .= '</p>';
                     // Render lines
@@ -423,7 +434,7 @@ class PagePositionMap
             $row = '';
             foreach ($colPosArray as $kk => $vv) {
                 $row .= '<td class="col-nowrap col-min" width="' . round(100 / $count) . '%">';
-                $row .= '<p><strong>' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv), true), $vv) . '</strong></p>';
+                $row .= '<p><strong>' . $this->wrapColumnHeader($this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv), true), $vv) . '</strong></p>';
                 if (!empty($lines[$vv])) {
                     $row .= '<ul class="list-unstyled">';
                     foreach ($lines[$vv] as $line) {
@@ -483,7 +494,7 @@ class PagePositionMap
             $uid = '';
         }
         $cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
-        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . $GLOBALS['LANG']->getLL($this->l_insertNewRecordHere, 1) . '"></i></a>';
+        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . $this->getLanguageService()->getLL($this->l_insertNewRecordHere, 1) . '"></i></a>';
     }
 
     /**
@@ -501,9 +512,9 @@ class PagePositionMap
     {
         $table = 'tt_content';
         if (is_array($row)) {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode();
+            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $this->getBackendUser()->veriCode();
         } else {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode();
+            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $this->getBackendUser()->veriCode();
         }
         $location .= '&redirect=' . rawurlencode($this->R_URI);
         // returns to prev. page
@@ -514,7 +525,7 @@ class PagePositionMap
      * Wrapping the record header  (from getRecordHeader())
      *
      * @param string $str HTML content
-     * @param array $row Record array.
+     * @param string $row Record array.
      * @return string HTML content
      */
     public function wrapRecordHeader($str, $row)
@@ -531,7 +542,8 @@ class PagePositionMap
     public function getRecordHeader($row)
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $line = '<span title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">' . $iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
+        $line = '<span ' . $toolTip . ' title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">' . $iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '</span>';
         $line .= BackendUtility::getRecordTitle('tt_content', $row, true);
         return $this->wrapRecordTitle($line, $row);
     }
@@ -546,5 +558,33 @@ class PagePositionMap
     public function wrapRecordTitle($str, $row)
     {
         return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$row['uid'], 'moveUid' => ''))) . '">' . $str . '</a>';
+    }
+
+    /**
+     * Returns the BackendUser
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns the LanguageService
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabase()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
