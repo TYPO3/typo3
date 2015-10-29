@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -43,7 +44,25 @@ class TcaRecordTitle implements FormDataProviderInterface
             );
         }
 
-        if (isset($result['processedTca']['ctrl']['label_userFunc'])) {
+        if ($result['isInlineChild'] && isset($result['processedTca']['ctrl']['formattedLabel_userFunc'])) {
+            $parameters = [
+                'table' => $result['tableName'],
+                'row' => $result['databaseRow'],
+                'title' => '',
+                'isOnSymmetricSide' => $result['isOnSymmetricSide'],
+                'options' => isset($result['processedTca']['ctrl']['formattedLabel_userFunc_options'])
+                    ? $result['processedTca']['ctrl']['formattedLabel_userFunc_options']
+                    : [],
+                'parent' => [
+                    'uid' => $result['databaseRow']['uid'],
+                    'config' => $result['inlineParentConfig']
+                ]
+            ];
+            // callUserFunction requires a third parameter, but we don't want to give $this as reference!
+            $null = null;
+            GeneralUtility::callUserFunction($result['processedTca']['ctrl']['formattedLabel_userFunc'], $parameters, $null);
+            $result['recordTitle'] = $parameters['title'];
+        } elseif (isset($result['processedTca']['ctrl']['label_userFunc'])) {
             // userFunc takes precedence over everything
             $parameters = [
                 'table' => $result['tableName'],

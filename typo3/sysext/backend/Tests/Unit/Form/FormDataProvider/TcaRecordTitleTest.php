@@ -91,6 +91,32 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataReturnsRecordTitleForFormattedLabelUserFunction()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'isInlineChild' => true,
+            'processedTca' => [
+                'ctrl' => [
+                    'label' => 'uid',
+                    'formattedLabel_userFunc' => function (&$parameters) {
+                        $parameters['title'] = 'Test';
+                    }
+                ],
+                'columns' => [],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['recordTitle'] = 'Test';
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataReturnsRecordTitleForUid()
     {
         $input = [
