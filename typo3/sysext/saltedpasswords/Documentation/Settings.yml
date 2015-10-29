@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2009-2013
+  copyright: 2009-2015
   project: Salted user password hashes
   version: 7
   release: 7
