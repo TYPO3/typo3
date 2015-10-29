@@ -21,11 +21,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 
 	// fetch from parent
 	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {
+		// we need to trigger the event capturing again, in order to make sure this works inside iframes
+		parent.window.TYPO3.Modal.initializeMarkupTrigger(document);
 		return parent.window.TYPO3.Modal;
 	}
 
 	// fetch object from outer frame
 	if (top && top.TYPO3.Modal) {
+		// we need to trigger the event capturing again, in order to make sure this works inside iframes
+		top.TYPO3.Modal.initializeMarkupTrigger(document);
 		return top.TYPO3.Modal;
 	}
 
@@ -284,9 +288,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 
 	/**
 	 * Initialize markup with data attributes
+	 *
+	 * @param {object} theDocument
 	 */
-	Modal.initializeMarkupTrigger = function() {
-		$(document).on('click', '.t3js-modal-trigger', function(evt) {
+	Modal.initializeMarkupTrigger = function(theDocument) {
+		$(theDocument).on('click', '.t3js-modal-trigger', function(evt) {
 			evt.preventDefault();
 			var $element = $(this);
 			var url = $element.data('url') || null;
@@ -299,15 +305,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 					active: true,
 					btnClass: 'btn-default',
 					trigger: function() {
-						Modal.trigger('modal-dismiss');
+						Modal.currentModal.trigger('modal-dismiss');
 					}
 				},
 				{
 					text: $element.data('button-ok-text') || 'OK',
 					btnClass: 'btn-' + Modal.getSeverityClass(severity),
 					trigger: function() {
-						Modal.trigger('modal-dismiss');
-						self.location.href = $element.data('href') || $element.attr('href');
+						Modal.currentModal.trigger('modal-dismiss');
+						evt.target.ownerDocument.location.href = $element.data('href') || $element.attr('href');
 					}
 				}
 			];
@@ -326,7 +332,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 */
 	$(document).on('modal-dismiss', Modal.dismiss);
 
-	Modal.initializeMarkupTrigger();
+	Modal.initializeMarkupTrigger(document);
 
 	// expose as global object
 	TYPO3.Modal = Modal;
