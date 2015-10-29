@@ -5950,7 +5950,11 @@ class ContentObjectRenderer
                             $retVal = 'none';
                         } elseif ($retVal === '' || $retVal === '0') {
                             // If it not set check the root-line for a layout on next level and use this
-                            foreach ($tsfe->rootLine as $rootLinePage) {
+                            // Remove first element, which is the current page
+                            // See also \TYPO3\CMS\Backend\View\BackendLayoutView::getSelectedCombinedIdentifier()
+                            $rootLine = $tsfe->rootLine;
+                            array_shift($rootLine);
+                            foreach ($rootLine as $rootLinePage) {
                                 $retVal = (string) $rootLinePage['backend_layout_next_level'];
                                 // If layout for "next level" is set to "none" - don't use any and stop searching
                                 if ($retVal === '-1') {
