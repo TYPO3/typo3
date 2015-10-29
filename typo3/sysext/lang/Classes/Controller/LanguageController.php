@@ -68,8 +68,8 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
 	 * @param mixed $extensions Extensions to show in form
 	 * @return void
-	 * @dontvalidate $languageSelectionForm
-	 * @dontvalidate $extensions
+	 * @ignorevalidation $languageSelectionForm
+	 * @ignorevalidation $extensions
 	 */
 	public function indexAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm = NULL, $extensions = NULL) {
 		if ($languageSelectionForm === NULL) {
@@ -91,7 +91,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 *
 	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
 	 * @return void
-	 * @dontvalidate $languageSelectionForm
+	 * @ignorevalidation $languageSelectionForm
 	 */
 	public function updateLanguageSelectionAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm) {
 		if ($languageSelectionForm !== NULL) {
