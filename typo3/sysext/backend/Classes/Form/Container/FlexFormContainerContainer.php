@@ -47,11 +47,11 @@ class FlexFormContainerContainer extends AbstractContainer
         $flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMd5(uniqid('id', true));
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $toggleIcons = '<span class="t3-flex-control-toggle-icon-open" style="' . ($flexFormContainerElementCollapsed ? 'display: none;' : '') . '">'
-            . $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render()
+        $toggleIcons = '<span class="t3js-flex-control-toggle-icon-open" style="' . ($flexFormContainerElementCollapsed ? 'display: none;' : '') . '">'
+            . $iconFactory->getIcon('actions-view-list-collapse', Icon::SIZE_SMALL)->render()
             . '</span>';
-        $toggleIcons .= '<span class="t3-flex-control-toggle-icon-close" style="' . ($flexFormContainerElementCollapsed ? '' : 'display: none;') . '">'
-            . $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render()
+        $toggleIcons .= '<span class="t3js-flex-control-toggle-icon-close" style="' . ($flexFormContainerElementCollapsed ? '' : 'display: none;') . '">'
+            . $iconFactory->getIcon('actions-view-list-expand', Icon::SIZE_SMALL)->render()
             . '</span>';
 
         $flexFormContainerCounter = $this->data['flexFormContainerCounter'];
@@ -68,10 +68,8 @@ class FlexFormContainerContainer extends AbstractContainer
         $moveAndDeleteContent = array();
         $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
         if ($userHasAccessToDefaultLanguage) {
-            $moveAndDeleteContent[] = '<div class="pull-right">';
-            $moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', true) . '" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span>';
-            $moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span>';
-            $moveAndDeleteContent[] = '</div>';
+            $moveAndDeleteContent[] = '<span class="btn btn-default"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', true) . '" class="t3js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span></span>';
+            $moveAndDeleteContent[] = '<span class="btn btn-default"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '" class="t3js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span></span>';
         }
 
         $options = $this->data;
@@ -82,25 +80,35 @@ class FlexFormContainerContainer extends AbstractContainer
         $containerContentResult = $this->nodeFactory->create($options)->render();
 
         $html = array();
-        $html[] = '<div id="' . $flexFormFieldIdentifierPrefix . '" class="t3-form-field-container-flexsections t3-flex-section">';
-        $html[] =    '<input class="t3-flex-control t3-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
-        $html[] =    '<div class="t3-form-field-header-flexsection t3-flex-section-header">';
-        $html[] =        '<div class="pull-left">';
-        $html[] =            '<a href="#" class="t3-flex-control-toggle-button">' . $toggleIcons . '</a>';
-        $html[] =            '<span class="t3-record-title">' . $flexFormContainerTitle . '</span>';
+        $html[] = '<div id="' . $flexFormFieldIdentifierPrefix . '" class="t3-form-field-container-flexsections t3-flex-section t3js-flex-section">';
+        $html[] =    '<input class="t3-flex-control t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
+        $html[] =    '<div class="panel panel-default panel-condensed">';
+        $html[] =        '<div class="panel-heading t3js-flex-section-header" data-toggle="formengine-flex">';
+        $html[] =            '<div class="form-irre-header">';
+        $html[] =                '<div class="form-irre-header-cell form-irre-header-icon">';
+        $html[] =                    $toggleIcons;
+        $html[] =                '</div>';
+        $html[] =                '<div class="form-irre-header-cell form-irre-header-body">';
+        $html[] =                    '<span class="t3js-record-title">' . $flexFormContainerTitle . '</span>';
+        $html[] =                '</div>';
+        $html[] =                '<div class="form-irre-header-cell form-irre-header-control">';
+        $html[] =                    '<div class="btn-group btn-group-sm">';
+        $html[] =                        implode(LF, $moveAndDeleteContent);
+        $html[] =                    '</div>';
+        $html[] =                '</div>';
+        $html[] =            '</div>';
         $html[] =        '</div>';
-        $html[] =        implode(LF, $moveAndDeleteContent);
+        $html[] =        '<div class="panel-collapse t3js-flex-section-content"' . ($flexFormContainerElementCollapsed ? ' style="display:none;"' : '') . '>';
+        $html[] =            $containerContentResult['html'];
+        $html[] =        '</div>';
+        $html[] =        '<input';
+        $html[] =            'class="t3-flex-control t3js-flex-control-toggle"';
+        $html[] =            'id="' . $flexFormFieldIdentifierPrefix . '-toggleClosed"';
+        $html[] =            'type="hidden"';
+        $html[] =            'name="' . htmlspecialchars($toggleFieldName) . '"';
+        $html[] =            'value="' . ($flexFormContainerElementCollapsed ? '1' : '0') . '"';
+        $html[] =        '/>';
         $html[] =    '</div>';
-        $html[] =    '<div class="t3-form-field-record-flexsection t3-flex-section-content"' . ($flexFormContainerElementCollapsed ? ' style="display:none;"' : '') . '>';
-        $html[] =        $containerContentResult['html'];
-        $html[] =    '</div>';
-        $html[] =    '<input';
-        $html[] =        'class="t3-flex-control t3-flex-control-toggle"';
-        $html[] =        'id="' . $flexFormFieldIdentifierPrefix . '-toggleClosed"';
-        $html[] =        'type="hidden"';
-        $html[] =        'name="' . htmlspecialchars($toggleFieldName) . '"';
-        $html[] =        'value="' . ($flexFormContainerElementCollapsed ? '1' : '0') . '"';
-        $html[] =    '/>';
         $html[] = '</div>';
 
         $containerContentResult['html'] = '';

@@ -114,18 +114,18 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 
 	// setting some default values
 	TYPO3.FormEngine.FlexFormElement.defaults = {
-		'deleteIconSelector': '.t3-js-delete',
-		'sectionSelector': '.t3-flex-section',
-		'sectionContentSelector': '.t3-flex-section-content',
-		'sectionHeaderSelector': '.t3-flex-section-header',
-		'sectionHeaderPreviewSelector': '.t3-flex-section-header-preview',
-		'sectionActionInputFieldSelector': '.t3-flex-control-action',
-		'sectionToggleInputFieldSelector': '.t3-flex-control-toggle',
-		'sectionToggleIconOpenSelector': '.t3-flex-control-toggle-icon-open',
-		'sectionToggleIconCloseSelector': '.t3-flex-control-toggle-icon-close',
-		'sectionToggleButtonSelector': 'a.t3-flex-control-toggle-button',
-		'flexFormToggleAllSectionsSelector': '.t3-form-field-toggle-flexsection',
-		'sectionDeletedClass': 't3-flex-section-deleted',
+		'deleteIconSelector': '.t3js-delete',
+		'sectionSelector': '.t3js-flex-section',
+		'sectionContentSelector': '.t3js-flex-section-content',
+		'sectionHeaderSelector': '.t3js-flex-section-header',
+		'sectionHeaderPreviewSelector': '.t3js-flex-section-header-preview',
+		'sectionActionInputFieldSelector': '.t3js-flex-control-action',
+		'sectionToggleInputFieldSelector': '.t3js-flex-control-toggle',
+		'sectionToggleIconOpenSelector': '.t3js-flex-control-toggle-icon-open',
+		'sectionToggleIconCloseSelector': '.t3js-flex-control-toggle-icon-close',
+		'sectionToggleButtonSelector': '[data-toggle="formengine-flex"]',
+		'flexFormToggleAllSectionsSelector': '.t3js-form-field-toggle-flexsection',
+		'sectionDeletedClass': 't3js-flex-section-deleted',
 		'allowRestructure': 0,	// whether the form can be modified
 		'flexformId': false
 	};
@@ -140,7 +140,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 		require(['jquery-ui/sortable'], function () {
 			me.$el.sortable({
 				containment: 'parent',
-				handle: '.t3-js-sortable-handle',
+				handle: '.t3js-sortable-handle',
 				axis: 'y',
 				tolerance: 'pointer',
 				stop: function () {
@@ -203,8 +203,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 		}
 
 		// create a preview container span element
-		if ($sectionEl.find(this.options.sectionHeaderPreviewSelector).length == 0) {
-			$sectionEl.find(this.options.sectionHeaderSelector).children(':first').append('<span class="' + this.options.sectionHeaderPreviewSelector.replace(/\./, '') + '"></span>');
+		if ($sectionEl.find(this.options.sectionHeaderPreviewSelector).length === 0) {
+			$sectionEl.find(this.options.sectionHeaderSelector).find('.t3js-record-title').parent().append('<span class="' + this.options.sectionHeaderPreviewSelector.replace(/\./, '') + '"></span>');
 		}
 
 		$sectionEl.find(this.options.sectionHeaderPreviewSelector).text(previewContent);

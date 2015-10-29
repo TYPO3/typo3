@@ -124,7 +124,7 @@ class FlexFormSectionContainer extends AbstractContainer
             $onClickInsert[] = 'TYPO3.FormEngine.reinitialize();';
             $onClickInsert[] = 'return false;';
 
-            $containerTemplateHtml[] = '<a href="#" onclick="' . htmlspecialchars(implode(LF, $onClickInsert)) . '">';
+            $containerTemplateHtml[] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars(implode(LF, $onClickInsert)) . '">';
             $containerTemplateHtml[] =    $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $containerTemplateHtml[] =    htmlspecialchars(GeneralUtility::fixed_lgd_cs($sectionTitle, 30));
             $containerTemplateHtml[] = '</a>';
@@ -141,35 +141,38 @@ class FlexFormSectionContainer extends AbstractContainer
         $createElementsHtml = array();
         if ($userHasAccessToDefaultLanguage) {
             $createElementsHtml[] = '<div class="t3-form-field-add-flexsection">';
-            $createElementsHtml[] =    '<strong>';
-            $createElementsHtml[] =        $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', true) . ':';
-            $createElementsHtml[] =    '</strong>';
-            $createElementsHtml[] =    implode('|', $containerTemplatesHtml);
+            $createElementsHtml[] =    '<div class="btn-group">';
+            $createElementsHtml[] =        implode('|', $containerTemplatesHtml);
+            $createElementsHtml[] =    '</div>';
             $createElementsHtml[] = '</div>';
         }
 
         // Wrap child stuff
         $toggleAll = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', true);
         $html = array();
-        $html[] = '<div class="t3-form-field-container t3-form-flex">';
-        $html[] =    '<div class="t3-form-field-label-flexsection">';
-        $html[] =        '<strong>';
-        $html[] =            htmlspecialchars($flexFormSectionTitle);
-        $html[] =        '</strong>';
-        $html[] =    '</div>';
-        $html[] =    '<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle">';
-        $html[] =        '<a href="#" title="' . $toggleAll . '">';
-        $html[] =            $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
-        $html[] =        '</a>';
-        $html[] =    '</div>';
-        $html[] =    '<div';
-        $html[] =        'id="' . $flexFormFieldIdentifierPrefix . '"';
-        $html[] =        'class="t3-form-field-container-flexsection t3-flex-container"';
-        $html[] =        'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
-        $html[] =    '>';
-        $html[] =        $resultArray['html'];
-        $html[] =    '</div>';
-        $html[] =    implode(LF, $createElementsHtml);
+        $html[] = '<div class="panel panel-tab">';
+        $html[] =     '<div class="panel-body">';
+        $html[] =         '<div class="t3-form-field-container t3-form-flex">';
+        $html[] =             '<div class="t3-form-field-label-flexsection">';
+        $html[] =                 '<h4>';
+        $html[] =                     htmlspecialchars($flexFormSectionTitle);
+        $html[] =                 '</h4>';
+        $html[] =             '</div>';
+        $html[] =             '<div class="t3js-form-field-toggle-flexsection t3-form-flexsection-toggle">';
+        $html[] =                 '<a class="btn btn-default" href="#" title="' . $toggleAll . '">';
+        $html[] =                     $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
+        $html[] =                 '</a>';
+        $html[] =             '</div>';
+        $html[] =             '<div';
+        $html[] =                 'id="' . $flexFormFieldIdentifierPrefix . '"';
+        $html[] =                 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
+        $html[] =                 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
+        $html[] =             '>';
+        $html[] =                 $resultArray['html'];
+        $html[] =             '</div>';
+        $html[] =             implode(LF, $createElementsHtml);
+        $html[] =         '</div>';
+        $html[] =     '</div>';
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
