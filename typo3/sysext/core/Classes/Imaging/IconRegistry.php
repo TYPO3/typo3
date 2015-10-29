@@ -357,6 +357,36 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-edit-upload.svg'
             )
         ),
+        'actions-file-csv' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-file-csv.svg'
+            )
+        ),
+        'actions-file-html' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-file-html.svg'
+            )
+        ),
+        'actions-file-openoffice' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-file-openoffice.svg'
+            )
+        ),
+        'actions-file-pdf' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-file-pdf.svg'
+            )
+        ),
+        'actions-file' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-file.svg'
+            )
+        ),
         'actions-filter' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -718,9 +748,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
         'actions-unlock' => array(
-            'provider' => FontawesomeIconProvider::class,
+            'provider' => SvgIconProvider::class,
             'options' => array(
-                'name' => 'unlock',
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-unlock.svg'
             )
         ),
         'actions-unmarkstate' => array(
@@ -894,10 +924,22 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-clipboard-list.svg'
             )
         ),
+        'apps-filetree-folder-add' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-add.svg'
+            )
+        ),
         'apps-filetree-folder-default' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-default.svg'
+            )
+        ),
+        'apps-filetree-folder-list' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-list.svg'
             )
         ),
         'apps-filetree-folder-locked' => array(
@@ -910,6 +952,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-media.svg'
+            )
+        ),
+        'apps-filetree-folder-news' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-news.svg'
             )
         ),
         'apps-filetree-folder-opened' => array(
@@ -930,6 +978,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-temp.svg'
             )
         ),
+        'apps-filetree-folder-user' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder-user.svg'
+            )
+        ),
+        'apps-filetree-folder' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-folder.svg'
+            )
+        ),
         'apps-filetree-mount' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -940,6 +1000,198 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-filetree-root.svg'
+            )
+        ),
+        'apps-irre-collapsed' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-irre-collapsed.svg'
+            )
+        ),
+        'apps-irre-expanded' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-irre-expanded.svg'
+            )
+        ),
+        'apps-pagetree-backend-user-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-backend-user-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-backend-user' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-backend-user.svg'
+            )
+        ),
+        'apps-pagetree-collapse' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-collapse.svg'
+            )
+        ),
+        'apps-pagetree-drag-copy-above' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-copy-above.svg'
+            )
+        ),
+        'apps-pagetree-drag-copy-below' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-copy-below.svg'
+            )
+        ),
+        'apps-pagetree-drag-move-above' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-move-above.svg'
+            )
+        ),
+        'apps-pagetree-drag-move-below' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-move-below.svg'
+            )
+        ),
+        'apps-pagetree-drag-move-between' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-move-between.svg'
+            )
+        ),
+        'apps-pagetree-drag-move-into' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-move-into.svg'
+            )
+        ),
+        'apps-pagetree-drag-new-between' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-new-between.svg'
+            )
+        ),
+        'apps-pagetree-drag-new-inside' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-new-inside.svg'
+            )
+        ),
+        'apps-pagetree-drag-place-denied' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-drag-place-denied.svg'
+            )
+        ),
+        'apps-pagetree-expand' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-expand.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains-approve' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains-approve.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains-board' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains-board.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains-fe_users' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains-fe_users.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains-news' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains-news.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains-shop' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains-shop.svg'
+            )
+        ),
+        'apps-pagetree-folder-contains' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains.svg'
+            )
+        ),
+        'apps-pagetree-folder-default' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-default.svg'
+            )
+        ),
+        'apps-pagetree-folder-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-folder-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-root.svg'
+            )
+        ),
+        'apps-pagetree-page-advanced-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-advanced-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-advanced-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-advanced-root.svg'
+            )
+        ),
+        'apps-pagetree-page-advanced' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-advanced.svg'
+            )
+        ),
+        'apps-pagetree-page-backend-user-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-backend-user-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-backend-user-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-backend-user-root.svg'
+            )
+        ),
+        'apps-pagetree-page-backend-user' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-backend-user.svg'
+            )
+        ),
+        'apps-pagetree-page-backend-users-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-backend-users-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-backend-users-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-backend-users-root.svg'
             )
         ),
         'apps-pagetree-page-backend-users' => array(
@@ -966,16 +1218,100 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-content-from-page.svg'
             )
         ),
-        'apps-pagetree-page-hideinmenu' => array(
+        'apps-pagetree-page-default' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-hideinmenu.svg'
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-default.svg'
+            )
+        ),
+        'apps-pagetree-page-domain' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-domain.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-user-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-user-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-user-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-user-root.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-user' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-user.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-users-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-users-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-users-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-users-root.svg'
+            )
+        ),
+        'apps-pagetree-page-frontend-users' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-frontend-users.svg'
+            )
+        ),
+        'apps-pagetree-page-mountpoint-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-mountpoint-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-mountpoint-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-mountpoint-root.svg'
+            )
+        ),
+        'apps-pagetree-page-mountpoint' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-mountpoint.svg'
+            )
+        ),
+        'apps-pagetree-page-not-in-menu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-not-in-menu.svg'
+            )
+        ),
+        'apps-pagetree-page-recycler-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-recycler-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-recycler' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-recycler.svg'
             )
         ),
         'apps-pagetree-page-shortcut-external-hideinmenu' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-shortcut-external-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-page-shortcut-external-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-shortcut-external-root.svg'
             )
         ),
         'apps-pagetree-page-shortcut-external' => array(
@@ -1012,6 +1348,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-root.svg'
+            )
+        ),
+        'apps-pagetree-spacer-hideinmenu' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-spacer-hideinmenu.svg'
+            )
+        ),
+        'apps-pagetree-spacer-root' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-spacer-root.svg'
+            )
+        ),
+        'apps-pagetree-spacer' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-spacer.svg'
             )
         ),
         'apps-toolbar-menu-actions' => array(
@@ -1060,144 +1414,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-toolbar-menu-workspace.svg'
-            )
-        ),
-        'apps-pagetree-page-backend-users-hideinmenu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-backend-users-hideinmenu.png',
-            )
-        ),
-        'apps-pagetree-page-backend-users-root' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-backend-users-root.png',
-            )
-        ),
-        'apps-pagetree-folder-contains-approve' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-approve.png',
-            )
-        ),
-        'apps-pagetree-folder-contains-board' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-board.png',
-            )
-        ),
-        'apps-pagetree-folder-contains-fe_users' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-fe_users.png',
-            )
-        ),
-        'apps-pagetree-folder-contains-news' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-news.png',
-            )
-        ),
-        'apps-pagetree-folder-contains-shop' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-shop.png',
-            )
-        ),
-        'apps-pagetree-folder-default' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-default.png',
-            )
-        ),
-        'apps-pagetree-folder-hideinmenu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-default.png',
-            )
-        ),
-        'apps-pagetree-folder-root' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
-            )
-        ),
-        'apps-pagetree-page-domain' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
-            )
-        ),
-        'apps-pagetree-page-default' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-default.png',
-            )
-        ),
-        'apps-pagetree-page-mountpoint' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint.png',
-            )
-        ),
-        'apps-pagetree-page-mountpoint-hideinmenu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint-hideinmenu.png',
-            )
-        ),
-        'apps-pagetree-page-mountpoint-root' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint-root.png',
-            )
-        ),
-        'apps-pagetree-page-recycler' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-recycler.png',
-            )
-        ),
-        'apps-pagetree-page-recycler-hideinmenu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-recycler.png',
-            )
-        ),
-        'apps-pagetree-page-not-in-menu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-not-in-menu.png',
-            )
-        ),
-        'apps-pagetree-page-shortcut-external-root' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-external-root.png',
-            )
-        ),
-        'apps-pagetree-spacer' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-spacer.png',
-            )
-        ),
-        'apps-pagetree-spacer-hideinmenu' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-spacer.png',
-            )
-        ),
-        'apps-pagetree-spacer-root' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
-            )
-        ),
-        'apps-pagetree-collapse' => array(
-            'provider' => FontawesomeIconProvider::class,
-            'options' => array(
-                'name' => 'caret-right',
             )
         ),
 
@@ -1632,6 +1848,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text.svg'
             )
         ),
+        'mimetypes-x-index_config' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-index_config.svg'
+            )
+        ),
         'mimetypes-x-sys_action' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1678,12 +1900,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-tx_scheduler_task_group.svg'
-            )
-        ),
-        'mimetypes-x-index_config' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:t3skin/icons/gfx/i/default.gif'
             )
         ),
         'mimetypes-x-sys_note' => array(
@@ -1743,6 +1959,30 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
 
 
         // Overlay
+        'overlay-advanced' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-advanced.svg'
+            )
+        ),
+        'overlay-approved' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-approved.svg'
+            )
+        ),
+        'overlay-backenduser' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-backenduser.svg'
+            )
+        ),
+        'overlay-backendusers' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-backendusers.svg'
+            )
+        ),
         'overlay-deleted' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1753,6 +1993,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-edit.svg'
+            )
+        ),
+        'overlay-external-link' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-external-link.svg'
+            )
+        ),
+        'overlay-frontenduser' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-frontenduser.svg'
+            )
+        ),
+        'overlay-frontendusers' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-frontendusers.svg'
             )
         ),
         'overlay-hidden' => array(
@@ -1773,10 +2031,22 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-info.svg'
             )
         ),
+        'overlay-list' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-list.svg'
+            )
+        ),
         'overlay-locked' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-locked.svg'
+            )
+        ),
+        'overlay-media' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-media.svg'
             )
         ),
         'overlay-missing' => array(
@@ -1785,10 +2055,22 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-missing.svg'
             )
         ),
+        'overlay-mountpoint' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-mountpoint.svg'
+            )
+        ),
         'overlay-new' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-new.svg'
+            )
+        ),
+        'overlay-news' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-news.svg'
             )
         ),
         'overlay-readonly' => array(
@@ -1807,6 +2089,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-scheduled.svg'
+            )
+        ),
+        'overlay-shop' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-shop.svg'
+            )
+        ),
+        'overlay-shortcut' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-shortcut.svg'
             )
         ),
         'overlay-translated' => array(
