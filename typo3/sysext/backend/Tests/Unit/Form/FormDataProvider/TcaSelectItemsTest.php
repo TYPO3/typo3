@@ -936,24 +936,19 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'systemLanguageRows' => [
+                0 => [
+                    'title' => 'aLangTitle',
+                    'uid' => 42,
+                    'flagIconIdentifier' => 'aFlag.gif',
+                ],
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-        $languages = [
-            0 => [
-                'title' => 'aLangTitle',
-                'uid' => 42,
-                'flagIcon' => 'aFlag.gif',
-            ],
-        ];
-
-        $translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
-        GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
-        $translationProphecy->getSystemLanguages()->shouldBeCalled()->willReturn($languages);
 
         $expectedItems = [
             0 => [

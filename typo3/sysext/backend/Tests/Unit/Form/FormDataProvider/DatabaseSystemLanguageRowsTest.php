@@ -179,7 +179,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 'flag' => 'fr',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->willReturn($dbRows);
+        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->willReturn($dbRows);
         $expected = [
             'systemLanguageRows' => [
                 -1 => [
@@ -222,7 +222,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 'flag' => 'fr',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
+        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
         // Needed for backendUtility::getRecord()
         $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
         $this->dbProphecy->exec_SELECTgetSingleRow('lg_iso_2', 'static_languages', 'uid=42')->shouldBeCalled()->willReturn([ 'lg_iso_2' => 'FR' ]);
@@ -265,7 +265,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 'flag' => 'fr',
             ],
         ];
-        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
+        $this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0')->shouldBeCalled()->willReturn($dbRows);
         // Needed for backendUtility::getRecord()
         $GLOBALS['TCA']['static_languages'] = [ 'foo' ];
         $expected = [
