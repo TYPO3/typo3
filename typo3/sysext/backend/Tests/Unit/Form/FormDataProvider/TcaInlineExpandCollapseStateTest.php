@@ -63,4 +63,50 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
         $this->assertSame($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataAddsInlineStatusForSecondLevelChild()
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'bChildTable',
+            'databaseRow' => [
+                'uid' => 13,
+            ],
+            'inlineStructure' =>  [
+                'stable' => [
+                    [
+                        'table' => 'aParentTable',
+                        'uid' => 5,
+                        'field' => 'inline_2',
+                    ],
+                ],
+            ],
+        ];
+        $inlineState = [
+            'aParentTable' => [
+                5 => [
+                    'aChildTable' => [
+                        // Records 23 and 42 are expanded
+                        23,
+                        42,
+                    ],
+                    'bChildTable' => [
+                        // Records 13 and 66 are expanded
+                        13,
+                        66,
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['BE_USER'] = new \stdClass();
+        $GLOBALS['BE_USER']->uc = [
+            'inlineView' => serialize($inlineState),
+        ];
+        $expected = $input;
+        $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }

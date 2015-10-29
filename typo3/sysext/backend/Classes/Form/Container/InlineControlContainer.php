@@ -170,7 +170,7 @@ class InlineControlContainer extends AbstractContainer
             $type = $config['selectorOrUniqueConfiguration']['config']['type'] === 'select' ? 'select' : 'groupdb';
             foreach ($parameterArray['fieldConf']['children'] as $child) {
                 // Determine used unique ids, skip not localized records
-                if (!$child['inlineIsDefaultLanguage']) {
+                if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                     $value = $child['databaseRow'][$config['foreign_unique']];
                     // We're assuming there is only one connected value here for both select and group
                     if ($type === 'select') {
@@ -226,7 +226,7 @@ class InlineControlContainer extends AbstractContainer
 
         $numberOfFullChildren = 0;
         foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
-            if (!$child['inlineIsDefaultLanguage']) {
+            if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $numberOfFullChildren ++;
             }
         }
@@ -272,7 +272,7 @@ class InlineControlContainer extends AbstractContainer
             $html .= $childResult['html'];
             $childArray['html'] = '';
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
-            if (!$options['inlineIsDefaultLanguage']) {
+            if (!$options['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 // Don't add record to list of "valid" uids if it is only the default
                 // language record of a not yet localized child
                 $sortableRecordUids[] = $options['databaseRow']['uid'];

@@ -81,8 +81,6 @@ class FormInlineAjaxController
             'columnsToProcess' => [
                 $parentFieldName
             ],
-            // @todo: still needed?
-            'inlineStructure' => $inlineStackProcessor->getStructure(),
             // Do not resolve existing children, we don't need them now
             'inlineResolveExistingChildren' => false,
         ];
@@ -112,6 +110,8 @@ class FormInlineAjaxController
             'command' => 'new',
             'tableName' => $childTableName,
             'vanillaUid' => $childVanillaUid,
+            'isInlineChild' => true,
+            'inlineStructure' => $inlineStackProcessor->getStructure(),
             'inlineFirstPid' => $inlineFirstPid,
             'inlineParentConfig' => $parentConfig,
         ];
@@ -162,10 +162,6 @@ class FormInlineAjaxController
         }
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
-        // @todo: needed?
-        $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
-        // @todo: needed?
-        $childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
         $childData['renderType'] = 'inlineRecordContainer';
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $childResult = $nodeFactory->create($childData)->render();
@@ -258,13 +254,9 @@ class FormInlineAjaxController
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
 
-        $childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid']);
+        $childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
-        // @todo: needed?
-        $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
-        // @todo: needed?
-        $childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
         $childData['renderType'] = 'inlineRecordContainer';
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $childResult = $nodeFactory->create($childData)->render();
@@ -339,7 +331,7 @@ class FormInlineAjaxController
                 'columnsToProcess' => [
                     $parentFieldName
                 ],
-                // @todo: still needed?
+                // @todo: still needed? NO!
                 'inlineStructure' => $inlineStackProcessor->getStructure(),
                 // Do not compile existing children, we don't need them now
                 'inlineCompileExistingChildren' => false,
@@ -382,13 +374,9 @@ class FormInlineAjaxController
 
             $localizedItems = array_diff($newItems, $oldItems);
             foreach ($localizedItems as $childUid) {
-                $childData = $this->compileChild($parentData, $parentFieldName, (int)$childUid);
+                $childData = $this->compileChild($parentData, $parentFieldName, (int)$childUid, $inlineStackProcessor->getStructure());
 
                 $childData['inlineParentUid'] = (int)$parent['uid'];
-                // @todo: needed?
-                $childData['inlineStructure'] = $inlineStackProcessor->getStructure();
-                // @todo: needed?
-                $childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
                 $childData['renderType'] = 'inlineRecordContainer';
                 $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
                 $childResult = $nodeFactory->create($childData)->render();
@@ -487,13 +475,14 @@ class FormInlineAjaxController
      * @param array $parentData Result array of parent
      * @param string $parentFieldName Name of parent field
      * @param int $childUid Uid of child to compile
+     * @param array $inlineStructure Current inline structure
      * @return array Full result array
      *
      * @todo: This clones methods compileChild and compileCombinationChild from TcaInline Provider.
      * @todo: Find something around that, eg. some option to force TcaInline provider to calculate a
      * @todo: specific forced-open element only :)
      */
-    protected function compileChild(array $parentData, $parentFieldName, $childUid)
+    protected function compileChild(array $parentData, $parentFieldName, $childUid, array $inlineStructure)
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
@@ -505,15 +494,18 @@ class FormInlineAjaxController
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
+            'isInlineChild' => true,
+            'inlineStructure' => $inlineStructure,
             'inlineFirstPid' => $parentData['inlineFirstPid'],
             'inlineParentConfig' => $parentConfig,
+            'isInlineAjaxOpeningContext' => true,
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild
         // is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
-            $mainChild['combinationChild'] = $this->compileCombinationChild($mainChild, $parentConfig);
+            $mainChild['combinationChild'] = $this->compileCombinationChild($mainChild, $parentConfig, $inlineStructure);
         }
         return $mainChild;
     }
@@ -524,13 +516,14 @@ class FormInlineAjaxController
      *
      * @param array $intermediate Full data array of "mm" record
      * @param array $parentConfig TCA configuration of "parent"
+     * @param array $inlineStructure Current inline structure
      * @return array Full data array of child
      */
-    protected function compileCombinationChild(array $intermediate, array $parentConfig)
+    protected function compileCombinationChild(array $intermediate, array $parentConfig, array $inlineStructure)
     {
         // foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
         $intermediateUid = $intermediate['databaseRow'][$parentConfig['foreign_selector']][0];
-        $combinationChild = $this->compileChild($intermediate, $parentConfig['foreign_selector'], $intermediateUid);
+        $combinationChild = $this->compileChild($intermediate, $parentConfig['foreign_selector'], $intermediateUid, $inlineStructure);
         return $combinationChild;
     }
 

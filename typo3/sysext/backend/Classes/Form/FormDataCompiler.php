@@ -191,18 +191,22 @@ class FormDataCompiler
             'columnsToProcess' => [],
             // If set to TRUE, no wizards are calculated and rendered later
             'disabledWizards' => false,
+
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
             // @todo: better documentation of nesting behaviour and bug fixing in this area
             'inlineExpandCollapseStateArray' => [],
             // The "entry" pid for inline records. Nested inline records can potentially hang around on different
-            // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes place on the page structure.
+            // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes
+            // place on the page structure.
             'inlineFirstPid' => null,
-            // This array of fields will be set as hidden-fields instead of rendered normally!
-            // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
-            'overrideValues' => [],
-
             // The "config" section of an inline parent, prepared and sanitized by TcaInlineConfiguration provider
             'inlineParentConfig' => [],
+            // Flag that is enabled if a records is child of an inline parent
+            'isInlineChild' => false,
+            // Flag if an inline child is expanded so that additional fields need to be rendered
+            'isInlineChildExpanded' => false,
+            // Flag if the inline is in an ajax context that wants to expand the element
+            'isInlineAjaxOpeningContext' => false,
             // Uid of a "child-child" if a new record of an intermediate table is compiled to an existing child. This
             // happens if foreign_selector in parent inline config is set. It will be used by default database row
             // data providers to set this as value for the foreign_selector field on the intermediate table. One use
@@ -214,7 +218,7 @@ class FormDataCompiler
             // Inline scenario: A localized parent record is handled and localizationMode is set to "select", so inline
             // parents can have localized childen. This value is set to TRUE if this array represents a default language
             // child record that was not yet localized.
-            'inlineIsDefaultLanguage' => false,
+            'isInlineDefaultLanguageRecordInLocalizedParentContext' => false,
             // If set, inline children will be resolved. This is set to FALSE in inline ajax context where new children
             // are created and existing children don't matter much.
             'inlineResolveExistingChildren' => true,
@@ -222,13 +226,15 @@ class FormDataCompiler
             // @todo compilation of certain fields is possible
             'inlineCompileExistingChildren' => true,
 
-            // @todo: must be handled / further defined
+            // @todo: keys below must be handled / further defined
             'elementBaseName' => '',
             'flexFormFieldIdentifierPrefix' => 'ID',
             'tabAndInlineStack' => [],
             'inlineData' => [],
             'inlineStructure' => [],
-
+            // This array of fields will be set as hidden-fields instead of rendered normally!
+            // This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
+            'overrideValues' => [],
         ];
     }
 }

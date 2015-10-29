@@ -184,7 +184,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                         // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                         // exist in default language, but are not localized yet. Compile and mark those
                         $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
-                        $compiledChild['inlineIsDefaultLanguage'] = true;
+                        $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                         $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                     }
                 }
@@ -230,6 +230,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                         ],
                     ],
                 ],
+                'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
             ];
             /** @var OnTheFly $formDataGroup */
             $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
@@ -265,6 +266,9 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
+            'isInlineChild' => true,
+            'inlineStructure' => $result['inlineStructure'],
+            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
             'inlineFirstPid' => $result['inlineFirstPid'],
             'inlineParentConfig' => $parentConfig,
         ];

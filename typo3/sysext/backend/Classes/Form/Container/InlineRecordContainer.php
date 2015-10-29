@@ -117,7 +117,7 @@ class InlineRecordContainer extends AbstractContainer
         // Set this variable if we handle a brand new unsaved record:
         $isNewRecord = !MathUtility::canBeInterpretedAsInteger($record['uid']);
         // Set this variable if the only the default language record and inline child has not been localized yet
-        $isDefaultLanguageRecord = $this->data['inlineIsDefaultLanguage'];
+        $isDefaultLanguageRecord = $this->data['isInlineDefaultLanguageRecordInLocalizedParentContext'];
         // If there is a selector field, normalize it:
         if ($foreign_selector) {
             $valueToNormalize = $record[$foreign_selector];
@@ -452,7 +452,7 @@ class InlineRecordContainer extends AbstractContainer
             /** @var InlineElementHookInterface $hookObj */
             $hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $enabledControls);
         }
-        if ($data['inlineIsDefaultLanguage']) {
+        if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             $cells['localize.isLocalizable'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', true) . '">'
                 . $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render()
                 . '</span>';
@@ -571,7 +571,7 @@ class InlineRecordContainer extends AbstractContainer
 					</span>';
             }
         } elseif ($isVirtualRecord && $isParentExisting) {
-            if ($enabledControls['localize'] && $data['inlineIsDefaultLanguage']) {
+            if ($enabledControls['localize'] && $data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $onClick = 'inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ', ' . GeneralUtility::quoteJSvalue($rec['uid']) . ');';
                 $cells['localize'] = '
 					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', true) . '">
