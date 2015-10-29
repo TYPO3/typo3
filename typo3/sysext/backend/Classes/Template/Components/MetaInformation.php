@@ -99,8 +99,12 @@ class MetaInformation
      */
     public function getRecordInformation()
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRecord = $this->recordArray;
+        if (empty($pageRecord)) {
+            return '';
+        }
+
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $uid = '';
         $title = '';
         $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
