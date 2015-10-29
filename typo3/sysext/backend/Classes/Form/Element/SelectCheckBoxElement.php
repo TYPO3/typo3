@@ -142,7 +142,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 $html[] = '<div class="panel panel-default">';
                 if (is_array($group['header'])) {
                     $html[] = '<div class="panel-heading">';
-                    $html[] = '<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="true" aria-controls="' . $groupId . '">';
+                    $html[] = '<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="false" aria-controls="' . $groupId . '">';
                     $html[] = $group['header']['icon'];
                     $html[] = $group['header']['title'];
                     $html[] = '</a>';
@@ -200,7 +200,9 @@ class SelectCheckBoxElement extends AbstractFormElement
                             . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '</a>';
                     }
 
-                    $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse in" role="tabpanel">';
+                    if (is_array($group['header'])) {
+                        $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse" role="tabpanel">';
+                    }
                     $html[] =    '<div class="table-fit">';
                     $html[] =        '<table class="table table-transparent table-hover">';
                     $html[] =            '<thead>';
@@ -213,7 +215,9 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';
                     $html[] =        '</table>';
                     $html[] =    '</div>';
-                    $html[] = '</div>';
+                    if (is_array($group['header'])) {
+                        $html[] = '</div>';
+                    }
                 }
                 $html[] = '</div>';
             }
