@@ -89,6 +89,15 @@ class DatabaseIntegrityView extends BaseScriptClass
         $this->menuConfig();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->setForm('<form action="" method="post" name="' . $this->formName . '">');
+        $this->moduleTemplate->addJavaScriptCode(
+            'jumpToUrl',
+            '
+            function jumpToUrl(URL) {
+                window.location.href = URL;
+                return false;
+            }
+            '
+        );
     }
 
     /**
