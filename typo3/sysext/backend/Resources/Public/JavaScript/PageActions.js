@@ -20,13 +20,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 
 	/**
 	 *
-	 * @type {{settings: {pageId: number, canEditPage: boolean, language: {pageOverlayId: number}}, identifier: {pageTitle: string, hiddenElements: string}, elements: {$pageTitle: null, $showHiddenElementsCheckbox: null}, documentIsReady: boolean}}
+	 * @type {{settings: {pageId: number, language: {pageOverlayId: number}}, identifier: {pageTitle: string, hiddenElements: string}, elements: {$pageTitle: null, $showHiddenElementsCheckbox: null}, documentIsReady: boolean}}
 	 * @exports TYPO3/CMS/Backend/PageActions
 	 */
 	var PageActions = {
 		settings: {
 			pageId: 0,
-			canEditPage: false,
 			language: {
 				pageOverlayId: 0
 			}
@@ -52,7 +51,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 			});
 			return;
 		}
-		if (PageActions.settings.pageId <= 0 || !PageActions.settings.canEditPage) {
+		if (PageActions.settings.pageId <= 0) {
 			return;
 		}
 
@@ -171,15 +170,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 	 */
 	PageActions.setPageId = function(pageId) {
 		PageActions.settings.pageId = pageId;
-	};
-
-	/**
-	 * Set if user can edit the page properties
-	 *
-	 * @param {Boolean} allowed
-	 */
-	PageActions.setCanEditPage = function(allowed) {
-		PageActions.settings.canEditPage = allowed;
 	};
 
 	/**
