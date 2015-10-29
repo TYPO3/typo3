@@ -211,7 +211,9 @@ class InlineControlContainer extends AbstractContainer
 
         // Render the localization links
         $localizationLinks = '';
-        if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0 && MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+        // @todo if isInlineDefaultLanguageRecordInLocalizedParentContext
+        // @todo: Would be even more cool if the localize button is only shown if there are any not yet localized children
+        if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']][0] > 0 && MathUtility::canBeInterpretedAsInteger($row['uid'])) {
             // Add the "Localize all records" link before all child records:
             if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
                 $localizationLinks .= ' ' . $this->getLevelInteractionLink('localize', $nameObject . '-' . $foreign_table, $config);
