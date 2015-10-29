@@ -4649,31 +4649,71 @@ class DataHandler
 
     /**
      * Performs localization or synchronization of child records.
+     * The $command argument expects an array, but supports a string for backward-compatibility.
+     *
+     * $command = array(
+     *   'field' => 'tx_myfieldname',
+     *   'language' => 2,
+     *   // either the key 'action' or 'ids' must be set
+     *   'action' => 'synchronize', // or 'localize'
+     *   'ids' => array(1, 2, 3, 4) // child element ids
+     * );
      *
      * @param string $table The table of the localized parent record
      * @param int $id The uid of the localized parent record
-     * @param string $command Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (int)
+     * @param array|string $command Defines the command to be performed (see example above)
      * @return void
      */
     protected function inlineLocalizeSynchronize($table, $id, $command)
     {
-        // <field>, (localize | synchronize | <uid>):
-        $parts = GeneralUtility::trimExplode(',', $command);
-        $field = $parts[0];
-        $type = $parts[1];
-        if (!$field || (($type !== 'localize' && $type !== 'synchronize') && !MathUtility::canBeInterpretedAsInteger($type)) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+        $parentRecord = BackendUtility::getRecordWSOL($table, $id);
+
+        // Backward-compatibility handling
+        if (!is_array($command)) {
+            // <field>, (localize | synchronize | <uid>):
+            $parts = GeneralUtility::trimExplode(',', $command);
+            $command = array();
+            $command['field'] = $parts[0];
+            // The previous process expected $id to point to the localized record already
+            $command['language'] = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+
+            if (!MathUtility::canBeInterpretedAsInteger($parts[1])) {
+                $command['action'] = $parts[1];
+            } else {
+                $command['ids'] = array($parts[1]);
+            }
+        }
+
+        // In case the parent record is the default language record, fetch the localization
+        if (empty($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+            // Fetch the live record
+            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND pid<>-1');
+            if (empty($parentRecordLocalization)) {
+                $this->newlog2('Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', $table, $id, $parentRecord['pid']);
+                return;
+            }
+            $parentRecord = $parentRecordLocalization[0];
+            $id = $parentRecord['uid'];
+            // Process overlay for current selected workspace
+            BackendUtility::workspaceOL($table, $parentRecord);
+        }
+
+        $field = $command['field'];
+        $language = $command['language'];
+        $action = $command['action'];
+        $ids = $command['ids'];
+
+        if (!$field || !GeneralUtility::inList('localize,synchronize', $action) && empty($ids) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             return;
         }
 
         $config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
         $foreignTable = $config['foreign_table'];
         $localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
-        if ($localizationMode != 'select') {
+        if ($localizationMode !== 'select') {
             return;
         }
 
-        $parentRecord = BackendUtility::getRecordWSOL($table, $id);
-        $language = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
         $transOrigPointer = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         $transOrigTable = BackendUtility::getOriginalTranslationTable($table);
         $childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
@@ -4705,7 +4745,7 @@ class DataHandler
         $dbAnalysisCurrent = $this->createRelationHandlerInstance();
         $dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
         // Perform synchronization: Possibly removal of already localized records:
-        if ($type == 'synchronize') {
+        if ($action === 'synchronize') {
             foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
                 $childRecord = BackendUtility::getRecordWSOL($item['table'], $item['id']);
                 if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField] > 0) {
@@ -4719,13 +4759,18 @@ class DataHandler
             }
         }
         // Perform synchronization/localization: Possibly add unlocalized records for original language:
-        if (MathUtility::canBeInterpretedAsInteger($type) && isset($elementsOriginal[$type])) {
-            $item = $elementsOriginal[$type];
-            $item['id'] = $this->localize($item['table'], $item['id'], $language);
-            $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
-            $dbAnalysisCurrent->itemArray[] = $item;
-        } elseif ($type === 'localize' || $type === 'synchronize') {
+        if ($action === 'localize' || $action === 'synchronize') {
             foreach ($elementsOriginal as $originalId => $item) {
+                $item['id'] = $this->localize($item['table'], $item['id'], $language);
+                $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+                $dbAnalysisCurrent->itemArray[] = $item;
+            }
+        } elseif (!empty($ids)) {
+            foreach ($ids as $childId) {
+                if (!MathUtility::canBeInterpretedAsInteger($childId) || !isset($elementsOriginal[$childId])) {
+                    continue;
+                }
+                $item = $elementsOriginal[$childId];
                 $item['id'] = $this->localize($item['table'], $item['id'], $language);
                 $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
                 $dbAnalysisCurrent->itemArray[] = $item;

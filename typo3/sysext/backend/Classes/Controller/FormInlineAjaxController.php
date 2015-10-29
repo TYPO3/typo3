@@ -354,10 +354,25 @@ class FormInlineAjaxController
             $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
             $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
             $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
+            $parentLanguageField = $parentData['processedTca']['ctrl']['languageField'];
+            $parentLanguage = $parentData['databaseRow'][$parentLanguageField];
             $oldItemList = $parentData['databaseRow'][$parentFieldName];
 
             $cmd = array();
-            $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
+            if (MathUtility::canBeInterpretedAsInteger($type)) {
+                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
+                    'field' => $parent['field'],
+                    'language' => $parentLanguage,
+                    'ids' => array($type),
+                );
+            } else {
+                $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
+                    'field' => $parent['field'],
+                    'language' => $parentLanguage,
+                    'action' => $type,
+                );
+            }
+
             /** @var $tce DataHandler */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = false;
