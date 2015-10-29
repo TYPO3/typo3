@@ -157,7 +157,7 @@ abstract class AbstractNode implements NodeInterface
             $minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
             $maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
             $type = ($config['type']) ?: 'range';
-            if ($config['renderMode'] !== 'tree' && $maxItems <= 1 && $minItems > 0) {
+            if ($config['renderType'] !== 'selectTree' && $maxItems <= 1 && $minItems > 0) {
                 $validationRules[] = array(
                     'type' => $type,
                     'minItems' => 1,

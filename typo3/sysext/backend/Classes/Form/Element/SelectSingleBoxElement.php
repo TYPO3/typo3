@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Create a widget with a select box where multiple items can be selected
  *
- * This is rendered for config type=select, maxitems > 1, renderMode=singlebox
+ * This is rendered for config type=select, maxitems > 1, renderType=selectSingleBox
  */
 class SelectSingleBoxElement extends AbstractFormElement
 {

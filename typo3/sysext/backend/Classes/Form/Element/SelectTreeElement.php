@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Render data as a tree.
  *
- * Typically rendered for config [type=select, renderMode=tree
+ * Typically rendered for config [type=select, renderType=selectTree
  */
 class SelectTreeElement extends AbstractFormElement
 {

@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 /**
  * Creates a widget with check box elements.
  *
- * This is rendered for config type=select, renderMode=checkbox, maxitems > 1
+ * This is rendered for config type=select, renderType=selectCheckBox, maxitems > 1
  */
 class SelectCheckBoxElement extends AbstractFormElement
 {

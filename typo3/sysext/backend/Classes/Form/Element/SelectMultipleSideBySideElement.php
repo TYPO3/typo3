@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Render a widget with two boxes side by side.
  *
- * This is rendered for config type=select, maxitems > 1, no other renderMode set
+ * This is rendered for config type=select, maxitems > 1, renderType=selectMultipleSideBySide set
  */
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {

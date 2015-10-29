@@ -142,8 +142,8 @@ abstract class AbstractFormElement extends AbstractNode
             $flexFormPath = str_replace('][', '/', substr($PA['itemFormElName'], strlen($prefixOfFormElName) + 1, -1));
         }
 
-        // Add a suffix-value if the item is a selector box with renderMode "singlebox":
-        if ($PA['fieldConf']['config']['type'] === 'select' && (int)$PA['fieldConf']['config']['maxitems'] > 1 && $PA['fieldConf']['config']['renderMode'] === 'singlebox') {
+        // Add a suffix-value if the item is a selector box with renderType "selectSingleBox":
+        if ($PA['fieldConf']['config']['type'] === 'select' && (int)$PA['fieldConf']['config']['maxitems'] > 1 && $PA['fieldConf']['config']['renderType'] === 'selectSingleBox') {
             $itemName .= '[]';
         }
 
