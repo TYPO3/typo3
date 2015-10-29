@@ -2983,13 +2983,11 @@ class DataHandler {
 			if (isset($GLOBALS['TCA'][$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList) {
 				// Traverse the command map:
 				foreach ($this->cmdmap[$table] as $id => $incomingCmdArray) {
-					$pasteUpdate = FALSE;
-					if (is_array($incomingCmdArray)) {
-						// have found a command.
-						// Get command and value (notice, only one command is observed at a time!):
-						reset($incomingCmdArray);
-						$command = key($incomingCmdArray);
-						$value = current($incomingCmdArray);
+					if (!is_array($incomingCmdArray)) {
+						continue;
+					}
+					foreach ($incomingCmdArray as $command => $value) {
+						$pasteUpdate = FALSE;
 						if (is_array($value) && isset($value['action']) && $value['action'] === 'paste') {
 							// Extended paste command: $command is set to "move" or "copy"
 							// $value['update'] holds field/value pairs which should be updated after copy/move operation
