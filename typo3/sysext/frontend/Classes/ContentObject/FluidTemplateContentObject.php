@@ -130,10 +130,15 @@ class FluidTemplateContentObject extends AbstractContentObject
     protected function setTemplate(array $conf)
     {
         // Fetch the Fluid template by templateName
-        if (!empty($conf['templateName']) && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])) {
+        if (
+            (!empty($conf['templateName']) || !empty($conf['templateName.']))
+            && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])
+        ) {
             $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
             $this->view->setTemplateRootPaths($templateRootPaths);
-            $templateName = isset($conf['templateName.']) ? $this->cObj->stdWrap($conf['templateName'], $conf['templateName.']) : $conf['templateName'];
+            $templateName = isset($conf['templateName.'])
+                ? $this->cObj->stdWrap(isset($conf['templateName']) ? $conf['templateName'] : '', $conf['templateName.'])
+                : $conf['templateName'];
             $this->view->setTemplate($templateName);
         // Fetch the Fluid template by template cObject
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
