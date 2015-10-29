@@ -42,7 +42,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             }
 
             // Make sure we are only processing supported renderTypes
-            if ($fieldConfig['config']['renderType'] !== 'selectTree') {
+            if ($this->isTargetRenderType($fieldConfig)) {
                 continue;
             }
 
@@ -185,5 +185,19 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
         }
 
         return $selectedNodes;
+    }
+
+    /**
+     * Determines whether the current field is a valid target for this DataProvider
+     *
+     * @param array $fieldConfig
+     * @return bool
+     */
+    protected function isTargetRenderType(array $fieldConfig)
+    {
+        if ($fieldConfig['config']['renderType'] !== 'selectTree') {
+            return true;
+        }
+        return false;
     }
 }

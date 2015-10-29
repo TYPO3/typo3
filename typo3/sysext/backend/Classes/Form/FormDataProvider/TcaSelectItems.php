@@ -38,7 +38,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             }
 
             // Make sure we are only processing supported renderTypes
-            if (!in_array($fieldConfig['config']['renderType'], ['selectSingle', 'selectSingleBox', 'selectCheckBox', 'selectMultipleSideBySide'])) {
+            if ($this->isTargetRenderType($fieldConfig)) {
                 continue;
             }
 
@@ -79,5 +79,23 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         }
 
         return $result;
+    }
+
+    /**
+     * Determines whether the current field is a valid target for this DataProvider
+     *
+     * @param array $fieldConfig
+     * @return bool
+     */
+    protected function isTargetRenderType(array $fieldConfig)
+    {
+        if (!in_array(
+            $fieldConfig['config']['renderType'],
+            ['selectSingle', 'selectSingleBox', 'selectCheckBox', 'selectMultipleSideBySide'],
+            true
+        )) {
+            return true;
+        }
+        return false;
     }
 }
