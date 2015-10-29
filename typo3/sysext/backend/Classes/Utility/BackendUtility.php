@@ -2850,7 +2850,7 @@ class BackendUtility
             $wrappedText .= '>' . $text . '</span>';
             return $wrappedText;
         }
-        return '';
+        return $text;
     }
 
     /**
