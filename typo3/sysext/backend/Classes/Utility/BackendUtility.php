@@ -2847,11 +2847,10 @@ class BackendUtility
                     $wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
                 }
             }
-        } else {
-            $wrappedText = '<span data-table="' . $table . '" data-field="' . $field . '"';
+            $wrappedText .= '>' . $text . '</span>';
+            return $wrappedText;
         }
-        $wrappedText .= '>' . $text . '</span>';
-        return $wrappedText;
+        return '';
     }
 
     /**

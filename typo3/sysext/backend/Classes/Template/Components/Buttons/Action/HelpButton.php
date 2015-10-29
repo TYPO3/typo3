@@ -148,6 +148,9 @@ class HelpButton implements ButtonInterface, PositionInterface
     public function render()
     {
         $helpMarkup = BackendUtility::cshItem($this->moduleName, $this->fieldName);
+        if ($helpMarkup === '') {
+            return '';
+        }
         return '<span class="btn btn-sm btn-default">' . $helpMarkup . '</span>';
     }
 }
