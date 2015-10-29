@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/SplitButtons
  * Initializes global handling of split buttons.
  */
-define(['jquery'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	'use strict';
 
 	/**
@@ -50,6 +50,24 @@ define(['jquery'], function($) {
 			}
 
 			$form.append($elem);
+
+			// Disable submit buttons
+			$form.on('submit', function() {
+				var $affectedButton,
+					$splitButton = $me.closest('.t3js-splitbutton');
+
+				if ($splitButton.length > 0) {
+					$splitButton.find('button').prop('disabled', true);
+					$affectedButton = $splitButton.children().first();
+				} else {
+					$me.prop('disabled', true);
+					$affectedButton = $me;
+				}
+
+				Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(markup) {
+					$affectedButton.find('.t3js-icon').replaceWith(markup);
+				});
+			});
 
 			if (e.currentTarget.tagName === 'A' && !e.isDefaultPrevented()) {
 				$form.submit();

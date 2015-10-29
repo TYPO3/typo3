@@ -150,7 +150,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
             $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
         }
         $content = '
-        <div class="btn-group">
+        <div class="btn-group t3js-splitbutton">
             <button' . $attributesString . '>
                 ' . $items['primary']->getIcon()->render() . '
                 ' . htmlspecialchars($items['primary']->getTitle()) . '
