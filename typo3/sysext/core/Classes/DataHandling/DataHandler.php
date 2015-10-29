@@ -3262,7 +3262,6 @@ class DataHandler
 
             // Traverse the command map:
             foreach ($this->cmdmap[$table] as $id => $incomingCmdArray) {
-                $pasteUpdate = false;
                 if (!is_array($incomingCmdArray)) {
                     continue;
                 }
@@ -3272,77 +3271,75 @@ class DataHandler
                     $this->pagetreeNeedsRefresh = true;
                 }
 
-                // have found a command.
-                // Get command and value (notice, only one command is observed at a time!):
-                reset($incomingCmdArray);
-                $command = key($incomingCmdArray);
-                $value = current($incomingCmdArray);
-                if (is_array($value) && isset($value['action']) && $value['action'] === 'paste') {
-                    // Extended paste command: $command is set to "move" or "copy"
-                    // $value['update'] holds field/value pairs which should be updated after copy/move operation
-                    // $value['target'] holds original $value (target of move/copy)
-                    $pasteUpdate = $value['update'];
-                    $value = $value['target'];
-                }
-                foreach ($hookObjectsArr as $hookObj) {
-                    if (method_exists($hookObj, 'processCmdmap_preProcess')) {
-                        $hookObj->processCmdmap_preProcess($command, $table, $id, $value, $this, $pasteUpdate);
+                foreach ($incomingCmdArray as $command => $value) {
+                    $pasteUpdate = false;
+                    if (is_array($value) && isset($value['action']) && $value['action'] === 'paste') {
+                        // Extended paste command: $command is set to "move" or "copy"
+                        // $value['update'] holds field/value pairs which should be updated after copy/move operation
+                        // $value['target'] holds original $value (target of move/copy)
+                        $pasteUpdate = $value['update'];
+                        $value = $value['target'];
                     }
-                }
-                // Init copyMapping array:
-                // Must clear this array before call from here to those functions:
-                // Contains mapping information between new and old id numbers.
-                $this->copyMappingArray = array();
-                // process the command
-                $commandIsProcessed = false;
-                foreach ($hookObjectsArr as $hookObj) {
-                    if (method_exists($hookObj, 'processCmdmap')) {
-                        $hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this, $pasteUpdate);
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'processCmdmap_preProcess')) {
+                            $hookObj->processCmdmap_preProcess($command, $table, $id, $value, $this, $pasteUpdate);
+                        }
                     }
-                }
-                // Only execute default commands if a hook hasn't been processed the command already
-                if (!$commandIsProcessed) {
-                    $procId = $id;
-                    // Branch, based on command
-                    switch ($command) {
-                        case 'move':
-                            $this->moveRecord($table, $id, $value);
-                            break;
-                        case 'copy':
-                            if ($table === 'pages') {
-                                $this->copyPages($id, $value);
-                            } else {
-                                $this->copyRecord($table, $id, $value, 1);
-                            }
-                            $procId = $this->copyMappingArray[$table][$id];
-                            break;
-                        case 'localize':
-                            $this->localize($table, $id, $value);
-                            break;
-                        case 'inlineLocalizeSynchronize':
-                            $this->inlineLocalizeSynchronize($table, $id, $value);
-                            break;
-                        case 'copyFromLanguage':
-                            $this->copyRecordFromLanguage($table, $id, $value);
-                            break;
-                        case 'delete':
-                            $this->deleteAction($table, $id);
-                            break;
-                        case 'undelete':
-                            $this->undeleteRecord($table, $id);
-                            break;
+                    // Init copyMapping array:
+                    // Must clear this array before call from here to those functions:
+                    // Contains mapping information between new and old id numbers.
+                    $this->copyMappingArray = array();
+                    // process the command
+                    $commandIsProcessed = false;
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'processCmdmap')) {
+                            $hookObj->processCmdmap($command, $table, $id, $value, $commandIsProcessed, $this, $pasteUpdate);
+                        }
                     }
-                    if (is_array($pasteUpdate)) {
-                        $pasteDatamap[$table][$procId] = $pasteUpdate;
+                    // Only execute default commands if a hook hasn't been processed the command already
+                    if (!$commandIsProcessed) {
+                        $procId = $id;
+                        // Branch, based on command
+                        switch ($command) {
+                            case 'move':
+                                $this->moveRecord($table, $id, $value);
+                                break;
+                            case 'copy':
+                                if ($table === 'pages') {
+                                    $this->copyPages($id, $value);
+                                } else {
+                                    $this->copyRecord($table, $id, $value, 1);
+                                }
+                                $procId = $this->copyMappingArray[$table][$id];
+                                break;
+                            case 'localize':
+                                $this->localize($table, $id, $value);
+                                break;
+                            case 'inlineLocalizeSynchronize':
+                                $this->inlineLocalizeSynchronize($table, $id, $value);
+                                break;
+                            case 'copyFromLanguage':
+                                $this->copyRecordFromLanguage($table, $id, $value);
+                                break;
+                            case 'delete':
+                                $this->deleteAction($table, $id);
+                                break;
+                            case 'undelete':
+                                $this->undeleteRecord($table, $id);
+                                break;
+                        }
+                        if (is_array($pasteUpdate)) {
+                            $pasteDatamap[$table][$procId] = $pasteUpdate;
+                        }
                     }
-                }
-                foreach ($hookObjectsArr as $hookObj) {
-                    if (method_exists($hookObj, 'processCmdmap_postProcess')) {
-                        $hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this, $pasteUpdate, $pasteDatamap);
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'processCmdmap_postProcess')) {
+                            $hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this, $pasteUpdate, $pasteDatamap);
+                        }
                     }
+                    // Merging the copy-array info together for remapping purposes.
+                    ArrayUtility::mergeRecursiveWithOverrule($this->copyMappingArray_merged, $this->copyMappingArray);
                 }
-                // Merging the copy-array info together for remapping purposes.
-                ArrayUtility::mergeRecursiveWithOverrule($this->copyMappingArray_merged, $this->copyMappingArray);
             }
         }
         /** @var $copyTCE DataHandler */
