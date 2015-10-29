@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Adds backend live search to the toolbar
@@ -59,7 +60,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
         return '
 			<form class="typo3-topbar-navigation-search t3js-topbar-navigation-search live-search-wrapper" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="Search" id="live-search-box" autocomplete="off">
+					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search', true) . '" id="live-search-box" autocomplete="off">
 				</div>
 			</form>
 			<div class="dropdown-menu" role="menu"></div>
@@ -114,5 +115,15 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
     protected function getPageRenderer()
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
