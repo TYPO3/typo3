@@ -12234,6 +12234,23 @@ select.form-control[size="1"] {
   height: 32px;
   min-height: 0;
 }
+select.form-control[size="1"],
+select.form-control:not([size]) {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url('../../../../../../typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-view-list-expand.svg');
+  background-position: right 4px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 24px;
+}
+select.form-control[size="1"].input-sm,
+select.form-control:not([size]).input-sm,
+.form-group-sm select.form-control[size="1"],
+.form-group-sm select.form-control:not([size]) {
+  line-height: 16px;
+}
 select.form-control > optgroup {
   margin-top: 9px;
 }

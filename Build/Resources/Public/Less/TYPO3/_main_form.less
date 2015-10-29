@@ -138,6 +138,20 @@ select {
 			height: @input-height-base;
 			min-height: 0;
 		}
+		&[size="1"],
+		&:not([size]) {
+			appearance: none;
+			background-image: url('@{path-sysext}/core/Resources/Public/Icons/T3Icons/actions/actions-view-list-expand.svg');
+			background-position: right 4px center;
+			background-repeat: no-repeat;
+			background-size: 16px;
+			padding-right: 24px;
+
+			&.input-sm,
+			.form-group-sm & {
+				line-height: 16px;
+			}
+		}
 		> optgroup {
 			margin-top: 9px;
 			&:first-child {
