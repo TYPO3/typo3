@@ -103,8 +103,6 @@ class SelectTreeElement extends AbstractFormElement
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
 
-        $selectedNodes = $this->data['databaseRow'][$this->data['fieldName']];
-
         $disabled = !empty($config['readOnly']) ? 'true' : 'false';
         $maxItems = $config['maxitems'] ? (int)$config['maxitems'] : 99999;
         $exclusiveKeys = !empty($config['exclusiveKeys']) ? $config['exclusiveKeys'] : '';
@@ -153,7 +151,7 @@ class SelectTreeElement extends AbstractFormElement
         $javascript[] = '        stateEvents: [],';
         $javascript[] = '        showHeader: ' . (int)$showHeader . ',';
         $javascript[] = '        onChange: ' . GeneralUtility::quoteJSvalue($onChange) . ',';
-        $javascript[] = '        countSelectedNodes: ' . count($selectedNodes) . ',';
+        $javascript[] = '        countSelectedNodes: ' . count($config['treeData']['selectedNodes']) . ',';
         $javascript[] = '        width: ' . $width . ',';
         $javascript[] = '        rendering: false,';
         $javascript[] = '        listeners: {';
