@@ -172,7 +172,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:compatibility6/Resources/Private/Language/locallang_wizards.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();
@@ -271,11 +271,11 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
             // CSH Buttons
             $buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons');
             // Close
-            $buttons['close'] = '<button class="c-inputButton" name="closedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</button>';
+            $buttons['close'] = '<button class="c-inputButton" name="closedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:closeDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</button>';
             // Save
-            $buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</button>';
+            $buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:saveDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</button>';
             // Save & Close
-            $buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render() . '</button>';
+            $buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:saveCloseDoc', true) . '>' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render() . '</button>';
             // Reload
             $buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', true) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</button>';
         }
@@ -394,10 +394,10 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
             $this->getLanguageService()->getLL('forms_config', true) . ':'
         );
         $tRows[] = '
-			<tr class="bgColor2" id="typo3-formWizardHeader">
-				<td>&nbsp;</td>
-				<td><strong>' . implode('</strong></td>
-				<td><strong>', $cells) . '</strong></td>
+			<tr id="typo3-formWizardHeader">
+				<th>&nbsp;</th>
+				<th><strong>' . implode('</strong></th>
+				<th><strong>', $cells) . '</strong></th>
 			</tr>';
         // Traverse the number of form elements:
         $k = 0;
@@ -499,7 +499,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
                         $ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', true) . '">' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
                         $ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', true) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
                     }
-                    $ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_LARGE)->render() . '</button>' . $brTag;
+                    $ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
 
                     if ($k != (count($formCfgArray)/2)) {
                         $ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', true) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
@@ -509,11 +509,10 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
                     $ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', true) . '">' . $this->iconFactory->getIcon('actions-template-new', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
                     $ctrl = '<span class="c-wizButtonsV">' . $ctrl . '</span>';
                     // Finally, put together the full row from the generated content above:
-                    $bgC = $confData['type'] ? ' class="bgColor5"' : '';
                     $tRows[] = '
-						<tr' . $bgC . '>
+						<tr>
 							<td><a name="ANC_' . ($k + 1) * 2 . '"></a>' . $ctrl . '</td>
-							<td class="bgColor4">' . implode('</td>
+							<td>' . implode('</td>
 							<td valign="top">', $cells) . '</td>
 						</tr>';
                 }
@@ -533,14 +532,12 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
             // Header:
             $tRows[] = '
 				<tr>
-					<td colspan="2" class="bgColor2">&nbsp;</td>
-					<td colspan="2" class="bgColor2"><strong>' . $this->getLanguageService()->getLL('forms_special_eform', true) . ':</strong>' . BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info') . '</td>
+					<th colspan="4"><h4>' . $this->getLanguageService()->getLL('forms_special_eform', true) . ': ' . BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info') . '</h4></th>
 				</tr>';
             // "FORM type":
             $tRows[] = '
-				<tr class="bgColor5">
-					<td>&nbsp;</td>
-					<td class="bgColor4">&nbsp;</td>
+				<tr>
+					<td colspan="2">&nbsp;</td>
 					<td>' . $this->getLanguageService()->getLL('forms_eform_formtype_mail', true) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1000 * 2 . '][fieldname]" value="formtype_mail" />
@@ -550,9 +547,8 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				</tr>';
             // "Send HTML mail":
             $tRows[] = '
-				<tr class="bgColor5">
-					<td>&nbsp;</td>
-					<td class="bgColor4">&nbsp;</td>
+				<tr>
+					<td colspan="2">&nbsp;</td>
 					<td>' . $this->getLanguageService()->getLL('forms_eform_html_enabled', true) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1001 * 2 . '][fieldname]" value="html_enabled" />
@@ -562,9 +558,8 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				</tr>';
             // "Subject":
             $tRows[] = '
-				<tr class="bgColor5">
-					<td>&nbsp;</td>
-					<td class="bgColor4">&nbsp;</td>
+				<tr>
+					<td colspan="2">&nbsp;</td>
 					<td>' . $this->getLanguageService()->getLL('forms_eform_subject', true) . ':</td>
 					<td>
 						<input type="hidden" name="FORMCFG[c][' . 1002 * 2 . '][fieldname]" value="subject" />
@@ -574,9 +569,8 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				</tr>';
             // Recipient:
             $tRows[] = '
-				<tr class="bgColor5">
-					<td>&nbsp;</td>
-					<td class="bgColor4">&nbsp;</td>
+				<tr>
+					<td colspan="2">&nbsp;</td>
 					<td>' . $this->getLanguageService()->getLL('forms_eform_recipient', true) . ':</td>
 					<td>
 						<input type="text"' . $this->doc->formWidth(15) . ' name="FORMCFG[recipient]" value="' . htmlspecialchars($row['subheader']) . '" />
@@ -590,7 +584,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 			<!--
 				Form wizard
 			-->
-			<table border="0" cellpadding="1" cellspacing="1" id="typo3-formwizard">
+			<table class="table table-bordered table-condensed" id="typo3-formwizard">
 				' . implode('', $tRows) . '
 			</table>';
         // Add hidden fields:
@@ -891,15 +885,13 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 					<td>' . $c . '</td>
 				</tr>';
         }
-        // Add a cell which will set a minimum width:
         $lines[] = '
 			<tr>
-				<td nowrap="nowrap"><span style="width: 70px; height: 1px;"></span></td>
-				<td></td>
+				<td colspan="2"></td>
 			</tr>';
         // Wrap in table and return:
         return '
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table>
 				' . implode('', $lines) . '
 			</table>';
     }

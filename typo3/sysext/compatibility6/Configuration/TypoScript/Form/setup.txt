@@ -49,7 +49,7 @@ tt_content.mailform.20 {
 	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
 	stdWrap {
 		editIcons = tt_content: bodytext, pages, subheader
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.form
+		editIcons.iconTitle.data = LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:eIcon.form
 
 		prefixComment = 2 | Mail form inserted:
 	}

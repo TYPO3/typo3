@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1446137224" source-language="en" datatype="plaintext" original="messages" date="2015-10-29T17:46:32Z" product-name="compatibility6">
+		<header/>
+		<body>
+			<trans-unit id="forms_mail_title">
+				<source>Mail Form</source>
+			</trans-unit>
+			<trans-unit id="forms_mail_description">
+				<source>A mail form allowing website users to submit responses.</source>
+			</trans-unit>
+			<trans-unit id="forms_search_title">
+				<source>Search Form</source>
+			</trans-unit>
+			<trans-unit id="forms_search_description">
+				<source>Draws a search form and the search result if a search is performed.</source>
+			</trans-unit>
+			<trans-unit id="closeDoc">
+				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="saveDoc">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="saveCloseDoc">
+				<source>Save and close</source>
+			</trans-unit>
+			<trans-unit id="labels.changeInOrig">
+				<source>Changed in original translation</source>
+			</trans-unit>
+			<trans-unit id="storage_pid">
+				<source>General Record Storage page:</source>
+			</trans-unit>
+			<trans-unit id="pages.storage_pid_formlabel" xml:space="preserve">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="pages.palettes.storage" xml:space="preserve">
+				<source>General Record Storage Page</source>
+			</trans-unit>
+			<trans-unit id="LGL.default_value">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="LGL.caption">
+				<source>Caption:</source>
+			</trans-unit>
+			<trans-unit id="eIcon.form">
+				<source>Edit email form</source>
+			</trans-unit>
+			<trans-unit id="eIcon.search">
+				<source>Edit search element</source>
+			</trans-unit>
+			<trans-unit id="search.resultRange">
+				<source>Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</source>
+			</trans-unit>
+			<trans-unit id="search.emptySearch">
+				<source>Sorry, your search was empty!</source>
+			</trans-unit>
+			<trans-unit id="search.searchResultNext">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="search.searchResultPrev">
+				<source>Prev</source>
+			</trans-unit>
+			<trans-unit id="search.searchWord">
+				<source>Searchword:</source>
+			</trans-unit>
+			<trans-unit id="search.searchIn">
+				<source>Search in:</source>
+			</trans-unit>
+			<trans-unit id="search.headersKeywords">
+				<source>Headers and keywords</source>
+			</trans-unit>
+			<trans-unit id="search.pageContent">
+				<source>Page content</source>
+			</trans-unit>
+			<trans-unit id="search.searchButton">
+				<source>Search now!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

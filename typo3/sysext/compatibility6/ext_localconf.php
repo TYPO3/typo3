@@ -97,8 +97,8 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
 	mod.wizards.newContentElement.wizardItems.forms {
 		elements.mailform {
 			iconIdentifier = content-elements-mailform
-			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
-			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
+			title = LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:forms_mail_title
+			description = LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:forms_mail_description
 			tt_content_defValues {
 				CType = mailform
 				bodytext (
@@ -138,8 +138,8 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
 mod.wizards.newContentElement.wizardItems.forms {
 	elements.search {
 		iconIdentifier = content-elements-searchform
-		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_title
-		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_description
+		title = LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:forms_search_title
+		description = LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:forms_search_description
 		tt_content_defValues.CType = search
 	}
 	show :=addToList(search)

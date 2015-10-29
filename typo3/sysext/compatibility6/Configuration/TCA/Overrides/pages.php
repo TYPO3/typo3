@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
 $additionalColumns = array(
     'storage_pid' => array(
         'exclude' => 1,
-        'label' => 'LLL:EXT:lang/locallang_tca.xlf:storage_pid',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:storage_pid',
         'config' => array(
             'type' => 'group',
             'internal_type' => 'db',
@@ -26,13 +26,13 @@ $additionalColumns = array(
 
 // Add palette
 $GLOBALS['TCA']['pages']['palettes']['storage'] = array(
-    'showitem' => 'storage_pid;LLL:EXT:cms/locallang_tca.xlf:pages.storage_pid_formlabel',
+    'showitem' => 'storage_pid;LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:pages.storage_pid_formlabel',
     'canNotCollapse' => 1
 );
 
 // Add to "normal" pages, "external URL", "shortcut page" and "storage PID"
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages',
-    '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.storage;storage',
+    '--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:pages.palettes.storage;storage',
     \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT . ','
     . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK . ','
     . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT . ','

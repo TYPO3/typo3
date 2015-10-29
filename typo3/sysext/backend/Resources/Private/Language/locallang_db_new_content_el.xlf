@@ -99,12 +99,6 @@
 			<trans-unit id="forms_mail_description">
 				<source>A mail form allowing website users to submit responses.</source>
 			</trans-unit>
-			<trans-unit id="forms_search_title">
-				<source>Search Form</source>
-			</trans-unit>
-			<trans-unit id="forms_search_description">
-				<source>Draws a search form and the search result if a search is performed.</source>
-			</trans-unit>
 			<trans-unit id="forms_login_title">
 				<source>Login Form</source>
 			</trans-unit>

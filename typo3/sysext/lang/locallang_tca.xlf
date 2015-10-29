@@ -366,9 +366,6 @@
 			<trans-unit id="is_siteroot">
 				<source>Is root of website:</source>
 			</trans-unit>
-			<trans-unit id="storage_pid">
-				<source>General Record Storage page:</source>
-			</trans-unit>
 			<trans-unit id="be_users">
 				<source>Backend user</source>
 			</trans-unit>

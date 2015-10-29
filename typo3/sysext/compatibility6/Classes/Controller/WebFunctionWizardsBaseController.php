@@ -49,7 +49,7 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
      */
     public function modMenu()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:func_wizards/locallang.xlf');
+        $GLOBALS['LANG']->includeLLFile('EXT:compatibility6/Resources/Private/Language/wizards.xlf');
         $modMenuAdd = array(
             $this->function_key => array()
         );

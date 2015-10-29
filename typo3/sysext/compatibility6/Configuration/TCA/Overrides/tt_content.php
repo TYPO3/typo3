@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
 $extraContentColumns = array(
     'altText' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_altText',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_altText',
         'config' => array(
             'type' => 'text',
             'cols' => '30',
@@ -13,7 +13,7 @@ $extraContentColumns = array(
         )
     ),
     'imagecaption' => array(
-        'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.caption',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:LGL.caption',
         'config' => array(
             'type' => 'text',
             'cols' => '30',
@@ -23,25 +23,25 @@ $extraContentColumns = array(
     ),
     'imagecaption_position' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
             'items' => array(
                 array(
-                    'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang.xlf:LGL.default_value',
                     ''
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.1',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.1',
                     'center'
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.2',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.2',
                     'right'
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.3',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position.I.3',
                     'left'
                 )
             ),
@@ -50,7 +50,7 @@ $extraContentColumns = array(
     ),
     'image_link' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_link',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_link',
         'config' => array(
             'type' => 'text',
             'cols' => '30',
@@ -58,8 +58,8 @@ $extraContentColumns = array(
             'wizards' => array(
                 'link' => array(
                     'type' => 'popup',
-                    'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
-                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                    'title' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
+                    'icon' => 'EXT:compatibility6/Resources/Public/Images/wizard_link.gif',
                     'module' => array(
                         'name' => 'wizard_link',
                     ),
@@ -71,45 +71,45 @@ $extraContentColumns = array(
     ),
     'image_frames' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames',
         'config' => array(
             'type' => 'select',
             'renderType' => 'selectSingle',
             'items' => array(
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.0',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.0',
                     0
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.1',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.1',
                     1
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.2',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.2',
                     2
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.3',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.3',
                     3
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.4',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.4',
                     4
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.5',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.5',
                     5
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.6',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.6',
                     6
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.7',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.7',
                     7
                 ),
                 array(
-                    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.8',
+                    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.8',
                     8
                 )
             )
@@ -117,7 +117,7 @@ $extraContentColumns = array(
     ),
     'longdescURL' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_longdescURL',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_longdescURL',
         'config' => array(
             'type' => 'text',
             'cols' => '30',
@@ -125,8 +125,8 @@ $extraContentColumns = array(
             'wizards' => array(
                 'link' => array(
                     'type' => 'popup',
-                    'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
-                    'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+                    'title' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
+                    'icon' => 'EXT:compatibility6/Resources/Public/Images/wizard_link.gif',
                     'module' => array(
                         'name' => 'wizard_link',
                     ),
@@ -142,7 +142,7 @@ $extraContentColumns = array(
     ),
     'titleText' => array(
         'exclude' => true,
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_titleText',
+        'label' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_titleText',
         'config' => array(
             'type' => 'text',
             'cols' => '30',
@@ -247,10 +247,10 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
         ),
         'image_accessibility' => array(
             'showitem' => '
-				altText;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:altText_formlabel,
-				titleText;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:titleText_formlabel,
+				altText;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:altText_formlabel,
+				titleText;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:titleText_formlabel,
 				--linebreak--,
-				longdescURL;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:longdescURL_formlabel
+				longdescURL;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:longdescURL_formlabel
 			',
         )
     )
@@ -263,50 +263,50 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('css_styled_co
         array(
             'visibility' => array(
                 'showitem' => '
-					hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:hidden_formlabel,
-					sectionIndex;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel,
-					linkToTop;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel
+					hidden;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:hidden_formlabel,
+					sectionIndex;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel,
+					linkToTop;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel
 				',
             ),
             'frames' => array(
                 'showitem' => '
-					layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel,
-					spaceBefore;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:spaceBefore_formlabel,
-					spaceAfter;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:spaceAfter_formlabel,
-					section_frame;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:section_frame_formlabel
+					layout;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel,
+					spaceBefore;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:spaceBefore_formlabel,
+					spaceAfter;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:spaceAfter_formlabel,
+					section_frame;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:section_frame_formlabel
 				',
             )
         )
     );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'image_settings', 'image_frames;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames_formlabel');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'image_settings', 'image_frames;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:image_frames_formlabel');
 
 /**
  * CType "search"
  */
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['search'] = 'mimetypes-x-content-form-search';
 $GLOBALS['TCA']['tt_content']['types']['search'] = array(
-    'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
-			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
-			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.behaviour,
-			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.searchform;searchform,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
+    'showitem' => '--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+			--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
+		--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+			--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
+		--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
+			--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
+			--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+		--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.behaviour,
+			--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.searchform;searchform,
+		--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
 );
 
 $GLOBALS['TCA']['tt_content']['palettes']['searchform'] = array(
-    'showitem' => 'pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.searchform',
+    'showitem' => 'pages;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.searchform',
 );
 
 // check if there is already a forms tab and add the item after that, otherwise
 // add the tab item as well
 $additionalCTypeItem = array(
-    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.9',
+    'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:CType.I.9',
     'search',
     'content-special-indexed_search'
 );
@@ -315,7 +315,7 @@ $existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config'
 $groupFound = false;
 $groupPosition = false;
 foreach ($existingCTypeItems as $position => $item) {
-    if ($item[0] === 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms') {
+    if ($item[0] === 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms') {
         $groupFound = true;
         $groupPosition = $position;
         break;
@@ -328,7 +328,7 @@ if ($groupFound && $groupPosition) {
 } else {
     // nothing found, add two items (group + new CType) at the bottom of the list
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType',
-        array('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms', '--div--')
+        array('LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:CType.div.forms', '--div--')
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', $additionalCTypeItem);
 }
@@ -343,8 +343,8 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
         'notNewRecords' => 1,
         'enableByTypeConfig' => 1,
         'type' => 'script',
-        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.forms',
-        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
+        'title' => 'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:bodytext.W.forms',
+        'icon' => 'EXT:compatibility6/Resources/Public/Images/wizard_forms.gif',
         'module' => array(
             'name' => 'wizard_forms',
             'urlParameters' => array(
@@ -360,7 +360,7 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
         'tt_content',
         'CType',
         array(
-            'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.8',
+            'LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:CType.I.8',
             'mailform',
             'content-elements-mailform'
         ),
@@ -371,17 +371,17 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
     // set up the fields
     $GLOBALS['TCA']['tt_content']['types']['mailform'] = array(
         'showitem' => '
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
-				bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.mailform_formlabel,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.behaviour,
-				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.mailform;mailform,
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
+				bodytext;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.mailform_formlabel,
+			--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
+			--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+			--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.behaviour,
+				--palette--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:palette.mailform;mailform,
+			--div--;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
     );
     $baseDefaultExtrasOfBodytext = '';
     if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
@@ -396,6 +396,6 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
     $GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap:wizards[forms]';
 
     $GLOBALS['TCA']['tt_content']['palettes']['mailform'] = array(
-        'showitem' => 'pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.mailform, --linebreak--, subheader;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:subheader.ALT.mailform_formlabel',
+        'showitem' => 'pages;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.mailform, --linebreak--, subheader;LLL:EXT:compatibility6/Resources/Private/Language/locallang_ttc.xlf:subheader.ALT.mailform_formlabel',
     );
 }
