@@ -469,10 +469,6 @@ class InlineRecordContainer extends AbstractContainer
             $cells['localize.isLocalizable'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', true) . '">'
                 . $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render()
                 . '</span>';
-        } elseif ($data['inlineIsDanglingLocalization']) {
-            $cells['localize.wasRemovedInOriginal'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', true) . '">'
-                . $this->iconFactory->getIcon('actions-edit-localize-status-high', Icon::SIZE_SMALL)->render()
-                . '</span>';
         }
         // "Info": (All records)
         if ($enabledControls['info'] && !$isNewItem) {
