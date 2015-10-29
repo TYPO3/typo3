@@ -206,8 +206,10 @@ class LocalizationUtility
                     }
                 }
             }
-        } elseif ($GLOBALS['BE_USER']->uc['lang'] !== '') {
+        } elseif (!empty($GLOBALS['BE_USER']->uc['lang'])) {
             self::$languageKey = $GLOBALS['BE_USER']->uc['lang'];
+        } elseif (!empty(self::getLanguageService()->lang)) {
+            self::$languageKey = self::getLanguageService()->lang;
         }
     }
 
