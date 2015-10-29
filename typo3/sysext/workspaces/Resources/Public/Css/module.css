@@ -132,6 +132,16 @@ table.t3-workspaces-foldout-contentDiff td {
 table.t3-workspaces-foldout-contentDiff .diff-r {
 	text-decoration: line-through;
 }
+.t3-workspaces-foldout-contentDiff .content ins > img {
+	padding: 1px;
+	margin-right: 2px;
+	border: 2px solid green;
+}
+.t3-workspaces-foldout-contentDiff .content del > img {
+	padding: 1px;
+	margin-right: 2px;
+	border: 2px solid red;
+}
 div.t3-workspaces-foldoutWrapper td.char_select_profile_stats {
 	padding-right: 10px;
 }

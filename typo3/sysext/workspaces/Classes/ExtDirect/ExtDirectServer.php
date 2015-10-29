@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Resource\FileReference;
 
 /**
  * ExtDirect server
@@ -36,9 +37,14 @@ class ExtDirectServer extends AbstractHandler
     protected $stagesService;
 
     /**
+     * @var \cogpowered\FineDiff\Diff
+     */
+    protected $differenceHandler;
+
+    /**
      * Checks integrity of elements before peforming actions on them.
      *
-     * @param stdClass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
     public function checkIntegrity(\stdClass $parameters)
@@ -134,10 +140,61 @@ class ExtDirectServer extends AbstractHandler
             }
         }
         foreach ($fieldsOfRecords as $fieldName) {
+            if (empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])) {
+                continue;
+            }
+            // Get the field's label. If not available, use the field name
+            $fieldTitle = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($parameter->table, $fieldName));
+            if (empty($fieldTitle)) {
+                $fieldTitle = $fieldName;
+            }
+            // Gets the TCA configuration for the current field
+            $configuration = $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'];
             // check for exclude fields
             if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
                 // call diff class only if there is a difference
-                if ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
+                if ($configuration['type'] === 'inline' && $configuration['foreign_table'] === 'sys_file_reference') {
+                    $useThumbnails = false;
+                    if (!empty($configuration['foreign_selector_fieldTcaOverride']['config']['appearance']['elementBrowserAllowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
+                        $fileExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], true);
+                        $allowedExtensions = GeneralUtility::trimExplode(',', $configuration['foreign_selector_fieldTcaOverride']['config']['appearance']['elementBrowserAllowed'], true);
+                        $differentExtensions = array_diff($allowedExtensions, $fileExtensions);
+                        $useThumbnails = empty($differentExtensions);
+                    }
+
+                    $liveFileReferences = BackendUtility::resolveFileReferences(
+                        $parameter->table,
+                        $fieldName,
+                        $liveRecord,
+                        0
+                    );
+                    $versionFileReferences = BackendUtility::resolveFileReferences(
+                        $parameter->table,
+                        $fieldName,
+                        $versionRecord,
+                        $this->getCurrentWorkspace()
+                    );
+                    $fileReferenceDifferences = $this->prepareFileReferenceDifferences(
+                        $liveFileReferences,
+                        $versionFileReferences,
+                        $useThumbnails
+                    );
+
+                    if ($fileReferenceDifferences === null) {
+                        continue;
+                    }
+
+                    $diffReturnArray[] = array(
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => $fileReferenceDifferences['differences']
+                    );
+                    $liveReturnArray[] = array(
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => $fileReferenceDifferences['live']
+                    );
+                } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
                     $liveRecord[$fieldName] = BackendUtility::getProcessedValue(
                         $parameter->table,
@@ -157,12 +214,8 @@ class ExtDirectServer extends AbstractHandler
                         false,
                         $versionRecord['uid']
                     );
-                    // Get the field's label. If not available, use the field name
-                    $fieldTitle = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($parameter->table, $fieldName));
-                    if (empty($fieldTitle)) {
-                        $fieldTitle = $fieldName;
-                    }
-                    if ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
+
+                    if ($configuration['type'] == 'group' && $configuration['internal_type'] == 'file') {
                         $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
                         $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
                         $diffReturnArray[] = array(
@@ -194,8 +247,10 @@ class ExtDirectServer extends AbstractHandler
         // (this may be used by custom or dynamically-defined fields)
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
-                $hookObject =& GeneralUtility::getUserObj($className);
-                $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
+                $hookObject = GeneralUtility::getUserObj($className);
+                if (method_exists($hookObject, 'modifyDifferenceArray')) {
+                    $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
+                }
             }
         }
         $commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);
@@ -214,6 +269,74 @@ class ExtDirectServer extends AbstractHandler
                     'icon_Workspace' => $icon_Workspace
                 )
             )
+        );
+    }
+
+    /**
+     * Prepares difference view for file references.
+     *
+     * @param FileReference[] $liveFileReferences
+     * @param FileReference[] $versionFileReferences
+     * @param bool|false $useThumbnails
+     * @return array|null
+     */
+    protected function prepareFileReferenceDifferences(array $liveFileReferences, array $versionFileReferences, $useThumbnails = false)
+    {
+        $randomValue = uniqid('file');
+
+        $liveValues = array();
+        $versionValues = array();
+        $candidates = array();
+        $substitutes = array();
+
+        // Process live references
+        foreach ($liveFileReferences as $identifier => $liveFileReference) {
+            $identifierWithRandomValue = $randomValue . '__' . $liveFileReference->getUid() . '__' . $randomValue;
+            $candidates[$identifierWithRandomValue] = $liveFileReference;
+            $liveValues[] = $identifierWithRandomValue;
+        }
+
+        // Process version references
+        foreach ($versionFileReferences as $identifier => $versionFileReference) {
+            $identifierWithRandomValue = $randomValue . '__' . $versionFileReference->getUid() . '__' . $randomValue;
+            $candidates[$identifierWithRandomValue] = $versionFileReference;
+            $versionValues[] = $identifierWithRandomValue;
+        }
+
+        // Combine values and surround by spaces
+        // (to reduce the chunks Diff will find)
+        $liveInformation = ' ' . implode(' ', $liveValues) . ' ';
+        $versionInformation = ' ' . implode(' ', $versionValues) . ' ';
+
+        // Return if information has not changed
+        if ($liveInformation === $versionInformation) {
+            return null;
+        }
+
+        /**
+         * @var string $identifierWithRandomValue
+         * @var FileReference $fileReference
+         */
+        foreach ($candidates as $identifierWithRandomValue => $fileReference) {
+            if ($useThumbnails) {
+                $thumbnailFile = $fileReference->getOriginalFile()->process(
+                    \TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                    array('width' => 40, 'height' => 40)
+                );
+                $thumbnailMarkup = '<img src="' . $thumbnailFile->getPublicUrl(true) . '" />';
+                $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
+            } else {
+                $substitutes[$identifierWithRandomValue] = $fileReference->getPublicUrl();
+            }
+        }
+
+        $differences = $this->getDifferenceHandler()->render($liveInformation, $versionInformation);
+        $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
+        $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
+
+        return array(
+            'live' => $liveInformation,
+            'differences' => $differences
         );
     }
 
@@ -305,6 +428,20 @@ class ExtDirectServer extends AbstractHandler
             $this->stagesService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
         }
         return $this->stagesService;
+    }
+
+    /**
+     * Gets the difference handler, parsing differences based on sentences.
+     *
+     * @return \cogpowered\FineDiff\Diff
+     */
+    protected function getDifferenceHandler()
+    {
+        if (!isset($this->differenceHandler)) {
+            $granularity = new \cogpowered\FineDiff\Granularity\Word();
+            $this->differenceHandler = new \cogpowered\FineDiff\Diff($granularity);
+        }
+        return $this->differenceHandler;
     }
 
     /**
