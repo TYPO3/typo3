@@ -138,7 +138,7 @@ class InputButton extends AbstractButton implements ButtonInterface
         foreach ($attributes as $key => $value) {
             $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
         }
-        return '<button' . $attributesString . '">'
+        return '<button' . $attributesString . '>'
             . $this->getIcon()->render() . htmlspecialchars($labelText)
         . '</button>';
     }
