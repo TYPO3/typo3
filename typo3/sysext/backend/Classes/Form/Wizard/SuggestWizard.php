@@ -142,7 +142,7 @@ class SuggestWizard
         $search = isset($parsedBody['value']) ? $parsedBody['value'] : $queryParams['value'];
         $table = isset($parsedBody['table']) ? $parsedBody['table'] : $queryParams['table'];
         $field = isset($parsedBody['field']) ? $parsedBody['field'] : $queryParams['field'];
-        $uid = (int)(isset($parsedBody['uid']) ? $parsedBody['uid'] : $queryParams['uid']);
+        $uid = isset($parsedBody['uid']) ? $parsedBody['uid'] : $queryParams['uid'];
         $pageId = (int)(isset($parsedBody['pid']) ? $parsedBody['pid'] : $queryParams['pid']);
         $newRecordRow = isset($parsedBody['newRecordRow']) ? $parsedBody['newRecordRow'] : $queryParams['newRecordRow'];
         // If the $uid is numeric, we have an already existing element, so get the
