@@ -258,9 +258,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 }
             }
             $content = '<a href="#" class="t3-js-clickmenutrigger" data-table="sys_template" data-uid="' . $tplRow['uid'] . '" data-listframe="1">' . $this->iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '</a><strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= $this->pObj->doc->section($lang->getLL('templateInformation'), $content, 0, 1);
+            $theOutput .= '<h2>' . $lang->getLL('templateInformation', true) . '</h2><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
-                $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
+                $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
             $theOutput .= '<div style="padding-top: 10px;"></div>';
             $numberOfRows = 35;
@@ -275,8 +275,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
                 $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('constants'), '', true);
-                $theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
+                $theOutput .= '<h3>' . $lang->getLL('constants', true) . '</h3>';
+                $theOutput .= $outCode;
             }
             if (isset($e['config'])) {
                 $outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="text-monospace enable-tab"' . $this->pObj->doc->formWidth(48, true, 'width:98%;height:70%') . ' class="text-monospace">' . htmlspecialchars($tplRow['config']) . '</textarea>';
@@ -285,8 +285,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
                 $theOutput .= '<div style="padding-top: 15px;"></div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('setup'), '', true);
-                $theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
+                $theOutput .= '<h3>' . $lang->getLL('setup', true) . '</h3>';
+                $theOutput .= $outCode;
             }
 
             // Processing:
@@ -313,7 +313,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
             $outCode .= '<br /><a class="btn btn-default" href="' . htmlspecialchars($url)
                 . '"><strong>' . $icon . '&nbsp;' . $title . '</strong></a>';
-            $theOutput .= $this->pObj->doc->section('', $outCode);
+            $theOutput .= '<div>' . $outCode . '</div>';
 
                 // hook	after compiling the output
             if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'])) {
