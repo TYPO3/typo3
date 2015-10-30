@@ -93,7 +93,11 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
         $templateService = $this->getExtendedTemplateService();
         if ($templateService->helpConfig['imagetag'] || $templateService->helpConfig['description'] || $templateService->helpConfig['header']) {
             $theOutput .= '<div style="padding-top: 30px;"></div>';
-            $theOutput .= $this->pObj->doc->section($templateService->helpConfig['header'], '<div align="center">' . $templateService->helpConfig['imagetag'] . '</div><BR>' . ($templateService->helpConfig['description'] ? implode(explode('//', $templateService->helpConfig['description']), '<BR>') . '<BR>' : '') . ($templateService->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $templateService->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>'));
+            $theOutput .= '<div>' . htmlspecialchars($templateService->helpConfig['header'])
+                . '<div align="center">' . $templateService->helpConfig['imagetag'] . '</div><br>'
+                . ($templateService->helpConfig['description'] ? implode(explode('//', $templateService->helpConfig['description']), '<br>') . '<br>' : '')
+                . ($templateService->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $templateService->helpConfig['bulletlist']), '<li>') . '</ul>' : '<br>')
+                . '</div>';
         }
         return $theOutput;
     }
@@ -156,18 +160,18 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             // Resetting the menu (stop)
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $content = $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . '<strong>' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= $this->pObj->doc->section($lang->getLL('editConstants', true), $content, false, true);
+            $theOutput .= '<h2>' . $lang->getLL('editConstants', true) . '</h2><div>' . $content . '</div>';
             if ($manyTemplatesMenu) {
-                $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
+                $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
             }
             $theOutput .= '<div style="padding-top: 10px;"></div>';
             if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {
                 $menu = '<div class="form-inline form-inline-spaced">';
                 $menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
                 $menu .= '</div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('category', true), '<span class="text-nowrap">' . $menu . '</span>', false);
+                $theOutput .= '<h3>' . $lang->getLL('category', true) . '</h3><div><span class="text-nowrap">' . $menu . '</span></div>';
             } else {
-                $theOutput .= $this->pObj->doc->section($lang->getLL('noConstants', true), $lang->getLL('noConstantsDescription', true), false, false, 1);
+                $theOutput .= '<h3>' . $iconFactory->getIcon('status-dialog-notification', Icon::SIZE_SMALL)->render() . $lang->getLL('noConstants', true) . '</h3><div>' . $lang->getLL('noConstantsDescription', true) . '</div>';
             }
             $theOutput .= '<div style="padding-top: 15px;"></div>';
             // Category and constant editor config:
@@ -176,7 +180,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 
             $printFields = trim($templateService->ext_printFields($theConstants, $category));
             if ($printFields) {
-                $theOutput .= $this->pObj->doc->section('', $printFields);
+                $theOutput .= '<div>' . $printFields . '</div>';
             }
             $BE_USER_modOptions = BackendUtility::getModTSconfig(0, 'mod.' . $this->pObj->MCONF['name']);
             if ($BE_USER_modOptions['properties']['constantEditor.']['example'] != 'top') {

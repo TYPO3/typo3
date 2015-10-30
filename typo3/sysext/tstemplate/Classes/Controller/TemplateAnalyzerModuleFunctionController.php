@@ -122,7 +122,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                 . htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '');
         }
         if ($manyTemplatesMenu) {
-            $theOutput .= '<div>' .$manyTemplatesMenu . '</div>';
+            $theOutput .= '<div>' . $manyTemplatesMenu . '</div>';
         }
         $templateService = $this->getExtendedTemplateService();
         $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
