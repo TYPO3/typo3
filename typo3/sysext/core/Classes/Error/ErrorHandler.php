@@ -197,7 +197,7 @@ class ErrorHandler implements ErrorHandlerInterface
                 'action' => 0,
                 'error' => $severity,
                 'details_nr' => 0,
-                'details' => $logMessage,
+                'details' => str_replace('%', '%%', $logMessage),
                 'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                 'tstamp' => $GLOBALS['EXEC_TIME'],
                 'workspace' => $workspace
