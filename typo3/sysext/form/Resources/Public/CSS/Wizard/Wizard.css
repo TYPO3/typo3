@@ -295,7 +295,7 @@ li.formwizard-element div.buttongroup span.x-btn-over {
 }
 
 li.formwizard-element.hover,
-li.formwizard-element.hidden.hover{
+li.formwizard-element.hidden.hover {
 	border: 1px solid #C5DBE6;
 	background-color: #F9FCFF;
 }
@@ -310,6 +310,16 @@ li.formwizard-element.hidden {
 	background-color: transparent;
 	border: 1px dotted #C5DBE6;
 	min-height: 1em;
+}
+
+li.formwizard-element.hidden-element {
+	cursor: default;
+}
+
+li.formwizard-element .hidden-dummy-element {
+	margin: 0;
+	padding: 5px;
+	border:1px dotted #A9A9A9;
 }
 
 li.formwizard-element.form {
