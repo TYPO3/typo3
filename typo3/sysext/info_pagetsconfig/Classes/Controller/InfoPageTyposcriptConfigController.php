@@ -82,9 +82,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
     {
         if ((int)(GeneralUtility::_GP('id')) === 0) {
             $lang = $this->getLanguageService();
-            return $this->pObj->doc->section(
-                '',
-                '<div class="nowrap"><div class="table-fit"><table class="table table-striped table-hover" id="tsconfig-overview">' .
+            return '<div class="nowrap"><div class="table-fit"><table class="table table-striped table-hover" id="tsconfig-overview">' .
                 '<thead>' .
                 '<tr>' .
                 '<th>' . $lang->getLL('pagetitle') . '</th>' .
@@ -93,10 +91,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 '</tr>' .
                 '</thead>' .
                 '<tbody>' . implode('', $this->getOverviewOfPagesUsingTSConfig()) . '</tbody>' .
-                '</table></div>',
-                0,
-                1
-            );
+                '</table></div>';
         } else {
             $menu = '<div class="form-inline form-inline-spaced">';
             $menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
@@ -156,9 +151,12 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 } else {
                     $editIcon = '';
                 }
-                $theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', null) . $menu . '
+                $theOutput .= '<div>';
+                $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', null) . $menu . '
 						<!-- Edit fields: -->
-						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon, 0, 1);
+						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon;
+                $theOutput .= '</div>';
+
             } else {
                 // Defined global here!
                 $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
@@ -224,14 +222,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                 $csh = BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null);
                 $tree = $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']);
 
-                $theOutput .= $this->pObj->doc->section(
-                    '',
-                    $csh .
-                    $menu .
-                    '<div class="nowrap">' . $tree . '</div>',
-                    0,
-                    1
-                );
+                $theOutput .= '<div>';
+                $theOutput .= $csh . $menu . '<div class="nowrap">' . $tree . '</div>';
+                $theOutput .= '</div>';
             }
         }
 
