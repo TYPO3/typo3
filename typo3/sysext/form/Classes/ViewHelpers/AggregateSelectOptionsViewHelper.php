@@ -70,14 +70,14 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
         if ($model->getElementType() === 'OPTGROUP') {
             $optGroupData = array(
                 'label' => $model->getAdditionalArgument('label'),
-                'disabled' => $model->getHtmlAttribute('disabled')
+                'disabled' => $model->getAdditionalArgument('disabled')
             );
             $this->getChildElements($model, $optGroupData);
         } else {
             $optionData = array(
                 'value' => $model->getAdditionalArgument('value') ?: $model->getElementCounter(),
                 'label' => $model->getAdditionalArgument('text'),
-                'selected' => $model->getHtmlAttribute('selected'),
+                'selected' => $model->getAdditionalArgument('selected'),
             );
 
             if (!empty($optionData['selected'])) {

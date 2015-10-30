@@ -122,18 +122,19 @@ class HandleIncomingFormValues implements SingletonInterface
                 $parentName = $element->getParentElement()->getName();
             }
             $incomingData = $formBuilder->getIncomingData()->getIncomingField($parentName);
+
             /* Multiselect */
             if (is_array($incomingData)) {
                 if (in_array($modelValue, $incomingData, true)) {
-                    $element->setHtmlAttribute('selected', 'selected');
+                    $element->setAdditionalArgument('selected', 'selected');
                 } else {
-                    $element->setHtmlAttribute('selected', null);
+                    $element->setAdditionalArgument('selected', null);
                 }
             } else {
                 if ($modelValue === $incomingData) {
-                    $element->setHtmlAttribute('selected', 'selected');
+                    $element->setAdditionalArgument('selected', 'selected');
                 } else {
-                    $element->setHtmlAttribute('selected', null);
+                    $element->setAdditionalArgument('selected', null);
                 }
             }
         } elseif ($element->getElementType() === 'TEXTAREA') {

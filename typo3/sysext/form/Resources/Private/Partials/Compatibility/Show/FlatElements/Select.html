@@ -14,7 +14,7 @@
 			onclick="{model.additionalArguments.onclick}"
 
 			name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
-			value="{model.additionalArguments.value}"
+			value="{form:aggregateSelectOptions(model:model, returnSelectedValues: 1)}"
 
 			multiple="{model.additionalArguments.multiple}"
 			size="{model.additionalArguments.size}"
