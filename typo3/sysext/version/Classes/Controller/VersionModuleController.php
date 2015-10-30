@@ -210,7 +210,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $markers['CONTENT'] = $this->content;
         } else {
             // If no access or id value, create empty document
-            $this->content = $this->doc->section($GLOBALS['LANG']->getLL('clickAPage_header'), $GLOBALS['LANG']->getLL('clickAPage_content'), 0, 1);
+            $this->content = '<h2>' . $GLOBALS['LANG']->getLL('clickAPage_header', true) . '</h2><div>' . $GLOBALS['LANG']->getLL('clickAPage_content') . '</div>';
             // Setting up the buttons and markers for docheader
             $docHeaderButtons = $this->getButtons();
             $markers['CONTENT'] = $this->content;
@@ -420,7 +420,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 					</div>
 				</div>
 			</form>';
-        $this->content .= $this->doc->section($GLOBALS['LANG']->getLL('title'), $content, 0, 1);
+        $this->content .= '<h2>' . $GLOBALS['LANG']->getLL('title', true) . '</h2><div>' . $content . '</div>';
         // Create new:
         $content = '
 			<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db')) . '" method="post">
@@ -441,7 +441,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 			</form>
 
 		';
-        $this->content .= $this->doc->section($GLOBALS['LANG']->getLL('createNewVersion'), $content, 0, 1);
+        $this->content .= '<h2>' . $GLOBALS['LANG']->getLL('createNewVersion', true) . '</h2><div>' . $content . '</div>';
     }
 
     /**
