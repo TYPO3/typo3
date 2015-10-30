@@ -466,12 +466,14 @@ class ElementInformationController
             case 'db': {
                 $references = $this->makeRef($this->table, $this->row['uid']);
                 if (!empty($references)) {
-                    $content .= $this->doc->section($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem'), $references);
+                    $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem', true) . '</h3>';
+                    $content .= $references;
                 }
 
                 $referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
                 if (!empty($referencesFrom)) {
-                    $content .= $this->doc->section($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem'), $referencesFrom);
+                    $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem', true) . '</h3>';
+                    $content .= $referencesFrom;
                 }
                 break;
             }
@@ -481,8 +483,8 @@ class ElementInformationController
                     $references = $this->makeRef('_FILE', $this->fileObject);
 
                     if (!empty($references)) {
-                        $header = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem');
-                        $content .= $this->doc->section($header, $references);
+                        $content .= '<h3>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem', true) . '</h3>';
+                        $content .= $references;
                     }
                 }
                 break;
