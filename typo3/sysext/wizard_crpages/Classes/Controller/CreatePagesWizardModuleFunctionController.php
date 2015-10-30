@@ -176,7 +176,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
         // CSH
         $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', null, '<div class="t3-help">|</div>');
         $out = $this->pObj->doc->header($this->getLanguageService()->getLL('wiz_crMany'));
-        $out .= $this->pObj->doc->section('', $theCode, false, true);
+        $out .= '<div>' . $theCode . '</div>';
         return $out;
     }
 
