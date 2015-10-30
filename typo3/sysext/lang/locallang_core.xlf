@@ -301,6 +301,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.cliptabs-description">
 				<source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
 			</trans-unit>
+			<trans-unit id="labels.clipboard.delete_elements">
+				<source>Delete elements</source>
+			</trans-unit>
+			<trans-unit id="labels.clipboard.clear_clipboard">
+				<source>Clear clipboard</source>
+			</trans-unit>
 			<trans-unit id="labels.removeItem">
 				<source>Remove item</source>
 			</trans-unit>
@@ -665,7 +671,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Are you sure you want to delete "%s"?</source>
 			</trans-unit>
 			<trans-unit id="mess.deleteClip">
-				<source>Are you sure you want to delete ALL selected elements (%s) on the clipboard?</source>
+				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
 			</trans-unit>
 			<trans-unit id="mess.refresh_login" xml:space="preserve">
 				<source>Your login has probably expired.
