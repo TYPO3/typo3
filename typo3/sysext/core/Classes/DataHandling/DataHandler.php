@@ -1385,11 +1385,16 @@ class DataHandler
      * Create a placeholder title for the label field that does match the field requirements
      *
      * @param string $table The table name
+     * @param string $placeholderContent Placeholder content to be used
      * @return string placeholder value
      */
-    protected function getPlaceholderTitleForTableLabel($table)
+    public function getPlaceholderTitleForTableLabel($table, $placeholderContent = null)
     {
-        $labelPlaceholder = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
+        if ($placeholderContent === null) {
+            $placeholderContent = 'PLACEHOLDER';
+        }
+
+        $labelPlaceholder = '[' . $placeholderContent . ', WS#' . $this->BE_USER->workspace . ']';
         $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
         if (!isset($GLOBALS['TCA'][$table]['columns'][$labelField]['config']['eval'])) {
             return $labelPlaceholder;
