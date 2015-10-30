@@ -454,11 +454,13 @@ class SetupModuleController extends AbstractModule
         $menuItems = $this->renderUserSetup();
         $this->content .= $this->moduleTemplate->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
         $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
-        $this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
+        $this->content .= '<div>';
+        $this->content .= '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
             <input type="hidden" name="formToken" value="' . $formToken . '" />
             <input type="hidden" value="1" name="data[save]" />
             <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
-            <input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />');
+            <input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />';
+        $this->content .= '</div>';
         // End of wrapper div
         $this->content .= '</div>';
         // Setting up the buttons and markers for docheader
