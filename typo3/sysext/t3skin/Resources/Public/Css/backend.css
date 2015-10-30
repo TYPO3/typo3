@@ -11923,8 +11923,26 @@ fieldset[disabled] .btn-login.active {
   color: #ff8800;
   background-color: #ffffff;
 }
+.btn-login:active,
+.btn-login:active:focus,
+.btn-login:active:hover,
+.btn-login:focus,
+.btn-login:hover,
+.btn-login:visited {
+  background-color: #ff8800;
+}
+.btn-login:active:focus,
 .btn-login:focus {
   outline: none;
+}
+.btn-login:hover {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.125);
+}
+.btn-login:active:focus,
+.btn-login:active:hover {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn-login:focus {
   box-shadow: none;
 }
 .typo3-login-carousel-control {

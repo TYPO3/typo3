@@ -133,8 +133,26 @@
 	.button-size(@login-input-padding-vertical; @login-input-padding-horizontal; @login-input-font-size; 1em; @login-input-border-radius);
 	.button-variant(@login-btn-text; @login-btn-bg; rgba(0,0,0,0.1));
 	line-height: 1.3em;
+	&:active,
+	&:active:focus,
+	&:active:hover,
+	&:focus,
+	&:hover,
+	&:visited {
+		background-color: @login-btn-bg;
+	}
+	&:active:focus,
 	&:focus {
 		outline: none;
+	}
+	&:hover {
+		box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.125);
+	}
+	&:active:focus,
+	&:active:hover {
+		box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	}
+	&:focus {
 		.box-shadow(none);
 	}
 }

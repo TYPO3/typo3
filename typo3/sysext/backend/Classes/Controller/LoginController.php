@@ -185,6 +185,7 @@ class LoginController
 				.btn-login.disabled:active, .btn-login[disabled]:active, fieldset[disabled] .btn-login:active,
 				.btn-login.disabled.active, .btn-login[disabled].active, fieldset[disabled] .btn-login.active,
 				.btn-login:hover, .btn-login:focus, .btn-login:active,
+				.btn-login:active:hover, .btn-login:active:focus,
 				.btn-login { background-color: ' . $extConf['loginHighlightColor'] . '; }
 				.panel-login .panel-body { border-color: ' . $extConf['loginHighlightColor'] . '; }
 			';
