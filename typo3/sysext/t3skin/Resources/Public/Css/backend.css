@@ -11219,6 +11219,9 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   width: 11px;
   bottom: 0;
 }
+.list-tree li .icon {
+  margin-right: 2px;
+}
 .list-tree-group {
   position: relative;
   display: block;
