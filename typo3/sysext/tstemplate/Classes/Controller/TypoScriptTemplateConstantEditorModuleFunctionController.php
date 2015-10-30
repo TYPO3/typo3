@@ -92,7 +92,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
     {
         $templateService = $this->getExtendedTemplateService();
         if ($templateService->helpConfig['imagetag'] || $templateService->helpConfig['description'] || $templateService->helpConfig['header']) {
-            $theOutput .= $this->pObj->doc->spacer(30);
+            $theOutput .= '<div style="padding-top: 30px;"></div>';
             $theOutput .= $this->pObj->doc->section($templateService->helpConfig['header'], '<div align="center">' . $templateService->helpConfig['imagetag'] . '</div><BR>' . ($templateService->helpConfig['description'] ? implode(explode('//', $templateService->helpConfig['description']), '<BR>') . '<BR>' : '') . ($templateService->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $templateService->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>'));
         }
         return $theOutput;
@@ -160,7 +160,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             if ($manyTemplatesMenu) {
                 $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
             }
-            $theOutput .= $this->pObj->doc->spacer(10);
+            $theOutput .= '<div style="padding-top: 10px;"></div>';
             if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {
                 $menu = '<div class="form-inline form-inline-spaced">';
                 $menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
@@ -169,7 +169,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             } else {
                 $theOutput .= $this->pObj->doc->section($lang->getLL('noConstants', true), $lang->getLL('noConstantsDescription', true), false, false, 1);
             }
-            $theOutput .= $this->pObj->doc->spacer(15);
+            $theOutput .= '<div style="padding-top: 15px;"></div>';
             // Category and constant editor config:
             $category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
             $templateService->ext_getTSCE_config($category);

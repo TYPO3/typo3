@@ -234,7 +234,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             if ($manyTemplatesMenu) {
                 $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
             }
-            $theOutput .= $this->pObj->doc->spacer(10);
+            $theOutput .= '<div style="padding-top: 10px;"></div>';
             if ($POST['add_property'] || $POST['update_value'] || $POST['clear_object']) {
                 // add property
                 $line = '';
@@ -352,7 +352,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $documentTemplate->formWidth(40) . ' />';
                 $out .= '	<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
                 $out .= '</div>';
-                $theOutput .= $this->pObj->doc->spacer(20);
+                $theOutput .= '<div style="padding-top: 20px;"></div>';
                 $theOutput .= $this->pObj->doc->section($lang->getLL('addProperty'), $out, 0, 0);
                 // clear
                 $out = '<div class="form-group">';
@@ -364,16 +364,16 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '		<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
                 $out .= '	</div>';
                 $out .= '</div>';
-                $theOutput .= $this->pObj->doc->spacer(20);
+                $theOutput .='<div style="padding-top: 20px;"></div>';
                 $theOutput .= $this->pObj->doc->section($lang->getLL('clearObject'), $out, 0, 0);
-                $theOutput .= $this->pObj->doc->spacer(10);
+                $theOutput .= '<div style="padding-top: 10px;"></div>';
                 // Inline Form Area End
                 $theOutput .= '</div>';
             } else {
                 $noTemplateMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noCurrentTemplate'), $lang->getLL('edit'), FlashMessage::ERROR);
                 $this->addFlashMessage($noTemplateMessage);
                 $theOutput .= htmlspecialchars($this->pObj->sObj) . ' = <strong>' . htmlspecialchars($theSetupValue) . '</strong>';
-                $theOutput .= $this->pObj->doc->spacer(10);
+                $theOutput .= '<div style="padding-top: 10px;"></div>';
             }
             // Links:
             $out = '';
@@ -457,7 +457,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                     $errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $lang->getLL('errorShowDetails') . '</a>';
                     $errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
                 }
-                $theOutput .= $this->pObj->doc->spacer(10);
+                $theOutput .= '<div style="padding-top: 10px;"></div>';
 
                 $title = $lang->getLL('errorsWarnings');
                 $message = '<p>' . implode($errMsg, '<br />') . '</p>';

@@ -2575,7 +2575,7 @@ class ElementBrowser
         $labelImportSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:importSelection', true);
         // Getting flag for showing/not showing thumbnails:
         $noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
-        $out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()"'
+        $out = '<div style="padding-top:10px;">' . '<a href="#" onclick="BrowseLinks.Selector.handle()"'
             . 'title="' . $labelImportSelection . '">'
             . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)->render()
             . $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
@@ -2590,12 +2590,12 @@ class ElementBrowser
             $addParams = '&act=' . $this->act . '&mode=' . $this->mode
                 . '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier())
                 . '&bparams=' . rawurlencode($this->bparams);
-            $thumbNailCheck = '<div class="checkbox"><label for="checkDisplayThumbs">' . BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
+            $thumbNailCheck = '<div class="checkbox" style="padding:5px 0 15px 0"><label for="checkDisplayThumbs">' . BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
                     GeneralUtility::_GP('M') ? '' : $this->thisScript, $addParams, 'id="checkDisplayThumbs"')
                 . $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', true) . '</label></div>';
-            $out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);
+            $out .= $thumbNailCheck;
         } else {
-            $out .= $this->doc->spacer(15);
+            $out .= '<div style="padding-top: 15px;"></div>';
         }
         return $out;
     }
@@ -2611,7 +2611,7 @@ class ElementBrowser
             . '&bparams=' . rawurlencode($this->bparams)
             . (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
         $out = '
-			<form method="post" action="' . htmlspecialchars($action) . '">
+			<form method="post" action="' . htmlspecialchars($action) . '" style="padding-bottom: 15px;">
 				<div class="input-group">
 					<input class="form-control" type="text" name="searchWord" value="' . htmlspecialchars($this->searchWord) . '">
 					<span class="input-group-btn">
@@ -2619,7 +2619,6 @@ class ElementBrowser
 					</span>
 				</div>
 			</form>';
-        $out .= $this->doc->spacer(15);
         return $out;
     }
 

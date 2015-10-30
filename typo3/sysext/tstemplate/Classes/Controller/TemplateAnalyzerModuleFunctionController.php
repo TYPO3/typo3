@@ -142,7 +142,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $head .= '</tr></thead>';
         $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
         $hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
-        $theOutput .= $this->pObj->doc->spacer(5);
+        $theOutput .= '<div style="padding-top: 5px;"></div>';
         $theOutput .= $this->pObj->doc->section($lang->getLL('templateHierarchy', true), $hierar, 0, 1);
         $urlParameters = array(
             'id' => $GLOBALS['SOBE']->id,
@@ -151,9 +151,9 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 
         $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $lang->getLL('viewCompleteTS', true) . '</a></p>';
-        $theOutput .= $this->pObj->doc->spacer(5);
+        $theOutput .= '<div style="padding-top: 5px;"></div>';
         $theOutput .= $this->pObj->doc->section($lang->getLL('completeTS', true), $completeLink, 0, 1);
-        $theOutput .= $this->pObj->doc->spacer(15);
+        $theOutput .= '<div style="padding-top: 15px;"></div>';
         // Output options
         $theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions', true), '', false, true);
 
@@ -180,7 +180,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
                 '</label></div>';
         }
         $theOutput .=  '</div>';
-        $theOutput .= $this->pObj->doc->spacer(25);
+        $theOutput .= '<div style="padding-top: 25px;"></div>';
 
         if ($template) {
             // Output Constants
@@ -206,7 +206,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
             }
 
             // Output Setup
-            $theOutput .= $this->pObj->doc->spacer(15);
+            $theOutput .= '<div style="padding-top: 15px;"></div>';
             $theOutput .= $this->pObj->doc->section($lang->getLL('setup', true), '', 0, 1);
             $theOutput .= $this->pObj->doc->sectionEnd();
             $templateService->ext_lineNumberOffset = 0;

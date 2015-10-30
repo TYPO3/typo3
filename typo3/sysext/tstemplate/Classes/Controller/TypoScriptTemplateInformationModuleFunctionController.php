@@ -262,7 +262,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             if ($manyTemplatesMenu) {
                 $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
             }
-            $theOutput .= $this->pObj->doc->spacer(10);
+            $theOutput .= '<div style="padding-top: 10px;"></div>';
             $numberOfRows = 35;
             // If abort pressed, nothing should be edited:
             if (isset($POST['_saveandclosedok'])) {
@@ -274,7 +274,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 // Display "Include TypoScript file content?" checkbox
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
-                $theOutput .= $this->pObj->doc->spacer(15);
+                $theOutput .= '<div style="padding-top: 15px;"></div>';
                 $theOutput .= $this->pObj->doc->section($lang->getLL('constants'), '', true);
                 $theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
             }
@@ -284,7 +284,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 // Display "Include TypoScript file content?" checkbox
                 $outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
                 $outCode .= $lang->getLL('includeTypoScriptFileContent') . '</label></div><br />';
-                $theOutput .= $this->pObj->doc->spacer(15);
+                $theOutput .= '<div style="padding-top: 15px;"></div>';
                 $theOutput .= $this->pObj->doc->section($lang->getLL('setup'), '', true);
                 $theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
             }

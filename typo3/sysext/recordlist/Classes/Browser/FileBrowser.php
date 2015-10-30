@@ -385,7 +385,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $labelToggleSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:toggleSelection', true);
         $labelImportSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:importSelection', true);
 
-        $out = $this->doc->spacer(10) . '<div>' . '<a href="#" id="t3-js-importSelection" title="' . $labelImportSelection . '">'
+        $out = '<div style="padding-top:10px;">' . '<a href="#" id="t3-js-importSelection" title="' . $labelImportSelection . '">'
             . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)
             . $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
             . '<a href="#" id="t3-js-toggleSelection" title="' . $labelToggleSelection . '">'
@@ -400,7 +400,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $_MCONF['name'] = 'file_list';
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
             $addParams = GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]));
-            $thumbNailCheck = '<div class="checkbox"><label for="checkDisplayThumbs">'
+            $thumbNailCheck = '<div class="checkbox" style="padding:5px 0 15px 0"><label for="checkDisplayThumbs">'
                 . BackendUtility::getFuncCheck(
                     '',
                     'SET[displayThumbs]',
@@ -410,9 +410,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     'id="checkDisplayThumbs"'
                 )
                 . $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', true) . '</label></div>';
-            $out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);
+            $out .= $thumbNailCheck;
         } else {
-            $out .= $this->doc->spacer(15);
+            $out .= '<div style="padding-top: 15px;"></div>';
         }
         return $out;
     }
@@ -426,7 +426,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         $action = $this->getScriptUrl() . GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters([]));
         $out = '
-			<form method="post" action="' . htmlspecialchars($action) . '">
+			<form method="post" action="' . htmlspecialchars($action) . '" style="padding-bottom: 15px;">
 				<div class="input-group">
 					<input class="form-control" type="text" name="searchWord" value="' . htmlspecialchars($this->searchWord) . '">
 					<span class="input-group-btn">
@@ -434,7 +434,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 					</span>
 				</div>
 			</form>';
-        $out .= $this->doc->spacer(15);
         return $out;
     }
 

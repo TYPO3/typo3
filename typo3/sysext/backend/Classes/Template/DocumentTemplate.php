@@ -998,9 +998,11 @@ function jumpToUrl(URL) {
      *
      * @param int $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
      * @return string HTML content
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
     public function spacer($dist)
     {
+        GeneralUtility::logDeprecatedFunction();
         if ($dist > 0) {
             return '
 
