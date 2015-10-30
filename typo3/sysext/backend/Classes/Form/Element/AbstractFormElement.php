@@ -135,7 +135,6 @@ abstract class AbstractFormElement extends AbstractNode
         $fieldChangeFunc = $PA['fieldChangeFunc'];
         $item = $itemKinds[0];
         $md5ID = 'ID' . GeneralUtility::shortmd5($itemName);
-        $fieldConfig = $PA['fieldConf']['config'];
         $prefixOfFormElName = 'data[' . $table . '][' . $row['uid'] . '][' . $field . ']';
         $flexFormPath = '';
         if (GeneralUtility::isFirstPartOfStr($PA['itemFormElName'], $prefixOfFormElName)) {
@@ -204,7 +203,6 @@ abstract class AbstractFormElement extends AbstractNode
             switch ($wizardConfiguration['type']) {
                 case 'userFunc':
                     $params = array();
-                    $params['fieldConfig'] = $fieldConfig;
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -231,10 +229,6 @@ abstract class AbstractFormElement extends AbstractNode
 
                 case 'script':
                     $params = array();
-                    // Including the full fieldConfig from TCA may produce too long an URL
-                    if ($wizardIdentifier != 'RTE') {
-                        $params['fieldConfig'] = $fieldConfig;
-                    }
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -260,7 +254,6 @@ abstract class AbstractFormElement extends AbstractNode
 
                 case 'popup':
                     $params = array();
-                    $params['fieldConfig'] = $fieldConfig;
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -315,7 +308,6 @@ abstract class AbstractFormElement extends AbstractNode
 
                 case 'colorbox':
                     $params = array();
-                    $params['fieldConfig'] = $fieldConfig;
                     $params['params'] = $wizardConfiguration['params'];
                     $params['exampleImg'] = $wizardConfiguration['exampleImg'];
                     $params['table'] = $table;
@@ -356,7 +348,7 @@ abstract class AbstractFormElement extends AbstractNode
                     break;
                 case 'slider':
                     $params = array();
-                    $params['fieldConfig'] = $fieldConfig;
+                    $params['fieldConfig'] = $PA['fieldConf']['config'];
                     $params['field'] = $field;
                     $params['table'] = $table;
                     $params['flexFormPath'] = $flexFormPath;
