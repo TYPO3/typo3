@@ -1370,7 +1370,7 @@ class DataHandlerHook {
 			$newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::MOVE_PLACEHOLDER);
 			// Setting workspace - only so display of place holders can filter out those from other workspaces.
 			$newVersion_placeholderFieldArray['t3ver_wsid'] = $tcemainObj->BE_USER->workspace;
-			$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #' . $uid . ', WS#' . $tcemainObj->BE_USER->workspace . ']';
+			$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = $tcemainObj->getPlaceholderTitleForTableLabel($table, 'MOVE-TO PLACEHOLDER for #' . $uid);
 			// moving localized records requires to keep localization-settings for the placeholder too
 			if (array_key_exists('languageField', $GLOBALS['TCA'][$table]['ctrl']) && array_key_exists('transOrigPointerField', $GLOBALS['TCA'][$table]['ctrl'])) {
 				$l10nParentRec = BackendUtility::getRecord($table, $uid);
