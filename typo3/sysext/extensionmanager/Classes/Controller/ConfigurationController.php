@@ -197,7 +197,7 @@ class ConfigurationController extends AbstractModuleController
             ->setName('_savedok')
             ->setValue('1')
             ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
-            ->setOnClick('javascript:document.configurationform.submit();return false;')
+            ->setForm('configurationform')
             ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
         $saveSplitButton->addItem($saveButton, true);
 
@@ -207,6 +207,7 @@ class ConfigurationController extends AbstractModuleController
             ->setClasses('t3js-save-close')
             ->setValue('1')
             ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+            ->setForm('configurationform')
             ->setIcon($moduleTemplate->getIconFactory()->getIcon(
                 'actions-document-save-close',
                 Icon::SIZE_SMALL

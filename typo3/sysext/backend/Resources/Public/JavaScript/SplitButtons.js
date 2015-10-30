@@ -39,7 +39,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 		].join(',');
 		$(document).on('click', elements, function(e) {
 			var $me = $(this),
-				$form = $me.closest('form'),
+				linkedForm = $me.attr('form') || $me.attr('data-form') || null,
+				$form = linkedForm ? $('#' + linkedForm) : $me.closest('form'),
 				name = $me.data('name') || this.name,
 				value = $me.data('value') || this.value,
 				$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', value);

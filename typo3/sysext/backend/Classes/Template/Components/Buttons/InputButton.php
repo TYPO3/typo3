@@ -50,6 +50,13 @@ class InputButton extends AbstractButton implements ButtonInterface
     protected $value = '';
 
     /**
+     * ID of the referenced <form> tag
+     *
+     * @var string
+     */
+    protected $form = '';
+
+    /**
      * Get name
      *
      * @return string
@@ -96,6 +103,25 @@ class InputButton extends AbstractButton implements ButtonInterface
     }
 
     /**
+     * @return string
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @param string $form
+     *
+     * @return InputButton
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
      * Validates the current button
      *
      * @return bool
@@ -125,7 +151,8 @@ class InputButton extends AbstractButton implements ButtonInterface
             'name' => $this->getName(),
             'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
             'value' => $this->getValue(),
-            'title' => $this->getTitle()
+            'title' => $this->getTitle(),
+            'form' => trim($this->getForm())
         );
         $labelText = '';
         if ($this->showLabelText) {
@@ -136,7 +163,9 @@ class InputButton extends AbstractButton implements ButtonInterface
         }
         $attributesString = '';
         foreach ($attributes as $key => $value) {
-            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+            if ($value !== '') {
+                $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+            }
         }
         return '<button' . $attributesString . '>'
             . $this->getIcon()->render() . htmlspecialchars($labelText)

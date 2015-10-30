@@ -145,6 +145,9 @@ class SplitButton extends AbstractButton implements ButtonInterface
         if (!empty($items['primary']->getOnClick())) {
             $attributes['onclick'] = $items['primary']->getOnClick();
         }
+        if (!empty($items['primary']->getForm())) {
+            $attributes['form'] = $items['primary']->getForm();
+        }
         $attributesString = '';
         foreach ($attributes as $key => $value) {
             $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
@@ -166,7 +169,8 @@ class SplitButton extends AbstractButton implements ButtonInterface
             $optionAttributes = [
                 'href' => '#',
                 'data-name' => $option->getName(),
-                'data-value' => $option->getValue()
+                'data-value' => $option->getValue(),
+                'data-form' => $option->getForm()
             ];
             if (!empty($option->getClasses())) {
                 $optionAttributes['class'] = htmlspecialchars($option->getClasses());
