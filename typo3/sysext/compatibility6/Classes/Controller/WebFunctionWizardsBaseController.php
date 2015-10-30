@@ -79,7 +79,9 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
         $content = '';
         if (!empty($menu)) {
             $menu = $GLOBALS['LANG']->getLL('wiz_lWizards', true) . ': ' . $menu;
-            $content = $this->pObj->doc->section('', '<span class="text-nowrap">' . $menu . '</span>');
+            $content = '<div>';
+            $content .= '<span class="text-nowrap">' . $menu . '</span>';
+            $content .= '</div>';
             $content .= '<div style="padding-top: 20px;"></div>';
         }
 
