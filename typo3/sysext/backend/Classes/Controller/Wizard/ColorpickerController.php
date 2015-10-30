@@ -241,7 +241,8 @@ class ColorpickerController extends AbstractWizardController
 					<input type="hidden" name="exampleImg" value="' . htmlspecialchars($this->exampleImg) . '" />
 				</form>';
 
-            $this->content .= $this->doc->section($this->getLanguageService()->getLL('colorpicker_title'), $content, false, true);
+            $this->content .= '<h2>' . $this->getLanguageService()->getLL('colorpicker_title', true) . '</h2>';
+            $this->content .= $content;
         }
     }
 
