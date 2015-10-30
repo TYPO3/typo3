@@ -31,7 +31,7 @@ class ColorpickerController extends AbstractWizardController
      *
      * @var array
      */
-    public $P;
+    public $wizardParameters;
 
     /**
      * Value of the current color picked.
@@ -136,7 +136,7 @@ class ColorpickerController extends AbstractWizardController
     protected function init()
     {
         // Setting GET vars (used in frameset script):
-        $this->P = GeneralUtility::_GP('P');
+        $this->wizardParameters = GeneralUtility::_GP('P');
         // Setting GET vars (used in colorpicker script):
         $this->colorValue = GeneralUtility::_GP('colorValue');
         $this->fieldChangeFunc = GeneralUtility::_GP('fieldChangeFunc');
@@ -282,13 +282,13 @@ class ColorpickerController extends AbstractWizardController
             'wizard_colorpicker',
             array(
                 'showPicker' => 1,
-                'colorValue' => $this->P['currentValue'],
-                'fieldName' => $this->P['itemName'],
-                'formName' => $this->P['formName'],
-                'exampleImg' => $this->P['exampleImg'],
-                'md5ID' => $this->P['md5ID'],
-                'fieldChangeFunc' => serialize($this->P['fieldChangeFunc']),
-                'fieldChangeFuncHash' => $this->P['fieldChangeFuncHash'],
+                'colorValue' => $this->wizardParameters['currentValue'],
+                'fieldName' => $this->wizardParameters['itemName'],
+                'formName' => $this->wizardParameters['formName'],
+                'exampleImg' => $this->wizardParameters['exampleImg'],
+                'md5ID' => $this->wizardParameters['md5ID'],
+                'fieldChangeFunc' => serialize($this->wizardParameters['fieldChangeFunc']),
+                'fieldChangeFuncHash' => $this->wizardParameters['fieldChangeFuncHash'],
             )
         );
         $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
