@@ -95,6 +95,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         $this->tag->addAttribute('type', 'text');
         $this->tag->addAttribute('id', $elementId);
         $this->tag->addAttribute('name', $elementName);
+        $this->tag->addAttribute('data-formengine-input-name', $elementName);
         $this->tag->addAttribute('class', 'form-control');
         if ($configuration->getValue() !== null) {
             $this->tag->addAttribute('value', $configuration->getValue());
