@@ -68,8 +68,8 @@ class FlexFormContainerContainer extends AbstractContainer
         $moveAndDeleteContent = array();
         $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
         if ($userHasAccessToDefaultLanguage) {
-            $moveAndDeleteContent[] = '<span class="btn btn-default"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', true) . '" class="t3js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span></span>';
-            $moveAndDeleteContent[] = '<span class="btn btn-default"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '" class="t3js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span></span>';
+            $moveAndDeleteContent[] = '<span class="btn btn-default t3js-sortable-handle"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', true) . '">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span></span>';
+            $moveAndDeleteContent[] = '<span class="btn btn-default t3js-delete"><span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span></span>';
         }
 
         $options = $this->data;

@@ -102,6 +102,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 					evt.preventDefault();
 					var $sectionEl = $(this).closest(opts.sectionSelector);
 					me.toggleSection($sectionEl);
+				}).on('click', opts.sectionToggleButtonSelector + ' .form-irre-header-control', function(evt) {
+					evt.stopPropagation();
 				});
 			}
 
