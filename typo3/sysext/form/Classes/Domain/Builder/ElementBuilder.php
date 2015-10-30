@@ -390,7 +390,7 @@ class ElementBuilder
             && (int)$this->typoScriptRepository->getModelConfigurationByScope($this->element->getParentElement()->getElementType(), 'childrenInheritName') == 1
         ) {
             $this->htmlAttributes['name'] = $this->element->getParentElement()->getName();
-            $this->htmlAttributes['multiple'] = '1';
+            $this->additionalArguments['multiple'] = '1';
             $name = $this->sanitizeNameAttribute($this->userConfiguredElementTyposcript['name']);
             $this->element->setName($name);
         } else {
