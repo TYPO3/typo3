@@ -584,13 +584,13 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $expectedItems = [
             0 => [
-                0 => 'fooTableTitle',
+                0 => 'fooTableTitle aFlexFieldTitle dummy',
                 1 => '--div--',
                 2 => 'default-not-found',
                 3 => null,
             ],
             1 => [
-                0 => '(input1)',
+                0 => 'flexInputLabel (input1)',
                 1 => 'fooTable:aFlexField;dummy;sDEF;input1',
                 2 => 'empty-empty',
                 3 => null,

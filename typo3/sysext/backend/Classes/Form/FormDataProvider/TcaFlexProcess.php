@@ -175,17 +175,16 @@ class TcaFlexProcess implements FormDataProviderInterface
             if (strpos($userNonExcludeField, $excludeFieldsPrefix) !== false) {
                 $exploded = explode(';', $userNonExcludeField);
                 $sheetName = $exploded[2];
-                $fieldName = $exploded[3];
-                $nonExcludeFields[$sheetName] = $fieldName;
+                $allowedFlexFieldName = $exploded[3];
+                $nonExcludeFields[$sheetName][$allowedFlexFieldName] = true;
             }
         }
-
         foreach ($dataStructure['sheets'] as $sheetName => $sheetDefinition) {
             if (!isset($sheetDefinition['ROOT']['el']) || !is_array($sheetDefinition['ROOT']['el'])) {
                 continue;
             }
             foreach ($sheetDefinition['ROOT']['el'] as $flexFieldName => $fieldDefinition) {
-                if (!empty($fieldDefinition['exclude']) && empty($nonExcludeFields[$sheetName])) {
+                if (!empty($fieldDefinition['exclude']) && !isset($nonExcludeFields[$sheetName][$flexFieldName])) {
                     unset($result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$sheetName]['ROOT']['el'][$flexFieldName]);
                 }
             }
