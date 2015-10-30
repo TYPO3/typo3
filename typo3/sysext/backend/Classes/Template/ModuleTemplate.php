@@ -626,26 +626,6 @@ class ModuleTemplate
     }
 
     /**
-     * Returns a blank <div>-section with a height
-     *
-     * @param int $dist Padding-top for the div-section
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function spacer($dist)
-    {
-        if ($dist > 0) {
-            return '
-
-	<!-- Spacer element -->
-	<div style="padding-top: ' . (int)$dist . 'px;"></div>
-';
-        }
-        return '';
-    }
-
-    /**
      * Make a section header.
      * Begins a section if not already open.
      *

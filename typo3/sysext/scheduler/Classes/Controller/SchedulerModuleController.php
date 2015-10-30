@@ -162,7 +162,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         } else {
             // If no access, only display the module's title
             $this->content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
-            $this->content .= $this->moduleTemplate->spacer(5);
+            $this->content .='<div style="padding-top: 5px;"></div>';
         }
         $this->getButtons();
         $this->getModuleMenu();

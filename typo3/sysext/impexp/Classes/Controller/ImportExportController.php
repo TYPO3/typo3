@@ -153,7 +153,7 @@ class ImportExportController extends BaseScriptClass
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
         $this->content .= $this->moduleTemplate->sectionHeader($this->lang->getLL('title_' . (string)$inData['action']));
-        $this->content .= $this->moduleTemplate->spacer(5);
+        $this->content .= '<div style="padding-top: 5px;"></div>';
         $this->checkUpload();
         switch ((string)$inData['action']) {
             case 'export':

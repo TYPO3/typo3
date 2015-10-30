@@ -334,7 +334,7 @@ class QueryView
             if ($msg) {
                 $output .= '<br />' . $msg;
             }
-            $output .= $GLOBALS['SOBE']->getModuleTemplate()->spacer(20);
+            $output .= '<div style="padding-top: 20px;"></div>';
         }
         // Query Maker:
         $qGen = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
