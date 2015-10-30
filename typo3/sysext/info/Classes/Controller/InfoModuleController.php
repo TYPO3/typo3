@@ -95,7 +95,9 @@ class InfoModuleController extends BaseScriptClass
         // The page will show only if there is a valid page and if this page
         // may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if ($this->pageinfo) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
         $access = is_array($this->pageinfo);
         if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
             if ($this->backendUser->user['admin'] && !$this->id) {
