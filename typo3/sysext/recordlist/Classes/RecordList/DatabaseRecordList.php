@@ -1805,6 +1805,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
         // Language title and icon:
         $out[0] = $this->languageFlag($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+        // Guard clause so we can quickly return if a record is localized to "all languages"
+        // It should only be possible to localize a record off default (uid 0)
+        // Reasoning: The Parent is for ALL languages... why overlay with a localization?
+        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === -1) {
+            return $out;
+        }
 
         $translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
         if (is_array($translations)) {

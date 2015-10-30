@@ -493,7 +493,7 @@ class PageRepository
                     // sys_language_content value is larger than zero.
                     if ($sys_language_content > 0) {
                         // Must be default language or [All], otherwise no overlaying:
-                        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) {
+                        if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
                             // Select overlay record:
                             $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $table, 'pid=' . (int)$row['pid'] . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$sys_language_content . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$row['uid'] . $this->enableFields($table), '', '', '1');
                             $olrow = $this->getDatabaseConnection()->sql_fetch_assoc($res);
