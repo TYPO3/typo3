@@ -285,7 +285,10 @@ class FrontendController extends ActionController
      */
     protected function skipForeignFormProcessing()
     {
-        if (!$this->request->hasArgument($this->configuration->getPrefix())) {
+        if (
+            !$this->request->hasArgument($this->configuration->getPrefix())
+            && !$this->sessionUtility->getSessionData()
+        ) {
             $this->forward('show');
         }
     }
