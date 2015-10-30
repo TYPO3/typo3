@@ -349,7 +349,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 	 *
 	 */
 	Repository.initDom = function() {
-		NProgress.configure({parent: '#typo3-docheader', showSpinner: false});
+		NProgress.configure({parent: '.t3js-module-body', showSpinner: false});
 
 		$('#terTable').DataTable({
 			lengthChange: false,
@@ -696,7 +696,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 	 */
 	ExtensionManager.UploadForm.initializeEvents = function() {
 		// Show upload form
-		$(document).on('click', '#upload-button-wrap > a', function(event) {
+		$(document).on('click', '.t3js-upload', function(event) {
 			var $me = $(this),
 				$uploadForm = $('.uploadForm');
 

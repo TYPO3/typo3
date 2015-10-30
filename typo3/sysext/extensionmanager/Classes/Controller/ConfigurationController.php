@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Controller for configuration related actions.
  */
-class ConfigurationController extends AbstractController
+class ConfigurationController extends AbstractModuleController
 {
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
@@ -46,6 +50,22 @@ class ConfigurationController extends AbstractController
     public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
+    }
+
+    /**
+     * Set up the doc header properly here
+     *
+     * @param ViewInterface $view
+     * @return void
+     */
+    protected function initializeView(ViewInterface $view)
+    {
+        if ($view instanceof BackendTemplateView) {
+            /** @var BackendTemplateView $view */
+            parent::initializeView($view);
+            $this->generateMenu();
+            $this->registerDocheaderButtons();
+        }
     }
 
     /**
@@ -145,5 +165,61 @@ class ConfigurationController extends AbstractController
             $extensionKey
         );
         $this->emitAfterExtensionConfigurationWriteSignal($extensionKey, $newConfiguration);
+    }
+
+    /**
+     * Registers the Icons into the docheader
+     *
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    protected function registerDocheaderButtons()
+    {
+        $moduleTemplate = $this->view->getModuleTemplate();
+        $lang = $this->getLanguageService();
+
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uri = $uriBuilder->reset()->uriFor('index', [], 'List');
+
+        $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+        $goBackButton = $buttonBar->makeLinkButton()
+            ->setHref($uri)
+            ->setTitle($this->translate('extConfTemplate.backToList'))
+            ->setIcon($icon);
+        $buttonBar->addButton($goBackButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+        $saveSplitButton = $buttonBar->makeSplitButton();
+        // SAVE button:
+        $saveButton = $buttonBar->makeInputButton()
+            ->setName('_savedok')
+            ->setValue('1')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+            ->setOnClick('javascript:document.configurationform.submit();return false;')
+            ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+        $saveSplitButton->addItem($saveButton, true);
+
+        // SAVE / CLOSE
+        $saveAndCloseButton = $buttonBar->makeInputButton()
+            ->setName('_saveandclosedok')
+            ->setClasses('t3js-save-close')
+            ->setValue('1')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+            ->setIcon($moduleTemplate->getIconFactory()->getIcon(
+                'actions-document-save-close',
+                Icon::SIZE_SMALL
+            ));
+        $saveSplitButton->addItem($saveAndCloseButton);
+        $buttonBar->addButton($saveSplitButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

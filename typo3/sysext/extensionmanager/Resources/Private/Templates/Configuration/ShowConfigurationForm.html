@@ -1,27 +1,16 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <f:layout name="main" />
 
-<f:section name="docheader-buttons">
-	<a href="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" title="{f:translate(key:'extConfTemplate.backToList')}">
-		<core:icon identifier="actions-view-go-back" />
-	</a>
-	<a href="javascript:document.configurationform.submit();" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:save')}">
-		<core:icon identifier="actions-document-save" />
-	</a>
-	<a href="#" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:saveAndClose')}" class="t3js-save-close">
-		<core:icon identifier="actions-document-save-close" />
-	</a>
-</f:section>
-
-<f:section name="module-headline">
+<f:section name="headline">
 	<h1>
 		<f:translate key="extConfTemplate.headline" />
 		{extension.key}
 	</h1>
 </f:section>
 
-<f:section name="Content">
+<f:section name="content">
 	<div role="tabpanel">
 		<ul class="nav nav-tabs" role="tablist">
 			<f:for each="{configuration}" as="category" key="categoryNumber" iteration="iteration">
@@ -35,7 +24,7 @@
 			</f:for>
 		</ul>
 
-		<f:form action="save" name="configurationform" class="validate">
+		<f:form action="save" name="configurationform" id="configurationform" class="validate">
 			<div class="tab-content">
 				<f:form.hidden name="extensionKey" value="{extension.key}" />
 				<f:for each="{configuration}" as="category" key="categoryNumber" iteration="iteration">

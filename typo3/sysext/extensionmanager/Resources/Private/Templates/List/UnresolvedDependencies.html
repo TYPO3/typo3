@@ -2,14 +2,11 @@
 
 <f:layout name="main" />
 
-<f:section name="docheader-buttons">
-</f:section>
-
-<f:section name="module-headline">
+<f:section name="headline">
 	<h1><f:translate key="installExtension">Install extension</f:translate></h1>
 </f:section>
 
-<f:section name="Content">
+<f:section name="content">
 	<f:flashMessages />
 	<f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
 	<f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">

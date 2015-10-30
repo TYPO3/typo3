@@ -1,17 +1,12 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <f:layout name="main" />
 
-<f:section name="docheader-buttons">
-	<a href="{f:uri.action(controller: 'List',action: 'distributions')}" title="{f:translate(key:'extConfTemplate.backToList')}">
-		<core:icon identifier="actions-view-go-back" />
-	</a>
+<f:section name="headline">
 </f:section>
 
-<f:section name="module-headline">
-</f:section>
-
-<f:section name="Content">
+<f:section name="content">
 	<f:flashMessages class="distribution-detail-flashmessage" />
 	<div class="distribution-detail">
 		<div class="distribution-detail-previewpane">

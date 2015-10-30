@@ -1,7 +1,7 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 
-<f:be.container pageTitle="Extension Manager" enableClickMenu="false" loadExtJsTheme="false" loadJQuery="true"
-
+<f:be.pageRenderer
+	loadJQuery="true"
 	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Contrib/LoadMask/jquery.loadmask.css\')}'
 	}"
@@ -12,36 +12,9 @@
 	}"
 	includeRequireJsModules="{
 		0:'TYPO3/CMS/Extensionmanager/Main'
-	}">
+	}"
+	/>
+<f:render section="headline" />
+<f:flashMessages />
 
-	<em:be.trigger triggers="{triggers}" />
-	<div id="typo3-docheader">
-		<div class="typo3-docheader-functions">
-			<f:be.menus.actionMenu>
-				<f:be.menus.actionMenuItem label="{f:translate(key: 'installedExtensions')}" controller="List" action="index" />
-				<f:if condition="{settings.offlineMode} == 0">
-					<f:then>
-						<f:if condition="{settings.composerMode} == 0">
-							<f:then>
-								<f:be.menus.actionMenuItem label="{f:translate(key: 'getExtensions')}" controller="List" action="ter" />
-								<f:be.menus.actionMenuItem label="{f:translate(key: 'distributions')}" controller="List" action="distributions" />
-								<f:if condition="{actionName} == 'showAllVersions'">
-									<f:be.menus.actionMenuItem label="{f:translate(key: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
-								</f:if>
-							</f:then>
-						</f:if>
-					</f:then>
-				</f:if>
-			</f:be.menus.actionMenu>
-		</div>
-		<div class="typo3-docheader-buttons">
-			<f:render section="docheader-buttons" />
-		</div>
-	</div>
-	<div id="typo3-docbody">
-		<div id="typo3-inner-docbody" class="typo3-extension-manager">
-			<f:render section="module-headline" />
-			<f:render section="Content" />
-		</div>
-	</div>
-</f:be.container>
+<f:render section="content" />

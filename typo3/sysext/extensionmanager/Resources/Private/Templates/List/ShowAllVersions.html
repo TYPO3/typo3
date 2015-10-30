@@ -1,7 +1,7 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 
-<f:layout name="main"/>
+<f:layout name="main" />
 
 <f:section name="docheader-buttons">
 	<a href="{f:uri.action(action: 'ter')}" title="{f:translate(key:'extConfTemplate.backToList')}">
@@ -9,11 +9,11 @@
 	</a>
 </f:section>
 
-<f:section name="module-headline">
+<f:section name="headline">
 	<h1><f:translate key="showAllVersions" /> {extensionKey}</h1>
 </f:section>
 
-<f:section name="Content">
+<f:section name="content">
 	<f:if condition="{currentVersion}">
 		<p>{currentVersion.description}</p>
 

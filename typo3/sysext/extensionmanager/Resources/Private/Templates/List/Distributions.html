@@ -2,15 +2,11 @@
 
 <f:layout name="main"/>
 
-<f:section name="docheader-buttons">
-</f:section>
-
-<f:section name="module-headline">
+<f:section name="headline">
 	<h1><f:translate key="distributions">Get Distributions</f:translate></h1>
 </f:section>
 
-<f:section name="Content">
-	<f:flashMessages />
+<f:section name="content">
 	<f:if condition="{enableDistributionsView}">
 		<f:then>
 			<f:if condition="{showUnsuitableDistributions} == 0">

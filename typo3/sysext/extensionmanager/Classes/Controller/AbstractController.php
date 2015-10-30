@@ -29,23 +29,6 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     );
 
     /**
-     * Resolve view and initialize the general view-variables extensionName,
-     * controllerName and actionName based on the request object
-     *
-     * @return \TYPO3\CMS\Fluid\View\TemplateView
-     */
-    protected function resolveView()
-    {
-        $view = parent::resolveView();
-        $view->assignMultiple(array(
-            'extensionName' => $this->request->getControllerExtensionName(),
-            'controllerName' => $this->request->getControllerName(),
-            'actionName' => $this->request->getControllerActionName()
-        ));
-        return $view;
-    }
-
-    /**
      * Translation shortcut
      *
      * @param $key
