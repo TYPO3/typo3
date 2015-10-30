@@ -11,7 +11,7 @@ TYPO3.Form.Wizard.Elements.Basic.Hidden = Ext.extend(TYPO3.Form.Wizard.Elements,
 	 * @cfg {String} elementClass
 	 * An extra CSS class that will be added to this component's Element
 	 */
-	elementClass: 'hidden',
+	elementClass: 'hidden-element',
 
 	/**
 	 * @cfg {Mixed} tpl
@@ -21,13 +21,23 @@ TYPO3.Form.Wizard.Elements.Basic.Hidden = Ext.extend(TYPO3.Form.Wizard.Elements,
 	 */
 	tpl: new Ext.XTemplate(
 		'<div class="overflow-hidden">',
+			'<p class="hidden-dummy-element">{[this.getAttributes(values.attributes, \'name\')]}</p>',
 			'<input {[this.getAttributes(values.attributes)]} />',
 		'</div>',
 		{
 			compiled: true,
-			getAttributes: function(attributes) {
+			getAttributes: function(attributes, filterBy) {
 				var attributesHtml = '';
 				Ext.iterate(attributes, function(key, value) {
+					if (typeof filterBy != 'undefined') {
+						if (key == filterBy) {
+							attributesHtml = value;
+							return;
+						} else {
+							return;
+						}
+					}
+
 					if (value) {
 						attributesHtml += key + '="' + value + '" ';
 					}
