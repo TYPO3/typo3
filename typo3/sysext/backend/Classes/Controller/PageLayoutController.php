@@ -444,14 +444,16 @@ class PageLayoutController
         $actionMenu->setLabel('');
 
         $defaultKey = null;
+        $foundDefaultKey = false;
         foreach ($availableActionArray as $key => $action) {
             $menuItem = $actionMenu
                 ->makeMenuItem()
                 ->setTitle($action)
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&SET[function]=' . $key);
 
-            if (!isset($defaultKey)) {
+            if (!$foundDefaultKey) {
                 $defaultKey = $key;
+                $foundDefaultKey = true;
             }
             if ((int)$this->MOD_SETTINGS['function'] === $key) {
                 $menuItem->setActive(true);
