@@ -116,15 +116,13 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         if ($existTemplate) {
             $siteTitle = trim($GLOBALS['tplRow']['sitetitle']);
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $theOutput .= $this->pObj->doc->section(
-                $lang->getLL('currentTemplate', true),
-                $iconFactory->getIconForRecord('sys_template', $GLOBALS['tplRow'], Icon::SIZE_SMALL)->render()
-                    . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
-                    . htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '')
-            );
+            $theOutput .= '<h3>' . $lang->getLL('currentTemplate', true) . '</h3>';
+            $theOutput .= $iconFactory->getIconForRecord('sys_template', $GLOBALS['tplRow'], Icon::SIZE_SMALL)->render()
+                . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
+                . htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '');
         }
         if ($manyTemplatesMenu) {
-            $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
+            $theOutput .= '<div>' .$manyTemplatesMenu . '</div>';
         }
         $templateService = $this->getExtendedTemplateService();
         $templateService->clearList_const_temp = array_flip($templateService->clearList_const);
@@ -143,7 +141,8 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
         $hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
         $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= $this->pObj->doc->section($lang->getLL('templateHierarchy', true), $hierar, 0, 1);
+        $theOutput .= '<h2>' . $lang->getLL('templateHierarchy', true) . '</h2>';
+        $theOutput .= '<div>' . $hierar . '</div>';
         $urlParameters = array(
             'id' => $GLOBALS['SOBE']->id,
             'template' => 'all'
@@ -152,10 +151,11 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
         $completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $lang->getLL('viewCompleteTS', true) . '</a></p>';
         $theOutput .= '<div style="padding-top: 5px;"></div>';
-        $theOutput .= $this->pObj->doc->section($lang->getLL('completeTS', true), $completeLink, 0, 1);
+        $theOutput .= '<h2>' . $lang->getLL('completeTS', true) . '</h2>';
+        $theOutput .= '<div>' . $completeLink . '</div>';
         $theOutput .= '<div style="padding-top: 15px;"></div>';
         // Output options
-        $theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions', true), '', false, true);
+        $theOutput .= '<h2>' . $lang->getLL('displayOptions', true) . '</h2>';
 
         $template = GeneralUtility::_GET('template');
         $addParams = $template ? '&template=' . $template : '';
@@ -184,8 +184,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
         if ($template) {
             // Output Constants
-            $theOutput .= $this->pObj->doc->section($lang->getLL('constants', true), '', 0, 1);
-            $theOutput .= $this->pObj->doc->sectionEnd();
+            $theOutput .= '<h2>' . $lang->getLL('constants', true) . '</h2>';
 
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'const';
@@ -207,8 +206,7 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
 
             // Output Setup
             $theOutput .= '<div style="padding-top: 15px;"></div>';
-            $theOutput .= $this->pObj->doc->section($lang->getLL('setup', true), '', 0, 1);
-            $theOutput .= $this->pObj->doc->sectionEnd();
+            $theOutput .= '<h2>' . $lang->getLL('setup', true) . '</h2>';
             $templateService->ext_lineNumberOffset = 0;
             $templateService->ext_lineNumberOffset_mode = 'setup';
             foreach ($templateService->config as $key => $val) {
