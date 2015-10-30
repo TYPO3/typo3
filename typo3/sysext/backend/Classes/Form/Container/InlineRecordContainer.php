@@ -330,20 +330,7 @@ class InlineRecordContainer extends AbstractContainer
 
             // Try using a normal self-defined user function
         } elseif (isset($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'])) {
-            $params = array(
-                'table' => $foreign_table,
-                'row' => $rec,
-                'title' => '',
-                'isOnSymmetricSide' => $isOnSymmetricSide,
-                'parent' => array(
-                    'uid' => $parentUid,
-                    'config' => $config
-                )
-            );
-            // callUserFunction requires a third parameter, but we don't want to give $this as reference!
-            $null = null;
-            GeneralUtility::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'], $params, $null);
-            $recTitle = $params['title'];
+            $recTitle = $data['recordTitle'];
         } elseif ($hasForeignLabel || $hasSymmetricLabel) {
             $titleCol = $hasForeignLabel ? $config['foreign_label'] : $config['symmetric_label'];
             // Render title for everything else than group/db:
