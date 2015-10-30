@@ -190,6 +190,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             $value = $this->getValueFromSubmittedFormData($value);
         } elseif ($this->hasArgument('value')) {
             $value = $this->arguments['value'];
+        } elseif ($this->isObjectAccessorMode()) {
+            $value = $this->getPropertyValue();
         }
 
         $value = $this->convertToPlainValue($value);
