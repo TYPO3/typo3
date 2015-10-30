@@ -2699,17 +2699,20 @@ Connection: close
         }
         if (static::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
-                $targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
-                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
-                    : octdec('0644');
-                // "@" is there because file is not necessarily OWNED by the user
-                $result = @chmod($path, $targetFilePermissions);
+                $targetPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
+                    ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']
+                    : '0644';
             } elseif (@is_dir($path)) {
-                $targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
-                    ? octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
-                    : octdec('0755');
+                $targetPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
+                    ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']
+                    : '0755';
+            }
+            if (!empty($targetPermissions)) {
+                // make sure it's always 4 digits
+                $targetPermissions = str_pad($targetPermissions, 4, 0, STR_PAD_LEFT);
+                $targetPermissions = octdec($targetPermissions);
                 // "@" is there because file is not necessarily OWNED by the user
-                $result = @chmod($path, $targetDirectoryPermissions);
+                $result = @chmod($path, $targetPermissions);
             }
             // Set createGroup if not empty
             if (
