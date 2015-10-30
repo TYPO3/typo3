@@ -230,9 +230,13 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $content = ' ' . $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . ' <strong>'
                 . $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>'
                 . (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
-            $theOutput .= $this->pObj->doc->section($lang->getLL('currentTemplate'), $content);
+            $theOutput .= '<h3>' . $lang->getLL('currentTemplate', true) . '</h3>';
+            $theOutput .= '<div>';
+            $theOutput .= $content;
+            $theOutput .= '</div>';
+
             if ($manyTemplatesMenu) {
-                $theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
+                $theOutput .= $manyTemplatesMenu;
             }
             $theOutput .= '<div style="padding-top: 10px;"></div>';
             if ($POST['add_property'] || $POST['update_value'] || $POST['clear_object']) {
@@ -343,7 +347,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $documentTemplate->formWidth(40) . ' />';
                 $out .= '	<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
                 $out .= '</div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('editProperty'), $out, 0, 0);
+                $theOutput .= '<h3>' . $lang->getLL('editProperty', true) . '</h3>';
+                $theOutput .= $out;
                 // Property
                 $out = '<div class="form-group">';
                 $out .= '	<label>' . htmlspecialchars($this->pObj->sObj) . '.';
@@ -353,7 +358,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
                 $out .= '</div>';
                 $theOutput .= '<div style="padding-top: 20px;"></div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('addProperty'), $out, 0, 0);
+                $theOutput .= '<h3>'. $lang->getLL('addProperty', true) . '</h3>';
+                $theOutput .= $out;
                 // clear
                 $out = '<div class="form-group">';
                 $out .= '	<div class="checkbox">';
@@ -365,7 +371,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	</div>';
                 $out .= '</div>';
                 $theOutput .='<div style="padding-top: 20px;"></div>';
-                $theOutput .= $this->pObj->doc->section($lang->getLL('clearObject'), $out, 0, 0);
+                $theOutput .= '<h3>' . $lang->getLL('clearObject', true) . '</h3>';
+                $theOutput .= $out;
                 $theOutput .= '<div style="padding-top: 10px;"></div>';
                 // Inline Form Area End
                 $theOutput .= '</div>';
@@ -391,14 +398,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= sprintf($lang->getLL('removeKey'), htmlspecialchars($this->pObj->sObj));
             }
             if ($out) {
-                $theOutput .= $this->pObj->doc->divider(5);
-                $theOutput .= $this->pObj->doc->section('', $out);
+                $theOutput .= '<div><hr style="margin-top: 5px; margin-bottom: 5px;" />' . $out . '</div>';
             }
             // back
             $out = $lang->getLL('back');
             $out = '<a href="' . htmlspecialchars($aHref) . '" class="btn btn-default"><strong><i class="fa fa-chevron-left"></i>&nbsp;' . $out . '</strong></a>';
-            $theOutput .= $this->pObj->doc->divider(5);
-            $theOutput .= $this->pObj->doc->section('', $out);
+            $theOutput .= '<div><hr style="margin-top: 5px; margin-bottom: 5px;" />'  . $out . '</div>';
         } else {
             $templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
             if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
@@ -478,7 +483,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             }
 
             $label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('constantRoot'), 'toUpper'));
-            $theOutput .= $this->pObj->doc->sectionEnd();
 
             $theOutput .= '<div class="panel panel-space panel-default">';
             $theOutput .= '<div class="panel-heading">';
@@ -501,10 +505,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $menu .= '</div>';
             }
             $menu .= '</div>';
-            $theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), $menu, 0, 1);
+
+            //start section displayoptions
+            $theOutput .= '<div>';
+            $theOutput .= '<h2>' . $lang->getLL('displayOptions', true) . '</h2>';
+            $theOutput .= $menu;
             // Conditions:
             if (is_array($templateService->sections) && !empty($templateService->sections)) {
-                $theOutput .= $this->pObj->doc->section($lang->getLL('conditions'), '', 0, 1);
+                $theOutput .= '<h2>' . $lang->getLL('conditions', true) . '</h2>';
                 $out = '';
                 foreach ($templateService->sections as $key => $val) {
                     $out .= '<div class="checkbox"><label for="check' . $key . '">';
@@ -513,8 +521,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 }
                 $theOutput .=  '<div class="typo3-listOptions">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
             }
-            // Ending section:
-            $theOutput .= $this->pObj->doc->sectionEnd();
+            // Ending section displayoptions
+            $theOutput .= '</div>';
         }
         return $theOutput;
     }
