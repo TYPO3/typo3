@@ -216,6 +216,7 @@ define(['jquery', 'bootstrap'], function($) {
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
+			$('<a />', {href: LoginRefresh.logoutUrl, class: 'btn btn-default'}).text(TYPO3.LLL.core.refresh_exit_button),
 			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-primary', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button)
 		);
 

@@ -707,6 +707,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.refresh_login_button">
 				<source>Login</source>
 			</trans-unit>
+			<trans-unit id="mess.refresh_exit_button">
+				<source>Exit</source>
+			</trans-unit>
 			<trans-unit id="mess.refresh_login_emptyPassword">
 				<source>Empty password is not allowed!</source>
 			</trans-unit>

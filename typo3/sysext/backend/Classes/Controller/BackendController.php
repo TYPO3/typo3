@@ -488,6 +488,7 @@ class BackendController
             'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_emptyPassword'),
             'refresh_login_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_button'),
             'refresh_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_logout_button'),
+            'refresh_exit_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_exit_button'),
             'please_wait' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.please_wait'),
             'loadingIndicator' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:loadingIndicator'),
             'be_locked' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.be_locked'),
