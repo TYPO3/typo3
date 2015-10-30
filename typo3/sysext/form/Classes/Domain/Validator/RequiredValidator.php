@@ -24,6 +24,11 @@ class RequiredValidator extends AbstractValidator
     const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_required';
 
     /**
+     * @var bool
+     */
+    protected $allFieldsAreEmpty = true;
+
+    /**
      * Check if $value is valid. If it is not valid, needs to add an error
      * to result.
      *
@@ -32,19 +37,66 @@ class RequiredValidator extends AbstractValidator
      */
     public function isValid($value)
     {
-        if (
-            empty($value)
-            && $value !== 0
-            && $value !== '0'
-        ) {
-            $this->addError(
-                $this->renderMessage(
-                    $this->options['errorMessage'][0],
-                    $this->options['errorMessage'][1],
-                    'error'
-                ),
-                1441980673
+        if (is_array($value)) {
+            array_walk_recursive($value, function ($value, $key, $validator) {
+                    if (!empty($value) || $value === '0' || $value === 0) {
+                        $validator->setAllFieldsAreEmpty(false);
+                    }
+                },
+                $this
             );
+            if ($this->getAllFieldsAreEmpty()) {
+                $this->addError(
+                    $this->renderMessage(
+                        $this->options['errorMessage'][0],
+                        $this->options['errorMessage'][1],
+                        'error'
+                    ),
+                    1441980673
+                );
+            }
+        } else {
+            if (
+                empty($value)
+                && $value !== 0
+                && $value !== '0'
+            ) {
+                $this->addError(
+                    $this->renderMessage(
+                        $this->options['errorMessage'][0],
+                        $this->options['errorMessage'][1],
+                        'error'
+                    ),
+                    144198067
+                );
+            }
         }
+    }
+
+    /**
+     * A helper method for the array_walk_recursive callback in the
+     * function isValid().
+     * If the callback detect a empty value, the
+     * property allFieldsAreEmpty is set to TRUE.
+     *
+     * @param bool $allFieldsAreEmpty
+     * @return void
+     */
+    protected function setAllFieldsAreEmpty($allFieldsAreEmpty = true)
+    {
+        $this->allFieldsAreEmpty = $allFieldsAreEmpty;
+    }
+
+    /**
+     * A helper method for the array_walk_recursive callback in the
+     * function isValid().
+     * If the callback detect a empty value, the
+     * property allFieldsAreEmpty is set to TRUE.
+     *
+     * @return bool
+     */
+    protected function getAllFieldsAreEmpty()
+    {
+        return $this->allFieldsAreEmpty;
     }
 }

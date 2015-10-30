@@ -30,10 +30,18 @@ class RequiredValidatorTest extends AbstractValidatorTest
     public function validDataProvider()
     {
         return array(
-            'a'   => array('a'),
-            'a b' => array('a b'),
-            '"0"' => array('0'),
-            '0'   => array(0)
+            'string "a"'   => array('a'),
+            'string "a b"' => array('a b'),
+            'string "0"'   => array('0'),
+            'value 0'      => array(0),
+            'array with string "a"'   => array(array('a')),
+            'array with string "a b"' => array(array('a b')),
+            'array with string "0"'   => array(array('0')),
+            'array with value 0'      => array(array(0)),
+            'array with strings "a" and "b"' => array(array('a', 'b')),
+            'array with empty string and "a"' => array(array('', 'a')),
+            'array with empty string and "0"' => array(array('', "0")),
+            'array with empty string and 0' => array(array('', 0)),
         );
     }
 
@@ -43,7 +51,9 @@ class RequiredValidatorTest extends AbstractValidatorTest
     public function invalidDataProvider()
     {
         return array(
-            'empty string'  => array(''),
+            'empty string'            => array(''),
+            'array with empty string' => array(array('')),
+            'array with empty strings' => array(array('', ''))
         );
     }
 

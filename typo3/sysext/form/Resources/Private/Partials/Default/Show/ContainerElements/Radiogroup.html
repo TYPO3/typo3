@@ -2,12 +2,20 @@
 	<f:then>
 		<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
 			<fieldset
-			<f:for each="{model.htmlAttributes}" as="htmAttributeValue" key="htmAttributeKey">
-				{htmAttributeKey}="{htmAttributeValue}"
-			</f:for>
+				<f:for each="{model.htmlAttributes}" as="htmAttributeValue" key="htmAttributeKey">
+					{htmAttributeKey}="{htmAttributeValue}"
+				</f:for>
 			>
 				<f:if condition="{model.additionalArguments.legend}">
-					<legend>{model.additionalArguments.legend}</legend>
+					<legend>
+						{model.additionalArguments.legend}
+						<f:if condition="{model.mandatoryValidationMessages}">
+							<em><f:for each="{model.mandatoryValidationMessages}" as="mandatoryValidationMessage" iteration="iterator">{mandatoryValidationMessage}<f:if condition="{iterator.isLast}"><f:else> - </f:else></f:if></f:for></em>
+						</f:if>
+						<f:if condition="{model.validationErrorMessages}">
+							<strong><f:for each="{model.validationErrorMessages}" as="errorValidationMessage" iteration="iterator">{errorValidationMessage}<f:if condition="{iterator.isLast}"><f:else> - </f:else></f:if></f:for></strong>
+						</f:if>
+					</legend>
 				</f:if>
 				<ol>
 					<f:for each="{model.childElements}" as="element">

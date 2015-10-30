@@ -169,7 +169,9 @@ class CompatibilityLayerUtility
                     }
                     break;
                 case 'LEGEND':
-                    if ($action !== 'process') {
+                    if ($action === 'show') {
+                        $layout = '<legend><legendvalue /><mandatory /><error /></legend>';
+                    } elseif ($action === 'confirmation') {
                         $layout = '<legend><legendvalue /></legend>';
                     } else {
                         $layout = '<thead><tr><th colspan="2" align="left"><legendvalue /></th></tr></thead>';
@@ -297,59 +299,22 @@ class CompatibilityLayerUtility
                 if ($elementWrap['html'] !== '') {
                     /* layout.label */
                     if (!in_array($element->getElementType(), $this->elementsWithoutLabel, true)) {
-                        $labelLayout = $this->getGlobalLayoutByElementType('LABEL');
-                        $mandatoryLayout = '';
-                        $errorLayout = '';
-                        if ($this->formBuilder->getControllerAction() === 'show') {
-                            /* layout.mandatory */
-                            $mandatoryMessages = $this->formBuilder->getValidationBuilder()->getMandatoryValidationMessagesByElementName($element->getName());
-                            if (!empty($mandatoryMessages)) {
-                                $mandatoryLayout = $this->replaceLabelContent('mandatory', $mandatoryMessages);
-                            }
-                            /* layout.error */
-                            $errorMessages = $element->getValidationErrorMessages();
-                            if (!empty($errorMessages)) {
-                                $errorLayout = $this->replaceLabelContent('error', $errorMessages);
-                            }
-                        }
-                        /* Replace the mandatory and error messages */
-                        $mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $labelLayout);
-                        $labelContainContent = false;
-                        if ($mandatoryReturn['html'] !== '') {
-                            if (!empty($mandatoryLayout)) {
-                                $labelContainContent = true;
-                            }
-                            $labelLayout = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
-                        }
-                        $errorReturn = $this->replaceTagWithMarker('error', 'body', $labelLayout);
-                        if ($errorReturn['html'] !== '') {
-                            if (!empty($errorLayout)) {
-                                $labelContainContent = true;
-                            }
-                            $labelLayout = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
-                        }
-                        /* Replace the label value */
-                        $labelValueReturn = $this->replaceTagWithMarker('labelvalue', 'body', $labelLayout);
-                        if ($labelValueReturn['html'] !== '') {
-                            if (!empty($element->getAdditionalArgument('label'))) {
-                                $labelContainContent = true;
-                            }
-                            $labelLayout = str_replace($labelValueReturn['marker'], $element->getAdditionalArgument('label'), $labelValueReturn['html']);
-                        }
-                        if (!$labelContainContent) {
-                            $labelLayout = '';
+                        $descriptionElementLayouts = $this->getDescriptionElementLayouts($element);
+
+                        if (!$descriptionElementLayouts['labelContainContent']) {
+                            $descriptionElementLayouts['labelLayout'] = '';
                         } else {
                             $libxmlUseInternalErrors = libxml_use_internal_errors(true);
                             $dom = new \DOMDocument('1.0', 'utf-8');
                             $dom->formatOutput = true;
                             $dom->preserveWhiteSpace = false;
-                            if ($dom->loadXML($labelLayout)) {
+                            if ($dom->loadXML($descriptionElementLayouts['labelLayout'])) {
                                 $nodes = $dom->getElementsByTagName('label');
                                 if ($nodes->length) {
                                     $node = $nodes->item(0);
                                     if ($node) {
                                         $node->setAttribute('for', $element->getId());
-                                        $labelLayout = $dom->saveXML($dom->firstChild);
+                                        $descriptionElementLayouts['labelLayout'] = $dom->saveXML($dom->firstChild);
                                     }
                                 }
                             }
@@ -358,15 +323,15 @@ class CompatibilityLayerUtility
                         /* Replace <label />, <error /> and <mandatory /> in the element wrap html */
                         $labelReturn = $this->replaceTagWithMarker('label', 'body', $elementWrap['html']);
                         if ($labelReturn['html'] !== '') {
-                            $elementWrap['html'] = str_replace($labelReturn['marker'], $labelLayout, $labelReturn['html']);
+                            $elementWrap['html'] = str_replace($labelReturn['marker'], $descriptionElementLayouts['labelLayout'], $labelReturn['html']);
                         }
                         $errorReturn = $this->replaceTagWithMarker('error', 'body', $elementWrap['html']);
                         if ($errorReturn['html'] !== '') {
-                            $elementWrap['html'] = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
+                            $elementWrap['html'] = str_replace($errorReturn['marker'], $descriptionElementLayouts['errorLayout'], $errorReturn['html']);
                         }
                         $mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $elementWrap['html']);
                         if ($mandatoryReturn['html'] !== '') {
-                            $elementWrap['html'] = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
+                            $elementWrap['html'] = str_replace($mandatoryReturn['marker'], $descriptionElementLayouts['mandatoryLayout'], $mandatoryReturn['html']);
                         }
                     }
                     $elementWrap = explode($elementWrap['marker'], $elementWrap['html']);
@@ -444,39 +409,21 @@ class CompatibilityLayerUtility
             if (in_array($element->getElementType(), $this->containerElements)) {
                 $elementWrap = $this->determineElementOuterWraps($element->getElementType(), $elementLayout);
                 /* Replace the legend value */
-                $legendLayout = $this->getGlobalLayoutByElementType('LEGEND');
-                $legendValueReturn = $this->replaceTagWithMarker('legendvalue', 'body', $legendLayout);
-                $legendContainContent = false;
-                if ($legendValueReturn['html'] !== '') {
-                    if (!empty($element->getAdditionalArgument('legend'))) {
-                        $legendContainContent = true;
-                    }
-                    $legendLayout = str_replace($legendValueReturn['marker'], $element->getAdditionalArgument('legend'), $legendValueReturn['html']);
-                }
-                /* remove <mandatory /> and <error /> from legend */
-                $mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $legendLayout);
-                if (!empty($mandatoryReturn['html'])) {
-                    $legendLayout = str_replace($mandatoryReturn['marker'], '', $mandatoryReturn['html']);
-                }
-                $errorReturn = $this->replaceTagWithMarker('error', 'body', $legendLayout);
-                if (!empty($errorReturn['html'])) {
-                    $legendLayout = str_replace($errorReturn['marker'], '', $errorReturn['html']);
-                }
-
-                if (!$legendContainContent) {
-                    $legendLayout = '';
+                $descriptionElementLayouts = $this->getDescriptionElementLayouts($element, 'legend');
+                if (!$descriptionElementLayouts['labelContainContent']) {
+                    $descriptionElementLayouts['labelLayout'] = '';
                 }
                 /* No fieldset tag exist.
                  * Ignore CONTAINERWRAP
                  * */
                 if ($elementWrap['html'] === '') {
                     $containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $elementLayout);
-                    $legendReturn = $this->replaceTagWithMarker('legend', 'body', $containerWrapReturn['html']);
-
-                    if ($legendReturn['html'] !== '') {
-                        $containerWrapReturn['html'] = str_replace($legendReturn['marker'], $legendLayout, $legendReturn['html']);
-                    }
                     if ($containerWrapReturn['marker'] && $containerWrapReturn['html']) {
+                        /* Replace <legend /> in the element wrap html */
+                        $legendReturn = $this->replaceTagWithMarker('legend', 'body', $containerWrapReturn['html']);
+                        if ($legendReturn['html'] !== '') {
+                            $containerWrapReturn['html'] = str_replace($legendReturn['marker'], $descriptionElementLayouts['labelLayout'], $legendReturn['html']);
+                        }
                         $containerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
                     } else {
                         $containerWrap = array('', '');
@@ -485,14 +432,9 @@ class CompatibilityLayerUtility
                     $layout = $element->getLayout();
                     $layout['containerInnerWrap'] = $containerWrap;
                     $layout['noFieldsetTag'] = true;
+                    $layout['legend'] = $descriptionElementLayouts['labelLayout'];
                     $element->setLayout($layout);
                 } else {
-                    $legendReturn = $this->replaceTagWithMarker('legend', 'body', $elementWrap['html']);
-
-                    if ($legendReturn['html'] !== '') {
-                        $elementWrap['html'] = str_replace($legendReturn['marker'], $legendLayout, $legendReturn['html']);
-                    }
-
                     /* set the wraps */
                     $containerOuterWrap = array('', '');
                     $containerOuterWrap = explode($elementWrap['marker'], $elementWrap['html']);
@@ -506,6 +448,7 @@ class CompatibilityLayerUtility
 
                     $layout = $element->getLayout();
                     $layout['containerInnerWrap'] = $containerWrap;
+                    $layout['legend'] = $descriptionElementLayouts['labelLayout'];
                     $element->setLayout($layout);
                     $classFromLayout = $this->getElementClassFromLayout('fieldset');
                     if (!empty($classFromLayout)) {
@@ -544,7 +487,7 @@ class CompatibilityLayerUtility
      *
      * @param string $scope
      * @param array $messages
-     * @return string $html
+     * @return string
      */
     protected function replaceLabelContent($scope = '', array $messages)
     {
@@ -552,6 +495,67 @@ class CompatibilityLayerUtility
         $return = $this->replaceTagWithMarker($scope . 'value', 'body', $this->getGlobalLayoutByElementType(strtoupper($scope)));
         $html = str_replace($return['marker'], $messages, $return['html']);
         return $html;
+    }
+
+    /**
+     * Replace <labelvalue /> or <legendvalue />, <mandatory />
+     * and <error /> in a label / legend with the associated content.
+     * Return the replaced <label /> / <legend /> layout and the replaced
+     * <mandatory /> and <error /> layout.
+     *
+     * @param \TYPO3\CMS\Form\Domain\Model\Element $element
+     * @param string $scope
+     * @return array
+     */
+    protected function getDescriptionElementLayouts(Element $element, $scope = 'label')
+    {
+        $labelLayout = $this->getGlobalLayoutByElementType(strtoupper($scope));
+        $labelContainContent = false;
+        $mandatoryLayout = '';
+        $errorLayout = '';
+        if ($this->formBuilder->getControllerAction() === 'show') {
+            /* Replace the mandatory and error messages */
+            /* layout.mandatory */
+            $mandatoryMessages = $this->formBuilder->getValidationBuilder()->getMandatoryValidationMessagesByElementName($element->getName());
+            if (!empty($mandatoryMessages)) {
+                $mandatoryLayout = $this->replaceLabelContent('mandatory', $mandatoryMessages);
+            }
+            $mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $labelLayout);
+            if (!empty($mandatoryReturn['html'])) {
+                if (!empty($mandatoryLayout)) {
+                    $labelContainContent = true;
+                }
+                $labelLayout = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
+            }
+
+            /* layout.error */
+            $errorMessages = $element->getValidationErrorMessages();
+            if (!empty($errorMessages)) {
+                $errorLayout = $this->replaceLabelContent('error', $errorMessages);
+            }
+            $errorReturn = $this->replaceTagWithMarker('error', 'body', $labelLayout);
+            if (!empty($errorReturn['html'])) {
+                if (!empty($errorLayout)) {
+                    $labelContainContent = true;
+                }
+                $labelLayout = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
+            }
+        }
+        /* Replace the label value */
+        $labelValueReturn = $this->replaceTagWithMarker($scope . 'value', 'body', $labelLayout);
+        if (!empty($labelValueReturn['html'])) {
+            if (!empty($element->getAdditionalArgument($scope))) {
+                $labelContainContent = true;
+            }
+            $labelLayout = str_replace($labelValueReturn['marker'], $element->getAdditionalArgument($scope), $labelValueReturn['html']);
+        }
+
+        return array(
+            'labelContainContent' => $labelContainContent,
+            'labelLayout' => $labelLayout,
+            'errorLayout' => $errorLayout,
+            'mandatoryLayout' => $mandatoryLayout
+        );
     }
 
     /**
