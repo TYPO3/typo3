@@ -135,7 +135,7 @@ class WorkspaceService implements SingletonInterface {
 				}
 			}
 			// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 0, 'tables_modify', $language);
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 999, 'tables_modify', $language);
 			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {
@@ -163,7 +163,7 @@ class WorkspaceService implements SingletonInterface {
 			// Define stage to select:
 			$stage = -99;
 			// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 0, 'tables_modify', $language);
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ?: -1, 999, 'tables_modify', $language);
 			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {
@@ -209,6 +209,7 @@ class WorkspaceService implements SingletonInterface {
 					$tempPageIds[] = $this->getTreeUids($mountPoint, $wsid, $recursionLevel);
 				}
 				$pageList = implode(',', $tempPageIds);
+				$pageList = implode(',', array_unique(explode(',', $pageList)));
 			}
 		}
 		// Traversing all tables supporting versioning:
