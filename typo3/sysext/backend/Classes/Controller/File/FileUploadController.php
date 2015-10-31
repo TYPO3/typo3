@@ -116,11 +116,6 @@ class FileUploadController extends AbstractModule
             'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ];
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
-
-        // set form tag
-        $this->moduleTemplate->setForm('<form action="'
-            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
-            . '" method="post" name="editform" enctype="multipart/form-data">');
     }
 
     /**
@@ -135,8 +130,11 @@ class FileUploadController extends AbstractModule
         // set page title
         $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
 
+        $pageContent = '<form action="'
+            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
+            . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
         // Make page header:
-        $pageContent = '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
+        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';
         $pageContent .= $this->renderUploadForm();
 
         // Header Buttons
@@ -157,6 +155,7 @@ class FileUploadController extends AbstractModule
             $buttonBar->addButton($backButton);
         }
 
+        $pageContent .= '</form>';
         $this->content .= $this->moduleTemplate->section('', $pageContent);
         $this->moduleTemplate->setContent($this->content);
     }
