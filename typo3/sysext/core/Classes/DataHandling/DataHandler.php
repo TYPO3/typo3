@@ -3591,15 +3591,36 @@ class DataHandler
                         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
                         $fields .= ',' . $languageField . ',' . $transOrigPointerField;
                     }
+                    if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+                        $workspaceStatement = '';
+                    } elseif ((int)$this->BE_USER->workspace === 0) {
+                        $workspaceStatement = ' AND t3ver_wsid=0';
+                    } else {
+                        $workspaceStatement = ' AND t3ver_wsid IN (0,' . (int)$this->BE_USER->workspace . ')';
+                    }
+                    // Fetch records
                     $rows = $this->databaseConnection->exec_SELECTgetRows(
                         $fields,
                         $table,
-                        'pid=' . (int)$uid . $this->deleteClause($table),
+                        'pid=' . (int)$uid . $this->deleteClause($table) . $workspaceStatement,
                         '',
                         (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : ''),
                         '',
                         'uid'
                     );
+                    // Resolve placeholders of workspace versions
+                    if (!empty($rows) && (int)$this->BE_USER->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                        $rows = array_reverse(
+                            $this->resolveVersionedRecords(
+                                $table,
+                                $fields,
+                                $GLOBALS['TCA'][$table]['ctrl']['sortby'],
+                                array_keys($rows)
+                            ),
+                            true
+                        );
+                    }
+
                     foreach ($rows as $row) {
                         // Skip localized records that will be processed in
                         // copyL10nOverlayRecords() on copying the default language record
@@ -7269,18 +7290,45 @@ class DataHandler
     public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID)
     {
         if ($counter) {
+            if ((int)$this->BE_USER->workspace === 0) {
+                $workspaceStatement = ' AND t3ver_wsid=0';
+            } else {
+                $workspaceStatement = ' AND t3ver_wsid IN (0,' . (int)$this->BE_USER->workspace . ')';
+            }
+
             $addW = !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($this->pMap['show']) : '';
-            $mres = $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$pid . $this->deleteClause('pages') . $addW, '', 'sorting DESC');
-            while ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
-                if ($row['uid'] != $rootID) {
-                    $CPtable[$row['uid']] = $pid;
+            $pages = $this->databaseConnection->exec_SELECTgetRows(
+                'uid',
+                'pages',
+                'pid=' . (int)$pid . $this->deleteClause('pages') . $workspaceStatement . $addW,
+                '',
+                'sorting DESC',
+                '',
+                'uid'
+            );
+
+            // Resolve placeholders of workspace versions
+            if (!empty($pages) && (int)$this->BE_USER->workspace !== 0) {
+                $pages = array_reverse(
+                    $this->resolveVersionedRecords(
+                        'pages',
+                        'uid',
+                        'sorting',
+                        array_keys($pages)
+                    ),
+                    true
+                );
+            }
+
+            foreach ($pages as $page) {
+                if ($page['uid'] != $rootID) {
+                    $CPtable[$page['uid']] = $pid;
                     // If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
                     if ($counter - 1) {
-                        $CPtable = $this->int_pageTreeInfo($CPtable, $row['uid'], $counter - 1, $rootID);
+                        $CPtable = $this->int_pageTreeInfo($CPtable, $page['uid'], $counter - 1, $rootID);
                     }
                 }
             }
-            $this->databaseConnection->sql_free_result($mres);
         }
         return $CPtable;
     }
@@ -8012,6 +8060,40 @@ class DataHandler
                 $this->remapStackChildIds[$idValue] = true;
             }
         }
+    }
+
+    /**
+     * Resolves versioned records for the current workspace scope.
+     * Delete placeholders and move placeholders are substituted and removed.
+     *
+     * @param string $tableName Name of the table to be processed
+     * @param string $fieldNames List of the field names to be fetched
+     * @param string $sortingField Name of the sorting field to be used
+     * @param array $liveIds Flat array of (live) record ids
+     * @return array
+     */
+    protected function resolveVersionedRecords($tableName, $fieldNames, $sortingField, array $liveIds)
+    {
+        /** @var PlainDataResolver $resolver */
+        $resolver = GeneralUtility::makeInstance(
+            PlainDataResolver::class,
+            $tableName,
+            $liveIds,
+            $sortingField
+        );
+
+        $resolver->setWorkspaceId($this->BE_USER->workspace);
+        $resolver->setKeepDeletePlaceholder(false);
+        $resolver->setKeepMovePlaceholder(false);
+        $resolver->setKeepLiveIds(true);
+        $recordIds = $resolver->get();
+
+        $records = array();
+        foreach ($recordIds as $recordId) {
+            $records[$recordId] = BackendUtility::getRecord($tableName, $recordId, $fieldNames);
+        }
+
+        return $records;
     }
 
     /**
