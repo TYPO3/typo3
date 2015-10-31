@@ -95,12 +95,6 @@ class RteController extends AbstractWizardController
         $this->MCONF['name'] = 'wizard_rte';
         // Need to NOT have the page wrapped in DIV since if we do that we destroy
         // the feature that the RTE spans the whole height of the page!!!
-        $this->moduleTemplate->setForm(
-            '<form action="'
-            . htmlspecialchars(BackendUtility::getModuleUrl('tce_db'))
-            . '" method="post" enctype="multipart/form-data" name="editform" '
-            . ' onsubmit="return TBE_EDITOR.checkSubmit(1);">'
-        );
     }
 
     /**
@@ -126,6 +120,10 @@ class RteController extends AbstractWizardController
      */
     public function main()
     {
+        $this->content .= '<form action="'
+            . htmlspecialchars(BackendUtility::getModuleUrl('tce_db'))
+            . '" method="post" enctype="multipart/form-data" id="RteController" name="editform" '
+            . ' onsubmit="return TBE_EDITOR.checkSubmit(1);">';
         // Translate id to the workspace version:
         if ($versionedRecord = BackendUtility::getWorkspaceVersionOfRecord(
             $this->getBackendUserAuthentication()->workspace,
@@ -287,6 +285,7 @@ class RteController extends AbstractWizardController
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('_savedok_x')
                 ->setValue('1')
+                ->setForm('RteController')
                 ->setOnClick('TBE_EDITOR.checkAndDoSubmit(1); return false;')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
@@ -294,6 +293,7 @@ class RteController extends AbstractWizardController
             $saveAndViewButton = $buttonBar->makeInputButton()
                 ->setName('_savedokview_x')
                 ->setValue('1')
+                ->setForm('RteController')
                 ->setOnClick('document.editform.redirect.value+= '  . GeneralUtility::quoteJSvalue('&popView=1') . '; '
                     . ' TBE_EDITOR.checkAndDoSubmit(1); return false;')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
@@ -305,6 +305,7 @@ class RteController extends AbstractWizardController
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('_saveandclosedok_x')
                 ->setValue('1')
+                ->setForm('RteController')
                 ->setOnClick('document.editform.redirect.value=' . GeneralUtility::quoteJSvalue($closeUrl)
                     . '; TBE_EDITOR.checkAndDoSubmit(1); return false;')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
