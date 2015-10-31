@@ -459,8 +459,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             if (!empty($templateService->parserErrors[$pEkey])) {
                 $errMsg = array();
                 foreach ($templateService->parserErrors[$pEkey] as $inf) {
-                    $errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $lang->getLL('errorShowDetails') . '</a>';
-                    $errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
+                    $errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '" class="text-warning">' . $lang->getLL('errorShowDetails') . '</a>';
+                    $errMsg[] = $lang->getLL('severity.' . $inf[1]) . ':&nbsp;' . $inf[0] . $errorLink;
                 }
                 $theOutput .= '<div style="padding-top: 10px;"></div>';
 

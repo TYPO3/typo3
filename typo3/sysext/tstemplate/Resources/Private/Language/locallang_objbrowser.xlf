@@ -123,6 +123,15 @@
 			<trans-unit id="setConditions">
 				<source>Set conditions</source>
 			</trans-unit>
+			<trans-unit id="severity.1">
+				<source>Info</source>
+			</trans-unit>
+			<trans-unit id="severity.2">
+				<source>Warning</source>
+			</trans-unit>
+			<trans-unit id="severity.3">
+				<source>Error</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
