@@ -411,7 +411,7 @@ class RecordHistory
 			</form>
 		';
 
-        return $GLOBALS['SOBE']->doc->section('', $content, false, true, false, false);
+        return '<div>' . $content . '</div>';
     }
 
     /**
@@ -544,7 +544,7 @@ class RecordHistory
         $theCode .= '<br /><br />';
 
         // Add the whole content as a module section:
-        return $GLOBALS['SOBE']->doc->section($languageService->getLL('changes'), $theCode, false, true);
+        return '<h2>' . $languageService->getLL('changes', true) . '</h2><div>' . $theCode . '</div>';
     }
 
     /**
@@ -583,7 +583,8 @@ class RecordHistory
                 $elParts = explode(':', $key);
                 $titleLine = $this->createRollbackLink($key, $languageService->getLL('revertRecord', true), 1) . $this->generateTitle($elParts[0], $elParts[1]);
                 $record = '<div style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">' . $record . '</div>';
-                $content .= $GLOBALS['SOBE']->doc->section($titleLine, $record, false, false, false, true);
+                // $titleLine contains HTML, no htmlspecialchars here.
+                $content .= '<h3>' . $titleLine . '</h3><div>' . $record . '</div>';
             }
             $content = $this->createRollbackLink(
                     'ALL',
@@ -593,7 +594,7 @@ class RecordHistory
         } else {
             $content = $languageService->getLL('noDifferences', true);
         }
-        return $GLOBALS['SOBE']->doc->section($languageService->getLL('mergedDifferences', true), $content, false, true, false, true);
+        return '<h2>' . $languageService->getLL('mergedDifferences', true) . '</h2><div>' . $content . '</div>';
     }
 
     /**
