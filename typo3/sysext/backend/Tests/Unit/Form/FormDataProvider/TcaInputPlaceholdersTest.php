@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
@@ -160,7 +162,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        /** @var TcaInputPlaceholderRecord $languageService */
+        /** @var FormDataCompiler|ObjectProphecy $formDataCompilerProphecy */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
         $formDataCompilerProphecy->compile([
@@ -175,6 +177,41 @@ class TcaInputPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $aForeignTableInput['databaseRow']['aForeignField'];
+
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataReturnsNoPlaceholderForNewSelectTypeRelation()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '',
+                'aRelationField' => [],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'placeholder' => '__row|aRelationField|aForeignField',
+                        ]
+                    ],
+                    'aRelationField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'aForeignTable'
+                        ]
+                    ]
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
         $this->assertSame($expected, $this->subject->addData($input));
     }

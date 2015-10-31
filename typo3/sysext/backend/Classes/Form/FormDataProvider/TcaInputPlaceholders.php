@@ -64,9 +64,8 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             }
 
             // Remove empty placeholders
-            if (empty($fieldConfig['config']['placeholder'])) {
+            if (empty($result['processedTca']['columns'][$fieldName]['config']['placeholder'])) {
                 unset($result['processedTca']['columns'][$fieldName]['config']['placeholder']);
-                continue;
             }
         }
 
@@ -103,8 +102,9 @@ class TcaInputPlaceholders implements FormDataProviderInterface
 
         switch ($fieldConfig['type']) {
             case 'select':
-                // The FormDataProviders already resolved the select items to an array of uids
-                $possibleUids = $value;
+                // The FormDataProviders already resolved the select items to an array of uids,
+                // filter out empty values that occur when no related record has been selected.
+                $possibleUids = array_filter($value);
                 $foreignTableName = $fieldConfig['foreign_table'];
                 break;
             case 'group':
@@ -125,9 +125,9 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             $value = $this->getPlaceholderValue($fieldNameArray, $relatedFormData, $recursionLevel + 1);
         }
 
-        // @todo: This might not be the best solution. The database row
-        // @todo: can include array type values. Final resolution would
-        // @todo: need to take the recursion into account.
+        if ($recursionLevel === 0 && is_array($value)) {
+            $value = implode(', ', $value);
+        }
         return (string)$value;
     }
 
