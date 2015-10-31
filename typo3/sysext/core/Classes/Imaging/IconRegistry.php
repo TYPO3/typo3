@@ -44,12 +44,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected $icons = array(
 
-		//
-		// Important Information:
-		//
-		// Icons are maintained in an external repository, if new icons are needed
-		// please request them at: https://github.com/wmdbsystems/T3.Icons/issues
-		//
+        /**
+         * Important Information:
+         *
+         * Icons are maintained in an external repository, if new icons are needed
+         * please request them at: https://github.com/wmdbsystems/T3.Icons/issues
+         */
 
         // Actions
         'actions-add' => array(
