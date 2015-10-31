@@ -124,7 +124,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />');
+            $this->content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" id="PageFunctionsController" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
             $vContent = $this->moduleTemplate->getVersionSelector($this->id, true);
             if ($vContent) {
                 $this->content .= $this->moduleTemplate->section('', $vContent);
@@ -133,6 +133,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
+            $this->content .= '</form>';
         } else {
             // If no access or if ID == zero
             $title = $this->getLanguageService()->getLL('title');
