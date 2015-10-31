@@ -216,18 +216,16 @@ class RteController extends AbstractWizardController
                 . $formResultCompiler->printNeededJSFunctions();
         } else {
             // ERROR:
-            $this->content .= $this->moduleTemplate->section(
-                $this->getLanguageService()->getLL('forms_title'),
-                '<span class="text-danger">'
+            $this->content .= '<h2>' . $this->getLanguageService()->getLL('forms_title', true) . '</h2>'
+                . '<div><span class="text-danger">'
                 . $this->getLanguageService()->getLL('table_noData', true)
-                . '</span>',
-                0,
-                1
-            );
+                . '</span></div>';
         }
         // Setting up the buttons and markers for docHeader
         $this->getButtons();
         // Build the <body> for the module
+
+        $this->content .= '</form>';
         $this->moduleTemplate->setContent($this->content);
     }
 

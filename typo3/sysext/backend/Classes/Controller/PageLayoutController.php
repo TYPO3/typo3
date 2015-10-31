@@ -837,13 +837,13 @@ class PageLayoutController
                 }
             } catch (AccessDeniedException $e) {
                 // If no edit access, print error message:
-                $content = $this->moduleTemplate->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg')
-                    . '<br /><br />'
-                    . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : ''), 0, 1);
+                $content = '<h2>' . $lang->getLL('noAccess', true) . '</h2>';
+                $conten .= '<div>' . $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : '') . '</div>';
             }
         } else {
             // If no edit access, print error message:
-            $content = $this->moduleTemplate->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg'), 0, 1);
+            $content = '<h2>' . $lang->getLL('noAccess') . '</h2>';
+            $content .= '<div>' . $lang->getLL('noAccess_msg') . '</div>';
         }
 
         // Element selection matrix:

@@ -127,7 +127,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" id="PageFunctionsController" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
             $vContent = $this->moduleTemplate->getVersionSelector($this->id, true);
             if ($vContent) {
-                $this->content .= $this->moduleTemplate->section('', $vContent);
+                $this->content .= '<div>' . $vContent . '</div>';
             }
             $this->extObjContent();
             // Setting up the buttons and markers for docheader

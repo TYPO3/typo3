@@ -198,13 +198,8 @@ class CreateFolderController extends AbstractModule
 				';
 
             // Switching form tags:
-            $pageContent .= $this->moduleTemplate->section(
-                $lang->sL(
-                    'LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders'
-                ),
-                $code
-            );
-            $pageContent .= '</form>';
+            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders', true) . '</h3>';
+            $pageContent .= '<div>' . $code . '</form></div>';
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
@@ -243,13 +238,8 @@ class CreateFolderController extends AbstractModule
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 				';
-            $pageContent .= $this->moduleTemplate->section(
-                $lang->sL(
-                    'LLL:EXT:lang/locallang_core.xlf:online_media.new_media',
-                    true
-                ),
-                $code
-            );
+            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true) . '</h3>';
+            $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
 
             $pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform3">';
@@ -286,13 +276,8 @@ class CreateFolderController extends AbstractModule
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 			';
-            $pageContent .= $this->moduleTemplate->section(
-                $lang->sL(
-                    'LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile',
-                    true
-                ),
-                $code
-            );
+            $pageContent .= '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile', true) . '</h3>';
+            $pageContent .= '<div>' . $code . '</div>';
             $pageContent .= '</form>';
         }
 
@@ -306,7 +291,7 @@ class CreateFolderController extends AbstractModule
             $buttonBar->addButton($backButton);
         }
 
-        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->content .= '<div>' . $pageContent . '</div>';
         $this->moduleTemplate->setContent($this->content);
     }
 

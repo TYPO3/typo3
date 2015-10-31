@@ -145,7 +145,7 @@ class MoveElementController extends AbstractModule
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . ';';
             $headerLine .= '<div><input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $lang->getLL('makeCopy', 1) . '</label></div>';
             // Add the header-content to the module content:
-            $this->content .= $this->moduleTemplate->section('', $headerLine, false, true);
+            $this->content .= '<div>' . $headerLine . '</div>';
             // Reset variable to pick up the module content in:
             $code = '';
             // IF the table is "pages":
@@ -227,12 +227,8 @@ class MoveElementController extends AbstractModule
                 }
             }
             // Add the $code content as a new section to the module:
-            $this->content .= $this->moduleTemplate->section(
-                $lang->getLL('selectPositionOfElement'),
-                $code,
-                false,
-                true
-            );
+            $this->content .= '<h2>' . $lang->getLL('selectPositionOfElement') . '</h2>';
+            $this->content .= '<div>' . $code . '</div>';
         }
         // Setting up the buttons and markers for docheader
         $this->getButtons();

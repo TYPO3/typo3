@@ -119,7 +119,7 @@ class InfoModuleController extends BaseScriptClass
                 '" method="post" id="InfoModuleController" name="webinfoForm" class="form-inline form-inline-spaced">';
             $vContent = $this->moduleTemplate->getVersionSelector($this->id, 1);
             if ($vContent) {
-                $this->content .= $this->moduleTemplate->section('', $vContent);
+                $this->content .= '<div>' . $vContent . '</div>';
             }
             $this->extObjContent();
             // Setting up the buttons and markers for docheader

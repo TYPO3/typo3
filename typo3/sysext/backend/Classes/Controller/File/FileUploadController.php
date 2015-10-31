@@ -156,7 +156,7 @@ class FileUploadController extends AbstractModule
         }
 
         $pageContent .= '</form>';
-        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->content .= '<div>' . $pageContent . '</div>';
         $this->moduleTemplate->setContent($this->content);
     }
 

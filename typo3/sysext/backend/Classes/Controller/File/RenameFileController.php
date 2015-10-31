@@ -184,7 +184,7 @@ class RenameFileController extends AbstractModule
         $this->content = '<h1>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle') . '</h1>';
 
         // add section
-        $this->content .= $this->moduleTemplate->section('', $pageContent);
+        $this->content .= '<div>' . $pageContent . '</div>';
         $this->moduleTemplate->setContent($this->content);
     }
 

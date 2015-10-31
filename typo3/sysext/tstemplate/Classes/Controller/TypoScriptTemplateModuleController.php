@@ -248,7 +248,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     '</table></div>';
 
             $this->content = $this->doc->header($lang->getLL('moduleTitle'));
-            $this->content .= $this->moduleTemplate->section('', '<p class="lead">' . $lang->getLL('overview') . '</p>' . $table);
+            $this->content .= '<div><p class="lead">' . $lang->getLL('overview') . '</p>' . $table . '</div>';
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
@@ -494,16 +494,15 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 $staticsText = '';
             }
             // Extension?
-            $theOutput .= $this->moduleTemplate->section(
-                $lang->getLL('newWebsite') . $staticsText,
-                '<p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="' . $lang->getLL('newWebsiteAction') . '" />',
-                0, 1);
+            $theOutput .= '<h2>' . $lang->getLL('newWebsite', true) . $staticsText . '</h2>';
+            $theOutput .= '<div><p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector
+                . '<input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="'
+                . $lang->getLL('newWebsiteAction') . '" /></div>';
         }
         // Extension?
-        $theOutput .= $this->moduleTemplate->section(
-            $lang->getLL('extTemplate'),
-            '<p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" />',
-            0, 1);
+        $theOutput .= '<h2>' . $lang->getLL('extTemplate') . '</h2>';
+        $theOutput .= '<div><p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" /></div>';
+
         // Go to first appearing...
         $first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
         if ($first) {
@@ -511,10 +510,8 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 'id' => $first['uid']
             );
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            $theOutput .= $this->moduleTemplate->section(
-                $lang->getLL('goToClosest'),
-                sprintf('<p>' . $lang->getLL('goToClosestDescription') . '</p>%s' . $lang->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>'),
-                0, 1);
+            $theOutput .= '<h3>' . $lang->getLL('goToClosest') . '</h3>';
+            $theOutput .= '<div>' . sprintf('<p>' . $lang->getLL('goToClosestDescription') . '</p>%s' . $lang->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>') . '</div>';
         }
         return $theOutput;
     }

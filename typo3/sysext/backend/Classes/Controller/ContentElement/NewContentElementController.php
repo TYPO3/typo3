@@ -322,16 +322,13 @@ class NewContentElementController extends AbstractModule
                 'new-content-element-wizard'
             );
 
-            $this->content .= $this->moduleTemplate->section(
-                !$this->onClickEvent ? $lang->getLL('1_selectType') : '',
-                $code,
-                0,
-                1
-            );
+            $this->content .= !$this->onClickEvent ? '<h2>' . $lang->getLL('1_selectType', true) . '</h2>' : '';
+            $this->content .= '<div>' . $code . '</div>';
+
             // If the user must also select a column:
             if (!$this->onClickEvent) {
                 // Add anchor "sel2"
-                $this->content .= $this->moduleTemplate->section('', '<a name="sel2"></a>');
+                $this->content .= '<div><a name="sel2"></a></div>';
                 // Select position
                 $code = '<p>' . $lang->getLL('sel2', 1) . '</p>';
 
@@ -346,7 +343,7 @@ class NewContentElementController extends AbstractModule
                 $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
                 // Finally, add the content of the column selector to the content:
                 $code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
-                $this->content .= $this->moduleTemplate->section($lang->getLL('2_selectPosition'), $code, 0, 1);
+                $this->content .= '<h2>' . $lang->getLL('2_selectPosition', true) . '</h2><div>' . $code . '</div>';
             }
         } else {
             // In case of no access:

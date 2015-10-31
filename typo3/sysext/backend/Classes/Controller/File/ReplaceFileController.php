@@ -215,7 +215,7 @@ class ReplaceFileController extends AbstractModule
 
         $this->content .= '<h1>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.pagetitle') . '</h1>';
         // Add the HTML as a section:
-        $this->content .= $this->moduleTemplate->section('', $code);
+        $this->content .= '<div>' . $code . '</div>';
 
         $this->moduleTemplate->setContent($this->content);
     }

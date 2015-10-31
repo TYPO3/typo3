@@ -161,19 +161,11 @@ class TableController extends AbstractWizardController
     {
         $this->content .= '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
-            $this->content .= $this->moduleTemplate->section(
-                $this->getLanguageService()->getLL('table_title'),
-                $this->tableWizard(),
-                0,
-                1
-            );
+            $this->content .= '<h2>' . $this->getLanguageService()->getLL('table_title', true) . '</h2>'
+                . '<div>' . $this->tableWizard() . '</div>';
         } else {
-            $this->content .= $this->moduleTemplate->section(
-                $this->getLanguageService()->getLL('table_title'),
-                '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span>',
-                0,
-                1
-            );
+            $this->content .= '<h2>' . $this->getLanguageService()->getLL('table_title', true) . '</h2>'
+                . '<div><span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span></div>';;
         }
         $this->content .= '</form>';
         // Setting up the buttons and markers for docHeader

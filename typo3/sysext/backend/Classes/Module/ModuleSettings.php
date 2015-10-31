@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $store->processStoreControl();
  *
  * // show control panel
- * $this->content .= $this->doc->section('Settings', $store->getStoreControl(), 0, 1);
+ * $this->content .= '<h2>Settings</h2>' . '<div>' . $store->getStoreControl() . '</div>';
  *
  * Format of saved settings
  *

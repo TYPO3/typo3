@@ -330,7 +330,7 @@ class QueryView
         }
         $msg = $this->procesStoreControl();
         if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableStoreControl']) {
-            $output .= $GLOBALS['SOBE']->getModuleTemplate()->section('Load/Save Query', $this->makeStoreControl(), 0, 1);
+            $output .= '<h2>Load/Save Query</h2><div>' . $this->makeStoreControl() . '</div>';
             if ($msg) {
                 $output .= '<br />' . $msg;
             }
@@ -343,7 +343,7 @@ class QueryView
             $qGen->setFormName($this->formName);
         }
         $tmpCode = $qGen->makeSelectorTable($GLOBALS['SOBE']->MOD_SETTINGS);
-        $output .= '<div id="query"></div>' . $GLOBALS['SOBE']->getModuleTemplate()->section('Make query', $tmpCode, 0, 1);
+        $output .= '<div id="query"></div>' . '<h2>Make query</h2><div>' . $tmpCode . '</div>';
         $mQ = $GLOBALS['SOBE']->MOD_SETTINGS['search_query_makeQuery'];
         // Make form elements:
         if ($qGen->table && is_array($GLOBALS['TCA'][$qGen->table])) {
@@ -362,16 +362,16 @@ class QueryView
                         }
                 }
                 if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableShowSQLQuery']) {
-                    $output .= $GLOBALS['SOBE']->getModuleTemplate()->section('SQL query', $this->tableWrap(htmlspecialchars($qExplain)), 0, 1);
+                    $output .= '<h2>SQL query</h2><div>' . $this->tableWrap(htmlspecialchars($qExplain)) . '</div>';
                 }
                 $res = @$GLOBALS['TYPO3_DB']->sql_query($qExplain);
                 if ($GLOBALS['TYPO3_DB']->sql_error()) {
                     $out = '<BR><strong>Error:</strong><BR><font color="red"><strong>' . $GLOBALS['TYPO3_DB']->sql_error() . '</strong></font>';
-                    $output .= $GLOBALS['SOBE']->getModuleTemplate()->section('SQL error', $out, 0, 1);
+                    $output .= '<h2>SQL error</h2><div>' . $out . '</div>';
                 } else {
                     $cPR = $this->getQueryResultCode($mQ, $res, $qGen->table);
                     $GLOBALS['TYPO3_DB']->sql_free_result($res);
-                    $output .= $GLOBALS['SOBE']->getModuleTemplate()->section($cPR['header'], $cPR['content'], 0, 1);
+                    $output .= '<h2>' . $cPR['header'] . '</h2><div>' . $cPR['content'] . '</div>';
                 }
             }
         }

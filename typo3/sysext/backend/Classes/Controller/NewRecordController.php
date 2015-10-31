@@ -294,7 +294,7 @@ class NewRecordController extends AbstractModule
                 $this->pagesOnly();
             }
             // Add all the content to an output section
-            $this->content .= $this->moduleTemplate->section('', $this->code);
+            $this->content .= '<div>' . $this->code . '</div>';
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             // Build the <body> for the module
@@ -585,6 +585,8 @@ class NewRecordController extends AbstractModule
             $row .= '</ul></li>';
             $finalRows[] = $row;
         }
+
+        $finalRows[] = '</ul>';
         // Make table:
         $this->code .= implode('', $finalRows);
     }

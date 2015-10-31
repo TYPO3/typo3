@@ -309,8 +309,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 $content .= $this->infoScreenAction();
                 break;
         }
-        // Wrap the content in a section
-        return $this->moduleTemplate->section($sectionTitle, '<div class="tx_scheduler_mod1">' . $content . '</div>', false, true);
+        // Wrap the content
+        return '<h2>' . $sectionTitle . '</h2><div class="tx_scheduler_mod1">' . $content . '</div>';
     }
 
     /**

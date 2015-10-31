@@ -102,24 +102,18 @@ class ModuleController extends BaseScriptClass
         // Debug log:
         switch ($this->MOD_SETTINGS['function']) {
             case 'info':
-                $this->content .= $this->moduleTemplate->section(
-                    $languageService->getLL('Cached_info'),
-                    $this->printCachedInfo()
-                );
+                $this->content .= '<h3>' . $languageService->getLL('Cached_info') . '</h3>';
+                $this->content .= '<div>' . $this->printCachedInfo() . '</div>';
                 $shortcutName = $languageService->getLL('Cached_info');
                 break;
             case 'sqlcheck':
-                $this->content .= $this->moduleTemplate->section(
-                    $languageService->getLL('SQL_check'),
-                    $this->printSqlCheck()
-                );
+                $this->content .= '<h3>' . $languageService->getLL('SQL_check') . '</h3>';
+                $this->content .= '<div>' . $this->printSqlCheck() . '</div>';
                 $shortcutName = $languageService->getLL('SQL_check');
                 break;
             case 0:
-                $this->content .= $this->moduleTemplate->section(
-                    $languageService->getLL('Debug_log'),
-                    $this->printLogMgm()
-                );
+                $this->content .= '<h3>' . $languageService->getLL('Debug_log') . '</h3>';
+                $this->content .= '<div>' . $this->printLogMgm() . '</div>';
                 break;
         }
         // ShortCut

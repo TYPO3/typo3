@@ -402,7 +402,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $this->getDatabaseConnection()->sql_free_result($res);
         // If any records found
         if (!empty($userList)) {
-            $content .= '<br />' . $this->taskObject->getModuleTemplate()->section($this->getLanguageService()->getLL('action_t1_listOfUsers'), implode('<br />', $userList));
+            $content .= '<br /><h3>' . $this->getLanguageService()->getLL('action_t1_listOfUsers', true) . '</h3><div>' . implode('<br />', $userList) . '</div>';
         }
         return $content;
     }
@@ -771,7 +771,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         . $this->getLanguageService()->getLL(($queryIsEmpty ? 'action_createQuery'
                         : 'action_editQuery')) . '</a><br /><br />';
                 }
-                $content .= $this->taskObject->getModuleTemplate()->section($this->getLanguageService()->getLL('action_t2_result'), $actionContent, 0, 1);
+                $content .= '<h2>' . $this->getLanguageService()->getLL('action_t2_result', true) . '</h2><div>' . $actionContent . '</div>';
             } else {
                 // Query is not configured
                 $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('action_notReady', true), $this->getLanguageService()->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
