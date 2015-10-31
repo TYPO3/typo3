@@ -115,8 +115,8 @@ class InfoModuleController extends BaseScriptClass
             );
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
-                '" method="post" name="webinfoForm" class="form-inline form-inline-spaced">');
+            $this->content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
+                '" method="post" id="InfoModuleController" name="webinfoForm" class="form-inline form-inline-spaced">';
             $vContent = $this->moduleTemplate->getVersionSelector($this->id, 1);
             if ($vContent) {
                 $this->content .= $this->moduleTemplate->section('', $vContent);
@@ -125,6 +125,7 @@ class InfoModuleController extends BaseScriptClass
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
+            $this->content .= '</form>';
         } else {
             // If no access or if ID == zero
             $this->content = $this->doc->header($this->languageService->getLL('title'));
