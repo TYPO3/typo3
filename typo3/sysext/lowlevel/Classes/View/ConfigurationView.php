@@ -68,7 +68,6 @@ class ConfigurationView extends BaseScriptClass
     {
         $this->menuConfig();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->setForm('<form action="" method="post">');
     }
 
     /**
@@ -213,7 +212,9 @@ class ConfigurationView extends BaseScriptClass
 
         $this->getModuleMenu();
 
-        $this->content = $this->view->render();
+        $this->content = '<form action="" id="ConfigurationView" method="post">';
+        $this->content .= $this->view->render();
+        $this->content .= '</form>';
     }
 
 
