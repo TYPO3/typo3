@@ -136,10 +136,6 @@ class EditFileController extends AbstractModule
 				top.goToModule("file_FilelistList");
 			}'
         );
-        $this->moduleTemplate->setForm(
-            '<form action="'
-            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">'
-        );
     }
 
     /**
@@ -164,7 +160,8 @@ class EditFileController extends AbstractModule
             }
         }
 
-        $pageContent = '<h1>'
+        $pageContent = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" id="EditFileController" name="editform">';
+        $pageContent .= '<h1>'
             . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle')
             . ' ' . htmlspecialchars($this->fileObject->getName()) . '</h1>';
 
@@ -214,6 +211,7 @@ class EditFileController extends AbstractModule
                 }
             }
         }
+        $pageContent .= '</form>';
         $this->content = $pageContent;
 
         $this->moduleTemplate->setContent($this->content);
