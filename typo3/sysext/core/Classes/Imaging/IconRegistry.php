@@ -44,6 +44,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected $icons = array(
 
+		//
+		// Important Information:
+		//
+		// Icons are maintained in an external repository, if new icons are needed
+		// please request them at: https://github.com/wmdbsystems/T3.Icons/issues
+		//
+
         // Actions
         'actions-add' => array(
             'provider' => SvgIconProvider::class,
@@ -547,6 +554,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-page-open.svg'
+            )
+        ),
+        'actions-pagetree-collapse' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-pagetree-collapse.svg'
+            )
+        ),
+        'actions-pagetree-expand' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-pagetree-expand.svg'
+            )
+        ),
+        'actions-pagetree-mountroot' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-pagetree-mountroot.svg'
             )
         ),
         'actions-preview' => array(
@@ -1518,6 +1543,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-menu.svg'
             )
         ),
+        'content-special-shortcut' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-shortcut.svg'
+            )
+        ),
         'content-table' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1570,12 +1601,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => BitmapIconProvider::class,
             'options' => array(
                 'source' => 'EXT:indexed_search/Resources/Public/Images/ce_wiz.png'
-            )
-        ),
-        'content-special-shortcut' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/shortcut.gif'
             )
         ),
 
@@ -1884,6 +1909,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-sys_news.svg'
             )
         ),
+        'mimetypes-x-sys_note' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-sys_note.svg'
+            )
+        ),
         'mimetypes-x-sys_workspace' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1900,12 +1931,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-tx_scheduler_task_group.svg'
-            )
-        ),
-        'mimetypes-x-sys_note' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:sys_note/ext_icon.png'
             )
         ),
         'mimetypes-x-sys_file_storage' => array(
