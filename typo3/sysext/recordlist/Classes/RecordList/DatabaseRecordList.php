@@ -1399,7 +1399,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         ($table === 'tt_content' ? '#' . $row['uid'] : '')
                     )
                 ) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">'
-                . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
