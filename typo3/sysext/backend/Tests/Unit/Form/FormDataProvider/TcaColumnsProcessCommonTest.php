@@ -152,10 +152,12 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     public function addDataRegistersSingleSubtypesAddlistFields()
     {
         $input = [
+            'recordTypeValue' => 'list',
             'columnsToProcess' => [],
             'processedTca' => [
                 'types' => [
                     'list' => [
+                        'subtype_value_field' => 'list_type',
                         'subtypes_addlist' => [
                             'aType' => 'aField',
                         ]
@@ -178,18 +180,20 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     public function addDataRegistersMultipleSubtypesAddlistFields()
     {
         $input = [
+            'recordTypeValue' => 'aType',
             'columnsToProcess' => [],
             'processedTca' => [
                 'types' => [
-                    'list' => [
+                    'aType' => [
+                        'subtype_value_field' => 'theSubtypeValueField',
                         'subtypes_addlist' => [
-                            'aType' => 'aField, bField',
+                            'theSubtypeValue' => 'aField, bField',
                         ]
                     ],
                 ],
             ],
             'databaseRow' => [
-                'list_type' => 'aType',
+                'theSubtypeValueField' => 'theSubtypeValue',
             ],
         ];
 

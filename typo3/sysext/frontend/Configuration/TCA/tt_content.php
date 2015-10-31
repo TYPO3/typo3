@@ -1212,8 +1212,8 @@ return array(
                 'categorized_content' => 'pages',
             ),
             'subtypes_addlist' => array(
-                'categorized_pages' => 'selected_categories;;menu, category_field;;menu',
-                'categorized_content' => 'selected_categories;;menu, category_field;;menu',
+                'categorized_pages' => 'selected_categories, category_field',
+                'categorized_content' => 'selected_categories, category_field',
             )
         ),
         'shortcut' => array(
