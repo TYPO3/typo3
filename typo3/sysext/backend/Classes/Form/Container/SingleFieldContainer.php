@@ -486,7 +486,7 @@ class SingleFieldContainer extends AbstractContainer
             // Get the parent record from structure stack
             $level = $inlineStackProcessor->getStructureLevel(-1);
             // If we have symmetric fields, check on which side we are and hide fields, that are set automatically:
-            if (RelationHandler::isOnSymmetricSide($level['uid'], $level['config'], $row)) {
+            if ($this->data['isOnSymmetricSide']) {
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['symmetric_field'] = $fieldName;
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['symmetric_sortby'] = $fieldName;
             } else {

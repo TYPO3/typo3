@@ -207,6 +207,25 @@ class FormDataCompiler
             'isInlineChildExpanded' => false,
             // Flag if the inline is in an ajax context that wants to expand the element
             'isInlineAjaxOpeningContext' => false,
+            // Uid of the direct parent of the inline element. Handled as string since it may be a "NEW123" string
+            'inlineParentUid' => '',
+            // Table name of the direct parent of the inline element
+            'inlineParentTableName' => '',
+            // Field name of the direct parent of the inline element
+            'inlineParentFieldName' => '',
+            // Uid of the top most parent element. Handled as string since it may be a "NEW123" string
+            'inlineTopMostParentUid' => '',
+            // Table name of the top most parent element
+            'inlineTopMostParentTableName' => '',
+            // Field name of the top most parent element
+            'inlineTopMostParentFieldName' => '',
+
+            // If is on symetric side of an inline child parent reference.
+            // symmetric side can be achieved in case of an mm relation to the same table. If record A has a relation
+            // to record B, the symmetric side is set in case that record B gets edited.
+            // Record A (table1) <=> mm <=> Record B (table1)
+            'isOnSymmetricSide' => false,
+
             // Uid of a "child-child" if a new record of an intermediate table is compiled to an existing child. This
             // happens if foreign_selector in parent inline config is set. It will be used by default database row
             // data providers to set this as value for the foreign_selector field on the intermediate table. One use

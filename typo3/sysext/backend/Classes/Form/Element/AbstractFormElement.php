@@ -564,10 +564,11 @@ abstract class AbstractFormElement extends AbstractNode
                 /** @var InlineStackProcessor $inlineStackProcessor */
                 $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
                 $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-                $inlineParent = $inlineStackProcessor->getStructureLevel(-1);
                 $aOnClickInline = '';
-                if (is_array($inlineParent) && $inlineParent['uid']) {
-                    if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
+                if ($this->data['isInlineChild'] && $this->data['inlineParentUid']) {
+                    if ($this->data['inlineParentConfig']['foreign_table'] === $table
+                        && $this->data['inlineParentConfig']['foreign_unique'] === $field
+                    ) {
                         $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
                         $aOnClickInline = $objectPrefix . '|inline.checkUniqueElement|inline.setUniqueElement';
                         $rOnClickInline = 'inline.revertUnique(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',null,' . GeneralUtility::quoteJSvalue($uid) . ');';

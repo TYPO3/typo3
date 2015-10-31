@@ -52,12 +52,13 @@ class SelectSingleElement extends AbstractFormElement
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $inlineParent = $inlineStackProcessor->getStructureLevel(-1);
         $uniqueIds = null;
-        if (is_array($inlineParent) && $inlineParent['uid']) {
+        if ($this->data['isInlineChild'] && $this->data['inlineParentUid']) {
             $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
             $inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
-            if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
+            if ($this->data['inlineParentConfig']['foreign_table'] === $table
+                && $this->data['inlineParentConfig']['foreign_unique'] === $field
+            ) {
                 $uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
                 $parameterArray['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,'
                     . GeneralUtility::quoteJSvalue($inlineObjectName . '-' . $table) . ','
@@ -65,11 +66,13 @@ class SelectSingleElement extends AbstractFormElement
                     . GeneralUtility::quoteJSvalue($row['uid']) . ');';
             }
             // hide uid of parent record for symmetric relations
-            if (
-                $inlineParent['config']['foreign_table'] == $table
-                && ($inlineParent['config']['foreign_field'] == $field || $inlineParent['config']['symmetric_field'] == $field)
+            if ($this->data['inlineParentConfig']['foreign_table'] === $table
+                && (
+                    $this->data['inlineParentConfig']['foreign_field'] === $field
+                    || $this->data['inlineParentConfig']['symmetric_field'] === $field
+                )
             ) {
-                $uniqueIds[] = $inlineParent['uid'];
+                $uniqueIds[] = $this->data['inlineParentUid'];
             }
         }
 

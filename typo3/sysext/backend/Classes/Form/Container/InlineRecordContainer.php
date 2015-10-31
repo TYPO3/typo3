@@ -303,9 +303,8 @@ class InlineRecordContainer extends AbstractContainer
         $objectId = $domObjectId . '-' . $foreign_table . '-' . $rec['uid'];
         // We need the returnUrl of the main script when loading the fields via AJAX-call (to correct wizard code, so include it as 3rd parameter)
         // Pre-Processing:
-        $isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
-        $hasForeignLabel = (bool)(!$isOnSymmetricSide && $config['foreign_label']);
-        $hasSymmetricLabel = (bool)$isOnSymmetricSide && $config['symmetric_label'];
+        $hasForeignLabel = (bool)(!$data['isOnSymmetricSide'] && $config['foreign_label']);
+        $hasSymmetricLabel = (bool)$data['isOnSymmetricSide'] && $config['symmetric_label'];
 
         // Get the record title/label for a record:
         // Try using a self-defined user function only for formatted labels
@@ -314,7 +313,7 @@ class InlineRecordContainer extends AbstractContainer
                 'table' => $foreign_table,
                 'row' => $rec,
                 'title' => '',
-                'isOnSymmetricSide' => $isOnSymmetricSide,
+                'isOnSymmetricSide' => $data['isOnSymmetricSide'],
                 'options' => isset($GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc_options'])
                     ? $GLOBALS['TCA'][$foreign_table]['ctrl']['formattedLabel_userFunc_options']
                     : array(),
@@ -432,8 +431,8 @@ class InlineRecordContainer extends AbstractContainer
         $tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
         $isPagesTable = $foreign_table === 'pages';
         $isSysFileReferenceTable = $foreign_table === 'sys_file_reference';
-        $isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
-        $enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'];
+        $enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$data['isOnSymmetricSide']
+            && $config['foreign_sortby'] || $data['isOnSymmetricSide'] && $config['symmetric_sortby'];
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         $nameObjectFt = $nameObject . '-' . $foreign_table;
         $nameObjectFtId = $nameObjectFt . '-' . $rec['uid'];

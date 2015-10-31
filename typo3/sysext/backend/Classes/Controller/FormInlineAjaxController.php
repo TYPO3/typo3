@@ -486,6 +486,12 @@ class FormInlineAjaxController
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
+
+        /** @var InlineStackProcessor $inlineStackProcessor */
+        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+        $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
+        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         /** @var FormDataCompiler $formDataCompiler */
@@ -499,6 +505,17 @@ class FormInlineAjaxController
             'inlineFirstPid' => $parentData['inlineFirstPid'],
             'inlineParentConfig' => $parentConfig,
             'isInlineAjaxOpeningContext' => true,
+
+            // values of the current parent element
+            // it is always a string either an id or new...
+            'inlineParentUid' => $parentData['databaseRow']['uid'],
+            'inlineParentTableName' => $parentData['tableName'],
+            'inlineParentFieldName' => $parentFieldName,
+
+             // values of the top most parent element set on first level and not overridden on following levels
+            'inlineTopMostParentUid' => $parentData['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
+            'inlineTopMostParentTableName' => $parentData['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
+            'inlineTopMostParentFieldName' => $parentData['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild
