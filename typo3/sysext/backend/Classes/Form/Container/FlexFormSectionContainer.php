@@ -111,15 +111,28 @@ class FlexFormSectionContainer extends AbstractContainer
             $options['renderType'] = 'flexFormContainerContainer';
             $flexFormContainerContainerTemplateResult = $this->nodeFactory->create($options)->render();
 
+            // Extract the random identifier used by the ExtJS tree. This is used later on in the onClick handler
+            // to dynamically modify the javascript code and instanciate a unique ExtJS tree instance per section.
+            if (!empty($flexFormContainerContainerTemplateResult['extJSCODE'])) {
+                $treeElementIdentifier = '';
+                if (preg_match('/StandardTreeItemData\["([a-f0-9]{32})"\]/', $flexFormContainerContainerTemplateResult['extJSCODE'], $matches)) {
+                    $treeElementIdentifier = $matches[1];
+                }
+            }
+
             $uniqueId = StringUtility::getUniqueId('idvar');
             $identifierPrefixJs = 'replace(/' . $flexFormFieldIdentifierPrefix . '-/g,"' . $flexFormFieldIdentifierPrefix . '-"+' . $uniqueId . '+"-")';
             $identifierPrefixJs .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
+            $identifierPrefixJs .= '.replace(/(tree_?)?' . $treeElementIdentifier . '/g,"$1" + (' . $uniqueId . '))';
 
             $onClickInsert = array();
             $onClickInsert[] = 'var ' . $uniqueId . ' = "' . 'idx"+(new Date()).getTime();';
             $onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").append(TYPO3.jQuery(' . json_encode($flexFormContainerContainerTemplateResult['html']) . '.' . $identifierPrefixJs . '));';
             $onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").t3FormEngineFlexFormElement();';
             $onClickInsert[] = 'eval(unescape("' . rawurlencode(implode(';', $flexFormContainerContainerTemplateResult['additionalJavaScriptPost'])) . '").' . $identifierPrefixJs . ');';
+            if (!empty($treeElementIdentifier)) {
+                $onClickInsert[] = 'eval(unescape("' . rawurlencode($flexFormContainerContainerTemplateResult['extJSCODE']) . '").' . $identifierPrefixJs . ');';
+            }
             $onClickInsert[] = 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $flexFormContainerContainerTemplateResult['additionalJavaScriptSubmit'])) . '").' . $identifierPrefixJs . ');';
             $onClickInsert[] = 'TYPO3.FormEngine.reinitialize();';
             $onClickInsert[] = 'return false;';
