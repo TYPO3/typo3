@@ -185,7 +185,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 'template' => 'all'
             );
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            $this->moduleTemplate->setForm('<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm" class="form">');
 
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
@@ -211,7 +210,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
             // Build the module content
-            $this->content = $this->doc->header($lang->getLL('moduleTitle'));
+            $this->content = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">';
+            $this->content .= $this->doc->header($lang->getLL('moduleTitle'));
+            $this->content .= '</form>';
             $this->extObjContent();
             // Setting up the buttons and markers for docheader
             $this->getButtons();
@@ -354,12 +355,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $saveButton = $buttonBar->makeInputButton()
                         ->setName('_savedok')
                         ->setValue('1')
+                        ->setForm('TypoScriptTemplateModuleController')
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
 
                     $saveAndCloseButton = $buttonBar->makeInputButton()
                         ->setName('_saveandclosedok')
                         ->setValue('1')
+                        ->setForm('TypoScriptTemplateModuleController')
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
 
@@ -387,6 +390,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 $saveButton = $buttonBar->makeInputButton()
                     ->setName('_savedok')
                     ->setValue('1')
+                    ->setForm('TypoScriptTemplateModuleController')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
@@ -492,13 +496,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             // Extension?
             $theOutput .= $this->moduleTemplate->section(
                 $lang->getLL('newWebsite') . $staticsText,
-                '<p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" name="newWebsite" value="' . $lang->getLL('newWebsiteAction') . '" />',
+                '<p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="' . $lang->getLL('newWebsiteAction') . '" />',
                 0, 1);
         }
         // Extension?
         $theOutput .= $this->moduleTemplate->section(
             $lang->getLL('extTemplate'),
-            '<p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" />',
+            '<p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" />',
             0, 1);
         // Go to first appearing...
         $first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
