@@ -994,6 +994,7 @@ class EditDocumentController extends AbstractModule
                 $body = $this->formResultCompiler->JStop();
                 $body .= $this->compileForm($editForm);
                 $body .= $this->formResultCompiler->printNeededJSFunctions();
+                $body .= '</form>';
             }
         }
         // Access check...
@@ -1462,8 +1463,7 @@ class EditDocumentController extends AbstractModule
 			<input type="hidden" name="closeDoc" value="0" />
 			<input type="hidden" name="doSave" value="0" />
 			<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-			<input type="hidden" name="_scrollPosition" value="" />
-			</form>';
+			<input type="hidden" name="_scrollPosition" value="" />';
         return $formContent;
     }
 
