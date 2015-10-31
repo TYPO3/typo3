@@ -354,9 +354,6 @@ class SetupModuleController extends AbstractModule
         }
         // Create instance of object for output of data
         $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->moduleTemplate->setForm(
-            '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="multipart/form-data">'
-        );
     }
 
     /**
@@ -383,6 +380,7 @@ class SetupModuleController extends AbstractModule
      */
     public function main()
     {
+        $this->content .= '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         if ($this->languageUpdate) {
             $this->moduleTemplate->addJavaScriptCode('languageUpdate', '
                 if (top.refreshMenu) {
@@ -468,6 +466,7 @@ class SetupModuleController extends AbstractModule
         // Build the <body> for the module
         // Renders the module page
         $this->moduleTemplate->setContent($this->content);
+        $this->content .= '</form>';
     }
 
 
@@ -518,6 +517,7 @@ class SetupModuleController extends AbstractModule
             ->setName('data[save]')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
             ->setValue('1')
+            ->setForm('SetupModuleController')
             ->setShowLabelText(true)
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
