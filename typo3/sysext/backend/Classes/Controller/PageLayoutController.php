@@ -1290,44 +1290,6 @@ class PageLayoutController
     }
 
     /**
-     * Get used languages in a colPos of a page
-     *
-     * @param int $pageId
-     * @param int $colPos
-     * @return bool|\mysqli_result|object
-     */
-    public function getUsedLanguagesInPageAndColumn($pageId, $colPos)
-    {
-        if (!isset($languagesInColumnCache[$pageId])) {
-            $languagesInColumnCache[$pageId] = array();
-        }
-        if (!isset($languagesInColumnCache[$pageId][$colPos])) {
-            $languagesInColumnCache[$pageId][$colPos] = array();
-        }
-
-        if (empty($languagesInColumnCache[$pageId][$colPos])) {
-            $exQ = BackendUtility::deleteClause('tt_content') .
-                ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
-
-            $databaseConnection = $this->getDatabaseConnection();
-            $res = $databaseConnection->exec_SELECTquery(
-                'sys_language.*',
-                'tt_content,sys_language',
-                'tt_content.sys_language_uid=sys_language.uid AND tt_content.colPos = ' . (int)$colPos . ' AND tt_content.pid=' . (int)$pageId . $exQ .
-                BackendUtility::versioningPlaceholderClause('tt_content'),
-                'tt_content.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
-                'sys_language.title'
-            );
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $languagesInColumnCache[$pageId][$colPos][$row['uid']] = $row;
-            }
-            $databaseConnection->sql_free_result($res);
-        }
-
-        return $languagesInColumnCache[$pageId][$colPos];
-    }
-
-    /**
      * Check if a column of a page for a language is empty. Translation records are ignored here!
      *
      * @param int $colPos

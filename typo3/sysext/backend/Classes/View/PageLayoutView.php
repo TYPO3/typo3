@@ -218,7 +218,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
 
     }
 
@@ -1672,60 +1674,27 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      */
     public function newLanguageButton($defLanguageCount, $lP, $colPos = 0)
     {
+        $lP = (int)$lP;
         if (!$this->doEdit || !$lP) {
             return '';
         }
-
-        $copyFromLanguageMenu = '';
-        foreach ($this->getLanguagesToCopyFrom(GeneralUtility::_GP('id'), $lP, $colPos) as $languageId => $label) {
-            $elementsInColumn = $languageId === 0 ? $defLanguageCount : $this->getElementsFromColumnAndLanguage(GeneralUtility::_GP('id'), $colPos, $languageId);
-            if (!empty($elementsInColumn)) {
-                $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getLinkToDataHandlerAction('&cmd[tt_content][' . implode(',', $elementsInColumn) . '][copyFromLanguage]=' . GeneralUtility::_GP('id') . ',' . $lP)) . '; return false;';
-                $copyFromLanguageMenu .= '<li><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $this->languageFlag($languageId, false) . ' ' . htmlspecialchars($label) . '</a></li>' . LF;
-            }
-        }
-        if ($copyFromLanguageMenu !== '') {
-            $copyFromLanguageMenu =
-                '<ul class="dropdown-menu">'
-                    . $copyFromLanguageMenu
-                . '</ul>';
-        }
+        $theNewButton = '';
 
         if (!empty($defLanguageCount)) {
-            $params = '';
-            foreach ($defLanguageCount as $uidVal) {
-                $params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
-            }
-
-            // We have content in the default language, create a split button
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getLinkToDataHandlerAction($params)) . '; return false;';
             $theNewButton =
-                '<div class="btn-group">
-                    <input
-                        class="btn btn-default"
-						type="submit" onclick="' . htmlspecialchars($onClick) . '; return false;"
-						value="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_copyForLang', true) . ' [' . count($defLanguageCount) . ']') . '"
-					/>';
-            if ($copyFromLanguageMenu !== '' && $this->isColumnEmpty($colPos, $lP)) {
-                $theNewButton .= '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-                    . '<span class="caret"></span>'
-                    . '<span class="sr-only">Toggle Dropdown</span>'
-                    . '</button>'
-                    . $copyFromLanguageMenu;
-            }
-            $theNewButton .= '</div>';
-        } else {
-            if ($copyFromLanguageMenu !== '' && $this->isColumnEmpty($colPos, $lP)) {
-                $theNewButton =
-                    '<div class="btn-group">'
-                    . '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-                    . $this->getLanguageService()->getLL('newPageContent_copyFromAnotherLang_button', true) . ' <span class="caret"></span>'
-                    . '</button>'
-                    . $copyFromLanguageMenu
-                    . '</div>';
-            } else {
-                $theNewButton = '';
-            }
+                '<input'
+                    . ' class="btn btn-default t3js-localize"'
+                    . ' type="button"'
+                    . ' disabled'
+                    . ' value="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate', true)) . '"'
+                    . ' data-has-elements="' . (int)!empty($this->contentElementCache[$lP][$colPos]) . '"'
+                    . ' data-table="tt_content"'
+                    . ' data-page-id="' . (int)GeneralUtility::_GP('id') . '"'
+                    . ' data-language-id="' . $lP . '"'
+                    . ' data-language-name="' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '"'
+                    . ' data-colpos-id="' . $colPos . '"'
+                    . ' data-colpos-name="' . BackendUtility::getProcessedValue('tt_content', 'colPos', $colPos) . '"'
+                . '/>';
         }
 
         return '<div class="t3-page-lang-copyce">' . $theNewButton . '</div>';
@@ -1773,170 +1742,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // Return link
         return $onClick ? '<a href="#" onclick="' . htmlspecialchars($onClick)
             . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">' . $str . '</a>' . $addButton : $str;
-    }
-
-    /**
-     * Get available languages for a page
-     *
-     * @param int $pageId
-     * @return array
-     */
-    protected function getAvailableLanguages($pageId)
-    {
-        // First, select all
-        $res = $this->getPageLayoutController()->exec_languageQuery(0);
-        $langSelItems = array();
-        while ($row = $this->getDatabase()->sql_fetch_assoc($res)) {
-            if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
-                $langSelItems[$row['uid']] = $row['title'];
-            }
-        }
-        $this->getDatabase()->sql_free_result($res);
-
-        // Remove disallowed languages
-        if (count($langSelItems) > 1
-            && !$this->getBackendUser()->user['admin']
-            && $this->getBackendUser()->groupData['allowed_languages'] !== ''
-        ) {
-            $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
-            if (!empty($allowed_languages)) {
-                foreach ($langSelItems as $key => $value) {
-                    if (!isset($allowed_languages[$key]) && $key != 0) {
-                        unset($langSelItems[$key]);
-                    }
-                }
-            }
-        }
-        // Remove disabled languages
-        $modSharedTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.SHARED');
-        $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
-            ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true)
-            : array();
-        if (!empty($langSelItems) && !empty($disableLanguages)) {
-            foreach ($disableLanguages as $language) {
-                if ($language != 0 && isset($langSelItems[$language])) {
-                    unset($langSelItems[$language]);
-                }
-            }
-        }
-
-        return $langSelItems;
-    }
-
-    /**
-     * Get available languages for copying into another language
-     *
-     * @param int $pageId
-     * @param int $excludeLanguage
-     * @param int $colPos
-     * @return array
-     */
-    protected function getLanguagesToCopyFrom($pageId, $excludeLanguage = null, $colPos = 0)
-    {
-        $langSelItems = array();
-        if (!$this->isColumnEmpty($colPos, 0)) {
-            $langSelItems[0] = $this->getLanguageService()->getLL('newPageContent_translateFromDefault', true);
-        }
-
-        $languages = $this->getUsedLanguagesInPageAndColumn($pageId, $colPos);
-        foreach ($languages as $uid => $language) {
-            $langSelItems[$uid] = sprintf($this->getLanguageService()->getLL('newPageContent_copyFromAnotherLang'), htmlspecialchars($language['title']));
-        }
-
-        if (isset($langSelItems[$excludeLanguage])) {
-            unset($langSelItems[$excludeLanguage]);
-        }
-
-        return $langSelItems;
-    }
-
-    /**
-     * Get used languages in a colPos of a page
-     *
-     * @param int $pageId
-     * @param int $colPos
-     * @return bool|\mysqli_result|object
-     */
-    protected function getUsedLanguagesInPageAndColumn($pageId, $colPos)
-    {
-        if (!isset($this->languagesInColumnCache[$pageId])) {
-            $this->languagesInColumnCache[$pageId] = array();
-        }
-        if (!isset($this->languagesInColumnCache[$pageId][$colPos])) {
-            $this->languagesInColumnCache[$pageId][$colPos] = array();
-        }
-
-        if (empty($this->languagesInColumnCache[$pageId][$colPos])) {
-            $exQ = BackendUtility::deleteClause('tt_content') .
-                ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
-
-            $databaseConnection = $this->getDatabaseConnection();
-            $res = $databaseConnection->exec_SELECTquery(
-                'sys_language.*',
-                'tt_content,sys_language',
-                'tt_content.sys_language_uid=sys_language.uid AND tt_content.colPos = ' . (int)$colPos . ' AND tt_content.pid=' . (int)$pageId . $exQ .
-                BackendUtility::versioningPlaceholderClause('tt_content'),
-                'tt_content.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
-                'sys_language.title'
-            );
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $this->languagesInColumnCache[$pageId][$colPos][$row['uid']] = $row;
-            }
-            $databaseConnection->sql_free_result($res);
-        }
-
-        return $this->languagesInColumnCache[$pageId][$colPos];
-    }
-
-    /**
-     * Check if a column of a page for a language is empty. Translation records are ignored here!
-     *
-     * @param int $colPos
-     * @param int $languageId
-     * @return bool
-     */
-    protected function isColumnEmpty($colPos, $languageId)
-    {
-        foreach ($this->contentElementCache[$languageId][$colPos] as $uid => $row) {
-            if ((int)$row['l18n_parent'] === 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Get elements for a column and a language
-     *
-     * @param int $pageId
-     * @param int $colPos
-     * @param int $languageId
-     * @return array
-     */
-    protected function getElementsFromColumnAndLanguage($pageId, $colPos, $languageId)
-    {
-        if (!isset($this->contentElementCache[$languageId][$colPos])) {
-            $languageId = (int)$languageId;
-            $whereClause = 'tt_content.pid=' . (int)$pageId . ' AND tt_content.colPos=' . (int)$colPos . ' AND tt_content.sys_language_uid=' . $languageId . BackendUtility::deleteClause('tt_content');
-            if ($languageId > 0) {
-                $whereClause .= ' AND tt_content.l18n_parent=0 AND sys_language.uid=' . $languageId . ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
-            }
-
-            $databaseConnection = $this->getDatabaseConnection();
-            $res = $databaseConnection->exec_SELECTquery(
-                'tt_content.uid',
-                'tt_content,sys_language',
-                $whereClause
-            );
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $this->contentElementCache[$languageId][$colPos][$row['uid']] = $row;
-            }
-            $databaseConnection->sql_free_result($res);
-        }
-        if (is_array($this->contentElementCache[$languageId][$colPos])) {
-            return array_keys($this->contentElementCache[$languageId][$colPos]);
-        }
-        return array();
     }
 
     /**

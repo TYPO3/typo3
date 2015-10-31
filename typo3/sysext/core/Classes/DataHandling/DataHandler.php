@@ -3318,9 +3318,6 @@ class DataHandler
                             case 'inlineLocalizeSynchronize':
                                 $this->inlineLocalizeSynchronize($table, $id, $value);
                                 break;
-                            case 'copyFromLanguage':
-                                $this->copyRecordFromLanguage($table, $id, $value);
-                                break;
                             case 'delete':
                                 $this->deleteAction($table, $id);
                                 break;
@@ -4742,28 +4739,6 @@ class DataHandler
         // Update field referencing to child records of localized parent record:
         if (!empty($updateFields)) {
             $this->updateDB($table, $id, $updateFields);
-        }
-    }
-
-    /**
-     * Creates a independent copy of content elements into another language.
-     *
-     * @param string $table The table of the localized parent record
-     * @param string $id Comma separated list of content element ids
-     * @param string $value Comma separated list of the destination and the target language
-     * @return void
-     */
-    protected function copyRecordFromLanguage($table, $id, $value)
-    {
-        list($destination, $language) = GeneralUtility::intExplode(',', $value);
-
-        // array_reverse is required to keep the order of elements
-        $idList = array_reverse(GeneralUtility::intExplode(',', $id, true));
-        foreach ($idList as $contentElementUid) {
-            $this->copyRecord($table, $contentElementUid, $destination, true, array(
-                $GLOBALS['TCA'][$table]['ctrl']['languageField'] => $language,
-                $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] => 0
-            ), '', 0, true);
         }
     }
 

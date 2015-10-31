@@ -13951,6 +13951,9 @@ div.typo3-module-lang div.progress-bar {
   max-width: 28px;
   max-height: 28px;
 }
+.localization-wizard .option {
+  margin-bottom: 4px;
+}
 .workspace-info {
   padding: 7px;
 }

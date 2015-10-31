@@ -66,6 +66,9 @@
 			<trans-unit id="newPageContent">
 				<source>Create page content</source>
 			</trans-unit>
+			<trans-unit id="newPageContent_translate">
+				<source>Translate</source>
+			</trans-unit>
 			<trans-unit id="newPageContent_copyForLang">
 				<source>Translate default content elements</source>
 			</trans-unit>
@@ -272,6 +275,45 @@
 			</trans-unit>
 			<trans-unit id="staleTranslationWarningTitle">
 				<source>Inconsistent content detected in language "%s"</source>
+			</trans-unit>
+			<trans-unit id="localize.chooseLanguage">
+				<source>Choose your language</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.header">
+				<source>Localize record &quot;{0}&quot; into {1}</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.button.next">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.button.process">
+				<source>Start processing</source>
+			</trans-unit>
+			<trans-unit id="localize.view.chooseLanguage">
+				<source>Choose the language from which you want to localize the content</source>
+			</trans-unit>
+			<trans-unit id="localize.view.summary">
+				<source>Record summary</source>
+			</trans-unit>
+			<trans-unit id="localize.view.processing">
+				<source>Processing...</source>
+			</trans-unit>
+			<trans-unit id="localize.progress.step">
+				<source>Step {0} of {1}</source>
+			</trans-unit>
+			<trans-unit id="localize.educate.translate" xml:space="preserve">
+				<source>Translating content will create a direct connection between the original language and the language you translate to.&lt;br&gt;
+					This means that moving and element or setting meta information like start- or endtime will be taken from the original content and you will not be able to set these values on a translated content element.&lt;br&gt;
+					&lt;strong&gt;Use this when your workflow demands a strict translation workflow.&lt;/strong&gt;
+				</source>
+			</trans-unit>
+			<trans-unit id="localize.educate.copy" xml:space="preserve">
+				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
+					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
+					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
+				</source>
 			</trans-unit>
 		</body>
 	</file>

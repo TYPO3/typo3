@@ -199,4 +199,22 @@ return [
         'path' => '/link-browser/encode-typolink',
         'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::encodeTypoLink',
     ],
+
+    // Get languages in page and colPos
+    'languages_page_colpos' => [
+        'path' => '/records/localize/get-languages',
+        'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPageAndColumn'
+    ],
+
+    // Get summary of records to localize
+    'records_localize_summary' => [
+        'path' => '/records/localize/summary',
+        'target' => Controller\Page\LocalizationController::class . '::getRecordLocalizeSummary'
+    ],
+
+    // Localize the records
+    'records_localize' => [
+        'path' => '/records/localize',
+        'target' => Controller\Page\LocalizationController::class . '::localizeRecords'
+    ]
 ];
