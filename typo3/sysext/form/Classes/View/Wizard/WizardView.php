@@ -89,9 +89,9 @@ class WizardView
     /**
      * The main render method
      *
-     * Gathers all content and echos it to the screen
+     * Gathers all content and returns it
      *
-     * @return void
+     * @return string
      */
     public function render()
     {
@@ -119,10 +119,7 @@ class WizardView
         $content = $this->doc->startPage($this->getLanguageService()->getLL('title', true));
         $content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
         $content .= $this->doc->endPage();
-        $content = $this->doc->insertStylesAndJS($content);
-
-        echo $content;
-        die;
+        return $this->doc->insertStylesAndJS($content);
     }
 
     /**

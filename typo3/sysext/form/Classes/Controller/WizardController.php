@@ -37,13 +37,17 @@ class WizardController
      *
      * The action which should be taken when the wizard is loaded
      *
-     * @return void
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface returns a 500 error or a valid JSON response
      */
-    public function indexAction()
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         /** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
         $view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
-        $view->render();
+        $content = $view->render();
+        $response->getBody()->write($content);
+        return $response;
     }
 
     /**
