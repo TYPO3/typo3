@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -203,10 +204,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     protected $iconFactory;
 
     /**
+     * Stores whether a certain language has translations in it
+     *
+     * @var array
+     */
+    protected $languageHasTranslationsCache = array();
+
+    /**
      * Construct to initialize class variables.
      */
     public function __construct()
     {
+        parent::__construct();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
@@ -398,7 +407,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 <div class="table-fit">
 					<table class="table table-striped table-hover typo3-page-pages">' .
                         '<thead>' .
-                            $this->addelement(1, '', $theData) .
+                            $this->addElement(1, '', $theData) .
                         '</thead>' .
                         '<tbody>' .
                             $out .
@@ -501,6 +510,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $link = '';
                 if ($this->getPageLayoutController()->pageIsNotLockedForEditors()
                     && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                    && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                 ) {
                     $link = '<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
                         . '" title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" class="btn btn-default btn-sm">'
@@ -556,7 +566,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $isDisabled = $this->isDisabled('tt_content', $row);
                         $statusHidden = $isDisabled ? ' t3-page-ce-hidden t3js-hidden-record' : '';
                         $displayNone = !$this->tt_contentConfig['showHidden'] && $isDisabled ? ' style="display: none;"' : '';
-                        $singleElementHTML = '<div class="t3-page-ce t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
+                        $highlightHeader = false;
+                        if ($this->checkIfTranslationsExistInLanguage([], (int)$row['sys_language_uid']) && (int)$row['l18n_parent'] === 0) {
+                            $highlightHeader = true;
+                        }
+                        $singleElementHTML = '<div class="t3-page-ce ' . ($highlightHeader ? 't3-page-ce-danger' : '') . ' t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
                             . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                         if ($this->tt_contentConfig['languageMode']) {
@@ -568,6 +582,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         if (!$disableMoveAndNewButtons
                             && $this->getPageLayoutController()->pageIsNotLockedForEditors()
                             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+                            && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                         ) {
                             // New content element:
                             if ($this->option_newWizard) {
@@ -869,7 +884,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 . 'title="' . $this->getLanguageService()->getLL('new', true) . '">'
                 . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
         }
-        $out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
+        $out .= $this->addElement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
         // Render Items
         $this->eCounter = $this->firstElementNumber;
         while ($row = $this->getDatabase()->sql_fetch_assoc($result)) {
@@ -894,7 +909,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     } else {
                         $Nrow['__editIconLink__'] = $this->noEditIcon();
                     }
-                    $out .= $this->addelement(1, '', $Nrow);
+                    $out .= $this->addElement(1, '', $Nrow);
                 }
                 $this->eCounter++;
             }
@@ -1125,7 +1140,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             }
         }
         $this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
-        return $this->addelement(1, '', $theData);
+        return $this->addElement(1, '', $theData);
     }
 
     /**
@@ -1333,8 +1348,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
             }
         }
+        $allowDragAndDrop = $this->isDragAndDropAllowed($row);
         $additionalIcons = array();
-        $additionalIcons[] = $this->getIcon('tt_content', $row) . ' ';
+        if ($row['sys_language_uid'] > 0 && $this->checkIfTranslationsExistInLanguage([], (int)$row['sys_language_uid'])) {
+            $disabledClickMenuItems = 'new,move';
+            $allowDragAndDrop = false;
+        }
+        $additionalIcons[] = $this->getIcon('tt_content', $row, $disabledClickMenuItems) . ' ';
         $additionalIcons[] = $langMode ? $this->languageFlag($row['sys_language_uid'], false) : '';
         // Get record locking status:
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
@@ -1351,7 +1371,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         // Wrap the whole header
         // NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
-        return '<div class="t3-page-ce-header ' . ($this->isDragAndDropAllowed($row) ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
+        return '<div class="t3-page-ce-header ' . ($allowDragAndDrop ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
 					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
 					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' .$out . '</div>' : '') . '</div>
 				</div>
@@ -1627,7 +1647,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $where = 'sys_language_uid=' . intval($lP) . ' AND l18n_parent IN ('
                 . implode(',', $defLanguageCount) . ')'
                 . BackendUtility::deleteClause('tt_content');
-            $rowArr = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $where);
+            $rowArr = $this->getDatabase()->exec_SELECTgetRows('*', 'tt_content', $where);
 
             // Flip uids:
             $defLanguageCount = array_flip($defLanguageCount);
@@ -2122,9 +2142,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * @param string $table Table name
      * @param array $row Record array
+     * @param string $enabledClickMenuItems Passthrough to wrapClickMenuOnIcon
      * @return string HTML for the icon
      */
-    public function getIcon($table, $row)
+    public function getIcon($table, $row, $enabledClickMenuItems = '')
     {
         // Initialization
         $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
@@ -2132,7 +2153,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $this->counter++;
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
+            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'], true, '', $enabledClickMenuItems);
         }
         return $icon;
     }
@@ -2297,6 +2318,59 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function getThumbCodeUnlinked($row, $table, $field)
     {
         return BackendUtility::thumbCode($row, $table, $field, '', '', null, 0, '', '', false);
+    }
+
+    /**
+     * Checks whether translated Content Elements exist in the desired language
+     * If so, deny creating new ones via the UI
+     *
+     * @param array $contentElements
+     * @param int $language
+     * @return bool
+     */
+    protected function checkIfTranslationsExistInLanguage(array $contentElements, $language)
+    {
+        // If in default language, you may always create new entries
+        // Also, you may override this strict behavior via user TS Config
+        // If you do so, you're on your own and cannot rely on any support by the TYPO3 core
+        // We jump out here since we don't need to do the expensive loop operations
+        $allowInconsistentLanguageHandling = BackendUtility::getModTSconfig($this->id, 'mod.web_layout.allowInconsistentLanguageHandling');
+        if ($language === 0 || $allowInconsistentLanguageHandling['value'] === '1') {
+            return false;
+        }
+        /**
+         * Build up caches
+         */
+        if (!isset($this->languageHasTranslationsCache[$language])) {
+            foreach ($contentElements as $columns) {
+                foreach ($columns as $contentElement) {
+                    if ((int)$contentElement['l18n_parent'] === 0) {
+                        $this->languageHasTranslationsCache[$language]['hasStandAloneContent'] = true;
+                    }
+                    if ((int)$contentElement['l18n_parent'] > 0) {
+                        $this->languageHasTranslationsCache[$language]['hasTranslations'] = true;
+                    }
+                }
+            }
+            // Check whether we have a mix of both
+            if ($this->languageHasTranslationsCache[$language]['hasStandAloneContent']
+                && $this->languageHasTranslationsCache[$language]['hasTranslations']
+            ) {
+                $message = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    sprintf($this->getLanguageService()->getLL('staleTranslationWarning'), $this->languageIconTitles[$language]['title']),
+                    sprintf($this->getLanguageService()->getLL('staleTranslationWarningTitle'), $this->languageIconTitles[$language]['title']),
+                    FlashMessage::WARNING
+                );
+                $service = GeneralUtility::makeInstance(FlashMessageService::class);
+                $queue = $service->getMessageQueueByIdentifier('module.template.flashmessages');
+                $queue->addMessage($message);
+            }
+        }
+        if ($this->languageHasTranslationsCache[$language]['hasTranslations']) {
+            return true;
+        }
+        return false;
     }
 
     /**

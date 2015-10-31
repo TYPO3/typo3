@@ -12956,6 +12956,24 @@ iframe {
 .t3-page-ce:hover .t3-page-ce-header-icons-right {
   opacity: 1;
 }
+.t3-page-ce-danger:hover .t3-page-ce-header {
+  background-color: #a32e2e;
+  border-color: #a32e2e;
+}
+.t3-page-ce-danger:hover .t3-page-ce-body {
+  border-color: #a32e2e;
+}
+.t3-page-ce-danger .t3-page-ce-header {
+  background-color: #c83c3c;
+  border-color: #c83c3c;
+}
+.t3-page-ce-danger .t3-page-ce-header:hover {
+  background-color: #a32e2e;
+  border-color: #a32e2e;
+}
+.t3-page-ce-danger .t3-page-ce-body {
+  border-color: #c83c3c;
+}
 .t3-page-ce-hidden {
   opacity: 0.4;
   transition: opacity 0.15s ease-in;

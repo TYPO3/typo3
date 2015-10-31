@@ -19,6 +19,10 @@
 @page-ce-body-bg: #fff;
 @page-ce-footer-bg: #fafafa;
 @page-ce-hidden-opacity: 0.4;
+@page-ce-header-bg-danger: @brand-danger;
+@page-ce-header-hover-bg-danger: darken(@brand-danger, 10%);
+@page-ce-header-border-danger: @page-ce-header-bg-danger;
+@page-ce-header-hover-border-danger: @page-ce-header-hover-bg-danger;
 
 @page-ce-dropzone-bg: @state-success-bg;
 @page-ce-dropzone-border: @state-success-border;
@@ -169,6 +173,31 @@
 		.t3-page-ce-header-icons-right {
 			opacity: 1;
 		}
+	}
+}
+.t3-page-ce-danger {
+	&:hover {
+		.t3-page-ce-header {
+			background-color: @page-ce-header-hover-bg-danger;
+			border-color: @page-ce-header-hover-border-danger;
+		}
+
+		.t3-page-ce-body {
+			border-color: @page-ce-header-hover-border-danger;
+		}
+	}
+
+	.t3-page-ce-header {
+		background-color: @page-ce-header-bg-danger;
+		border-color: @page-ce-header-border-danger;
+		&:hover {
+			background-color: @page-ce-header-hover-bg-danger;
+			border-color: @page-ce-header-hover-border-danger;
+		}
+	}
+
+	.t3-page-ce-body {
+		border-color: @page-ce-header-border-danger;
 	}
 }
 .t3-page-ce-hidden {
