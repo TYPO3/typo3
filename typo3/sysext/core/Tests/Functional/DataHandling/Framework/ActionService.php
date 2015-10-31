@@ -453,7 +453,12 @@ class ActionService
      */
     protected function createDataHandler()
     {
-        return $this->dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(DataHandler::class);
+        $this->dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(DataHandler::class);
+        $backendUser = $this->getBackendUser();
+        if (isset($backendUser->uc['copyLevels'])) {
+            $this->dataHandler->copyTree = $backendUser->uc['copyLevels'];
+        }
+        return $this->dataHandler;
     }
 
     /**
