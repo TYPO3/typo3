@@ -88,7 +88,6 @@ class DatabaseIntegrityView extends BaseScriptClass
         $this->MCONF['name'] = $this->moduleName;
         $this->menuConfig();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->setForm('<form action="" method="post" name="' . $this->formName . '">');
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
@@ -219,7 +218,9 @@ class DatabaseIntegrityView extends BaseScriptClass
                 $this->func_default();
         }
         $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . $templateFilename));
-        $this->content = $this->view->render();
+        $this->content = '<form action="" method="post" id="DatabaseIntegrityView" name="' . $this->formName . '">';
+        $this->content .= $this->view->render();
+        $this->content .= '</form>';
 
         // Setting up the shortcut button for docheader
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
