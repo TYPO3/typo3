@@ -647,11 +647,19 @@ class TemplateService
             $clConst = $row['clear'] & 1;
             $clConf = $row['clear'] & 2;
             if ($clConst) {
-                $this->constants = array();
+                // Keep amount of items to stay in sync with $this->templateIncludePaths so processIncludes() does not break
+                foreach ($this->constants as &$constantConfiguration) {
+                    $constantConfiguration = '';
+                }
+                unset($constantConfiguration);
                 $this->clearList_const = array();
             }
             if ($clConf) {
-                $this->config = array();
+                // Keep amount of items to stay in sync with $this->templateIncludePaths so processIncludes() does not break
+                foreach ($this->config as &$configConfiguration) {
+                    $configConfiguration = '';
+                }
+                unset($configConfiguration);
                 $this->hierarchyInfoToRoot = array();
                 $this->clearList_setup = array();
             }
