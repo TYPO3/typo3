@@ -365,12 +365,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::createContentAndCopyLivePage();
 		$this->assertAssertionDataSet('createContentAndCopyLivePage');
 
-//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
-//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
-//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
 	}
 
 	/**
@@ -397,12 +397,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::createPageAndCopyLiveParentPage();
 		$this->assertAssertionDataSet('createPageAndCopyLiveParentPage');
 
-//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
-//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
-//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
 	}
 
 	/**
@@ -429,12 +429,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::createNestedPagesAndCopyLiveParentPage();
 		$this->assertAssertionDataSet('createNestedPagesAndCopyLiveParentPage');
 
-//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
-//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
-//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
 	}
 
 	/**
@@ -445,12 +445,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::deleteContentAndCopyDraftPage();
 		$this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
 
-//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
-//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
 
 	/**
@@ -509,14 +509,14 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::moveContentAndCopyDraftPage();
 		$this->assertAssertionDataSet('moveContentAndCopyDraftPage');
 
-//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
-//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0', 'Regular Element #2'));
-//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
-//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
-//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0', 'Regular Element #2'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
 	}
 
 	/**
