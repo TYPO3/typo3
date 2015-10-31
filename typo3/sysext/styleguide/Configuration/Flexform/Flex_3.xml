@@ -367,6 +367,25 @@
 											</config>
 										</TCEforms>
 									</element_3>
+									<element_4>
+										<TCEforms>
+											<label>element_4, type=select, renderMode=tree</label>
+											<config>
+												<type>select</type>
+												<foreign_table>pages</foreign_table>
+												<size>20</size>
+												<maxitems>4</maxitems>
+												<renderMode>tree</renderMode>
+												<treeConfig>
+													<expandAll>1</expandAll>
+													<parentField>pid</parentField>
+													<appearance>
+														<showHeader>1</showHeader>
+													</appearance>
+												</treeConfig>
+											</config>
+										</TCEforms>
+									</element_4>
 								</el>
 							</container_1>
 							<container_2>
