@@ -148,8 +148,8 @@ class ImportExportController extends BaseScriptClass
             'ImpexpInLineJS',
             'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
         );
-        $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
-            . '<input type="hidden" name="id" value="' . $this->id . '" />');
+        $this->content = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" id="ImportExportController" enctype="multipart/form-data">'
+            . '<input type="hidden" name="id" value="' . $this->id . '" />';
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
         $this->content .= $this->moduleTemplate->sectionHeader($this->lang->getLL('title_' . (string)$inData['action']));
@@ -180,6 +180,7 @@ class ImportExportController extends BaseScriptClass
         }
         // Setting up the buttons and markers for docheader
         $this->getButtons();
+        $this->content .= '</form>';
     }
 
     /**
