@@ -309,6 +309,11 @@ class PageLayoutController
     protected $buttonBar;
 
     /**
+     * @var string
+     */
+    protected $searchContent;
+
+    /**
      * Initializing the module
      *
      * @return void
@@ -621,12 +626,7 @@ class PageLayoutController
                 }
             ');
 
-            // Setting doc-header
-            $this->moduleTemplate->setForm(
-                '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, array('id' => $this->id, 'imagemode' =>  $this->imagemode))) . '" method="post">'
-            );
-
-            // Find backend layout / coumns
+            // Find backend layout / columns
             $backendLayout = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
             if (!empty($backendLayout['__colPosList'])) {
                 $this->colPosList = implode(',', $backendLayout['__colPosList']);
@@ -655,14 +655,17 @@ class PageLayoutController
             // Render the primary module content:
             if ($this->MOD_SETTINGS['function'] == 0) {
                 // QuickEdit
+                $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="multipart/form-data" name="editform" id="PageLayoutController" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
                 $content .= $this->renderQuickEdit();
             } else {
+                $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, array('id' => $this->id, 'imagemode' =>  $this->imagemode))) . '" id="PageLayoutController" method="post">';
                 // Page title
                 $content .= '<h1 class="t3js-title-inlineedit">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
                 // All other listings
                 $content .= $this->renderListContent();
             }
-
+            $content .= '</form>';
+            $content .= $this->searchContent;
             // Setting up the buttons for the docheader
             $this->makeButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
             // Create LanguageMenu
@@ -697,10 +700,6 @@ class PageLayoutController
         $databaseConnection = $this->getDatabaseConnection();
         $beUser = $this->getBackendUser();
         $lang = $this->getLanguageService();
-        // Alternative form tag; Quick Edit submits its content to tce_db.php.
-        $this->moduleTemplate->setForm(
-            '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="multipart/form-data" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">'
-        );
         // Set the edit_record value for internal use in this function:
         $edit_record = $this->edit_record;
         // If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
@@ -1009,7 +1008,7 @@ class PageLayoutController
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
                 ->setHref('#');
             $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-            $content .= $dbList->getSearchBox(0);
+            $this->searchContent = $dbList->getSearchBox();
         }
         // Additional footer content
         $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
@@ -1154,12 +1153,14 @@ class PageLayoutController
                 $saveButton = $this->buttonBar->makeInputButton()
                     ->setName('_savedok')
                     ->setValue('1')
+                    ->setForm('PageLayoutController')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveButton);
                 $saveAndCloseButton = $this->buttonBar->makeInputButton()
                     ->setName('_saveandclosedok')
                     ->setValue('1')
+                    ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value=\'' . $this->closeUrl . '\';')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
@@ -1167,6 +1168,7 @@ class PageLayoutController
                 $saveAndShowPageButton = $this->buttonBar->makeInputButton()
                     ->setName('_savedokview')
                     ->setValue('1')
+                    ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value+=\'&popView=1\';')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL));
