@@ -133,9 +133,6 @@ class TableController extends AbstractWizardController
         $this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : true;
         // Setting form tag:
         list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
-        $this->moduleTemplate->setForm(
-            '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">'
-        );
         $this->tableParsing_delimiter = '|';
         $this->tableParsing_quote = '';
     }
@@ -162,6 +159,7 @@ class TableController extends AbstractWizardController
      */
     public function main()
     {
+        $this->content .= '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
             $this->content .= $this->moduleTemplate->section(
                 $this->getLanguageService()->getLL('table_title'),
@@ -177,6 +175,7 @@ class TableController extends AbstractWizardController
                 1
             );
         }
+        $this->content .= '</form>';
         // Setting up the buttons and markers for docHeader
         $this->getButtons();
         // Build the <body> for the module
@@ -217,12 +216,14 @@ class TableController extends AbstractWizardController
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('_savedok')
                 ->setValue('1')
+                ->setForm('TableController')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
             // Save & Close
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('_saveandclosedok')
                 ->setValue('1')
+                ->setForm('TableController')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-save-close',
@@ -237,6 +238,7 @@ class TableController extends AbstractWizardController
             $reloadButton = $buttonBar->makeInputButton()
                 ->setName('_refresh')
                 ->setValue('1')
+                ->setForm('TableController')
                 ->setTitle($this->getLanguageService()->getLL('forms_refresh', true))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
             $buttonBar->addButton($reloadButton);
