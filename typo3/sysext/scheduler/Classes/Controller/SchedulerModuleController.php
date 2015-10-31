@@ -154,11 +154,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // The page will show only if user has admin rights
         if ($this->getBackendUser()->isAdmin()) {
             // Set the form
-            $this->moduleTemplate->setForm('<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">');
+            $this->content = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
 
             // Prepare main content
-            $this->content = '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
+            $this->content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
             $this->content .= $this->getModuleContent();
+            $this->content .= '</form>';
         } else {
             // If no access, only display the module's title
             $this->content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
@@ -1624,18 +1625,21 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $saveButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('save')
+                ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', true));
             $saveButtonDropdown->addItem($saveButton);
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('saveclose')
+                ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', true));
             $saveButtonDropdown->addItem($saveAndCloseButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('savenew')
+                ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', true));
             $saveButtonDropdown->addItem($saveAndNewButton);
@@ -1646,6 +1650,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $deleteButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('delete')
+                ->setForm('tx_scheduler_form')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
