@@ -159,9 +159,6 @@ class NewContentElementController extends AbstractModule
         // Starting the document template object:
         // We keep this here in case somebody relies on it in a hook or alike
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->moduleTemplate->setForm(
-            '<form action="" name="editForm"><input type="hidden" name="defValues" value="" />'
-        );
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         // Getting the current page and receiving access information (used in main())
@@ -195,6 +192,7 @@ class NewContentElementController extends AbstractModule
     public function main()
     {
         $lang = $this->getLanguageService();
+        $this->content .= '<form action="" name="editForm" id="NewContentElementController"><input type="hidden" name="defValues" value="" />';
         if ($this->id && $this->access) {
             // Init position map object:
             $posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
@@ -355,6 +353,7 @@ class NewContentElementController extends AbstractModule
             $this->content = '';
             $this->content .= '<h1>' . $lang->getLL('newContentElement') . '</h1>';
         }
+        $this->content .= '</form>';
         // Setting up the buttons and markers for docheader
         $this->getButtons();
     }
