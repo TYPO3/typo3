@@ -711,12 +711,6 @@ class EditDocumentController extends AbstractModule
         $this->doc = $GLOBALS['TBE_TEMPLATE'];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_alt_doc.xlf');
-        $this->moduleTemplate->setForm('<form
-            action="' . htmlspecialchars($this->R_URI) . '"
-            method="post"
-            enctype="multipart/form-data"
-            name="editform"
-            onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;">');
         // override the default jumpToUrl
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
@@ -1227,6 +1221,7 @@ class EditDocumentController extends AbstractModule
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
                 ->setName('_savedok')
                 ->setValue('1')
+                ->setForm('EditDocumentController')
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
             $saveSplitButton->addItem($saveButton, true);
 
@@ -1254,6 +1249,7 @@ class EditDocumentController extends AbstractModule
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
                         ->setName('_savedokview')
                         ->setValue('1')
+                        ->setForm('EditDocumentController')
                         ->setOnClick("window.open('', 'newTYPO3frontendWindow');")
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                             'actions-document-save-view',
@@ -1268,6 +1264,7 @@ class EditDocumentController extends AbstractModule
                     ->setName('_savedoknew')
                     ->setClasses('t3js-editform-submitButton')
                     ->setValue('1')
+                    ->setForm('EditDocumentController')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', true))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-save-new',
@@ -1280,6 +1277,7 @@ class EditDocumentController extends AbstractModule
                 ->setName('_saveandclosedok')
                 ->setClasses('t3js-editform-submitButton')
                 ->setValue('1')
+                ->setForm('EditDocumentController')
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-document-save-close',
@@ -1291,6 +1289,7 @@ class EditDocumentController extends AbstractModule
                 $saveTranslationButton = $buttonBar->makeInputButton()
                     ->setName('_translation_savedok')
                     ->setValue('1')
+                    ->setForm('EditDocumentController')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', true))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-save-cleartranslationcache',
@@ -1300,6 +1299,7 @@ class EditDocumentController extends AbstractModule
                 $saveAndClearTranslationButton = $buttonBar->makeInputButton()
                     ->setName('_translation_savedokclear')
                     ->setValue('1')
+                    ->setForm('EditDocumentController')
                     ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', true))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-save-cleartranslationcache',
@@ -1440,6 +1440,13 @@ class EditDocumentController extends AbstractModule
     {
         $formContent = '
 			<!-- EDITING FORM -->
+			<form
+            action="' . htmlspecialchars($this->R_URI) . '"
+            method="post"
+            enctype="multipart/form-data"
+            name="editform"
+            id="EditDocumentController"
+            onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;">
 			' . $editForm . '
 
 			<input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
@@ -1455,7 +1462,8 @@ class EditDocumentController extends AbstractModule
 			<input type="hidden" name="closeDoc" value="0" />
 			<input type="hidden" name="doSave" value="0" />
 			<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-			<input type="hidden" name="_scrollPosition" value="" />';
+			<input type="hidden" name="_scrollPosition" value="" />
+			</form>';
         return $formContent;
     }
 
