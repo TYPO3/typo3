@@ -112,7 +112,7 @@ class SingleFieldContainer extends AbstractContainer
             && $isOverlay
         ) {
             $parameterArray['fieldConf']['config']['readOnly'] = true;
-            $parameterArray['itemFormElValue'] = $this->data['defaultLanguageData'][$table . ':' . $row['uid']][$fieldName];
+            $parameterArray['itemFormElValue'] = $this->data['defaultLanguageRow'][$fieldName];
         }
 
         if (strpos($this->data['processedTca']['ctrl']['type'], ':') === false) {
