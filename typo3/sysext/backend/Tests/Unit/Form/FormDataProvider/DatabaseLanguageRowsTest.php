@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -37,10 +38,18 @@ class DatabaseLanguageRowsTest extends UnitTestCase
      */
     protected $dbProphecy;
 
+    /**
+     * @var BackendUserAuthentication | ObjectProphecy
+     */
+    protected $beUserProphecy;
+
     protected function setUp()
     {
         $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+
+        $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->beUserProphecy;
 
         $this->subject = new DatabaseLanguageRows();
     }
@@ -117,6 +126,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
         $defaultLanguageRow = [
             'uid' => 23,
+            'pid' => 123,
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
@@ -161,6 +171,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
         $defaultLanguageRow = [
             'uid' => 23,
+            'pid' => 123,
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
@@ -219,6 +230,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'translations' => [
                 3 => [
                     'uid' => 43,
+                    'pid' => 32,
                 ],
             ],
         ];
@@ -226,11 +238,13 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content'] = array('foo');
         $recordWsolResult = [
             'uid' => 43,
+            'pid' => 32,
             'text' => 'localized text in french',
         ];
 
         $defaultLanguageRow = [
             'uid' => 23,
+            'pid' => 32,
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
@@ -251,6 +265,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $expected['additionalLanguageRows'] = [
             3 => [
                 'uid' => 43,
+                'pid' => 32,
                 'text' => 'localized text in french',
             ],
         ];
@@ -314,11 +329,13 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content'] = array('foo');
         $recordWsolResult = [
             'uid' => 43,
+            'pid' => 32,
             'text' => 'localized text in french',
         ];
 
         $defaultLanguageRow = [
             'uid' => 23,
+            'pid' => 32,
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
@@ -340,6 +357,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $expected['additionalLanguageRows'] = [
             3 => [
                 'uid' => 43,
+                'pid' => 32,
                 'text' => 'localized text in french',
             ],
         ];

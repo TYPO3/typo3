@@ -4524,7 +4524,7 @@ class BackendUtility
      */
     public static function versioningPlaceholderClause($table)
     {
-        if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
+        if (static::isTableWorkspaceEnabled($table)) {
             $currentWorkspace = (int)static::getBackendUserAuthentication()->workspace;
             return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
         }

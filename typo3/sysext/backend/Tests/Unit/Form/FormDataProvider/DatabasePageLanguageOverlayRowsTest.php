@@ -39,6 +39,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     {
         $this->dbProphecy = $this->prophesize(DatabaseConnection::class);
         $GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
+        $GLOBALS['TCA']['pages_language_overlay'] = array();
 
         $this->subject = new DatabasePageLanguageOverlayRows();
     }
@@ -51,7 +52,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
         $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
         $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
         $this->setExpectedException(\UnexpectedValueException::class,  $this->anything(), 1440777705);
-        $this->subject->addData([]);
+        $this->subject->addData(['effectivePid' => 1]);
     }
 
     /**
