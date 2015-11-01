@@ -73,7 +73,11 @@ This can either happen on demand, when the processed file is first needed, or by
         $join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
         $res = $db->exec_SELECTquery('sys_file_processedfile.*', $join, 'entry_key IS NULL AND sys_file_processedfile.identifier <> \'\'');
         while ($processedFileRow = $db->sql_fetch_assoc($res)) {
-            $storage = $factory->getStorageObject($processedFileRow['storage']);
+            try {
+                $storage = $factory->getStorageObject($processedFileRow['storage']);
+            } catch (\InvalidArgumentException $e) {
+                $storage = null;
+            }
             if (!$storage) {
                 // invalid storage, delete record, we can't take care of the associated file
                 $db->exec_DELETEquery('sys_file_processedfile', 'uid=' . $processedFileRow['uid']);
