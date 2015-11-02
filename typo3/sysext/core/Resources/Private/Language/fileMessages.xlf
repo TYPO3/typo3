@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1447138381" source-language="en" datatype="plaintext" original="messages" date="2015-11-10T06:53:10Z" product-name="core">
+		<header/>
+		<body>
+			<trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied">
+				<source>Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved">
+				<source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources">
+				<source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.CouldNotDeleteDirectory">
+				<source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.CouldNotDeleteDirectory1">
+				<source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.CouldNotDeleteFile">
+				<source>Could not delete file "%s". There might be a problem with write permissions.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DestinationExistedAlready">
+				<source>Destination "%s" already exists!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints">
+				<source>Destination path "%s" was not within your mountpoints!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DestinationWasNotADirectory">
+				<source>Destination "%s" was not a directory.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryCopiedTo">
+				<source>Directory "%s" copied to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryCreatedIn">
+				<source>Directory "%s" created in "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryMovedTo">
+				<source>Directory "%s" moved to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryNotCreated">
+				<source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryRenamedFromTo">
+				<source>Directory renamed from "%s" to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryWasNotCopiedTo">
+				<source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryWasNotMovedTo">
+				<source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryWasNotRenamed">
+				<source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn">
+				<source>Extension of file name "%s" is not allowed in "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed">
+				<source>Extension of file name "%s" or "%s" was not allowed!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed">
+				<source>Extension of file "%s" was not allowed!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileAlreadyExistsInFolder">
+				<source>File "%s" already exists in folder "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileCopiedTo">
+				<source>File "%s" copied to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileCreated">
+				<source>File created: "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileExistedAlreadyIn">
+				<source>File existed already in "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat">
+				<source>File extension "%s" is not a textfile format! (%s).</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileExtensionIsNotzip">
+				<source>File extension is not "zip".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileMovedTo">
+				<source>File "%s" moved to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileNameWasNotAllowed">
+				<source>File name "%s" was not allowed!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints">
+				<source>File "%s" or destination "%s" was not within your mountpoints!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileOrDirectoryExistedAlready">
+				<source>File or directory "%s" already exists!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileRenamedFromTo">
+				<source>File renamed from "%s" to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileSavedToBytesMd5">
+				<source>File saved to "%s", bytes: %s, MD5: %s.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileWasNotCopiedTo">
+				<source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileWasNotCreated">
+				<source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileWasNotRenamed">
+				<source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileWasNotSaved">
+				<source>File "%s" was not saved! There might be a problem with write permissions.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.FileWasNotSaved2">
+				<source>File "%s" was not saved! File extension rejected!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.NoFileWasUploaded">
+				<source>No file was uploaded!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.NoFileWasUploadedForReplacing">
+				<source>No file was uploaded for replacing!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.NoNameForNewFolderGiven">
+				<source>No name for new folder given!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.NoUniqueFilenameAvailableIn">
+				<source>No unique filename available in "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.ReplacingFileTo">
+				<source>Replacing file "%s" to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TargetAlreadyExists">
+				<source>Target "%s" already exists!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TargetWasNotAFile">
+				<source>Target "%s" was not a file!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints">
+				<source>Target was not within your mountpoints! T="%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheFileDidNotExist">
+				<source>The file "%s" did not exist!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented">
+				<source>The function to copy a file between storages is not yet implemented.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented">
+				<source>The function to copy a folder between storages is not yet implemented.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented">
+				<source>The function to move a file between storages is not yet implemented.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented">
+				<source>The function to move a folder between storages is not yet implemented.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound">
+				<source>The upload has failed, no uploaded file found!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit">
+				<source>The uploaded file "%s" exceeds the size-limit</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.UnzippingFileIn">
+				<source>Unzipping file "%s" in "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.UploadedFileCouldNotBeMoved">
+				<source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.UploadingFileTo">
+				<source>Uploading file "%s" to "%s".</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory">
+				<source>You are not allowed to access the directory.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile">
+				<source>You are not allowed to access the file.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories">
+				<source>You are not allowed to copy directories.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles">
+				<source>You are not allowed to copy files.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.InvalidFolderName">
+				<source>Invalid folder name "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories">
+				<source>You are not allowed to create directories!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles">
+				<source>You are not allowed to create files!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToEditFiles">
+				<source>You are not allowed to edit files!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories">
+				<source>You are not allowed to move directories.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles">
+				<source>You are not allowed to move files.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToOverride">
+				<source>You are not allowed to override "%s"!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories">
+				<source>You are not allowed to rename directories!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles">
+				<source>You are not allowed to rename files!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles">
+				<source>You are not allowed to unzip files.</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles">
+				<source>You are not allowed to upload files!</source>
+			</trans-unit>
+			<trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory">
+				<source>You don't have full access to the destination directory "%s"!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
