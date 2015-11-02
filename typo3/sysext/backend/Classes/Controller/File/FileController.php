@@ -163,8 +163,6 @@ class FileController
      */
     public function finish()
     {
-        // Push errors to flash message queue, if there are any
-        $this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
         BackendUtility::setUpdateSignal('updateFolderTree');
         if ($this->redirect) {
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
@@ -183,8 +181,6 @@ class FileController
     {
         $this->main();
 
-        // Push errors to flash message queue, if there are any
-        $this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
         BackendUtility::setUpdateSignal('updateFolderTree');
 
         if ($this->redirect) {
