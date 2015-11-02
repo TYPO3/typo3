@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -161,6 +163,13 @@ class ModuleTemplate
      * @var string
      */
     protected $title = '';
+
+    /**
+     * Flash message queue
+     *
+     * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     */
+    protected $flashMessageQueue;
 
     /**
      * Gets the standalone view.
@@ -322,7 +331,7 @@ class ModuleTemplate
 
         $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
         $renderedPage .= $this->view->render();
-        $renderedPage .= $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
+        $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
         $renderedPage .= $this->pageRenderer->render(PageRenderer::PART_FOOTER);
 
         return $renderedPage;
@@ -801,5 +810,44 @@ class ModuleTemplate
 	<h1 class="t3js-title-inlineedit">' . htmlspecialchars($text) . '</h1>
 ';
         return $this->sectionEnd() . $str;
+    }
+
+    /**
+     * Creates a Message object and adds it to the FlashMessageQueue.
+     *
+     * @param string $messageBody The message
+     * @param string $messageTitle Optional message title
+     * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
+     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default)
+     * @return void
+     * @throws \InvalidArgumentException if the message body is no string
+     */
+    public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true)
+    {
+        if (!is_string($messageBody)) {
+            throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1446483133);
+        }
+        /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+        $flashMessage = GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $messageBody,
+            $messageTitle,
+            $severity,
+            $storeInSession
+        );
+        $this->getFlashMessageQueue()->enqueue($flashMessage);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     */
+    protected function getFlashMessageQueue()
+    {
+        if (!isset($this->flashMessageQueue)) {
+            /** @var FlashMessageService $service */
+            $service = GeneralUtility::makeInstance(FlashMessageService::class);
+            $this->flashMessageQueue = $service->getMessageQueueByIdentifier('module.template.flashmessages');
+        }
+        return $this->flashMessageQueue;
     }
 }
