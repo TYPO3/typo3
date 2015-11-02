@@ -2271,7 +2271,7 @@ class ResourceStorage implements ResourceStorageInterface
         if (!$this->checkFolderActionPermission('add', $parentFolder)) {
             throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
         }
-        if ($this->driver->folderExists($folderName)) {
+        if ($this->driver->folderExistsInFolder($folderName, $parentFolder->getIdentifier())) {
             throw new Exception\ExistingTargetFolderException('Folder "' . $folderName . '" already exists.', 1423347324);
         }
 
