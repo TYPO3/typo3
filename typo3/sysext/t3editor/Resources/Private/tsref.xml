@@ -2951,7 +2951,7 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 ]]></default>
 		</property>
 	</type>
-	<type id="GMENU">
+	<type id="GMENU" extends="mObj">
 		<property name="ACT" type="GMENU_itemState">
 			<description><![CDATA[Boolean / (config)
 			Enable/Configuration for menu items which are found in the rootLine]]></description>
@@ -3079,17 +3079,6 @@ See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]
 			<description><![CDATA[RollOver configuration enabled / disabled.
 If this is true, RO becomes a GIFBUILDER-object defining the layout of the menuitem when the mouse rolls over it]]></description>
 			<default><![CDATA[0]]></default>
-		</property>
-		<property name="[Common Item States, see above]" type="GIFBUILDER">
-			<description><![CDATA[This is the GIFBUILDER-options for each category of menuitem that can be generated.
-
-NOTE: For the GMENU series you can also define the RollOver configuration for the item states. This means that you define the GIFBUILDER object for the 'Active' state by ACT and the RollOver GIFBUILDER object for the 'Active' state by ACTRO.
-This pattern goes for ALL the states except the SPC state.
-
-SPECIAL:
-The ->OptionSplit function is run on the whole GIFBUILDER-configuration before the items are generated.]]></description>
-			<default><![CDATA[
-]]></default>
 		</property>
 		<property name="accessKey" type="boolean">
 			<description><![CDATA[If set access-keys are set on the menu-links]]></description>
@@ -3654,7 +3643,7 @@ Used with either lockPosition=x or xPosOffset defined.]]></description>
 	</type>
 	<type id="TMENU_LAYERS" extends="TMENU,MENU_LAYERS"/>
 	<type id="GMENU_LAYERS" extends="GMENU,MENU_LAYERS"/>
-	<type id="IMGMENU">
+	<type id="IMGMENU" extends="mObj">
 		<property name="ACT" type="IMGMENUITEM">
 			<description><![CDATA[Boolean / (config)
 			Enable/Configuration for menu items which are found in the rootLine]]></description>
@@ -3769,22 +3758,6 @@ Example:
 "&some_var=some%20value"
 Must be rawurlencoded.
 Applies to GMENU, TMENU, IMGMENU]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="[Common Item States, see above]" type="IMGMENUITEM">
-			<description><![CDATA[This is the TMENUITEM-options for each category of menuitem that can be generated.
-
-SPECIAL:
-The ->OptionSplit function is run on the whole GIFBUILDER-configuration before the items are generated.
-
-.distrib is (x,y,v,h +calc) of the distribution of the menuitems. This provides a way to space each item from the other. The codes "textX" and "textY" can be used for the width (X) and height (Y) dimension of each link.
-This works by adding a WORKAREA-GifBuilderObj between each of the IMGMENUITEM ("subset" of a GIFBUILDER-object) and this workarea defines where the text should be printed. As such the "x,y" defines the offset the next item will have (this should be the width of the previous in many cases!) and "v,h" defines the dimensions of the current item.
-Consider this example taken from the static_template "template: MM":
-    NO.distrib = textX+10, 0, textX+10, textY+5
-In the future TypoScript may provide better ways to position GIFBUILDER-objects on the image-maps!
-
-ImgMap is automatically used on the links! (that is the ".imgMap" property of the text-objects in the GIFBUILDER-objects is set automatically, unless is allready set.)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4131,7 +4104,7 @@ If this flag is set, however, no menuitems in the selector box will ever link to
 ]]></default>
 		</property>
 	</type>
-	<type id="TMENU">
+	<type id="TMENU" extends="mObj">
 		<property name="ACT" type="TMENUITEM">
 			<description><![CDATA[Boolean / (config)
 			Enable/Configuration for menu items which are found in the rootLine]]></description>
@@ -4253,14 +4226,6 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 			<description><![CDATA[function-name
 			The internal array "I" is passed to this function and expected returned as well. Subsequent to this function call the menu item is compiled by implode()'ing the array $I[parts] in the passed array. Thus you may modify this if you need to.
 See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="[Common Item States, see above]" type="TMENUITEM">
-			<description><![CDATA[This is the TMENUITEM-options for each category of menuitem that can be generated.
-
-SPECIAL:
-The ->OptionSplit function is run on the whole GIFBUILDER-configuration before the items are generated.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
