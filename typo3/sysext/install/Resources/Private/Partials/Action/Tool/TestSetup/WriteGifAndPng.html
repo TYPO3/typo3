@@ -5,14 +5,6 @@
 	<f:if condition="{writeGifAndPngTested}">
 		<f:then>
 
-			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
-			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
-			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
-
-			<p></p>
-
-			<h4>Writing gif and png</h4>
-
 			<p>
 				This verifies that ImageMagick is able to write GIF and PNG files.
 				The GIF-file is attempted compressed with LZW by the
@@ -22,6 +14,10 @@
 			<f:for each="{testResults}" as="test">
 				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
 			</f:for>
+
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
 		</f:then>
 		<f:else>
 			<h4>Writing gif and png</h4>

@@ -81,8 +81,10 @@ abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\A
                 'number' => $i,
                 'class' => $class,
                 'total' => $totalSteps,
+                'percent' => floor((100 * $i) / $totalSteps)
             );
         }
         $this->view->assign('steps', $steps);
+        $this->view->assign('currentStep', $steps[$currentStep-1]);
     }
 }

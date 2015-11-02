@@ -1,5 +1,3 @@
-<h4>Mail setup</h4>
-
 <p>
 	You can check the basic mail functionality by entering your email address here and clicking the button.
 	You should then receive a test email from "{senderEmailAddress}".
@@ -22,22 +20,14 @@
 
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<fieldset>
-		<ol>
-			<li>
-				<label
-					for="t3-install-checkmail"
-				>
-					Email address:
-				</label>
-				<input
-					id="t3-install-checkmail"
-					type="email"
-					name="install[values][testEmailRecipient]"
-					class="t3-install-form-input-text"
-				/>
-			</li>
-		</ol>
-	</fieldset>
+	<div class="form-group">
+		<label for="t3-install-checkmail">Email address:</label>
+		<input
+			id="t3-install-checkmail"
+			type="email"
+			name="install[values][testEmailRecipient]"
+			class="t3-install-form-input-text form-control"
+		/>
+	</div>
 	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testMail', text:'Send test mail'}"/>
 </form>

@@ -43,12 +43,18 @@ class CleanUp extends Action\AbstractAction
     {
         if (isset($this->postValues['set']['clearTables'])) {
             $this->actionMessages[] = $this->clearSelectedTables();
+            $this->view->assign('postAction', 'clearTables');
         }
         if (isset($this->postValues['set']['resetBackendUserUc'])) {
             $this->actionMessages[] = $this->resetBackendUserUc();
+            $this->view->assign('postAction', 'resetBackendUserUc');
         }
         if (isset($this->postValues['set']['clearProcessedFiles'])) {
             $this->actionMessages[] = $this->clearProcessedFiles();
+            $this->view->assign('postAction', 'clearProcessedFiles');
+        }
+        if (isset($this->postValues['set']['deleteTypo3TempFiles'])) {
+            $this->view->assign('postAction', 'deleteTypo3TempFiles');
         }
 
         $this->view->assign('cleanableTables', $this->getCleanableTableList());

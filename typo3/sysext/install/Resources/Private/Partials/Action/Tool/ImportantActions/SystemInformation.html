@@ -1,37 +1,52 @@
 {namespace i=TYPO3\CMS\Install\ViewHelpers}
 
-<h4>Main system information</h4>
-
-<dl id="systemInformation">
-	<dt>Operating system:</dt>
-	<dd>{operatingSystem}</dd>
-	<dt>PHP version:</dt>
-	<dd><i:constant name="PHP_VERSION" /></dd>
-	<dt>PHP CGI detected:</dt>
-	<dd>{f:if(condition:cgiDetected, then:'Yes', else:'No')}</dd>
-	<dt>Database name:</dt>
-	<dd>{databaseName} </dd>
-	<dt>Database username:</dt>
-	<dd>{databaseUsername} </dd>
-	<dt>Database host:</dt>
-	<dd>{databaseHost} </dd>
+<h3>Main system information</h3>
+<table class="table table-striped">
+	<tr>
+		<td>Operating system:</td>
+		<td><strong>{operatingSystem}</strong></td>
+	</tr>
+	<tr>
+		<td>PHP version:</td>
+		<td><strong><i:constant name="PHP_VERSION" /></strong></td>
+	</tr>
+	<tr>
+		<td>PHP CGI detected:</td>
+		<td><strong>{f:if(condition:cgiDetected, then:'Yes', else:'No')}</strong></td>
+	</tr>
+	<tr>
+		<td>Database name:</td>
+		<td><strong>{databaseName}</strong></td>
+	</tr>
+	<tr>
+		<td>Database username:</td>
+		<td><strong>{databaseUsername}</strong></td>
+	</tr>
+	<tr>
+		<td>Database host:</td>
+		<td><strong>{databaseHost}</strong></td>
+	</tr>
+	<tr>
 	<f:if condition="{databasePort}">
 		<f:then>
-			<dt>Database port:</dt>
-			<dd>{databasePort} </dd>
+			<td>Database port:</td>
+			<td><strong>{databasePort}</strong></td>
 		</f:then>
 		<f:else>
-			<dt>Database socket:</dt>
+			<td>Database socket:</td>
 			<f:if condition="{databaseSocket}">
 				<f:then>
-					<dd>{databaseSocket} </dd>
+					<td><strong>{databaseSocket}</strong></td>
 				</f:then>
 				<f:else>
-					<dd><em>default socket</em> </dd>
+					<td><em>default socket</em> </td>
 				</f:else>
 			</f:if>
 		</f:else>
 	</f:if>
-	<dt>Database tables:</dt>
-	<dd>{databaseNumberOfTables} </dd>
-</dl>
+	</tr>
+	<tr>
+		<td>Database tables:</td>
+		<td><strong>{databaseNumberOfTables}</strong></td>
+	</tr>
+</table>

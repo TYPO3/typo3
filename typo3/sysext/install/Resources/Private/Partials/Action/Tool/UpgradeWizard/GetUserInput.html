@@ -5,15 +5,14 @@
 	<h4>{updateData.title}</h4>
 
 	<f:format.raw>{updateData.wizardHtml}</f:format.raw>
-
-	<fieldset>
-		<ol>
-			<li class="t3-install-form-label-after">
+	<div class="form-group">
+		<div class="checkbox">
+			<label>
 				<input id="t3-install-showdatabasequeries" type="checkbox" name="install[values][showDatabaseQueries]" value="1" />
-				<label for="t3-install-showdatabasequeries">Show database queries performed</label>
-			</li>
-		</ol>
-	</fieldset>
+				Show database queries performed
+			</label>
+		</div>
+	</div>
 
 	<f:render
 		partial="Action/Common/SubmitButton"

@@ -3,7 +3,7 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>System environment check</h3>
+	<h1>System environment check</h1>
 
 	<f:for each="{statusObjectsBySeverity}" as="statusMessages">
 		<f:for each="{statusMessages}" as="statusMessage">
@@ -11,13 +11,12 @@
 		</f:for>
 	</f:for>
 
-	<div class="toggleGroup phpinfo">
-		<div class="toggleButton">
-			<h4>PHP Info</h4>
-		</div>
-
-		<div class="toggleData" style="display:none">
-			<div class="toggleDataContent">
+	<a class="btn btn-default" role="button" data-toggle="collapse" href="#phpinfo" aria-expanded="false">
+		Show PHP Info
+	</a>
+	<div class="collapse" id="phpinfo">
+		<div class="panel panel-default">
+			<div class="panel-body">
 				<i:phpInfo />
 			</div>
 		</div>

@@ -4,13 +4,6 @@
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 	<f:if condition="{scalingImagesTested}">
 		<f:then>
-			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
-			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
-			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
-
-			<p></p>
-
-			<h4>Scaling images</h4>
 
 			<p>
 				This shows how ImageMagick reacts when scaling transparent GIF and PNG files.
@@ -19,6 +12,10 @@
 			<f:for each="{testResults}" as="test">
 				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
 			</f:for>
+
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
 		</f:then>
 		<f:else>
 			<h4>Scaling images</h4>

@@ -1,4 +1,4 @@
-<div class="typo3-message message-warning">
+<div class="alert alert-warning">
 	<div class="header-container">
 		<div class="message-header">
 			<input
@@ -29,13 +29,16 @@
 		</p>
 
 		<f:for each="{preset.configurationValues}" as="configurationValue" key="configurationKey">
-			<div>
-				<input
-					type="input"
-					name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
-					value="{configurationValue}"
-				/>
-				{configurationKey}
+			<div class="form-group">
+				<label class="col-sm-4 control-label">{configurationKey}</label>
+				<div class="col-sm-8">
+					<input
+						type="input"
+						name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
+						value="{configurationValue}"
+						class="form-control"
+					/>
+				</div>
 			</div>
 		</f:for>
 	</div>

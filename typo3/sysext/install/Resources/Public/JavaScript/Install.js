@@ -35,20 +35,24 @@ TYPO3.Install.Cache = {
 
 TYPO3.Install.Scrolling = {
 	isScrolledIntoView: function(elem) {
-		var docViewTop = $(window).scrollTop();
-		var docViewBottom = docViewTop + $(window).height();
-		var elemTop = $(elem).offset().top;
-		var elemBottom = elemTop + $(elem).height();
+		var $window = $(window);
+		var docViewTop = $window.scrollTop();
+		var docViewBottom = docViewTop + $window.height();
+		var $elem = $(elem);
+		var elemTop = $elem.offset().top;
+		var elemBottom = elemTop + $elem.height();
 
 		return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 	},
 	handleButtonScrolling: function() {
 		var $fixedFooterHandler = $('#fixed-footer-handler');
 		if ($fixedFooterHandler.length > 0) {
+			var $fixedFooter = $('#fixed-footer');
 			if (!this.isScrolledIntoView($fixedFooterHandler)) {
-				$('#fixed-footer').addClass('fixed');
+				$fixedFooter.addClass('fixed');
+				$fixedFooter.width($('.content-area').width());
 			} else {
-				$('#fixed-footer').removeClass('fixed');
+				$fixedFooter.removeClass('fixed');
 			}
 		}
 	}
@@ -85,8 +89,8 @@ TYPO3.Install.ExtensionChecker = {
 					if (data.substring(data.length - 2) === 'OK') {
 						self.checkExtensionsCompatibility(true);
 					} else {
-						$('.message-loading', '#checkExtensions').hide();
-						$('.message-error .message-body', '#checkExtensions').html(
+						$('.alert-loading', '#checkExtensions').hide();
+						$('.alert-error .messageText', '#checkExtensions').html(
 							'Something went wrong. Check failed.' + '<p>Message:<br />' + data + '</p>'
 						);
 					}
@@ -110,7 +114,7 @@ TYPO3.Install.ExtensionChecker = {
 			cache: false,
 			success: function(data) {
 				if (data) {
-					$('.message-error .message-body', '#checkExtensions').html(
+					$('.alert-danger .messageText', '#checkExtensions').html(
 						'The following extensions are not compatible. Please uninstall them and try again. '
 					);
 					var extensions = data.split(',');
@@ -123,7 +127,7 @@ TYPO3.Install.ExtensionChecker = {
 							'data-extension': $.trim(extension)
 						});
 						var fullButton = unloadButtonWrapper.append(unloadButton);
-						$('.message-error .message-body', '#checkExtensions').append(fullButton);
+						$('.alert-danger .messageText', '#checkExtensions').append(fullButton);
 					}
 					if (extensions.length) {
 						$(document).on('click', 't3-js-uninstallSingle', function(e) {
@@ -135,7 +139,7 @@ TYPO3.Install.ExtensionChecker = {
 					var unloadAllButton = $('<button />', {
 						text: 'Uninstall all incompatible extensions: '+ data,
 						click: function(e) {
-							$('.message-loading', '#checkExtensions').show();
+							$('.alert-loading', '#checkExtensions').show();
 							self.uninstallExtension(data);
 							e.preventDefault();
 							return false;
@@ -143,19 +147,19 @@ TYPO3.Install.ExtensionChecker = {
 					});
 					unloadButtonWrapper.append('<hr />');
 					var fullUnloadAllButton = unloadButtonWrapper.append(unloadAllButton);
-					$('.message-error .message-body', '#checkExtensions').append(fullUnloadAllButton);
+					$('.alert-danger .messageText', '#checkExtensions').append(fullUnloadAllButton);
 
-					$('.message-loading', '#checkExtensions').hide();
+					$('.alert-loading', '#checkExtensions').hide();
 					$('button', '#checkExtensions').show();
-					$('.message-error', '#checkExtensions').show();
+					$('.alert-danger', '#checkExtensions').show();
 				} else {
-					$('.typo3-message', '#checkExtensions').hide();
-					$('.message-ok', '#checkExtensions').show();
+					$('.t3js-message', '#checkExtensions').hide();
+					$('.alert-success', '#checkExtensions').show();
 				}
 			},
 			error: function() {
-				$('.typo3-message', '#checkExtensions').hide();
-				$('.message-ok', '#checkExtensions').show();
+				$('.t3js-message', '#checkExtensions').hide();
+				$('.alert-success', '#checkExtensions').show();
 			}
 		});
 		$.getJSON(
@@ -163,10 +167,10 @@ TYPO3.Install.ExtensionChecker = {
 			function(data) {
 				$.each(data, function(i, error) {
 					var messageToDisplay = error.message + ' in ' + error.file + ' on line ' + error.line;
-					$checkExtensions.find('.typo3-message.message-error').before($(
-						'<div class="typo3-message message-warning"><div class="header-container"><div class="message-header">' +
-						'<strong>' + error.type + '</strong></div><div class="message-body">' +
-						messageToDisplay + '</div></div></div><p></p>'
+					$checkExtensions.find('.t3js-message.alert-danger').before($(
+						'<div class="t3js-message alert-warning">' +
+						'<h4>' + error.type + '</h4><p class="messageText">' +
+						messageToDisplay + '</p></div><p></p>'
 					));
 				});
 			}
@@ -204,7 +208,7 @@ TYPO3.Install.ExtensionChecker = {
 					}
 				}
 			},
-			error: function(data) {
+			error: function() {
 				self.handleCheckExtensionsError();
 			}
 		});
@@ -219,7 +223,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-folderStructure').find('a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
+					$('#t3-install-menu-folderStructure').append('<span class="badge badge-danger">' + data + '</span>');
 				}
 			}
 		});
@@ -231,7 +235,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-systemEnvironment').find('a').append('<span class="t3-install-menu-errorCount">' + data + '</span>');
+					$('#t3-install-menu-systemEnvironment').append('<span class="badge badge-danger">' + data + '</span>');
 				}
 			}
 		});
@@ -396,21 +400,21 @@ TYPO3.Install.coreUpdate = {
 				this.showActionButton(data.action);
 			}
 			if (successMessage) {
-				this.addMessage('ok', successMessage);
+				this.addMessage('success', successMessage);
 			}
 		} else {
 			// Handle clearcache until it uses the new view object
 			if (data === "OK") {
 				canContinue = true;
 				if (successMessage) {
-					this.addMessage('ok', successMessage);
+					this.addMessage('success', successMessage);
 				}
 			} else {
 				canContinue = false;
 				if (data.status && typeof(data.status) === 'object') {
 					this.showStatusMessages(data.status);
 				} else {
-					this.addMessage('error', 'General error');
+					this.addMessage('danger', 'General error');
 				}
 			}
 		}
@@ -424,8 +428,9 @@ TYPO3.Install.coreUpdate = {
 	 */
 	addLoadingMessage: function(messageTitle) {
 		var domMessage = this.messageTemplate.clone();
-		domMessage.find('.message-header strong').html(messageTitle);
-		domMessage.addClass('message-loading');
+		domMessage.find('h4').html(messageTitle);
+		domMessage.addClass('alert-notice');
+		domMessage.find('.messageText').remove();
 		$('#coreUpdate').append(domMessage);
 	},
 
@@ -433,7 +438,7 @@ TYPO3.Install.coreUpdate = {
 	 * Remove an enabled loading message
 	 */
 	removeLoadingMessage: function() {
-		$('#coreUpdate').find('.message-loading').closest('.typo3-message').remove();
+		$('#coreUpdate').find('.alert-notice').closest('.alert').remove();
 	},
 
 	/**
@@ -494,13 +499,15 @@ TYPO3.Install.coreUpdate = {
 	addMessage: function(severity, title, message) {
 		var domMessage = this.messageTemplate.clone();
 		if (severity) {
-			domMessage.addClass('message-' + severity);
+			domMessage.addClass('alert-' + severity);
 		}
 		if (title) {
-			domMessage.find('.message-header strong').html(title);
+			domMessage.find('h4').html(title);
 		}
 		if (message) {
-			domMessage.find('.message-body').html(message);
+			domMessage.find('.messageText').html(message);
+		} else {
+			domMessage.find('.messageText').remove();
 		}
 		$('#coreUpdate').append(domMessage);
 	}
@@ -510,27 +517,6 @@ $(function() {
 	// Used in database compare section to select/deselect checkboxes
 	$('.checkall').on('click', function() {
 		$(this).closest('fieldset').find(':checkbox').prop('checked', this.checked);
-	});
-
-	// Toggle open/close
-	$('.toggleButton').on('click', function() {
-		var $toggleGroup = $(this).closest('.toggleGroup');
-		$toggleGroup.toggleClass('expanded');
-		$toggleGroup.find('.toggleData').toggle();
-		TYPO3.Install.Scrolling.handleButtonScrolling();
-	});
-
-	$('.toggleAll').on('click', function() {
-		var $toggleAll = $('.toggleGroup');
-		if ($toggleAll.not('.expanded').length === 0) {
-			// all elements are open, close them
-			$toggleAll.removeClass('expanded');
-			$toggleAll.find('.toggleData').hide();
-		} else {
-			$toggleAll.addClass('expanded');
-			$toggleAll.find('.toggleData').show();
-		}
-		TYPO3.Install.Scrolling.handleButtonScrolling();
 	});
 
 	$('.item-description').find('a').on('click', function() {
@@ -576,26 +562,26 @@ $(function() {
 			socketField = $('#t3-install-step-socket');
 
 		if (connectionType === 'socket') {
-			hostField.parent().fadeOut();
+			hostField.parents('.form-group').fadeOut();
 			hostField.val('localhost');
-			portField.parent().fadeOut();
-			socketField.parent().fadeIn();
+			portField.parents('.form-group').fadeOut();
+			socketField.parents('.form-group').fadeIn();
 		} else {
-			hostField.parent().fadeIn();
+			hostField.parents('.form-group').fadeIn();
 			if (hostField.val() === 'localhost') {
 				hostField.val('127.0.0.1');
 			}
-			portField.parent().fadeIn();
-			socketField.parent().fadeOut();
+			portField.parents('.form-group').fadeIn();
+			socketField.parents('.form-group').fadeOut();
 		}
 	}).trigger('change');
 
 	// Extension compatibility check
-	$('.typo3-message', '#checkExtensions').hide();
+	$('.t3js-message', '#checkExtensions').hide();
 	$('button', '#checkExtensions').click(function(e) {
 		$('button', '#checkExtensions').hide();
-		$('.typo3-message', '#checkExtensions').hide();
-		$('.message-loading', '#checkExtensions').show();
+		$('.t3js-message', '#checkExtensions').hide();
+		$('.alert-loading', '#checkExtensions').show();
 		TYPO3.Install.ExtensionChecker.checkExtensionsCompatibility(true);
 		e.preventDefault();
 		return false;
@@ -613,8 +599,49 @@ $(function() {
 		}));
 	}
 
-	if ($('#t3-install-left').length > 0) {
+	var $installLeft = $('#t3-install-left');
+	if ($installLeft.length > 0) {
 		TYPO3.Install.Status.getFolderStatus();
 		TYPO3.Install.Status.getEnvironmentStatus();
 	}
+	// This makes jquerys "contains" work case-insensitive
+	jQuery.expr[':'].contains = jQuery.expr.createPseudo(function(arg) {
+		return function( elem ) {
+			return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+		};
+	});
+	$('#configSearch').keyup(function() {
+		var typedQuery = $(this).val();
+		$('div.item:contains(' + typedQuery + ')').removeClass('hidden').addClass('searchhit');
+		$('div.item').not(':contains(' + typedQuery + ')').removeClass('searchhit').addClass('hidden');
+		$('.searchhit').parent().collapse('show');
+	});
+
+	// Define width of fixed menu
+	var $menuWrapper = $('#menuWrapper');
+	$menuWrapper.on('affixed.bs.affix', function() {
+		$('#t3-install-left').width($(this).parent().width());
+	});
+	$installLeft.width($menuWrapper.parent().width());
+	$(window).resize(function(){
+		$('#t3-install-left').width($('#menuWrapper').parent().width());
+	});
+	var $collapse = $('.collapse');
+	$collapse.on('shown.bs.collapse', function() {
+		TYPO3.Install.Scrolling.handleButtonScrolling();
+	});
+	$collapse.on('hidden.bs.collapse', function() {
+		TYPO3.Install.Scrolling.handleButtonScrolling();
+	});
+
+	// trigger 'handleButtonScrolling' on page scroll
+	// if the user scroll until page bottom, we need to remove 'position: fixed'
+	// so that the copyright info (footer) is not overlayed by the 'fixed button'
+	var scrollTimeout;
+	$(window).on('scroll', function() {
+		clearTimeout(scrollTimeout);
+		scrollTimeout = setTimeout(function() {
+			TYPO3.Install.Scrolling.handleButtonScrolling();
+		}, 50);
+	});
 });

@@ -5,14 +5,14 @@
 <f:section name="Content">
 	<f:if condition="{contextService.standaloneContext}">
 		<f:then>
-			<h3>About</h3>
+			<h1>About</h1>
 		</f:then>
 		<f:else>
-			<h3>TYPO3 CMS {typo3Version} Install tool on site: {siteName}
+			<h1>TYPO3 CMS {typo3Version} Install tool on site: {siteName}
 		</f:else>
 	</f:if>
 
-	<h4>How to configure TYPO3 CMS</h4>
+	<h3>How to configure TYPO3 CMS</h3>
 	<p>
 		Local configuration is done by overriding default values in the
 		file typo3conf/LocalConfiguration.php. The options that you
@@ -31,7 +31,7 @@
 	<hr />
 
 
-	<h4>Using this script</h4>
+	<h3>Using this script</h3>
 	<p>
 		These are the primary steps for you to take:
 	</p>
@@ -120,47 +120,60 @@
 	<hr />
 
 
-	<h4>Header legend</h4>
-	<h4 class="typo3-message message-notice">
-		Notice!
-	</h4>
-	<p>
-		Indicates that something is important to be aware of.
-		<br />
-		This does <em>not</em> indicate an error.
-	</p>
+	<h3>Header legend</h3>
+	<div class="alert alert-notice">
+		<h4 class="typo3-message message-notice">
+			Notice!
+		</h4>
+		<p class="messageText">
+			Indicates that something is important to be aware of.
+			<br />
+			This does <em>not</em> indicate an error.
+		</p>
+	</div>
 
-	<h4 class="typo3-message message-information">
-		Just information
-	</h4>
-	<p>
-		This is a simple message with some information about something.
-	</p>
+	<div class="alert alert-info">
+		<h4 class="typo3-message message-information">
+			Just information
+		</h4>
+		<p>
+			This is a simple message with some information about something.
+		</p>
+	</div>
 
-	<h4 class="typo3-message message-ok">
+	<div class="alert alert-success">
+		<h4 class="typo3-message message-ok">
 		Check was successful
 	</h4>
-	<p>
+	<p class="messageText">
 		Indicates that something was checked and returned an expected result.
-	</p>
+	</p></div>
 
-	<h4 class="typo3-message message-warning">
+	<div class="alert alert-warning"><h4 class="typo3-message message-warning">
 		Warning!
 	</h4>
-	<p>
+	<p class="messageText">
 		Indicates that something may very well cause trouble
 		and you should definitely look into it before proceeding.
 		<br />
 		This indicates a <em>potential</em> error.
-	</p>
+	</p></div>
 
-	<h4 class="typo3-message message-error">
+	<div class="alert alert-danger"><h4 class="typo3-message message-error">
 		Error!
 	</h4>
-	<p>
+	<p class="messageText">
 		Indicates that something is definitely wrong and that TYPO3 will most
 		likely not perform as expected if this problem is not solved.
 		<br />
 		This indicates an actual error.
-	</p>
+	</p></div>
+	<div class="row copyright">
+		<hr>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<f:render partial="Action/Common/Copyright" arguments="{_all}" />
+			</div>
+		</div>
+	</div>
 </f:section>

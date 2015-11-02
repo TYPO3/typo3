@@ -1,0 +1,144 @@
+//
+// Install Tool
+// =========
+// Contains all needed styles for the TYPO3 Intall Tool.
+//
+
+
+//
+// Load minimal Setup including variables
+//
+@import "_minimal.less";
+
+//
+// Load global Variables
+// Note: Needs to be loaded always at the end of the LESS file that gets compiled
+//
+@import "_variables.less";
+
+.content-area > h3 {
+	margin-top: 0;
+}
+
+.logo-pageheader {
+	display: table-cell;
+	vertical-align: bottom;
+	line-height:0;
+	img {
+		padding-bottom: 1px;
+	}
+}
+
+img.logo {
+	vertical-align: bottom;
+}
+
+.typo3-message > h4 {
+	margin-bottom: 0;
+}
+
+.typo3-message p {
+	margin-top: 9px;
+}
+
+@alert-success-text: @gray-darker;
+@alert-success-border: #79a548;
+@alert-success-bg: lighten(#79a548, 20%);
+
+@alert-info-text: @gray-darker;
+@alert-info-border: #6daae0;
+@alert-info-bg: lighten(#6daae0, 20%);
+
+@alert-warning-text: @gray-darker;
+@alert-warning-border: #e8a33d;
+@alert-warning-bg: lighten(#e8a33d, 20%);
+
+@alert-danger-text: @gray-darker;
+@alert-danger-border: #c83c3c;
+@alert-danger-bg: lighten(#c83c3c, 30%);
+
+.alert-notice {
+	.alert-variant(@btn-default-bg; @btn-default-border; @btn-default-color);
+}
+
+table.t3-install-displaytwinimageimages tr > td {
+	padding-right: 20px;
+}
+
+.nav-pills > li > a {
+	border-radius: 0;
+}
+
+h1:first-child {
+	margin-top: 0;
+}
+
+.typo3-docheader {
+	&-functions,
+	&-buttons {
+		min-height: 20px;
+	}
+}
+
+.item {
+	margin : 1em;
+	border: 1px solid @panel-default-heading-bg;
+}
+
+.item .item-heading {
+	padding: 1em;
+	background-color: @panel-default-heading-bg;
+}
+
+.item .item-body {
+	padding: 1em;
+}
+
+@media (min-width: @screen-md-min) {
+	.affix-bottom {
+		position: absolute;
+	}
+
+	body.standalone .affix-top {
+		position: relative;
+	}
+
+	.affix {
+		position: fixed;
+		top: 35px;
+	}
+
+	body.backend .affix-top {
+		position: fixed;
+		top: 35px;
+	}
+
+	body.backend .leftNavigation {
+		min-height: 425px;
+	}
+}
+
+hr {
+	border-top-color: @panel-default-heading-bg;
+}
+
+#fixed-footer-handler {
+	height: 32px;
+}
+.fixed {
+	position: fixed;
+	bottom: 0;
+	background-color: grey;
+	.footer-innerWrap {
+		padding : 1.5em;
+	}
+}
+
+// override 'position: fixed' (set by bootstrap affix via JS) if viewport < MD
+// menu is placed above the content
+#menuWrapper {
+	@media (max-width: @screen-sm-max) {
+		position: relative!important;
+		margin-bottom: 30px;
+	}
+}

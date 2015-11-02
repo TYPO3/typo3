@@ -41,6 +41,7 @@ class TestSetup extends Action\AbstractAction
         $actionMessages = array();
         if (isset($this->postValues['set']['testMail'])) {
             $actionMessages[] = $this->sendTestMail();
+            $this->view->assign('postAction', 'testMail');
         }
 
         if (isset($this->postValues['set']['testTrueTypeFont'])) {

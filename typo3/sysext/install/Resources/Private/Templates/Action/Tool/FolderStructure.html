@@ -3,12 +3,12 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>Folder Structure</h3>
+	<h1>Folder Structure</h1>
 	<p>Root Directory: <strong><i:constant name="PATH_site" /></strong></p>
 
 	<f:if condition="{fixedStatus}">
 		<hr />
-		<h4>Fix action results:</h4>
+		<h3>Fix action results:</h3>
 		<f:for each="{fixedStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
@@ -16,7 +16,7 @@
 
 	<f:if condition="{errorStatus}">
 		<hr />
-		<h4>These files or folders have errors and may be fixed automatically:</h4>
+		<h3>These files or folders have errors and may be fixed automatically:</h3>
 		<f:for each="{errorStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
@@ -27,13 +27,13 @@
 	</f:if>
 
 	<hr />
-	<h4>Default File and Directory permissions</h4>
+	<h3>Default File and Directory permissions</h3>
 	<f:render partial="Action/Common/StatusMessage" arguments="{message: filePermissionStatus}" />
 	<f:render partial="Action/Common/StatusMessage" arguments="{message: directoryPermissionStatus}" />
 
 	<f:if condition="{okStatus}">
 		<hr />
-		<h4>These structures don't need to be fixed:</h4>
+		<h3>These structures don't need to be fixed:</h3>
 		<f:for each="{okStatus}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>

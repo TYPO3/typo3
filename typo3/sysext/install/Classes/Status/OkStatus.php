@@ -22,5 +22,5 @@ class OkStatus extends AbstractStatus implements StatusInterface
     /**
      * @var string The severity
      */
-    protected $severity = 'ok';
+    protected $severity = 'success';
 }

@@ -3,7 +3,7 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>Configuration presets</h3>
+	<h1>Configuration presets</h1>
 
 	<f:for each="{actionMessages}" as="statusMessage">
 		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
@@ -24,17 +24,20 @@
 		is not controlled by the TYPO3 CMS core and may override single settings again. Administrators
 		must maintain AdditionalConfiguration.php on their own and should use it with care.
 	</p>
-	<form method="post">
+	<form method="post" class="form-horizontal">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 
-		<f:for each="{features}" as="feature">
-			<f:render partial="Action/Tool/Configuration/{feature.name}" arguments="{_all}" />
-		</f:for>
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<f:for each="{features}" as="feature">
+				<f:render partial="Action/Tool/Configuration/{feature.name}" arguments="{_all}" />
+			</f:for>
+		</div>
 
 		<div id="fixed-footer-handler">
 			<div id="fixed-footer">
-				<f:render partial="Action/Common/SubmitButton" arguments="{name:'activate', text:'Activate', className:'btn-save'}"/>
-				<div class="toggleAll button">Toggle All</div>
+				<div class="footer-innerWrap">
+					<f:render partial="Action/Common/SubmitButton" arguments="{name:'activate', text:'Activate', className:'btn-save'}"/>
+				</div>
 			</div>
 		</div>
 

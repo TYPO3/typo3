@@ -2,27 +2,33 @@
 <html>
 <head>
 	<title>The Install Tool is locked</title>
-	<link rel="stylesheet" type="text/css" href="../Resources/Public/Css/Action/Common/EarlyExit.css?{time}" />
+	<link rel="stylesheet" type="text/css" href="../Resources/Public/Css/InstallTool.css?{time}" />
 </head>
 <body>
-<div id="container">
-	<h1>TYPO3</h1>
+<div class="container">
+	<div class="page-header"><img src="../Resources/Public/Images/typo3_orange.svg" width="130" class="logo" /></div>
+	<div class="row">
+		<div class="col-sm-12 col-md-8 col-lg-5 center-block">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<h2 class="panel-title">The Install Tool is locked</h2>
+				</div>
+				<div class="panel-body">
+					<p>
+						To enable the Install Tool, the file <strong>ENABLE_INSTALL_TOOL</strong>
+						must be created in the directory <strong>typo3conf/</strong>.
+						The file must be writable by the web server user.
+						The filename is case-sensitive but the file itself can be empty.
+					</p>
 
-	<div class="typo3-message message-warning">
-		<h2>The Install Tool is locked</h2>
-
-		<p>
-			To enable the Install Tool, the file <strong>ENABLE_INSTALL_TOOL</strong>
-			must be created in the directory <strong>typo3conf/</strong>.
-			The file must be writable by the web server user.
-			The filename is case-sensitive but the file itself can be empty.
-		</p>
-
-		<p>
-			<strong>Security note:</strong>
-			When you are finished with the Install Tool, you should rename or delete this file.
-			It will automatically be deleted if you log out of the Install Tool or if the file is older than one hour.
-		</p>
+					<p>
+						<strong>Security note:</strong>
+						When you are finished with the Install Tool, you should rename or delete this file.
+						It will automatically be deleted if you log out of the Install Tool or if the file is older than one hour.
+					</p>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 </body>

@@ -34,6 +34,7 @@ module.exports = function(grunt) {
 			root      : '../',
 			sysext    : '<%= paths.root %>typo3/sysext/',
 			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
+			install   : '<%= paths.sysext %>install/Resources/',
 			backend   : '<%= paths.sysext %>backend/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			flags     : 'bower_components/region-flags/svg/',
@@ -47,6 +48,15 @@ module.exports = function(grunt) {
 				},
 				files: {
 					"<%= paths.t3skin %>Public/Css/backend.css": "<%= paths.less %>backend.less"
+				}
+			},
+			InstallTool: {
+				options: {
+					banner: '<%= banner %>',
+					outputSourceFiles: true
+				},
+				files: {
+					"<%= paths.install %>Public/Css/InstallTool.css": "<%= paths.less %>InstallTool.less"
 				}
 			}
 		},

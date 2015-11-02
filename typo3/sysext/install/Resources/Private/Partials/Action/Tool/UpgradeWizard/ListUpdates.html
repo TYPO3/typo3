@@ -14,10 +14,12 @@
 				<h4>{availableUpdate.title}</h4>
 				<f:format.raw>{availableUpdate.explanation}</f:format.raw>
 				<f:if condition="{availableUpdate.renderNext}">
-					<f:render
-						partial="Action/Common/SubmitButton"
-						arguments="{name:'getUserInput', text:'Execute'}"
-					/>
+					<div>
+						<f:render
+							partial="Action/Common/SubmitButton"
+							arguments="{name:'getUserInput', text:'Execute'}"
+						/>
+					</div>
 				</f:if>
 				<hr />
 			</form>
@@ -36,6 +38,6 @@
 	When all updates are done you can check the database for tables and fields no longer required.
 	Perform the Database Analyzer steps until no more changes are required.
 </p>
-<a href="Install.php?install[action]=importantActions&amp;install[context]={context}&amp;install[controller]=tool">
+<a href="Install.php?install[action]=importantActions&amp;install[context]={context}&amp;install[controller]=tool" class="btn btn-default">
 	Go to Database Analyzer
 </a>

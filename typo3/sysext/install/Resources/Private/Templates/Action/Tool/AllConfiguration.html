@@ -6,7 +6,7 @@
 
 	<f:if condition="{configurationValuesSaved}">
 		<f:then>
-			<h3>Saved configuration values</h3>
+			<h1>Saved configuration values</h1>
 
 			<f:if condition="{savedConfigurationValueMessages}">
 				<f:then>
@@ -35,29 +35,37 @@
 		</f:then>
 
 		<f:else>
-			<h3>Change configuration values</h3>
+			<div class="fixedHead">
+				<h1>Change configuration values</h1>
 
-			<p>
-				Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php
-				is not controlled by the TYPO3 CMS core and may override single settings again. Administrators
-				must maintain AdditionalConfiguration.php on their own and should use it with care.
-			</p>
+				<p>
+					Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php
+					is not controlled by the TYPO3 CMS core and may override single settings again. Administrators
+					must maintain AdditionalConfiguration.php on their own and should use it with care.
+				</p>
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon">Filter by:</span>
+						<input type="text" class="form-control" placeholder="search setting" id="configSearch">
+					</div>
+				</div>
+			</div>
 
 			<form method="post">
 				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-
-
-
+				<div class="panel-group" id="allConfiguration" role="tablist" aria-multiselectable="true">
 				<f:for each="{data}" as="sectionData" key="sectionName">
 					<f:if condition="{sectionData}">
 						<f:render partial="Action/Tool/AllConfiguration/SubSection" arguments="{_all}" />
 					</f:if>
 				</f:for>
+				</div>
 
 				<div id="fixed-footer-handler">
 					<div id="fixed-footer">
-						<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration', className:'btn-save'}"/>
-						<div class="toggleAll button">Toggle All</div>
+						<div class="footer-innerWrap">
+							<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration', className:'btn-save'}"/>
+						</div>
 					</div>
 				</div>
 			</form>

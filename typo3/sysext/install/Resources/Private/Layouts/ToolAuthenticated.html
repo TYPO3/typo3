@@ -5,23 +5,28 @@
 		<f:render partial="Action/Common/Headers" arguments="{_all}" />
 	</head>
 	<body class="{context}">
-	<f:if condition="{contextService.backendContext}">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions"></div>
-			<div class="typo3-docheader-buttons"></div>
-		</div>
-	</f:if>
-	<div id="typo3-docbody">
-		<div id="t3-install-outer">
-			<f:render partial="Action/Common/Head" arguments="{_all}" />
-			<div id="t3-install-center">
-				<f:render partial="Action/Common/Left" arguments="{_all}" />
-				<div id="t3-install-right">
-					<div id="t3-install-box-body">
-						<f:render section="Content" />
-					</div>
-					<f:render partial="Action/Common/Copyright" arguments="{_all}" />
+	<div class="container">
+		<f:if condition="{contextService.backendContext}">
+			<f:then>
+				<div id="typo3-docheader">
+					<div class="typo3-docheader-functions"></div>
+					<div class="typo3-docheader-buttons"></div>
 				</div>
+			</f:then>
+			<f:else>
+				<div class="row">
+					<div class="col-sm-12">
+						<f:render partial="Action/Common/Head" arguments="{_all}" />
+					</div>
+				</div>
+			</f:else>
+		</f:if>
+		<div class="row">
+			<div class="col-sm-12 col-md-3 leftNavigation">
+				<f:render partial="Action/Common/Left" arguments="{_all}" />
+			</div>
+			<div class="col-sm-12 col-md-9 content-area">
+				<f:render section="Content" />
 			</div>
 		</div>
 	</div>

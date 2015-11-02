@@ -1,7 +1,7 @@
 <f:layout name="ToolAuthenticated" />
 
 <f:section name="Content">
-	<h3>Load extension configuration</h3>
+	<h1>Load extension configuration</h1>
 
 	<f:for each="{actionMessages}" as="statusMessage">
 		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
@@ -20,8 +20,8 @@
 	<script type="text/javascript">
 		$(function() {
 			$('button', '#checkExtensions').hide();
-			$('.typo3-message', '#checkExtensions').hide();
-			$('.message-loading', '#checkExtensions').show();
+			$('.t3js-message', '#checkExtensions').hide();
+			$('.t3js-message-loading', '#checkExtensions').show();
 			TYPO3.Install.ExtensionChecker.checkExtensionsCompatibility(true);
 		});
 	</script>

@@ -2,32 +2,37 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers">
 	<head>
 		<title>Installing TYPO3 CMS</title>
-		<script type="text/javascript" src="../../core/Resources/Public/JavaScript/Contrib/jquery/jquery-2.1.4.min.js?{time}"></script>
-		<script type="text/javascript" src="../Resources/Public/JavaScript/Install.js?{time}"></script>
-		<link rel="stylesheet" type="text/css" href="../Resources/Public/Css/Action/Step/General.css?{time}" />
+		<f:render partial="Action/Common/Headers" arguments="{_all}" />
 	</head>
 	<body>
-		<div id="t3-install-outer">
-			<h1></h1>
-
-			<h2>Installing TYPO3 CMS <i:constant name="TYPO3_version" /></h2>
-
-			<f:if condition="{messages}">
-				<div id="t3-install-step-execution-messages">
-					<h4>Messages</h4>
-					<f:for each="{messages}" as="message">
-						<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
-					</f:for>
-				</div>
-			</f:if>
-
-			<div id="t3-install-box-body">
-				<f:render section="Content" />
+		<div class="container">
+			<div class="page-header">
+				<h1 class="logo-pageheader"><img src="../Resources/Public/Images/typo3_orange.svg" width="130" class="logo" /> <small> CMS {typo3Version}</small></h1>
 			</div>
+			<div class="row">
+				<h2>Installing TYPO3 CMS <i:constant name="TYPO3_version" /></h2>
 
-			<div id="t3-install-box-border-bottom">&nbsp;</div>
+				<f:if condition="{messages}">
+					<div id="t3-install-step-execution-messages">
+						<h4>Messages</h4>
+						<f:for each="{messages}" as="message">
+							<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
+						</f:for>
+					</div>
+				</f:if>
 
-			<f:render partial="Action/Common/Copyright" arguments="{_all}" />
+				<div id="t3-install-box-body">
+					<f:render section="Content" />
+				</div>
+
+				<div id="t3-install-box-border-bottom">&nbsp;</div>
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<f:render partial="Action/Common/Copyright" arguments="{_all}" />
+					</div>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

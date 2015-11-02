@@ -1,76 +1,79 @@
 {namespace i=TYPO3\CMS\Install\ViewHelpers}
 
-<div class="toggleGroup">
-	<div class="toggleButton">
-		<h4>Current configuration</h4>
-	</div>
-
-	<div class="toggleData" style="display:none">
-		<div class="toggleDataContent">
-			<dl class="t3-install-definitionlist">
-				<dt>
-					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} enabled:
-				</dt>
-				<dd>
-					{f:if(condition:imageConfiguration.imageMagickEnabled, then:'Yes', else:'No')}
-				</dd>
-
-				<dt>
-					ImageMagick or GraphicsMagick:
-				</dt>
-				<dd>
-					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')}
-				</dd>
-
-				<dt>
-					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} path:
-				</dt>
-				<dd>
-					{imageConfiguration.imageMagickPath}
-				</dd>
-
-				<dt>
-					{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} version:
-				</dt>
-				<dd>
-					{imageConfiguration.imageMagickVersion}
-				</dd>
-
-				<dt>
-					IM5 effects enabled:
-				</dt>
-				<dd>
-					{imageConfiguration.imageMagick5Effects} <span>(Blurring/Sharpening with IM 5+)</span>
-				</dd>
-
-				<dt>
-					GDLib enabled:
-				</dt>
-				<dd>
-					{f:if(condition:imageConfiguration.gdlibEnabled, then:'Yes', else:'No')}
-				</dd>
-
-				<dt>
-					GDLib using PNG:
-				</dt>
-				<dd>
-					{imageConfiguration.gdlibPng}
-				</dd>
-
-				<dt>
-					Freetype DPI:
-				</dt>
-				<dd>
-					{imageConfiguration.freeTypeDpi} <span>(Should be 96 for Freetype 2)</span>
-				</dd>
-
-				<dt>
-					File Formats:
-				</dt>
-				<dd>
-					{imageConfiguration.fileFormats}
-				</dd>
-			</dl>
-		</div>
-	</div>
+<div class="alert alert-notice">
+	<h4>Current configuration</h4>
+	<table class="table table-striped">
+		<tr>
+			<td>
+				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} enabled:
+			</td>
+			<td>
+				{f:if(condition:imageConfiguration.imageMagickEnabled, then:'Yes', else:'No')}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				ImageMagick or GraphicsMagick:
+			</td>
+			<td>
+				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} path:
+			</td>
+			<td>
+				{imageConfiguration.imageMagickPath}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} version:
+			</td>
+			<td>
+				{imageConfiguration.imageMagickVersion}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IM5 effects enabled:
+			</td>
+			<td>
+				{imageConfiguration.imageMagick5Effects} <span>(Blurring/Sharpening with IM 5+)</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				GDLib enabled:
+			</td>
+			<td>
+				{f:if(condition:imageConfiguration.gdlibEnabled, then:'Yes', else:'No')}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				GDLib using PNG:
+			</td>
+			<td>
+				{imageConfiguration.gdlibPng}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Freetype DPI:
+			</td>
+			<td>
+				{imageConfiguration.freeTypeDpi} <span>(Should be 96 for Freetype 2)</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				File Formats:
+			</td>
+			<td>
+				{imageConfiguration.fileFormats}
+			</td>
+		</tr>
+	</table>
 </div>

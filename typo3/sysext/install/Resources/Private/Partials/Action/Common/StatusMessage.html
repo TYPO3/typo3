@@ -1,10 +1,6 @@
-<div class="typo3-message message-{message.severity}">
-	<div class="header-container">
-		<div class="message-header message-left"><strong>{message.title}</strong></div>
-		<div class="message-header message-right"></div>
-	</div>
-	<div class="message-body">
-		<f:format.nl2br>{message.message}</f:format.nl2br>
-	</div>
+<div class="t3js-message typo3-message alert alert-{message.severity}" role="alert">
+	<h4>{message.title}</h4>
+	<f:if condition="{message.message}">
+		<p class="messageText"><f:format.nl2br>{message.message}</f:format.nl2br></p>
+	</f:if>
 </div>
-<p></p>
