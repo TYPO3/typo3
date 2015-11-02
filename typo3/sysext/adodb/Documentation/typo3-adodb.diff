@@ -393,3 +393,29 @@ index e7b4c2b..3453d4c 100644
 
  		if (isset($tableoptions['REPLACE'])) $sql[] = "DROP SEQUENCE $seqname";
  		$seqCache = '';
+diff --git a/drivers/adodb-sqlite.inc.php b/drivers/adodb-sqlite.inc.php
+index e7cf353..286f39c 100644
+--- a/drivers/adodb-sqlite.inc.php
++++ b/drivers/adodb-sqlite.inc.php
+@@ -262,7 +262,7 @@ class ADODB_sqlite extends ADOConnection {
+ 		return @sqlite_close($this->_connectionID);
+ 	}
+ 
+-	function MetaIndexes($table, $primary = FALSE, $owner=false, $owner = false)
++	function MetaIndexes($table, $primary = FALSE, $owner=false)
+ 	{
+ 		$false = false;
+ 		// save old fetch mode
+diff --git a/drivers/adodb-sqlite3.inc.php b/drivers/adodb-sqlite3.inc.php
+index af83517..f9f667c 100644
+--- a/drivers/adodb-sqlite3.inc.php
++++ b/drivers/adodb-sqlite3.inc.php
+@@ -282,7 +282,7 @@ class ADODB_sqlite3 extends ADOConnection {
+ 		return $this->_connectionID->close();
+ 	}
+ 
+-	function MetaIndexes($table, $primary = FALSE, $owner=false, $owner = false)
++	function MetaIndexes($table, $primary = FALSE, $owner=false)
+ 	{
+ 		$false = false;
+ 		// save old fetch mode
