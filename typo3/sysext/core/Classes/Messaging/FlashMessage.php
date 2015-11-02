@@ -134,4 +134,13 @@ class FlashMessage extends AbstractMessage
 			</div>';
         return $message;
     }
+
+    /**
+     * Renders the flash message, makes it possible to render a flashMessage in a fluid view.
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->render();
+    }
 }

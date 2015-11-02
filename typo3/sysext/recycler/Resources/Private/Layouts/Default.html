@@ -1,4 +1,8 @@
 <f:be.pageRenderer includeRequireJsModules="{0:'TYPO3/CMS/Recycler/Recycler'}" />
 <h1><f:translate key="title" /></h1>
-<f:flashMessages />
+<f:flashMessages as="flashMessages">
+	<f:for each="{flashMessages}" as="flashMessage">
+		{flashMessage}
+	</f:for>
+</f:flashMessages>
 <f:render section="content" />

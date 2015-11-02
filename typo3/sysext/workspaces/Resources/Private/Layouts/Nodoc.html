@@ -3,7 +3,11 @@
 	<div id="typo3-docbody">
 		<div id="typo3-inner-docbody">
 
-			<f:flashMessages />
+			<f:flashMessages as="flashMessages">
+				<f:for each="{flashMessages}" as="flashMessage">
+					{flashMessage}
+				</f:for>
+			</f:flashMessages>
 
 			<f:render section="main"/>
 		</div>

@@ -5,7 +5,11 @@
 
 <f:section name="Content">
 	<p class="lead"><f:translate key="administration.document.description"/></p>
-	<f:flashMessages />
+	<f:flashMessages as="flashMessages">
+		<f:for each="{flashMessages}" as="flashMessage">
+			{flashMessage}
+		</f:for>
+	</f:flashMessages>
 	<f:if condition="{phashRow}">
 		<f:then>
 			<table class="table table-striped table-hover">

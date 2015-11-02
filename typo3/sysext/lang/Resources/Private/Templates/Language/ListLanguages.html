@@ -9,7 +9,11 @@
 	<h1>
 		<f:translate key="header.languages"/>
 	</h1>
-	<f:flashMessages/>
+	<f:flashMessages as="flashMessages">
+		<f:for each="{flashMessages}" as="flashMessage">
+			{flashMessage}
+		</f:for>
+	</f:flashMessages>
 	<form class="form-inline">
 		<div class="form-group">
 			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}"
