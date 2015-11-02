@@ -378,7 +378,6 @@ class FileListController extends ActionController
                     $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
                     $fileProcessor->start($FILE);
                     $fileProcessor->processData();
-                    $fileProcessor->pushErrorMessagesToFlashMessageQueue();
                 }
             }
             // Start up filelisting object, include settings.

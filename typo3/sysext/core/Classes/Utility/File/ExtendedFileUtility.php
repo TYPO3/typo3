@@ -312,9 +312,11 @@ class ExtendedFileUtility extends BasicFileUtility
      * Adds all log error messages from the operations of this script instance to the FlashMessageQueue
      *
      * @return void
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public function pushErrorMessagesToFlashMessageQueue()
     {
+        GeneralUtility::logDeprecatedFunction();
         foreach ($this->getErrorMessages() as $msg) {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
