@@ -134,7 +134,7 @@ CodeCompletion::loadTemplates          t3editor_codecompletion_loadtemplates   /
 ====================================   =====================================   =======================================
 
 * T3Editor_TSrefLoader::getTypes and T3Editor_TSrefLoader::getDescription have been combined. The separation is done by
-the new parameter ``fetch`` being either "types" or "description".
+  the new parameter ``fetch`` being either "types" or "description".
 
 EXT:taskcenter
 ^^^^^^^^^^^^^^
