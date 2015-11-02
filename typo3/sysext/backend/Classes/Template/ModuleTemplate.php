@@ -130,13 +130,6 @@ class ModuleTemplate
     protected $content = '';
 
     /**
-     * Defines whether a section has been opened before
-     *
-     * @var int
-     */
-    protected $sectionFlag = 0;
-
-    /**
      * IconFactory Member
      *
      * @var IconFactory
@@ -608,136 +601,6 @@ class ModuleTemplate
     }
 
     /**
-     * Begins an output section and sets header and content
-     *
-     * @param string $label The header
-     * @param string $text The HTML-content
-     * @param bool $noStrToUpper A flag that will prevent the header from
-     * being converted to uppercase
-     * @param bool $sH Defines the type of header (if set, "<h3>" rather
-     * than the default "h4")
-     * @param int $type The number of an icon to show with the header
-     * (see the icon-function). -1,1,2,3
-     * @param bool $allowHtmlInHeader If set, HTML tags are allowed in
-     * $label (otherwise this value is by default htmlspecialchars()'ed)
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function section($label, $text, $noStrToUpper = false, $sH = false, $type = 0, $allowHtmlInHeader = false)
-    {
-        $str = '';
-        // Setting header
-        if ($label) {
-            if (!$allowHtmlInHeader) {
-                $label = htmlspecialchars($label);
-            }
-            $str .= $this->sectionHeader($this->icons($type) . $label, $sH, $noStrToUpper ? '' : ' class="uppercase"');
-        }
-        // Setting content
-        $str .= '
-
-	<!-- Section content -->
-' . $text;
-        return $this->sectionBegin() . $str;
-    }
-
-    /**
-     * Inserts a divider image
-     * Ends a section (if open) before inserting the image
-     *
-     * @param int $dist The margin-top/-bottom of the <hr> ruler.
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function divider($dist)
-    {
-        $dist = (int)$dist;
-        $str = '
-
-	<!-- DIVIDER -->
-	<hr style="margin-top: ' . $dist . 'px; margin-bottom: ' . $dist . 'px;" />
-';
-        return $this->sectionEnd() . $str;
-    }
-
-    /**
-     * Make a section header.
-     * Begins a section if not already open.
-     *
-     * @param string $label The label between the <h3> or <h4> tags. (Allows HTML)
-     * @param bool $sH If set, <h3> is used, otherwise <h4>
-     * @param string $addAttribute Additional attributes to h-tag, eg. ' class=""'
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function sectionHeader($label, $sH = false, $addAttribute = '')
-    {
-        $tag = $sH ? 'h2' : 'h3';
-        if ($addAttribute && $addAttribute[0] !== ' ') {
-            $addAttribute = ' ' . $addAttribute;
-        }
-        $str = '
-
-	<!-- Section header -->
-	<' . $tag . $addAttribute . '>' . $label . '</' . $tag . '>
-';
-        return $this->sectionBegin() . $str;
-    }
-
-    /**
-     * Begins an output section.
-     * Returns the <div>-begin tag AND sets the ->sectionFlag TRUE
-     * (if the ->sectionFlag is not already set!)
-     * You can call this function even if a section is already begun
-     * since the function will only return something if the sectionFlag
-     * is not already set!
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function sectionBegin()
-    {
-        if (!$this->sectionFlag) {
-            $this->sectionFlag = 1;
-            $str = '
-
-	<!-- ***********************
-	      Begin output section.
-	     *********************** -->
-	<div>
-';
-            return $str;
-        }
-        return '';
-    }
-
-    /**
-     * Ends and output section
-     * Returns the </div>-end tag AND clears the ->sectionFlag
-     * (but does so only IF the sectionFlag is set - that is a section is 'open')
-     * See sectionBegin() also.
-     *
-     * @return string HTML content
-     * @internal
-     */
-    public function sectionEnd()
-    {
-        if ($this->sectionFlag) {
-            $this->sectionFlag = 0;
-            return '
-	</div>
-	<!-- *********************
-	      End output section.
-	     ********************* -->
-';
-        }
-        return '';
-    }
-
-    /**
      * Returns the BE USER Object
      *
      * @return BackendUserAuthentication
@@ -830,12 +693,11 @@ class ModuleTemplate
      */
     public function header($text)
     {
-        $str = '
+        return '
 
 	<!-- MAIN Header in page top -->
 	<h1 class="t3js-title-inlineedit">' . htmlspecialchars($text) . '</h1>
 ';
-        return $this->sectionEnd() . $str;
     }
 
     /**

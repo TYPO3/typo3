@@ -733,9 +733,11 @@ function jumpToUrl(URL) {
      * @param bool $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
      * @return string HTML content
      * @see icons(), sectionHeader()
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function section($label, $text, $nostrtoupper = false, $sH = false, $type = 0, $allowHTMLinHeader = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         $str = '';
         // Setting header
         if ($label) {
@@ -758,9 +760,11 @@ function jumpToUrl(URL) {
      *
      * @param int $dist The margin-top/-bottom of the <hr> ruler.
      * @return string HTML content
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function divider($dist)
     {
+        GeneralUtility::logDeprecatedFunction();
         $dist = (int)$dist;
         $str = '
 
@@ -778,9 +782,11 @@ function jumpToUrl(URL) {
      * @param bool $sH If set, <h3> is used, otherwise <h4>
      * @param string $addAttrib Additional attributes to h-tag, eg. ' class=""'
      * @return string HTML content
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function sectionHeader($label, $sH = false, $addAttrib = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $tag = $sH ? 'h2' : 'h3';
         if ($addAttrib && $addAttrib[0] !== ' ') {
             $addAttrib = ' ' . $addAttrib;
@@ -799,9 +805,11 @@ function jumpToUrl(URL) {
      * You can call this function even if a section is already begun since the function will only return something if the sectionFlag is not already set!
      *
      * @return string HTML content
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function sectionBegin()
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!$this->sectionFlag) {
             $this->sectionFlag = 1;
             $str = '
@@ -823,9 +831,11 @@ function jumpToUrl(URL) {
      * See sectionBegin() also.
      *
      * @return string HTML content
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function sectionEnd()
     {
+        GeneralUtility::logDeprecatedFunction();
         if ($this->sectionFlag) {
             $this->sectionFlag = 0;
             return '
