@@ -1,6 +1,6 @@
 {
 	"name": "typo3/cms-openid",
-	"type": "typo3-cms-framework",
+	"type": "typo3-cms-extension",
 	"description": "TYPO3 Core",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
@@ -15,7 +15,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\Openid\\": "Classes/"
+			"FoT3\\Openid\\": "Classes/"
 		}
 	},
 	"extra": {

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Openid;
+namespace FoT3\Openid;
 
 /*
  * This file is part of the TYPO3 CMS project.

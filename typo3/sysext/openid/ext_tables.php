@@ -9,8 +9,8 @@ if (TYPO3_MODE === 'BE') {
         'table' => 'be_users',
         'label' => 'LLL:EXT:openid/locallang_db.xlf:_MOD_user_setup.tx_openid_openid',
         'csh' => 'tx_openid_openid',
-        'userFunc' => \TYPO3\CMS\Openid\OpenidModuleSetup::class . '->renderOpenID',
-        'access' => \TYPO3\CMS\Openid\OpenidModuleSetup::class
+        'userFunc' => \FoT3\Openid\OpenidModuleSetup::class . '->renderOpenID',
+        'access' => \FoT3\Openid\OpenidModuleSetup::class
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
 }

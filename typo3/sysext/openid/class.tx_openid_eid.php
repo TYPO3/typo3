@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/* @var \TYPO3\CMS\Openid\OpenidEid $module */
-$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidEid::class);
+/* @var \FoT3\Openid\OpenidEid $module */
+$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\FoT3\Openid\OpenidEid::class);
 $module->main();
