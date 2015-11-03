@@ -351,7 +351,11 @@ class InlineRecordContainer extends AbstractContainer
             $fileUid = array_pop(BackendUtility::splitTable_Uid($firstElement));
 
             if (!empty($fileUid)) {
-                $fileObject = ResourceFactory::getInstance()->getFileObject($fileUid);
+                try {
+                    $fileObject = ResourceFactory::getInstance()->getFileObject($fileUid);
+                } catch (\InvalidArgumentException $e) {
+                    $fileObject = null;
+                }
                 if ($fileObject && $fileObject->isMissing()) {
                     $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
                     $thumbnail = $flashMessage->render();
