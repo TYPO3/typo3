@@ -252,23 +252,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                     if ($POST['add_property']) {
                         $property = trim($POST['data'][$name]['name']);
                         if (preg_replace('/[^a-zA-Z0-9_\\.]*/', '', $property) != $property) {
-                            $badPropertyMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noSpaces') . '<br />' . $lang->getLL('nothingUpdated'), $lang->getLL('badProperty'), FlashMessage::ERROR);
+                            $badPropertyMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noSpaces') . $lang->getLL('nothingUpdated'), $lang->getLL('badProperty'), FlashMessage::ERROR);
                             $this->addFlashMessage($badPropertyMessage);
                         } else {
                             $pline = $name . '.' . $property . ' = ' . trim($POST['data'][$name]['propertyValue']);
-                            $propertyAddedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('propertyAdded'));
+                            $propertyAddedMessage = GeneralUtility::makeInstance(FlashMessage::class, $pline, $lang->getLL('propertyAdded'));
                             $this->addFlashMessage($propertyAddedMessage);
                             $line .= LF . $pline;
                         }
                     } elseif ($POST['update_value']) {
                         $pline = $name . ' = ' . trim($POST['data'][$name]['value']);
-                        $updatedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('valueUpdated'));
+                        $updatedMessage = GeneralUtility::makeInstance(FlashMessage::class, $pline, $lang->getLL('valueUpdated'));
                         $this->addFlashMessage($updatedMessage);
                         $line .= LF . $pline;
                     } elseif ($POST['clear_object']) {
                         if ($POST['data'][$name]['clearValue']) {
                             $pline = $name . ' >';
-                            $objectClearedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('objectCleared'));
+                            $objectClearedMessage = GeneralUtility::makeInstance(FlashMessage::class, $pline, $lang->getLL('objectCleared'));
                             $this->addFlashMessage($objectClearedMessage);
                             $line .= LF . $pline;
                         }
@@ -538,7 +538,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         /** @var $flashMessageService FlashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier('module.template.flashmessages');
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
