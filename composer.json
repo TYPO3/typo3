@@ -95,7 +95,6 @@
 		"typo3/cms-info": "self.version",
 		"typo3/cms-info-pagetsconfig": "self.version",
 		"typo3/cms-install": "self.version",
-		"typo3/cms-jumpurl": "self.version",
 		"typo3/cms-lang": "self.version",
 		"typo3/cms-linkvalidator": "self.version",
 		"typo3/cms-lowlevel": "self.version",
