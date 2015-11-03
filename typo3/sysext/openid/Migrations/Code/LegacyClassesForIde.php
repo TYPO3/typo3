@@ -39,38 +39,38 @@ namespace {
     }
 }
 
-namespace typo3\cms\openid {
+namespace TYPO3\CMS\Openid {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class openideid extends \FoT3\Openid\OpenidEid
+    class OpenidEid extends \FoT3\Openid\OpenidEid
     {
     }
 }
 
-namespace typo3\cms\openid {
+namespace TYPO3\CMS\Openid {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class openidmodulesetup extends \FoT3\Openid\OpenidModuleSetup
+    class OpenidModuleSetup extends \FoT3\Openid\OpenidModuleSetup
     {
     }
 }
 
-namespace typo3\cms\openid {
+namespace TYPO3\CMS\Openid {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class openidservice extends \FoT3\Openid\OpenidService
+    class OpenidService extends \FoT3\Openid\OpenidService
     {
     }
 }
 
-namespace typo3\cms\openid {
+namespace TYPO3\CMS\Openid {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class openidstore extends \FoT3\Openid\OpenidStore
+    class OpenidStore extends \FoT3\Openid\OpenidStore
     {
     }
 }
