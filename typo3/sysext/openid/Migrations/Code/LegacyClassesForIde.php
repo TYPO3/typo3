@@ -1,29 +1,36 @@
 <?php
-namespace
-{
+namespace {
     die('Access denied');
+}
 
+namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
     class tx_openid_eID extends \FoT3\Openid\OpenidEid
     {
     }
+}
 
+namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
     class tx_openid_mod_setup extends \FoT3\Openid\OpenidModuleSetup
     {
     }
+}
 
+namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
     class tx_openid_sv1 extends \FoT3\Openid\OpenidService
     {
     }
+}
 
+namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
@@ -32,33 +39,39 @@ namespace
     }
 }
 
-namespace TYPO3\CMS\Openid
-{
+namespace typo3\cms\openid {
     /**
-     * @deprecated since 7.0, removed since 8.0
+     * @deprecated since 6.0, removed since 7.0
      */
-    class OpenidEid extends \FoT3\Openid\OpenidEid
-    {
-    }
-
-    /**
-     * @deprecated since 7.0, removed since 8.0
-     */
-    class OpenidModuleSetup extends \FoT3\Openid\OpenidModuleSetup
-    {
-    }
-
-    /**
-     * @deprecated since 7.0, removed since 8.0
-     */
-    class OpenidService extends \FoT3\Openid\OpenidService
-    {
-    }
-
-    /**
-     * @deprecated since 7.0, removed since 8.0
-     */
-    class OpenidStore extends \FoT3\Openid\OpenidStore
+    class openideid extends \FoT3\Openid\OpenidEid
     {
     }
 }
+
+namespace typo3\cms\openid {
+    /**
+     * @deprecated since 6.0, removed since 7.0
+     */
+    class openidmodulesetup extends \FoT3\Openid\OpenidModuleSetup
+    {
+    }
+}
+
+namespace typo3\cms\openid {
+    /**
+     * @deprecated since 6.0, removed since 7.0
+     */
+    class openidservice extends \FoT3\Openid\OpenidService
+    {
+    }
+}
+
+namespace typo3\cms\openid {
+    /**
+     * @deprecated since 6.0, removed since 7.0
+     */
+    class openidstore extends \FoT3\Openid\OpenidStore
+    {
+    }
+}
+
