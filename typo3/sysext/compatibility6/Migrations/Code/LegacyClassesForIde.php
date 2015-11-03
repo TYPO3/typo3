@@ -6397,7 +6397,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_Controller_Form extends \TYPO3\CMS\Form\Controller\FormController
+    class tx_form_Controller_Form extends \TYPO3\CMS\Form\Controller\FrontendController
     {
     }
 }
@@ -6424,556 +6424,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_Domain_Factory_Typoscript extends \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_Domain_Model_Additional_Abstract extends \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Additional_Additional extends \TYPO3\CMS\Form\Domain\Model\Additional\AdditionalAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Additional_Error extends \TYPO3\CMS\Form\Domain\Model\Additional\ErrorAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Additional_Label extends \TYPO3\CMS\Form\Domain\Model\Additional\LabelAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Additional_Legend extends \TYPO3\CMS\Form\Domain\Model\Additional\LegendAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Additional_Mandatory extends \TYPO3\CMS\Form\Domain\Model\Additional\MandatoryAdditionalElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_Domain_Model_Attributes_Abstract extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Accept extends \TYPO3\CMS\Form\Domain\Model\Attribute\AcceptAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Acceptcharset extends \TYPO3\CMS\Form\Domain\Model\Attribute\AcceptCharsetAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Accesskey extends \TYPO3\CMS\Form\Domain\Model\Attribute\AccesskeyAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Action extends \TYPO3\CMS\Form\Domain\Model\Attribute\ActionAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Alt extends \TYPO3\CMS\Form\Domain\Model\Attribute\AltAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Attributes extends \TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Checked extends \TYPO3\CMS\Form\Domain\Model\Attribute\CheckedAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Class extends \TYPO3\CMS\Form\Domain\Model\Attribute\ClassAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Cols extends \TYPO3\CMS\Form\Domain\Model\Attribute\ColsAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Dir extends \TYPO3\CMS\Form\Domain\Model\Attribute\DirAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Disabled extends \TYPO3\CMS\Form\Domain\Model\Attribute\DisabledAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Enctype extends \TYPO3\CMS\Form\Domain\Model\Attribute\EnctypeAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Id extends \TYPO3\CMS\Form\Domain\Model\Attribute\IdAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Label extends \TYPO3\CMS\Form\Domain\Model\Attribute\LabelAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Lang extends \TYPO3\CMS\Form\Domain\Model\Attribute\LangAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Maxlength extends \TYPO3\CMS\Form\Domain\Model\Attribute\MaxlengthAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Method extends \TYPO3\CMS\Form\Domain\Model\Attribute\MethodAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Multiple extends \TYPO3\CMS\Form\Domain\Model\Attribute\MultipleAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Name extends \TYPO3\CMS\Form\Domain\Model\Attribute\NameAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Readonly extends \TYPO3\CMS\Form\Domain\Model\Attribute\ReadonlyAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Rows extends \TYPO3\CMS\Form\Domain\Model\Attribute\RowsAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Selected extends \TYPO3\CMS\Form\Domain\Model\Attribute\SelectedAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Size extends \TYPO3\CMS\Form\Domain\Model\Attribute\SizeAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Src extends \TYPO3\CMS\Form\Domain\Model\Attribute\SrcAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Style extends \TYPO3\CMS\Form\Domain\Model\Attribute\StyleAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Tabindex extends \TYPO3\CMS\Form\Domain\Model\Attribute\TabindexAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Title extends \TYPO3\CMS\Form\Domain\Model\Attribute\TitleAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Type extends \TYPO3\CMS\Form\Domain\Model\Attribute\TypeAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Attributes_Value extends \TYPO3\CMS\Form\Domain\Model\Attribute\ValueAttribute
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
     class tx_form_Domain_Model_Content extends \TYPO3\CMS\Form\Domain\Model\Content
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_Domain_Model_Element_Abstract extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_Domain_Model_Element_AbstractPlain extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Button extends \TYPO3\CMS\Form\Domain\Model\Element\ButtonElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Checkbox extends \TYPO3\CMS\Form\Domain\Model\Element\CheckboxElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Checkboxgroup extends \TYPO3\CMS\Form\Domain\Model\Element\CheckboxGroupElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Container extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Content extends \TYPO3\CMS\Form\Domain\Model\Element\ContentElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Fieldset extends \TYPO3\CMS\Form\Domain\Model\Element\FieldsetElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Fileupload extends \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Header extends \TYPO3\CMS\Form\Domain\Model\Element\HeaderElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Hidden extends \TYPO3\CMS\Form\Domain\Model\Element\HiddenElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Imagebutton extends \TYPO3\CMS\Form\Domain\Model\Element\ImagebuttonElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Optgroup extends \TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Option extends \TYPO3\CMS\Form\Domain\Model\Element\OptionElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Password extends \TYPO3\CMS\Form\Domain\Model\Element\PasswordElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Radio extends \TYPO3\CMS\Form\Domain\Model\Element\RadioElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Radiogroup extends \TYPO3\CMS\Form\Domain\Model\Element\RadioGroupElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Reset extends \TYPO3\CMS\Form\Domain\Model\Element\ResetElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Select extends \TYPO3\CMS\Form\Domain\Model\Element\SelectElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Submit extends \TYPO3\CMS\Form\Domain\Model\Element\SubmitElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Textarea extends \TYPO3\CMS\Form\Domain\Model\Element\TextareaElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Textblock extends \TYPO3\CMS\Form\Domain\Model\Element\TextblockElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Element_Textline extends \TYPO3\CMS\Form\Domain\Model\Element\TextlineElement
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_Domain_Model_Form extends \TYPO3\CMS\Form\Domain\Model\Form
     {
     }
 }
@@ -7180,7 +6631,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Elementcounter extends \TYPO3\CMS\Form\ElementCounter
+    class tx_form_System_Elementcounter extends \TYPO3\CMS\Form\Utility\ElementCounter
     {
     }
 }
@@ -7189,7 +6640,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Alphabetic extends \TYPO3\CMS\Form\Filter\AlphabeticFilter
+    class tx_form_System_Filter_Alphabetic extends \TYPO3\CMS\Form\Domain\Filter\AlphabeticFilter
     {
     }
 }
@@ -7198,7 +6649,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Alphanumeric extends \TYPO3\CMS\Form\Filter\AlphanumericFilter
+    class tx_form_System_Filter_Alphanumeric extends \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter
     {
     }
 }
@@ -7207,7 +6658,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Currency extends \TYPO3\CMS\Form\Filter\CurrencyFilter
+    class tx_form_System_Filter_Currency extends \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter
     {
     }
 }
@@ -7216,7 +6667,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Digit extends \TYPO3\CMS\Form\Filter\DigitFilter
+    class tx_form_System_Filter_Digit extends \TYPO3\CMS\Form\Domain\Filter\DigitFilter
     {
     }
 }
@@ -7225,7 +6676,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    interface tx_form_System_Filter_Interface extends \TYPO3\CMS\Form\Filter\FilterInterface
+    interface tx_form_System_Filter_Interface extends \TYPO3\CMS\Form\Domain\Filter\FilterInterface
     {
     }
 }
@@ -7234,7 +6685,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Integer extends \TYPO3\CMS\Form\Filter\IntegerFilter
+    class tx_form_System_Filter_Integer extends \TYPO3\CMS\Form\Domain\Filter\IntegerFilter
     {
     }
 }
@@ -7243,7 +6694,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Lowercase extends \TYPO3\CMS\Form\Filter\LowerCaseFilter
+    class tx_form_System_Filter_Lowercase extends \TYPO3\CMS\Form\Domain\Filter\LowerCaseFilter
     {
     }
 }
@@ -7252,7 +6703,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Regexp extends \TYPO3\CMS\Form\Filter\RegExpFilter
+    class tx_form_System_Filter_Regexp extends \TYPO3\CMS\Form\Domain\Filter\RegExpFilter
     {
     }
 }
@@ -7261,7 +6712,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Removexss extends \TYPO3\CMS\Form\Filter\RemoveXssFilter
+    class tx_form_System_Filter_Removexss extends \TYPO3\CMS\Form\Domain\Filter\RemoveXssFilter
     {
     }
 }
@@ -7270,7 +6721,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Stripnewlines extends \TYPO3\CMS\Form\Filter\StripNewLinesFilter
+    class tx_form_System_Filter_Stripnewlines extends \TYPO3\CMS\Form\Domain\Filter\StripNewLinesFilter
     {
     }
 }
@@ -7279,7 +6730,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Titlecase extends \TYPO3\CMS\Form\Filter\TitleCaseFilter
+    class tx_form_System_Filter_Titlecase extends \TYPO3\CMS\Form\Domain\Filter\TitleCaseFilter
     {
     }
 }
@@ -7288,7 +6739,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Trim extends \TYPO3\CMS\Form\Filter\TrimFilter
+    class tx_form_System_Filter_Trim extends \TYPO3\CMS\Form\Domain\Filter\TrimFilter
     {
     }
 }
@@ -7297,34 +6748,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Filter_Uppercase extends \TYPO3\CMS\Form\Filter\UpperCaseFilter
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_System_Filter extends \TYPO3\CMS\Form\Utility\FilterUtility
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_System_Layout extends \TYPO3\CMS\Form\Layout
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_System_Localization extends \TYPO3\CMS\Form\Localization
+    class tx_form_System_Filter_Uppercase extends \TYPO3\CMS\Form\Domain\Filter\UpperCaseFilter
     {
     }
 }
@@ -7360,15 +6784,6 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Request extends \TYPO3\CMS\Form\Request
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
     class tx_form_Common extends \TYPO3\CMS\Form\Utility\FormUtility
     {
     }
@@ -7378,7 +6793,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate extends \TYPO3\CMS\Form\Utility\ValidatorUtility
+    abstract class tx_form_System_Validate_Abstract extends \TYPO3\CMS\Form\Domain\Validator\AbstractValidator
     {
     }
 }
@@ -7387,7 +6802,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    abstract class tx_form_System_Validate_Abstract extends \TYPO3\CMS\Form\Validation\AbstractValidator
+    class tx_form_System_Validate_Alphabetic extends \TYPO3\CMS\Form\Domain\Validator\AlphabeticValidator
     {
     }
 }
@@ -7396,7 +6811,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Alphabetic extends \TYPO3\CMS\Form\Validation\AlphabeticValidator
+    class tx_form_System_Validate_Alphanumeric extends \TYPO3\CMS\Form\Domain\Validator\AlphanumericValidator
     {
     }
 }
@@ -7405,7 +6820,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Alphanumeric extends \TYPO3\CMS\Form\Validation\AlphanumericValidator
+    class tx_form_System_Validate_Between extends \TYPO3\CMS\Form\Domain\Validator\BetweenValidator
     {
     }
 }
@@ -7414,7 +6829,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Between extends \TYPO3\CMS\Form\Validation\BetweenValidator
+    class tx_form_System_Validate_Date extends \TYPO3\CMS\Form\Domain\Validator\DateValidator
     {
     }
 }
@@ -7423,7 +6838,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Date extends \TYPO3\CMS\Form\Validation\DateValidator
+    class tx_form_System_Validate_Digit extends \TYPO3\CMS\Form\Domain\Validator\DigitValidator
     {
     }
 }
@@ -7432,7 +6847,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Digit extends \TYPO3\CMS\Form\Validation\DigitValidator
+    class tx_form_System_Validate_Email extends \TYPO3\CMS\Form\Domain\Validator\EmailValidator
     {
     }
 }
@@ -7441,7 +6856,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Email extends \TYPO3\CMS\Form\Validation\EmailValidator
+    class tx_form_System_Validate_Equals extends \TYPO3\CMS\Form\Domain\Validator\EqualsValidator
     {
     }
 }
@@ -7450,7 +6865,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Equals extends \TYPO3\CMS\Form\Validation\EqualsValidator
+    class tx_form_System_Validate_Fileallowedtypes extends \TYPO3\CMS\Form\Domain\Validator\FileAllowedTypesValidator
     {
     }
 }
@@ -7459,7 +6874,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Fileallowedtypes extends \TYPO3\CMS\Form\Validation\FileAllowedTypesValidator
+    class tx_form_System_Validate_Filemaximumsize extends \TYPO3\CMS\Form\Domain\Validator\FileMaximumSizeValidator
     {
     }
 }
@@ -7468,7 +6883,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Filemaximumsize extends \TYPO3\CMS\Form\Validation\FileMaximumSizeValidator
+    class tx_form_System_Validate_Fileminimumsize extends \TYPO3\CMS\Form\Domain\Validator\FileMinimumSizeValidator
     {
     }
 }
@@ -7477,7 +6892,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Fileminimumsize extends \TYPO3\CMS\Form\Validation\FileMinimumSizeValidator
+    class tx_form_System_Validate_Float extends \TYPO3\CMS\Form\Domain\Validator\FloatValidator
     {
     }
 }
@@ -7486,7 +6901,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Float extends \TYPO3\CMS\Form\Validation\FloatValidator
+    class tx_form_System_Validate_Greaterthan extends \TYPO3\CMS\Form\Domain\Validator\GreaterThanValidator
     {
     }
 }
@@ -7495,7 +6910,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Greaterthan extends \TYPO3\CMS\Form\Validation\GreaterThanValidator
+    class tx_form_System_Validate_Inarray extends \TYPO3\CMS\Form\Domain\Validator\InArrayValidator
     {
     }
 }
@@ -7504,7 +6919,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Inarray extends \TYPO3\CMS\Form\Validation\InArrayValidator
+    class tx_form_System_Validate_Integer extends \TYPO3\CMS\Form\Domain\Validator\IntegerValidator
     {
     }
 }
@@ -7513,7 +6928,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Integer extends \TYPO3\CMS\Form\Validation\IntegerValidator
+    class tx_form_System_Validate_Ip extends \TYPO3\CMS\Form\Domain\Validator\IpValidator
     {
     }
 }
@@ -7522,7 +6937,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    interface tx_form_System_Validate_Interface extends \TYPO3\CMS\Form\Validation\ValidatorInterface
+    class tx_form_System_Validate_Length extends \TYPO3\CMS\Form\Domain\Validator\LengthValidator
     {
     }
 }
@@ -7531,7 +6946,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Ip extends \TYPO3\CMS\Form\Validation\IpValidator
+    class tx_form_System_Validate_Lessthan extends \TYPO3\CMS\Form\Domain\Validator\LessthanValidator
     {
     }
 }
@@ -7540,7 +6955,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Length extends \TYPO3\CMS\Form\Validation\LengthValidator
+    class tx_form_System_Validate_Regexp extends \TYPO3\CMS\Form\Domain\Validator\RegExpValidator
     {
     }
 }
@@ -7549,7 +6964,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Lessthan extends \TYPO3\CMS\Form\Validation\LessthanValidator
+    class tx_form_System_Validate_Required extends \TYPO3\CMS\Form\Domain\Validator\RequiredValidator
     {
     }
 }
@@ -7558,763 +6973,7 @@ namespace {
     /**
      * @deprecated since 6.0, removed since 7.0
      */
-    class tx_form_System_Validate_Regexp extends \TYPO3\CMS\Form\Validation\RegExpValidator
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_System_Validate_Required extends \TYPO3\CMS\Form\Validation\RequiredValidator
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_System_Validate_Uri extends \TYPO3\CMS\Form\Validation\UriValidator
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Additional extends \TYPO3\CMS\Form\View\Confirmation\Additional\AdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Additional_Label extends \TYPO3\CMS\Form\View\Confirmation\Additional\LabelAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Additional_Legend extends \TYPO3\CMS\Form\View\Confirmation\Additional\LegendAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation extends \TYPO3\CMS\Form\View\Confirmation\ConfirmationView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_View_Confirmation_Element_Abstract extends \TYPO3\CMS\Form\View\Confirmation\Element\AbstractElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Checkbox extends \TYPO3\CMS\Form\View\Confirmation\Element\CheckboxElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Checkboxgroup extends \TYPO3\CMS\Form\View\Confirmation\Element\CheckboxGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Container extends \TYPO3\CMS\Form\View\Confirmation\Element\ContainerElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Fieldset extends \TYPO3\CMS\Form\View\Confirmation\Element\FieldsetElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Fileupload extends \TYPO3\CMS\Form\View\Confirmation\Element\FileuploadElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Optgroup extends \TYPO3\CMS\Form\View\Confirmation\Element\OptgroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Option extends \TYPO3\CMS\Form\View\Confirmation\Element\OptionElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Radio extends \TYPO3\CMS\Form\View\Confirmation\Element\RadioElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Radiogroup extends \TYPO3\CMS\Form\View\Confirmation\Element\RadioGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Select extends \TYPO3\CMS\Form\View\Confirmation\Element\SelectElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Textarea extends \TYPO3\CMS\Form\View\Confirmation\Element\TextareaElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Confirmation_Element_Textline extends \TYPO3\CMS\Form\View\Confirmation\Element\TextlineElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Additional extends \TYPO3\CMS\Form\View\Form\Additional\AdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Additional_Error extends \TYPO3\CMS\Form\View\Form\Additional\ErrorAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Additional_Label extends \TYPO3\CMS\Form\View\Form\Additional\LabelAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Additional_Legend extends \TYPO3\CMS\Form\View\Form\Additional\LegendAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Additional_Mandatory extends \TYPO3\CMS\Form\View\Form\Additional\MandatoryAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_View_Form_Element_Abstract extends \TYPO3\CMS\Form\View\Form\Element\AbstractElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Button extends \TYPO3\CMS\Form\View\Form\Element\ButtonElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Checkbox extends \TYPO3\CMS\Form\View\Form\Element\CheckboxElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Checkboxgroup extends \TYPO3\CMS\Form\View\Form\Element\CheckboxGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Container extends \TYPO3\CMS\Form\View\Form\Element\ContainerElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Content extends \TYPO3\CMS\Form\View\Form\Element\ContentElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Fieldset extends \TYPO3\CMS\Form\View\Form\Element\FieldsetElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Fileupload extends \TYPO3\CMS\Form\View\Form\Element\FileuploadElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Header extends \TYPO3\CMS\Form\View\Form\Element\HeaderElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Hidden extends \TYPO3\CMS\Form\View\Form\Element\HiddenElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Imagebutton extends \TYPO3\CMS\Form\View\Form\Element\ImagebuttonElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Optgroup extends \TYPO3\CMS\Form\View\Form\Element\OptgroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Option extends \TYPO3\CMS\Form\View\Form\Element\OptionElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Password extends \TYPO3\CMS\Form\View\Form\Element\PasswordElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Radio extends \TYPO3\CMS\Form\View\Form\Element\RadioElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Radiogroup extends \TYPO3\CMS\Form\View\Form\Element\RadioGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Reset extends \TYPO3\CMS\Form\View\Form\Element\ResetElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Select extends \TYPO3\CMS\Form\View\Form\Element\SelectElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Submit extends \TYPO3\CMS\Form\View\Form\Element\SubmitElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Textarea extends \TYPO3\CMS\Form\View\Form\Element\TextareaElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Textblock extends \TYPO3\CMS\Form\View\Form\Element\TextblockElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form_Element_Textline extends \TYPO3\CMS\Form\View\Form\Element\TextlineElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Form extends \TYPO3\CMS\Form\View\Form\FormView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Additional extends \TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Additional_Label extends \TYPO3\CMS\Form\View\Mail\Html\Additional\LabelAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Additional_Legend extends \TYPO3\CMS\Form\View\Mail\Html\Additional\LegendAdditionalElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_View_Mail_Html_Element_Abstract extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Checkbox extends \TYPO3\CMS\Form\View\Mail\Html\Element\CheckboxElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Checkboxgroup extends \TYPO3\CMS\Form\View\Mail\Html\Element\CheckboxGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Container extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Fieldset extends \TYPO3\CMS\Form\View\Mail\Html\Element\FieldsetElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Fileupload extends \TYPO3\CMS\Form\View\Mail\Html\Element\FileuploadElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Hidden extends \TYPO3\CMS\Form\View\Mail\Html\Element\HiddenElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Optgroup extends \TYPO3\CMS\Form\View\Mail\Html\Element\OptgroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Option extends \TYPO3\CMS\Form\View\Mail\Html\Element\OptionElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Radio extends \TYPO3\CMS\Form\View\Mail\Html\Element\RadioElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Radiogroup extends \TYPO3\CMS\Form\View\Mail\Html\Element\RadioGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Select extends \TYPO3\CMS\Form\View\Mail\Html\Element\SelectElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Textarea extends \TYPO3\CMS\Form\View\Mail\Html\Element\TextareaElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html_Element_Textline extends \TYPO3\CMS\Form\View\Mail\Html\Element\TextlineElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Html extends \TYPO3\CMS\Form\View\Mail\Html\HtmlView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail extends \TYPO3\CMS\Form\View\Mail\MailView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_View_Mail_Plain_Element_Abstract extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Checkbox extends \TYPO3\CMS\Form\View\Mail\Plain\Element\CheckboxElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Checkboxgroup extends \TYPO3\CMS\Form\View\Mail\Plain\Element\CheckboxGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Container extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Fieldset extends \TYPO3\CMS\Form\View\Mail\Plain\Element\FieldsetElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Fileupload extends \TYPO3\CMS\Form\View\Mail\Plain\Element\FileuploadElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Hidden extends \TYPO3\CMS\Form\View\Mail\Plain\Element\HiddenElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Optgroup extends \TYPO3\CMS\Form\View\Mail\Plain\Element\OptgroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Option extends \TYPO3\CMS\Form\View\Mail\Plain\Element\OptionElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Radio extends \TYPO3\CMS\Form\View\Mail\Plain\Element\RadioElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Radiogroup extends \TYPO3\CMS\Form\View\Mail\Plain\Element\RadioGroupElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Select extends \TYPO3\CMS\Form\View\Mail\Plain\Element\SelectElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Textarea extends \TYPO3\CMS\Form\View\Mail\Plain\Element\TextareaElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain_Element_Textline extends \TYPO3\CMS\Form\View\Mail\Plain\Element\TextlineElementView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Mail_Plain extends \TYPO3\CMS\Form\View\Mail\Plain\PlainView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    abstract class tx_form_View_Wizard_Abstract extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Wizard_Load extends \TYPO3\CMS\Form\View\Wizard\LoadWizardView
-    {
-    }
-}
-
-namespace {
-    /**
-     * @deprecated since 6.0, removed since 7.0
-     */
-    class tx_form_View_Wizard_Save extends \TYPO3\CMS\Form\View\Wizard\SaveWizardView
+    class tx_form_System_Validate_Uri extends \TYPO3\CMS\Form\Domain\Validator\UriValidator
     {
     }
 }
