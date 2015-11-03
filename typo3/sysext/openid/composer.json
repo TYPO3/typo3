@@ -17,5 +17,12 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Openid\\": "Classes/"
 		}
+	},
+	"extra": {
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		}
 	}
 }
