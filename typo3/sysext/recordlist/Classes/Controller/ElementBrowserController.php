@@ -135,7 +135,7 @@ class ElementBrowserController
     }
 
     /**
-     * Get instance of ElementBrowser
+     * Get instance of the actual element browser
      *
      * This method shall be overwritten in subclasses
      *

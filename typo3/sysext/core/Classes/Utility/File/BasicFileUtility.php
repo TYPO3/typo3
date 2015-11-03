@@ -326,7 +326,7 @@ class BasicFileUtility
      * @param string $thePath MUST HAVE a trailing '/' in order to match correctly with the mounts
      * @return string The key to the first mount found, otherwise nothing is returned.
      * @see init()
-     * @todo: deprecate this function, now done in the Storage object. But still in use by impexp and ElementBrowser
+     * @todo: deprecate this function, now done in the Storage object. But still in use by impexp and ExtendedFileUtility
      * @deprecated but still in use in the Core. Don't use in your extensions!
      */
     public function checkPathAgainstMounts($thePath)

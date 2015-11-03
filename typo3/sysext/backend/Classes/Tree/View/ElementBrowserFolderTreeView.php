@@ -34,8 +34,6 @@ class ElementBrowserFolderTreeView extends FolderTreeView
     public $ext_IconMode = 1;
 
     /**
-     * Back-reference to ElementBrowser class
-     *
      * @var LinkParameterProviderInterface
      */
     protected $linkParameterProvider;

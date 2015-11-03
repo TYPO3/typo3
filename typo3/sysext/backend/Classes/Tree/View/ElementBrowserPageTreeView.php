@@ -44,8 +44,6 @@ class ElementBrowserPageTreeView extends BrowseTreeView
     public $ext_pArrPages = true;
 
     /**
-     * Back-reference to ElementBrowser class
-     *
      * @var LinkParameterProviderInterface
      */
     protected $linkParameterProvider;
