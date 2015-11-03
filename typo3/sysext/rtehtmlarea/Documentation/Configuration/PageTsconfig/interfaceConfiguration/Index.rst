@@ -1,9 +1,5 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../../../Includes.txt
+﻿.. include:: ../../../Includes.txt
+.. highlight:: typoscript
 
 
 .. _rte-interface-configuration-objects:
@@ -2046,9 +2042,7 @@ colors
          selectors. The id-strings must be configured in the RTE.colors array
          (see description earlier).
 
-         **Example:**
-
-         ::
+         **Example:** ::
 
             RTE.default {
               colors = color1, color2,noColor
@@ -2589,10 +2583,10 @@ contentCSS
          Multiple files may be specified by using contentCSS.[id-string].
          For example::
 
-         contentCSS {
-             file1 = fileadmin/myStylesheet1.css
-             file2 = fileadmin/myStylesheet2.css
-         }
+            contentCSS {
+                file1 = fileadmin/myStylesheet1.css
+                file2 = fileadmin/myStylesheet2.css
+            }
 
 
 

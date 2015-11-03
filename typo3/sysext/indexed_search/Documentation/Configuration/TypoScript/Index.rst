@@ -44,7 +44,7 @@ breadcrumbWrap
          breadcrumbWrap
 
    Data type
-         :ref:`wrap <t3tsref:wrap>` + :ref:`optionSplit <t3tsref:objects-optionsplit>`
+         :ref:`wrap <t3tsref:data-type-wrap>` + :ref:`optionSplit <t3tsref:objects-optionsplit>`
 
    Description
          This configuration is used to wrap a single page title in a search result item breadcrumb.

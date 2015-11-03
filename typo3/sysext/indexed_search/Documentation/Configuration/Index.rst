@@ -19,5 +19,5 @@ Configuration
    :glob:
 
    General/Index
-   Typoscript/Index
+   TypoScript/Index
 
