@@ -59,9 +59,14 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			},
 			// Rendering of each item
 			formatResult: function(suggestion, value) {
-				return '<a class="autocomplete-suggestion-link" href="#" data-label="' + suggestion.data.label + '" data-table="' + suggestion.data.table + '" data-uid="' + suggestion.data.uid + '">' +
-						suggestion.data.sprite + suggestion.data.text +
-					'</a>';
+				return $('<div>').append(
+							$('<a class="autocomplete-suggestion-link" href="#">' +
+								suggestion.data.sprite + suggestion.data.text +
+							'</a></div>').attr({
+								'data-label': suggestion.data.label,
+								'data-table': suggestion.data.table,
+								'data-uid': suggestion.data.uid
+							})).html();
 			},
 			onSearchComplete: function() {
 				$containerElement.addClass('open');
@@ -87,7 +92,10 @@ define(['jquery', 'jquery/autocomplete'], function ($) {
 			}
 
 			var formEl = $searchField.data('fieldname');
-			setFormValueFromBrowseWin(formEl, insertData, $(this).data('label'), $(this).data('label'));
+			var labelEl = $('<div>').html($(this).data('label'));
+			var label = labelEl.text();
+			var title = labelEl.find('span').attr('title') || label;
+			setFormValueFromBrowseWin(formEl, insertData, label, title);
 			TBE_EDITOR.fieldChanged(table, uid, field, formEl);
 		});
 	};
