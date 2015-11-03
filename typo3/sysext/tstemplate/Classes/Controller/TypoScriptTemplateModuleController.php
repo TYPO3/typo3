@@ -212,11 +212,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             // Build the module content
             $this->content = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">';
             $this->content .= $this->doc->header($lang->getLL('moduleTitle'));
-            $this->content .= '</form>';
             $this->extObjContent();
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
+            $this->content .= '</form>';
         } else {
             // Template pages:
             $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
