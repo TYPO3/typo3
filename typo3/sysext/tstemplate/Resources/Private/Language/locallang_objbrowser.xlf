@@ -132,6 +132,9 @@
 			<trans-unit id="severity.3">
 				<source>Error</source>
 			</trans-unit>
+			<trans-unit id="error.1446559458">
+				<source>Error evaluating regular expression "%s".</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -408,7 +409,20 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
             if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
                 // If any POST-vars are send, update the condition array
-                $templateService->tsbrowser_depthKeys = $templateService->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
+                $searchString = GeneralUtility::_POST('search_field');
+                try {
+                    $templateService->tsbrowser_depthKeys =
+                        $templateService->ext_getSearchKeys(
+                            $theSetup,
+                            '',
+                            $searchString,
+                            array()
+                        );
+                } catch (Exception $e) {
+                    $this->addFlashMessage(
+                        GeneralUtility::makeInstance(FlashMessage::class, sprintf($lang->getLL('error.' . $e->getCode()), $searchString), '', FlashMessage::ERROR)
+                    );
+                }
             }
             $theOutput .= '
 				<div class="tsob-menu">
