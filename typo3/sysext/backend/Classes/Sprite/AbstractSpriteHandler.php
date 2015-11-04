@@ -52,7 +52,6 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface
      */
     public function __construct()
     {
-        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         // The file name is prefixed with "z" since the concatenator orders files per name
         $this->cssTcaFile = PATH_site . SpriteManager::$tempPath . 'zextensions.css';
         $this->styleSheetData = '/* Auto-Generated via ' . get_class($this) . ' */' . LF;

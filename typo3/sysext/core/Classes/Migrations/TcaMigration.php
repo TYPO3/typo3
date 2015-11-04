@@ -585,9 +585,9 @@ class TcaMigration
                     continue;
                 }
                 if (!empty($fieldConfig['config']['selicon_cols'])) {
-                    $this->messages[] = 'The "showIconTable" setting is missing for table "' . $table . '" and field "' . $fieldName . '"';
                     // selicon_cols without showIconTable true does not make sense, so set it to true here if not already defined
                     if (!array_key_exists('showIconTable', $fieldConfig['config'])) {
+                        $this->messages[] = 'The "showIconTable" setting is missing for table "' . $table . '" and field "' . $fieldName . '"';
                         $fieldConfig['config']['showIconTable'] = true;
                     }
                 }
