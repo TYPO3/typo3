@@ -110,29 +110,6 @@ class SelectCheckBoxElement extends AbstractFormElement
                     }
                 }
             }
-            // Remaining values (invalid):
-            if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-                $currentGroup++;
-                // Creating the label for the "No Matching Value" entry.
-                $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-                    ? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-                    : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
-                foreach ($itemArray as $theNoMatchValue => $temp) {
-                    // Build item array
-                    $groups[$currentGroup]['items'][] = array(
-                        'id' => StringUtility::getUniqueId('select_checkbox_row_'),
-                        'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
-                        'value' => $theNoMatchValue,
-                        'checked' => 1,
-                        'disabled' => $disabled,
-                        'class' => 'danger',
-                        'icon' => '',
-                        'title' => htmlspecialchars(@sprintf($noMatchingLabel, $theNoMatchValue), ENT_COMPAT, 'UTF-8', false),
-                        'help' => ''
-                    );
-                    $c++;
-                }
-            }
             // Add an empty hidden field which will send a blank value if all items are unselected.
             $html[] = '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="">';
 

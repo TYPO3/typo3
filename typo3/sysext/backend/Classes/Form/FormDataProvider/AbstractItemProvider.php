@@ -1024,6 +1024,21 @@ abstract class AbstractItemProvider
     }
 
     /**
+     * Convert the current database values into an array
+     *
+     * @param array $row database row
+     * @param string $fieldName fieldname to process
+     * @return array
+     */
+    protected function processDatabaseFieldValue(array $row, $fieldName)
+    {
+        $currentDatabaseValues = array_key_exists($fieldName, $row)
+            ? $row[$fieldName]
+            : '';
+        return GeneralUtility::trimExplode(',', $currentDatabaseValues, true);
+    }
+
+    /**
      * Validate and sanitize database row values of the select field with the given name.
      * Creates an array out of databaseRow[selectField] values.
      *
@@ -1038,24 +1053,12 @@ abstract class AbstractItemProvider
     {
         $fieldConfig = $result['processedTca']['columns'][$fieldName];
 
-        // For single select fields we just keep the current value because the renderer
-        // will take care of showing the "Invalid value" text.
-        // For maxitems=1 select fields is is also possible to select empty values.
-        // @todo: move handling of invalid values to this data provider.
-        if ($fieldConfig['config']['maxitems'] === 1 && empty($fieldConfig['config']['MM'])) {
-            return [$result['databaseRow'][$fieldName]];
-        }
-
-        $currentDatabaseValues = array_key_exists($fieldName, $result['databaseRow']) ? $result['databaseRow'][$fieldName] : '';
-        // Selecting empty values does not make sense for fields that can contain more than one item
-        // because it is impossible to determine if the empty value or nothing is selected.
-        // This is why empty values will be removed for multi value fields.
-        $currentDatabaseValuesArray = GeneralUtility::trimExplode(',', $currentDatabaseValues, true);
+        $currentDatabaseValueArray = array_key_exists($fieldName, $result['databaseRow']) ? $result['databaseRow'][$fieldName] : [];
         $newDatabaseValueArray = [];
 
         // Add all values that were defined by static methods and do not come from the relation
         // e.g. TCA, TSconfig, itemProcFunc etc.
-        foreach ($currentDatabaseValuesArray as $value) {
+        foreach ($currentDatabaseValueArray as $value) {
             if (isset($staticValues[$value])) {
                 $newDatabaseValueArray[] = $value;
             }
@@ -1068,7 +1071,7 @@ abstract class AbstractItemProvider
             if (!empty($fieldConfig['config']['MM']) && $result['command'] !== 'new') {
                 // MM relation
                 $relationHandler->start(
-                    $currentDatabaseValues,
+                    implode(',', $currentDatabaseValueArray),
                     $fieldConfig['config']['foreign_table'],
                     $fieldConfig['config']['MM'],
                     $result['databaseRow']['uid'],
@@ -1079,7 +1082,7 @@ abstract class AbstractItemProvider
                 // Non MM relation
                 // If not dealing with MM relations, use default live uid, not versioned uid for record relations
                 $relationHandler->start(
-                    $currentDatabaseValues,
+                    implode(',', $currentDatabaseValueArray),
                     $fieldConfig['config']['foreign_table'],
                     '',
                     $this->getLiveUid($result),

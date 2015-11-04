@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Resolve select items, set processed item list in processedTca, sanitize and resolve database field
@@ -53,11 +54,15 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
             $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
 
+            $removedItems = $fieldConfig['config']['items'];
+
             $fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->removeItemsByUserAuthMode($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $fieldConfig['config']['items']);
+
+            $removedItems = array_diff_key($removedItems, $fieldConfig['config']['items']);
 
             // Resolve "itemsProcFunc"
             if (!empty($fieldConfig['config']['itemsProcFunc'])) {
@@ -66,19 +71,77 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 unset($fieldConfig['config']['itemsProcFunc']);
             }
 
-            // Translate labels
-            $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
+            // needed to determine the items for invalid values
+            $currentDatabaseValuesArray = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
+            $result['databaseRow'][$fieldName] = $currentDatabaseValuesArray;
 
             $staticValues = $this->getStaticValues($fieldConfig['config']['items'], $dynamicItems);
+            $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
+
+            $fieldConfig['config']['items'] = $this->addInvalidItemsFromDatabase(
+                $result,
+                $table,
+                $fieldName,
+                $fieldConfig,
+                $currentDatabaseValuesArray,
+                $removedItems
+            );
+
+            // Translate labels
+            $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
 
             // Keys may contain table names, so a numeric array is created
             $fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
 
             $result['processedTca']['columns'][$fieldName] = $fieldConfig;
-            $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
         }
 
         return $result;
+    }
+
+    /**
+     * Add values that are currently listed in the database columns but not in the selectable items list
+     * back to the list.
+     *
+     * @param array $result The current result array.
+     * @param string $table The current table name
+     * @param string $fieldName The current field name
+     * @param array $fieldConf The configuration of the current field.
+     * @param array $databaseValues The item values from the database, can contain invalid items!
+     * @param array $removedItems Items removed by access checks and restrictions, must not be added as invalid values
+     * @return array
+     */
+    public function addInvalidItemsFromDatabase(array $result, $table, $fieldName, array $fieldConf, array $databaseValues, array $removedItems)
+    {
+        // Early return if there are no items or invalid values should not be displayed
+        if (empty($fieldConf['config']['items'])
+            || $fieldConf['config']['renderType'] !== 'selectSingle'
+            || $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['disableNoMatchingValueElement']
+            || $fieldConf['config']['disableNoMatchingValueElement']
+        ) {
+            return $fieldConf['config']['items'];
+        }
+
+        $languageService = $this->getLanguageService();
+        $noMatchingLabel = isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['noMatchingValue_label'])
+            ? $languageService->sL(trim($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['noMatchingValue_label']))
+            : '[ ' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+
+        $unmatchedValues = array_diff(
+            array_values($databaseValues),
+            array_column($fieldConf['config']['items'], 1),
+            array_column($removedItems, 1)
+        );
+
+        foreach ($unmatchedValues as $unmatchedValue) {
+            $invalidItem = [
+                @sprintf($noMatchingLabel, $unmatchedValue),
+                $unmatchedValue
+            ];
+            array_unshift($fieldConf['config']['items'], $invalidItem);
+        }
+
+        return $fieldConf['config']['items'];
     }
 
     /**

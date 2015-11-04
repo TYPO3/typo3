@@ -43,11 +43,6 @@ class SelectSingleElement extends AbstractFormElement
 
         $selectItems = $parameterArray['fieldConf']['config']['items'];
 
-        // Creating the label for the "No Matching Value" entry.
-        $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-            ? $this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['noMatchingValue_label']))
-            : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
-
         // Check against inline uniqueness
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
@@ -78,9 +73,7 @@ class SelectSingleElement extends AbstractFormElement
 
         // Initialization:
         $selectId = StringUtility::getUniqueId('tceforms-select-');
-        $selectedIndex = 0;
         $selectedIcon = '';
-        $selectedValueFound = false;
         $size = (int)$config['size'];
 
         // Style set on <select/>
@@ -118,9 +111,7 @@ class SelectSingleElement extends AbstractFormElement
                 $selected = $selectedValue === (string)$item[1];
 
                 if ($selected) {
-                    $selectedIndex = $selectItemCounter;
                     $selectedIcon = $icon;
-                    $selectedValueFound = true;
                 }
 
                 $selectItemGroups[$selectItemGroupCount]['items'][] = array(
@@ -144,11 +135,9 @@ class SelectSingleElement extends AbstractFormElement
             }
         }
 
-        // No-matching-value:
-        if ($selectedValue && !$selectedValueFound && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-            $noMatchingLabel = @sprintf($noMatchingLabel, $selectedValue);
-            $options = '<option value="' . htmlspecialchars($selectedValue) . '" selected="selected">' . htmlspecialchars($noMatchingLabel) . '</option>';
-        } elseif (!$selectedIcon && $selectItemGroups[0]['items'][0]['icon']) {
+        // Fallback icon
+        // @todo: assign a special icon for non matching values?
+        if (!$selectedIcon && $selectItemGroups[0]['items'][0]['icon']) {
             $selectedIcon = $selectItemGroups[0]['items'][0]['icon'];
         }
 

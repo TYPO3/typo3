@@ -64,27 +64,6 @@ class SelectSingleBoxElement extends AbstractFormElement
             $optionElements[] = $this->renderOptionElement($value, $item[0], $attributes);
         }
 
-        // Remaining values:
-        if (!empty($itemArray)
-            && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement']
-            && !$config['disableNoMatchingValueElement']) {
-
-            // Creating the label for the "No Matching Value" entry.
-            $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-                ? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-                : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
-
-            foreach ($itemArray as $unmatchedValue => $temp) {
-                // Compile <option> tag:
-                array_unshift($optionElements, $this->renderOptionElement(
-                    $unmatchedValue,
-                    // @todo Check if we can get rid of "@" here (catches missing %s in $noMatchingLabel)
-                    @sprintf($noMatchingLabel, $unmatchedValue),
-                    ['selected' => 'selected']
-                ));
-            }
-        }
-
         $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);
         $resetButtonElement = $this->renderResetButtonElement($parameterArray['itemFormElName'] . '[]', $initiallySelectedIndices);
         $html = [];

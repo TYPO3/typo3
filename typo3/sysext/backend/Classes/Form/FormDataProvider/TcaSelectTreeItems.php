@@ -74,6 +74,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
 
             $staticValues = $this->getStaticValues($fieldConfig['config']['items'], $dynamicItems);
+            $result['databaseRow'][$fieldName] = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
             $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
 
             // Keys may contain table names, so a numeric array is created
@@ -111,7 +112,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             $fieldName,
             $result['databaseRow']
         );
-        $treeDataProvider->setSelectedList(implode(',', $result['databaseRow'][$fieldName]));
+        $treeDataProvider->setSelectedList(is_array($result['databaseRow'][$fieldName]) ? implode(',', $result['databaseRow'][$fieldName]) : $result['databaseRow'][$fieldName]);
         $treeDataProvider->setItemWhiteList($allowedUids);
         $treeDataProvider->initializeTreeData();
 

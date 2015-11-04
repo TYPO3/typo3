@@ -60,38 +60,24 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         if (!$maxitems) {
             $maxitems = 100000;
         }
-        // Get "removeItems":
-        $removeItems = GeneralUtility::trimExplode(',', $parameterArray['fieldTSConfig']['removeItems'], true);
         // Get the array with selected items:
         $itemsArray = $parameterArray['itemFormElValue'] ?: [];
 
         // Perform modification of the selected items array:
-        // @todo: this part should probably be moved to TcaSelectItems provider?!
         foreach ($itemsArray as $itemNumber => $itemValue) {
             $itemArray = array(
                 0 => $itemValue,
                 1 => '',
             );
-            $itemIcon = null;
-            $isRemoved = in_array($itemValue, $removeItems)
-                || $config['type'] == 'select' && $config['authMode']
-                && !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $itemValue, $config['authMode']);
-            if ($isRemoved && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-                $itemArray[1] = rawurlencode(@sprintf($noMatchingLabel, $itemValue));
-            } else {
-                if (isset($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])) {
-                    $itemArray[1] = rawurlencode($this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])));
-                }
-                if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
-                    $itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
-                }
+
+            if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
+                $itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
             }
-            if ($itemArray[1] === '') {
-                foreach ($selItems as $selItem) {
-                    if ($selItem[1] == $itemValue) {
-                        $itemArray[1] = $selItem[0];
-                        break;
-                    }
+
+            foreach ($selItems as $selItem) {
+                if ($selItem[1] == $itemValue) {
+                    $itemArray[1] = $selItem[0];
+                    break;
                 }
             }
             $itemsArray[$itemNumber] = implode('|', $itemArray);
