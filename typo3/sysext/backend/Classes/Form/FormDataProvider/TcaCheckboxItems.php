@@ -65,7 +65,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
                     $itemValue[1] = '';
                 }
                 $newItems[$itemKey] = [
-                    $languageService->sL($itemValue[0]),
+                    $languageService->sL(trim($itemValue[0])),
                     $itemValue[1]
                 ];
             }

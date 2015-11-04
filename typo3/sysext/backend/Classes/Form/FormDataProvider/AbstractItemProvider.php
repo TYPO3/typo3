@@ -655,7 +655,7 @@ abstract class AbstractItemProvider
                 }
                 // Get all sheets and title
                 foreach ($flexForms as $extIdent => $extConf) {
-                    $extTitle = $languageService->sl($extConf['title']);
+                    $extTitle = $languageService->sl(trim($extConf['title']));
                     // Get all fields in sheet
                     foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
                         if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
@@ -666,7 +666,7 @@ abstract class AbstractItemProvider
                             if (empty($field['TCEforms']['exclude'])) {
                                 continue;
                             }
-                            $fieldLabel = !empty($field['TCEforms']['label']) ? $languageService->sl($field['TCEforms']['label']) : $fieldName;
+                            $fieldLabel = !empty(trim($field['TCEforms']['label'])) ? $languageService->sl(trim($field['TCEforms']['label'])) : $fieldName;
                             $fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
                             $excludeArrayTable[] = [trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent];
                         }
@@ -1114,7 +1114,7 @@ abstract class AbstractItemProvider
             ) {
                 $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]]);
             } else {
-                $label = $languageService->sL($item[0]);
+                $label = $languageService->sL(trim($item[0]));
             }
             $value = strlen((string)$item[1]) > 0 ? $item[1] : '';
             $icon = $item[2] ?: null;

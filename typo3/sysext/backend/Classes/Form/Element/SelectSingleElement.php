@@ -45,7 +45,7 @@ class SelectSingleElement extends AbstractFormElement
 
         // Creating the label for the "No Matching Value" entry.
         $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-            ? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+            ? $this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['noMatchingValue_label']))
             : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
         // Check against inline uniqueness

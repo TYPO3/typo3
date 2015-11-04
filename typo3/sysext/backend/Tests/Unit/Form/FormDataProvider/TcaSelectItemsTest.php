@@ -584,7 +584,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 3 => null,
             ],
             1 => [
-                0 => ' (input1)',
+                0 => '(input1)',
                 1 => 'fooTable:aFlexField;dummy;sDEF;input1',
                 2 => 'empty-empty',
                 3 => null,

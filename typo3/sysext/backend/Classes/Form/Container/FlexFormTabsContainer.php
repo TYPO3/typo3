@@ -82,10 +82,10 @@ class FlexFormTabsContainer extends AbstractContainer
             $childReturn = $this->nodeFactory->create($options)->render();
 
             $tabElements[] = array(
-                'label' => !empty($sheetDataStructure['ROOT']['sheetTitle']) ? $languageService->sL($sheetDataStructure['ROOT']['sheetTitle']) : $sheetName,
+                'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
                 'content' => $childReturn['html'],
-                'description' => $sheetDataStructure['ROOT']['sheetDescription'] ? $languageService->sL($sheetDataStructure['ROOT']['sheetDescription']) : '',
-                'linkTitle' => $sheetDataStructure['ROOT']['sheetShortDescr'] ? $languageService->sL($sheetDataStructure['ROOT']['sheetShortDescr']) : '',
+                'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
+                'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
             );
 
             $childReturn['html'] = '';

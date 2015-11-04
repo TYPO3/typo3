@@ -67,8 +67,8 @@ class FlexFormSectionContainer extends AbstractContainer
                 // There may be cases where a field is still in DB but does not exist in definition
                 if (is_array($containerDataStructure)) {
                     $sectionTitle = '';
-                    if (!empty($containerDataStructure['title'])) {
-                        $sectionTitle = $languageService->sL($containerDataStructure['title']);
+                    if (!empty(trim($containerDataStructure['title']))) {
+                        $sectionTitle = $languageService->sL(trim($containerDataStructure['title']));
                     }
 
                     $options = $this->data;
@@ -94,8 +94,8 @@ class FlexFormSectionContainer extends AbstractContainer
         foreach ($flexFormFieldsArray as $flexFormContainerName => $flexFormFieldDefinition) {
             $containerTemplateHtml = array();
             $sectionTitle = '';
-            if (!empty($flexFormFieldDefinition['title'])) {
-                $sectionTitle = $languageService->sL($flexFormFieldDefinition['title']);
+            if (!empty(trim($flexFormFieldDefinition['title']))) {
+                $sectionTitle = $languageService->sL(trim($flexFormFieldDefinition['title']));
             }
 
             $options = $this->data;

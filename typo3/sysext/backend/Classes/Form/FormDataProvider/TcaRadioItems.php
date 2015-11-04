@@ -71,7 +71,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                     );
                 }
                 $newItems[$itemKey] = [
-                    $languageService->sL($itemValue[0]),
+                    $languageService->sL(trim($itemValue[0])),
                     $itemValue[1]
                 ];
             }
@@ -90,7 +90,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
             ) {
                 foreach ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'] as $itemKey => $label) {
                     if (isset($items[$itemKey][0])) {
-                        $items[$itemKey][0] = $languageService->sL($label);
+                        $items[$itemKey][0] = $languageService->sL(trim($label));
                     }
                 }
             }

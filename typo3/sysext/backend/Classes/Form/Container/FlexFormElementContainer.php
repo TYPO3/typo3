@@ -63,8 +63,8 @@ class FlexFormElementContainer extends AbstractContainer
                 }
 
                 $sectionTitle = '';
-                if (!empty($flexFormFieldArray['title'])) {
-                    $sectionTitle = $languageService->sL($flexFormFieldArray['title']);
+                if (!empty(trim($flexFormFieldArray['title']))) {
+                    $sectionTitle = $languageService->sL(trim($flexFormFieldArray['title']));
                 }
 
                 $options = $this->data;

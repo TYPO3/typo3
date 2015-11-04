@@ -42,7 +42,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         // Creating the label for the "No Matching Value" entry.
         $noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-            ? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+            ? $this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['noMatchingValue_label']))
             : '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
         $selItems = $config['items'];
@@ -80,7 +80,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
                 $itemArray[1] = rawurlencode(@sprintf($noMatchingLabel, $itemValue));
             } else {
                 if (isset($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])) {
-                    $itemArray[1] = rawurlencode($this->getLanguageService()->sL($parameterArray['fieldTSConfig']['altLabels.'][$itemValue]));
+                    $itemArray[1] = rawurlencode($this->getLanguageService()->sL(trim($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])));
                 }
                 if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
                     $itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
@@ -149,9 +149,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
                 $filterDropDownOptions = array();
                 foreach ($config['multiSelectFilterItems'] as $optionElement) {
-                    $optionValue = $this->getLanguageService()->sL(isset($optionElement[1]) && $optionElement[1] != '' ? $optionElement[1]
-                        : $optionElement[0]);
-                    $filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->getLanguageService()->sL($optionElement[0])) . '">'
+                    $optionValue = $this->getLanguageService()->sL(isset($optionElement[1]) && trim($optionElement[1]) !== '' ? trim($optionElement[1])
+                        : trim($optionElement[0]));
+                    $filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->getLanguageService()->sL(trim($optionElement[0]))) . '">'
                         . htmlspecialchars($optionValue) . '</option>';
                 }
                 $filterSelectbox = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">'
