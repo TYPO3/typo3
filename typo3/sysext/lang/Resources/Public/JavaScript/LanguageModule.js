@@ -197,6 +197,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 			} else if (status === 'error') {
 				LanguageModule.displayError(LanguageModule.labels.errorOccurred);
 			} else if (status === 'finished') {
+				LanguageModule.updateButtonStatus('cancel');
 				LanguageModule.displaySuccess(LanguageModule.labels.updateComplete);
 				LanguageModule.topMenu.removeClass(LanguageModule.classes.processing);
 			}
