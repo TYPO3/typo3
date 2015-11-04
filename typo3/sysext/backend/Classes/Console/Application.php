@@ -73,9 +73,6 @@ class Application implements ApplicationInterface
         $this->bootstrap->handleRequest(new \Symfony\Component\Console\Input\ArgvInput());
 
         if ($execute !== null) {
-            if ($execute instanceof \Closure) {
-                $execute->bindTo($this);
-            }
             call_user_func($execute);
         }
 

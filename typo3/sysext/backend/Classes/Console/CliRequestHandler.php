@@ -66,9 +66,6 @@ class CliRequestHandler implements RequestHandlerInterface
             $this->boot($commandLineName);
 
             if (is_callable($commandLineScript)) {
-                if ($commandLineScript instanceof \Closure) {
-                    $commandLineScript->bindTo($this);
-                }
                 call_user_func($commandLineScript);
             } else {
                 // include the CLI script

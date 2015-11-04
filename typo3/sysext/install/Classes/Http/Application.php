@@ -74,9 +74,6 @@ class Application implements ApplicationInterface
         $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
         if ($execute !== null) {
-            if ($execute instanceof \Closure) {
-                $execute->bindTo($this);
-            }
             call_user_func($execute);
         }
 

@@ -94,9 +94,6 @@ class Application implements ApplicationInterface
         $this->bootstrap->handleRequest($this->request);
 
         if ($execute !== null) {
-            if ($execute instanceof \Closure) {
-                $execute->bindTo($this);
-            }
             call_user_func($execute);
         }
 
