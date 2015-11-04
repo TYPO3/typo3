@@ -57,6 +57,7 @@ class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
+        $this->setRespectSubmittedDataValue(true);
 
         $this->tag->addAttribute('type', 'hidden');
         $this->tag->addAttribute('name', $name);
