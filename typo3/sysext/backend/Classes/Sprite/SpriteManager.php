@@ -67,7 +67,6 @@ class SpriteManager
      */
     public static function isInitialized()
     {
-        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         return self::$isInitialized;
     }
 
@@ -83,7 +82,6 @@ class SpriteManager
      */
     protected static function buildSpriteDataAndCreateCacheEntry()
     {
-        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         $handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
         /** @var $handler \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface */
         $handler = GeneralUtility::makeInstance($handlerClass);
