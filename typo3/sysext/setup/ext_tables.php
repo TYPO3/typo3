@@ -117,22 +117,11 @@ if (TYPO3_MODE === 'BE') {
             'resetConfiguration' => array(
                 'type' => 'button',
                 'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration',
-                'buttonlabel' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfigurationShort',
+                'buttonlabel' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfigurationButton',
                 'csh' => 'reset',
                 'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'setValuesToDefault\').value = 1; this.form.submit(); }',
                 'onClickLabels' => array(
                     'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion'
-                )
-            ),
-            'clearSessionVars' => array(
-                'type' => 'button',
-                'access' => 'admin',
-                'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:clearSessionVars',
-                'buttonlabel' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:clearSessionVarsShort',
-                'csh' => 'reset',
-                'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'clearSessionVars\').value = 1; this.form.submit(); }',
-                'onClickLabels' => array(
-                    'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:clearSessionVarsQuestion'
                 )
             ),
             'resizeTextareas_Flexible' => array(
@@ -154,7 +143,7 @@ if (TYPO3_MODE === 'BE') {
         'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xml:passwordHeader,passwordCurrent,password,password2,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
-				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
+				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:adminFunctions,debugInWindow'
     );
 }

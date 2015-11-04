@@ -312,20 +312,11 @@
 			<trans-unit id="resetConfiguration">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
-			<trans-unit id="resetConfigurationShort">
-				<source>Reset</source>
+			<trans-unit id="resetConfigurationButton">
+				<source>Reset user settings to default state</source>
 			</trans-unit>
 			<trans-unit id="setToStandardQuestion">
 				<source>Are you sure you want to reset all values to default?</source>
-			</trans-unit>
-			<trans-unit id="clearSessionVars">
-				<source>Clear Temporary Data</source>
-			</trans-unit>
-			<trans-unit id="clearSessionVarsShort">
-				<source>Clear</source>
-			</trans-unit>
-			<trans-unit id="clearSessionVarsQuestion">
-				<source>Are you sure you want to clear the temporary data?</source>
 			</trans-unit>
 			<trans-unit id="functions">
 				<source>Advanced functions</source>
@@ -407,15 +398,6 @@
 			</trans-unit>
 			<trans-unit id="enableInstallTool.fileHasKeep">
 				<source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
-			</trans-unit>
-			<trans-unit id="tempDataCleared">
-				<source>Temporary data cleared</source>
-			</trans-unit>
-			<trans-unit id="tempDataClearedFlashMessage">
-				<source>The temporary data has been cleared.</source>
-			</trans-unit>
-			<trans-unit id="tempDataClearedLog">
-				<source>Temporary data cleared</source>
 			</trans-unit>
 			<trans-unit id="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
