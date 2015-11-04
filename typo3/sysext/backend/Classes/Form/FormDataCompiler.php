@@ -98,6 +98,13 @@ class FormDataCompiler
 
         $result = $this->formDataGroup->compile($result);
 
+        if (!is_array($result)) {
+            throw new \UnexpectedValueException(
+                'Data group provider must return array',
+                1446664764
+            );
+        }
+
         $resultKeysAfterFormDataGroup = array_keys($result);
 
         if ($resultKeysAfterFormDataGroup !== $resultKeysBeforeFormDataGroup) {
@@ -191,6 +198,11 @@ class FormDataCompiler
             'columnsToProcess' => [],
             // If set to TRUE, no wizards are calculated and rendered later
             'disabledWizards' => false,
+
+            // Flex form field data handling is done in a separated FormDataCompiler instance. The full databaseRow
+            // of the record this flex form is embedded in is transferred in case features like single fields
+            // itemsProcFunc need to have this data at hand to do their job.
+            'flexParentDatabaseRow' => [],
 
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
             // @todo: better documentation of nesting behaviour and bug fixing in this area

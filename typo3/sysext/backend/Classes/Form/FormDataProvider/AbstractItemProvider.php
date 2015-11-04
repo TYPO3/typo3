@@ -61,6 +61,9 @@ abstract class AbstractItemProvider
             'row' => $result['databaseRow'],
             'field' => $fieldName,
         ];
+        if (!empty($result['flexParentDatabaseRow'])) {
+            $processorParameters['flexParentDatabaseRow'] = $result['flexParentDatabaseRow'];
+        }
 
         try {
             GeneralUtility::callUserFunction($config['itemsProcFunc'], $processorParameters, $this);

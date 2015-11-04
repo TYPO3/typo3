@@ -136,6 +136,16 @@ class FormDataComplierTest extends UnitTestCase
     /**
      * @test
      */
+    public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray()
+    {
+        $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn(null);
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1446664764);
+        $this->subject->compile([]);
+    }
+
+    /**
+     * @test
+     */
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray()
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {

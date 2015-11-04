@@ -221,6 +221,9 @@ class TcaCheckboxItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'flexParentDatabaseRow' => [
+                'aParentDatabaseRowFieldName' => 'aParentDatabaseRowFieldValue',
+            ],
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -240,6 +243,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     || $parameters['table'] !== 'aTable'
                                     || $parameters['row'] !== [ 'aField' => 'aValue' ]
                                     || $parameters['field'] !== 'aField'
+                                    || $parameters['flexParentDatabaseRow']['aParentDatabaseRowFieldName'] !== 'aParentDatabaseRowFieldValue'
                                 ) {
                                     throw new \UnexpectedValueException('broken', 1438604329);
                                 }
@@ -376,4 +380,5 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->addData($input));
         $this->subject->addData($input);
     }
+
 }
