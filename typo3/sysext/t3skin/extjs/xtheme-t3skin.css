@@ -2100,11 +2100,6 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	color: #606060;
 }
 
-/* Tree frame split bar */
-#typo3-navigationContainer-xsplit {
-	width: 0;
-}
-
 /* Collapse icon */
 #typo3-navigationContainer-xsplit .x-layout-mini-west,
 #typo3-navigationContainer-xcollapsed .x-layout-mini-west {
@@ -2126,7 +2121,8 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 #typo3-navigationContainer-xcollapsed {
-	width: 10px !important;
+	overflow: visible;
+	width: 9px!important;
 }
 
 /**

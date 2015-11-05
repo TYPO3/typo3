@@ -142,6 +142,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 
 			this.add({
 				layout: 'border',
+				border: false,
 				items: [
 					topPanelItems,
 					{
@@ -269,7 +270,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	afterTopPanelItemAdded: function(component) {
 		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
-		topPanelItems.setHeight(topPanelItems.getHeight() + component.getHeight() + 3);
+		topPanelItems.setHeight(topPanelItems.getHeight() + component.getHeight());
 		this.doLayout();
 	},
 
@@ -281,7 +282,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	removeIndicator: function(component) {
 		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
-		topPanelItems.setHeight(topPanelItems.getHeight() - component.getHeight() - 3);
+		topPanelItems.setHeight(topPanelItems.getHeight() - component.getHeight());
 		Ext.getCmp(this.id + '-indicatorBar').remove(component);
 		this.doLayout();
 	},

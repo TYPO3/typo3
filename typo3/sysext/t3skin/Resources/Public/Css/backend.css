@@ -7724,6 +7724,9 @@ button.close {
   width: 68.75%;
   text-align: center;
 }
+.icon-color {
+  fill: currentColor;
+}
 .icon-spin .icon-markup {
   -webkit-animation: icon-spin 2s infinite linear;
   animation: icon-spin 2s infinite linear;
@@ -9542,13 +9545,6 @@ div#contentMenu1 {
   padding-bottom: 3px;
   border-bottom: 1px solid #C3C3C3;
 }
-#typo3-navigationContainer-xsplit,
-#typo3-navigationContainer-xcollapsed {
-  background: #ffffff url(../../Public/Images/docheader-split-background.png) left top repeat-x;
-}
-#typo3-navigationContainer-xcollapsed {
-  width: 24px!important;
-}
 #typo3-navigationContainer-xcollapsed:before {
   content: "";
   position: absolute;
@@ -9596,7 +9592,6 @@ div#contentMenu1 {
   text-align: center;
 }
 .x-layout-split-west .x-layout-mini {
-  margin-left: -2px;
   background-color: #f5f5f5;
 }
 .x-layout-split-west .x-layout-mini:hover {
@@ -9878,7 +9873,7 @@ ul.typo3-messages {
   background: none;
 }
 #typo3-pagetree .x-tree-node .x-tree-node-el {
-  margin-right: 0;
+  margin-right: 3px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   border-left: 1px solid transparent;
@@ -9887,12 +9882,9 @@ ul.typo3-messages {
 #typo3-pagetree .x-tree-node .x-tree-selected {
   border-bottom: 1px solid #d7d7d7;
   border-top: 1px solid #d7d7d7;
-  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
 }
 #typo3-pagetree .x-tree-node .x-tree-node-over {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
-  background-position: right;
-  background-repeat: repeat-y;
   background-color: #f2f2f2;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -11497,8 +11489,11 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 }
 #ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docbody,
 #typo3-pagetree-treeContainer {
-  border-right: 1px solid #c3c3c3;
   background-color: #f5f5f5;
+}
+.x-layout-split {
+  width: 1px;
+  background-color: #c3c3c3;
 }
 .pagination .t3-icon {
   margin: 0;
@@ -11588,12 +11583,6 @@ a.badge-danger:focus {
 .btn-radio input[type=checkbox]:checked + .fa:before,
 .btn-checkbox input[type=checkbox]:checked + .fa:before {
   content: "\f00c";
-}
-.btn-danger .icon-color,
-.btn-success .icon-color,
-.btn-warning .icon-color,
-.btn-info .icon-color {
-  fill: currentColor;
 }
 .dropzone {
   position: relative;
@@ -12656,7 +12645,7 @@ iframe {
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 3px 9px;
+  padding: 4px 9px;
   text-transform: uppercase;
 }
 [id="typo3-menu"] .typo3-module-menu-group-header:before,
@@ -12682,7 +12671,7 @@ iframe {
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 3px 9px;
+  padding: 4px 9px;
   color: #aaaaaa;
   border-radius: 0 2px 2px 0;
   text-decoration: none;

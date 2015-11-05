@@ -99,16 +99,6 @@
 // ExtJS Viewport
 //
 
-//
-// Collapsed tree frame is not invisible, but 5px wide.
-// If no tree frame is in use, an empty container is shown instead
-//
-
-#typo3-navigationContainer-xsplit,
-#typo3-navigationContainer-xcollapsed {
-	background: @body-bg url(../../Public/Images/docheader-split-background.png) left top repeat-x;
-}
-
 
 // override the ExtJS collapse page tree button
 // -------------------------
@@ -117,7 +107,6 @@
 @module-menu-border-color-light: #C3C3C3;
 
 #typo3-navigationContainer-xcollapsed {
-	width: 24px!important;
 	&:before {
 		content: "";
 		position: absolute;
@@ -172,7 +161,6 @@
 // close page tree button
 .x-layout-split-west .x-layout-mini {
 	&:extend(.typo3-btn-collapse-page-tree all);
-	margin-left: -2px;
 	background-color: @module-menu-border-color-lighter;
 	&:hover {
 		background-color: darken(@module-menu-border-color-lighter,5%);

@@ -56,7 +56,7 @@ TYPO3.Viewport.configuration = {
 			layout: 'absolute',
 			region: 'north',
 			id: 'typo3-topbar',
-			height: 42,
+			height: 45,
 			contentEl: 'typo3-top-container',
 			border: false
 		},
@@ -69,7 +69,7 @@ TYPO3.Viewport.configuration = {
 			collapseMode: null,
 			floatable: true,
 			minWidth: 50,
-			maxWidth: 400,
+			maxWidth: 250,
 			hideCollapseTool: true,
 			split: true,
 			useSplitTips: true,
@@ -82,7 +82,7 @@ TYPO3.Viewport.configuration = {
 					var containerWidth = adjWidth,
 						moduleMenuWidth = document.getElementById('typo3-menu').clientWidth,
 						moduleMenuMinWidth = 100,
-						moduleMenuSnappedWidth = 46,
+						moduleMenuSnappedWidth = 50,
 						moduleMenuSnappingClass = 'typo3-module-menu-snapped',
 						forceSnapMode = (containerWidth <= moduleMenuMinWidth);
 					if (forceSnapMode){
@@ -108,7 +108,8 @@ TYPO3.Viewport.configuration = {
 					layout: 'fit',
 					id: 'typo3-navigationContainer',
 					width: 300,
-					minWidth: 20,
+					minWidth: 250,
+					maxWidth: 500,
 					floatable: true,
 					animCollapse: false,
 					split: true,
@@ -134,21 +135,13 @@ TYPO3.Viewport.configuration = {
 					]
 				},
 				{
+					id: 'typo3-contentContainerWrapper',
+					name: 'content',
+					border: false,
+					xtype: 'panel',
 					region: 'center',
-					layout: 'border',
-					items: [
-						{
-							id: 'typo3-contentContainerWrapper',
-							border: false,
-							layout: 'fit',
-							name: 'content',
-							region: 'center',
-							xtype: 'panel',
-							layout: 'card',
-							activeItem: 0,
-							items: TYPO3.Viewport.ContentCards.cards
-						}
-					]
+					layout: 'card',
+					items: TYPO3.Viewport.ContentCards.cards
 				}
 			]
 		}
