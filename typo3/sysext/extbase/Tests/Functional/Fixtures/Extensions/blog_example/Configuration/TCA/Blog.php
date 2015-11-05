@@ -12,6 +12,7 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
@@ -27,6 +28,7 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('', 0),
                 ),
@@ -60,6 +62,7 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'size' => 5,
                 'maxitems' => 20,
                 'items' => array(
@@ -136,6 +139,7 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.administrator',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'fe_users',
                 'foreign_table_where' => "AND fe_users.tx_extbase_type='Tx_BlogExample_Domain_Model_Administrator'",
                 'items' => array(

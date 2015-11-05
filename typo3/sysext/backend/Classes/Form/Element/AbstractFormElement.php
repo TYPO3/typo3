@@ -383,6 +383,7 @@ abstract class AbstractFormElement extends AbstractNode
                             'columns' => [
                                 $wizardIdentifier => [
                                     'type' => 'select',
+                                    'renderType' => 'selectSingle',
                                     'config' => $wizardConfiguration,
                                 ],
                             ],

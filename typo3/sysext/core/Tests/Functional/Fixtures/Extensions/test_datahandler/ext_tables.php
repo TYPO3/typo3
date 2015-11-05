@@ -11,6 +11,7 @@ defined('TYPO3_MODE') or die();
             'label' => 'DataHandler Test Select',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_testdatahandler_element',
                 'minitems' => 1,
                 'maxitems' => 10,
