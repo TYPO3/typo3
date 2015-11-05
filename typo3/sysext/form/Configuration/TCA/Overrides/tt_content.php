@@ -48,6 +48,25 @@ $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms
     )
 );
 
+// Add palettes if they are not available
+if (!isset($GLOBALS['TCA']['tt_content']['palettes']['visibility'])) {
+    $GLOBALS['TCA']['tt_content']['palettes']['visibility'] = array(
+        'showitem' => '
+            hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:hidden_formlabel,
+            sectionIndex;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel,
+            linkToTop;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel
+        ',
+    );
+}
+
+if (!isset($GLOBALS['TCA']['tt_content']['palettes']['frames'])) {
+    $GLOBALS['TCA']['tt_content']['palettes']['frames'] = array(
+        'showitem' => '
+            layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel
+        ',
+    );
+}
+
 $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
 	--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
