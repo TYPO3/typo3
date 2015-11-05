@@ -16,3 +16,17 @@ Impact
 ======
 
 Setting the option mentioned above has no effect anymore. The PHP limit is used instead.
+
+The TCA settings ``max_size`` for ``fe_users.image`` is removed, allowing editors to upload images up to the PHP-specific limit.
+
+
+Affected Installations
+======================
+
+Extensions that use ``$GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']`` as default for the TCA setting ``max_size`` need adjustment, if the PHP-specific upload limit is higher than ``$TYPO3_CONF_VARS['BE']['maxFileSize']``.
+
+
+Migration
+=========
+
+Explicitly set a value for ``max_size`` or drop those lines from your TCA configuration.
