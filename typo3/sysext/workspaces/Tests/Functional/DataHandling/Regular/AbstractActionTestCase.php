@@ -254,4 +254,100 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
 	}
 
+	/**
+	 * Creates a content element and copies the page in draft workspace.
+	 */
+	public function createContentAndCopyDraftPage() {
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+	}
+
+	/**
+	 * Creates a content element and copies the page in live workspace.
+	 */
+	public function createContentAndCopyLivePage() {
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
+	/**
+	 * Creates a page in a draft workspace and copies the parent page in draft workspace.
+	 */
+	public function createPageAndCopyDraftParentPage() {
+		$this->backendUser->uc['copyLevels'] = 10;
+
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, array('title' => 'Testing #1', 'hidden' => 0));
+		$this->recordIds['newPageId'] = $newTableIds[static::TABLE_Page][0];
+		$newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
+	}
+	/**
+	 * Creates a page in a draft workspace and copies the parent page in live workspace.
+	 */
+	public function createPageAndCopyLiveParentPage() {
+		$this->backendUser->uc['copyLevels'] = 10;
+
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, array('title' => 'Testing #1', 'hidden' => 0));
+		$this->recordIds['newPageId'] = $newTableIds[static::TABLE_Page][0];
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
+	/**
+	 * Creates nested pages in a draft workspace and copies the parent page in draft workspace.
+	 */
+	public function createNestedPagesAndCopyDraftParentPage() {
+		$this->backendUser->uc['copyLevels'] = 10;
+
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, array('title' => 'Testing #1', 'hidden' => 0));
+		$this->recordIds['newPageIdFirst'] = $newTableIds[static::TABLE_Page][0];
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, $this->recordIds['newPageIdFirst'], array('title' => 'Testing #2', 'hidden' => 0));
+		$this->recordIds['newPageIdSecond'] = $newTableIds[static::TABLE_Page][0];
+		$newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
+		$this->recordIds['copiedPageIdFirst'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdFirst']];
+		$this->recordIds['copiedPageIdSecond'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdSecond']];
+	}
+
+	/**
+	 * Creates nested pages in a draft workspace and copies the parent page in live workspace.
+	 */
+	public function createNestedPagesAndCopyLiveParentPage() {
+		$this->backendUser->uc['copyLevels'] = 10;
+
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, array('title' => 'Testing #1', 'hidden' => 0));
+		$this->recordIds['newPageIdFirst'] = $newTableIds[static::TABLE_Page][0];
+		$newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, $this->recordIds['newPageIdFirst'], array('title' => 'Testing #2', 'hidden' => 0));
+		$this->recordIds['newPageIdSecond'] = $newTableIds[static::TABLE_Page][0];
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(static::TABLE_Page, static::VALUE_PageId, static::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
+		$this->recordIds['copiedPageIdFirst'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdFirst']];
+		$this->recordIds['copiedPageIdSecond'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdSecond']];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
 }

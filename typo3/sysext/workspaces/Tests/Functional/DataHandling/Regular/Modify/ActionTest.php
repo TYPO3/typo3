@@ -341,4 +341,100 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 			->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/createContentAndCopyDraftPage.csv
+	 */
+	public function createContentAndCopyDraftPage() {
+		parent::createContentAndCopyDraftPage();
+		$this->assertAssertionDataSet('createContentAndCopyDraftPage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createContentAndCopyLivePage.csv
+	 */
+	public function createContentAndCopyLivePage() {
+		parent::createContentAndCopyLivePage();
+		$this->assertAssertionDataSet('createContentAndCopyLivePage');
+
+//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createPageAndCopyDraftParentPage.csv
+	 */
+	public function createPageAndCopyDraftParentPage() {
+		parent::createPageAndCopyDraftParentPage();
+		$this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createPageAndCopyParentPage.csv
+	 */
+	public function createPageAndCopyLiveParentPage() {
+		parent::createPageAndCopyLiveParentPage();
+		$this->assertAssertionDataSet('createPageAndCopyLiveParentPage');
+
+//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createNestedPagesAndCopyDraftParentPage.csv
+	 */
+	public function createNestedPagesAndCopyDraftParentPage() {
+		parent::createNestedPagesAndCopyDraftParentPage();
+		$this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createNestedPagesAndCopyParentPage.csv
+	 */
+	public function createNestedPagesAndCopyLiveParentPage() {
+		parent::createNestedPagesAndCopyLiveParentPage();
+		$this->assertAssertionDataSet('createNestedPagesAndCopyLiveParentPage');
+
+//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
+	}
+
 }
