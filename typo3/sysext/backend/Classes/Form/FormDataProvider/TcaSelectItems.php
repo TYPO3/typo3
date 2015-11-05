@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Resolve select items, set processed item list in processedTca, sanitize and resolve database field

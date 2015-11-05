@@ -24,7 +24,6 @@ use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Core\Database\RelationHandler;
 
 /**
  * Container around a "single field".

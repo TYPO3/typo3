@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Authentication\BackendUserAuthentication

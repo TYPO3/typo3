@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\ViewHelpers;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\ViewHelpers\IconViewHelper;

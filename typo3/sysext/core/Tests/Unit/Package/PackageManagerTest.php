@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\DependencyResolver;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Package\PackageManager;
