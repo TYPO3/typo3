@@ -102,7 +102,6 @@ return array(
                 'internal_type' => 'file',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'disallowed' => 'php',
-                'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
                 'uploadfolder' => 'uploads/tx_impexpgroupfiles',
                 'size' => 5,
                 'maxitems' => 5,
@@ -117,7 +116,6 @@ return array(
                 'internal_type' => 'file_reference',
                 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'disallowed' => 'php',
-                'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
                 'size' => 5,
                 'maxitems' => 5,
                 'show_thumbs' => 1,
@@ -168,7 +166,6 @@ return array(
 														<internal_type>file</internal_type>
 														<allowed>' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . '</allowed>
 														<disallowed>php</disallowed>
-														<max_size>' . $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] . '</max_size>
 														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
 														<size>5</size>
 														<maxitems>5</maxitems>
@@ -184,7 +181,6 @@ return array(
 														<internal_type>file_reference</internal_type>
 														<allowed>' . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . '</allowed>
 														<disallowed>php</disallowed>
-														<max_size>' . $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] . '</max_size>
 														<uploadfolder>uploads/tx_impexpgroupfiles</uploadfolder>
 														<size>5</size>
 														<maxitems>5</maxitems>

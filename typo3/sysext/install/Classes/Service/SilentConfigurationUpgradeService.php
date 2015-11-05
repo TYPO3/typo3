@@ -100,6 +100,8 @@ class SilentConfigurationUpgradeService
         'SYS/serverTimeZone',
         // #70138
         'BE/flexFormXMLincludeDiffBase',
+        // #71110
+        'BE/maxFileSize',
     );
 
     /**

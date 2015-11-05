@@ -79,7 +79,6 @@ class Check
         $statusArray[] = $this->checkCurrentDirectoryIsInIncludePath();
         $statusArray[] = $this->checkTrustedHostPattern();
         $statusArray[] = $this->checkFileUploadEnabled();
-        $statusArray[] = $this->checkMaximumFileUploadSize();
         $statusArray[] = $this->checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize();
         $statusArray[] = $this->checkMemorySettings();
         $statusArray[] = $this->checkPhpVersion();
@@ -197,32 +196,6 @@ class Check
         } else {
             $status = new Status\OkStatus();
             $status->setTitle('File uploads allowed in PHP');
-        }
-        return $status;
-    }
-
-    /**
-     * Check maximum file upload size against default value of 10MB
-     *
-     * @return Status\StatusInterface
-     */
-    protected function checkMaximumFileUploadSize()
-    {
-        $maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
-        $configuredMaximumUploadFilesize = 1024 * (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'];
-        if ($maximumUploadFilesize < $configuredMaximumUploadFilesize) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('PHP Maximum upload filesize too small');
-            $status->setMessage(
-                'PHP upload_max_filesize = ' . (int)($maximumUploadFilesize / 1024) . ' KB' . LF .
-                'TYPO3_CONF_VARS[BE][maxFileSize] = ' . (int)($configuredMaximumUploadFilesize / 1024) . ' KB' . LF . LF .
-                'Currently PHP determines the limits for uploaded file\'s sizes and not TYPO3.' .
-                ' It is recommended that the value of upload_max_filesize is at least equal to the value' .
-                ' of TYPO3_CONF_VARS[BE][maxFileSize].'
-            );
-        } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('PHP Maximum file upload size is higher than or equal to [BE][maxFileSize]');
         }
         return $status;
     }

@@ -3153,18 +3153,12 @@ Connection: close
     /**
      * Returns the maximum upload size for a file that is allowed. Measured in KB.
      * This might be handy to find out the real upload limit that is possible for this
-     * TYPO3 installation. The first parameter can be used to set something that overrides
-     * the maxFileSize, usually for the TCA values.
+     * TYPO3 installation.
      *
-     * @param int $localLimit the number of Kilobytes (!) that should be used as
      * @return int The maximum size of uploads that are allowed (measured in kilobytes)
      */
-    public static function getMaxUploadFileSize($localLimit = 0)
+    public static function getMaxUploadFileSize()
     {
-        // Don't allow more than the global max file size at all
-        $t3Limit = (int)($localLimit > 0 ? $localLimit : $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize']);
-        // As TYPO3 is handling the file size in KB, multiply by 1024 to get bytes
-        $t3Limit = $t3Limit * 1024;
         // Check for PHP restrictions of the maximum size of one of the $_FILES
         $phpUploadLimit = self::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
         // Check for PHP restrictions of the maximum $_POST size
@@ -3172,8 +3166,7 @@ Connection: close
         // If the total amount of post data is smaller (!) than the upload_max_filesize directive,
         // then this is the real limit in PHP
         $phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
-        // Is the allowed PHP limit (upload_max_filesize) lower than the TYPO3 limit?, also: revert back to KB
-        return floor(($phpUploadLimit < $t3Limit ? $phpUploadLimit : $t3Limit)) / 1024;
+        return floor(($phpUploadLimit)) / 1024;
     }
 
     /**
