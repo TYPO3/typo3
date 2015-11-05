@@ -165,11 +165,38 @@ class ModuleTemplate
     protected $title = '';
 
     /**
+     * Body Tag
+     *
+     * @var string
+     */
+    protected $bodyTag = '<body>';
+
+    /**
      * Flash message queue
      *
      * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue
      */
     protected $flashMessageQueue;
+
+    /**
+     * Returns the current body tag
+     *
+     * @return string
+     */
+    public function getBodyTag()
+    {
+        return $this->bodyTag;
+    }
+
+    /**
+     * Sets the body tag
+     *
+     * @param string $bodyTag
+     */
+    public function setBodyTag($bodyTag)
+    {
+        $this->bodyTag = $bodyTag;
+    }
 
     /**
      * Gets the standalone view.
@@ -330,6 +357,7 @@ class ModuleTemplate
         }
 
         $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
+        $renderedPage.= $this->bodyTag;
         $renderedPage .= $this->view->render();
         $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
         $renderedPage .= $this->pageRenderer->render(PageRenderer::PART_FOOTER);
