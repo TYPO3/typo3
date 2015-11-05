@@ -58,7 +58,10 @@ class TrimFilter extends AbstractFilter implements FilterInterface
      */
     public function filter($value)
     {
-        if ($this->characterList === null) {
+        if (
+            $this->characterList === null
+            || $this->characterList === ''
+        ) {
             return trim((string)$value);
         } else {
             return trim((string)$value, $this->characterList);

@@ -120,7 +120,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 					formItems.push({
 						fieldLabel: TYPO3.l10n.localize('filters_properties_characterlist'),
 						name: 'characterList',
-						allowBlank: false,
+						allowBlank: true,
 						listeners: {
 							'triggerclick': {
 								scope: this,
