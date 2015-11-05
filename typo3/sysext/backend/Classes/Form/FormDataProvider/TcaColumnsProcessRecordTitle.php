@@ -44,6 +44,16 @@ class TcaColumnsProcessRecordTitle implements FormDataProviderInterface
             $result['columnsToProcess'] = array_merge($result['columnsToProcess'], array_filter($labelColumns));
         }
 
+        // Add foreign_label to process list if exists and the record is an inline child
+        if ($result['isInlineChild'] && isset($result['inlineParentConfig']['foreign_label'])) {
+            $result['columnsToProcess'][] = $result['inlineParentConfig']['foreign_label'];
+        }
+
+        // Add symmetric_label to process list if exists and the record is an inline child
+        if ($result['isInlineChild'] && isset($result['inlineParentConfig']['symmetric_label'])) {
+            $result['columnsToProcess'][] = $result['inlineParentConfig']['symmetric_label'];
+        }
+
         return $result;
     }
 }

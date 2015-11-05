@@ -47,6 +47,26 @@ class TcaColumnsProcessShowitem implements FormDataProviderInterface
             return $result;
         }
 
+        $addShowItemFieldsToColumnsToProcess = true;
+        if ($result['isInlineChild']) {
+            // If the record is an inline child that is not expanded, it is not necessary to calculate all fields
+            $isExistingRecord = $result['command'] === 'edit';
+            $inlineConfig = $result['inlineParentConfig'];
+            $collapseAll = isset($inlineConfig['appearance']['collapseAll']) && $inlineConfig['appearance']['collapseAll'];
+            $expandCollapseStateArray = $result['inlineExpandCollapseStateArray'];
+            $foreignTable = $result['inlineParentConfig']['foreign_table'];
+            $isExpandedByUcState = isset($expandCollapseStateArray[$foreignTable])
+                    && is_array($expandCollapseStateArray[$foreignTable])
+                    && in_array($result['databaseRow']['uid'], $expandCollapseStateArray[$foreignTable]) !== false;
+            if ($isExistingRecord && ($collapseAll || !$isExpandedByUcState) && !$result['isInlineAjaxOpeningContext']) {
+                $addShowItemFieldsToColumnsToProcess = false;
+            }
+        }
+
+        if (!$addShowItemFieldsToColumnsToProcess) {
+            return $result;
+        }
+
         $showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
         $showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, true);
 

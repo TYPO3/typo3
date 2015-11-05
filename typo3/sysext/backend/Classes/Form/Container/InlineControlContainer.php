@@ -209,14 +209,27 @@ class InlineControlContainer extends AbstractContainer
 
         $resultArray['inlineData'] = $this->inlineData;
 
-        // Render the localization links
+        // @todo: It might be a good idea to have something like "isLocalizedRecord" or similar set by a data provider
+        $isLocalizedParent = $language > 0
+            && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']][0] > 0
+            && MathUtility::canBeInterpretedAsInteger($row['uid']);
+        $numberOfFullLocalizedChildren = 0;
+        $numberOfNotYetLocalizedChildren = 0;
+        foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
+            if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
+                $numberOfFullLocalizedChildren ++;
+            }
+            if ($isLocalizedParent && $child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
+                $numberOfNotYetLocalizedChildren ++;
+            }
+        }
+
+        // Render the localization links if needed
         $localizationLinks = '';
-        // @todo if isInlineDefaultLanguageRecordInLocalizedParentContext
-        // @todo: Would be even more cool if the localize button is only shown if there are any not yet localized children
-        if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']][0] > 0 && MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+        if ($numberOfNotYetLocalizedChildren) {
             // Add the "Localize all records" link before all child records:
             if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
-                $localizationLinks .= ' ' . $this->getLevelInteractionLink('localize', $nameObject . '-' . $foreign_table, $config);
+                $localizationLinks = ' ' . $this->getLevelInteractionLink('localize', $nameObject . '-' . $foreign_table, $config);
             }
             // Add the "Synchronize with default language" link before all child records:
             if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
@@ -224,14 +237,8 @@ class InlineControlContainer extends AbstractContainer
             }
         }
 
-        $numberOfFullChildren = 0;
-        foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
-            if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-                $numberOfFullChildren ++;
-            }
-        }
         // Define how to show the "Create new record" link - if there are more than maxitems, hide it
-        if ($numberOfFullChildren >= $config['maxitems'] || $uniqueMax > 0 && $numberOfFullChildren >= $uniqueMax) {
+        if ($numberOfFullLocalizedChildren >= $config['maxitems'] || $uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
         }

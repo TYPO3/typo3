@@ -75,15 +75,8 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
             'databaseRow' => [
                 'uid' => 13,
             ],
-            'inlineStructure' =>  [
-                'stable' => [
-                    [
-                        'table' => 'aParentTable',
-                        'uid' => 5,
-                        'field' => 'inline_2',
-                    ],
-                ],
-            ],
+            'inlineTopMostParentTableName' => 'aParentTable',
+            'inlineTopMostParentUid' => 5,
         ];
         $inlineState = [
             'aParentTable' => [

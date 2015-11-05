@@ -15,10 +15,9 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Remove fields from columns not in showitem or palette list.
+ * Remove fields from columns not in showitem or palette list or needed otherwise
  * This is a relatively effective performance improvement preventing other
  * providers from resolving stuff of fields that are not shown later.
  * Especially effective for fal related tables.

@@ -205,7 +205,14 @@ class FormDataCompiler
             'flexParentDatabaseRow' => [],
 
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
-            // @todo: better documentation of nesting behaviour and bug fixing in this area
+            // This array is "flat", an inline structure with parent uid 1 having firstChild uid 2 having secondChild uid 3
+            // firstChild and secondChild are not nested. If an uid is set it means "record is expanded", example:
+            // 'parent' => [
+            //     1 => [
+            //         'firstChild' => [ 2 ], // record 2 of firstChild table is open in inline context to parent 1
+            //         'secondChild' => [ 3 ], // record 3 of secondChild table is open in inline context to parent 1
+            //     ],
+            // ]
             'inlineExpandCollapseStateArray' => [],
             // The "entry" pid for inline records. Nested inline records can potentially hang around on different
             // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes

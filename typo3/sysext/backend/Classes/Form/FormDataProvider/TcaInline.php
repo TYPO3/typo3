@@ -164,7 +164,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 );
 
                 $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
-                $showRemoved = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showRemovedLocalizationRecords'];
 
                 // Find which records are localized, which records are not localized and which are
                 // localized but miss default language record

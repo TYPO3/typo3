@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
@@ -33,29 +31,27 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        // Early return if a parent record has already set this
         if (!empty($result['inlineExpandCollapseStateArray'])) {
+            // Early return if a parent record has already set this, happens for existing inline children
+            // when opening a parent record.
             return $result;
-        } elseif (!empty($result['inlineStructure'])) {
-            /** @var InlineStackProcessor $inlineStackProcessor */
-            $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-            $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-            // Top parent
-            $parent = $inlineStackProcessor->getStructureLevel(0);
+        } elseif (!empty($result['inlineTopMostParentUid']) && !empty($result['inlineTopMostParentTableName'])) {
+            // Happens in inline ajax context, top parent uid and top parent table are set
             $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
             if (!is_array($fullInlineState)) {
                 $fullInlineState = [];
             }
             $inlineStateForTable = [];
             if ($result['command'] !== 'new') {
-                $table = $parent['table'];
-                $uid = $parent['uid'];
+                $table = $result['inlineTopMostParentTableName'];
+                $uid = $result['inlineTopMostParentUid'];
                 if (!empty($fullInlineState[$table][$uid])) {
                     $inlineStateForTable = $fullInlineState[$table][$uid];
                 }
             }
             $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
         } else {
+            // Default case for a single record
             $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
             if (!is_array($fullInlineState)) {
                 $fullInlineState = [];

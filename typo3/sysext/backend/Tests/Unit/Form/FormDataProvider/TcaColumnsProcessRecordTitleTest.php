@@ -72,4 +72,40 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
         $expected['columnsToProcess'] = ['uid','aField','anotherField'];
         $this->assertSame($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataRegistersForeignLabelInInlineContext()
+    {
+        $input = [
+            'columnsToProcess' => [],
+            'inlineParentConfig' => [
+                'foreign_label' => 'aForeignLabelField',
+            ],
+            'isInlineChild' => true,
+        ];
+
+        $expected = $input;
+        $expected['columnsToProcess'] = [ 'aForeignLabelField' ];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataRegistersSymmetricLabelInInlineContext()
+    {
+        $input = [
+            'columnsToProcess' => [],
+            'inlineParentConfig' => [
+                'symmetric_label' => 'aSymmetricLabelField',
+            ],
+            'isInlineChild' => true,
+        ];
+
+        $expected = $input;
+        $expected['columnsToProcess'] = [ 'aSymmetricLabelField' ];
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }
