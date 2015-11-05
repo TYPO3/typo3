@@ -302,9 +302,9 @@ class PermissionAjaxController
     {
         $page = (int)$page;
         if ($editLockState === 1) {
-            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">' . $this->iconFactory->getIcon('actions-unlock', Icon::SIZE_SMALL)->render() . '</a></span>';
+            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">' . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a></span>';
         } else {
-            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">' . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a></span>';
+            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">' . $this->iconFactory->getIcon('actions-unlock', Icon::SIZE_SMALL)->render() . '</a></span>';
         }
         return $ret;
     }

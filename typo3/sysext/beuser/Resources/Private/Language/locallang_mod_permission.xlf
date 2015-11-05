@@ -25,7 +25,7 @@
 				<source>Lock</source>
 			</trans-unit>
 			<trans-unit id="EditLock_descr">
-				<source>The page and all content is locked for editing by all non-Admin users.</source>
+				<source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
 			</trans-unit>
 			<trans-unit id="EditLock_descr2">
 				<source>Enable the »Admin-only« edit lock for this page</source>
