@@ -37,7 +37,7 @@ call_user_func(function () {
     $GLOBALS['TCA']['tt_content']['types']['textmedia'] = [
         'showitem' => '
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.general;general,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,
+				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,rowDescription,
 				bodytext;' . $frontendLanguageFilePrefix . 'bodytext_formlabel,
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.media,
 				assets,
