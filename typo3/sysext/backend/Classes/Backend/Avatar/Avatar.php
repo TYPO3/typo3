@@ -82,7 +82,7 @@ class Avatar
         $avatarImage = $this->getImage($backendUser, $size);
 
         if ($avatarImage) {
-            $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '"' .
+            $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '" ' .
                 'width="' . (int)$avatarImage->getWidth() . '" ' .
                 'height="' . (int)$avatarImage->getHeight() . '" />';
         }
