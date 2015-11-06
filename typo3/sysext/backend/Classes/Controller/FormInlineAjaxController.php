@@ -101,7 +101,11 @@ class FormInlineAjaxController
             $childVanillaUid = (int)$inlineFirstPid;
         }
 
+        if ($parentConfig['type'] === 'flex') {
+            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId);
+        }
         $childTableName = $parentConfig['foreign_table'];
+
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         /** @var FormDataCompiler $formDataCompiler */
@@ -113,6 +117,9 @@ class FormInlineAjaxController
             'isInlineChild' => true,
             'inlineStructure' => $inlineStackProcessor->getStructure(),
             'inlineFirstPid' => $inlineFirstPid,
+            'inlineParentUid' => $parent['uid'],
+            'inlineParentTableName' => $parent['table'],
+            'inlineParentFieldName' => $parent['field'],
             'inlineParentConfig' => $parentConfig,
         ];
         if ($childChildUid) {
@@ -485,12 +492,15 @@ class FormInlineAjaxController
     protected function compileChild(array $parentData, $parentFieldName, $childUid, array $inlineStructure)
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
-        $childTableName = $parentConfig['foreign_table'];
 
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+
+        // @todo: do not use stack processor here ...
+        $child = $inlineStackProcessor->getUnstableStructure();
+        $childTableName = $child['table'];
 
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -733,5 +743,77 @@ class FormInlineAjaxController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Extract the inline child table configuration from the flexform data structure
+     * using the the domObjectId to traverse the XML structure.
+     *
+     * domObjectId parsing has been copied from InlineStackProcessor::initializeByDomObjectId
+     *
+     * @param array $parentConfig
+     * @param string $domObjectId
+     * @return array
+     */
+    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId)
+    {
+        // Substitute FlexForm addition and make parsing a bit easier
+        $domObjectId = str_replace('---', ':', $domObjectId);
+        // The starting pattern of an object identifier (e.g. "data-<firstPidValue>-<anything>)
+        $pattern = '/^data' . '-' . '(?<firstPidValue>.+?)' . '-' . '(?<anything>.+)$/';
+
+        $flexFormPath = [];
+
+        if (preg_match($pattern, $domObjectId, $match)) {
+            $parts = explode('-', $match['anything']);
+
+            if (!isset($parts[2]) || strpos($parts[2], ':') === false) {
+                throw new \UnexpectedValueException(
+                    'DOM Object ID' . $domObjectId. 'does not contain required information '
+                    . 'to extract inline field configuration.',
+                    1446996136
+                );
+            }
+
+            $fieldParts = GeneralUtility::trimExplode(':', $parts[2]);
+
+            // FlexForm parts start with data:
+            if (empty($fieldParts) || !isset($fieldParts[1]) || $fieldParts[1] !== 'data') {
+                throw new \UnexpectedValueException(
+                    'Malformed flexform identifier: ' . $parts[2],
+                    1446996254
+                );
+            }
+
+            $flexFormPath = array_slice($fieldParts, 2);
+        }
+
+        $childConfig = $parentConfig['ds']['sheets'];
+
+        foreach ($flexFormPath as $flexFormNode) {
+            // We are dealing with configuration information from a flexform,
+            // not value storage, identifiers that the reference language or
+            // value nodes must be skipped.
+            if (!isset($childConfig[$flexFormNode]) && preg_match('/^[lv][[:alpha:]]+$/', $flexFormNode)) {
+                continue;
+            }
+            $childConfig = $childConfig[$flexFormNode];
+
+            // Skip to the field configuration of a sheet
+            if (isset($childConfig['ROOT']) && $childConfig['ROOT']['type'] == 'array') {
+                $childConfig = $childConfig['ROOT']['el'];
+            }
+        }
+
+        if (!isset($childConfig['config'])
+            || !is_array($childConfig['config'])
+            || $childConfig['config']['type'] !== 'inline'
+        ) {
+            throw new \UnexpectedValueException(
+                'Configuration retrieved from FlexForm is incomplete or not of type "inline".',
+                1446996319
+            );
+        }
+        return $childConfig['config'];
     }
 }

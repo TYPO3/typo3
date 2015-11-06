@@ -81,6 +81,7 @@ class FlexFormElementContainer extends AbstractContainer
                     'fieldConf' => [
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
                         'config' => $flexFormFieldArray['config'],
+                        'children' => $flexFormFieldArray['children'],
                         'defaultExtras' => $flexFormFieldArray['defaultExtras'],
                         'onChange' => $flexFormFieldArray['onChange'],
                     ],

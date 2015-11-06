@@ -658,9 +658,26 @@ return array(
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                         ),
                     ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
+                        ),
+                    ),
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => array(
+                        'depends' => array(
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+                        ),
+                    ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
                         'depends' => array(
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
                         ),
                     ),
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
