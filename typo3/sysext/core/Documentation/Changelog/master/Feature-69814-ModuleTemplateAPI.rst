@@ -12,6 +12,7 @@ This means we have about 80 DocHeaders which are equal but not the same.
 
 The main challenge is to provide extension developers with all tools they need to build decent backend modules while maintaining control of the docHeader itself.
 
+
 Solution
 ========
 
@@ -34,6 +35,7 @@ Parts of a docHeader Currently a typical docHeader is split up into the followin
 
   * Left Button Bar
   * Right Button Bar
+
 
 API Components
 ==============
@@ -96,3 +98,45 @@ Examples of usages
     }
     $languageMenu->addMenuItem($menuItem);
     $this->moduleTemplate->getDocHeaderComponent()->getModuleMenuRegistry()->addMenu($languageMenu);
+
+
+ButtonBar Hook
+==============
+
+The old module rendering knew a ``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook']`` hook
+to manipulate buttons. A similar hook is available in ModuleTemplate API as ``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook']``.
+
+**Registering your own hook**
+
+.. code-block:: php
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook']['MyExt'] =
+        \MyVendor\MyExt\Hooks\ButtonBarHook::class . '->getButtons';
+
+**Example usage of the hook**
+
+.. code-block:: php
+
+    class ButtonBarHook {
+
+        /**
+         * Get buttons
+         *
+         * @param array $params
+         * @param ButtonBar $buttonBar
+         * @return array
+         */
+        public function getButtons(array $params, ButtonBar $buttonBar) {
+            $buttons = $params['buttons'];
+
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $button = $buttonBar->makeLinkButton();
+            $button->setIcon($iconFactory->getIcon('my-custom-icon', Icon::SIZE_SMALL));
+            $button->setTitle('My custom docHeader button');
+            $button->setOnClick('alert("Hook works");return false;');
+
+            $buttons[ButtonBar::BUTTON_POSITION_LEFT][1][] = $button;
+
+            return $buttons;
+        }
+    }

@@ -165,7 +165,15 @@ class ButtonBar
         foreach ($this->buttons as $position => $_) {
             ksort($this->buttons[$position]);
         }
-        // @todo do we want to provide a hook here?
+        // Hook for manipulating the docHeaderButtons
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook'] as $funcRef) {
+                $params = array(
+                    'buttons' => $this->buttons
+                );
+                $this->buttons = GeneralUtility::callUserFunction($funcRef, $params, $this);
+            }
+        }
         return $this->buttons;
     }
 }
