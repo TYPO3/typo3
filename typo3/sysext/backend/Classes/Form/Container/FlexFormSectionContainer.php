@@ -138,6 +138,8 @@ class FlexFormSectionContainer extends AbstractContainer
             }
             $onClickInsert[] = 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $flexFormContainerContainerTemplateResult['additionalJavaScriptSubmit'])) . '").' . $identifierPrefixJs . ');';
             $onClickInsert[] = 'TYPO3.FormEngine.reinitialize();';
+            $onClickInsert[] = 'TYPO3.FormEngine.Validation.initializeInputFields();';
+            $onClickInsert[] = 'TYPO3.FormEngine.Validation.validate();';
             $onClickInsert[] = 'return false;';
 
             $containerTemplateHtml[] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars(implode(LF, $onClickInsert)) . '">';
