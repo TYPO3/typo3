@@ -8308,13 +8308,8 @@ button.close {
 .content-area > h3 {
   margin-top: 0;
 }
-.logo-pageheader {
-  display: table-cell;
-  vertical-align: bottom;
-  line-height: 0;
-}
 .logo-pageheader img {
-  padding-bottom: 1px;
+  padding-bottom: 3px;
 }
 img.logo {
   vertical-align: bottom;
