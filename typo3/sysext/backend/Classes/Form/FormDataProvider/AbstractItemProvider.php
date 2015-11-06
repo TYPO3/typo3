@@ -472,10 +472,16 @@ abstract class AbstractItemProvider
     protected function removeItemsByKeepItemsPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
+        if (!isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
             || !is_string($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
         ) {
             return $items;
+        }
+
+        // If keepItems is set but is an empty list all current items get removed
+        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
+            && $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'] !== '0') {
+            return [];
         }
 
         return ArrayUtility::keepItemsInArray(

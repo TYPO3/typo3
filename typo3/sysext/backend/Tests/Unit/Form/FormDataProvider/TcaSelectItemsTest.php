@@ -1154,6 +1154,124 @@ class TcaSelectItemsTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function addDataAddsItemsByAddItemsFromPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    null,
+                                ],
+                            ],
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'addItems.' => [
+                                '1' => 'addMe'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['items'][1] = [
+            0 => 'addMe',
+            1 => '1',
+            null,
+            null,
+        ];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataAddsItemsByAddItemsWithDuplicateValuesFromPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    null,
+                                ],
+                            ],
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'addItems.' => [
+                                'keep' => 'addMe'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['items'][1] = [
+            0 => 'addMe',
+            1 => 'keep',
+            null,
+            null,
+        ];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
      * Data provider
      */
     public function addDataReplacesMarkersInForeignTableClauseDataProvider()
@@ -1650,6 +1768,141 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataRemovesAllItemsByEmptyKeepItemsPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    null,
+                                ],
+                                1 => [
+                                    0 => 'removeMe',
+                                    1 => 'remove',
+                                ],
+                            ],
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'keepItems' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['items'] = [];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataEvaluatesKeepItemsBeforeAddItemsFromPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => '1',
+                                    null,
+                                    null,
+                                ],
+                                1 => [
+                                    0 => 'removeMe',
+                                    1 => 'remove',
+                                ],
+                            ],
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'keepItems' => '1',
+                            'addItems.' => [
+                                '1' => 'addItem #1',
+                                '12' => 'addItem #12',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['items'] = [
+            0 => [
+                0 => 'keepMe',
+                1 => '1',
+                null,
+                null,
+            ],
+            1 => [
+                0 => 'addItem #1',
+                1 => '1',
+                null,
+                null,
+            ],
+            2 => [
+                0 => 'addItem #12',
+                1 => '12',
+                null,
+                null,
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataRemovesItemsByRemoveItemsPageTsConfig()
     {
         $input = [
@@ -1685,6 +1938,65 @@ class TcaSelectItemsTest extends UnitTestCase
                     'aTable.' => [
                         'aField.' => [
                             'removeItems' => 'remove',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataRemovesItemsAddedByAddItemsFromPageTsConfigByRemoveItemsPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => ''
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    null,
+                                ],
+                                1 => [
+                                    0 => 'removeMe',
+                                    1 => 'remove',
+                                ],
+                            ],
+                            'maxitems' => 1,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'removeItems' => 'remove,add',
+                            'addItems.' => [
+                                'add' => 'addMe'
+                            ]
                         ],
                     ],
                 ],
