@@ -143,7 +143,7 @@ class MoveElementController extends AbstractModule
             $headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, true);
             // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . ';';
-            $headerLine .= '<input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $lang->getLL('makeCopy', 1) . '</label>';
+            $headerLine .= '<div><input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $lang->getLL('makeCopy', 1) . '</label></div>';
             // Add the header-content to the module content:
             $this->content .= $this->moduleTemplate->section('', $headerLine, false, true);
             // Reset variable to pick up the module content in:
