@@ -1,5 +1,6 @@
 .CodeMirror-wrapping {
 	position: relative;
+	min-width: 100%;
 }
 
 .CodeMirror-wrapping div {
@@ -96,6 +97,7 @@ div.CodeMirror-line-numbers {
 .t3e_wrap {
 	border: 1px solid gray;
 	position: relative;
+	min-width: 100%;
 	background-color: #EFEFF4;
 }
 
