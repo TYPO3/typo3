@@ -1947,6 +1947,8 @@ class ContentObjectRenderer
         } else {
             $longDescUrl = trim($conf['longdescURL']);
         }
+        $longDescUrl = strip_tags($longDescUrl);
+
         // "alt":
         $altParam = ' alt="' . htmlspecialchars($altText) . '"';
         // "title":
@@ -1958,8 +1960,8 @@ class ContentObjectRenderer
             $altParam .= ' title="' . htmlspecialchars($altText) . '"';
         }
         // "longDesc" URL
-        if ($longDesc) {
-            $altParam .= ' longdesc="' . htmlspecialchars(strip_tags($longDescUrl)) . '"';
+        if ($longDesc && !empty($longDescUrl)) {
+            $altParam .= ' longdesc="' . htmlspecialchars($longDescUrl) . '"';
         }
         return $altParam;
     }
