@@ -75,6 +75,9 @@ module.exports = function(grunt) {
 			},
 			t3skin: {
 				src: '<%= paths.t3skin %>Public/Css/*.css'
+			},
+			InstallTool: {
+				src: '<%= paths.install %>Public/Css/InstallTool.css'
 			}
 		},
 		watch: {
