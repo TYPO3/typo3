@@ -13954,6 +13954,10 @@ img.c-inputButton {
   margin-right: 2px;
   vertical-align: middle;
 }
+.media input[type="radio"],
+.media input[type="checkbox"] {
+  margin: 4px 0 0 1px;
+}
 table.typo3-dblist tr.c-table-row-spacer td {
   display: none;
 }
