@@ -11313,7 +11313,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .list-tree-control > .fa:before {
   background-color: #f5f5f5;
 }
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] [id=typo3-inner-docbody] {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body {
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -11370,8 +11370,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .treeline-icon-clear:after {
   display: none;
 }
-#typo3-pagetree #typo3-docheader div.buttonsright,
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader div.buttonsright {
+#typo3-pagetree #typo3-docheader div.buttonsright {
   margin-right: 3px;
 }
 body#typo3-alt-db-navframe-php div.c-notice {
@@ -11381,8 +11380,7 @@ body#typo3-alt-db-navframe-php div.c-notice {
   padding: 5px 5px 5px 5px;
   width: 95%;
 }
-body#typo3-pagetree,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
+body#typo3-pagetree {
   margin: 0;
   padding: 0;
 }
@@ -11473,11 +11471,8 @@ ul.tree div.treeLinkItem span.dragIcon {
 }
 body#typo3-pagetree,
 body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
-  background: #ebebeb;
+  background: #f5f5f5;
 }
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docbody,
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader-row1,
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader-row2,
 .typo3-pagetree-indicatorBar-item,
 #typo3-pagetree-topPanelItems,
 #typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
@@ -11487,7 +11482,7 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
   background-position: right;
   background-repeat: repeat-y;
 }
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docbody,
+#ext-backend-Modules-FileSystemNavigationFrame-index-php .module-body,
 #typo3-pagetree-treeContainer {
   background-color: #f5f5f5;
 }
