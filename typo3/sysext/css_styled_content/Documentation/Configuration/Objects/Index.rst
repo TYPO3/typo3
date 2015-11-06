@@ -67,7 +67,6 @@ to all properties, when specific ones exist:
    BulletList/Index
    Table/Index
    Uploads/Index
-   Media/Index
    Mailform/Index
    Search/Index
    Menu/Index
