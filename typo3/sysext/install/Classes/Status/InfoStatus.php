@@ -22,5 +22,5 @@ class InfoStatus extends AbstractStatus implements StatusInterface
     /**
      * @var string The severity
      */
-    protected $severity = 'info';
+    protected $severity = 'information';
 }

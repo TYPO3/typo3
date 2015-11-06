@@ -1,4 +1,23 @@
-<div class="t3js-message typo3-message alert alert-{message.severity}" role="alert">
+<f:switch expression="{message.severity}">
+	<f:case value="error">
+		<div class="t3js-message typo3-message alert alert-danger" role="alert">
+	</f:case>
+	<f:case value="warning">
+		<div class="t3js-message typo3-message alert alert-warning" role="alert">
+	</f:case>
+	<f:case value="ok">
+		<div class="t3js-message typo3-message alert alert-success" role="alert">
+	</f:case>
+	<f:case value="information">
+		<div class="t3js-message typo3-message alert alert-info" role="alert">
+	</f:case>
+	<f:case value="loading">
+		<div class="t3js-message typo3-message alert alert-loading" role="alert">
+	</f:case>
+	<f:case default="TRUE">
+		<div class="t3js-message typo3-message alert alert-notice" role="alert">
+	</f:case>
+</f:switch>
 	<h4>{message.title}</h4>
 	<f:if condition="{message.message}">
 		<p class="messageText"><f:format.nl2br>{message.message}</f:format.nl2br></p>

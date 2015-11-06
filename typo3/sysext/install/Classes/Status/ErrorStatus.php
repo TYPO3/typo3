@@ -22,5 +22,5 @@ class ErrorStatus extends AbstractStatus implements StatusInterface
     /**
      * @var string The severity
      */
-    protected $severity = 'danger';
+    protected $severity = 'error';
 }

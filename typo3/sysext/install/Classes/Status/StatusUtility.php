@@ -31,10 +31,10 @@ class StatusUtility
     {
         $orderedStatus = array(
             'alert' => $this->filterBySeverity($statusObjects, 'alert'),
-            'danger' => $this->filterBySeverity($statusObjects, 'danger'),
+            'error' => $this->filterBySeverity($statusObjects, 'error'),
             'warning' => $this->filterBySeverity($statusObjects, 'warning'),
-            'success' => $this->filterBySeverity($statusObjects, 'success'),
-            'info' => $this->filterBySeverity($statusObjects, 'info'),
+            'ok' => $this->filterBySeverity($statusObjects, 'ok'),
+            'information' => $this->filterBySeverity($statusObjects, 'information'),
             'notice' => $this->filterBySeverity($statusObjects, 'notice'),
         );
         return $orderedStatus;
