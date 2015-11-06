@@ -7,7 +7,7 @@ Description
 
 The following TS properties can now be configured for indexed search
 
-.. code-block:: [typoscript]
+.. code-block:: typoscript
 
 	[plugin.tx_indexedsearch.results. || plugin.tx_indexedsearch.settings.results.]
 	titleCropAfter = 50
