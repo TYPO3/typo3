@@ -18,10 +18,8 @@
 					<pid>2</pid>
 					<title>Content Image in RTE</title>
 					<size>1738</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tt_content" type="array">
@@ -30,8 +28,7 @@
 					<pid>8</pid>
 					<title>Link to file</title>
 					<size>3066</size>
-					<relations index="rels" type="array">
-					</relations>
+					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="bodytext:typolink_tag:00692883b4dd0879da87edac355a80c4:1" type="array">
 							<field>bodytext</field>
@@ -129,8 +126,7 @@
 				<field index="title">Content Image in RTE</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tt_content:9" type="array">
 			<fieldlist index="data" type="array">

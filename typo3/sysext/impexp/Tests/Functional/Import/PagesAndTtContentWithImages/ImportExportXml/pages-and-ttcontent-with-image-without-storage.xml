@@ -8,20 +8,16 @@
 					<pid>0</pid>
 					<title>Root</title>
 					<size>162</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
 					<size>167</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tt_content" type="array">
@@ -36,8 +32,7 @@
 							<table>sys_file_reference</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="sys_language" type="array">
@@ -46,10 +41,8 @@
 					<pid>0</pid>
 					<title>Deutsch</title>
 					<size>109</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="sys_file_reference" type="array">
@@ -64,8 +57,7 @@
 							<table>sys_file</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="sys_file" type="array">
@@ -89,8 +81,7 @@
 							<table>sys_file_metadata</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="sys_file_metadata" type="array">
@@ -106,8 +97,7 @@
 							<table>sys_file</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -129,8 +119,7 @@
 							<table>sys_file</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 		</records>
@@ -192,8 +181,7 @@
 				<field index="title">Root</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="pages:2" type="array">
 			<fieldlist index="data" type="array">
@@ -205,8 +193,7 @@
 				<field index="title">Dummy 1-2</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
@@ -239,8 +226,7 @@
 				<field index="title">Deutsch</field>
 				<field index="flag">de</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="sys_file_reference:1" type="array">
 			<fieldlist index="data" type="array">

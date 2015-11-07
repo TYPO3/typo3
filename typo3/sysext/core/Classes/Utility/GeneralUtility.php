@@ -2166,11 +2166,15 @@ class GeneralUtility {
 					$subOptions = $options;
 					$clearStackPath = FALSE;
 				}
-				$content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
-					'parentTagName' => $tagName,
-					'grandParentTagName' => $stackData['parentTagName'],
-					'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
-				)) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
+				if (empty($v)) {
+					$content = '';
+				} else {
+					$content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
+						'parentTagName' => $tagName,
+						'grandParentTagName' => $stackData['parentTagName'],
+						'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
+					)) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
+				}
 				// Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
 				if ((int)$options['disableTypeAttrib'] != 2) {
 					$attr .= ' type="array"';

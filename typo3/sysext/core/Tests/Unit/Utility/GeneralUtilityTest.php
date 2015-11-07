@@ -4673,4 +4673,23 @@ text with a ' . $urlMatch . '$|s'),
 	public function stripHttpHeadersStripsHeadersFromHttpResponse($httpResponse, $expected) {
 		$this->assertEquals($expected, GeneralUtilityFixture::stripHttpHeaders($httpResponse));
 	}
+
+	/**
+	* If the element is not empty, its contents might be treated as "something" (instead of "nothing") e.g. by Fluid
+	* view helpers, which is why we want to avoid that.
+	*
+	* @test
+	*/
+	public function xml2ArrayConvertsEmptyArraysToElementWithoutContent()
+	{
+	$input = array(
+		'el' => array()
+	);
+
+	$output = Utility\GeneralUtility::array2xml($input);
+
+	$this->assertEquals('<phparray>
+	<el type="array"></el>
+</phparray>', $output);
+    }
 }

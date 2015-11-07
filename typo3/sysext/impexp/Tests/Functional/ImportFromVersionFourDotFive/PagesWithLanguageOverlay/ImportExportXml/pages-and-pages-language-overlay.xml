@@ -18,10 +18,8 @@
 					<pid>2</pid>
 					<title>Pages Overlay Media</title>
 					<size>1737</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="pages_language_overlay" type="array">
@@ -36,8 +34,7 @@
 							<table>sys_language</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 					<filerefs type="array">
 						<file index="0">c350a838df6c4791dda258ed01cd72f1</file>
 					</filerefs>
@@ -50,10 +47,8 @@
 					<title>deutsch</title>
 					<size>175</size>
 					<relationLevel>1</relationLevel>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 		</records>
@@ -95,8 +90,7 @@
 				<field index="title">Pages Overlay Media</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="pages_language_overlay:1" type="array">
 			<fieldlist index="data" type="array">
@@ -140,8 +134,7 @@
 				<field index="title">deutsch</field>
 				<field index="flag">de</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 	</records>
 	<files type="array">
