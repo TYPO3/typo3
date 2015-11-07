@@ -111,6 +111,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}).hide();
 
 			var topPanel = new TYPO3.Components.PageTree.TopPanel({
+				cls: this.id + '-toppanel',
 				dataProvider: TYPO3.Components.PageTree.DataProvider,
 				filteringTree: filteringTree,
 				ddGroup: this.id,
@@ -129,9 +130,10 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 
 			var topPanelItems = new Ext.Panel({
 				id: this.id + '-topPanelItems',
+				cls: this.id + '-toppanel-items',
 				border: false,
 				region: 'north',
-				height: 49,
+				height: 65,
 				items: [
 					topPanel, {
 						border: false,
@@ -220,17 +222,22 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 					scope: this
 				}
 			},
-
-			html: '<p>' +
-					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-info' + '" ' +
-						'class="' + this.id + '-indicatorBar-item-leftIcon">' +
-							TYPO3.Components.PageTree.Icons.Info + '</span>' +
-					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-clear' + '" ' +
-						'class="' + this.id + '-indicatorBar-item-rightIcon ' + '">X' +
-					'</span>' +
-					TYPO3.Components.PageTree.LLL.temporaryMountPointIndicatorInfo + '<br />' +
-						TYPO3.Components.PageTree.Configuration.temporaryMountPoint +
-				'</p>'
+			html: '' +
+				'<div class="alert alert-info">' +
+					'<div class="media">' +
+						'<div class="media-left">' +
+							TYPO3.Components.PageTree.Icons.Info +
+						'</div>' +
+						'<div class="media-body">' +
+							TYPO3.Components.PageTree.Configuration.temporaryMountPoint +
+						'</div>' +
+						'<div class="media-right">' +
+							'<a href="#" id="' + this.id + '-indicatorBar-temporaryMountPoint-clear">' +
+								TYPO3.Components.PageTree.Icons.Close +
+							'</a>' +
+						'</div>' +
+					'</div>' +
+				'</div>'
 		});
 	},
 

@@ -9613,33 +9613,6 @@ div#contentMenu1 {
   color: #fff;
   content: "\f0da";
 }
-#typo3-pagetree-topPanelItems {
-  background: #eeeeee;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body-noborder {
-  border-bottom: 1px solid #c3c3c3;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar {
-  color: #2d2d2d;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar a {
-  color: #2d2d2d;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar a:hover {
-  color: #000;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body {
-  color: #2d2d2d;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body .typo3-pagetree-topPanel-button {
-  margin-top: 0;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a {
-  color: #2d2d2d;
-}
-#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a:hover {
-  color: #000;
-}
 ul.typo3-messages {
   padding: 0;
 }
@@ -9838,41 +9811,24 @@ ul.typo3-messages {
 #typo3-pagetree .x-panel-body {
   height: 100%;
 }
-#typo3-pagetree .x-toolbar {
-  background: none;
-  border: none;
-  padding: 0;
-}
-#typo3-pagetree .x-panel-tbar {
-  padding: 0;
-  margin: 0;
-}
-#typo3-pagetree .x-panel-tbar .x-toolbar {
-  height: 26px;
-}
-#typo3-pagetree .t3-icon {
-  margin-bottom: 2px;
-}
 #typo3-pagetree ul {
   padding-left: 0;
   list-style: none;
+}
+#typo3-pagetree .x-toolbar {
+  padding: 0;
+  border: none;
 }
 #typo3-pagetree ul.x-tree-root-ct {
   padding-top: 24px;
   margin-bottom: 50px;
 }
-#typo3-pagetree .typo3-pagetree-topPanel-button {
-  margin: 0;
-  margin-right: 1px;
-  padding: 2px 3px 4px 3px;
-}
-#typo3-pagetree .x-toolbar-ct {
-  height: 20px;
-}
-#typo3-pagetree .x-tree .x-panel-body {
+#typo3-pagetree .x-panel-body {
   background: none;
 }
 #typo3-pagetree .x-tree-node .x-tree-node-el {
+  line-height: 18px;
+  height: 20px;
   margin-right: 3px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
@@ -10014,94 +9970,64 @@ ul.typo3-messages {
   background-color: inherit;
   border: none;
 }
-.typo3-pagetree-topPanel-button {
-  background: none;
-  border: none;
-  margin: 1px 5px 0 0;
-  padding: 1px 2px;
-  height: 25px;
+.typo3-pagetree-toppanel {
+  padding: 0 10px;
+  border-bottom: 1px solid #c3c3c3;
 }
-.typo3-pagetree-topPanel-button button {
-  height: 16px;
-  width: 16px;
-  border: none;
+.typo3-pagetree-toppanel .btn {
+  line-height: 16px;
 }
-#typo3-pagetree-topPanel .x-btn-icon:hover,
-#typo3-pagetree-topPanel .x-btn-pressed,
-#typo3-pagetree-topPanel .x-btn-over,
-#typo3-pagetree-topPanel .x-btn-click {
-  border: none;
-  top: 0;
-  left: 0;
-  background: none;
+.typo3-pagetree-toppanel .x-toolbar {
+  padding: 0;
+  border: 0!important;
 }
-#typo3-pagetree-topPanel button,
-#typo3-pagetree-topPanel button:hover {
-  background-color: transparent;
-  color: #000000;
+.typo3-pagetree-toppanel .x-toolbar-left-row .btn {
+  margin-right: 4px;
 }
-#typo3-pagetree-topPanel button:focus {
-  outline: none;
+.typo3-pagetree-toppanel .x-toolbar-right-row .btn {
+  margin-left: 4px;
 }
-#typo3-pagetree .typo3-pagetree-topPanel-item {
-  line-height: normal;
+.typo3-pagetree-toppanel .x-panel-body,
+.typo3-pagetree-toppanel .x-panel-tbar {
+  margin: 4px 0;
+  min-height: 26px;
+  height: auto!important;
 }
-#typo3-pagetree-topPanel-filter {
-  border: 1px solid #aeaeae;
-  box-shadow: inset 0 1px 1px #aeaeae;
+.typo3-pagetree-toppanel .x-panel-bwrap {
+  height: auto!important;
+  overflow: visible;
 }
-.typo3-pagetree-topPanel-filter-defaultText {
-  color: gray;
+.typo3-pagetree-toppanel .x-btn button {
+  font-size: inherit;
 }
-#typo3-pagetree .typo3-pagetree-topPanel-button {
-  border: none;
-  border-radius: 0;
+.typo3-pagetree-toppanel-filter {
+  width: 100%!important;
+  height: 26px!important;
+  padding-right: 25px;
+  padding-left: 8px;
+  box-sizing: inherit;
 }
-#typo3-pagetree .typo3-pagetree-topPanel-button button {
-  vertical-align: middle;
-}
-#typo3-pagetree-topPanel-defaultPanel {
-  color: #a2aab8;
-  line-height: 18px;
-}
-#typo3-pagetree-topPanel-item-newNode button {
-  cursor: move;
-}
-#typo3-pagetree-topPanel .x-toolbar-left {
-  height: 20px;
-  padding-left: 12px;
-}
-#typo3-pagetree-topPanel .x-toolbar-right {
-  padding-right: 12px;
-}
-.typo3-pagetree-topPanel-item {
-  padding: 0 3px 0 3px;
-  height: 22px;
-}
-#typo3-pagetree-topPanel-filter {
-  height: 15px;
-  width: 98% !important;
-  margin-top: 1px;
-  padding: 1px 0 1px 2px;
-}
-#typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
+.typo3-pagetree-toppanel-filter-clear {
   position: absolute;
-  right: 6px;
-  top: 3px;
+  right: 5px;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
 }
-#typo3-pagetree-topPanel-defaultPanel {
-  padding-left: 6px;
+.typo3-pagetree-toppanel-item .x-form-field-wrap {
+  width: 100%!important;
 }
-#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
-  width: 100% !important;
-  margin: 0 20px 0 0;
+.typo3-pagetree-toppanel-item .x-panel-body {
+  margin: 0;
 }
-.typo3-pagetree-topPanel-item .x-form-trigger {
-  margin: 4px 0 0;
-  display: none;
-}
-.typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
-  display: block;
+.typo3-pagetree-toppanel-drag-node {
+  cursor: move;
+  padding: 5px;
+  border: none;
+  background: none;
+  font-size: 11px;
+  line-height: 16px;
 }
 #typo3-pagetree-deletionDropZone {
   color: #FFF;
@@ -10153,42 +10079,8 @@ ul.typo3-messages {
 .x-tree-node-readableRootline {
   font-style: italic;
 }
-#typo3-pagetree-indicatorBar-filter,
-#typo3-pagetree-indicatorBar-temporaryMountPoint {
-  background-color: #eaf7ff;
-  border-bottom: 1px solid #c5dbe6;
-  color: #4c73a1;
-}
-#typo3-pagetree-indicatorBar-filter p,
-#typo3-pagetree-indicatorBar-temporaryMountPoint p {
-  padding: 10px 35px;
-}
-#typo3-pagetree-indicatorBar-temporaryMountPoint p {
-  line-height: 13px;
-}
-#typo3-pagetree-indicatorBar-indicatorTitle {
-  background-color: #ffec97;
-  font-weight: bold;
-}
-#typo3-pagetree-indicatorBar-indicatorTitle span {
-  margin-right: 10px;
-}
-.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
-  cursor: pointer;
-}
-.typo3-pagetree-indicatorBar-item p {
-  margin-bottom: 0;
-  padding: 5px 10px;
-}
-.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-leftIcon {
-  left: 10px;
-  top: 9px;
-  position: absolute;
-}
-.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
-  right: 10px;
-  top: 5px;
-  position: absolute;
+[id=typo3-pagetree-indicatorBar] .alert {
+  margin: 10px 10px 0;
 }
 .x-menu-floating {
   z-index: 50 !important;
@@ -11466,25 +11358,18 @@ ul.tree div.treeLinkItem span.dragIcon {
   opacity: 0.5;
   white-space: nowrap;
 }
-#typo3-pagetree #typo3-docheader img {
-  margin: 2px;
-}
-body#typo3-pagetree,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
-  background: #f5f5f5;
-}
-.typo3-pagetree-indicatorBar-item,
-#typo3-pagetree-topPanelItems,
-#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
-#typo3-pagetree-treeContainer,
-#typo3-pagetree .x-panel-tbar,
 #typo3-pagetree-deletionDropZone .x-panel-body {
   background-position: right;
   background-repeat: repeat-y;
 }
-#ext-backend-Modules-FileSystemNavigationFrame-index-php .module-body,
-#typo3-pagetree-treeContainer {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php],
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body,
+[id=typo3-pagetree-treeContainer] {
   background-color: #f5f5f5;
+}
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-docheader {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .x-layout-split {
   width: 1px;

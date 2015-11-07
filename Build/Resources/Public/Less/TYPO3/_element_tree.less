@@ -401,35 +401,25 @@ ul.tree div.treeLinkItem span.dragIcon {
 	white-space: nowrap;
 }
 
-#typo3-pagetree #typo3-docheader img {
-	margin: 2px;
-}
-
 
 //
 // Tree
 //
-
-body#typo3-pagetree,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
-	background: @navigation-bg;
-}
-
-.typo3-pagetree-indicatorBar-item,
-#typo3-pagetree-topPanelItems,
-#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
-#typo3-pagetree-treeContainer,
-#typo3-pagetree .x-panel-tbar,
 #typo3-pagetree-deletionDropZone .x-panel-body {
 	background-position: right;
 	background-repeat: repeat-y;
 }
-
-#ext-backend-Modules-FileSystemNavigationFrame-index-php .module-body,
-#typo3-pagetree-treeContainer {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php],
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body,
+[id=typo3-pagetree-treeContainer] {
 	background-color: @navigation-bg;
 }
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-docheader {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .x-layout-split {
 	width: 1px;
-	background-color: #c3c3c3;
+	background-color: @navigation-border;
 }

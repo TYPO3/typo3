@@ -207,9 +207,10 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
             ),
             'Icons' => array(
                 'InputClear' => $this->iconFactory->getIcon('actions-input-clear', Icon::SIZE_SMALL)->render(),
-                'TrashCan' => $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
-                'TrashCanRestore' => $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render(),
-                'Info' => $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render(),
+                'Close' => $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline'),
+                'TrashCan' => $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render('inline'),
+                'TrashCanRestore' => $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render('inline'),
+                'Info' => $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render('inline'),
                 'NewNode' => $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render(),
                 'Filter' => $this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL)->render(),
                 'Refresh' => $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render()
