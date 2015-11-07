@@ -107,6 +107,7 @@ class DocumentController extends ActionController
             }
 
             $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
         }
     }
 

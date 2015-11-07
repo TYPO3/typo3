@@ -2,11 +2,6 @@
 
 <f:section name="content">
 	<h1><f:translate key="header.translations" /></h1>
-	<f:flashMessages as="flashMessages">
-		<f:for each="{flashMessages}" as="flashMessage">
-			{flashMessage}
-		</f:for>
-	</f:flashMessages>
 	<form class="form-inline">
 		<div class="form-group">
 			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}" id="typo3-language-searchfield" value="{search}" class="form-control t3js-language-searchfield" />

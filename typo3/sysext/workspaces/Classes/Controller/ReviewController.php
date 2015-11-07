@@ -34,6 +34,7 @@ class ReviewController extends AbstractController
     {
         parent::initializeView($view);
         $this->registerButtons();
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
     }
 
     /**

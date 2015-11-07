@@ -7,12 +7,6 @@
 </f:section>
 
 <f:section name="content">
-	<f:flashMessages as="flashMessages">
-		<f:for each="{flashMessages}" as="flashMessage">
-			{flashMessage}
-		</f:for>
-	</f:flashMessages>
-
 	<f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
 	<f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">
 		<f:render partial="List/UnresolvedDependenciesMessage" />

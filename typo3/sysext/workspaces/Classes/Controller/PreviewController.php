@@ -43,6 +43,7 @@ class PreviewController extends AbstractController
     {
         parent::initializeView($view);
         $view->getModuleTemplate()->getDocHeaderComponent()->disable();
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
     }
 
     /**

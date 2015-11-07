@@ -14,13 +14,15 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A class representing flash messages.
  */
 class FlashMessage extends AbstractMessage
 {
     /**
-     * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
+     * Defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
      *
      * @var bool
      */
@@ -55,7 +57,6 @@ class FlashMessage extends AbstractMessage
      * @param string $title Optional message title.
      * @param int $severity Optional severity, must be either of one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
-     * @return void
      */
     public function __construct($message, $title = '', $severity = self::OK, $storeInSession = false)
     {
@@ -101,7 +102,7 @@ class FlashMessage extends AbstractMessage
      *
      * @return string The message severity icon name
      */
-    protected function getIconName()
+    public function getIconName()
     {
         return $this->icons[$this->severity];
     }
@@ -110,9 +111,11 @@ class FlashMessage extends AbstractMessage
      * Renders the flash message.
      *
      * @return string The flash message as HTML.
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      */
     public function render()
     {
+        GeneralUtility::logDeprecatedFunction();
         $title = '';
         if (!empty($this->title)) {
             $title = '<h4 class="alert-title">' . $this->title . '</h4>';
@@ -133,14 +136,5 @@ class FlashMessage extends AbstractMessage
 				</div>
 			</div>';
         return $message;
-    }
-
-    /**
-     * Renders the flash message, makes it possible to render a flashMessage in a fluid view.
-     *
-     * @return string
-     */
-    public function __toString() {
-        return $this->render();
     }
 }

@@ -13460,12 +13460,6 @@ iframe {
 .distribution-meta .distribution-install {
   margin-top: 0.5em;
 }
-.distribution-detail-flashmessage {
-  margin-bottom: 2.5em;
-}
-.distribution-detail-flashmessage p {
-  padding-bottom: 0;
-}
 .distribution-detail {
   min-width: 750px;
 }

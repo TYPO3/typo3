@@ -115,6 +115,7 @@ class RecyclerModuleController extends ActionController
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
         $this->registerDocheaderButtons();
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
     }
 
     /**

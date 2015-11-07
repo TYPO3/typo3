@@ -355,7 +355,7 @@ class ModuleTemplate
         if ($this->moduleName) {
             $this->view->assign('moduleName', $this->moduleName);
         }
-
+        $this->view->assign('flashMessageQueueIdentifier', $this->getFlashMessageQueue()->getIdentifier());
         $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
         $renderedPage .= $this->bodyTag;
         $renderedPage .= $this->view->render();
@@ -867,6 +867,14 @@ class ModuleTemplate
     }
 
     /**
+     * @param \TYPO3\CMS\Core\Messaging\FlashMessageQueue $flashMessageQueue
+     */
+    public function setFlashMessageQueue($flashMessageQueue)
+    {
+        $this->flashMessageQueue = $flashMessageQueue;
+    }
+
+    /**
      * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
      */
     protected function getFlashMessageQueue()
@@ -874,7 +882,7 @@ class ModuleTemplate
         if (!isset($this->flashMessageQueue)) {
             /** @var FlashMessageService $service */
             $service = GeneralUtility::makeInstance(FlashMessageService::class);
-            $this->flashMessageQueue = $service->getMessageQueueByIdentifier('module.template.flashmessages');
+            $this->flashMessageQueue = $service->getMessageQueueByIdentifier();
         }
         return $this->flashMessageQueue;
     }

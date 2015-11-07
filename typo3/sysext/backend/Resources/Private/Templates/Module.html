@@ -8,9 +8,24 @@
 		<f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
 	</f:if>
 	<div class="module-body t3js-module-body">
-		<f:flashMessages as="flashMessages" queueIdentifier="module.template.flashmessages">
+		<f:flashMessages as="flashMessages" queueIdentifier="{flashMessageQueueIdentifier}">
 			<f:for each="{flashMessages}" as="flashMessage">
-				{flashMessage}
+				<div class="alert {flashMessage.class}">
+					<div class="media">
+						<div class="media-left">
+							<span class="fa-stack fa-lg">
+								<i class="fa fa-circle fa-stack-2x"></i>
+								<i class="fa fa-{flashMessage.iconName} fa-stack-1x"></i>
+							</span>
+						</div>
+						<div class="media-body">
+							<f:if condition="{flashMessage.title}">
+								<h4 class="alert-title">{flashMessage.title}</h4>
+							</f:if>
+							<div class="alert-message">{flashMessage.message}</div>
+						</div>
+					</div>
+				</div>
 			</f:for>
 		</f:flashMessages>
 		<f:format.raw>{content}</f:format.raw>

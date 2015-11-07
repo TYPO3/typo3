@@ -37,6 +37,14 @@ class FlashMessageQueue extends \SplQueue
     }
 
     /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
      * Adds a message either to the BE_USER session (if the $message has the storeInSession flag set)
      * or it enqueues the message.
      *

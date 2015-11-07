@@ -1,15 +1,2 @@
-<f:be.pageRenderer />
 <f:render section="headline" />
-
-<f:flashMessages as="flashMessages">
-	<ul class="typo3-flashMessages">
-		<f:for each="{flashMessages}" as="flashMessage">
-			<li class="alert {flashMessage.class}">
-				<h4><f:translate id="{flashMessage.title}" extensionName="beuser" /></h4>
-				<f:translate id="{flashMessage.message}" extensionName="beuser" />
-			</li>
-		</f:for>
-	</ul>
-</f:flashMessages>
-
 <f:render section="content" />

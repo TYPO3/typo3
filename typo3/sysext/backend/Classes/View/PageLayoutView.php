@@ -2168,7 +2168,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     FlashMessage::WARNING
                 );
                 $service = GeneralUtility::makeInstance(FlashMessageService::class);
-                $queue = $service->getMessageQueueByIdentifier('module.template.flashmessages');
+                $queue = $service->getMessageQueueByIdentifier();
                 $queue->addMessage($message);
             }
         }

@@ -552,7 +552,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         /** @var $flashMessageService FlashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier('module.template.flashmessages');
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 

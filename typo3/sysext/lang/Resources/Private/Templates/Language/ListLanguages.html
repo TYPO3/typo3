@@ -1,6 +1,5 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
       xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:layout name="Default"/>
@@ -9,11 +8,6 @@
 	<h1>
 		<f:translate key="header.languages"/>
 	</h1>
-	<f:flashMessages as="flashMessages">
-		<f:for each="{flashMessages}" as="flashMessage">
-			{flashMessage}
-		</f:for>
-	</f:flashMessages>
 	<form class="form-inline">
 		<div class="form-group">
 			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}"

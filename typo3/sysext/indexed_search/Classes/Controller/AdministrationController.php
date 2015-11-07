@@ -92,6 +92,7 @@ class AdministrationController extends ActionController
         $pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
         $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $this->generateMenu();
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
     }
 
     /**

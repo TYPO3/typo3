@@ -59,6 +59,7 @@ class BackendUserActionController extends ActionController
             || $this->actionMethodName == 'compareAction') {
             $this->generateMenu();
             $this->registerDocheaderButtons();
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
         }
     }
 

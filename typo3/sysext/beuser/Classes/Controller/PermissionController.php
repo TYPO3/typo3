@@ -138,6 +138,7 @@ class PermissionController extends ActionController
                 '
             );
             $this->registerDocHeaderButtons();
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
         }
     }
 
@@ -192,8 +193,8 @@ class PermissionController extends ActionController
         if ($this->getBackendUser()->workspace != 0) {
             // Adding section with the permission setting matrix:
             $this->addFlashMessage(
-                'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText',
-                'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarning',
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText', 'beuser'),
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarning', 'beuser'),
                 FlashMessage::WARNING
             );
         }
