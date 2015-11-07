@@ -206,16 +206,15 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				afterrender: {
 					fn: function() {
 						var element = Ext.fly(this.id + '-indicatorBar-temporaryMountPoint-clear');
+						var me = this;
 						element.on('click', function() {
-							top.TYPO3.Storage.Persistent.unset(
-								'pageTree_temporaryMountPoint',
+							top.TYPO3.Storage.Persistent.unset('pageTree_temporaryMountPoint').done(
 								function() {
 									TYPO3.Components.PageTree.Configuration.temporaryMountPoint = null;
-									this.removeIndicator(this.temporaryMountPointInfoIndicator);
-									this.getTree().refreshTree();
-									this.getTree().stateId = 'Pagetree';
-								},
-								this
+									me.removeIndicator(me.temporaryMountPointInfoIndicator);
+									me.getTree().refreshTree();
+									me.getTree().stateId = 'Pagetree';
+								}
 							);
 						}, this);
 					},
