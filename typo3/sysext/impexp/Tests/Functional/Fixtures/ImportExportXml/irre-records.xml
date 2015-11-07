@@ -8,10 +8,8 @@
 					<pid>0</pid>
 					<title>IRRE</title>
 					<size>162</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tt_content" type="array">
@@ -38,8 +36,7 @@
 							<table>tx_irretutorial_1ncsv_hotel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1ncsv_hotel" type="array">
@@ -54,8 +51,7 @@
 							<table>tx_irretutorial_1ncsv_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -72,8 +68,7 @@
 							<table>tx_irretutorial_1ncsv_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1ncsv_offer" type="array">
@@ -88,8 +83,7 @@
 							<table>tx_irretutorial_1ncsv_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -102,8 +96,7 @@
 							<table>tx_irretutorial_1ncsv_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -116,8 +109,7 @@
 							<table>tx_irretutorial_1ncsv_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1ncsv_price" type="array">
@@ -126,30 +118,24 @@
 					<pid>1</pid>
 					<title>Price 2.2.1 (csv)</title>
 					<size>254</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Price 1.2.1 (csv)</title>
 					<size>254</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Price 1.1.1 (csv)</title>
 					<size>255</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1nff_hotel" type="array">
@@ -168,8 +154,7 @@
 							<table>tx_irretutorial_1nff_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -182,8 +167,7 @@
 							<table>tx_irretutorial_1nff_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1nff_offer" type="array">
@@ -202,8 +186,7 @@
 							<table>tx_irretutorial_1nff_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="3" type="array">
 					<uid>3</uid>
@@ -216,8 +199,7 @@
 							<table>tx_irretutorial_1nff_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -230,8 +212,7 @@
 							<table>tx_irretutorial_1nff_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_1nff_price" type="array">
@@ -240,40 +221,32 @@
 					<pid>1</pid>
 					<title>Price 1.1.1 (nff)</title>
 					<size>358</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="3" type="array">
 					<uid>3</uid>
 					<pid>1</pid>
 					<title>Price 1.2.1 (nff)</title>
 					<size>360</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="4" type="array">
 					<uid>4</uid>
 					<pid>1</pid>
 					<title>Price 2.1.1 (nff)</title>
 					<size>365</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Price 1.1.2 (nff)</title>
 					<size>360</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnasym_hotel" type="array">
@@ -292,8 +265,7 @@
 							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnasym_hotel_offer_rel" type="array">
@@ -316,8 +288,7 @@
 							<table>tx_irretutorial_mnasym_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -338,8 +309,7 @@
 							<table>tx_irretutorial_mnasym_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnasym_offer" type="array">
@@ -354,8 +324,7 @@
 							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -368,8 +337,7 @@
 							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnasym_price" type="array">
@@ -378,20 +346,16 @@
 					<pid>1</pid>
 					<title>Price 1 1:2 (m:n ASym)</title>
 					<size>281</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Price 2 1:1 (m:n ASym)</title>
 					<size>280</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnattr_hotel" type="array">
@@ -406,8 +370,7 @@
 							<table>tx_irretutorial_mnattr_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -420,8 +383,7 @@
 							<table>tx_irretutorial_mnattr_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnattr_hotel_offer_rel" type="array">
@@ -440,8 +402,7 @@
 							<table>tx_irretutorial_mnattr_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -458,8 +419,7 @@
 							<table>tx_irretutorial_mnattr_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnattr_offer" type="array">
@@ -474,8 +434,7 @@
 							<table>tx_irretutorial_mnattr_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -488,8 +447,7 @@
 							<table>tx_irretutorial_mnattr_hotel_offer_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnmmasym_hotel" type="array">
@@ -508,8 +466,7 @@
 							<table>tx_irretutorial_mnmmasym_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -522,8 +479,7 @@
 							<table>tx_irretutorial_mnmmasym_offer</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnmmasym_offer" type="array">
@@ -538,8 +494,7 @@
 							<table>tx_irretutorial_mnmmasym_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -552,8 +507,7 @@
 							<table>tx_irretutorial_mnmmasym_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -566,8 +520,7 @@
 							<table>tx_irretutorial_mnmmasym_price</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnmmasym_price" type="array">
@@ -576,30 +529,24 @@
 					<pid>1</pid>
 					<title>Price (m:n (MM) ASym)</title>
 					<size>279</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Price 1.2.2 (m:n (MM) ASym)</title>
 					<size>286</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Price 1.1.1 (m:n (MM) ASym)</title>
 					<size>286</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnsym_hotel" type="array">
@@ -614,8 +561,7 @@
 							<table>tx_irretutorial_mnsym_hotel_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="3" type="array">
 					<uid>3</uid>
@@ -628,8 +574,7 @@
 							<table>tx_irretutorial_mnsym_hotel_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -646,8 +591,7 @@
 							<table>tx_irretutorial_mnsym_hotel_rel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_irretutorial_mnsym_hotel_rel" type="array">
@@ -666,8 +610,7 @@
 							<table>tx_irretutorial_mnsym_hotel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
@@ -684,8 +627,7 @@
 							<table>tx_irretutorial_mnsym_hotel</table>
 						</element>
 					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 		</records>
@@ -797,8 +739,7 @@
 				<field index="title">IRRE</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
@@ -983,8 +924,7 @@
 				<field index="title">Price 2.2.1 (csv)</field>
 				<field index="price">112.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1ncsv_price:2" type="array">
 			<fieldlist index="data" type="array">
@@ -999,8 +939,7 @@
 				<field index="title">Price 1.2.1 (csv)</field>
 				<field index="price">90.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1ncsv_price:1" type="array">
 			<fieldlist index="data" type="array">
@@ -1015,8 +954,7 @@
 				<field index="title">Price 1.1.1 (csv)</field>
 				<field index="price">567.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_hotel:1" type="array">
 			<fieldlist index="data" type="array">
@@ -1182,8 +1120,7 @@
 				<field index="title">Price 1.1.1 (nff)</field>
 				<field index="price">4.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:3" type="array">
 			<fieldlist index="data" type="array">
@@ -1201,8 +1138,7 @@
 				<field index="title">Price 1.2.1 (nff)</field>
 				<field index="price">678.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:4" type="array">
 			<fieldlist index="data" type="array">
@@ -1220,8 +1156,7 @@
 				<field index="title">Price 2.1.1 (nff)</field>
 				<field index="price">5467567.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_1nff_price:2" type="array">
 			<fieldlist index="data" type="array">
@@ -1239,8 +1174,7 @@
 				<field index="title">Price 1.1.2 (nff)</field>
 				<field index="price">869.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnasym_hotel:1" type="array">
 			<fieldlist index="data" type="array">
@@ -1425,8 +1359,7 @@
 				<field index="title">Price 1 1:2 (m:n ASym)</field>
 				<field index="price">678.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnasym_price:2" type="array">
 			<fieldlist index="data" type="array">
@@ -1442,8 +1375,7 @@
 				<field index="title">Price 2 1:1 (m:n ASym)</field>
 				<field index="price">45.00</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnattr_hotel:1" type="array">
 			<fieldlist index="data" type="array">
@@ -1765,8 +1697,7 @@
 				<field index="price">223.00</field>
 				<field index="offers">0</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnmmasym_price:2" type="array">
 			<fieldlist index="data" type="array">
@@ -1782,8 +1713,7 @@
 				<field index="price">567.00</field>
 				<field index="offers">0</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnmmasym_price:1" type="array">
 			<fieldlist index="data" type="array">
@@ -1799,8 +1729,7 @@
 				<field index="price">567.00</field>
 				<field index="offers">0</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_irretutorial_mnsym_hotel:2" type="array">
 			<fieldlist index="data" type="array">

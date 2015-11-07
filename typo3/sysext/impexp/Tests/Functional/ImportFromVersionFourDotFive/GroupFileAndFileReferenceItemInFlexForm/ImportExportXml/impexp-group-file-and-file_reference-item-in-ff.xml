@@ -16,10 +16,8 @@
 					<pid>2</pid>
 					<title>Group File Reference in FlexForm</title>
 					<size>1751</size>
-					<relations index="rels" type="array">
-					</relations>
-					<softrefs type="array">
-					</softrefs>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="tx_impexpgroupfiles_item" type="array">
@@ -28,8 +26,7 @@
 					<pid>9</pid>
 					<title>Test FlexForm</title>
 					<size>1355</size>
-					<relations index="rels" type="array">
-					</relations>
+					<relations index="rels" type="array"></relations>
 					<softrefs type="array">
 						<softref_element index="flexform:sDEF/lDEF/link/vDEF/:typolink:e9e93f03ab903de1d9b8860afad1cb61:0" type="array">
 							<field>flexform</field>
@@ -99,8 +96,7 @@
 				<field index="title">Group File Reference in FlexForm</field>
 				<field index="doktype">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="tx_impexpgroupfiles_item:2" type="array">
 			<fieldlist index="data" type="array">

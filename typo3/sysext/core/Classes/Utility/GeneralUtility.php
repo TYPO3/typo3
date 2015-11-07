@@ -2136,7 +2136,7 @@ class GeneralUtility
                     $subOptions = $options;
                     $clearStackPath = false;
                 }
-                if (count($v) === 0) {
+                if (empty($v)) {
                     $content = '';
                 } else {
                     $content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
