@@ -4719,4 +4719,24 @@ text with a ' . $urlMatch . '$|s'),
         GeneralUtility::rmdir($directory);
         $this->assertTrue($check);
     }
+
+
+    /**
+     * If the element is not empty, its contents might be treated as "something" (instead of "nothing") e.g. by Fluid
+     * view helpers, which is why we want to avoid that.
+     *
+     * @test
+     */
+    public function xml2ArrayConvertsEmptyArraysToElementWithoutContent()
+    {
+        $input = [
+            'el' => []
+        ];
+
+        $output = GeneralUtility::array2xml($input);
+
+        $this->assertEquals('<phparray>
+	<el type="array"></el>
+</phparray>', $output);
+    }
 }
