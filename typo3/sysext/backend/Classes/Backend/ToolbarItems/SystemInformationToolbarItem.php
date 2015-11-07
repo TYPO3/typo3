@@ -273,6 +273,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function emitGetSystemInformation()
     {
+        // @internal This API is subject to be rebuilt from scratch anytime. Do not use in extensions!
         list($systemInformation) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'getSystemInformation', array(array()));
         if (!empty($systemInformation)) {
             $this->systemInformation[] = $systemInformation;
@@ -286,6 +287,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function emitLoadMessages()
     {
+        // @internal This API is subject to be rebuilt from scratch anytime. Do not use in extensions!
         list($message) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'loadMessages', array(array()));
         if (empty($message)) {
             return;
