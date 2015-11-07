@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -57,10 +58,10 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
     const STATE_ERROR = 2;
 
     /**
-     * @param string $title The title of the infobox
-     * @param string $message The message of the infobox, if NULL tag content is used
+     * @param string $title The title of the info box
+     * @param string $message The message of the info box, if NULL tag content is used
      * @param int $state The state of the box, InfoboxViewHelper::STATE_*
-     * @param string $iconName The icon name from fontawsome, NULL sets default icon
+     * @param string $iconName The icon name from font awesome, NULL sets default icon
      * @param bool $disableIcon If set to TRUE, the icon is not rendered.
      *
      * @return string
@@ -68,13 +69,13 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
     public function render($title = null, $message = null, $state = self::STATE_NOTICE, $iconName = null, $disableIcon = false)
     {
         return static::renderStatic(
-            array(
+            [
                 'title' => $title,
                 'message' => $message,
                 'state' => $state,
                 'iconName' => $iconName,
                 'disableIcon' => $disableIcon
-            ),
+            ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
@@ -82,50 +83,41 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
 
     /**
      * @param array $arguments
-     * @param callable $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
-     * @throws Exception
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $title = $arguments['title'];
         $message = $arguments['message'];
-        $state = $arguments['state'];
+        $state = MathUtility::forceIntegerInRange($arguments['state'], -2, 2, -2);
         $iconName = $arguments['iconName'];
         $disableIcon = $arguments['disableIcon'];
-
         if ($message === null) {
-            $message = $renderChildrenClosure();
+            $messageTemplate = $renderChildrenClosure();
+        } else {
+            $messageTemplate = htmlspecialchars($message);
         }
-        switch ($state) {
-            case self::STATE_NOTICE:
-                $stateClass = 'notice';
-                $icon = 'lightbulb-o';
-                break;
-            case self::STATE_INFO:
-                $stateClass = 'info';
-                $icon = 'info';
-                break;
-            case self::STATE_OK:
-                $stateClass = 'success';
-                $icon = 'check';
-                break;
-            case self::STATE_WARNING:
-                $stateClass = 'warning';
-                $icon = 'exclamation';
-                break;
-            case self::STATE_ERROR:
-                $stateClass = 'danger';
-                $icon = 'times';
-                break;
-            default:
-                $stateClass = 'notice';
-                $icon = 'lightbulb-o';
-        }
+        $classes = [
+            self::STATE_NOTICE => 'notice',
+            self::STATE_INFO => 'info',
+            self::STATE_OK => 'success',
+            self::STATE_WARNING => 'warning',
+            self::STATE_ERROR => 'danger'
+        ];
+        $icons = [
+            self::STATE_NOTICE => 'lightbulb-o',
+            self::STATE_INFO => 'info',
+            self::STATE_OK => 'check',
+            self::STATE_WARNING => 'exclamation',
+            self::STATE_ERROR => 'times'
+        ];
+        $stateClass = $classes[$state];
+        $icon = $icons[$state];
         if ($iconName !== null) {
-            $icon = htmlspecialchars($iconName);
+            $icon = $iconName;
         }
         $iconTemplate = '';
         if (!$disableIcon) {
@@ -133,20 +125,20 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
                 '<div class="media-left">' .
                     '<span class="fa-stack fa-lg callout-icon">' .
                         '<i class="fa fa-circle fa-stack-2x"></i>' .
-                        '<i class="fa fa-' . $icon . ' fa-stack-1x"></i>' .
+                        '<i class="fa fa-' . htmlspecialchars($icon) . ' fa-stack-1x"></i>' .
                     '</span>' .
                 '</div>';
         }
         $titleTemplate = '';
         if ($title !== null) {
-            $titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
+            $titleTemplate = '<h4 class="callout-title">' . htmlspecialchars($title) . '</h4>';
         }
-        return '<div class="callout callout-' . $stateClass . '">' .
+        return '<div class="callout callout-' . htmlspecialchars($stateClass) . '">' .
                 '<div class="media">' .
                     $iconTemplate .
                     '<div class="media-body">' .
                         $titleTemplate .
-                        '<div class="callout-body">' . $message . '</div>' .
+                        '<div class="callout-body">' . $messageTemplate . '</div>' .
                     '</div>' .
                 '</div>' .
             '</div>';
