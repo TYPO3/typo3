@@ -117,7 +117,7 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'RecyclerCleanerTCA' => $table
         );
 
-        $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock());
+        $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock(['addMessage']));
     }
 
     /**
