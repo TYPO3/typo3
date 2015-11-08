@@ -16,6 +16,8 @@
 //
 @import "_variables.less";
 
+@grid-float-breakpoint: @screen-md-min;
+
 .content-area > h3 {
 	margin-top: 0;
 }
@@ -91,6 +93,17 @@ h1:first-child {
 	padding: 1em;
 }
 
+.list-group-item {
+	a {
+		display: block;
+	}
+	&.active {
+		a {
+			color: #fff;
+		}
+	}
+}
+
 @media (min-width: @screen-md-min) {
 	.affix-bottom {
 		position: absolute;
@@ -137,5 +150,13 @@ hr {
 	@media (max-width: @screen-sm-max) {
 		position: relative!important;
 		margin-bottom: 30px;
+	}
+}
+
+#install-menu-button {
+	.navbar-toggle {
+		.icon-bar {
+			background-color: black;
+		}
 	}
 }

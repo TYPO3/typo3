@@ -223,7 +223,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-folderStructure').append('<span class="badge badge-danger">' + data + '</span>');
+					$('.t3js-install-menu-folderStructure').append('<span class="badge badge-danger">' + data + '</span>');
 				}
 			}
 		});
@@ -235,7 +235,7 @@ TYPO3.Install.Status = {
 			cache: false,
 			success: function(data) {
 				if (data > 0) {
-					$('#t3-install-menu-systemEnvironment').append('<span class="badge badge-danger">' + data + '</span>');
+					$('.t3js-install-menu-systemEnvironment').append('<span class="badge badge-danger">' + data + '</span>');
 				}
 			}
 		});
@@ -599,7 +599,7 @@ $(function() {
 		}));
 	}
 
-	var $installLeft = $('#t3-install-left');
+	var $installLeft = $('.t3js-list-group-wrapper');
 	if ($installLeft.length > 0) {
 		TYPO3.Install.Status.getFolderStatus();
 		TYPO3.Install.Status.getEnvironmentStatus();
@@ -619,12 +619,13 @@ $(function() {
 
 	// Define width of fixed menu
 	var $menuWrapper = $('#menuWrapper');
+	var $menuListGroup = $menuWrapper.children('.t3js-list-group-wrapper');
 	$menuWrapper.on('affixed.bs.affix', function() {
-		$('#t3-install-left').width($(this).parent().width());
+		$menuListGroup.width($(this).parent().width());
 	});
-	$installLeft.width($menuWrapper.parent().width());
+	$menuListGroup.width($menuWrapper.parent().width());
 	$(window).resize(function(){
-		$('#t3-install-left').width($('#menuWrapper').parent().width());
+		$menuListGroup.width($('#menuWrapper').parent().width());
 	});
 	var $collapse = $('.collapse');
 	$collapse.on('shown.bs.collapse', function() {

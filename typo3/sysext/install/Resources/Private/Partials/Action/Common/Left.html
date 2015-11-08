@@ -1,41 +1,24 @@
-<div id="menuWrapper" data-spy="affix" data-offset-top="60" data-offset-bottom="190">
-	<div class="list-group" id="t3-install-left">
-		<a href="Install.php?install[action]=importantActions&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'importantActions\'', then:'active')}">
-			Important actions
-		</a>
-		<a href="Install.php?install[action]=configuration&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'configuration\'', then:'active')}">
-			Configuration Presets
-		</a>
-		<a href="Install.php?install[action]=allConfiguration&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'allConfiguration\'', then:'active')}">
-			All configuration
-		</a>
-		<a href="Install.php?install[action]=upgradeWizard&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'upgradeWizard\'', then:'active')}">
-			Upgrade Wizard
-		</a>
-		<a href="Install.php?install[action]=systemEnvironment&install[context]={context}&install[controller]=tool" id="t3-install-menu-systemEnvironment" class="list-group-item {f:if(condition:'{action} == \'systemEnvironment\'', then:'active')}">
-			System environment
-		</a>
-		<a href="Install.php?install[action]=folderStructure&install[context]={context}&install[controller]=tool" id="t3-install-menu-folderStructure" class="list-group-item {f:if(condition:'{action} == \'folderStructure\'', then:'active')}">
-			Folder structure
-		</a>
-		<a href="Install.php?install[action]=testSetup&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'testSetup\'', then:'active')}">
-			Test setup
-		</a>
-		<a href="Install.php?install[action]=cleanUp&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'cleanUp\'', then:'active')}">
-			Clean up
-		</a>
-		<a href="Install.php?install[action]=about&install[context]={context}&install[controller]=tool" class="list-group-item {f:if(condition:'{action} == \'about\'', then:'active')}">
-			About
-		</a>
-	</div>
-	<hr>
-	<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool" class="btn btn-warning btn-block">Logout from Install Tool</a>
-	<f:if condition="{contextService.backendContext}">
-		<f:then></f:then>
-		<f:else>
-			<hr>
-			<a href="../../../index.php" class="btn btn-default btn-block">Backend admin</a><br>
+<div class="t3js-list-group-wrapper" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+	<ul class="list-group">
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'importantActions', label: 'Important actions'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'configuration', label: 'Configuration Presets'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'allConfiguration', label: 'All configuration'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'upgradeWizard', label: 'Upgrade Wizard'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'systemEnvironment', label: 'System environment'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'folderStructure', label: 'Folder structure'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'testSetup', label: 'Test setup'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'cleanUp', label: 'Clean up'}" />
+		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'about', label: 'About'}" />
+	</ul>
+
+	<div>
+		<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool" class="btn btn-warning btn-block">Logout from Install Tool</a>
+		<f:if condition="{contextService.backendContext}">
+			<f:then></f:then>
+			<f:else>
+			<a href="../../../index.php" class="btn btn-default btn-block">Backend admin</a>
 			<a href="../../../../index.php" class="btn btn-default btn-block">Frontend website</a>
-		</f:else>
-	</f:if>
+			</f:else>
+		</f:if>
+	</div>
 </div>

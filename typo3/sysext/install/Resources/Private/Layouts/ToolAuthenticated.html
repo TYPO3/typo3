@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 	<head>
 		<title>Install tool on site {siteName}</title>
 		<f:render partial="Action/Common/Headers" arguments="{_all}" />
@@ -22,8 +22,29 @@
 			</f:else>
 		</f:if>
 		<div class="row">
-			<div class="col-sm-12 col-md-3 leftNavigation">
-				<f:render partial="Action/Common/Left" arguments="{_all}" />
+			<div class="col-sm-12">
+				<div id="install-menu-button">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mobileMenuWrapper">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="row hidden-md hidden-lg">
+			<div class="col-sm-12">
+				<div id="mobileMenuWrapper" class="collapse">
+					<f:render partial="Action/Common/Left" arguments="{_all}" />
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3 leftNavigation hidden-xs hidden-sm">
+				<div id="menuWrapper" data-spy="affix" data-offset-top="60" data-offset-bottom="190">
+					<f:render partial="Action/Common/Left" arguments="{_all}" />
+				</div>
 			</div>
 			<div class="col-sm-12 col-md-9 content-area">
 				<f:render section="Content" />
