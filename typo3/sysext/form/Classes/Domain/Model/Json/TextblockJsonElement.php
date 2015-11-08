@@ -34,7 +34,7 @@ class TextblockJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJso
     public $configuration = array(
         'attributes' => array(),
         'various' => array(
-            'content' => ''
+            'text' => ''
         )
     );
 
@@ -75,8 +75,11 @@ class TextblockJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJso
      */
     protected function setVarious(array $parameters)
     {
-        if (isset($parameters['content'])) {
-            $this->configuration['various']['content'] = $parameters['content'];
+        if (isset($parameters['text'])) {
+            $this->configuration['various']['text'] = $parameters['text'];
+        } elseif (isset($parameters['content'])) {
+            // preserve backward compatibility by rewriting content to text
+            $this->configuration['various']['text'] = $parameters['content'];
         }
     }
 }

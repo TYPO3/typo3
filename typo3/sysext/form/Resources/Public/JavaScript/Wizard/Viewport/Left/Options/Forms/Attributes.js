@@ -849,6 +849,24 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						}
 					});
 					break;
+				case 'text':
+					formItems.push({
+						fieldLabel: TYPO3.l10n.localize('attributes_text'),
+						xtype: 'textarea',
+						name: 'text',
+						allowBlank: true,
+						listeners: {
+							'triggerclick': {
+								scope: this,
+								fn: this.storeValue
+							},
+							'blur': {
+								scope: this,
+								fn: this.storeValue
+							}
+						}
+					});
+					break;
 				case 'title':
 					formItems.push({
 						fieldLabel: TYPO3.l10n.localize('attributes_title'),

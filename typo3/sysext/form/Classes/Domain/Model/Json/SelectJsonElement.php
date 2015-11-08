@@ -105,11 +105,14 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
                         if (isset($childElementArguments['selected'])) {
                             $childElementArguments['attributes']['selected'] = $childElementArguments['selected'];
                             unset($childElementArguments['selected']);
-                            if (isset($childElementArguments['value'])) {
-                                $childElementArguments['attributes']['value'] = $childElementArguments['value'];
-                                unset($childElementArguments['value']);
-                            }
-                            $this->configuration['options'][] = $childElementArguments;
+                        }
+                        if (isset($childElementArguments['value'])) {
+                            $childElementArguments['attributes']['value'] = $childElementArguments['value'];
+                            unset($childElementArguments['value']);
+                        }
+                        if (isset($childElementArguments['data']) && !isset($childElementArguments['text'])) {
+                            // preserve backward compatibility by rewriting data to text
+                            $childElementArguments['text'] = $childElementArguments['data'];
                         }
                         $this->configuration['options'][] = $childElementArguments;
                     }

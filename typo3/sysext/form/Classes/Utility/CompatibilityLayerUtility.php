@@ -246,6 +246,13 @@ class CompatibilityLayerUtility
                         $layout = '<td style="width: 200px;"><label /></td><td><inputvalue /></td>';
                     }
                     break;
+                case 'TEXTBLOCK':
+                    if ($action === 'show') {
+                        $layout = '<textblock />';
+                    } else {
+                        $layout = '';
+                    }
+                    break;
             }
         }
         return $layout;

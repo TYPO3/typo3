@@ -19,7 +19,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 * The id of a column in this grid that should expand to fill unused space.
 	 * This value specified here can not be 0.
 	 */
-	autoExpandColumn: 'data',
+	autoExpandColumn: 'text',
 
 	/**
 	 * @cfg {Number/String} padding
@@ -56,8 +56,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	initComponent: function () {
 		var optionRecord = Ext.data.Record.create([
 			{
-				name: 'data',
-				mapping: 'data',
+				name: 'text',
+				mapping: 'text',
 				type: 'string'
 			}, {
 				name: 'selected',
@@ -65,7 +65,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 				type: 'bool'
 			}, {
 				name: 'value',
-				mapping: 'value',
+				mapping: 'attributes.value',
 				type: 'string'
 			}
 		]);
@@ -111,13 +111,13 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 					{
 						width: 40,
 						id: 'data',
-						header: TYPO3.l10n.localize('fieldoptions_data'),
-						dataIndex: 'data',
+						header: TYPO3.l10n.localize('fieldoptions_text'),
+						dataIndex: 'text',
 						editor: new Ext.ux.form.TextFieldSubmit({
 							allowBlank: false,
 							listeners: {
 								'triggerclick': function (field) {
-									field.gridEditor.record.set('data', field.getValue());
+									field.gridEditor.record.set('text', field.getValue());
 								}
 							}
 						})
@@ -164,7 +164,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	addOption: function () {
 		var option = this.store.recordType;
 		var newOption = new option({
-			data: TYPO3.l10n.localize('fieldoptions_new'),
+			text: TYPO3.l10n.localize('fieldoptions_new'),
 			selected: false,
 			value: TYPO3.l10n.localize('fieldoptions_value')
 		});
@@ -188,7 +188,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 			var options = [];
 			this.store.each(function (record) {
 				var option = {
-					data: record.get('data')
+					text: record.get('text')
 				};
 				if (record.get('selected')) {
 					if (!option.attributes) {

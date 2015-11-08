@@ -26,7 +26,7 @@ TYPO3.Form.Wizard.Elements.Basic.Textarea = Ext.extend(TYPO3.Form.Wizard.Element
 					'<label for="">{value}{[this.getMessage(parent.validation)]}</label>',
 				'</tpl>',
 			'</tpl>',
-			'<textarea {[this.getAttributes(values.attributes)]}>{data}</textarea>',
+			'<textarea {[this.getAttributes(values.attributes)]}>{values.attributes.text}</textarea>',
 			'<tpl for="label">',
 				'<tpl if="value && parent.layout == \'back\'">',
 					'<label for="">{value}{[this.getMessage(parent.validation)]}</label>',
@@ -100,9 +100,9 @@ TYPO3.Form.Wizard.Elements.Basic.Textarea = Ext.extend(TYPO3.Form.Wizard.Element
 					'selectionDirection': '',
 					'selectionEnd': '',
 					'selectionStart': '',
+					'text': '',
 					'wrap': ''
 				},
-				data: '',
 				filters: {},
 				label: {
 					value: TYPO3.l10n.localize('elements_label')

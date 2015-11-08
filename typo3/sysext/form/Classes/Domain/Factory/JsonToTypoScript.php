@@ -450,7 +450,7 @@ class JsonToTypoScript
             $optionCounter = 10;
             foreach ($options as $option) {
                 $parent[$elementCounter . '.'][$optionCounter] = 'OPTION';
-                $parent[$elementCounter . '.'][$optionCounter . '.']['data'] = $option['data'];
+                $parent[$elementCounter . '.'][$optionCounter . '.']['text'] = $option['text'];
                 if (isset($option['attributes'])) {
                     $parent[$elementCounter . '.'][$optionCounter . '.'] += $option['attributes'];
                 }
@@ -538,6 +538,8 @@ class JsonToTypoScript
 
                 case 'content':
 
+                case 'text':
+
                 case 'name':
                     $parent[$elementCounter . '.'][$key] = (string)$value;
                     break;
@@ -566,8 +568,12 @@ class JsonToTypoScript
             if (!is_array($value)) {
                 if (strstr($value, LF)) {
                     $typoscript .= str_repeat(TAB, $tabCount) . $key . ' (' . LF;
-                    $value = str_replace(LF, LF . str_repeat(TAB, ($tabCount + 1)), $value);
-                    $typoscript .= str_repeat(TAB, ($tabCount + 1)) . $value . LF;
+                    if ($key !== 'text') {
+                        $value = str_replace(LF, LF . str_repeat(TAB, ($tabCount + 1)), $value);
+                        $typoscript .= str_repeat(TAB, ($tabCount + 1)) . $value . LF;
+                    } else {
+                        $typoscript .= $value . LF;
+                    }
                     $typoscript .= str_repeat(TAB, $tabCount) . ')' . LF;
                 } else {
                     $typoscript .= str_repeat(TAB, $tabCount) . $key . ' = ' . $value . LF;

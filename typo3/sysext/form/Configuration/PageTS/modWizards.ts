@@ -46,7 +46,7 @@ prefix = tx_form
 							showProperties = label
 						}
 						attributes {
-							showProperties = accept, accept-charset, accesskey, action, alt, autocomplete, autofocus, checked, class, cols, contenteditable, contextmenu, dir, draggable, dropzone, disabled, enctype, hidden, height, id, inputmode, label, lang, list, max, maxlength, method, min, minlength, multiple, name, novalidate, pattern, placeholder, readonly, required, rows, selected, selectionDirection, selectionEnd, selectionStart, size, spellcheck, src, step, style, tabindex, title, translate, type, value, width, wrap
+							showProperties = accept, accept-charset, accesskey, action, alt, autocomplete, autofocus, checked, class, cols, contenteditable, contextmenu, dir, draggable, dropzone, disabled, enctype, hidden, height, id, inputmode, label, lang, list, max, maxlength, method, min, minlength, multiple, name, novalidate, pattern, placeholder, readonly, required, rows, selected, selectionDirection, selectionEnd, selectionStart, size, spellcheck, src, step, style, tabindex, text, title, translate, type, value, width, wrap
 						}
 						validation {
 							showRules = alphabetic, alphanumeric, between, date, digit, email, equals, fileallowedtypes, filemaximumsize, fileminimumsize, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri
@@ -316,7 +316,7 @@ prefix = tx_form
 				showAccordions = label, attributes, validation, filters
 				accordions {
 					attributes {
-						showProperties = name, placeholder, cols, rows, class, id, required
+						showProperties = name, placeholder, cols, rows, class, id, required, text
 					}
 					filtering {
 						showFilters = alphabetic, alphanumeric, lowercase, regexp, stripnewlines, titlecase, trim, uppercase

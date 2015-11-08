@@ -80,6 +80,22 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
         'selectionDirection',
         'selectionEnd',
         'selectionStart',
+        'text',
         'wrap'
     );
+
+    /**
+     * Set the attributes according to the allowed attributes of this element
+     *
+     * @param array $parameters Configuration array
+     * @return void
+     */
+    protected function setAttributes(array $parameters)
+    {
+        // preserve backward compatibility by rewriting data to text
+        if (isset($parameters['data'])) {
+            $this->configuration['attributes']['text'] = $parameters['data'];
+        }
+        parent::setAttributes($parameters);
+    }
 }

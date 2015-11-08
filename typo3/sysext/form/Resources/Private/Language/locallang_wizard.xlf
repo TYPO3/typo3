@@ -393,6 +393,9 @@
 			<trans-unit id="attributes_tabindex">
 				<source>Tabindex</source>
 			</trans-unit>
+			<trans-unit id="attributes_text">
+				<source>Text</source>
+			</trans-unit>
 			<trans-unit id="attributes_title">
 				<source>Title</source>
 			</trans-unit>
@@ -711,8 +714,8 @@
 			<trans-unit id="fieldoptions_emptytext">
 				<source>No options to display</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_data">
-				<source>Data</source>
+			<trans-unit id="fieldoptions_text">
+				<source>Text</source>
 			</trans-unit>
 			<trans-unit id="fieldoptions_value">
 				<source>Value</source>
@@ -746,6 +749,9 @@
 			</trans-unit>
 			<trans-unit id="various_properties_suffix">
 				<source>Show suffix</source>
+			</trans-unit>
+			<trans-unit id="various_properties_text">
+				<source>Text</source>
 			</trans-unit>
 			<trans-unit id="various_properties_middlename">
 				<source>Show middle name</source>
