@@ -224,6 +224,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		this.filteringTree.searchWord = searchWord;
 		if (this.filteringTree.searchWord === '') {
 			this.app.activeTree = this.tree;
+			this.tree.t3ContextNode = this.filteringTree.t3ContextNode;
 
 			textField.setHideTrigger(true);
 			this.filteringTree.hide();
