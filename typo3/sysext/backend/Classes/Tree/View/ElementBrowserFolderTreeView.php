@@ -53,10 +53,11 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      * Wrapping the title in a link, if applicable.
      *
      * @param string $title Title, ready for output.
-     * @param Folder $folderObject The "record
+     * @param Folder $folderObject The record
+     * @param int $bank Bank pointer (which mount point number)
      * @return string Wrapping title string.
      */
-    public function wrapTitle($title, Folder $folderObject)
+    public function wrapTitle($title, $folderObject, $bank = 0)
     {
         if ($this->ext_isLinkable($folderObject)) {
             $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
