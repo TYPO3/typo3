@@ -836,6 +836,8 @@ class ExtendedFileUtility extends BasicFileUtility
             $folderName = $cmds['data'];
             $resultObject = $targetFolderObject->createFolder($folderName);
             $this->writelog(6, 0, 1, 'Directory "%s" created in "%s"', array($folderName, $targetFolderObject->getIdentifier() . '/'));
+        } catch (\TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException $e) {
+            $this->writelog(6, 1, 104, 'Invalid folder name "%s"!', [$folderName]);
         } catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException $e) {
             $this->writelog(6, 1, 103, 'You are not allowed to create directories!', '');
         } catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
