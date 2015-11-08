@@ -29,9 +29,13 @@ TYPO3 requires a web server with a PHP environment and a database. The minimum
 system requirements for running TYPO3 CMS 7 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
-* PHP 5.5 up to 5.6
+* PHP 5.5 up to 7
 * MySQL 5.5 up to 5.6 or compatible (no "strict mode", see below)
 * more than 200 MB of disk space
+
+Note: If you use any other webserver than Apache, make sure you add the necessary configuration normally
+provided in the various `.htaccess` files inside the TYPO3 core. This configuration is security relevant,
+therefore only experienced server administrators should create such configuration.
 
 ### MySQL environment
 
@@ -61,8 +65,6 @@ It is recommended to also grant the following privileges:
 * memory_limit set to at least 64M
 * max_execution_time set to at least 30s (240s recommended)
 * register_globals disabled
-* disabled safe_mode (not supported)
-* disabled magic_quotes (not supported)
 * AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
 
@@ -111,9 +113,8 @@ functionality:
   * max_execution_time set to at least 240s
 
 * Additional PHP extensions:
-  * PHP opcode cache, i.e.: apc, xcache, eaccelerator, Zend Optimizer,
-    Zend OPcache, wincache (in case of an IIS installation)
-  * apc caching (with at least 100 MB of memory available)
+  * PHP opcode cache, i.e.: apc, xcache, eaccelerator, Zend Optimizer, wincache (in case of an IIS installation)
+  * apcu caching (with at least 100 MB of memory available)
   * curl
   * mbstring
   * FreeType 2 (usually included within the PHP distribution)
@@ -125,10 +126,9 @@ functionality:
   will attempt to simulate random number generation. This is less secure,
   reduces performance and throws out warnings in the TYPO3 system log.
 
-* TYPO3 works with PHP's IPv6 support, which is enabled by default since
-  PHP 5.3. If you compile PHP on your own, be aware not to use option
-  "--disable-ipv6", because this will break the IPv6 support and the according
-  unit tests.
+* TYPO3 works with PHP's IPv6 support, which is enabled by default.
+  If you compile PHP on your own, be aware not to use option "--disable-ipv6",
+  because this will break the IPv6 support and the according unit tests.
 
 Installation
 ------------
@@ -147,19 +147,22 @@ If you have SSH access to your webserver and are able to create symlinks,
 this is the recommended way of setting up TYPO3 so that it can easily
 be upgraded later through the Install Tool:
 
-* Uncompress the `typo3_src-7.0.x.tar.gz` file one level above the Document
+* Uncompress the `typo3_src-7.6.x.tar.gz` file one level above the Document
   Root of your Web server:
 ```
 /var/www/site/htdocs/ $ cd ..
-/var/www/site/ $ tar xzf typo3_src-7.0.x.tar.gz
+/var/www/site/ $ tar xzf typo3_src-7.6.x.tar.gz
 ```
+
+* Important: If you use GIT to fetch the sources, don't forget to run `composer install --no-dev`
+  inside the repository, otherwise your installation won't work!
 
 * Create the symlinks in your Document Root:
 ```
   cd htdocs
-  ln -s ../typo3_src-7.0.x typo3_src
-  ln -s typo3_src/index.php index.php
-  ln -s typo3_src/typo3 typo3
+  ln -s ../typo3_src-7.6.x typo3_src
+  ln -s typo3_src/index.php
+  ln -s typo3_src/typo3
 ```
 
 * In case you use Apache, copy the .htaccess to your Document Root:
@@ -170,8 +173,8 @@ be upgraded later through the Install Tool:
 You end up with the follow structure of files:
 
 ```
-  typo3_src-7.0.x/
-  htdocs/typo3_src -> ../typo3_src-7.0.x/
+  typo3_src-7.6.x/
+  htdocs/typo3_src -> ../typo3_src-7.6.x/
   htdocs/typo3 -> typo3_src/typo3/
   htdocs/index.php -> typo3_src/index.php
   htdocs/.htaccess
@@ -183,16 +186,11 @@ be found in the Install Tool.
 
 ### Windows specifics
 
-On Windows Vista and Windows 7, you can create symbolic links using
-the `mklink` tool:
+On Windows Vista and newer you can create symbolic links using the `mklink` tool:
 ```
-  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-7.0.x
-  mklink C:\<dir>\example.com\index.php C:\<dir>\typo3_src-7.0.x\index.php
+  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-7.6.x
+  mklink C:\<dir>\example.com\index.php C:\<dir>\typo3_src-7.6.x\index.php
 ```
-
-Users of Windows XP/2000 or newer can use the `junction` program by
-Marc Russinovich to create links. It can be downloaded at
-http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx
 
 Windows users might need to copy `index.php` from the source directory to the
 web site root directory in case the Windows version does not support links
@@ -205,15 +203,14 @@ Windows.
 
 In case you only have FTP or SFTP access to your hosting environment, you
 can still install TYPO3, but you won't easily be able to upgrade your
-installation once a new patchlevel release is out.
+installation once a new patch-level release is out.
 
 Please note that this is not a recommended setup!
 
-* Uncompress `typo3_src-7.0.x.tar.gz` locally
+* Uncompress `typo3_src-7.6.x.zip` locally
 * Upload all files and subdirectories directly in your Document Root
   (where files that are served by your webserver are located).
-* In case your provider uses Apache:
-  * rename `_.htaccess` to `.htaccess`
+* In case your provider uses Apache, rename the file `_.htaccess` to `.htaccess`.
 
 You end up with this files in your Document Root:
 
