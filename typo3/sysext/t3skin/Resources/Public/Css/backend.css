@@ -13418,7 +13418,7 @@ iframe {
   right: 0px;
 }
 .distribution-holder {
-  top: 0px;
+  margin-top: 1em;
   bottom: 0px;
   margin-left: -20px;
 }
@@ -13597,6 +13597,7 @@ iframe {
 }
 #terTableWrapper {
   position: relative;
+  margin-top: 1em;
 }
 #terTableWrapper .splash-receivedata {
   display: none;

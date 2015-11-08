@@ -249,13 +249,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
         // Create the header of current folder:
         $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
-        $lines[] = '<tr class="t3-row-header"><td colspan="4">'
-            . $folderIcon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen))
-            . '</td></tr>';
+        $lines[] = '<tr class="t3-row-header"><th colspan="4">'
+            . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen))
+            . '</th></tr>';
 
         if ($filesCount === 0) {
             $lines[] = '
-				<tr class="file_list_normal">
+				<tr>
 					<td colspan="4">No files found.</td>
 				</tr>';
         }
@@ -320,7 +320,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
             // Show element:
             $lines[] = '
-					<tr class="file_list_normal">
+					<tr>
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td>' . $ATag . '<span title="' .  $lang->getLL('addToList', true) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '</td>
 						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', true) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', true) . '</a></td>
@@ -345,7 +345,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 	<!--
 		Filelisting
 	-->
-			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
+			<table class="table table-striped table-hover" id="typo3-filelist">
 				' . implode('', $lines) . '
 			</table>';
         // Return accumulated content for filelisting:
