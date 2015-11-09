@@ -76,9 +76,9 @@ class LocalizationController
         $elementsInColumnCount = $databaseConnection->exec_SELECTcountRows(
             'uid',
             'tt_content',
-            'tt_content.sys_language_uid=' . $languageId
-                . ' AND tt_content.colPos = ' . $colPos
-                . ' AND tt_content.pid=' . $pageId
+            'tt_content.sys_language_uid=' . (int)$languageId
+                . ' AND tt_content.colPos = ' . (int)$colPos
+                . ' AND tt_content.pid=' . (int)$pageId
                 . $excludeQueryPart
         );
         $additionalWhere = '';
@@ -94,16 +94,15 @@ class LocalizationController
                 'sys_language.uid',
                 'tt_content,sys_language',
                 'tt_content.sys_language_uid=sys_language.uid'
-                    . ' AND tt_content.colPos = ' . $colPos
-                    . ' AND tt_content.pid=' . $pageId
-                    . ' AND sys_language.uid <> ' . $languageId
+                    . ' AND tt_content.colPos = ' . (int)$colPos
+                    . ' AND tt_content.pid=' . (int)$pageId
+                    . ' AND sys_language.uid <> ' . (int)$languageId
                     . $additionalWhere
                     . $excludeQueryPart,
                 'tt_content.sys_language_uid',
                 'sys_language.title'
             );
             while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $row['uid'] = (int)$row['uid'];
                 if (isset($systemLanguages[$row['uid']])) {
                     $availableLanguages[] = $systemLanguages[$row['uid']];
                 }
