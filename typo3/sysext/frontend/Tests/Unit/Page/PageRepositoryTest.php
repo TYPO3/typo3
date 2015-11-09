@@ -48,7 +48,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'));
+        $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result', 'exec_SELECTgetSingleRow'));
         $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getMultipleGroupsWhereClause'));
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
@@ -213,7 +213,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->pageSelectObject->init(false);
 
         // check SQL created by \TYPO3\CMS\Frontend\Page\PageRepository->getPage()
-        $GLOBALS['TYPO3_DB']->expects($this->at(2))
+        $GLOBALS['TYPO3_DB']->expects($this->once())
             ->method('exec_SELECTgetSingleRow')
             ->with(
             '*',
@@ -246,7 +246,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->pageSelectObject->init(false);
 
         // check SQL created by \TYPO3\CMS\Frontend\Page\PageRepository->getPage()
-        $GLOBALS['TYPO3_DB']->expects($this->at(2))
+        $GLOBALS['TYPO3_DB']->expects($this->once())
             ->method('exec_SELECTgetSingleRow')
             ->with(
             '*',
