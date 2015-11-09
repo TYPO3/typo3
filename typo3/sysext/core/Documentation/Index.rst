@@ -64,6 +64,7 @@ Old changes
 	Changelog/7.3/Index
 	Changelog/7.4/Index
 	Changelog/7.5/Index
+	Changelog/7.6/Index
 
 How to contribute
 =================

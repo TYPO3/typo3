@@ -366,6 +366,7 @@ whatis\_stdWrap
    Description
          Parse input through the stdWrap function
 
+
 .. _resultlist-stdWrap:
 
 resultlist\_stdWrap
@@ -383,6 +384,187 @@ resultlist\_stdWrap
          Parse the result list through the stdWrap function
 
 
+.. _results-titleCropAfter:
+
+results\_titleCropAfter
+"""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_titleCropAfter
+
+   Data type
+         int
+
+   Description
+         Determines the length of the cropped title
+         Defaults to 50
+
+
+.. _results-titleCropSignifier:
+
+results\_titleCropSignifier
+"""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_titleCropSignifier
+
+   Data type
+         string
+
+   Description
+         Determines the string being appended to a cropped title
+         Defaults to "..."
+
+
+.. _results-summaryCropAfter:
+
+results\_summaryCropAfter
+"""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_summaryCropAfter
+
+   Data type
+         int
+
+   Description
+         Determines the length of the cropped summary
+         Defaults to 180
+
+
+.. _results-summaryCropSignifier:
+
+results\_summaryCropSignifier
+"""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_summaryCropSignifier
+
+   Data type
+         string
+
+   Description
+         Determines the string being appended to a cropped summary
+         Defaults to "..."
+
+
+.. _results-hrefInSummaryCropAfter:
+
+results\_hrefInSummaryCropAfter
+"""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_hrefInSummaryCropAfter
+
+   Data type
+         int
+
+   Description
+         Determines the length of cropped links in the summary
+         Defaults to 60
+
+
+.. _results-hrefInSummaryCropSignifier:
+
+results\_hrefInSummaryCropSignifier
+"""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_hrefInSummaryCropSignifier
+
+   Data type
+         string
+
+   Description
+         Determines the string being appended to cropped links in the summary
+         Defaults to "..."
+
+
+.. _results-markupSW_summaryMax:
+
+results\_markupSW_summaryMax
+""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_markupSW_summaryMax
+
+   Data type
+         int
+
+   Description
+         Maximum length of a summary to highlight searchwords in
+         Defaults to 300
+
+
+.. _results-markupSW_postPreLgd:
+
+results\_markupSW_postPreLgd
+""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_markupSW_postPreLgd
+
+   Data type
+         int
+
+   Description
+         Determines the amount of characters to keep on both sides of the highlighted searchword
+         Defaults to 60
+
+
+.. _results-markupSW_postPreLgd_offset:
+
+results\_markupSW_postPreLgd_offset
+"""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_markupSW_postPreLgd_offset
+
+   Data type
+         int
+
+   Description
+         Determines the offset of characters from the right side of a highlighted searchword. Higher values will "move"
+         the highlighted searchword further to the left.
+         Defaults to 5
+
+
+.. _results-markupSW_divider:
+
+results\_markupSW_divider
+"""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_markupSW_divider
+
+   Data type
+         string
+
+   Description
+         Divider for highlighted searchwords in the summary
+         Defaults to "..."
+
+
 .. _linkSectionTitles-stdWrap:
 
 linkSectionTitles
@@ -398,6 +580,23 @@ linkSectionTitles
 
    Description
          Toggles whether section titles are linked or not
+
+
+.. _forwardSearchWordsInResultLink:
+
+forwardSearchWordsInResultLink.no_cache
+"""""""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         forwardSearchWordsInResultLink.no_cache
+
+   Data type
+         boolean
+
+   Description
+         Toggles whether result links add the no_cache parameter
 
 
 [tsref:plugin.tx\_indexedsearch]
