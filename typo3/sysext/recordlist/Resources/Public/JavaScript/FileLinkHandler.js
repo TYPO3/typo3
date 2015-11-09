@@ -34,9 +34,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 	FileLinkHandler.linkFile = function(event) {
 		event.preventDefault();
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction($(this).data('file'));
 	};
 
@@ -47,9 +44,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 	FileLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
 	};
 

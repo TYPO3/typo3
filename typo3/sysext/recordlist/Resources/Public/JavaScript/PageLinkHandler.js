@@ -37,9 +37,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 		var id = $(this).data('id');
 		var anchor = $(this).data('anchor');
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction('page:' + id + (anchor ? anchor : ''));
 	};
 
@@ -55,9 +52,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 			return;
 		}
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction('page:' + value);
 	};
 
@@ -68,9 +62,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	PageLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction('page:' + PageLinkHandler.currentLink);
 	};
 

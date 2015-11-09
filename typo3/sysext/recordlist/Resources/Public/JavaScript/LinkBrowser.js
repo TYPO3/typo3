@@ -30,7 +30,7 @@ define(['jquery'], function($) {
 		addOnParams: '',
 		linkAttributeFields: [],
 		additionalLinkAttributes: {},
-		finalizeFunction: null // receives the value of the selected element as parameter (e.g. "page:<pageUid>" or "file:<uid>", etc
+		finalizeFunction: null
 	};
 
 	/**
@@ -83,8 +83,27 @@ define(['jquery'], function($) {
 		return '&' + str.join("&");
 	};
 
+	/**
+	 * Set an additional attribute for the link
+	 *
+	 * @param {String} name
+	 * @param value
+	 */
 	LinkBrowser.setAdditionalLinkAttribute = function(name, value) {
 		LinkBrowser.additionalLinkAttributes[name] = value;
+	};
+
+	/**
+	 * Stores the final link
+	 *
+	 * This method MUST be overridden in the actual implementation of the link browser.
+	 * The function is responsible for encoding the link (and possible link attributes) and
+	 * returning it to the caller (e.g. FormEngine, RTE, etc)
+	 *
+	 * @param {String} link The select element or anything else which identifies the link (e.g. "page:<pageUid>" or "file:<uid>")
+	 */
+	LinkBrowser.finalizeFunction = function(link) {
+		throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
 	};
 
 	$(function() {

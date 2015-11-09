@@ -38,9 +38,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 				value = value.substr(7);
 			}
 
-			if (!LinkBrowser.finalizeFunction) {
-				throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-			}
 			LinkBrowser.finalizeFunction('mailto:' + value);
 		});
 	});

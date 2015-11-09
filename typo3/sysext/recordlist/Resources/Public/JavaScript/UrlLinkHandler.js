@@ -39,9 +39,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 
 		LinkBrowser.setAdditionalLinkAttribute('data-htmlarea-external', '1');
 
-		if (!LinkBrowser.finalizeFunction) {
-			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
-		}
 		LinkBrowser.finalizeFunction(value);
 	};
 
