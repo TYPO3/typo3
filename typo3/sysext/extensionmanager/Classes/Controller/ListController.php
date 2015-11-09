@@ -105,9 +105,6 @@ class ListController extends AbstractModuleController
         if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
             $this->settings['offlineMode'] = true;
         }
-        if (Bootstrap::usesComposerClassLoading()) {
-            $this->settings['composerMode'] = true;
-        }
     }
 
     /**
@@ -273,12 +270,15 @@ class ListController extends AbstractModuleController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()
     {
-        if ($this->actionMethodName === 'distributionsAction') {
+        if (Bootstrap::usesComposerClassLoading()) {
+            return;
+        }
+
+        if (!in_array($this->actionMethodName, ['indexAction', 'terAction', 'showAllVersionsAction'], true)) {
             return;
         }
 
