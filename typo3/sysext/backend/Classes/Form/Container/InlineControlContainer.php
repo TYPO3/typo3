@@ -491,7 +491,7 @@ class InlineControlContainer extends AbstractContainer
                     $placeholder = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true);
                     $buttonSubmit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true);
                     $item .= '
-						<span class="btn btn-default t3js-online-media-add-btn"
+						<span class="btn btn-default t3js-online-media-add-btn ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
 							data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"

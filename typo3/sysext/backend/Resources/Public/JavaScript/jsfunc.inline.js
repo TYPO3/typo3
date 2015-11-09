@@ -758,13 +758,14 @@ var inline = {
 			}
 		}
 
-		// if we reached the maximum off possible records after this action, hide the new buttons
+		// if we reached the maximum of possible records after this action, hide the new buttons
 		if (!this.isBelowMax(objectPrefix)) {
 			var objectParent = this.parseObjectId('full', objectPrefix, 0, 1);
 			var md5 = this.getObjectMD5(objectParent);
 			this.hideElementsWithClassName('.inlineNewButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.hideElementsWithClassName('.inlineNewRelationButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.hideElementsWithClassName('.inlineNewFileUploadButton' + (md5 ? '.' + md5 : ''), objectParent);
+			this.hideElementsWithClassName('.t3js-online-media-add-btn' + (md5 ? '.' + md5 : ''), objectParent);
 			this.hideElementsWithClassName('.inlineForeignSelector' + (md5 ? '.' + md5 : ''), 't3-form-field-item');
 		}
 
@@ -980,6 +981,7 @@ var inline = {
 			this.showElementsWithClassName('.inlineNewButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewRelationButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewFileUploadButton' + (md5 ? '.' + md5 : ''), objectParent);
+			this.hideElementsWithClassName('.t3js-online-media-add-btn' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineForeignSelector' + (md5 ? '.' + md5 : ''), 't3-form-field-item');
 		}
 		TYPO3.FormEngine.Validation.validate();
