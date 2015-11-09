@@ -238,20 +238,8 @@ class PageRepository
         if (is_array($this->cache_getPage[$uid][$cacheKey])) {
             return $this->cache_getPage[$uid][$cacheKey];
         }
-        $workspaceVersion = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $uid);
-        $db = $this->getDatabaseConnection();
-        if (is_array($workspaceVersion)) {
-            $workspaceVersionAccess = $db->exec_SELECTgetSingleRow(
-                'uid',
-                'pages',
-                'uid=' . intval($workspaceVersion['uid']) . $this->where_hid_del . $accessCheck
-            );
-            if (is_array($workspaceVersionAccess)) {
-                $accessCheck = '';
-            }
-        }
         $result = array();
-        $row = $db->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
+        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
@@ -623,28 +611,6 @@ class PageRepository
             . ' '
             . $additionalWhereClause;
 
-        // Check the user group access for draft pages in preview
-        if ($this->versioningWorkspaceId != 0) {
-            $databaseResource = $db->exec_SELECTquery(
-                'uid',
-                'pages',
-                $relationField . ' IN (' . implode(',', $db->cleanIntArray($pageIds)) . ')'
-                    . $this->where_hid_del . ' ' . $additionalWhereClause,
-                '',
-                $sortField
-            );
-
-            $draftUserGroupAccessWhereStatement = $this->getDraftUserGroupAccessWhereStatement(
-                $databaseResource,
-                $sortField,
-                $additionalWhereClause
-            );
-
-            if ($draftUserGroupAccessWhereStatement !== false) {
-                $whereStatement = $draftUserGroupAccessWhereStatement;
-            }
-        };
-
         $databaseResource = $db->exec_SELECTquery(
             $fields,
             'pages',
@@ -677,49 +643,6 @@ class PageRepository
 
         // Finally load language overlays
         return $this->getPagesOverlay($pages);
-    }
-
-    /**
-     * Prevent pages being shown in menu's for preview which contain usergroup access rights in a draft workspace
-     *
-     * Returns an adapted "WHERE" statement if pages are in draft
-     *
-     * @param bool|\mysqli_result|object $databaseResource MySQLi result object / DBAL object
-     * @param string $sortField The field to sort by
-     * @param string $addWhere Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
-     * @return bool|string FALSE if no records are available in draft, a WHERE statement with the uid's if available
-     */
-    protected function getDraftUserGroupAccessWhereStatement($databaseResource, $sortField, $addWhere)
-    {
-        $draftUserGroupAccessWhereStatement = false;
-        $recordArray = [];
-
-        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($databaseResource)) {
-            $workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
-
-            $realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
-
-            $result = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                'uid',
-                'pages',
-                'uid=' . intval($realUid)
-                . $this->where_hid_del
-                . $this->where_groupAccess
-                . ' ' . $addWhere,
-                '',
-                $sortField
-            );
-
-            if (is_array($result)) {
-                $recordArray[] = $row['uid'];
-            }
-        }
-
-        if (!empty($recordArray)) {
-            $draftUserGroupAccessWhereStatement = 'uid IN (' . implode(',', $recordArray) . ')';
-        }
-
-        return $draftUserGroupAccessWhereStatement;
     }
 
     /**

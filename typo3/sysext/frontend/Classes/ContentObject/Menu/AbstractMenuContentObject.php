@@ -717,9 +717,8 @@ abstract class AbstractMenuContentObject
                 $id = $mount_info['mount_pid'];
             }
             // Get sub-pages:
-            $res = $databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . intval($id) . $this->sys_page->where_hid_del, '', $sortingField);
+            $res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $sortingField));
             while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                $row = $this->sys_page->getPage($row['uid']);
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (!empty($row)) {
                     // Keep mount point?
@@ -743,7 +742,7 @@ abstract class AbstractMenuContentObject
                         if ($MP) {
                             $row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
                         }
-                        $menuItems[$row['uid']] = $row;
+                        $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
                     }
                 }
             }
