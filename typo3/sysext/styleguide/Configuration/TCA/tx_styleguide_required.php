@@ -81,6 +81,7 @@ return array(
             'label' => 'INPUT 1: eval required',
             'config' => array(
                 'type' => 'input',
+                'max' => 23,
                 'eval' => 'required',
             ),
         ),
