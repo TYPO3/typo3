@@ -30,4 +30,7 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 		}
 	});
 
+	if (self.location.hash) {
+		window.scrollTo(window.pageXOffset, window.pageYOffset - 40);
+	}
 });
