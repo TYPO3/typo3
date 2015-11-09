@@ -418,23 +418,13 @@ class ExtendedFileUtility extends BasicFileUtility
                 $shortcutContent = array();
                 $brokenReferences = array();
 
-                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 foreach ($refIndexRecords as $fileReferenceRow) {
                     if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
                         $row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
                         $shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
                         if ($shortcutRecord) {
-                            $icon = $iconFactory->getIconForRecord($row['tablename'], $shortcutRecord, Icon::SIZE_SMALL)->render();
-                            $tagParameters = array(
-                                'class'           => 't3-js-clickmenutrigger',
-                                'data-table'      => $row['tablename'],
-                                'data-uid'        => $row['recuid'],
-                                'data-listframe'  => 1,
-                                'data-iteminfo'   => '%2Binfo,history,edit'
-                            );
-                            $icon = '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $icon . '</a>';
-                            $shortcutContent[] = $icon . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
+                            $shortcutContent[] = '[record:' . $row['tablename'] . ':' .  $row['recuid'] . ']';
                         } else {
                             $brokenReferences[] = $fileReferenceRow['ref_uid'];
                         }
@@ -455,7 +445,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     // render a message that the file could not be deleted
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
+                        sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . ' ' . implode(', ', $shortcutContent),
                         $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
                         FlashMessage::WARNING,
                         true
