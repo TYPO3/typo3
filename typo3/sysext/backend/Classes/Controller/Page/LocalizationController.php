@@ -60,15 +60,16 @@ class LocalizationController
         $colPos = (int)$params['colPos'];
         $languageId = (int)$params['languageId'];
         $databaseConnection = $this->getDatabaseConnection();
+        $backendUser = $this->getBackendUser();
 
         /** @var TranslationConfigurationProvider $translationProvider */
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationProvider->getSystemLanguages($pageId);
+
         $availableLanguages = [];
         $availableLanguages[0] = $systemLanguages[0];
 
         $excludeQueryPart = BackendUtility::deleteClause('tt_content')
-            . ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0')
             . BackendUtility::versioningPlaceholderClause('tt_content');
 
         // First check whether column is empty and then load additional languages
@@ -80,6 +81,14 @@ class LocalizationController
                 . ' AND tt_content.pid=' . $pageId
                 . $excludeQueryPart
         );
+        $additionalWhere = '';
+        if (!$backendUser->isAdmin()) {
+            $additionalWhere .= ' AND sys_language.hidden=0';
+
+            if (!empty($backendUser->user['allowed_languages'])) {
+                $additionalWhere .= ' AND sys_language.uid IN(' . $databaseConnection->cleanIntList($backendUser->user['allowed_languages']) . ')';
+            }
+        }
         if ($elementsInColumnCount === 0) {
             $res = $databaseConnection->exec_SELECTquery(
                 'sys_language.uid',
@@ -88,11 +97,13 @@ class LocalizationController
                     . ' AND tt_content.colPos = ' . $colPos
                     . ' AND tt_content.pid=' . $pageId
                     . ' AND sys_language.uid <> ' . $languageId
+                    . $additionalWhere
                     . $excludeQueryPart,
                 'tt_content.sys_language_uid',
                 'sys_language.title'
             );
             while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+                $row['uid'] = (int)$row['uid'];
                 if (isset($systemLanguages[$row['uid']])) {
                     $availableLanguages[] = $systemLanguages[$row['uid']];
                 }
