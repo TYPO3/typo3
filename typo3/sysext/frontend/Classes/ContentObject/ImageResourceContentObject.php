@@ -23,17 +23,14 @@ class ImageResourceContentObject extends AbstractContentObject
      * Rendering the cObject, IMG_RESOURCE
      *
      * @param array $conf Array of TypoScript properties
+     *
      * @return string Output
      */
-    public function render($conf = array())
+    public function render($conf = [])
     {
         $GLOBALS['TSFE']->lastImgResourceInfo = $this->cObj->getImgResource($conf['file'], $conf['file.']);
         if ($GLOBALS['TSFE']->lastImgResourceInfo) {
-            $urlPrefix = '';
-            if (parse_url($GLOBALS['TSFE']->lastImgResourceInfo[3], PHP_URL_HOST) === null) {
-                $urlPrefix = $GLOBALS['TSFE']->absRefPrefix;
-            }
-            $imageResource = $urlPrefix . $GLOBALS['TSFE']->lastImgResourceInfo[3];
+            $imageResource = $GLOBALS['TSFE']->lastImgResourceInfo[3];
             $theValue = isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
         } else {
             $theValue = '';
