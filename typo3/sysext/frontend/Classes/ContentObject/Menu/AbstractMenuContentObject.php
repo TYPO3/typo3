@@ -720,6 +720,7 @@ abstract class AbstractMenuContentObject
             $res = $databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . intval($id) . $this->sys_page->where_hid_del, '', $sortingField);
             while ($row = $databaseConnection->sql_fetch_assoc($res)) {
                 $row = $this->sys_page->getPage($row['uid']);
+                $tsfe->sys_page->versionOL('pages', $row, true);
                 if (!empty($row)) {
                     // Keep mount point?
                     $mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
