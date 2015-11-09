@@ -8294,6 +8294,15 @@ h1:first-child {
 .list-group-item.active a {
   color: #fff;
 }
+.collapsed .caret {
+  transition: all 0.25s ease-in-out;
+  -webkit-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+a[data-toggle="collapse"] {
+  display: block;
+}
 @media (min-width: 992px) {
   .affix-bottom {
     position: absolute;

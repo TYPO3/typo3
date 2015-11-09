@@ -104,6 +104,15 @@ h1:first-child {
 	}
 }
 
+.collapsed .caret {
+	transition: all 0.25s ease-in-out;
+	transform: rotate(-90deg);
+}
+
+a[data-toggle="collapse"] {
+	display: block;
+}
+
 @media (min-width: @screen-md-min) {
 	.affix-bottom {
 		position: absolute;
