@@ -204,7 +204,12 @@ class UserSettingsController
         $subkeys = GeneralUtility::trimExplode('.', $key);
         $array = &$this->getBackendUser()->uc;
         foreach ($subkeys as $subkey) {
-            $array = &$array[$subkey];
+            if (isset($array[$subkey])) {
+                $array =  &$array[$subkey];
+            } else {
+                $array = [];
+                break;
+            }
         }
         return $array;
     }

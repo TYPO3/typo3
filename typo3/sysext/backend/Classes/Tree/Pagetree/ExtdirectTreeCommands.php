@@ -363,7 +363,11 @@ class ExtdirectTreeCommands
         /** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */
         $userSettingsController = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\UserSettingsController::class);
         $state = $userSettingsController->process('get', 'BackendComponents.States.' . $stateId);
-        $state->stateHash = (object) $state->stateHash;
+        if (empty($state)) {
+            $state = new \StdClass();
+            $state->stateHash = new \StdClass();
+        }
+        $state->stateHash = (object)$state->stateHash;
         $rootline = BackendUtility::BEgetRootLine($nodeId, '', $GLOBALS['BE_USER']->workspace != 0);
         $rootlineIds = array();
         foreach ($rootline as $pageData) {
