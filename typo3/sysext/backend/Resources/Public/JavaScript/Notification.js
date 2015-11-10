@@ -173,12 +173,14 @@ define(['jquery'], function ($) {
 						'</span>' +
 					'</div>' +
 					'<div class="media-body">' +
-						'<h4 class="alert-title">' + title + '</h4>' +
-						'<p class="alert-message">' + message + '</p>' +
+						'<h4 class="alert-title"></h4>' +
+						'<p class="alert-message"></p>' +
 					'</div>' +
 				'</div>' +
 			'</div>'
 		);
+		$box.find('.alert-title').text(title);
+		$box.find('.alert-message').text(message);
 		$box.on('close.bs.alert', function(e) {
 			e.preventDefault();
 			$(this)
