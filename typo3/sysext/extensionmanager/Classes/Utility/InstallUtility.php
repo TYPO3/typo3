@@ -240,6 +240,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
+     * Reset and reload the available extensions
+     */
+    public function reloadAvailableExtensions() {
+        $this->listUtility->reloadAvailableExtensions();
+    }
+
+    /**
      * Wrapper function for loading extensions
      *
      * @param string $extensionKey
