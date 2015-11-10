@@ -1789,7 +1789,22 @@ function jumpToUrl(URL) {
      */
     public function renderQueuedFlashMessages(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $response->getBody()->write($this->getFlashMessages());
+        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $flashMessages = $defaultFlashMessageQueue->getAllMessagesAndFlush();
+
+        $messages = [];
+        foreach ($flashMessages as $flashMessage) {
+            $messages[] = [
+                'title' => $flashMessage->getTitle(),
+                'message' => $flashMessage->getMessage(),
+                'severity' => $flashMessage->getSeverity()
+            ];
+        }
+
+        $response->getBody()->write(json_encode($messages));
         return $response;
     }
 

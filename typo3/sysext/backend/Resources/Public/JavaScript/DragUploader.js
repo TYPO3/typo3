@@ -277,12 +277,9 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/L
 						url: TYPO3.settings.ajaxUrls['flashmessages_render'],
 						cache: false,
 						success: function(data) {
-							var messages = $('#typo3-messages');
-							if (messages.length == 0) {
-								$('#typo3-inner-docbody').prepend(data);
-							} else {
-								messages.replaceWith(data);
-							}
+							$.each(data, function(index, flashMessage) {
+								top.TYPO3.Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
+							});
 						}
 					});
 				}
