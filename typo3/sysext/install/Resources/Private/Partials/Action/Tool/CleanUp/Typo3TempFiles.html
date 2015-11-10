@@ -21,17 +21,18 @@
 
 <form method="post" class="form-horizontal">
 <div class="row">
-	<div class="col-sm-4">Number of temporary files:</div>
+	<div class="col-sm-4"><strong class="pull-right">Number of temporary files</strong></div>
 	<div class="col-sm-8">{typo3TempData.numberOfFilesInSelectedDirectory}</div>
 </div>
 <div class="row">
-	<div class="col-sm-4">Number matching:</div>
+	<div class="col-sm-4"><strong class="pull-right">Number matching</strong></div>
 	<div class="col-sm-8">{typo3TempData.numberOfFilesMatchingCriteria}	</div>
 </div>
 <div class="row">
-	<div class="col-sm-4">Number deleted:</div>
+	<div class="col-sm-4"><strong class="pull-right">Number deleted</strong></div>
 	<div class="col-sm-8">{typo3TempData.numberOfDeletedFiles}</div>
 </div>
+<br>
 <div class="row">
 	<div class="form-group">
 		<label for="t3-install-delete" class="col-sm-4 control-label">Delete files by condition</label>
@@ -52,7 +53,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="t3-install-action" class="col-sm-4 control-label">Number of files at a time:</label>
+		<label for="t3-install-action" class="col-sm-4 control-label">Number of files at a time</label>
 		<div class="col-sm-7">
 			<select
 					id="t3-install-action"
@@ -68,7 +69,7 @@
 	</div>
 
 	<div class="form-group">
-		<label for="t3-install-subdirectory" class="col-sm-4 control-label">From sub-directory:</label>
+		<label for="t3-install-subdirectory" class="col-sm-4 control-label">From sub-directory</label>
 		<div class="col-sm-7">
 			<select
 				id="t3-install-subdirectory"

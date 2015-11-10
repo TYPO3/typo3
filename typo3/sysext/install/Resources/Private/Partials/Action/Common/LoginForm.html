@@ -12,11 +12,11 @@
 
 		<form method="post" class="form-inline" id="t3-install-form-login">
 			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-			<div class="form-group form-group-lg">
+			<div class="form-group">
 				<label for="t3-install-form-password">Password</label>
-				<input id="t3-install-form-password" type="password" name="install[values][password]" class="t3-install-form-input-text form-control input-lg" autofocus="autofocus" />
+				<input id="t3-install-form-password" type="password" name="install[values][password]" class="t3-install-form-input-text form-control" autofocus="autofocus" />
 			</div>
-			<f:render partial="Action/Common/SubmitButton" arguments="{name:'login', text:'Login', className:'btn-lg'}"/>
+			<f:render partial="Action/Common/SubmitButton" arguments="{name:'login', text:'Login', className:'btn-success'}"/>
 		</form>
 	</div>
 	<div id="t3-install-box-border-bottom">&nbsp;</div>
@@ -27,13 +27,13 @@
 	</f:if>
 
 	<div class="panel panel-info">
-		<div class="panel-heading"><h3 class="panel-title">Information:</h3></div>
+		<div class="panel-heading"><h3 class="panel-title">Information</h3></div>
 		<div class="panel-body">
 			By default the install tool password is the one specified during the installation.
 		</div>
 	</div>
 	<div class="panel panel-warning">
-		<div class="panel-heading"><h3 class="panel-title">Important:</h3></div>
+		<div class="panel-heading"><h3 class="panel-title">Important</h3></div>
 		<div class="panel-body">
 			If you don't know the current password, you can set a new one by setting the value of
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] in typo3conf/LocalConfiguration.php to
