@@ -495,6 +495,9 @@ class FileListController extends ActionController
             }
         }
 
+        $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
+
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);
         $this->view->assign('settings', [
