@@ -18,7 +18,14 @@
  * ExtensionManager.Update => Various AJAX functions to display updates
  * ExtensionManager.uploadForm => helper to show the upload form
  */
-define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress, Modal) {
+define([
+	'jquery',
+	'nprogress',
+	'TYPO3/CMS/Backend/Modal',
+	'TYPO3/CMS/Backend/SplitButtons',
+	'datatables',
+	'TYPO3/CMS/Backend/jquery.clearable'
+], function($, NProgress, Modal, SplitButtons) {
 
 	/**
 	 *
@@ -765,8 +772,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'datatables', 'TYPO3/C
 		ExtensionManager.configurationFieldSupport();
 		var $validate = $('.validate');
 		$validate.validate();
-		$(document).on('click', '.t3js-save-close', function() {
-			$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'}));
+
+		SplitButtons.addPreSubmitCallback(function(e) {
+			if ($(e.target).hasClass('t3js-save-close')) {
+				$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'}));
+			}
 		});
 
 		// initialize the repository
