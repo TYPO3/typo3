@@ -53,12 +53,13 @@ class TcaColumnsProcessShowitem implements FormDataProviderInterface
             $isExistingRecord = $result['command'] === 'edit';
             $inlineConfig = $result['inlineParentConfig'];
             $collapseAll = isset($inlineConfig['appearance']['collapseAll']) && $inlineConfig['appearance']['collapseAll'];
+            $expandAll = isset($inlineConfig['appearance']['collapseAll']) && !$inlineConfig['appearance']['collapseAll'];
             $expandCollapseStateArray = $result['inlineExpandCollapseStateArray'];
             $foreignTable = $result['inlineParentConfig']['foreign_table'];
             $isExpandedByUcState = isset($expandCollapseStateArray[$foreignTable])
                     && is_array($expandCollapseStateArray[$foreignTable])
                     && in_array($result['databaseRow']['uid'], $expandCollapseStateArray[$foreignTable]) !== false;
-            if ($isExistingRecord && ($collapseAll || !$isExpandedByUcState) && !$result['isInlineAjaxOpeningContext']) {
+            if ($isExistingRecord && ($collapseAll || !$isExpandedByUcState) && !$expandAll && !$result['isInlineAjaxOpeningContext']) {
                 $addShowItemFieldsToColumnsToProcess = false;
             }
         }
