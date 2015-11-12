@@ -18,12 +18,18 @@
 									<div class="ce-media">
 								</f:else>
 							</f:if>
-							<f:if condition="{column.media.type} == 2">
-								<f:render section="imageType" arguments="{_all}" />
-							</f:if>
-							<f:if condition="{column.media.type} == 4">
-								<f:render section="videoType" arguments="{_all}" />
-							</f:if>
+
+							<f:switch expression="{column.media.type}">
+								<f:case default="TRUE">
+									<f:render section="imageType" arguments="{_all}" />
+								</f:case>
+								<f:case value="3">
+									<f:render section="audioType" arguments="{_all}" />
+								</f:case>
+								<f:case value="4">
+									<f:render section="videoType" arguments="{_all}" />
+								</f:case>
+							 </f:switch>
 
 							<f:if condition="{column.media.description}">
 								<f:then>
@@ -68,6 +74,10 @@
 			</f:if>
 		</f:else>
 	</f:if>
+</f:section>
+
+<f:section name="audioType">
+	<f:render section="media" arguments="{_all}" />
 </f:section>
 
 <f:section name="videoType">
