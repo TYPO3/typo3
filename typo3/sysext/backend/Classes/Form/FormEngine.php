@@ -4553,8 +4553,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								} elseif (isset($wConf['script'])) {
 									GeneralUtility::deprecationLog(
 										'The way registering a wizard in TCA has changed in 6.2. '
-										. 'Please set module[name]=module_name instead of using script=path/to/sctipt.php in your TCA. '
-										. 'The possibility to register wizards this way will be removed in 2 versions.'
+										. 'Please set module[name]=module_name instead of using script=path/to/script.php in your TCA. '
+										. 'The possibility to register wizards this way will be removed in TYPO3 CMS 7.'
 									);
 									if (substr($wConf['script'], 0, 4) === 'EXT:') {
 										$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
