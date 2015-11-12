@@ -21,6 +21,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
+	var formSelector = '.t3js-topbar-navigation-search';
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
 	var category = '';
 
@@ -97,9 +98,14 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 		});
 
 		$(searchFieldSelector).clearable({
-				onClear: function() {
-					$(containerSelector).removeClass('open');
-				}
+			onClear: function() {
+				$(containerSelector).removeClass('open');
+			}
+		});
+
+		// Prevent submitting the search form
+		$(formSelector).submit(function(evt) {
+			evt.preventDefault();
 		});
 	});
 
