@@ -82,7 +82,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
             }
         }
         if ($loadJQuery) {
-            $pageRenderer->loadJquery(null, null, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
+            $pageRenderer->loadJquery();
         }
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {

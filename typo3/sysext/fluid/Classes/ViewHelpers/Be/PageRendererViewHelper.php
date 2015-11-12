@@ -74,7 +74,7 @@ class PageRendererViewHelper extends AbstractViewHelper
             }
         }
         if ($loadJQuery) {
-            $this->pageRenderer->loadJquery(null, null, PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
+            $this->pageRenderer->loadJquery();
         }
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
