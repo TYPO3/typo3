@@ -141,7 +141,7 @@ class FormInlineAjaxController
         }
          */
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
-            // We have a foreign_selector. So, we just created a new record on an intermediate table in $mainChild.
+            // We have a foreign_selector. So, we just created a new record on an intermediate table in $childData.
             // Now, if a valid id is given as second ajax parameter, the intermediate row should be connected to an
             // existing record of the child-child table specified by the given uid. If there is no such id, user
             // clicked on "created new" and a new child-child should be created, too.
@@ -150,7 +150,7 @@ class FormInlineAjaxController
                 $childData['databaseRow'][$parentConfig['foreign_selector']] = [
                     $childChildUid,
                 ];
-                $childData['combinationChild'] = $this->compileCombinationChild($childData, $parentConfig);
+                $childData['combinationChild'] = $this->compileChildChild($childData, $parentConfig, $inlineStackProcessor->getStructure());
             } else {
                 /** @var TcaDatabaseRecord $formDataGroup */
                 $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -160,6 +160,9 @@ class FormInlineAjaxController
                     'command' => 'new',
                     'tableName' => $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'],
                     'vanillaUid' => (int)$inlineFirstPid,
+                    'isInlineChild' => true,
+                    'isInlineAjaxOpeningContext' => true,
+                    'inlineStructure' => $inlineStackProcessor->getStructure(),
                     'inlineFirstPid' => (int)$inlineFirstPid,
                 ];
                 $childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput);
@@ -482,9 +485,8 @@ class FormInlineAjaxController
      * @param array $inlineStructure Current inline structure
      * @return array Full result array
      *
-     * @todo: This clones methods compileChild and compileCombinationChild from TcaInline Provider.
-     * @todo: Find something around that, eg. some option to force TcaInline provider to calculate a
-     * @todo: specific forced-open element only :)
+     * @todo: This clones methods compileChild from TcaInline Provider. Find a better abstraction
+     * @todo: to also encapsulate the more complex scenarios with combination child and friends.
      */
     protected function compileChild(array $parentData, $parentFieldName, $childUid, array $inlineStructure)
     {
@@ -529,7 +531,8 @@ class FormInlineAjaxController
         // is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
-            $mainChild['combinationChild'] = $this->compileCombinationChild($mainChild, $parentConfig, $inlineStructure);
+            // This kicks in if opening an existing mainChild that has a child-child set
+            $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig, $inlineStructure);
         }
         return $mainChild;
     }
@@ -538,17 +541,36 @@ class FormInlineAjaxController
      * With useCombination set, not only content of the intermediate table, but also
      * the connected child should be rendered in one go. Prepare this here.
      *
-     * @param array $intermediate Full data array of "mm" record
+     * @param array $child Full data array of "mm" record
      * @param array $parentConfig TCA configuration of "parent"
      * @param array $inlineStructure Current inline structure
      * @return array Full data array of child
      */
-    protected function compileCombinationChild(array $intermediate, array $parentConfig, array $inlineStructure)
+    protected function compileChildChild(array $child, array $parentConfig, array $inlineStructure)
     {
         // foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
-        $intermediateUid = $intermediate['databaseRow'][$parentConfig['foreign_selector']][0];
-        $combinationChild = $this->compileChild($intermediate, $parentConfig['foreign_selector'], $intermediateUid, $inlineStructure);
-        return $combinationChild;
+        $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
+        // child-child table name is set in child tca "the selector field" foreign_table
+        $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
+        /** @var TcaDatabaseRecord $formDataGroup */
+        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+        /** @var FormDataCompiler $formDataCompiler */
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompilerInput = [
+            'command' => 'edit',
+            'tableName' => $childChildTableName,
+            'vanillaUid' => (int)$childChildUid,
+            'isInlineChild' => true,
+            'isInlineAjaxOpeningContext' => true,
+            // @todo: this is the wrong inline structure, isn't it? Shouldn't contain it the part from child child, too?
+            'inlineStructure' => $inlineStructure,
+            'inlineFirstPid' => $child['inlineFirstPid'],
+            // values of the top most parent element set on first level and not overridden on following levels
+            'inlineTopMostParentUid' => $child['inlineTopMostParentUid'],
+            'inlineTopMostParentTableName' => $child['inlineTopMostParentTableName'],
+            'inlineTopMostParentFieldName' => $child['inlineTopMostParentFieldName'],
+        ];
+        return $formDataCompiler->compile($formDataCompilerInput);
     }
 
     /**
