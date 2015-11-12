@@ -50,8 +50,8 @@ $signalSlotDispatcher->connect(
 
 if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
     $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
-        'hasInstalledExtensions',
+        \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
+        'afterExtensionInstall',
         \TYPO3\CMS\Core\Core\ClassLoadingInformation::class,
         'dumpClassLoadingInformation'
     );
