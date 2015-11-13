@@ -1579,7 +1579,15 @@ return array(
                 'readOnly' => 1,
             )
         ),
-
+        'group_13' => array(
+            'exclude' => 1,
+            'label' => 'GROUP: 13 internal_type=folder, maxitems=1',
+            'config' => array(
+                'type' => 'group',
+                'internal_type' => 'folder',
+                'maxitems' => 1,
+            ),
+        ),
 
         'none_1' => array(
             'exclude' => 1,
@@ -2678,7 +2686,7 @@ return array(
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			select_30, select_31, select_32, select_33, select_34,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
-			group_11, group_12,
+			group_11, group_12, group_13,
 			none_1, none_2, none_3, none_4, none_5, none_6,
 			passthrough_1,
 			user_1, user_2,
@@ -2717,7 +2725,7 @@ return array(
 					select_30, select_31, select_32,
 				--div--;Group,
 					group_1, group_12, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
-					group_11,
+					group_11, group_13,
 				--div--;Passthrough,
 					passthrough_1,
 				--div--;None,
