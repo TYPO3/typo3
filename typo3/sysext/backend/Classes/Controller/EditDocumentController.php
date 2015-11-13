@@ -1340,7 +1340,7 @@ class EditDocumentController extends AbstractModule
                             Icon::SIZE_SMALL
                         ))
                         ->setDataAttributes([
-                            'return-url' => $this->retUrl,
+                            'return-url' => BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['pid'])),
                             'uid' => $this->firstEl['uid'],
                             'table' => $this->firstEl['table']
                         ]);
