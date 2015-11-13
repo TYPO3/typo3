@@ -59,7 +59,7 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     public function indexAction()
     {
         if ($this->enableFileService->checkInstallToolEnableFile()) {
-            $this->redirect('sysext/install/Start/Install.php?install[context]=backend');
+            \TYPO3\CMS\Core\Utility\HttpUtility::redirect('sysext/install/Start/Install.php?install[context]=backend');
         } else {
             $this->forward('showEnableInstallToolButton');
         }
@@ -95,6 +95,8 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * Redirect to specified URI
      *
      * @param string $uri
+     * @todo: deprecate this method in CMS8, it overload the method of AbstractController in wrong way.
+     * @todo: to late to deprecate in CMS7
      */
     protected function redirect($uri)
     {
