@@ -10175,10 +10175,6 @@ table#typo3-linkTarget {
 input.typo3-link-input {
   width: 250px;
 }
-form#typo3-uplFilesForm,
-form#typo3-crFolderForm {
-  border-top: 1px solid #adadad;
-}
 table#typo3-linkPages tr td.c-wCell,
 table#typo3-linkFiles tr td.c-wCell,
 table#typo3-EBrecords tr td.c-wCell,
@@ -12092,6 +12088,11 @@ span.warningboxheader {
 }
 .t3-btn {
   cursor: pointer;
+}
+.element-browser-section {
+  border-bottom: 1px solid #d7d7d7;
+  padding-bottom: 30px;
+  margin: 0 15px 30px 15px;
 }
 *::-ms-clear {
   display: none;

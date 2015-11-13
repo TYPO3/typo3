@@ -202,12 +202,14 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 			<!--
 				Wrapper table for folder tree / filelist:
 			-->
+			<div class="element-browser-section element-browser-filetree">
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
 					<td class="c-wCell" valign="top"><h3>' . $this->getLanguageService()->getLL('folderTree', true) . ':</h3>' . $tree . '</td>
 					<td class="c-wCell" valign="top">' . $files . '</td>
 				</tr>
 			</table>
+			</div>
 			';
         // Adding create folder + upload forms if applicable:
         if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
