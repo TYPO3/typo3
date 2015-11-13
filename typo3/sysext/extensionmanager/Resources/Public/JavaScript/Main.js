@@ -504,14 +504,14 @@ define([
 						});
 					});
 				} else {
-					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension) + ' <br />';
-					successMessage += '<br /><h3>' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ':</h3>';
+					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension);
+
+					successMessage += '\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ': ';
 					$.each(data.result, function(index, value) {
-						successMessage += TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ':<br /><ul>';
-						$.each(value, function(extkey, extdata) {
-							successMessage += '<li>' + extkey + '</li>';
+						successMessage += '\n\n' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ': ';
+						$.each(value, function(extkey) {
+							successMessage += '\n* ' + extkey
 						});
-						successMessage += '</ul>';
 					});
 					top.TYPO3.Notification.info(TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
 					top.TYPO3.ModuleMenu.App.refreshMenu();

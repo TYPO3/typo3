@@ -174,7 +174,7 @@ define(['jquery'], function ($) {
 					'</div>' +
 					'<div class="media-body">' +
 						'<h4 class="alert-title"></h4>' +
-						'<p class="alert-message"></p>' +
+						'<p class="alert-message text-pre-wrap"></p>' +
 					'</div>' +
 				'</div>' +
 			'</div>'
