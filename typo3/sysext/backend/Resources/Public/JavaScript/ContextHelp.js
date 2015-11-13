@@ -68,6 +68,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 			} else if ($me.attr('data-loaded') === 'false' && $me.data('table')) {
 				ContextHelp.loadHelp($me);
 			}
+
+			// if help icon is in DocHeader, force open to bottom
+			if ($me.closest('.t3js-module-docheader').length) {
+				TYPO3.Popover.setOption($me, 'placement', 'bottom');
+			}
 		});
 		$(document).on('shown.bs.popover', ContextHelp.selector, function(evt) {
 			var $popover = $(evt.target).data('bs.popover').$tip;

@@ -61,6 +61,17 @@ define(['jquery', 'bootstrap'], function($) {
 	};
 
 	/**
+	 * Set popover option on $element
+	 *
+	 * @param {Object} $element
+	 * @param {String} key
+	 * @param {String} value
+     */
+	Popover.setOption = function($element, key, value) {
+		$element.data('bs.popover').options[key] = value;
+	};
+
+	/**
 	 * Show popover with title and content on $element
 	 *
 	 * @param {Object} $element
