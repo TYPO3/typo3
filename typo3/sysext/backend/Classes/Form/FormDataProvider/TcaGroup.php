@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -50,7 +52,7 @@ class TcaGroup implements FormDataProviderInterface
 
             $internalType = $fieldConfig['config']['internal_type'];
             if ($internalType === 'file_reference' || $internalType === 'file') {
-                $files = array();
+                $files = [];
                 // Simple list of files
                 $fileList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
                 foreach ($fileList as $file) {
@@ -72,8 +74,21 @@ class TcaGroup implements FormDataProviderInterface
                 );
                 $relationHandler->getFromDB();
                 $result['databaseRow'][$fieldName] = $relationHandler->readyForInterface();
+            } elseif ($internalType === 'folder') {
+                $folders = [];
+                // Simple list of folders
+                $folderList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
+                foreach ($folderList as $folder) {
+                    if ($folder) {
+                        $folderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folder);
+                        if ($folderObject instanceof Folder) {
+                            $folderName = PathUtility::basename($folderObject->getIdentifier());
+                            $folders[] = rawurlencode($folder) . '|' . rawurlencode($folderName);
+                        }
+                    }
+                }
+                $result['databaseRow'][$fieldName] = implode(',', $folders);
             } else {
-                // @todo: "folder" is a valid internal_type, too.
                 throw new \UnexpectedValueException(
                     'TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
                     . ' must be set to either "db", "file" or "file_reference"',
