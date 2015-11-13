@@ -431,7 +431,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             : '';
         // @todo define label "linkRelationship" below in xlf
         return '
-				<form action="" name="lrelform" id="lrelform">
+				<form action="" name="lrelform" id="lrelform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkRel">
 						<tr>
 							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', true) . ':</label></td>
@@ -468,7 +468,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-				<form action="" name="ltargetform" id="ltargetform">
+				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
 						<tr' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
 							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
@@ -512,7 +512,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 : $this->classesAnchorDefaultTitle[$this->currentLinkHandlerId];
         }
         return '
-				<form action="" name="ltitleform" id="ltitleform">
+				<form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
 							<td style="width: 96px;"><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', true) . '</label></td>
@@ -538,7 +538,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $selectClass = '';
         if ($this->classesAnchorJSOptions[$this->currentLinkHandlerId]) {
             $selectClass = '
-				<form action="" name="lclassform" id="lclassform">
+				<form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
 							<td style="width: 96px;">' . $this->getLanguageService()->getLL('anchor_class', true) . '</td>

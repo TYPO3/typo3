@@ -116,6 +116,7 @@ define(['jquery'], function($) {
 		LinkBrowser.linkAttributeFields = data.linkAttributeFields;
 
 		$('.t3js-targetPreselect').on('change', LinkBrowser.loadTarget);
+		$('form.t3js-dummyform').on('submit', function(evt) { evt.preventDefault(); });
 	});
 
 	/**

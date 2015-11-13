@@ -502,7 +502,7 @@ abstract class AbstractLinkBrowserController
 			<!--
 				Selecting target for link:
 			-->
-				<form action="" name="ltargetform" id="ltargetform">
+				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
 						<tr>
 							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
@@ -522,7 +522,7 @@ abstract class AbstractLinkBrowserController
 				<!--
 					Selecting title for link:
 				-->
-				<form action="" name="ltitleform" id="ltitleform">
+				<form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
 							<td style="width: 96px;">' . $lang->getLL('title', true) . '</td>
@@ -536,7 +536,7 @@ abstract class AbstractLinkBrowserController
 				<!--
 					Selecting class for link:
 				-->
-				<form action="" name="lclassform" id="lclassform">
+				<form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
 							<td style="width: 96px;">' . $lang->getLL('class', true) . '</td>
@@ -550,7 +550,7 @@ abstract class AbstractLinkBrowserController
 				<!--
 					Selecting params for link:
 				-->
-				<form action="" name="lparamsform" id="lparamsform">
+				<form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
 						<tr>
 							<td style="width: 96px;">' . $lang->getLL('params', true) . '</td>
