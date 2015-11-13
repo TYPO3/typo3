@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Utility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -1579,6 +1580,12 @@ class BackendUtility {
 			foreach ($fileReferences as $fileReferenceObject) {
 				$fileObject = $fileReferenceObject->getOriginalFile();
 
+				// Skip the resource if it's not of type AbstractFile. One case where this can happen if the
+				// storage has been externally modified and the field value now points to a folder
+				// instead of a file.
+				if (!$fileObject instanceof AbstractFile) {
+					continue;
+				}
 				if ($fileObject->isMissing()) {
 					$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
 					$thumbData .= $flashMessage->render();
