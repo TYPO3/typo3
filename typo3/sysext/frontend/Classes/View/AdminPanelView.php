@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -50,6 +51,13 @@ class AdminPanelView
     protected $iconFactory;
 
     /**
+     * Determines whether EXT:feedit is loaded
+     *
+     * @var bool
+     */
+    protected $extFeEditLoaded = FALSE;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -68,6 +76,7 @@ class AdminPanelView
         $this->saveConfigOptions();
         $typoScriptFrontend = $this->getTypoScriptFrontendController();
         // Setting some values based on the admin panel
+        $this->extFeEditLoaded = ExtensionManagementUtility::isLoaded('feedit');
         $typoScriptFrontend->forceTemplateParsing = $this->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
         $typoScriptFrontend->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
         $typoScriptFrontend->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
@@ -91,9 +100,9 @@ class AdminPanelView
         }
         if ($typoScriptFrontend->forceTemplateParsing) {
             $typoScriptFrontend->set_no_cache('Admin Panel: Force template parsing', true);
-        } elseif ($typoScriptFrontend->displayEditIcons) {
+        } elseif ($this->extFeEditLoaded && $typoScriptFrontend->displayEditIcons) {
             $typoScriptFrontend->set_no_cache('Admin Panel: Display edit icons', true);
-        } elseif ($typoScriptFrontend->displayFieldEditIcons) {
+        } elseif ($this->extFeEditLoaded && $typoScriptFrontend->displayFieldEditIcons) {
             $typoScriptFrontend->set_no_cache('Admin Panel: Display field edit icons', true);
         } elseif (GeneralUtility::_GP('ADMCMD_view')) {
             $typoScriptFrontend->set_no_cache('Admin Panel: Display preview', true);
@@ -449,8 +458,12 @@ class AdminPanelView
             $newPageModule = trim($this->getBackendUser()->getTSConfigVal('options.overridePageModule'));
             $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
             $this->extNeedUpdate = true;
-            $out .= $this->extGetItem('edit_displayFieldIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />');
-            $out .= $this->extGetItem('edit_displayIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
+            if ($this->extFeEditLoaded) {
+                $out .= $this->extGetItem('edit_displayFieldIcons', '',
+                    '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" id="edit_displayFieldIcons" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayFieldIcons'] ? ' checked="checked"' : '') . ' />');
+                $out .= $this->extGetItem('edit_displayIcons', '',
+                    '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
+            }
             $out .= $this->extGetItem('', $this->ext_makeToolBar());
             if (!GeneralUtility::_GP('ADMCMD_view')) {
                 $out .= $this->extGetItem('', '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('
