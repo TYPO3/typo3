@@ -186,6 +186,9 @@
 	.live-search-wrapper {
 		&+ .dropdown-menu {
 			width: 100%;
+			.dropdown-list {
+				position: relative!important; // Needs to be important to override inline styles of autocomplete
+			}
 		}
 	}
 	.dropdown-menu {

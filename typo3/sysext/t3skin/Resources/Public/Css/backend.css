@@ -13042,6 +13042,9 @@ iframe {
 .typo3-topbar-navigation-items .live-search-wrapper + .dropdown-menu {
   width: 100%;
 }
+.typo3-topbar-navigation-items .live-search-wrapper + .dropdown-menu .dropdown-list {
+  position: relative!important;
+}
 .typo3-topbar-navigation-items .dropdown-menu {
   left: auto;
   right: 0;
