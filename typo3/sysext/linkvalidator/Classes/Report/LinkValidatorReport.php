@@ -499,10 +499,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             ],
             'returnUrl' => $requestUri
         ]);
-        $actionLink = '<a href="' . htmlspecialchars($url);
-        $actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
-        $actionLink .= $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
-        $actionLink .= '</a>';
+        $actionLinkOpen = '<a href="' . htmlspecialchars($url);
+        $actionLinkOpen .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
+        $actionLinkClose = '</a>';
         $elementHeadline = $row['headline'];
         if (empty($elementHeadline)) {
             $elementHeadline = '<i>' . $this->getLanguageService()->getLL('list.no.headline') . '</i>';
@@ -521,7 +520,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
         $element .= $elementHeadline;
         $element .= ' ' . sprintf($this->getLanguageService()->getLL('list.field'), $fieldName);
-        $markerArray['actionlink'] = $actionLink;
+        $markerArray['actionlinkOpen'] = $actionLinkOpen;
+        $markerArray['actionlinkClose'] = $actionLinkClose;
+        $markerArray['actionlinkIcon'] = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
         $markerArray['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
         $markerArray['element'] = $element;
         $markerArray['headlink'] = $row['link_title'];
