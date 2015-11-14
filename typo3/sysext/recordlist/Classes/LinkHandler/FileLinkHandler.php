@@ -228,17 +228,19 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         // Get files from the folder:
         $folderContent = $this->getFolderContent($folder, $extensionList);
         if (!empty($folderContent)) {
-            $out .= '<ul class="list-tree list-tree-root">';
+            $out .= '<ul class="list-tree">';
             foreach ($folderContent as $fileOrFolderObject) {
                 list($fileIdentifier, $icon) = $this->renderItem($fileOrFolderObject);
                 $selected = $currentIdentifier === $fileIdentifier ? ' class="active"' : '';
                 $out .=
                     '<li' . $selected . '>
-						<a href="#" class="t3js-fileLink" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" data-file="file:' . htmlspecialchars($fileIdentifier) . '">
-							' .    $icon . '
-							' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '
-						</a>
-					</li>';
+                        <span class="list-tree-group">
+                            <a href="#" class="t3js-fileLink list-tree-group" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" data-file="file:' . htmlspecialchars($fileIdentifier) . '">
+                                <span class="list-tree-icon">' . $icon . '</span>
+                                <span class="list-tree-title">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '</span>
+                            </a>
+                        </span>
+                    </li>';
             }
             $out .= '</ul>';
         }
