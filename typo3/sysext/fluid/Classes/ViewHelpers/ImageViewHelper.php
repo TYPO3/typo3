@@ -120,26 +120,11 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
             'crop' => $crop,
         );
         $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-        $tagWidthAttribute = (int)$processedImage->getProperty('width');
-        $tagHeightAttribute = (int)$processedImage->getProperty('height');
-        $trimmedWidthAttribute = (int)trim($width, 'cm');
-        $trimmedHeightAttribute = (int)trim($height, 'cm');
-
-        if ($trimmedWidthAttribute !== $tagWidthAttribute) {
-            $tagWidthAttribute = $trimmedWidthAttribute;
-        }
-        if ($trimmedHeightAttribute !== $tagHeightAttribute) {
-            $tagHeightAttribute = $trimmedHeightAttribute;
-        }
         $imageUri = $this->imageService->getImageUri($processedImage, $absolute);
 
         $this->tag->addAttribute('src', $imageUri);
-        if (!empty($tagWidthAttribute)) {
-            $this->tag->addAttribute('width', $tagWidthAttribute);
-        }
-        if (!empty($tagHeightAttribute)) {
-            $this->tag->addAttribute('height', $tagHeightAttribute);
-        }
+        $this->tag->addAttribute('width', $processedImage->getProperty('width'));
+        $this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
         $alt = $image->getProperty('alternative');
         $title = $image->getProperty('title');
