@@ -1,0 +1,37 @@
+{
+  "name": "7elix/styleguide",
+  "authors": [
+    {
+      "name": "Felix Kopp",
+      "email": "felix-source@phorax.com",
+      "role": "Developer",
+      "homepage": "http://phorax.com"
+    }
+  ],
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 CMS Backend Styleguide",
+  "homepage": "https://github.com/7elix/TYPO3.CMS.Styleguide",
+  "license": "GPL-2.0+",
+  "keywords": [
+    "typo3",
+    "style guide"
+  ],
+  "support": {
+    "issues": "https://github.com/7elix/TYPO3.CMS.Styleguide/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "TYPO3\\CMS\\Styleguide\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+    }
+  },
+  "require": {
+    "typo3/cms-core": ">=7.4.0,<8.0"
+  }
+}
