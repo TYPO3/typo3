@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
 
 // @todo implement constructor-level caching
 /**
@@ -248,14 +249,8 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     {
         $configuration = array();
         if ($flexFormData) {
-            $flexFormContents = GeneralUtility::xml2array($flexFormData);
-            if (!empty($flexFormContents['data']['sDEF']['lDEF']) && is_array($flexFormContents['data']['sDEF']['lDEF'])) {
-                foreach ($flexFormContents['data']['sDEF']['lDEF'] as $key => $value) {
-                    if (isset($value['vDEF'])) {
-                        $configuration[$key] = $value['vDEF'];
-                    }
-                }
-            }
+            $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
+            $configuration = $flexFormService->convertFlexFormContentToArray($flexFormData);
         }
         return $configuration;
     }
