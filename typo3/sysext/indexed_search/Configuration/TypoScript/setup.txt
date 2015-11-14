@@ -6,7 +6,7 @@ config.index_metatags = 1
 plugin.tx_indexedsearch {
 
 	settings {
-
+		targetPid =
 		# show the rules
 		displayRules = 1
 
