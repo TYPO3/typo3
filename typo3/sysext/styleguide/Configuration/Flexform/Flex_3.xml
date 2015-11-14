@@ -437,8 +437,8 @@
 								<foreign_match_fields>
 									<fieldname>fal</fieldname>
 								</foreign_match_fields>
-								<forgein_label>uid_local</forgein_label>
-								<foreig_serlector>uid_local</foreig_serlector>
+								<foreign_label>uid_local</foreign_label>
+								<foreign_selector>uid_local</foreign_selector>
 								<foreign_selector_fieldTcaOverride>
 									<config>
 										<appearance>
