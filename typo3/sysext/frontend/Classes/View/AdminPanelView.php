@@ -335,7 +335,9 @@ class AdminPanelView
 					TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue);
 				}') . '/*]]>*/</script><script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
         }
+        $cssPath = htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . ExtensionManagementUtility::siteRelPath('t3skin')) . 'stylesheets/standalone/admin_panel.css';
         $out .= '<script src="' . GeneralUtility::locationHeaderUrl('typo3/sysext/frontend/Resources/Public/JavaScript/AdminPanel.js') . '" type="text/javascript"></script><script type="text/javascript">/*<![CDATA[*/' . 'typo3AdminPanel = new TYPO3AdminPanel();typo3AdminPanel.init("typo3-adminPanel-header", "TSFE_ADMIN_PANEL_FORM");' . '/*]]>*/</script>
+<link type="text/css" rel="stylesheet" href="' . $cssPath . '" media="all" />
 <!--
 	TYPO3 admin panel end
 -->
