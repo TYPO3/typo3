@@ -8238,8 +8238,14 @@ button.close {
     display: none !important;
   }
 }
+.content-area {
+  padding-bottom: 35px;
+}
 .content-area > h3 {
   margin-top: 0;
+}
+.content-area > *:last-child {
+  margin-bottom: 0;
 }
 .logo-pageheader img {
   padding-bottom: 3px;
@@ -8324,6 +8330,9 @@ a[data-toggle="collapse"] {
 }
 hr {
   border-top-color: #dddddd;
+}
+.copyright .panel-default:last-child {
+  margin-bottom: 0;
 }
 #fixed-footer-handler {
   height: 32px;

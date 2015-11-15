@@ -18,8 +18,16 @@
 
 @grid-float-breakpoint: @screen-md-min;
 
-.content-area > h3 {
-	margin-top: 0;
+.content-area {
+	padding-bottom: 35px;
+
+	> h3 {
+		margin-top: 0;
+	}
+
+	> *:last-child {
+		margin-bottom: 0;
+	}
 }
 
 .logo-pageheader {
@@ -139,6 +147,10 @@ a[data-toggle="collapse"] {
 
 hr {
 	border-top-color: @panel-default-heading-bg;
+}
+
+.copyright .panel-default:last-child {
+	margin-bottom: 0;
 }
 
 #fixed-footer-handler {
