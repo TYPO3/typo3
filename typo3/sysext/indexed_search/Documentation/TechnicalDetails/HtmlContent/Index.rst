@@ -25,8 +25,8 @@ HTML content is weighted by the indexing engine in this order:
 In addition you can insert markers as HTML comments which define which
 part of the body-text to include or exclude in the indexing:
 
-The marker is :code:`<!--TYPO3SEARCH\_begin-->` or
-:code:`<!--TYPO3SEARCH\_end-->`.
+The marker is :code:`<!--TYPO3SEARCH_begin-->` or
+:code:`<!--TYPO3SEARCH_end-->`.
 
 Rules:
 
