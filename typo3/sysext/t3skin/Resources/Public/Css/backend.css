@@ -12186,6 +12186,9 @@ span.typo3-moduleHeader img {
 .input-group-addon {
   min-width: 2.5em;
 }
+label .icon img {
+  pointer-events: none;
+}
 .form-control {
   min-width: 120px;
 }
