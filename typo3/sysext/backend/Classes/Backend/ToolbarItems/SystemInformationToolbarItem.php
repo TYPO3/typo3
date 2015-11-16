@@ -150,7 +150,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = array(
             'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.phpversion', true),
             'value' => PHP_VERSION,
-            'icon' => '<span class="fa fa-code"></span>'
+            'icon' => '<span class="fa fa-code fa-fw"></span>'
         );
     }
 
@@ -164,7 +164,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = array(
             'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.database', true),
             'value' => $this->getDatabaseConnection()->getServerVersion(),
-            'icon' => '<span class="fa fa-database"></span>'
+            'icon' => '<span class="fa fa-database fa-fw"></span>'
         );
     }
 
@@ -180,7 +180,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext', true),
             'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
-            'icon' => '<span class="fa fa-tasks"></span>'
+            'icon' => '<span class="fa fa-tasks fa-fw"></span>'
         );
     }
 
@@ -197,7 +197,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = array(
             'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.composerMode', true),
             'value' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.enabled', true),
-            'icon' => '<span class="fa fa-music"></span>'
+            'icon' => '<span class="fa fa-music fa-fw"></span>'
         );
     }
 
@@ -224,7 +224,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             $this->systemInformation[] = array(
                 'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.gitrevision', true),
                 'value' => sprintf('%s [%s]', $revision, $branch),
-                'icon' => '<span class="fa fa-git"></span>'
+                'icon' => '<span class="fa fa-git fa-fw"></span>'
             );
         }
     }
@@ -250,7 +250,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = array(
             'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem', true),
             'value' => $kernelName . ' ' . php_uname('r'),
-            'icon' => '<span class="fa fa-' . htmlspecialchars($icon) . '"></span>'
+            'icon' => '<span class="fa fa-' . htmlspecialchars($icon) . ' fa-fw"></span>'
         );
     }
 
@@ -262,7 +262,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = array(
             'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.webserver', true),
             'value' => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
-            'icon' => '<span class="fa fa-server"></span>'
+            'icon' => '<span class="fa fa-server fa-fw"></span>'
         );
     }
 
