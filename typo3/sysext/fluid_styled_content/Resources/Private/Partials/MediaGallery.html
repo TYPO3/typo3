@@ -20,14 +20,14 @@
 							</f:if>
 
 							<f:switch expression="{column.media.type}">
-								<f:case default="TRUE">
-									<f:render section="imageType" arguments="{_all}" />
-								</f:case>
 								<f:case value="3">
 									<f:render section="audioType" arguments="{_all}" />
 								</f:case>
 								<f:case value="4">
 									<f:render section="videoType" arguments="{_all}" />
+								</f:case>
+								<f:case default="TRUE">
+									<f:render section="imageType" arguments="{_all}" />
 								</f:case>
 							 </f:switch>
 
