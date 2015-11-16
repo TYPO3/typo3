@@ -472,10 +472,12 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 		$(FormEngineValidation.rulesSelector).each(function() {
 			var $field = $(this);
-			var newValue = FormEngineValidation.validateField($field);
-			if (newValue.length && $field.val() !== newValue) {
-				$field.attr('value', newValue);
-				FormEngineValidation.setCaretPosition($field, 0);
+			if (!$field.closest('.t3js-flex-section-deleted').length) {
+				var newValue = FormEngineValidation.validateField($field);
+				if (newValue.length && $field.val() !== newValue) {
+					$field.attr('value', newValue);
+					FormEngineValidation.setCaretPosition($field, 0);
+				}
 			}
 		});
 	};

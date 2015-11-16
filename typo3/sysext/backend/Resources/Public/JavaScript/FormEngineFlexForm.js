@@ -94,6 +94,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 					if (window.confirm('Are you sure?')) {
 						$(this).closest(opts.sectionSelector).hide().addClass(opts.sectionDeletedClass);
 						me.setActionStatus();
+						TYPO3.FormEngine.Validation.validate();
 					}
 				});
 
