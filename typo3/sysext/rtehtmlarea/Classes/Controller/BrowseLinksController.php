@@ -180,13 +180,15 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->bparams = implode('|', $pArr);
 
         $this->contentLanguageService->init($this->contentTypo3Language);
-        $this->buttonConfig = isset($this->RTEProperties['default.']['buttons.']['link.'])
-            ? $this->RTEProperties['default.']['buttons.']['link.']
-            : [];
 
         $RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
         $RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-        $this->thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+        $this->RTEProperties = $RTEsetup['properties'];
+
+        $this->thisConfig = BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+        $this->buttonConfig = isset($this->thisConfig['buttons.']['link.'])
+            ? $this->thisConfig['buttons.']['link.']
+            : [];
     }
 
     /**
@@ -259,7 +261,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 'all' => []
             ];
             $titleReadOnly = $this->buttonConfig['properties.']['title.']['readOnly']
-                || $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'];
+                || $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
             if (is_array($this->RTEProperties['classesAnchor.'])) {
                 foreach ($this->RTEProperties['classesAnchor.'] as $label => $conf) {
                     if (in_array($conf['class'], $classesAnchorArray)) {
@@ -298,7 +300,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . $class . '"' . ($classStyle ? ' style="' . $classStyle . '"' : '') . '>' . $classLabel . '</option>';
                 }
             }
-            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties.']['class.']['required'] || $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['class.']['required'])) {
+            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties.']['class.']['required'] || $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['class.']['required'])) {
                 $selected = '';
                 if (!$this->linkAttributeValues['class'] && !$this->classesAnchorDefault[$this->displayedLinkHandlerId]) {
                     $selected = 'selected="selected"';
@@ -307,10 +309,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
         }
         // Default target
-        $this->defaultLinkTarget = $this->classesAnchorDefault[$this->currentLinkHandlerId] && $this->classesAnchorDefaultTarget[$this->currentLinkHandlerId]
-            ? $this->classesAnchorDefaultTarget[$this->currentLinkHandlerId]
-            : (isset($this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['target.']['default'])
-                ? $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['target.']['default']
+        $this->defaultLinkTarget = $this->classesAnchorDefault[$this->displayedLinkHandlerId] && $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
+            ? $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
+            : (isset($this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['target.']['default'])
+                ? $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['target.']['default']
                 : (isset($this->buttonConfig['properties.']['target.']['default'])
                     ? $this->buttonConfig['properties.']['target.']['default']
                     : ''));
@@ -365,8 +367,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
     {
         $allowedItems = parent::getAllowedItems();
 
-        $blindLinkOptions = isset($this->RTEProperties['default.']['blindLinkOptions'])
-            ? GeneralUtility::trimExplode(',', $this->RTEProperties['default.']['blindLinkOptions'], true)
+        $blindLinkOptions = isset($this->thisConfig['blindLinkOptions'])
+            ? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], true)
             : [];
         $allowedItems = array_diff($allowedItems, $blindLinkOptions);
 
@@ -386,8 +388,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
     {
         $allowedLinkAttributes = parent::getAllowedLinkAttributes();
 
-        $blindLinkFields = isset($this->RTEProperties['default.']['blindLinkFields'])
-            ? GeneralUtility::trimExplode(',', $this->RTEProperties['default.']['blindLinkFields'], true)
+        $blindLinkFields = isset($this->thisConfig['blindLinkFields'])
+            ? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], true)
             : [];
         $allowedLinkAttributes = array_diff($allowedLinkAttributes, $blindLinkFields);
 
@@ -489,10 +491,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         if ($this->linkAttributeValues['title']) {
             $title = $this->linkAttributeValues['title'];
         } else {
-            $title = !$this->classesAnchorDefault[$this->currentLinkHandlerId] ? '' : $this->classesAnchorDefaultTitle[$this->currentLinkHandlerId];
+            $title = !$this->classesAnchorDefault[$this->displayedLinkHandlerId] ? '' : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
         }
-        if (isset($this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'])) {
-            $readOnly = (bool)$this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'];
+        if (isset($this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'])) {
+            $readOnly = (bool)$this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
         } else {
             $readOnly = isset($this->buttonConfig['properties.']['title.']['readOnly'])
                 ? (bool)$this->buttonConfig['properties.']['title.']['readOnly']
@@ -502,11 +504,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
         if ($readOnly) {
             $currentClass = $this->linkAttributeFields['class'];
             if (!$currentClass) {
-                $currentClass = empty($this->classesAnchorDefault[$this->currentLinkHandlerId]) ? '' : $this->classesAnchorDefault[$this->currentLinkHandlerId];
+                $currentClass = empty($this->classesAnchorDefault[$this->displayedLinkHandlerId]) ? '' : $this->classesAnchorDefault[$this->displayedLinkHandlerId];
             }
             $title = $currentClass
                 ? $this->classesAnchorClassTitle[$currentClass]
-                : $this->classesAnchorDefaultTitle[$this->currentLinkHandlerId];
+                : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
         }
         return '
 				<form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
@@ -533,14 +535,14 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function getClassField()
     {
         $selectClass = '';
-        if ($this->classesAnchorJSOptions[$this->currentLinkHandlerId]) {
+        if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId]) {
             $selectClass = '
 				<form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
 							<td style="width: 96px;">' . $this->getLanguageService()->getLL('anchor_class', true) . '</td>
 							<td><select name="lclass" class="t3js-class-selector">
-								' . $this->classesAnchorJSOptions[$this->currentLinkHandlerId] . '
+								' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
 							</select></td>
 						</tr>
 					</table>
