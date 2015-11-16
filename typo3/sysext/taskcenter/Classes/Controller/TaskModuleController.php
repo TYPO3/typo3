@@ -532,6 +532,4 @@ class TaskModuleController extends BaseScriptClass
     {
         return $this->moduleTemplate;
     }
-
-
 }

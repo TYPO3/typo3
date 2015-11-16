@@ -58,7 +58,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $availableExtensions = NULL;
+    protected $availableExtensions = null;
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
@@ -127,7 +127,8 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Reset and reload the available extensions
      */
-    public function reloadAvailableExtensions() {
+    public function reloadAvailableExtensions()
+    {
         $this->availableExtensions = null;
         $this->packageManager->scanAvailablePackages();
         $this->getAvailableExtensions();

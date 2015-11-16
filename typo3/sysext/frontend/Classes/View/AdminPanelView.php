@@ -55,7 +55,7 @@ class AdminPanelView
      *
      * @var bool
      */
-    protected $extFeEditLoaded = FALSE;
+    protected $extFeEditLoaded = false;
 
     /**
      * Constructor

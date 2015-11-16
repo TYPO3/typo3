@@ -380,5 +380,4 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->addData($input));
         $this->subject->addData($input);
     }
-
 }

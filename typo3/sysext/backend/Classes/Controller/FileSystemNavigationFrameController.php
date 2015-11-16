@@ -31,7 +31,6 @@ use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
  */
 class FileSystemNavigationFrameController
 {
-
     /**
      * Content accumulates in this variable.
      *

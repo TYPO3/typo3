@@ -25,8 +25,8 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 /**
  * Extended controller for link browser
  */
-class LinkBrowserController extends AbstractLinkBrowserController {
-
+class LinkBrowserController extends AbstractLinkBrowserController
+{
     /**
      * Initialize $this->currentLinkParts
      *
@@ -161,5 +161,4 @@ class LinkBrowserController extends AbstractLinkBrowserController {
         }
         return (int)$pageId;
     }
-
 }

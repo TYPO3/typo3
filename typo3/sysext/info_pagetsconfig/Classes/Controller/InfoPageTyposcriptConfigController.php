@@ -156,7 +156,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						<!-- Edit fields: -->
 						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon;
                 $theOutput .= '</div>';
-
             } else {
                 // Defined global here!
                 $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);

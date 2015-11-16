@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  */
 class PageLayoutControllerTest extends UnitTestCase
 {
-
     /**
      * @test
      * @dataProvider pageIsNotLockedForEditorsReturnsCorrectValueDataProvider
@@ -61,5 +60,4 @@ class PageLayoutControllerTest extends UnitTestCase
             'user does not have permission' => [ false, 0, false, false],
         ];
     }
-
 }

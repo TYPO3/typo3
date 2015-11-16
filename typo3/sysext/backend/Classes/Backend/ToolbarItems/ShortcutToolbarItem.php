@@ -578,11 +578,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                     $resourceFactory = ResourceFactory::getInstance();
                     $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
                     $shortcutName = trim($shortcutNamePrepend . ' ' . $resource->getName());
-                } catch (ResourceDoesNotExistException $e) {}
+                } catch (ResourceDoesNotExistException $e) {
+                }
             } else {
                 // Lookup the title of this page and use it as default description
                 $pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
-                $page = FALSE;
+                $page = false;
                 if ($pageId) {
                     $page = BackendUtility::getRecord('pages', $pageId);
                 }

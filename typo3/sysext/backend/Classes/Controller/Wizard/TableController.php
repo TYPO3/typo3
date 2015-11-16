@@ -165,7 +165,8 @@ class TableController extends AbstractWizardController
                 . '<div>' . $this->tableWizard() . '</div>';
         } else {
             $this->content .= '<h2>' . $this->getLanguageService()->getLL('table_title', true) . '</h2>'
-                . '<div><span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span></div>';;
+                . '<div><span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', true) . '</span></div>';
+            ;
         }
         $this->content .= '</form>';
         // Setting up the buttons and markers for docHeader

@@ -85,7 +85,8 @@ abstract class AbstractLinkHandler
      * @param string[] $fieldDefinitions Array of link attribute field definitions
      * @return string[]
      */
-    public function modifyLinkAttributes(array $fieldDefinitions) {
+    public function modifyLinkAttributes(array $fieldDefinitions)
+    {
         return $fieldDefinitions;
     }
 

@@ -26,7 +26,6 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
  */
 abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
 {
-
     /**
      * @var string
      */

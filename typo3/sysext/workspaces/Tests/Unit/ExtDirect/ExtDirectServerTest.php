@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * @var \TYPO3\CMS\Workspaces\ExtDirect\ExtDirectServer
      */
@@ -49,7 +48,8 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Tear down.
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
         unset($this->subject);
         unset($this->fileReferenceProphecies);
@@ -58,7 +58,8 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function prepareFileReferenceDifferencesAreCorrectDataProvider() {
+    public function prepareFileReferenceDifferencesAreCorrectDataProvider()
+    {
         return array(
             // without thumbnails
             'unchanged wo/thumbnails' => array('1,2,3,4', '1,2,3,4', false, null),
@@ -123,7 +124,8 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @dataProvider prepareFileReferenceDifferencesAreCorrectDataProvider
      * @test
      */
-    public function prepareFileReferenceDifferencesAreCorrect($fileFileReferenceList, $versionFileReferenceList, $useThumbnails, array $expected = null) {
+    public function prepareFileReferenceDifferencesAreCorrect($fileFileReferenceList, $versionFileReferenceList, $useThumbnails, array $expected = null)
+    {
         $liveFileReferences = $this->getFileReferenceProphecies($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceProphecies($versionFileReferenceList);
 
@@ -141,7 +143,8 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param string $idList List of ids
      * @return FileReference[]|ObjectProphecy[]
      */
-    protected function getFileReferenceProphecies($idList) {
+    protected function getFileReferenceProphecies($idList)
+    {
         $fileReferenceProphecies = array();
         $ids = GeneralUtility::trimExplode(',', $idList, true);
 
@@ -156,7 +159,8 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param int $id
      * @return ObjectProphecy|FileReference
      */
-    protected function getFileReferenceProphecy($id) {
+    protected function getFileReferenceProphecy($id)
+    {
         if (isset($this->fileReferenceProphecies[$id])) {
             return $this->fileReferenceProphecies[$id];
         }
@@ -175,5 +179,4 @@ class ExtDirectServerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->fileReferenceProphecies[$id] = $fileReferenceProphecy->reveal();
         return $this->fileReferenceProphecies[$id];
     }
-
 }

@@ -35,7 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList
 {
-
     /**
      * If TRUE, users/groups are shown in the page info box.
      *
@@ -221,14 +220,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
-
     }
 
     /*****************************************
      *
      * Renderings
      *
-	 *****************************************/
+     *****************************************/
     /**
      * Adds the code of a single table
      *
@@ -840,7 +838,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * Generic listing of items
      *
-	 **********************************/
+     **********************************/
     /**
      * Creates a standard list of elements from a table.
      *
@@ -1043,7 +1041,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * Additional functions; Pages
      *
-	 **********************************/
+     **********************************/
     /**
      * Adds pages-rows to an array, selecting recursively in the page tree.
      *
@@ -1162,7 +1160,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * Additional functions; Content Elements
      *
-	 **********************************/
+     **********************************/
     /**
      * Draw header for a content element column:
      *
@@ -1375,7 +1373,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
         return '<div class="t3-page-ce-header ' . ($allowDragAndDrop ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
 					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
-					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' .$out . '</div>' : '') . '</div>
+					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' . $out . '</div>' : '') . '</div>
 				</div>
 				<div class="t3-page-ce-body">';
     }
@@ -1627,7 +1625,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         foreach ($uidList as $uid) {
             $uid = (int)$uid;
             $record = BackendUtility::getRecord($table, $uid, 'title');
-            $content .= '<br>' . $record['title'] . ' (' .$uid. ')';
+            $content .= '<br>' . $record['title'] . ' (' . $uid . ')';
         }
         return $content;
     }
@@ -1801,7 +1799,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             // If any languages are left, make selector:
             if (count($langSelItems) > 1) {
                 $url = BackendUtility::getModuleUrl('record_edit', array(
-                    'edit[pages_language_overlay]['. $id . ']' => 'new',
+                    'edit[pages_language_overlay][' . $id . ']' => 'new',
                     'overrideVals[pages_language_overlay][doktype]' => (int)$this->pageRecord['doktype'],
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ));
@@ -1846,7 +1844,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * Various helper functions
      *
-	 ********************************/
+     ********************************/
 
     /**
      * Initializes the clipboard for generating paste links
@@ -2050,7 +2048,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * External renderings
      *
-	 *****************************************/
+     *****************************************/
 
     /**
      * Creates a menu of the tables that can be listed by this function
@@ -2092,7 +2090,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     // ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
                     $title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true)
                         . ': ' . $c . ' ' . $this->getLanguageService()->getLL('records', true);
-                    $this->activeTables[$tName] = '<span title="' . $title. '">'
+                    $this->activeTables[$tName] = '<span title="' . $title . '">'
                         . $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
                         . '</span>'
                         . '&nbsp;' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true);

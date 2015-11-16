@@ -375,5 +375,4 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected['columnsToProcess'] = [ 'aField' ];
         $this->assertSame($expected, $this->subject->addData($input));
     }
-
 }

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  */
 
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
 
 /**

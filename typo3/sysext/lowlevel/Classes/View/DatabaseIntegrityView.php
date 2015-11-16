@@ -228,7 +228,7 @@ class DatabaseIntegrityView extends BaseScriptClass
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setSetVariables(['function','search','search_query_makeQuery']);
+            ->setSetVariables(['function', 'search', 'search_query_makeQuery']);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
         $this->getModuleMenu();
@@ -501,6 +501,4 @@ class DatabaseIntegrityView extends BaseScriptClass
     {
         return $this->moduleTemplate;
     }
-
-
 }

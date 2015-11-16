@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class InlineOverrideChildTca implements FormDataProviderInterface
 {
-
     /**
      * Inline parent TCA may override some TCA of children.
      *

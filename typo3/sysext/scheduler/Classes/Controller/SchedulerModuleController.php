@@ -986,13 +986,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $table[] =
                 '<thead><tr>'
                     . '<th><a href="#" id="checkall" title="' . $this->getLanguageService()->getLL('label.checkAll', true) . '" class="icon">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a></th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.id', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('task', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.type', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.frequency', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.parallel', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.lastExecution', true). '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.nextExecution', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.id', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('task', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.type', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.frequency', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.parallel', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.lastExecution', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.nextExecution', true) . '</th>'
                     . '<th></th>'
                 . '</tr></thead>';
 
@@ -1018,7 +1018,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $table[] = '<tr><td colspan="9">' . $groupText . '</td></tr>';
                 }
 
-                foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
+                foreach ($taskGroup['tasks'] as $schedulerRecord) {
+                    // Define action icons
                     $link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
                     $editAction = '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', true) . '" class="icon">' .
                         $this->moduleTemplate->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1659,5 +1660,4 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     {
         return $GLOBALS['TYPO3_DB'];
     }
-
 }

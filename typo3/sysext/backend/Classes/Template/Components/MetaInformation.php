@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
  */
 class MetaInformation
 {
-
     /**
      * The recordArray.
      * Typically this is a page record

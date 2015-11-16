@@ -264,12 +264,12 @@ class LanguageController extends ActionController
         /** @var Menu $menu */
         $menu = GeneralUtility::makeInstance(Menu::class);
         $menu->setIdentifier('_languageMenu');
-        $menu->setLabel($this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE));
+        $menu->setLabel($this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', true));
 
         /** @var MenuItem $languageListMenuItem */
         $languageListMenuItem = GeneralUtility::makeInstance(MenuItem::class);
         $action = 'listLanguages';
-        $isActive = $this->request->getControllerActionName() === $action ? TRUE : FALSE;
+        $isActive = $this->request->getControllerActionName() === $action ? true : false;
         $languageListMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.languages'));
         $uri = $uriBuilder->reset()->uriFor('listLanguages', array(), 'Language');
         $languageListMenuItem->setHref($uri)->setActive($isActive);
@@ -277,7 +277,7 @@ class LanguageController extends ActionController
         /** @var MenuItem $translationMenuItem */
         $translationMenuItem = GeneralUtility::makeInstance(MenuItem::class);
         $action = 'listTranslations';
-        $isActive = $this->request->getControllerActionName() === $action ? TRUE : FALSE;
+        $isActive = $this->request->getControllerActionName() === $action ? true : false;
         $translationMenuItem->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:header.translations'));
         $uri = $uriBuilder->reset()->uriFor('listTranslations', array(), 'Language');
         $translationMenuItem->setHref($uri)->setActive($isActive);

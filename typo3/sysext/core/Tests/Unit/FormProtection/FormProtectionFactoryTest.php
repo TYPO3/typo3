@@ -165,5 +165,4 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->assertFalse($flashMessage->isSessionMessage());
     }
-
 }

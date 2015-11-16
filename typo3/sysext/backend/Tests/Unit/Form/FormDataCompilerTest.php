@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
 /**
  * Test case
  */
-class FormDataComplierTest extends UnitTestCase
+class FormDataCompilerTest extends UnitTestCase
 {
     /**
      * @var FormDataCompiler

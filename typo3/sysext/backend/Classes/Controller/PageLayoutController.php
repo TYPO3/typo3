@@ -49,7 +49,6 @@ use TYPO3\CMS\Recordlist\RecordList;
  */
 class PageLayoutController
 {
-
     /**
      * Page Id for which to make the listing
      *
@@ -670,7 +669,6 @@ class PageLayoutController
             $this->makeButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
             // Create LanguageMenu
             $this->makeLanguageMenu();
-
         } else {
             $this->moduleTemplate->addJavaScriptCode(
                 'mainJsFunctions',
@@ -812,7 +810,7 @@ class PageLayoutController
                 }
                 $redirect = ($uidVal == 'new' ? BackendUtility::getModuleUrl(
                     $this->moduleName,
-                    ['id' => $this->id,'new_unique_uid' => $new_unique_uid,'returnUrl' => $this->returnUrl]
+                    ['id' => $this->id, 'new_unique_uid' => $new_unique_uid, 'returnUrl' => $this->returnUrl]
                 ) : $this->R_URI);
                 $panel .= '
                     <input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
@@ -1220,7 +1218,6 @@ class PageLayoutController
                         ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($historyButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }
-
             }
         }
     }

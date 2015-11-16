@@ -833,7 +833,8 @@ class TcaMigrationTest extends UnitTestCase
     /**
      * @return array
      */
-    public function migrateSetsShowIconTableIfMissingDataProvider() {
+    public function migrateSetsShowIconTableIfMissingDataProvider()
+    {
         return [
             'not-a-select-is-kept' => [
                 [
@@ -960,7 +961,8 @@ class TcaMigrationTest extends UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateSetsShowIconTableIfMissing(array $givenConfig, array $expectedConfig) {
+    public function migrateSetsShowIconTableIfMissing(array $givenConfig, array $expectedConfig)
+    {
         $input = [
             'aTable' => [
                 'columns' => [

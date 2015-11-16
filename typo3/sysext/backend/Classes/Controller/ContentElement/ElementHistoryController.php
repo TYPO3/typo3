@@ -179,6 +179,4 @@ class ElementHistoryController extends AbstractModule
     {
         return $GLOBALS['BE_USER'];
     }
-
-
 }

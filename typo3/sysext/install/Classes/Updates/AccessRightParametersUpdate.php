@@ -88,5 +88,4 @@ class AccessRightParametersUpdate extends AbstractUpdate
         $this->markWizardAsDone();
         return true;
     }
-
 }

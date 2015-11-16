@@ -1244,7 +1244,7 @@ class EditDocumentController extends AbstractModule
                     );
                 }
                 if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
-                    || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])
+                    || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
                 ) {
                     $saveAndOpenButton = $buttonBar->makeInputButton()
                         ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
@@ -1617,7 +1617,6 @@ class EditDocumentController extends AbstractModule
                                 $menuItem->setActive(true);
                             }
                             $languageMenu->addMenuItem($menuItem);
-
                         }
                     }
                     $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);

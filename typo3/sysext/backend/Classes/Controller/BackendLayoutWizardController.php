@@ -94,8 +94,8 @@ class BackendLayoutWizardController extends AbstractModule
             'moduleUrl',
             BackendUtility::getModuleUrl(
                 'help_CshmanualCshmanual',
-                array (
-                    'tx_cshmanual_help_cshmanualcshmanual' => array (
+                array(
+                    'tx_cshmanual_help_cshmanualcshmanual' => array(
                         'controller' => 'Help',
                         'action' => 'detail'
                     )

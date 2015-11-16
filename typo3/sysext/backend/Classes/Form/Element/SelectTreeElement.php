@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SelectTreeElement extends AbstractFormElement
 {
-
     /**
      * Default height of the tree in pixels.
      *

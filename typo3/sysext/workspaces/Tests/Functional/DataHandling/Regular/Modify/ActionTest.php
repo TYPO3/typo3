@@ -462,5 +462,4 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 //        $this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
 //            ->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
     }
-
 }

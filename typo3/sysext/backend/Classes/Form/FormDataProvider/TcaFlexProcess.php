@@ -436,7 +436,6 @@ class TcaFlexProcess implements FormDataProviderInterface
                     } else {
                         $tcaNewColumns[$dataStructureSheetElementName] = $dataStructureSheetElementDefinition;
                     }
-
                 } // End of single element handling
             }
 

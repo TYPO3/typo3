@@ -405,7 +405,6 @@ class FormInlineAjaxController
                     }
                     $jsonArray['scriptCall'][] = 'inline.fadeAndRemove(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $transOrigPointerField . '_div') . ');';
                 }
-
             }
             // Tell JS to add new HTML of one or multiple (localize all) records to DOM
             if (!empty($jsonArray['data'])) {
@@ -768,7 +767,7 @@ class FormInlineAjaxController
 
             if (!isset($parts[2]) || strpos($parts[2], ':') === false) {
                 throw new \UnexpectedValueException(
-                    'DOM Object ID' . $domObjectId. 'does not contain required information '
+                    'DOM Object ID' . $domObjectId . 'does not contain required information '
                     . 'to extract inline field configuration.',
                     1446996136
                 );

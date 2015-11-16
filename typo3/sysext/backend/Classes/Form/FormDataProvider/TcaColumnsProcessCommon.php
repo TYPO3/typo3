@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TcaColumnsProcessCommon implements FormDataProviderInterface
 {
-
     /**
      * Determine which common fields are in use and add those to the list of
      * columns that must be processed by the next data providers. Common fields

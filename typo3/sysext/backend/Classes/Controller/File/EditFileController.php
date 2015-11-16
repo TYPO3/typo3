@@ -187,7 +187,6 @@ class EditFileController extends AbstractModule
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
 				</div>
 				<br />';
-
         } catch (\Exception $e) {
             $code .= sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'),
@@ -289,7 +288,6 @@ class EditFileController extends AbstractModule
             ->setModuleName('file_edit')
             ->setGetVariables(['target']);
         $buttonBar->addButton($shortButton);
-
     }
 
     /**

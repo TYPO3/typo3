@@ -133,5 +133,4 @@ class FrontendFormProtection extends AbstractFormProtection
     {
         return !empty($this->frontendUser->user['uid']);
     }
-
 }

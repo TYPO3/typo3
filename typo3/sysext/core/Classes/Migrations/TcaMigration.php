@@ -575,7 +575,8 @@ class TcaMigration
      * @param array $tca
      * @return array Migrated TCA
      */
-    public function migrateSelectFieldIconTable(array $tca) {
+    public function migrateSelectFieldIconTable(array $tca)
+    {
         foreach ($tca as $table => &$tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
                 continue;

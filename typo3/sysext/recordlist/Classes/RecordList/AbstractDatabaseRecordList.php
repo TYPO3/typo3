@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class AbstractDatabaseRecordList extends AbstractRecordList
 {
-
     /**
      * Specify a list of tables which are the only ones allowed to be displayed.
      *
@@ -590,7 +589,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * Various helper functions
      *
-	 ******************************/
+     ******************************/
     /**
      * Setting the field names to display in extended list.
      * Sets the internal variable $this->setFields
@@ -734,8 +733,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                             } elseif ($fieldConfig['type'] == 'text' ||
                                 $fieldConfig['type'] == 'flex' ||
                                 ($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
-                                    $condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
-                                    $whereParts[] = $condition;
+                                $condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
+                                $whereParts[] = $condition;
                             }
                         }
                     }

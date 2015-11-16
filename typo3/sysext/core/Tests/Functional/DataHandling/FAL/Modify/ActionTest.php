@@ -247,5 +247,4 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
             ->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
     }
-
 }

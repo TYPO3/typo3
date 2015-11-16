@@ -625,7 +625,8 @@ abstract class AbstractLinkBrowserController
      *
      * @return array
      */
-    public function getConfiguration() {
+    public function getConfiguration()
+    {
         return [];
     }
 

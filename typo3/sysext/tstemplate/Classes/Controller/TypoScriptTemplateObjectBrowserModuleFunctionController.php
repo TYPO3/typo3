@@ -359,7 +359,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out .= '	<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
                 $out .= '</div>';
                 $theOutput .= '<div style="padding-top: 20px;"></div>';
-                $theOutput .= '<h3>'. $lang->getLL('addProperty', true) . '</h3>';
+                $theOutput .= '<h3>' . $lang->getLL('addProperty', true) . '</h3>';
                 $theOutput .= $out;
                 // clear
                 $out = '<div class="form-group">';

@@ -1191,5 +1191,4 @@ class TcaFlexProcessTest extends UnitTestCase
 
         $this->subject->addData($input);
     }
-
 }

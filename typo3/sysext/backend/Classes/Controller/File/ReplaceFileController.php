@@ -31,7 +31,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class ReplaceFileController extends AbstractModule
 {
-
     /**
      * Document template object
      *

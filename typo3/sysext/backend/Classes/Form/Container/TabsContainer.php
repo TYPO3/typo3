@@ -104,5 +104,4 @@ class TabsContainer extends AbstractContainer
     {
         return $GLOBALS['LANG'];
     }
-
 }

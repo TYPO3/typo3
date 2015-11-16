@@ -42,7 +42,6 @@ use TYPO3\CMS\Filelist\FileList;
  */
 class FileListController extends ActionController
 {
-
     /**
      * Module configuration
      *

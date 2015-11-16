@@ -24,13 +24,11 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class IndexerTest extends UnitTestCase
 {
-
     /**
      * @test
      */
     public function isFileTypeSupportedByExtractorReturnsFalesForFileTypeTextAndExtractorLimitedToFileTypeImage()
     {
-
         $mockStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $mockFile = $this->getMock(File::class, [], [], '', false);
         $mockFile->expects($this->any())->method('getType')->will($this->returnValue(
@@ -58,7 +56,6 @@ class IndexerTest extends UnitTestCase
      */
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeImageAndExtractorLimitedToFileTypeImage()
     {
-
         $mockStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $mockFile = $this->getMock(File::class, [], [], '', false);
         $mockFile->expects($this->any())->method('getType')->will($this->returnValue(
@@ -86,7 +83,6 @@ class IndexerTest extends UnitTestCase
      */
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeTextAndExtractorHasNoFileTypeLimitation()
     {
-
         $mockStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, [], [], '', false);
         $mockFile = $this->getMock(File::class, [], [], '', false);
         $mockFile->expects($this->any())->method('getType')->will($this->returnValue(

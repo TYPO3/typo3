@@ -20,8 +20,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 /**
  * Abstract action controller.
  */
-class AbstractModuleController extends AbstractController {
-
+class AbstractModuleController extends AbstractController
+{
     /**
      * BackendTemplateContainer
      *

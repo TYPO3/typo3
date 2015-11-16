@@ -26,7 +26,6 @@ use TYPO3\CMS\Reports\ReportInterface;
  */
 class ReportController extends ActionController
 {
-
     /**
      * @var BackendTemplateView
      */

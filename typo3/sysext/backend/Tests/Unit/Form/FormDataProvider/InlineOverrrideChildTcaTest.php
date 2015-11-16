@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class InlineOverrrideChildTcaTest extends UnitTestCase
 {
-
     /**
      * @var InlineOverrideChildTca
      */

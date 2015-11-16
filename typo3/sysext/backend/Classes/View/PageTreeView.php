@@ -338,5 +338,4 @@ class PageTreeView extends BrowseTreeView
         }
         return $this->printTree($treeArr);
     }
-
 }

@@ -26,7 +26,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RenameFileController extends AbstractModule
 {
-
     /**
      * Name of the filemount
      *
@@ -125,7 +124,6 @@ class RenameFileController extends AbstractModule
             'RenameFileInlineJavaScript',
             'function backToList() {top.goToModule("file_FilelistList");}'
         );
-
     }
 
     /**

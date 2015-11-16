@@ -376,5 +376,4 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         // Switch back to draft workspace
         $this->backendUser->workspace = static::VALUE_WorkspaceId;
     }
-
 }

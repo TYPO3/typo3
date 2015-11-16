@@ -312,7 +312,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * @param string[] $fieldDefinitions Array of link attribute field definitions
      * @return string[]
      */
-    public function modifyLinkAttributes(array $fieldDefinitions) {
+    public function modifyLinkAttributes(array $fieldDefinitions)
+    {
         $configuration = $this->linkBrowser->getConfiguration();
         if (!empty($configuration['pageIdSelector.']['enabled'])) {
             $fieldDefinitions['pageIdSelector'] = '

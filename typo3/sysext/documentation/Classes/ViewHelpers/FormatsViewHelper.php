@@ -129,5 +129,4 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
         }
         return $iconHtml;
     }
-
 }
