@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Generate a page-tree, non-browsable.
@@ -125,16 +124,23 @@ class PageTreeView extends AbstractTreeView
      */
     public function getTitleStr($row, $titleLen = 30)
     {
-        /** @var LanguageService $lang */
-        $lang = $GLOBALS['LANG'];
-        if ($this->ext_showNavTitle && trim($row['nav_title']) !== '') {
-            $title = '<span title="' . $lang->sL('LLL:EXT:lang/locallang_tca.xlf:title', true) . ' ' . htmlspecialchars(trim($row['title'])) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</span>';
+        $lang = $this->getLanguageService();
+        if ($this->ext_showNavTitle && isset($row['nav_title']) && trim($row['nav_title']) !== '') {
+            $title = '<span title="' . $lang->sL('LLL:EXT:lang/locallang_tca.xlf:title', true) . ' '
+                     . htmlspecialchars(trim($row['title'])) . '">'
+                     . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen))
+                     . '</span>';
         } else {
             $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
-            if (trim($row['nav_title']) !== '') {
-                $title = '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title', true) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
+            if (isset($row['nav_title']) && trim($row['nav_title']) !== '') {
+                $title = '<span title="'
+                         . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title', true)
+                         . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title
+                         . '</span>';
             }
-            $title = trim($row['title']) === '' ? '<em>[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', true) . ']</em>' : $title;
+            $title = trim($row['title']) === ''
+                ? '<em>[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', true) . ']</em>'
+                : $title;
         }
         return $title;
     }

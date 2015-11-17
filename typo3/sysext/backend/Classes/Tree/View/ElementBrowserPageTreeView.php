@@ -36,11 +36,6 @@ class ElementBrowserPageTreeView extends BrowseTreeView
     /**
      * @var bool
      */
-    public $ext_showNavTitle = false;
-
-    /**
-     * @var bool
-     */
     public $ext_pArrPages = true;
 
     /**

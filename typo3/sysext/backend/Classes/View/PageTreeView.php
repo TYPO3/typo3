@@ -31,16 +31,6 @@ class PageTreeView extends BrowseTreeView
     public $ext_showPageId = false;
 
     /**
-     * @var bool
-     */
-    public $ext_showNavTitle = false;
-
-    /**
-     * @var string
-     */
-    public $ext_IconMode;
-
-    /**
      * @var string
      */
     public $ext_separateNotinmenuPages;
