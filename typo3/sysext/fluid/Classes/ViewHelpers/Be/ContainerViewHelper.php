@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -61,11 +62,12 @@ class ContainerViewHelper extends AbstractBackendViewHelper
      * @param array $includeJsFiles List of custom JavaScript file to be loaded
      * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
      * @param array $includeRequireJsModules List of RequireJS modules to be loaded
+     * @param string $jQueryNamespace Store the jQuery object in a specific namespace
      * @return string
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public function render($pageTitle = '', $enableClickMenu = true, $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null)
+    public function render($pageTitle = '', $enableClickMenu = true, $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null, $jQueryNamespace = null)
     {
         $pageRenderer = $this->getPageRenderer();
         $doc = $this->getDocInstance();
@@ -82,7 +84,8 @@ class ContainerViewHelper extends AbstractBackendViewHelper
             }
         }
         if ($loadJQuery) {
-            $pageRenderer->loadJquery();
+            $jQueryNamespace = $jQueryNamespace ?: PageRenderer::JQUERY_NAMESPACE_DEFAULT;
+            $pageRenderer->loadJquery(null, null, $jQueryNamespace);
         }
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {

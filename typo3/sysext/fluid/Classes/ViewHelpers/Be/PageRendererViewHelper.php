@@ -60,9 +60,10 @@ class PageRendererViewHelper extends AbstractViewHelper
      * @param array $includeJsFiles List of custom JavaScript file to be loaded
      * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
      * @param array $includeRequireJsModules List of RequireJS modules to be loaded
+     * @param string $jQueryNamespace Store the jQuery object in a specific namespace
      * @return void
      */
-    public function render($pageTitle = '', $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null)
+    public function render($pageTitle = '', $loadExtJs = false, $loadExtJsTheme = true, $enableExtJsDebug = false, $loadJQuery = false, $includeCssFiles = null, $includeJsFiles = null, $addJsInlineLabels = null, $includeRequireJsModules = null, $jQueryNamespace = null)
     {
         if ($pageTitle) {
             $this->pageRenderer->setTitle($pageTitle);
@@ -74,7 +75,8 @@ class PageRendererViewHelper extends AbstractViewHelper
             }
         }
         if ($loadJQuery) {
-            $this->pageRenderer->loadJquery();
+            $jQueryNamespace = $jQueryNamespace ?: PageRenderer::JQUERY_NAMESPACE_DEFAULT;
+            $this->pageRenderer->loadJquery(null, null, $jQueryNamespace);
         }
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
