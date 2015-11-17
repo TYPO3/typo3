@@ -1123,6 +1123,12 @@ class TemplateService
         // Setting default configuration:
         $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
         for ($a = 0; $a <= $this->outermostRootlineIndexWithTemplate; $a++) {
+            if (trim($this->absoluteRootLine[$a]['tsconfig_includes'])) {
+                $includeTsConfigFileList = GeneralUtility::trimExplode(',',
+                    $this->absoluteRootLine[$a]['tsconfig_includes'], true);
+
+                $TSdataArray = $this->mergeConstantsFromIncludedTsConfigFiles($includeTsConfigFileList, $TSdataArray);
+            }
             $TSdataArray[] = $this->absoluteRootLine[$a]['TSconfig'];
         }
         // Parsing the user TS (or getting from cache)
@@ -1134,7 +1140,40 @@ class TemplateService
         if (is_array($parseObj->setup['TSFE.']['constants.'])) {
             ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);
         }
+
         return $constArray;
+    }
+
+    /**
+     * Reads TSconfig defined in external files and appends it to the given TSconfig array (in this case only constants)
+     *
+     * @param array $filesToInclude The files to read constants from
+     * @param array $TSdataArray The TSconfig array the constants should be appended to
+     * @return array The TSconfig with the included constants appended
+     */
+    protected function mergeConstantsFromIncludedTsConfigFiles($filesToInclude, $TSdataArray)
+    {
+        foreach ($filesToInclude as $key => $file) {
+            if (!StringUtility::beginsWith($file, 'EXT:')) {
+                continue;
+            }
+
+            list($extensionKey, $filePath) = explode('/', substr($file, 4), 2);
+
+            if ((string)$extensionKey === '' || !ExtensionManagementUtility::isLoaded($extensionKey)) {
+                continue;
+            }
+            if ((string)$filePath == '') {
+                continue;
+            }
+
+            $tsConfigFile = ExtensionManagementUtility::extPath($extensionKey) . $filePath;
+            if (file_exists($tsConfigFile)) {
+                $TSdataArray[] = GeneralUtility::getUrl($tsConfigFile);
+            }
+        }
+
+        return $TSdataArray;
     }
 
     /**

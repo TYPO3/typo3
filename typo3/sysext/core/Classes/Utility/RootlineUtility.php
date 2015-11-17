@@ -84,6 +84,7 @@ class RootlineUtility
         'extendToSubpages',
         'doktype',
         'TSconfig',
+        'tsconfig_includes',
         'is_siteroot',
         'mount_pid',
         'mount_pid_ol',

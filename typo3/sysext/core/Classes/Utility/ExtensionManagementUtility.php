@@ -1476,20 +1476,28 @@ tt_content.' . $key . $suffix . ' {
 
     /**
      * Call this method to add an entry in the pageTSconfig list found in pages
-     * FOR USE in ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
+     * FOR USE in files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
      *
      * @param string $extKey The extension key
-     * @param string $file The path and title where the TSconfig file is located
+     * @param string $filePath The path where the TSconfig file is located
      * @param string $title The title in the selector box
      * @return void
      */
-    public static function registerPageTSConfigFile($extKey, $file, $title)
+    public static function registerPageTSConfigFile($extKey, $filePath, $title)
     {
-        if ($extKey && $file && is_array($GLOBALS['TCA']['pages']['columns'])) {
-            $value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $file);
-            $itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
-            $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
+        if (!$extKey) {
+            throw new \InvalidArgumentException('No extension key given.', 1447789490);
         }
+        if (!$filePath) {
+            throw new \InvalidArgumentException('No file path given.', 1447789491);
+        }
+        if (!isset($GLOBALS['TCA']['pages']['columns']) || !is_array($GLOBALS['TCA']['pages']['columns'])) {
+            throw new \InvalidArgumentException('No TCA definition for table "pages".', 1447789492);
+        }
+
+        $value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $filePath);
+        $itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
+        $GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
     }
 
     /**
