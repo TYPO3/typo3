@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * </output>
  *
  * <code title="Specify cObject data & current value">
- * <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" current="{article.title}" />
+ * <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" currentValueKey="title" />
  * </code>
  * <output>
  * rendered lib.customHeader. data and current value will be available in TypoScript
