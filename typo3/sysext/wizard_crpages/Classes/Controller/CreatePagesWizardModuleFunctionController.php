@@ -123,7 +123,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                         $lines[] = '<span class="text-nowrap" title="' . BackendUtility::titleAttribForPages($record, '', false) . '">' . $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render() . htmlspecialchars(GeneralUtility::fixed_lgd_cs($record['title'], $this->getBackendUser()->uc['titleLen'])) . '</span>';
                     }
                 }
-                $theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);
+                $theCode .= '<div class="form-group"><h4>' . $this->getLanguageService()->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines) . '</div>';
             } else {
                 // Display create form
                 $this->typeSelectHtml = $this->getTypeSelectHtml();
