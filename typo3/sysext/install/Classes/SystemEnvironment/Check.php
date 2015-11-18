@@ -222,6 +222,7 @@ class Check
         } else {
             $status = new Status\OkStatus();
             $status->setTitle('Maximum post upload size correlates with maximum upload file size in PHP');
+            $status->setMessage('The maximum size for file uploads is actually set to ' . ini_get('post_max_size'));
         }
         return $status;
     }
