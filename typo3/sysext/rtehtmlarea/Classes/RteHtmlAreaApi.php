@@ -320,7 +320,7 @@ abstract class RteHtmlAreaApi
                 throw new \RuntimeException($failure, 1294585668);
             }
         }
-        if (isset($GLOBALS['TSFE'])) {
+        if ($this->isFrontend() || $this->isFrontendEditActive()) {
             $fileName = $relativeFilename;
         } else {
             $fileName = '../' . $relativeFilename;
