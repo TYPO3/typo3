@@ -48,7 +48,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 
 	/**
 	 * calls TYPO3 to clear a cache, then changes the topbar icon
-	 * to a spinner. Once done, restores the original topbar icon
+	 * to a spinner. Restores the original topbar icon when the request completed.
 	 *
 	 * @param {String} ajaxUrl the URL to load
 	 */
@@ -67,7 +67,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 			url: ajaxUrl,
 			type: 'post',
 			cache: false,
-			success: function() {
+			complete: function() {
 				$(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
 			}
 		});
