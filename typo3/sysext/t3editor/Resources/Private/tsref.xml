@@ -340,7 +340,7 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="disableCharsetHeader" type="boolean">
-			<description><![CDATA[By default a header "content-type:text/html; charset..." is sent. This option will disable that.]]></description>
+			<description><![CDATA[By default a HTTP header "content-type:text/html; charset..." is sent. This option will disable that.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
