@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -3730,24 +3729,30 @@ class ContentObjectRenderer
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for offsetWrap.
      * @return string The processed input value
+     * @deprecated since CMS 7, will be removed with CMS 8 without replacement
      */
     public function stdWrap_offsetWrap($content = '', $conf = array())
     {
-        $controlTable = GeneralUtility::makeInstance(OffsetTableContentObject::class);
-        if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
-            $controlTable->tableParams = isset($conf['offsetWrap.']['tableParams.'])
-                ? $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.'])
-                : $conf['offsetWrap.']['tableParams'];
+        GeneralUtility::logDeprecatedFunction();
+
+        if (ExtensionManagementUtility::isLoaded('compatibility6')) {
+            $controlTable = GeneralUtility::makeInstance(TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject::class);
+            if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
+                $controlTable->tableParams = isset($conf['offsetWrap.']['tableParams.'])
+                    ? $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.'])
+                    : $conf['offsetWrap.']['tableParams'];
+            }
+            if ($conf['offsetWrap.']['tdParams'] || $conf['offsetWrap.']['tdParams.']) {
+                $controlTable->tdParams = ' ' . (isset($conf['offsetWrap.']['tdParams.'])
+                        ? $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.'])
+                        : $conf['offsetWrap.']['tdParams']);
+            }
+            $content = $controlTable->start($content, $conf['offsetWrap']);
+            if ($conf['offsetWrap.']['stdWrap.']) {
+                $content = $this->stdWrap($content, $conf['offsetWrap.']['stdWrap.']);
+            }
         }
-        if ($conf['offsetWrap.']['tdParams'] || $conf['offsetWrap.']['tdParams.']) {
-            $controlTable->tdParams = ' ' . (isset($conf['offsetWrap.']['tdParams.'])
-                ? $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.'])
-                : $conf['offsetWrap.']['tdParams']);
-        }
-        $content = $controlTable->start($content, $conf['offsetWrap']);
-        if ($conf['offsetWrap.']['stdWrap.']) {
-            $content = $this->stdWrap($content, $conf['offsetWrap.']['stdWrap.']);
-        }
+
         return $content;
     }
 
