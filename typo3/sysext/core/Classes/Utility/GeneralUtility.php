@@ -5228,7 +5228,7 @@ Connection: close
         if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
             return;
         }
-        $trail = debug_backtrace();
+        $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         if ($trail[1]['type']) {
             $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
         } else {

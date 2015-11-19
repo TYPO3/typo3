@@ -1859,19 +1859,13 @@ class DatabaseConnection
         if ($res !== false) {
             return true;
         }
-        $msg = 'Invalid database result detected';
-        $trace = debug_backtrace();
+        $trace = debug_backtrace(0);
         array_shift($trace);
-        $cnt = count($trace);
-        for ($i = 0; $i < $cnt; $i++) {
-            // Complete objects are too large for the log
-            if (isset($trace['object'])) {
-                unset($trace['object']);
-            }
-        }
-        $msg .= ': function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2)) . ' in line ' . $trace[0]['line'];
+        $msg = 'Invalid database result detected: function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->'
+            . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2))
+            . ' in line ' . $trace[0]['line'] . '.';
         GeneralUtility::sysLog(
-            $msg . '. Use a devLog extension to get more details.',
+            $msg . ' Use a devLog extension to get more details.',
             'core',
             GeneralUtility::SYSLOG_SEVERITY_ERROR
         );
@@ -1884,7 +1878,7 @@ class DatabaseConnection
             if ($this->debug_lastBuiltQuery) {
                 $debugLogData = array('SQL Query' => $this->debug_lastBuiltQuery) + $debugLogData;
             }
-            GeneralUtility::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
+            GeneralUtility::devLog($msg, 'Core/t3lib_db', 3, $debugLogData);
         }
         return false;
     }

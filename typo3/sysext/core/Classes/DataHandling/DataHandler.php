@@ -8024,7 +8024,7 @@ class DataHandler
     protected function getOuterMostInstance()
     {
         if (!isset($this->outerMostInstance)) {
-            $stack = array_reverse(debug_backtrace());
+            $stack = array_reverse(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS));
             foreach ($stack as $stackItem) {
                 if (isset($stackItem['object']) && $stackItem['object'] instanceof DataHandler) {
                     $this->outerMostInstance = $stackItem['object'];

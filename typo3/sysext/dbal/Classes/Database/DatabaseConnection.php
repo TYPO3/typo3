@@ -3889,10 +3889,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                 }
             }
             if ($this->conf['debugOptions']['backtrace']) {
-                $backtrace = debug_backtrace();
-                unset($backtrace[0]);
-                // skip this very method :)
-                $data['backtrace'] = array_slice($backtrace, 0, $this->conf['debugOptions']['backtrace']);
+                $backtrace = debug_backtrace(0);
+                $data['backtrace'] = array_slice($backtrace, 1, $this->conf['debugOptions']['backtrace']);
             }
             switch ($function) {
                 case 'exec_INSERTquery':

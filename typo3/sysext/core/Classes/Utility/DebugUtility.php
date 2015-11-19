@@ -132,7 +132,7 @@ class DebugUtility
      */
     public static function debugTrail()
     {
-        $trail = debug_backtrace();
+        $trail = debug_backtrace(0);
         $trail = array_reverse($trail);
         array_pop($trail);
         $path = array();

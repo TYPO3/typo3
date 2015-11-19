@@ -4376,7 +4376,7 @@ class TypoScriptFrontendController
         if ($reason !== '') {
             $warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
         } else {
-            $trace = debug_backtrace();
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
             $PATH_site_real = dirname(realpath(PATH_site . 'typo3')) . '/';
             $file = $trace[0]['file'];
