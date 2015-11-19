@@ -571,7 +571,7 @@ define([
 			$me.attr('action', '#');
 			$me.submit(function() {
 				// Force update on click.
-				ExtensionManager.Update.updateFromTer(updateURL, 1);
+				ExtensionManager.Update.updateFromTer(updateURL, true);
 
 				// Prevent normal submit action.
 				return false;
@@ -579,17 +579,17 @@ define([
 
 			// This might give problems when there are more "update"-buttons,
 			// each one would trigger a TER-ExtensionManager.Update.
-			ExtensionManager.Update.updateFromTer(updateURL, 0);
+			ExtensionManager.Update.updateFromTer(updateURL, false);
 		});
 	};
 
 	/**
 	 *
 	 * @param {String} url
-	 * @param {Number} forceUpdate
+	 * @param {Boolean} forceUpdate
 	 */
 	ExtensionManager.Update.updateFromTer = function(url, forceUpdate) {
-		if (forceUpdate == 1) {
+		if (forceUpdate) {
 			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
 		}
 
@@ -603,6 +603,8 @@ define([
 		$(ExtensionManager.Update.identifier.splashscreen).addClass('is-shown');
 		$(ExtensionManager.Update.identifier.terTableDataTableWrapper).addClass('is-loading');
 		$(ExtensionManager.Update.identifier.pagination).addClass('is-loading');
+
+		var reload = false;
 
 		$.ajax({
 			url: url,
@@ -626,14 +628,9 @@ define([
 				);
 
 				if (data.updated) {
-					$.ajax({
-						url: window.location.href + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bformat%5D=json',
-						dataType: 'json',
-						success: function(data) {
-							$(ExtensionManager.Update.identifier.terTableWrapper).html(data);
-							ExtensionManager.Update.transformPaginatorToAjax();
-						}
-					});
+					// Reload page
+					reload = true;
+					window.location.replace(window.location.href);
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -649,16 +646,18 @@ define([
 			complete: function() {
 				NProgress.done();
 
-				// Hide loaders
-				$(ExtensionManager.Update.identifier.splashscreen).removeClass('is-shown');
-				$(ExtensionManager.Update.identifier.terTableDataTableWrapper).removeClass('is-loading');
-				$(ExtensionManager.Update.identifier.pagination).removeClass('is-loading');
+				if (!reload) {
+					// Hide loaders
+					$(ExtensionManager.Update.identifier.splashscreen).removeClass('is-shown');
+					$(ExtensionManager.Update.identifier.terTableDataTableWrapper).removeClass('is-loading');
+					$(ExtensionManager.Update.identifier.pagination).removeClass('is-loading');
 
-				// Show triggers for TER-update
-				$(ExtensionManager.Update.identifier.terUpdateAction).removeClass('is-hidden');
+					// Show triggers for TER-update
+					$(ExtensionManager.Update.identifier.terUpdateAction).removeClass('is-hidden');
 
-				// Show extension table
-				$(ExtensionManager.Update.identifier.extensionTable).show();
+					// Show extension table
+					$(ExtensionManager.Update.identifier.extensionTable).show();
+				}
 			}
 		});
 	};
