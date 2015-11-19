@@ -47,13 +47,14 @@ class SpacelessViewHelper extends AbstractViewHelper implements CompilableInterf
      */
     public function render()
     {
-        return static::renderStatic($this->arguments, $this->renderChildrenClosure, $this->renderingContext);
+        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
      * @param array $arguments
      * @param \Closure $childClosure
      * @param RenderingContextInterface $renderingContext
+     * @return string
      */
     public static function renderStatic(array $arguments, \Closure $childClosure, RenderingContextInterface $renderingContext)
     {
