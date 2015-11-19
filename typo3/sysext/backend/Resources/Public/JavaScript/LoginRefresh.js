@@ -258,7 +258,9 @@ define(['jquery', 'bootstrap'], function($) {
 	 */
 	LoginRefresh.showLoginPopup = function() {
 		var vHWin = window.open(LoginRefresh.loginFramesetUrl, 'relogin_' + TYPO3.configuration.uniqueID, 'height=450,width=700,status=0,menubar=0,location=1');
-		vHWin.focus();
+		if (vHWin) {
+			vHWin.focus();
+		}
 	};
 
 	/**
