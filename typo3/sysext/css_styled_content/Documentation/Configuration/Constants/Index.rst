@@ -1073,7 +1073,7 @@ videoPlayer
          configure the path to the video player
 
    Default
-         typo3/contrib/flashmedia/flvplayer.swf
+         EXT:mediace/Resources/Contrib/flashmedia/flvplayer.swf
 
 
 
@@ -1136,7 +1136,7 @@ audioPlayer
          configure the path to the audio player
 
    Default
-         typo3/contrib/flashmedia/player.swf
+         EXT:mediace/Resources/Contrib/flashmedia/player.swf
 
 
 
