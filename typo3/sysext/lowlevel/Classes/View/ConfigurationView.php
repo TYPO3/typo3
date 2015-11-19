@@ -50,6 +50,27 @@ class ConfigurationView extends BaseScriptClass
     protected $moduleTemplate;
 
     /**
+     * Blind configurations which should not be visible
+     *
+     * @var array
+     */
+    protected $blindedConfigurationOptions = [
+        'TYPO3_CONF_VARS' => [
+            'DB' => [
+                'database' => '******',
+                'host' => '******',
+                'password' => '******',
+                'port' => '******',
+                'socket' => '******',
+                'username' => '******'
+            ],
+            'SYS' => [
+                'encryptionKey' => '******'
+            ]
+        ]
+    ];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -175,7 +196,7 @@ class ConfigurationView extends BaseScriptClass
         // Update node:
         $update = 0;
         $node = GeneralUtility::_GET('node');
-        // If any plus-signs were clicked, it's registred.
+        // If any plus-signs were clicked, it's registered.
         if (is_array($node)) {
             $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]);
             $update = 1;
@@ -193,9 +214,11 @@ class ConfigurationView extends BaseScriptClass
         if (GeneralUtility::_POST('search') && trim($search_field)) {
             $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
         }
-        // mask the encryption key to not show it as plaintext in the configuration module
-        if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
-            $theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
+
+        // mask sensitive information
+        $varName = trim($arrayBrowser->varName, '$');
+        if (isset($this->blindedConfigurationOptions[$varName])) {
+            ArrayUtility::mergeRecursiveWithOverrule($theVar, $this->blindedConfigurationOptions[$varName]);
         }
         $tree = $arrayBrowser->tree($theVar, '', '');
         $this->view->assign('tree', $tree);
