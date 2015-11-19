@@ -38,6 +38,8 @@
 		$('#terTableWrapper .dataTables_wrapper').addClass('is-loading');
 		$('#typo3-dblist-pagination').addClass('is-loading');
 
+		var reload = false;
+
 		$.ajax({
 			url: url,
 			dataType: 'json',
@@ -58,16 +60,9 @@
 				);
 
 				if (data.updated) {
-					$.ajax({
-						url: window.location.href + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bformat%5D=json',
-						dataType: 'json',
-						success: function(data) {
-							$('#terTableWrapper').html(
-								data
-							);
-							transformPaginatorToAjax();
-						}
-					});
+					// Reload page
+					reload = true;
+					window.location.replace(window.location.href);
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -84,13 +79,15 @@
 			},
 			complete: function() {
 
-				// Hide loaders
-				$('.splash-receivedata').removeClass('is-shown');
-				$('#terTableWrapper .dataTables_wrapper').removeClass('is-loading');
-				$('#typo3-dblist-pagination').removeClass('is-loading');
+				if (!reload) {
+					// Hide loaders
+					$('.splash-receivedata').removeClass('is-shown');
+					$('#terTableWrapper .dataTables_wrapper').removeClass('is-loading');
+					$('#typo3-dblist-pagination').removeClass('is-loading');
 
-				// Show triggers for TER-update
-				$('.update-from-ter').removeClass('is-hidden');
+					// Show triggers for TER-update
+					$('.update-from-ter').removeClass('is-hidden');
+				}
 			}
 		});
 	}
