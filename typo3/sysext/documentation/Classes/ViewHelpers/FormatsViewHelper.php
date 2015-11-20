@@ -125,7 +125,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
                 $iconHtml = $iconFactory->getIcon('actions-system-extension-documentation', Icon::SIZE_SMALL)->render();
                 break;
             default:
-                $iconHtml = $iconFactory->getIconForFileExtension($extension, Icon::SIZE_SMALL)->render();;
+                $iconHtml = $iconFactory->getIconForFileExtension($extension, Icon::SIZE_SMALL)->render();
         }
         return $iconHtml;
     }

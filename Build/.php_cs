@@ -62,6 +62,7 @@ return Symfony\CS\Config\Config::create()
         'concat_with_spaces',
         'whitespacy_lines',
         'ordered_use',
-        'single_quote'
+        'single_quote',
+        'duplicate_semicolon'
     ])
     ->finder($finder);
