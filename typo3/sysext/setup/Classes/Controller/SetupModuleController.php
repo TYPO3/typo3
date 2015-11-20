@@ -144,9 +144,9 @@ class SetupModuleController extends AbstractModule
     protected $simulateSelector = '';
 
     /**
-     * @var string
+     * @var int
      */
-    protected $simUser = '';
+    protected $simUser;
 
     /**
      * The name of the module
@@ -387,8 +387,8 @@ class SetupModuleController extends AbstractModule
         $this->content .= $this->moduleTemplate->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
         $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
         $this->content .= '<div>';
-        $this->content .= '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
-            <input type="hidden" name="formToken" value="' . $formToken . '" />
+        $this->content .= '<input type="hidden" name="simUser" value="' . (int)$this->simUser . '" />
+            <input type="hidden" name="formToken" value="' . htmlspecialchars($formToken) . '" />
             <input type="hidden" value="1" name="data[save]" />
             <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />';
         $this->content .= '</div>';
@@ -504,10 +504,10 @@ class SetupModuleController extends AbstractModule
 
             $style = $config['style'];
             if ($class) {
-                $more .= ' class="' . $class . '"';
+                $more .= ' class="' . htmlspecialchars($class) . '"';
             }
             if ($style) {
-                $more .= ' style="' . $style . '"';
+                $more .= ' style="' . htmlspecialchars($style) . '"';
             }
             if (isset($this->overrideConf[$fieldName])) {
                 $more .= ' disabled="disabled"';
@@ -531,18 +531,18 @@ class SetupModuleController extends AbstractModule
                         $noAutocomplete = 'autocomplete="off" ';
                         $more .= ' data-rsa-encryption=""';
                     }
-                    $html = '<input id="field_' . $fieldName . '"
-                        type="' . $type . '"
-                        name="data' . $dataAdd . '[' . $fieldName . ']" ' .
+                    $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
+                        type="' . htmlspecialchars($type) . '"
+                        name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
                         $noAutocomplete .
                         'value="' . htmlspecialchars($value) . '" ' .
                         $more .
                         ' />';
                     break;
                 case 'check':
-                    $html = $label . '<div class="checkbox"><label><input id="field_' . $fieldName . '"
+                    $html = $label . '<div class="checkbox"><label><input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
-                        name="data' . $dataAdd . '[' . $fieldName . ']"' .
+                        name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
                         ' /></label></div>';
@@ -552,11 +552,11 @@ class SetupModuleController extends AbstractModule
                     if ($config['itemsProcFunc']) {
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
                     } else {
-                        $html = '<select id="field_' . $fieldName . '"
-                            name="data' . $dataAdd . '[' . $fieldName . ']"' .
+                        $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
+                            name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                             $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
-                            $html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
+                            $html .= '<option value="' . htmlspecialchars($key) . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
                         }
                         $html .= '</select>';
                     }
@@ -606,7 +606,7 @@ class SetupModuleController extends AbstractModule
                     }
                     $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
                             'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
-                            ' value="' . $avatarFileUid . '" />';
+                            ' value="' . (int)$avatarFileUid . '" />';
 
                     $html .= '<div class="btn-group">';
                     $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -749,8 +749,8 @@ class SetupModuleController extends AbstractModule
             $users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', $where);
             $opt = array();
             foreach ($users as $rr) {
-                $label = htmlspecialchars(($rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '')));
-                $opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . $label . '</option>';
+                $label = $rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '');
+                $opt[] = '<option value="' . (int)$rr['uid'] . '"' . ($this->simUser === (int)$rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
             if (!empty($opt)) {
                 $this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
@@ -783,12 +783,12 @@ class SetupModuleController extends AbstractModule
             return '';
         }
 
-        return '<p>' .
-            '<label for="field_simulate" style="margin-right: 20px;">' .
-            $this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate') .
-            '</label>' .
-            $this->simulateSelector .
-            '</p>';
+        return '<p>'
+            . '<label for="field_simulate" style="margin-right: 20px;">'
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate'))
+            . '</label>'
+            . $this->simulateSelector
+            . '</p>';
     }
 
     /**
@@ -828,7 +828,7 @@ class SetupModuleController extends AbstractModule
     protected function getLabel($str, $key = '', $addLabelTag = true, $altLabelTagId = '')
     {
         if (substr($str, 0, 4) === 'LLL:') {
-            $out = $this->getLanguageService()->sL($str);
+            $out = htmlspecialchars($this->getLanguageService()->sL($str));
         } else {
             $out = htmlspecialchars($str);
         }
@@ -836,7 +836,7 @@ class SetupModuleController extends AbstractModule
             $out = '<span style="color:#999999">' . $out . '</span>';
         }
         if ($addLabelTag) {
-            $out = '<label for="' . ($altLabelTagId ?: 'field_' . $key) . '">' . $out . '</label>';
+            $out = '<label for="' . ($altLabelTagId ?: 'field_' . htmlspecialchars($key)) . '">' . $out . '</label>';
         }
         return $out;
     }
@@ -933,8 +933,8 @@ class SetupModuleController extends AbstractModule
 
                 // Create new file reference
                 $storeRec['sys_file_reference']['NEW1234'] = array(
-                    'uid_local' => $fileUid,
-                    'uid_foreign' => $beUserId,
+                    'uid_local' => (int)$fileUid,
+                    'uid_foreign' => (int)$beUserId,
                     'tablenames' => 'be_users',
                     'fieldname' => 'avatar',
                     'pid' => 0,
