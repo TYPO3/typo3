@@ -1,0 +1,14 @@
+<f:if condition="{reloadPageFrame}">
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
+            top.content.nav_frame.refresh_nav();
+        }
+        /*]]>*/
+    </script>
+</f:if>
+<f:render partial="RecordHistory/Settings" arguments="{_all}" />
+<f:if condition="{lastSyslogId}">
+    <f:render partial="RecordHistory/MultipleDiff" arguments="{_all}" />
+</f:if>
+<f:render partial="RecordHistory/History" arguments="{_all}" />

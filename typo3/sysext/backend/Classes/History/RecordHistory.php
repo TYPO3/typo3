@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class for the record history display module show_rechis
@@ -101,6 +102,11 @@ class RecordHistory
     protected $iconFactory;
 
     /**
+     * @var StandaloneView
+     */
+    protected $view;
+
+    /**
      * Constructor for the class
      */
     public function __construct()
@@ -113,6 +119,8 @@ class RecordHistory
         $this->rollbackFields = $this->getArgument('rollbackFields');
         // Resolve sh_uid if set
         $this->resolveShUid();
+
+        $this->view = $this->getFluidTemplateObject();
     }
 
     /**
@@ -123,7 +131,6 @@ class RecordHistory
      */
     public function main()
     {
-        $content = '';
         // Single-click rollback
         if ($this->getArgument('revert') && $this->getArgument('sumUp')) {
             $this->rollbackFields = $this->getArgument('revert');
@@ -148,22 +155,24 @@ class RecordHistory
             $this->toggleHighlight($this->getArgument('highlight'));
         }
 
-        $content .= $this->displaySettings();
+        $this->displaySettings();
 
         if ($this->createChangeLog()) {
             if ($this->rollbackFields) {
                 $completeDiff = $this->createMultipleDiff();
-                $content .= $this->performRollback($completeDiff);
+                $this->performRollback($completeDiff);
             }
             if ($this->lastSyslogId) {
+                $this->view->assign('lastSyslogId', $this->lastSyslogId);
                 $completeDiff = $this->createMultipleDiff();
-                $content .= $this->displayMultipleDiff($completeDiff);
+                $this->displayMultipleDiff($completeDiff);
             }
             if ($this->element) {
-                $content .= $this->displayHistory();
+                $this->displayHistory();
             }
         }
-        return $content;
+
+        return $this->view->render();
     }
 
     /*******************************
@@ -285,17 +294,7 @@ class RecordHistory
         $this->lastSyslogId = false;
         $this->rollbackFields = false;
         $this->createChangeLog();
-        // Reload page frame if necessary
-        if ($reloadPageFrame) {
-            return '<script type="text/javascript">
-			/*<![CDATA[*/
-			if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
-				top.content.nav_frame.refresh_nav();
-			}
-			/*]]>*/
-			</script>';
-        }
-        return '';
+        $this->view->assign('reloadPageFrame', $reloadPageFrame);
     }
 
     /*******************************
@@ -305,8 +304,6 @@ class RecordHistory
      *******************************/
     /**
      * Displays settings
-     *
-     * @return string HTML code to modify settings
      */
     public function displaySettings()
     {
@@ -322,56 +319,62 @@ class RecordHistory
         }
         // Display selector for number of history entries
         $selector['maxSteps'] = array(
-            10 => 10,
-            20 => 20,
-            50 => 50,
-            100 => 100,
-            '' => 'maxSteps_all',
-            'marked' => 'maxSteps_marked'
+            10 => array(
+                'value' => 10
+            ),
+            20 => array(
+                'value' => 20
+            ),
+            50 => array(
+                'value' => 50
+            ),
+            100 => array(
+                'value' => 100
+            ),
+            '' => array(
+                'value' => 'maxSteps_all'
+            ),
+            'marked' => array(
+                'value' => 'maxSteps_marked'
+            )
         );
         $selector['showDiff'] = array(
-            0 => 'showDiff_no',
-            1 => 'showDiff_inline'
+            0 => array(
+                'value' => 'showDiff_no'
+            ),
+            1 => array(
+                'value' => 'showDiff_inline'
+            )
         );
         $selector['showSubElements'] = array(
-            0 => 'no',
-            1 => 'yes'
+            0 => array(
+                'value' => 'no'
+            ),
+            1 => array(
+                'value' => 'yes'
+            )
         );
         $selector['showInsertDelete'] = array(
-            0 => 'no',
-            1 => 'yes'
+            0 => array(
+                'value' => 'no'
+            ),
+            1 => array(
+                'value' => 'yes'
+            )
         );
-        // render selectors
-        $displayCode = '';
+
         $scriptUrl = GeneralUtility::linkThisScript();
         $languageService = $this->getLanguageService();
+
         foreach ($selector as $key => $values) {
-            $displayCode .= '<tr><td>' . $languageService->getLL($key, true) . '</td>';
-
-            $label = ($currentSelection[$key] !== ''
-                ? ($languageService->getLL($selector[$key][$currentSelection[$key]], true) ?: $selector[$key][$currentSelection[$key]])
-                : ($languageService->getLL($selector[$key][$currentSelection[0]], true) ?: $selector[$key][$currentSelection[0]])
-            );
-
-            $displayCode .= '<td>
-			<div class="btn-group">
-				<button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-					' . $label . '
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="copymodeSelector">';
-
             foreach ($values as $singleKey => $singleVal) {
-                $caption = $languageService->getLL($singleVal, true) ?: htmlspecialchars($singleVal);
-                $displayCode .= '<li><a href="#" onclick="document.settings.method=\'POST\'; document.settings.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($scriptUrl . '&settings[' . $key . ']=' . $singleKey)) . '; document.settings.submit()">' . $caption . '</a></li>';
+                $selector[$key][$singleKey]['scriptUrl'] = htmlspecialchars(GeneralUtility::quoteJSvalue($scriptUrl . '&settings[' . $key . ']=' . $singleKey));
             }
-
-            $displayCode .= '
-				</ul>
-			</div>
-			</td></tr>
-			';
         }
+        $this->view->assign('settings', $selector);
+        $this->view->assign('currentSelection', $currentSelection);
+        $this->view->assign('TYPO3_REQUEST_URI', htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')));
+
         // set values correctly
         if ($currentSelection['maxSteps'] !== 'marked') {
             $this->maxSteps = $currentSelection['maxSteps'] ? (int)$currentSelection['maxSteps'] : '';
@@ -382,34 +385,17 @@ class RecordHistory
         $this->showDiff = (int)$currentSelection['showDiff'];
         $this->showSubElements = (int)$currentSelection['showSubElements'];
         $this->showInsertDelete = (int)$currentSelection['showInsertDelete'];
-        $content = '';
+
         // Get link to page history if the element history is shown
         $elParts = explode(':', $this->element);
         if (!empty($this->element) && $elParts[0] !== 'pages') {
-            $content .= '<strong>' . $languageService->getLL('elementHistory', true) . '</strong><br />';
+            $this->view->assign('singleElement', 'true');
             $pid = $this->getRecord($elParts[0], $elParts[1]);
 
             if ($this->hasPageAccess('pages', $pid['pid'])) {
-                $content .= $this->linkPage('<span class="btn btn-default" style="margin-bottom: 5px;">' . $languageService->getLL('elementHistory_link', true) . '</span>', array('element' => 'pages:' . $pid['pid']));
+                $this->view->assign('fullHistoryLink', $this->linkPage($languageService->getLL('elementHistory_link', true), array('element' => 'pages:' . $pid['pid'])));
             }
         }
-
-        $content .= '<a name="settings_head"></a>
-			<form name="settings" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post">
-				<div class="row">
-					<div class="col-sm-12 col-md-6 col-lg-4">
-						<div class="panel panel-default">
-							<div class="panel-heading">' . $languageService->getLL('settings', true) . '</div>
-								<table class="table">
-			' . $displayCode . '
-								</table>
-						</div>
-					</div>
-			</div>
-			</form>
-		';
-
-        return '<div>' . $content . '</div>';
     }
 
     /**
@@ -424,21 +410,9 @@ class RecordHistory
         }
         $languageService = $this->getLanguageService();
         $lines = array();
-        // Initialize:
-        $lines[] = '<thead><tr>
-				<th>' . $languageService->getLL('rollback', true) . '</th>
-				<th>' . $languageService->getLL('time', true) . '</th>
-				<th>' . $languageService->getLL('age', true) . '</th>
-				<th>' . $languageService->getLL('user', true) . '</th>
-				<th>' . $languageService->getLL('tableUid', true) . '</th>
-				<th>' . $languageService->getLL('differences', true) . '</th>
-				<th>&nbsp;</th>
-			</tr></thead>';
         $beUserArray = BackendUtility::getUserNames();
 
         $i = 0;
-        /** @var Avatar $avatar */
-        $avatar = GeneralUtility::makeInstance(Avatar::class);
 
         // Traverse changeLog array:
         foreach ($this->changeLog as $sysLogUid => $entry) {
@@ -451,22 +425,25 @@ class RecordHistory
                 continue;
             }
             $i++;
-            // Get user names
-            $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange', true);
             // Build up single line
             $singleLine = array();
-            // Diff link
-            $image = '<span title="' . $languageService->getLL('sumUpChanges', true) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</span>';
-            $singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
-            // remove first link
-            $singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
-            // add time
-            $singleLine[] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
-            // add age
-            $userEntry = is_array($beUserArray[$entry['user']]) ? $beUserArray[$entry['user']] : null;
-            $singleLine[] = $avatar->render($userEntry) . ' ' . htmlspecialchars($userName);
+
+            // Get user names
+            $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange', true);
+            $singleLine['backendUserName'] = htmlspecialchars($userName);
+            $singleLine['backendUserUid'] = $entry['user'];
             // add user name
-            $singleLine[] = $this->linkPage(
+
+            // Diff link
+            $image = $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
+            $singleLine['rollbackLink']= $this->linkPage($image, array('diff' => $sysLogUid));
+            // remove first link
+            $singleLine['time'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
+            // add time
+            $singleLine['age'] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+            // add age
+
+            $singleLine['tableUid'] = $this->linkPage(
                 $this->generateTitle($entry['tablename'], $entry['recuid']),
                 array('element' => $entry['tablename'] . ':' . $entry['recuid']),
                 '',
@@ -476,7 +453,7 @@ class RecordHistory
             // Show insert/delete/diff/changed field names
             if ($entry['action']) {
                 // insert or delete of element
-                $singleLine[] = '<strong>' . htmlspecialchars($languageService->getLL($entry['action'], true)) . '</strong>';
+                $singleLine['action'] = htmlspecialchars($languageService->getLL($entry['action'], true));
             } else {
                 // Display field names instead of full diff
                 if (!$this->showDiff) {
@@ -491,11 +468,11 @@ class RecordHistory
                             unset($tmpFieldList[$key]);
                         }
                     }
-                    $singleLine[] = htmlspecialchars(implode(',', $tmpFieldList));
+                    $singleLine['fieldNames'] = htmlspecialchars(implode(',', $tmpFieldList));
                 } else {
                     // Display diff
                     $diff = $this->renderDiff($entry, $entry['tablename']);
-                    $singleLine[] = $diff;
+                    $singleLine['differences'] = $diff;
                 }
             }
             // Show link to mark/unmark state
@@ -507,92 +484,58 @@ class RecordHistory
                     $title = $languageService->getLL('markState', true);
                     $image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL)->render();
                 }
-                $singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
+                $singleLine['markState'] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
             } else {
-                $singleLine[] = '';
+                $singleLine['markState'] = '';
             }
             // put line together
-            $lines[] = '
-				<tr>
-					<td>' . implode('</td><td>', $singleLine) . '</td>
-				</tr>';
+            $lines[] = $singleLine;
         }
+        $this->view->assign('history', $lines);
 
-        // @TODO: introduce Fluid Standalone view and use callout viewHelper
-        $theCode = '<div class="callout callout-info">'
-            . '<div class="media"><div class="media-left"><span class="fa-stack fa-lg callout-icon"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span></div>'
-            . '<div class="media-body">'
-            . '<p>' . $languageService->getLL('differenceMsg') . '</p>'
-            . '	<div class="callout-body">'
-            . '	</div></div></div></div>';
-
-        // Finally, put it all together:
-        $theCode .= '
-			<!--
-				History (list):
-			-->
-
-			<table class="table table-striped table-hover table-vertical-top" id="typo3-history">
-				' . implode('', $lines) . '
-			</table>';
         if ($this->lastSyslogId) {
-            $theCode .= '<br />' . $this->linkPage('<span class="btn btn-default">' . $languageService->getLL('fullView', true) . '</span>', array('diff' => ''));
+            $this->view->assign('fullViewLink', $this->linkPage($languageService->getLL('fullView', true), array('diff' => '')));
         }
-
-        $theCode .= '<br /><br />';
-
-        // Add the whole content as a module section:
-        return '<h2>' . $languageService->getLL('changes', true) . '</h2><div>' . $theCode . '</div>';
     }
 
     /**
      * Displays a diff over multiple fields including rollback links
      *
      * @param array $diff Difference array
-     * @return string HTML output
      */
     public function displayMultipleDiff($diff)
     {
-        $content = '';
         // Get all array keys needed
         $arrayKeys = array_merge(array_keys($diff['newData']), array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
         $arrayKeys = array_unique($arrayKeys);
         $languageService = $this->getLanguageService();
         if ($arrayKeys) {
+            $lines = array();
             foreach ($arrayKeys as $key) {
-                $record = '';
+                $singleLine = array();
                 $elParts = explode(':', $key);
                 // Turn around diff because it should be a "rollback preview"
                 if ((int)$diff['insertsDeletes'][$key] === 1) {
                     // insert
-                    $record .= '<strong>' . $languageService->getLL('delete', true) . '</strong>';
-                    $record .= '<br />';
+                    $singleLine['insertDelete'] = 'delete';
                 } elseif ((int)$diff['insertsDeletes'][$key] === -1) {
-                    $record .= '<strong>' . $languageService->getLL('insert', true) . '</strong>';
-                    $record .= '<br />';
+                    $singleLine['insertDelete'] = 'insert';
                 }
                 // Build up temporary diff array
                 // turn around diff because it should be a "rollback preview"
                 if ($diff['newData'][$key]) {
                     $tmpArr['newRecord'] = $diff['oldData'][$key];
                     $tmpArr['oldRecord'] = $diff['newData'][$key];
-                    $record .= $this->renderDiff($tmpArr, $elParts[0], $elParts[1]);
+                    $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], $elParts[1]);
                 }
                 $elParts = explode(':', $key);
-                $titleLine = $this->createRollbackLink($key, $languageService->getLL('revertRecord', true), 1) . $this->generateTitle($elParts[0], $elParts[1]);
-                $record = '<div style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">' . $record . '</div>';
-                // $titleLine contains HTML, no htmlspecialchars here.
-                $content .= '<h3>' . $titleLine . '</h3><div>' . $record . '</div>';
+                $singleLine['revertRecordLink'] = $this->createRollbackLink($key, $languageService->getLL('revertRecord', true), 1);
+                $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
+                $lines[] = $singleLine;
             }
-            $content = $this->createRollbackLink(
-                    'ALL',
-                    $languageService->getLL('revertAll', true),
-                    0
-                ) . '<div style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">' . $content . '</div>';
-        } else {
-            $content = $languageService->getLL('noDifferences', true);
+            $this->view->assign('revertAllLink', $this->createRollbackLink('ALL', $languageService->getLL('revertAll', true), 0));
+            $this->view->assign('multipleDiff', $lines);
         }
-        return '<h2>' . $languageService->getLL('mergedDifferences', true) . '</h2><div>' . $content . '</div>';
     }
 
     /**
@@ -608,6 +551,7 @@ class RecordHistory
     {
         $lines = array();
         if (is_array($entry['newRecord'])) {
+            /* @var DiffUtility $diffUtility */
             $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
@@ -618,19 +562,16 @@ class RecordHistory
                         BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, true),
                         BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, true)
                     );
-                    $lines[] = '
-						<div class="diff-item">
-							<div class="diff-item-title">
-								' . ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', true), 2) : '') . '
-								' . $languageService->sl(BackendUtility::getItemLabel($table, $fN), true) . '
-							</div>
-							<div class="diff-item-result">' . str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres)) . '</div>
-						</div>';
+                    $lines[] = array(
+                        'title' => ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', true), 2) : '') . '
+                          ' . $languageService->sl(BackendUtility::getItemLabel($table, $fN), true),
+                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
+                    );
                 }
             }
         }
         if ($lines) {
-            return '<div class="diff">' . implode('', $lines) . '</div>';
+            return $lines;
         }
         // error fallback
         return null;
@@ -1062,5 +1003,24 @@ class RecordHistory
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * returns a new standalone view, shorthand function
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject()
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')));
+        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')));
+        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')));
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/RecordHistory/Main.html'));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }

@@ -1,0 +1,12 @@
+<div class="diff">
+	<f:for each="{differences}" as="differencesItem" key="key">
+		<div class="diff-item">
+			<div class="diff-item-title">
+				<f:format.raw>{differencesItem.title}</f:format.raw>
+			</div>
+			<div class="diff-item-result">
+				<f:format.raw>{differencesItem.result}</f:format.raw>
+			</div>
+		</div>
+	</f:for>
+</div>

@@ -1,0 +1,76 @@
+<div>
+	<f:if condition="{singleElement}">
+		<strong>{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:elementHistory')}</strong><br/>
+		<f:if condition="{fullHistoryLink}">
+			<span class="btn btn-default" style="margin-bottom: 5px;"><f:format.raw>{fullHistoryLink}</f:format.raw></span>
+		</f:if>
+	</f:if>
+	<a name="settings_head"></a>
+	<form name="settings" action="{TYPO3_REQUEST_URI}" method="post">
+		<div class="row">
+			<div class="col-sm-12 col-md-6 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:settings')}</div>
+					<table class="table">
+						<f:for each="{settings}" as="values" key="key">
+							<tr>
+								<td>{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{key}')}</td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector"
+														data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											<f:for each="{currentSelection}" as="currentSelectionValue" key="currentSelectionKey">
+												<f:if condition="{currentSelectionKey} == {key}">
+													<f:then>
+														<f:if condition="{currentSelectionValue}">
+															<f:then>
+																<f:for each="{values}" as="singleValue" key="singleKey">
+																	<f:if condition="{currentSelectionValue} == {singleKey}">
+																		<f:then>
+																			<f:if condition="{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}">
+																				<f:then>{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
+																				<f:else>{singleValue.value}</f:else>
+																			</f:if>
+																		</f:then>
+																	</f:if>
+																</f:for>
+															</f:then>
+															<f:else>
+																<f:for each="{values}" as="singleValue" iteration="iterator">
+																	<f:if condition="{iterator.isFirst}">
+																		<f:then>
+																			<f:if condition="{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}">
+																				<f:then>{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
+																				<f:else>{singleValue.value}</f:else>
+																			</f:if>
+																		</f:then>
+																	</f:if>
+																</f:for>
+															</f:else>
+														</f:if>
+													</f:then>
+												</f:if>
+											</f:for>
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="copymodeSelector">
+											<f:for each="{values}" as="singleValue" key="singleKey">
+												<li><a href="#"
+															 onclick="document.settings.method='POST'; document.settings.action={singleValue.scriptUrl}; document.settings.submit()">
+													<f:if condition="{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}">
+														<f:then>{f:translate(key: 'LLL:EXT:lang/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
+														<f:else>{singleValue.value}</f:else>
+													</f:if>
+												</a></li>
+											</f:for>
+										</ul>
+									</div>
+								</td>
+							</tr>
+						</f:for>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
