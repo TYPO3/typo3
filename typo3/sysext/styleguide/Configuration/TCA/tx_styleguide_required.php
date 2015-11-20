@@ -265,6 +265,8 @@ return array(
             'config' => array(
                 'type' => 'text',
                 'eval' => 'required',
+                'rows' => '15',
+                'cols' => '80',
             ),
             'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
         ),
@@ -456,6 +458,8 @@ return array(
 					input_1, input_4, input_5, --palette--;Required in palette;input_palette,
 				--div--;Text,
 					text_1,
+				--div--;Rte,
+					rte_1, rte_2,
 				--div--;Select,
 					select_1, select_2, select_5,
 				--div--;Group,
@@ -466,8 +470,6 @@ return array(
 					flex_1, flex_2,
 			',
 //					select_3, select_4, // @todo: both checkbox and tree required handling still open
-//				--div--;Rte, @todo: The two RTE fields are disabled for now since re-validation does not work
-//					rte_1, rte_2,
         ),
     ),
 

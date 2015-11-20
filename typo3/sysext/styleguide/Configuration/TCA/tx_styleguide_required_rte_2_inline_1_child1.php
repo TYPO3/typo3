@@ -1,7 +1,7 @@
 <?php
 return array(
     'ctrl' => array(
-        'title' => 'Form engine tests - rte_2 inline_1 child 1',
+        'title' => 'Form engine tests - Required fields - rte_2 inline_1 child 1',
         'label' => 'text_1',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
         'tstamp' => 'tstamp',
