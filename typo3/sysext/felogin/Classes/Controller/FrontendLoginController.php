@@ -256,7 +256,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', TRUE), array());
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
-		$markerArray['###LEGEND###'] = $this->pi_getLL('legend', $this->pi_getLL('reset_password', '', TRUE), TRUE);
+		$markerArray['###LEGEND###'] = $this->pi_getLL('legend', $this->pi_getLL('reset_password'), TRUE);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]' => 1), TRUE);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', TRUE);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', TRUE);
