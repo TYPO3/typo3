@@ -176,7 +176,7 @@ class SelectFont extends RteHtmlAreaApi
         }
         $itemsJSArray = json_encode(array('options' => $itemsJSArray));
         // Adding to button JS configuration
-        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($buttonId . '.')])) {
+        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$buttonId . '.'])) {
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $buttonId . ' = new Object();';
         }
         $jsArray[] = 'RTEarea[editornumber].buttons.' . $buttonId . '.dataUrl = "' . $this->writeTemporaryFile($buttonId . '_' . $this->configuration['contentLanguageUid'], 'js', $itemsJSArray) . '";';

@@ -328,7 +328,7 @@ class ColorpickerController extends AbstractWizardController
         while (isset($color[$columns * $rows])) {
             $tCells = array();
             for ($i = 0; $i < $columns; $i++) {
-                $tCells[] = '<td bgcolor="' . $color[($columns * $rows + $i)] . '" class="t3js-colorpicker-value" data-color-value="' . htmlspecialchars($color[($columns * $rows + $i)]) . '" title="' . htmlspecialchars($color[($columns * $rows + $i)]) . '">&nbsp;&nbsp;</td>';
+                $tCells[] = '<td bgcolor="' . $color[$columns * $rows + $i] . '" class="t3js-colorpicker-value" data-color-value="' . htmlspecialchars($color[($columns * $rows + $i)]) . '" title="' . htmlspecialchars($color[($columns * $rows + $i)]) . '">&nbsp;&nbsp;</td>';
             }
             $tRows[] = '<tr>' . implode('', $tCells) . '</tr>';
             $rows++;

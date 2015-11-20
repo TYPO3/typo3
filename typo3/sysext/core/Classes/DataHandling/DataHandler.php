@@ -1558,7 +1558,7 @@ class DataHandler
                 }
 
                 // Look for transformation flag:
-                if ((string)$incomingFieldArray[('_TRANSFORM_' . $vconf['field'])] === 'RTE') {
+                if ((string)$incomingFieldArray['_TRANSFORM_' . $vconf['field']] === 'RTE') {
                     if ($theTypeString === null) {
                         $theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
                     }
@@ -3131,7 +3131,7 @@ class DataHandler
                         // @deprecated: flexFormXMLincludeDiffBase is only enabled by ext:compatibility6 since TYPO3 CMS 7, vDEFbase can be unset / ignored with TYPO3 CMS 8
                         if ($this->clear_flexFormData_vDEFbase) {
                             $dataValues[$key][$vKey . '.vDEFbase'] = '';
-                        } elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
+                        } elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
                                 $diffValue = $dataValues[$key]['vDEF'];
@@ -6043,7 +6043,7 @@ class DataHandler
      */
     public function isRecordInWebMount($table, $id)
     {
-        if (!isset($this->isRecordInWebMount_Cache[($table . ':' . $id)])) {
+        if (!isset($this->isRecordInWebMount_Cache[$table . ':' . $id])) {
             $recP = $this->getRecordProperties($table, $id);
             $this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($recP['event_pid']);
         }
@@ -7038,12 +7038,12 @@ class DataHandler
                 if (!$fieldConfiguration['MM'] && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $cRecTypes[$col], $isNullField)) {
                     unset($fieldArray[$col]);
                 } else {
-                    if (!isset($this->mmHistoryRecords[($table . ':' . $id)]['oldRecord'][$col])) {
+                    if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
                         $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $currentRecord[$col];
                     } elseif ($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col]) {
                         $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col];
                     }
-                    if (!isset($this->mmHistoryRecords[($table . ':' . $id)]['newRecord'][$col])) {
+                    if (!isset($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col])) {
                         $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $fieldArray[$col];
                     } elseif ($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col]) {
                         $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col];

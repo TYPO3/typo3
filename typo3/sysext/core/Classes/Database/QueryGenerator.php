@@ -1186,7 +1186,7 @@ class QueryGenerator
         $out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
         for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
             if ($this->lang['comparison'][$i . '_']) {
-                $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][($i . '_')]) . '</option>';
+                $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][$i . '_']) . '</option>';
             }
         }
         $out[] = '</select>';

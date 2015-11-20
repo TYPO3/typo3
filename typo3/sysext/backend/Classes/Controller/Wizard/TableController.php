@@ -529,7 +529,7 @@ class TableController extends AbstractWizardController
                             // will be TRUE after one row is added while if rows are added in the bottom
                             // of the table there will be no existing rows to stop the addition of new rows
                             // which means it will add up to $this->numNewRows rows then.
-                            if (!isset($this->TABLECFG['c'][($kk + $a)])) {
+                            if (!isset($this->TABLECFG['c'][$kk + $a])) {
                                 $this->TABLECFG['c'][$kk + $a] = array();
                             } else {
                                 break;

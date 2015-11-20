@@ -865,7 +865,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         $cc = 0;
         $aC = count($blockSplit);
         // Avoid superfluous linebreaks by transform_db after ending headListTag
-        while ($aC && trim($blockSplit[($aC - 1)]) === '') {
+        while ($aC && trim($blockSplit[$aC - 1]) === '') {
             unset($blockSplit[$aC - 1]);
             $aC = count($blockSplit);
         }

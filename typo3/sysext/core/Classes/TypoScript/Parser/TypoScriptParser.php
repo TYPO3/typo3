@@ -242,7 +242,7 @@ class TypoScriptParser
         $pre = '[GLOBAL]';
         while ($pre) {
             if ($this->breakPointLN && $pre === '[_BREAK]') {
-                $this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[($this->rawP - 2)] . '"', 1);
+                $this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[$this->rawP - 2] . '"', 1);
                 break;
             }
             $preUppercase = strtoupper($pre);
@@ -437,7 +437,7 @@ class TypoScriptParser
                                                     return $exitSig;
                                                 }
                                             } else {
-                                                if (!isset($setup[($objStrName . '.')])) {
+                                                if (!isset($setup[$objStrName . '.'])) {
                                                     $setup[$objStrName . '.'] = array();
                                                 }
                                                 $exitSig = $this->parseSub($setup[$objStrName . '.']);

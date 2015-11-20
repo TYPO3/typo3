@@ -70,7 +70,7 @@ class Typo3Link extends RteHtmlAreaApi
         $jsArray = array();
         $button = 'link';
         if (in_array($button, $this->toolbar)) {
-            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_browse_links')) . ';';

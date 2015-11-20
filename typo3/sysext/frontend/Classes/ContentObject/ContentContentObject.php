@@ -88,7 +88,7 @@ class ContentContentObject extends AbstractContentObject
                             $_procObj->modifyDBRow($row, $conf['table']);
                         }
                     }
-                    if (!$frontendController->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
+                    if (!$frontendController->recordRegister[$conf['table'] . ':' . $row['uid']]) {
                         $this->cObj->currentRecordNumber++;
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                         $frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];

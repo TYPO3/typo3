@@ -425,7 +425,7 @@ class ExtensionManagerConfigurationUtility
             if (count($parts) == 2) {
                 // @todo Explain
                 $value = $this->processPostData(array($parts[1] => $value));
-                $postArray[$parts[0] . '.'] = array_merge((array)$postArray[($parts[0] . '.')], $value);
+                $postArray[$parts[0] . '.'] = array_merge((array)$postArray[$parts[0] . '.'], $value);
             } else {
                 // @todo Explain
                 $postArray[$parts[0]] = $value;

@@ -653,7 +653,7 @@ abstract class AbstractUserAuthentication
                         GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 0);
                     }
                     // User found, just stop to search for more if not configured to go on
-                    if (!$this->svConfig['setup'][($this->loginType . '_fetchAllUsers')]) {
+                    if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
                         break;
                     }
                 }

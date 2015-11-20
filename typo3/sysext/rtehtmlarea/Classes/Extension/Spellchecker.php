@@ -87,7 +87,7 @@ class Spellchecker extends RteHtmlAreaApi
         // Set the use of personal dictionary
         $enablePersonalDicts = $this->configuration['thisConfig']['buttons.'][$button . '.']['enablePersonalDictionaries'] && !empty($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']);
         if (in_array($button, $this->toolbar)) {
-            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.contentTypo3Language = "' . $this->configuration['contentTypo3Language'] . '";';

@@ -56,7 +56,7 @@ class UserElements extends RteHtmlAreaApi
         $jsArray = array();
         $button = 'user';
         if (in_array($button, $this->toolbar)) {
-            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                 $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathUserModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_user_elements')) . ';';

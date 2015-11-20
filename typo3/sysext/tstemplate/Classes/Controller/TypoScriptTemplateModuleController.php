@@ -620,7 +620,7 @@ page.10.value = HELLO WORLD!
         $pArray[$cEl['uid']] = htmlspecialchars($cEl['title']);
         array_shift($rlArr);
         if (!empty($rlArr)) {
-            if (!isset($pArray[($cEl['uid'] . '.')])) {
+            if (!isset($pArray[$cEl['uid'] . '.'])) {
                 $pArray[$cEl['uid'] . '.'] = array();
             }
             $this->setInPageArray($pArray[$cEl['uid'] . '.'], $rlArr, $row);
@@ -651,7 +651,7 @@ page.10.value = HELLO WORLD!
                 if (isset($pArray[$k . '_'])) {
                     $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
-						<td>' . $pArray[($k . '_')]['count'] . '</td>
+						<td>' . $pArray[$k . '_']['count'] . '</td>
 						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						</tr>';

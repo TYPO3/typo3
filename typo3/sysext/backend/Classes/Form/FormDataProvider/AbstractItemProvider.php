@@ -324,7 +324,7 @@ abstract class AbstractItemProvider
                         // Add label for main module:
                         $pp = explode('_', $theMod);
                         if (count($pp) > 1) {
-                            $label .= $languageService->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
+                            $label .= $languageService->moduleLabels['tabs'][$pp[0] . '_tab'] . '>';
                         }
                         // Add modules own label now:
                         $label .= $languageService->moduleLabels['tabs'][$theMod . '_tab'];

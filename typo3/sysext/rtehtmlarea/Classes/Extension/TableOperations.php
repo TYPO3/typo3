@@ -100,7 +100,7 @@ class TableOperations extends RteHtmlAreaApi
             // Combining fieldset disablers as a list
             $disabledFieldsets = array('Alignment', 'Borders', 'Color', 'Description', 'Layout', 'RowGroup', 'Spacing', 'Style');
             foreach ($disabledFieldsets as $index => $fieldset) {
-                if (!trim($this->configuration['thisConfig'][('disable' . $fieldset . 'FieldsetInTableOperations')])) {
+                if (!trim($this->configuration['thisConfig']['disable' . $fieldset . 'FieldsetInTableOperations'])) {
                     unset($disabledFieldsets[$index]);
                 }
             }
@@ -110,7 +110,7 @@ class TableOperations extends RteHtmlAreaApi
                 $dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
                 foreach ($dialogues as $dialogue) {
                     if (in_array($dialogue, $this->toolbar)) {
-                        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($dialogue . '.')])) {
+                        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$dialogue . '.'])) {
                             $jsArray[] = 'RTEarea[editornumber].buttons.' . $dialogue . ' = new Object();';
                             $jsArray[] = 'RTEarea[editornumber].buttons.' . $dialogue . '.removeFieldsets = "' . $disabledFieldsets . '";';
                         } elseif ($this->configuration['thisConfig']['buttons.'][$dialogue . '.']['removeFieldsets']) {

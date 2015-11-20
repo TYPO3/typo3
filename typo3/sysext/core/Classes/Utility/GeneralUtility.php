@@ -1206,23 +1206,23 @@ class GeneralUtility
         static $bytes = '';
         $bytesToGenerate = max(4096, $bytesToReturn);
         // if we have not enough random bytes cached, we generate new ones
-        if (!isset($bytes[($bytesToReturn - 1)])) {
+        if (!isset($bytes[$bytesToReturn - 1])) {
             if (TYPO3_OS === 'WIN') {
                 // Openssl seems to be deadly slow on Windows, so try to use mcrypt
                 $bytes .= self::generateRandomBytesMcrypt($bytesToGenerate);
             } else {
                 // Try to use native PHP functions first, precedence has openssl
                 $bytes .= self::generateRandomBytesOpenSsl($bytesToGenerate);
-                if (!isset($bytes[($bytesToReturn - 1)])) {
+                if (!isset($bytes[$bytesToReturn - 1])) {
                     $bytes .= self::generateRandomBytesMcrypt($bytesToGenerate);
                 }
                 // If openssl and mcrypt failed, try /dev/urandom
-                if (!isset($bytes[($bytesToReturn - 1)])) {
+                if (!isset($bytes[$bytesToReturn - 1])) {
                     $bytes .= self::generateRandomBytesUrandom($bytesToGenerate);
                 }
             }
             // Fall back if other random byte generation failed until now
-            if (!isset($bytes[($bytesToReturn - 1)])) {
+            if (!isset($bytes[$bytesToReturn - 1])) {
                 $bytes .= self::generateRandomBytesFallback($bytesToReturn);
             }
         }
@@ -1292,7 +1292,7 @@ class GeneralUtility
         $bytes = '';
         // We initialize with somewhat random.
         $randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . StringUtility::getUniqueId() . getmypid();
-        while (!isset($bytes[($bytesToReturn - 1)])) {
+        while (!isset($bytes[$bytesToReturn - 1])) {
             $randomState = sha1(microtime() . mt_rand() . $randomState);
             $bytes .= sha1(mt_rand() . $randomState, true);
         }
@@ -2102,15 +2102,15 @@ class GeneralUtility
             // Use tag based on grand-parent + parent tag name
             if (isset($options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
-                $tagName = (string)$options['grandParentTagMap'][($stackData['grandParentTagName'] . '/' . $stackData['parentTagName'])];
+                $tagName = (string)$options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']];
             } elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && MathUtility::canBeInterpretedAsInteger($tagName)) {
                 // Use tag based on parent tag name + if current tag is numeric
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
-                $tagName = (string)$options['parentTagMap'][($stackData['parentTagName'] . ':_IS_NUM')];
+                $tagName = (string)$options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM'];
             } elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName])) {
                 // Use tag based on parent tag name + current tag
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';
-                $tagName = (string)$options['parentTagMap'][($stackData['parentTagName'] . ':' . $tagName)];
+                $tagName = (string)$options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName];
             } elseif (isset($options['parentTagMap'][$stackData['parentTagName']])) {
                 // Use tag based on parent tag name:
                 $attr .= ' index="' . htmlspecialchars($tagName) . '"';

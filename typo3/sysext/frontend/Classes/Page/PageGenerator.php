@@ -594,7 +594,7 @@ class PageGenerator
             unset($tsfe->pSetup['includeJSlibs.']);
             foreach ($tsfe->pSetup['includeJSLibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
-                    if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][($key . '.')]['if.'])) {
+                    if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
                         continue;
                     }
                     $ss = $tsfe->pSetup['includeJSLibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
@@ -625,7 +625,7 @@ class PageGenerator
         if (is_array($tsfe->pSetup['includeJSFooterlibs.'])) {
             foreach ($tsfe->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
-                    if (isset($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooterlibs.'][($key . '.')]['if.'])) {
+                    if (isset($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
                         continue;
                     }
                     $ss = $tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
@@ -656,7 +656,7 @@ class PageGenerator
         if (is_array($tsfe->pSetup['includeJS.'])) {
             foreach ($tsfe->pSetup['includeJS.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
-                    if (isset($tsfe->pSetup['includeJS.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJS.'][($key . '.')]['if.'])) {
+                    if (isset($tsfe->pSetup['includeJS.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJS.'][$key . '.']['if.'])) {
                         continue;
                     }
                     $ss = $tsfe->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
@@ -685,7 +685,7 @@ class PageGenerator
         if (is_array($tsfe->pSetup['includeJSFooter.'])) {
             foreach ($tsfe->pSetup['includeJSFooter.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
-                    if (isset($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooter.'][($key . '.')]['if.'])) {
+                    if (isset($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.'])) {
                         continue;
                     }
                     $ss = $tsfe->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);

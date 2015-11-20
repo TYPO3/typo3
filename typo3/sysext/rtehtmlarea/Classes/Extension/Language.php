@@ -75,7 +75,7 @@ class Language extends RteHtmlAreaApi
     {
         $button = 'language';
         $jsArray = array();
-        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+        if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
         }
         $languages = array(

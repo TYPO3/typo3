@@ -716,7 +716,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     if ($strLen > $postPreLgd) {
                         $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
-                } elseif ($summaryLgd > $summaryMax || !isset($parts[($k + 1)])) {
+                } elseif ($summaryLgd > $summaryMax || !isset($parts[$k + 1])) {
                     // In case summary length is exceed OR if there are no more entries at all:
                     if ($strLen > $postPreLgd) {
                         $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;

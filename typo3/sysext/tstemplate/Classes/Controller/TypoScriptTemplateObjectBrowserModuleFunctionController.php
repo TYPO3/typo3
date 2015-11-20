@@ -97,7 +97,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             }
             if (!empty($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
                 $modMenu['ts_browser_toplevel_' . $bType]['-'] = '---';
-                $modMenu['ts_browser_toplevel_' . $bType] = $modMenu[('ts_browser_toplevel_' . $bType)] + $this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)];
+                $modMenu['ts_browser_toplevel_' . $bType] = $modMenu['ts_browser_toplevel_' . $bType] + $this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType];
             }
         }
         return $modMenu;
@@ -389,7 +389,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 'id' => $this->pObj->id
             );
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            if (!$this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)][$this->pObj->sObj]) {
+            if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$this->pObj->sObj]) {
                 if (!empty($theSetup)) {
                     $out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj))) . '">';
                     $out .= sprintf($lang->getLL('addKey'), htmlspecialchars($this->pObj->sObj));

@@ -302,7 +302,7 @@ class Rfc822AddressesParser
         for ($i = 0; $i < $partsCounter; $i++) {
             if ($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>') || $this->_hasUnclosedBrackets($string, '[]') || $this->_hasUnclosedBrackets($string, '()') || substr($string, -1) == '\\') {
                 if (isset($parts[$i + 1])) {
-                    $string = $string . $char . $parts[($i + 1)];
+                    $string = $string . $char . $parts[$i + 1];
                 } else {
                     $this->error = 'Invalid address spec. Unclosed bracket or quotes';
                     return false;
@@ -385,7 +385,7 @@ class Rfc822AddressesParser
                 $num--;
             }
             if (isset($parts[$i + 1])) {
-                $parts[$i + 1] = $parts[$i] . $char . $parts[($i + 1)];
+                $parts[$i + 1] = $parts[$i] . $char . $parts[$i + 1];
             }
         }
         return $num;

@@ -189,7 +189,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
             }
             if ($useTfoot) {
                 $tableContents .= '
-					<tfoot>' . $rows[($rCount - 1)] . '</tfoot>';
+					<tfoot>' . $rows[$rCount - 1] . '</tfoot>';
                 unset($rows[$rCount - 1]);
                 $addTbody = 1;
             }
@@ -861,7 +861,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                                 $imageMarkers['caption'] = $this->cObj->substituteMarkerArray($imageMarkers['caption'], $captionMarkers, '###|###', 1, 1);
                             }
                             if ($addClassesImageConf[$imagesCounter - 1]['addClassesImage']) {
-                                $imageMarkers['classes'] = ' ' . $addClassesImageConf[($imagesCounter - 1)]['addClassesImage'];
+                                $imageMarkers['classes'] = ' ' . $addClassesImageConf[$imagesCounter - 1]['addClassesImage'];
                             }
                         }
                         $columnImages[] = $this->cObj->substituteMarkerArray($single, $imageMarkers, '###|###', 1, 1);
@@ -871,7 +871,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                     // Start filling the markers for columnStdWrap
                     $columnMarkers = array();
                     if ($addClassesColConf[$columnCounter - 1]['addClassesCol']) {
-                        $columnMarkers['classes'] = ' ' . $addClassesColConf[($columnCounter - 1)]['addClassesCol'];
+                        $columnMarkers['classes'] = ' ' . $addClassesColConf[$columnCounter - 1]['addClassesCol'];
                     }
                     $rowColumns[] = $this->cObj->substituteMarkerArray($rowColumn, $columnMarkers, '###|###', 1, 1);
                 }

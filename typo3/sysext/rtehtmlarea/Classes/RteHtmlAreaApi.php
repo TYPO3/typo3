@@ -130,7 +130,7 @@ abstract class RteHtmlAreaApi
         $pluginButtons = GeneralUtility::trimExplode(',', $this->pluginButtons, true);
         foreach ($pluginButtons as $button) {
             if (in_array($button, $this->toolbar)) {
-                if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+                if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                     $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
                 }
             }

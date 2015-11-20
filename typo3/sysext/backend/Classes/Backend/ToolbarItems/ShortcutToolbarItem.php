@@ -873,7 +873,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             $splitModuleName = explode('_', $moduleName);
             $title = $languageService->moduleLabels['tabs'][$splitModuleName[0] . '_tab'];
             if (count($splitModuleName) > 1) {
-                $title .= '>' . $languageService->moduleLabels['tabs'][($moduleName . '_tab')];
+                $title .= '>' . $languageService->moduleLabels['tabs'][$moduleName . '_tab'];
             }
         }
         if ($parentModuleName) {

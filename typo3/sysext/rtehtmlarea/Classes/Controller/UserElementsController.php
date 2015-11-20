@@ -249,13 +249,13 @@ class UserElementsController
                                 } else {
                                     $title = $GLOBALS['LANG']->sL($title, true);
                                 }
-                                $description = $GLOBALS['LANG']->sL($v[($k2i . '.')]['description'], true) . '<br />';
-                                if (!$v[($k2i . '.')]['dontInsertSiteUrl']) {
+                                $description = $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], true) . '<br />';
+                                if (!$v[$k2i . '.']['dontInsertSiteUrl']) {
                                     $v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
                                 }
                                 $logo = $v[$k2i . '.']['_icon'] ?: '';
                                 $onClickEvent = '';
-                                switch ((string)$v[($k2i . '.')]['mode']) {
+                                switch ((string)$v[$k2i . '.']['mode']) {
                                     case 'wrap':
                                         $wrap = explode('|', $v[$k2i . '.']['content']);
                                         $onClickEvent = 'wrapHTML(' . GeneralUtility::quoteJSvalue($wrap[0]) . ',' . GeneralUtility::quoteJSvalue($wrap[1]) . ',false);';
@@ -272,7 +272,7 @@ class UserElementsController
                                     case 'insert':
 
                                     default:
-                                        $onClickEvent = 'insertHTML(' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['content']) . ');';
+                                        $onClickEvent = 'insertHTML(' . GeneralUtility::quoteJSvalue($v[$k2i . '.']['content']) . ');';
                                 }
                                 $A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
                                 $subcats[$k2i] = '<tr>

@@ -3663,7 +3663,7 @@ class BackendUtility
                     $userName,
                     self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))
                 );
-                if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][($row['record_table'] . ':' . $row['record_pid'])])) {
+                if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_pid']])) {
                     $GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
                         $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,

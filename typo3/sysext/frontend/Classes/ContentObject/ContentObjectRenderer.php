@@ -5182,7 +5182,7 @@ class ContentObjectRenderer
                                     $tag = $htmlParser->getFirstTag($vvv);
                                     $tagName = strtolower($htmlParser->getFirstTagName($vvv));
                                     $colParts[$kkk] = $htmlParser->removeFirstAndLastTag($vvv);
-                                    if ($cfg['HTMLtableCells.'][$cc . '.']['callRecursive'] || !isset($cfg['HTMLtableCells.'][($cc . '.')]['callRecursive']) && $cfg['HTMLtableCells.']['default.']['callRecursive']) {
+                                    if ($cfg['HTMLtableCells.'][$cc . '.']['callRecursive'] || !isset($cfg['HTMLtableCells.'][$cc . '.']['callRecursive']) && $cfg['HTMLtableCells.']['default.']['callRecursive']) {
                                         if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs']) {
                                             $colParts[$kkk] = str_replace('</p><p>', '</p>' . LF . '<p>', $colParts[$kkk]);
                                         }
@@ -5404,7 +5404,7 @@ class ContentObjectRenderer
                         $contentAccumP++;
                         // If the TypoTag section
                         if (!$breakOut) {
-                            $contentAccum[$contentAccumP - 2] .= $contentAccum[($contentAccumP - 1)] . $contentAccum[$contentAccumP];
+                            $contentAccum[$contentAccumP - 2] .= $contentAccum[$contentAccumP - 1] . $contentAccum[$contentAccumP];
                             unset($contentAccum[$contentAccumP]);
                             unset($contentAccum[$contentAccumP - 1]);
                             $contentAccumP -= 2;

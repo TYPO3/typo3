@@ -473,7 +473,7 @@ class ExtendedTemplateService extends TemplateService
                         }
                         $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
                         if ($this->bType != 'const') {
-                            $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[($key . '.ln..')]) : 'N/A';
+                            $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
                         } else {
                             $ln = '';
                         }

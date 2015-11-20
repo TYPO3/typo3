@@ -88,7 +88,7 @@ This will check the system for double files relations.';
                 // Compile info string for location of reference:
                 $infoString = $this->infoStr($rec);
                 // Registering occurencies in directories:
-                $resultArray['dirname_registry'][dirname($rec['ref_string'])][($rec['tablename'] . ':' . $rec['field'])]++;
+                $resultArray['dirname_registry'][dirname($rec['ref_string'])][$rec['tablename'] . ':' . $rec['field']]++;
                 // Handle missing file:
                 if (!@is_file((PATH_site . $rec['ref_string']))) {
                     $resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;

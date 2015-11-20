@@ -1284,7 +1284,7 @@ class CharsetConverter
                     foreach (array_reverse($decomposition['U+' . $code_value]) as $cv) {
                         array_unshift($to, $cv);
                     }
-                } elseif (!isset($mark[('U+' . $code_value)])) {
+                } elseif (!isset($mark['U+' . $code_value])) {
                     // remove mark
                     array_push($code_decomp, $code_value);
                 }

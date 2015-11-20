@@ -74,7 +74,7 @@ class Typo3Image extends RteHtmlAreaApi
         $jsArray = array();
         $button = 'image';
         if (in_array($button, $this->toolbar)) {
-            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+            if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][$button . '.'])) {
                 $jsArray[] = 'RTEarea[editornumber]["buttons"]["' . $button . '"] = new Object();';
             }
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathImageModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_select_image')) . ';';

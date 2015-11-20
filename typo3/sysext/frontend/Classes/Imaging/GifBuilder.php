@@ -656,7 +656,7 @@ class GifBuilder extends GraphicalFunctions
                         $travKeys = array('xSpaceBefore', 'xSpaceAfter', 'ySpaceBefore', 'ySpaceAfter');
                         foreach ($travKeys as $pxKey) {
                             if (isset($conf['splitRendering.'][$cfgK . '.'][$pxKey])) {
-                                $conf['splitRendering.'][$cfgK . '.'][$pxKey] = round($conf['splitRendering.'][($cfgK . '.')][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
+                                $conf['splitRendering.'][$cfgK . '.'][$pxKey] = round($conf['splitRendering.'][$cfgK . '.'][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
                             }
                         }
                     }
