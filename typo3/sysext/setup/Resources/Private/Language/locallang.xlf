@@ -229,7 +229,7 @@
 				<source>Show Thumbnails by default</source>
 			</trans-unit>
 			<trans-unit id="condensedMode">
-				<source>Use condensed mode in backend&lt;br /&gt;(for small screens)</source>
+				<source>Use condensed mode in backend (for small screens)</source>
 			</trans-unit>
 			<trans-unit id="noMenuMode">
 				<source>Select navigation mode</source>
@@ -247,7 +247,7 @@
 				<source>Start up in the following module</source>
 			</trans-unit>
 			<trans-unit id="emailMeAtLogin">
-				<source>Notify me by email, when somebody logs in &lt;br /&gt;from my account</source>
+				<source>Notify me by email when somebody logs in from my account</source>
 			</trans-unit>
 			<trans-unit id="helpText">
 				<source>Show help text when applicable</source>
@@ -295,7 +295,7 @@
 				<source>Make Textareas flexible</source>
 			</trans-unit>
 			<trans-unit id="editFunctionsTab">
-				<source>Edit &amp; Advanced functions</source>
+				<source>Edit and Advanced functions</source>
 			</trans-unit>
 			<trans-unit id="edit_functions">
 				<source>Edit</source>
@@ -322,10 +322,10 @@
 				<source>Advanced functions</source>
 			</trans-unit>
 			<trans-unit id="copyLevels">
-				<source>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</source>
+				<source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
 			<trans-unit id="recursiveDelete">
-				<source>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</source>
+				<source>Recursive Delete(!): Allow ALL subpages to be deleted when deleting a page</source>
 			</trans-unit>
 			<trans-unit id="activateChanges">
 				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
