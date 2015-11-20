@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser
  * HTMLArea.CSS.Parser: CSS Parser

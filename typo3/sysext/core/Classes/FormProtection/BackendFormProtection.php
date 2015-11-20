@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Registry;
+
 /**
  * This class provides protection against cross-site request forgery (XSRF/CSRF)
  * for forms in the BE.
@@ -65,13 +68,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  * flash message for an invalid token
  * }
  * </pre>
- */
-
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Registry;
-
-/**
- * Backend form protection
  */
 class BackendFormProtection extends AbstractFormProtection
 {

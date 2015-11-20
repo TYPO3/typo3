@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Module: TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
@@ -149,7 +150,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 							recursionLevel++;
 						}
 						if (recursionLevel < 20) {
-							for (var i = 0, n = HTMLArea.classesRequires[className].length; i < n; i++) { 
+							for (var i = 0, n = HTMLArea.classesRequires[className].length; i < n; i++) {
 								var classNames = Dom.getClassNames(node);
 								if (classNames.indexOf(HTMLArea.classesRequires[className][i]) === -1) {
 									Dom.addClass(node, HTMLArea.classesRequires[className][i], recursionLevel);
@@ -210,10 +211,10 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 
 		/**
 		 * Check if the class is required by another class assigned to the node
-		 * 
+		 *
 		 * @param object node: the node
 		 * @param string className: the class name to check
-		 * @return boolean 
+		 * @return boolean
 		 */
 		isRequiredClass: function (node, className) {
 			if (typeof HTMLArea.classesRequiredBy !== 'undefined') {

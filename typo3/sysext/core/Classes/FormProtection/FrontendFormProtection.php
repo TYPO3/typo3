@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+
 /**
  * This class provides protection against cross-site request forgery (XSRF/CSRF)
  * for actions in the frontend that change data.
@@ -64,12 +66,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  * Create a flash message for the invalid token or just discard this request.
  * }
  * </pre>
- */
-
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-
-/**
- * Frontend form protection
  */
 class FrontendFormProtection extends AbstractFormProtection
 {
