@@ -23,7 +23,7 @@ use TYPO3\CMS\Install\Status;
 class DirectoryNode extends AbstractNode implements NodeInterface
 {
     /**
-     * @var NULL|integer Default for directories is octal 02775 == decimal 1533
+     * @var NULL|int Default for directories is octal 02775 == decimal 1533
      */
     protected $targetPermission = '2775';
 

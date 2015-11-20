@@ -173,7 +173,7 @@ class ClientUtility
      * stripping of any non-numeric values in the beginning of the string first.
      *
      * @param string $version A string with version number, eg. "/7.32 blablabla
-     * @return double Returns double value, eg. "7.32
+     * @return float Returns double value, eg. "7.32
      */
     public static function getVersion($version)
     {

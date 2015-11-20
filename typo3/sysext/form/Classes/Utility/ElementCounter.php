@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Form\Utility;
 class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $elementCounter = 0;
 
     /**
      * Raise the element counter by one
      *
-     * @return integer
+     * @return int
      */
     public function getElementId()
     {

@@ -447,7 +447,7 @@ class ElementBuilder
      *
      * @param string $needle
      * @param array $haystack
-     * @return boolean TRUE if found
+     * @return bool TRUE if found
      */
     protected function arrayKeyExists($needle, array $haystack = array())
     {

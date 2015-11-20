@@ -65,6 +65,7 @@ return Symfony\CS\Config\Config::create()
         'single_quote',
         'duplicate_semicolon',
         'extra_empty_lines',
-        'phpdoc_no_package'
+        'phpdoc_no_package',
+        'phpdoc_scalar'
     ])
     ->finder($finder);

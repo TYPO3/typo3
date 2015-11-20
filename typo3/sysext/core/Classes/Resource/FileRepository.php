@@ -116,7 +116,7 @@ class FileRepository extends AbstractRepository
      * Find FileReference objects by uid
      *
      * @param int $uid The UID of the sys_file_reference record
-     * @return FileReference|boolean
+     * @return FileReference|bool
      * @throws \InvalidArgumentException
      * @api
      */

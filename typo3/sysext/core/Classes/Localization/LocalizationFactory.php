@@ -75,7 +75,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $charset Character set (option); if not set, determined by the language key
      * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
      * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
-     * @return array|boolean
+     * @return array|bool
      */
     public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = 0, $isLocalizationOverride = false)
     {

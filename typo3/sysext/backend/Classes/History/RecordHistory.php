@@ -1012,7 +1012,7 @@ class RecordHistory
      * to an empty string.
      *
      * @param string $name Name of the argument
-     * @return array|string|integer
+     * @return array|string|int
      */
     protected function getArgument($name)
     {

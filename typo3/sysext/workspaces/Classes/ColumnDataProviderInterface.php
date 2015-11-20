@@ -26,7 +26,7 @@ interface ColumnDataProviderInterface
 
     /**
      * @param Domain\Model\CombinedRecord $combinedRecord
-     * @return string|integer|array
+     * @return string|int|array
      */
     public function getData(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $combinedRecord);
 }

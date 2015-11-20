@@ -2010,7 +2010,7 @@ class Indexer
      * maps frequency from a real number in [0;1] to an integer in [0;$this->freqRange] with anything above $this->freqMax as 1
      * and back.
      *
-     * @param double $freq Frequency
+     * @param float $freq Frequency
      * @return int Frequency in range.
      */
     public function freqMap($freq)

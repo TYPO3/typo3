@@ -34,7 +34,7 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper
 
     /**
      * @param Element $model
-     * @param boolean $returnSelectedValues
+     * @param bool $returnSelectedValues
      * @return array
      */
     public function render(Element $model, $returnSelectedValues = false)

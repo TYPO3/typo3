@@ -291,7 +291,7 @@ abstract class AbstractService
      * Check if a file exists and is readable.
      *
      * @param string $absFile File name with absolute path.
-     * @return string|boolean File name or FALSE.
+     * @return string|bool File name or FALSE.
      */
     public function checkInputFile($absFile)
     {
@@ -313,7 +313,7 @@ abstract class AbstractService
      *
      * @param string $absFile File name to read from.
      * @param int $length Maximum length to read. If empty the whole file will be read.
-     * @return string|boolean $content or FALSE
+     * @return string|bool $content or FALSE
      */
     public function readFile($absFile, $length = 0)
     {
@@ -332,7 +332,7 @@ abstract class AbstractService
      *
      * @param string $content Content to write to the file
      * @param string $absFile File name to write into. If empty a temp file will be created.
-     * @return string|boolean File name or FALSE
+     * @return string|bool File name or FALSE
      */
     public function writeFile($content, $absFile = '')
     {
@@ -355,7 +355,7 @@ abstract class AbstractService
      * Create a temporary file.
      *
      * @param string $filePrefix File prefix.
-     * @return string|boolean File name or FALSE
+     * @return string|bool File name or FALSE
      */
     public function tempFile($filePrefix)
     {

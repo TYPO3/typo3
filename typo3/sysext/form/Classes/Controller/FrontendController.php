@@ -58,7 +58,7 @@ class FrontendController extends ActionController
     /**
      * TRUE if the validation of the form should be skipped
      *
-     * @var boolean
+     * @var bool
      */
     protected $skipValidation = false;
 

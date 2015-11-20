@@ -47,7 +47,7 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
      * This validator always needs to be executed even if the given value is empty.
      * See AbstractValidator::validate()
      *
-     * @var boolean
+     * @var bool
      */
     protected $acceptsEmptyValues = false;
 

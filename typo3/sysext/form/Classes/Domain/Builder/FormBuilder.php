@@ -618,7 +618,7 @@ class FormBuilder
     /**
      * TRUE if the content element rendering should be disabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisableContentElementRendering()
     {

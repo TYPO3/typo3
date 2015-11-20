@@ -214,7 +214,7 @@ class EditDocumentController extends AbstractModule
     /**
      * Workspace used for the editing action.
      *
-     * @var NULL|integer
+     * @var NULL|int
      */
     protected $workspace;
 

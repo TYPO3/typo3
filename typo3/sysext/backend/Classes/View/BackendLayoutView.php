@@ -137,7 +137,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $tableName
      * @param array $data
-     * @return NULL|integer
+     * @return NULL|int
      */
     protected function determinePageId($tableName, array $data)
     {

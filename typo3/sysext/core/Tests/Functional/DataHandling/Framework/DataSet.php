@@ -205,7 +205,7 @@ class DataSet
 
     /**
      * @param string $tableName
-     * @return NULL|integer
+     * @return NULL|int
      */
     public function getIdIndex($tableName)
     {

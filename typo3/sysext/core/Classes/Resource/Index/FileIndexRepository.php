@@ -78,7 +78,7 @@ class FileIndexRepository implements SingletonInterface
      * Retrieves Index record for a given $combinedIdentifier
      *
      * @param string $combinedIdentifier
-     * @return array|boolean
+     * @return array|bool
      */
     public function findOneByCombinedIdentifier($combinedIdentifier)
     {
@@ -90,7 +90,7 @@ class FileIndexRepository implements SingletonInterface
      * Retrieves Index record for a given $fileUid
      *
      * @param int $fileUid
-     * @return array|boolean
+     * @return array|bool
      */
     public function findOneByUid($fileUid)
     {
@@ -107,7 +107,7 @@ class FileIndexRepository implements SingletonInterface
      *
      * @param int $storageUid
      * @param string $identifier
-     * @return array|boolean
+     * @return array|bool
      *
      * @internal only for use from FileRepository
      */
@@ -122,7 +122,7 @@ class FileIndexRepository implements SingletonInterface
      *
      * @param int $storageUid
      * @param string $identifierHash
-     * @return array|boolean
+     * @return array|bool
      *
      * @internal only for use from FileRepository
      */
@@ -140,7 +140,7 @@ class FileIndexRepository implements SingletonInterface
      * Retrieves Index record for a given $fileObject
      *
      * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
-     * @return array|boolean
+     * @return array|bool
      *
      * @internal only for use from FileRepository
      */

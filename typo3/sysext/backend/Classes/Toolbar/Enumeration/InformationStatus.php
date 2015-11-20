@@ -61,7 +61,7 @@ class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration
      * Check if the given status is greater than this status instance
      *
      * @param InformationStatus $status
-     * @return boolean
+     * @return bool
      */
     public function isGreaterThan(InformationStatus $status)
     {

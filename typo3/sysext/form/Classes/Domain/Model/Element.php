@@ -111,7 +111,7 @@ class Element extends AbstractEntity
     /**
      * TRUE if the element should be displayed
      *
-     * @var boolean
+     * @var bool
      */
     protected $showElement;
 

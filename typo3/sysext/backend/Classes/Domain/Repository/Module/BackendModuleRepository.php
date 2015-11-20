@@ -86,7 +86,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      * Finds a module menu entry by name
      *
      * @param string $name
-     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|boolean
+     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|bool
      */
     public function findByModuleName($name)
     {

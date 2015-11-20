@@ -2272,7 +2272,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      * MySQLi fetch_assoc() wrapper function
      *
      * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-     * @return array|boolean Associative array of result row.
+     * @return array|bool Associative array of result row.
      */
     public function sql_fetch_assoc($res)
     {
@@ -2342,7 +2342,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      * MySQLi fetch_row() wrapper function
      *
      * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-     * @return array|boolean Array with result rows.
+     * @return array|bool Array with result rows.
      */
     public function sql_fetch_row($res)
     {
