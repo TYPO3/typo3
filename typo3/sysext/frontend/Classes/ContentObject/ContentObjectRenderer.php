@@ -3532,7 +3532,7 @@ class ContentObjectRenderer
     }
 
     /**
-     * Compares values together based on the settings in the input TypoScript array and returns TRUE or FALSE based on the comparison result.
+     * Compares values together based on the settings in the input TypoScript array and returns the comparison result.
      * Implements the "if" function in TYPO3 TypoScript
      *
      * @param array $conf TypoScript properties defining what to compare
@@ -3767,11 +3767,11 @@ class ContentObjectRenderer
             if (!$inside) {
                 $len = strcspn(substr($str, $pointer), '{');
                 $newVal .= substr($str, $pointer, $len);
-                $inside = 1;
+                $inside = true;
             } else {
                 $len = strcspn(substr($str, $pointer), '}') + 1;
                 $newVal .= $this->getData(substr($str, $pointer + 1, $len - 2), $this->data);
-                $inside = 0;
+                $inside = false;
             }
             $pointer += $len;
         } while ($pointer < $totalLen);
@@ -4639,7 +4639,7 @@ class ContentObjectRenderer
             return $theValue;
         }
         // Indicates that the data is from within a tag.
-        $inside = 0;
+        $inside = false;
         // Pointer to the total string position
         $pointer = 0;
         // Loaded with the current typo-tag if any.
@@ -4748,7 +4748,7 @@ class ContentObjectRenderer
                     }
                     $contentAccum[$contentAccumP] .= $data;
                 }
-                $inside = 1;
+                $inside = true;
             } else {
                 // tags
                 $len = strcspn(substr($theValue, $pointer), '>') + 1;
@@ -4785,7 +4785,7 @@ class ContentObjectRenderer
                         // This flag indicates, that NL- (13-10-chars) should be stripped first and last.
                         $stripNL = (bool)$theConf['stripNL'];
                         // This flag indicates, that this TypoTag section should NOT be included in the nonTypoTag content.
-                        $breakOut = $theConf['breakoutTypoTagContent'] ? 1 : 0;
+                        $breakOut = (bool)$theConf['breakoutTypoTagContent'];
                         $this->parameters = array();
                         if ($currentTag[1]) {
                             $params = GeneralUtility::get_tag_attributes($currentTag[1]);
@@ -4831,7 +4831,7 @@ class ContentObjectRenderer
                         $contentAccum[$contentAccumP] .= HTMLSpecialChars($data);
                     }
                 }
-                $inside = 0;
+                $inside = false;
             }
             $pointer += $len;
         } while ($pointer < $totalLen);
@@ -4875,10 +4875,10 @@ class ContentObjectRenderer
         $str_content = '';
         foreach ($lParts as $k => $l) {
             $sameBeginEnd = 0;
-            $emptyTag = 0;
+            $emptyTag = false;
             $l = trim($l);
             $attrib = array();
-            $nWrapped = 0;
+            $nonWrapped = false;
             $tagName = '';
             if ($l[0] === '<' && substr($l, -1) === '>') {
                 $fwParts = explode('>', substr($l, 1), 2);
@@ -4889,7 +4889,7 @@ class ContentObjectRenderer
                     }
                     if (substr($fwParts[0], -1) === '/') {
                         $sameBeginEnd = 1;
-                        $emptyTag = 1;
+                        $emptyTag = true;
                         $attrib = GeneralUtility::get_tag_attributes('<' . substr($fwParts[0], 0, -1) . '>');
                     }
                 } else {
@@ -4905,9 +4905,9 @@ class ContentObjectRenderer
             } else {
                 $uTagName = strtoupper($nonWrappedTag);
                 // The line will be wrapped: $uTagName should not be an empty tag
-                $emptyTag = 0;
+                $emptyTag = false;
                 $str_content = $lParts[$k];
-                $nWrapped = 1;
+                $nonWrapped = true;
                 $attrib = array();
             }
             // Wrapping all inner-content:
@@ -4950,7 +4950,7 @@ class ContentObjectRenderer
                     }
                 }
             }
-            if ($nWrapped && $conf['wrapNonWrappedLines']) {
+            if ($nonWrapped && $conf['wrapNonWrappedLines']) {
                 $str_content = $this->wrap($str_content, $conf['wrapNonWrappedLines']);
             }
             $lParts[$k] = $str_content;
@@ -7232,26 +7232,26 @@ class ContentObjectRenderer
         } else {
             $groupList = $feUserRow['usergroup'];
         }
-        $ok = 0;
+        $ok = false;
         // Points to the field that allows further editing from frontend if not set. If set the record is locked.
         if (!$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] || !$row[$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']]) {
             // Points to the field (int) that holds the fe_users-id of the creator fe_user
             if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']) {
                 $rowFEUser = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']];
                 if ($rowFEUser && $rowFEUser === (int)$feUserRow['uid']) {
-                    $ok = 1;
+                    $ok = true;
                 }
             }
             // If $feEditSelf is set, fe_users may always edit them selves...
             if ($feEditSelf && $table === 'fe_users' && (int)$feUserRow['uid'] === (int)$row['uid']) {
-                $ok = 1;
+                $ok = true;
             }
             // Points to the field (int) that holds the fe_group-id of the creator fe_user's first group
             if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']) {
                 $rowFEUser = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']];
                 if ($rowFEUser) {
                     if (GeneralUtility::inList($groupList, $rowFEUser)) {
-                        $ok = 1;
+                        $ok = true;
                     }
                 }
             }
@@ -7537,7 +7537,7 @@ class ContentObjectRenderer
      * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-     * @return bool|\mysqli_result SQL result pointer
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      * @see mm_query_uidList()
      */
     public function exec_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
@@ -7566,7 +7566,7 @@ class ContentObjectRenderer
      * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-     * @return bool|\mysqli_result SQL result pointer
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      * @see mm_query()
      */
     public function exec_mm_query_uidList($select, $local_table_uidlist, $mm_table, $foreign_table = '', $whereClause = '', $groupBy = '', $orderBy = '', $limit = '')
@@ -7623,7 +7623,7 @@ class ContentObjectRenderer
      *
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
-     * @return mixed A SQL result pointer
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      * @see getQuery()
      */
     public function exec_getQuery($table, $conf)

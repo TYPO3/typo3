@@ -113,9 +113,9 @@ class AbstractPlugin
      * Flag that tells if the locallang file has been fetch (or tried to
      * be fetched) already.
      *
-     * @var int
+     * @var bool
      */
-    public $LOCAL_LANG_loaded = 0;
+    public $LOCAL_LANG_loaded = false;
 
     /**
      * Pointer to the language to use.
@@ -178,9 +178,9 @@ class AbstractPlugin
     public $pi_autoCacheFields = array();
 
     /**
-     * @var int
+     * @var bool
      */
-    public $pi_autoCacheEn = 0;
+    public $pi_autoCacheEn = false;
 
     /**
      * If set, then links are
@@ -543,7 +543,7 @@ class AbstractPlugin
         //	 		 2: only the text "Displaying results..." will be shown
         $showResultCount = (int)$showResultCount;
         // If this is set, two links named "<< First" and "LAST >>" will be shown and point to the very first or last page.
-        $showFirstLast = $this->internal['showFirstLast'];
+        $showFirstLast = !empty($this->internal['showFirstLast']);
         // If this has a value the "previous" button is always visible (will be forced if "showFirstLast" is set)
         $alwaysPrev = $showFirstLast ? 1 : $this->pi_alwaysPrev;
         if (isset($this->internal['pagefloat'])) {
@@ -1016,7 +1016,7 @@ class AbstractPlugin
                 }
             }
         }
-        $this->LOCAL_LANG_loaded = 1;
+        $this->LOCAL_LANG_loaded = true;
     }
 
     /***************************

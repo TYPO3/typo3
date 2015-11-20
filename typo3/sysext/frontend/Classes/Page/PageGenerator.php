@@ -70,7 +70,7 @@ class PageGenerator
         }
         // Global vars...
         $tsfe->indexedDocTitle = $tsfe->page['title'];
-        $tsfe->debug = '' . $tsfe->config['config']['debug'];
+        $tsfe->debug = !empty($tsfe->config['config']['debug']);
         // Base url:
         if (isset($tsfe->config['config']['baseURL'])) {
             $tsfe->baseUrl = $tsfe->config['config']['baseURL'];

@@ -99,7 +99,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * @var bool
      */
-    public $is_permanent;
+    public $is_permanent = false;
 
     /**
      * @var int|NULL
@@ -188,7 +188,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function getNewSessionRecord($tempuser)
     {
         $insertFields = parent::getNewSessionRecord($tempuser);
-        $insertFields['ses_permanent'] = $this->is_permanent;
+        $insertFields['ses_permanent'] = $this->is_permanent ? 1 : 0;
         return $insertFields;
     }
 
@@ -237,11 +237,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 // we need to force setting the session cookie here
                 $this->forceSetCookie = true;
             }
-            $isPermanent = $isPermanent ? 1 : 0;
+            $isPermanent = (bool)$isPermanent;
         } elseif ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
-            $isPermanent = 1;
+            $isPermanent = true;
         } else {
-            $isPermanent = 0;
+            $isPermanent = false;
         }
         $loginData['permanent'] = $isPermanent;
         $this->is_permanent = $isPermanent;

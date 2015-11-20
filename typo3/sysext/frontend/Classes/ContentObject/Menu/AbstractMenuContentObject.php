@@ -82,7 +82,7 @@ abstract class AbstractMenuContentObject
     /**
      * @var bool
      */
-    public $debug = 0;
+    public $debug = false;
 
     /**
      * Loaded with the parent cObj-object when a new HMENU is made
