@@ -478,7 +478,6 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      *
      * @dataProvider sortArrayWithIntegerKeysDataProvider
      */
-
     public function sortArrayWithIntegerKeysSortsNumericArrays(array $arrayToSort, array $expectedArray)
     {
         $sortedArray = \TYPO3\CMS\Extbase\Utility\ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);

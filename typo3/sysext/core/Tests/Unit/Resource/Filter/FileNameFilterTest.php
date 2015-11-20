@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 

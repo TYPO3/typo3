@@ -64,7 +64,6 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
      * @return string the rendered shortcut button
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
      */
-
     public function render(array $getVars = array(), array $setVars = array())
     {
         return static::renderStatic(

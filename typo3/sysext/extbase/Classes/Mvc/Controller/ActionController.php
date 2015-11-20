@@ -221,7 +221,6 @@ class ActionController extends AbstractController
          * @todo: add validation group support
          * (https://review.typo3.org/#/c/13556/4)
          */
-
         $actionMethodParameters = static::getActionMethodParameters($this->objectManager);
         if (isset($actionMethodParameters[$this->actionMethodName])) {
             $methodParameters = $actionMethodParameters[$this->actionMethodName];
@@ -233,7 +232,6 @@ class ActionController extends AbstractController
          * @todo: add resolving of $actionValidateAnnotations and pass them to
          * buildMethodArgumentsValidatorConjunctions as in TYPO3.Flow
          */
-
         $parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {

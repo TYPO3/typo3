@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;

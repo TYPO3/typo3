@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Type\File;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Type\TypeInterface;
 
 /**

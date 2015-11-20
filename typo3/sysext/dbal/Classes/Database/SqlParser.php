@@ -80,7 +80,6 @@ class SqlParser
     /**
      * @var SqlCompilers\Adodb
      */
-
     protected $sqlCompiler;
 
     /**

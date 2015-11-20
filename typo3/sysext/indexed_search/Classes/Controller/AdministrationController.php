@@ -13,7 +13,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

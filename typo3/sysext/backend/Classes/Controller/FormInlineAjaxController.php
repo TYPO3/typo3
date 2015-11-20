@@ -140,7 +140,6 @@ class FormInlineAjaxController
             }
         }
          */
-
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
             // We have a foreign_selector. So, we just created a new record on an intermediate table in $mainChild.
             // Now, if a valid id is given as second ajax parameter, the intermediate row should be connected to an

@@ -17,7 +17,6 @@
  * This file is only a deprecation layer, and all @deprecated entrypoints fallbacks will be removed with TYPO3 CMS 8
  * Use the UriBuilder for generating routes in your scripts to link to Ajax pages, Modules or simple pages in the Backend.
  */
-
 use TYPO3\CMS\Backend\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

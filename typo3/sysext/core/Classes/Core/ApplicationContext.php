@@ -106,7 +106,6 @@ class ApplicationContext
      * @return bool
      * @api
      */
-
     public function isProduction()
     {
         return ($this->rootContextString === 'Production');

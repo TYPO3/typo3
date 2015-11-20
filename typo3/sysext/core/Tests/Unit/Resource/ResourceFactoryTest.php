@@ -156,7 +156,6 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @test
      * @dataProvider storageDetectionDataProvider
      */
-
     public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId)
     {
         $this->subject->_set('localDriverStorageCache', $storageConfiguration);
