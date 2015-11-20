@@ -4941,12 +4941,12 @@ class ContentObjectRenderer
         if ($min && $splitCount < $min) {
             $splitCount = $min;
         }
-        $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-        $cObjNum = isset($conf['cObjNum.']) ? (int)$this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : (int)$conf['cObjNum'];
+        $wrap = isset($conf['wrap.']) ? (string)$this->stdWrap($conf['wrap'], $conf['wrap.']) : (string)$conf['wrap'];
+        $cObjNumSplitConf = isset($conf['cObjNum.']) ? (string)$this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : (string)$conf['cObjNum'];
         $splitArr = array();
-        if ($wrap || $cObjNum) {
+        if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
-            $splitArr['cObjNum'] = $cObjNum;
+            $splitArr['cObjNum'] = $cObjNumSplitConf;
             $splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $splitCount);
         }
         $content = '';
