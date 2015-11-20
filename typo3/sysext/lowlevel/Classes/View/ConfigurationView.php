@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Lowlevel\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,6 +57,27 @@ class ConfigurationView {
 	 * @todo Define visibility
 	 */
 	public $content;
+
+	/**
+	 * Blind configurations which should not be visible
+	 *
+	 * @var array
+	 */
+	protected $blindedConfigurationOptions = array(
+		'TYPO3_CONF_VARS' => array(
+			'DB' => array(
+				'database' => '******',
+				'host' => '******',
+				'password' => '******',
+				'port' => '******',
+				'socket' => '******',
+				'username' => '******'
+			),
+			'SYS' => array(
+				'encryptionKey' => '******'
+			)
+		)
+	);
 
 	/**
 	 * Constructor
@@ -208,9 +230,10 @@ class ConfigurationView {
 		if (GeneralUtility::_POST('search') && trim($search_field)) {
 			$arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
 		}
-		// mask the encryption key to not show it as plaintext in the configuration module
-		if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
-			$theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
+		// mask sensitive information
+		$varName = trim($arrayBrowser->varName, '$');
+		if (isset($this->blindedConfigurationOptions[$varName])) {
+			ArrayUtility::mergeRecursiveWithOverrule($theVar, $this->blindedConfigurationOptions[$varName]);
 		}
 		$tree = $arrayBrowser->tree($theVar, '', '');
 		$this->content .= $this->doc->sectionEnd();
