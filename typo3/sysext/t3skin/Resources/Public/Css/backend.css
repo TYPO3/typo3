@@ -12219,6 +12219,15 @@ fieldset[disabled] .form-control {
   color: #c83c3c;
   display: inline-block;
 }
+.form-group.has-error .btn-toolbar label:before {
+  font-family: inherit;
+  font-size: inherit;
+  margin-right: inherit;
+  text-align: inherit;
+  content: '';
+  color: inherit;
+  display: block;
+}
 .form-group.has-error .input-group-btn label {
   border-color: #c83c3c;
 }

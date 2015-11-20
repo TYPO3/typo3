@@ -344,7 +344,7 @@ class RichTextElement extends AbstractFormElement
         $result[] =    $this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:Please wait');
         $result[] = '</div>';
         $result[] = '<div id="editorWrap' . $this->domIdentifier . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:100%;">';
-        $result[] =    '<textarea id="RTEarea' . $this->domIdentifier . '" name="' . htmlspecialchars($itemFormElementName) . '" rows="0" cols="0" style="' . htmlspecialchars($rteDivStyle) . '">';
+        $result[] =    '<textarea ' . $this->getValidationDataAsDataAttribute($this->data['parameterArray']['fieldConf']['config']) . ' id="RTEarea' . $this->domIdentifier . '" name="' . htmlspecialchars($itemFormElementName) . '" rows="0" cols="0" style="' . htmlspecialchars($rteDivStyle) . '">';
         $result[] =        htmlspecialchars($value);
         $result[] =    '</textarea>';
         $result[] = '</div>';
