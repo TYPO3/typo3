@@ -73,7 +73,7 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $isSet = null;
         $originalPassword = 'M$P$CibIRipvLfaPlaaeH8ifu9g21BrPjp.';
         $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
-        $this->assertSame(null, $isSet);
+        $this->assertNull($isSet);
         $this->assertSame($originalPassword, $saltedPassword);
     }
 }

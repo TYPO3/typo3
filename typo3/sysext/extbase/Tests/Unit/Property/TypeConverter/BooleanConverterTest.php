@@ -61,7 +61,7 @@ class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertFromCastsSourceStringToBoolean()
     {
         $source = 'true';
-        $this->assertSame(true, $this->converter->convertFrom($source, 'boolean'));
+        $this->assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 
     /**
@@ -70,6 +70,6 @@ class BooleanConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function convertFromCastsNumericSourceStringToBoolean()
     {
         $source = '1';
-        $this->assertSame(true, $this->converter->convertFrom($source, 'boolean'));
+        $this->assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 }
