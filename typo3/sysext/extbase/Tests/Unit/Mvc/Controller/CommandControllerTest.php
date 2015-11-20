@@ -94,7 +94,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         }
                     }
                 ));
-        $this->commandController->_set('userAuthentication', $mockedUserAuthentication);
+        $GLOBALS['BE_USER'] = $mockedUserAuthentication;
         $this->commandController->_set('arguments', array());
         $this->commandController->_set('commandMethodName', 'dummyCommand');
         $this->commandController->_set('requestAdminPermissions', true);

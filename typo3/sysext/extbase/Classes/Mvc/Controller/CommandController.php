@@ -15,16 +15,20 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
 use TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput;
 use TYPO3\CMS\Extbase\Mvc\Cli\Request;
 use TYPO3\CMS\Extbase\Mvc\Cli\Response;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * A controller which processes requests from the command line
@@ -64,22 +68,17 @@ class CommandController implements CommandControllerInterface
     protected $requestAdminPermissions = false;
 
     /**
-     * @var AbstractUserAuthentication
-     */
-    protected $userAuthentication;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
+     * @var ReflectionService
      */
     protected $reflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput
+     * @var ConsoleOutput
      */
     protected $output;
 
@@ -87,18 +86,15 @@ class CommandController implements CommandControllerInterface
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @return void
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
-        $this->userAuthentication = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
-        $this->output = $this->objectManager->get(ConsoleOutput::class);
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
      */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
+    public function injectReflectionService(ReflectionService $reflectionService)
     {
         $this->reflectionService = $reflectionService;
     }
@@ -134,6 +130,8 @@ class CommandController implements CommandControllerInterface
         $this->response = $response;
 
         $this->commandMethodName = $this->resolveCommandMethodName();
+        $this->output = $this->objectManager->get(ConsoleOutput::class);
+        $this->arguments = $this->objectManager->get(Arguments::class);
         $this->initializeCommandMethodArguments();
         $this->mapRequestArgumentsToControllerArguments();
         $this->callCommandMethod();
@@ -168,7 +166,6 @@ class CommandController implements CommandControllerInterface
      */
     protected function initializeCommandMethodArguments()
     {
-        $this->arguments->removeAll();
         $methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->commandMethodName);
 
         foreach ($methodParameters as $parameterName => $parameterInfo) {
@@ -271,11 +268,14 @@ class CommandController implements CommandControllerInterface
      */
     protected function ensureAdminRoleIfRequested()
     {
-        if (!$this->requestAdminPermissions || !$this->userAuthentication || !isset($this->userAuthentication->user['admin'])) {
+        $userAuthentication = $this->getBackendUserAuthentication();
+
+        if (!$this->requestAdminPermissions || $userAuthentication === null || !isset($userAuthentication->user['admin'])) {
             return null;
         }
-        $originalRole = $this->userAuthentication->user['admin'];
-        $this->userAuthentication->user['admin'] = 1;
+
+        $originalRole = $userAuthentication->user['admin'];
+        $userAuthentication->user['admin'] = 1;
         return $originalRole;
     }
 
@@ -286,8 +286,10 @@ class CommandController implements CommandControllerInterface
      */
     protected function restoreUserRole($originalRole)
     {
-        if ($originalRole !== null) {
-            $this->userAuthentication->user['admin'] = $originalRole;
+        $userAuthentication = $this->getBackendUserAuthentication();
+
+        if ($originalRole !== null && $userAuthentication !== null) {
+            $userAuthentication->user['admin'] = $originalRole;
         }
     }
 
@@ -358,5 +360,15 @@ class CommandController implements CommandControllerInterface
     {
         $this->response->send();
         exit($exitCode);
+    }
+
+    /**
+     * Returns the global BackendUserAuthentication object.
+     *
+     * @return BackendUserAuthentication|null
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
     }
 }
