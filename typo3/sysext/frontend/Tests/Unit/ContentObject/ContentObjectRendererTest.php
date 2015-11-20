@@ -3003,6 +3003,121 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @param array $settings
+	 * @param string $linkText
+	 * @param string $mailAddress
+	 * @param string $expected
+	 * @dataProvider typoLinkEncodesMailAddressForSpamProtectionDataProvider
+	 * @test
+	 */
+	public function typoLinkEncodesMailAddressForSpamProtection(array $settings, $linkText, $mailAddress, $expected) {
+		$this->getFrontendController()->spamProtectEmailAddresses = $settings['spamProtectEmailAddresses'];
+		$this->getFrontendController()->config['config'] = $settings;
+		$typoScript = array('parameter' => $mailAddress);
+
+		$this->assertEquals($expected, $this->cObj->typoLink($linkText, $typoScript));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typoLinkEncodesMailAddressForSpamProtectionDataProvider() {
+		return array(
+			'plain mail without mailto scheme' => array(
+				array(
+					'spamProtectEmailAddresses' => '',
+					'spamProtectEmailAddresses_atSubst' => '',
+					'spamProtectEmailAddresses_lastDotSubst' => '',
+				),
+				'some.body@test.typo3.org',
+				'some.body@test.typo3.org',
+				'<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+			),
+			'plain mail with mailto scheme' => array(
+				array(
+					'spamProtectEmailAddresses' => '',
+					'spamProtectEmailAddresses_atSubst' => '',
+					'spamProtectEmailAddresses_lastDotSubst' => '',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+			),
+			'plain with at and dot substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => '0',
+					'spamProtectEmailAddresses_atSubst' => '(at)',
+					'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="mailto:some.body@test.typo3.org">some.body@test.typo3.org</a>',
+			),
+			'mono-alphabetic substitution offset +1' => array(
+				array(
+					'spamProtectEmailAddresses' => '1',
+					'spamProtectEmailAddresses_atSubst' => '',
+					'spamProtectEmailAddresses_lastDotSubst' => '',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf/cpezAuftu/uzqp4/psh\');">some.body(at)test.typo3.org</a>',
+			),
+			'mono-alphabetic substitution offset +1 with at substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => '1',
+					'spamProtectEmailAddresses_atSubst' => '@',
+					'spamProtectEmailAddresses_lastDotSubst' => '',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf/cpezAuftu/uzqp4/psh\');">some.body@test.typo3.org</a>',
+			),
+			'mono-alphabetic substitution offset +1 with at and dot substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => '1',
+					'spamProtectEmailAddresses_atSubst' => '(at)',
+					'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnf/cpezAuftu/uzqp4/psh\');">some.body(at)test.typo3(dot)org</a>',
+			),
+			'mono-alphabetic substitution offset -1 with at and dot substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => '-1',
+					'spamProtectEmailAddresses_atSubst' => '(at)',
+					'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="javascript:linkTo_UnCryptMailto(\'lzhksn9rnld-ancxZsdrs-sxon2-nqf\');">some.body(at)test.typo3(dot)org</a>',
+			),
+			'entity substitution with at and dot substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => 'ascii',
+					'spamProtectEmailAddresses_atSubst' => '',
+					'spamProtectEmailAddresses_lastDotSubst' => '',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3.org</a>',
+			),
+			'entity substitution with at and dot substitution with at and dot substitution' => array(
+				array(
+					'spamProtectEmailAddresses' => 'ascii',
+					'spamProtectEmailAddresses_atSubst' => '(at)',
+					'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
+				),
+				'some.body@test.typo3.org',
+				'mailto:some.body@test.typo3.org',
+				'<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3(dot)org</a>',
+			),
+		);
+	}
+
+
+	/**
 	 * @return array
 	 */
 	public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider() {
@@ -3278,6 +3393,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
 		$this->assertEquals($expectedResult, $this->cObj->typoLink($linkText, $configuration));
+	}
+
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getFrontendController() {
+		return $GLOBALS['TSFE'];
 	}
 
 }
