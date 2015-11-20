@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
+use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
 
 /**
  * Test case

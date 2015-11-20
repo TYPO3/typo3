@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Http\Uri;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Request

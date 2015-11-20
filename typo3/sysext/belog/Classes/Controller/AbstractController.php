@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Belog\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Abstract class to show log entries from sys_log

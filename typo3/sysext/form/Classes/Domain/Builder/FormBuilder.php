@@ -14,14 +14,14 @@ namespace TYPO3\CMS\Form\Domain\Builder;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Configuration;
 use TYPO3\CMS\Form\Domain\Model\Element;
 use TYPO3\CMS\Form\Domain\Model\ValidationElement;
+use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Utility\CompatibilityLayerUtility;
 use TYPO3\CMS\Form\Utility\FormUtility;
-use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Form\Domain\Model\Configuration;
 
 /**
  * TypoScript factory for form

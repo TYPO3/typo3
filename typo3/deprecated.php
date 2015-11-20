@@ -18,8 +18,8 @@
  * Use the UriBuilder for generating routes in your scripts to link to Ajax pages, Modules or simple pages in the Backend.
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Controller;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../vendor/autoload.php';

@@ -14,14 +14,14 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Tests\Fixture\DummyController;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Cli\Command;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandManager;
 use TYPO3\CMS\Extbase\Scheduler\FieldProvider;
-use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Extbase\Tests\MockACommandController;
 use TYPO3\CMS\Extbase\Scheduler\Task;
+use TYPO3\CMS\Extbase\Tests\Fixture\DummyController;
+use TYPO3\CMS\Extbase\Tests\MockACommandController;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 
 /**
  * Test case

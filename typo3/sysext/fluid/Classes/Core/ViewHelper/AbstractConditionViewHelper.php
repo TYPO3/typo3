@@ -11,9 +11,9 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
-use TYPO3\CMS\Fluid\ViewHelpers\ElseViewHelper;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3\CMS\Fluid\ViewHelpers\ElseViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
 
 /**
  * This view helper is an abstract ViewHelper which implements an if/else condition.

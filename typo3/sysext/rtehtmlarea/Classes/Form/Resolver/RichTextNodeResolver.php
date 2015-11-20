@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Rtehtmlarea\Form\Resolver;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\NodeResolverInterface;
-use TYPO3\CMS\Rtehtmlarea\Form\Element\RichTextElement;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Form\NodeResolverInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Rtehtmlarea\Form\Element\RichTextElement;
 
 /**
  * This resolver will return the RichTextElement render class of ext:rtehtmlarea if RTE is enabled for this field.

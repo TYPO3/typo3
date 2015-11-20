@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Form\Element\NoneElement;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

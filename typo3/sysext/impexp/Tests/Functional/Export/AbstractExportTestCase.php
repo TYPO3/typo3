@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Functional test for the ImportExport

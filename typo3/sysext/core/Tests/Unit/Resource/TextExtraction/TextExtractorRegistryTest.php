@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
+use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
 
 /**
  * Test cases for TextExtractorRegistry

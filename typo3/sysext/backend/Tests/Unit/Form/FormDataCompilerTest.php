@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

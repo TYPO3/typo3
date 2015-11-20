@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Workspaces\Service\StagesService;
-use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
+use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * ExtDirect action handler

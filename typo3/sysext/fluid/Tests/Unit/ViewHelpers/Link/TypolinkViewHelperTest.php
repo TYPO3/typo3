@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 

@@ -11,10 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
-use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
 
 /**
  * This ViewHelper prevents rendering of any content inside the tag

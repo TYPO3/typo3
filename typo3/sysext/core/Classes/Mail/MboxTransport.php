@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Locking\LockFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions.

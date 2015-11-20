@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  */
 
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
-use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\LockFactory;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
 use TYPO3\CMS\Core\Tests\UnitTestCase;

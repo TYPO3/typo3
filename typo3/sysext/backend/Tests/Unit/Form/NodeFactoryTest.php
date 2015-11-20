@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  */
 
 use TYPO3\CMS\Backend\Form\Element;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Form\NodeResolverInterface;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

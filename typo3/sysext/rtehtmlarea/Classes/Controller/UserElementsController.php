@@ -13,8 +13,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Form\Domain\Repository;
  */
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provide the TypoScript data-source

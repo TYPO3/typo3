@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
  * Tests for \TYPO3\CMS\Backend\Tests\Unit\Controller\File\FileController

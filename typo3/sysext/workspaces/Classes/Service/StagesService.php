@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
+use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 
 /**
  * Stages service

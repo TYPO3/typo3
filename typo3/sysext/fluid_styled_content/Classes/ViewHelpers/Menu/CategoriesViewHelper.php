@@ -15,8 +15,8 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
 /**
  * A view helper which returns records with assigned categories

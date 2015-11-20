@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Http;
  */
 
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Default implementation for the RequestInterface of the PSR-7 standard

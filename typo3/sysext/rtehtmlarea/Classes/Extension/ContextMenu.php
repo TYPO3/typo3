@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
  * Context Menu plugin for htmlArea RTE

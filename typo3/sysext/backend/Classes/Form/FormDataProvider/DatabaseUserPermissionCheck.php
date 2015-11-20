@@ -14,19 +14,19 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageEditException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageEditException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Determine user permission for action and check them

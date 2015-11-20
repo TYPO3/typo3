@@ -16,8 +16,8 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\IndexedSearch\Utility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * Index search frontend

@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Test case

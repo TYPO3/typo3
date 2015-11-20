@@ -13,8 +13,8 @@
 
 namespace Composer\Autoload;
 
-use Symfony\Component\Finder\Finder;
 use Composer\IO\IOInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * ClassMapGenerator

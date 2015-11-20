@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Report;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\Exception;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status;
-use TYPO3\CMS\Install\Service\Exception;
 
 /**
  * Provides an installation status report.

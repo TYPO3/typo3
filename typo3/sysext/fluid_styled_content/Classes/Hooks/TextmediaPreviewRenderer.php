@@ -14,9 +14,9 @@ namespace TYPO3\CMS\FluidStyledContent\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
-use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 
 /**
  * Contains a preview rendering for the page module of CType="textmedia"

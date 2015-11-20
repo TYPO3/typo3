@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Version\Dependency;
+use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
  * Service to collect dependent elements.

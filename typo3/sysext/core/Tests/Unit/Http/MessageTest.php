@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Message;
+use TYPO3\CMS\Core\Http\Stream;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\Message

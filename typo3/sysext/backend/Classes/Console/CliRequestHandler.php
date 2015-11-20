@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Console\RequestHandlerInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 

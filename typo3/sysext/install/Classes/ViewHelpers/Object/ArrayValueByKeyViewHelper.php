@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Install\ViewHelpers\Object;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\ViewHelpers\Exception;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Install\ViewHelpers\Exception;
 
 /**
  * View helper which allows you to access a key in an array.

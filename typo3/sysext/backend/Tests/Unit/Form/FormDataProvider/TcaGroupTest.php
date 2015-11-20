@@ -16,11 +16,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Install\Tests\Unit\Updates;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Updates\ContentTypesToTextMediaUpdate as UpdateWizard;
-use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Test Class for ContentTypesToTextMediaUpdate

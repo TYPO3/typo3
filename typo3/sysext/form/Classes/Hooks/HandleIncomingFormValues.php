@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Form\Hooks;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Builder\FormBuilder;
 use TYPO3\CMS\Form\Domain\Model\Element;
 use TYPO3\CMS\Form\Domain\Model\ValidationElement;
-use TYPO3\CMS\Form\Domain\Builder\FormBuilder;
 
 /**
  * Handle the incoming form data

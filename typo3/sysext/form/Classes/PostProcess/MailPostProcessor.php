@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Form\PostProcess;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Utility\FormUtility;
 

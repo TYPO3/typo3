@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
  * Controller abstract for shared parts of Tool, Step and Ajax controller

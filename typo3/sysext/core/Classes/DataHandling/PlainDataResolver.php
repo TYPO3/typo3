@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Plain data resolving.

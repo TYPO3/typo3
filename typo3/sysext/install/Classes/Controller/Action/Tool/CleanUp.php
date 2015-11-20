@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Controller\Action;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\ErrorStatus;
 use TYPO3\CMS\Install\Status\InfoStatus;
 use TYPO3\CMS\Install\Status\OkStatus;

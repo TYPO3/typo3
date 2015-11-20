@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Workspaces\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Implements the preview controller of the workspace module.

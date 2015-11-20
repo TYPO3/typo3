@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Backend\View;
  */
 
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**

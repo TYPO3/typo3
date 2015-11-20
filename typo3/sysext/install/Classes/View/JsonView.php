@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Install\View;
  */
 
 use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
-use TYPO3\CMS\Install\Status\StatusInterface;
 use TYPO3\CMS\Install\Status\Exception as StatusException;
+use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Simple JsonView (currently returns an associative array)

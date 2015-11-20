@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * HelpButton

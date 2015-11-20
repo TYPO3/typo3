@@ -15,13 +15,13 @@ namespace TYPO3\CMS\Form\Controller;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Form\Domain\Model\ValidationElement;
-use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Builder\FormBuilder;
 use TYPO3\CMS\Form\Domain\Builder\ValidationBuilder;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
+use TYPO3\CMS\Form\Domain\Model\ValidationElement;
+use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Utility\FormUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * The form wizard controller

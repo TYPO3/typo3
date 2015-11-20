@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Install\Controller\Action;
 
 /**
  * Test various system setup settings

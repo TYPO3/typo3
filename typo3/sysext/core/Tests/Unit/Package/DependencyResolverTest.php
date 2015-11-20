@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  */
 
 use TYPO3\CMS\Core\Package\DependencyResolver;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

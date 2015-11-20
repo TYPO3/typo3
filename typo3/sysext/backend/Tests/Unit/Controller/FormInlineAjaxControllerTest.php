@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

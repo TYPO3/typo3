@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render the image attributes and reconstruct magic images, if necessary (and possible)

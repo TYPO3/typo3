@@ -18,14 +18,14 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**

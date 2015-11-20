@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Migrations;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case

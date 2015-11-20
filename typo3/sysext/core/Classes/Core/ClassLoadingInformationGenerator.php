@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Composer\Autoload\ClassMapGenerator;
 use Composer\Autoload\ClassLoader;
+use Composer\Autoload\ClassMapGenerator;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

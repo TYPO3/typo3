@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Install\Report;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Reports\Status;
 
 /**
  * Provides an status report of the security of the install tool

@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Install\Controller\Action;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action;
 
 /**
  * Handle important actions
