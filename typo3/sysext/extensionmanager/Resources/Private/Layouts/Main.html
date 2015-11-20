@@ -1,3 +1,5 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+
 <f:be.pageRenderer
 	loadJQuery="true"
 	jQueryNamespace="none"
@@ -13,6 +15,9 @@
 		0:'TYPO3/CMS/Extensionmanager/Main'
 	}"
 	/>
+
+<em:be.trigger triggers="{triggers}" />
+
 <f:render section="headline" />
 
 <f:render section="content" />
