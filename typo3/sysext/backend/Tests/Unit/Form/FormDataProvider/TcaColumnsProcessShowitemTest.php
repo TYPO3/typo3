@@ -244,6 +244,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                 ],
             ],
             'isInlineChild' => true,
+            'isInlineChildExpanded' => false,
             'isInlineAjaxOpeningContext' => false,
             'inlineExpandCollapseStateArray' => [
                 'aTable' => [
@@ -284,6 +285,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                 'foreign_table' => 'aTable',
             ],
             'isInlineChild' => true,
+            'isInlineChildExpanded' => true,
             'isInlineAjaxOpeningContext' => false,
             'inlineExpandCollapseStateArray' => [
                 'aTable' => [
@@ -293,86 +295,6 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataAddsColumnsForAjaxOpeningContextInlineChild()
-    {
-        $input = [
-            'command' => 'edit',
-            'databaseRow' => [
-                'uid' => 42,
-            ],
-            'recordTypeValue' => 'aType',
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => 'aField',
-                    ],
-                ],
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                ],
-            ],
-            'inlineParentConfig' => [
-                'foreign_table' => 'aTable',
-                'appearance' => [
-                    'collapseAll' => true,
-                ],
-            ],
-            'isInlineChild' => true,
-            'isInlineAjaxOpeningContext' => true,
-            'inlineExpandCollapseStateArray' => [],
-        ];
-        $expected = $input;
-        $expected['columnsToProcess'] = [ 'aField' ];
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataAddsColumnsForNewInlineChild()
-    {
-        $input = [
-            'command' => 'new',
-            'databaseRow' => [
-                'uid' => 'NEW1234',
-            ],
-            'recordTypeValue' => 'aType',
-            'processedTca' => [
-                'types' => [
-                    'aType' => [
-                        'showitem' => 'aField',
-                    ],
-                ],
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                ],
-            ],
-            'inlineParentConfig' => [
-                'foreign_table' => 'aTable',
-                'appearance' => [
-                    'collapseAll' => true,
-                ],
-            ],
-            'isInlineChild' => true,
-            'isInlineAjaxOpeningContext' => false,
-            'inlineExpandCollapseStateArray' => [],
-        ];
-        $expected = $input;
-        $expected['columnsToProcess'] = [ 'aField' ];
         $this->assertSame($expected, $this->subject->addData($input));
     }
 }

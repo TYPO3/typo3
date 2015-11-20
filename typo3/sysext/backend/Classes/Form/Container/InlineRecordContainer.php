@@ -128,19 +128,7 @@ class InlineRecordContainer extends AbstractContainer
         $combinationHtml = '';
         $isNewRecord = $data['command'] === 'new';
         if (!$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-            $collapseAll = isset($inlineConfig['appearance']['collapseAll']) && $inlineConfig['appearance']['collapseAll'];
-            $expandAll = isset($inlineConfig['appearance']['collapseAll']) && !$inlineConfig['appearance']['collapseAll'];
-            if ($isNewRecord) {
-                $isExpanded = $expandAll || !$collapseAll;
-            } else {
-                $expandCollapseStateArray = $data['inlineExpandCollapseStateArray'];
-                $isExpandedByUcState = isset($expandCollapseStateArray[$foreignTable])
-                    && is_array($expandCollapseStateArray[$foreignTable])
-                    && in_array($record['uid'], $expandCollapseStateArray[$foreignTable]) !== false;
-                $isExpanded = $inlineConfig['renderFieldsOnly'] || !$collapseAll && $isExpandedByUcState || $expandAll;
-            }
-
-            if ($isNewRecord || $isExpanded) {
+            if ($isNewRecord || $data['isInlineChildExpanded']) {
                 // Render full content ONLY IF this is an AJAX request, a new record, or the record is not collapsed
                 $combinationHtml = '';
                 if (isset($data['combinationChild'])) {
@@ -159,26 +147,31 @@ class InlineRecordContainer extends AbstractContainer
             }
             if ($isNewRecord) {
                 // Add pid of record as hidden field
-                $html .= '<input type="hidden" name="data' . $appendFormFieldNames . '[pid]" value="' . $record['pid'] . '"/>';
+                $html .= '<input type="hidden" name="data' . htmlspecialchars($appendFormFieldNames)
+                    . '[pid]" value="' . htmlspecialchars($record['pid']) . '"/>';
                 // Tell DataHandler this record is expanded
                 $ucFieldName = 'uc[inlineView]'
                     . '[' . $data['inlineTopMostParentTableName'] . ']'
                     . '[' . $data['inlineTopMostParentUid'] . ']'
                     . $appendFormFieldNames;
-                $html .= '<input type="hidden" name="' . $ucFieldName . '" value="' . $isExpanded . '" />';
+                $html .= '<input type="hidden" name="' . htmlspecialchars($ucFieldName)
+                    . '" value="' . (int)$data['isInlineChildExpanded'] . '" />';
             } else {
                 // Set additional field for processing for saving
-                $html .= '<input type="hidden" name="cmd' . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
-                if (!$isExpanded
+                $html .= '<input type="hidden" name="cmd' . htmlspecialchars($appendFormFieldNames)
+                    . '[delete]" value="1" disabled="disabled" />';
+                if (!$data['isInlineChildExpanded']
                     && !empty($GLOBALS['TCA'][$foreignTable]['ctrl']['enablecolumns']['disabled'])
                 ) {
                     $checked = !empty($record['hidden']) ? ' checked="checked"' : '';
-                    $html .= '<input type="checkbox" name="data' . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
-                    $html .= '<input type="input" name="data' . $appendFormFieldNames . '[hidden]" value="' . $record['hidden'] . '" />';
+                    $html .= '<input type="checkbox" name="data' . htmlspecialchars($appendFormFieldNames)
+                        . '[hidden]_0" value="1"' . $checked . ' />';
+                    $html .= '<input type="input" name="data' . htmlspecialchars($appendFormFieldNames)
+                        . '[hidden]" value="' . htmlspecialchars($record['hidden']) . '" />';
                 }
             }
             // If this record should be shown collapsed
-            $class = $isExpanded ? 'panel-visible' : 'panel-collapsed';
+            $class = $data['isInlineChildExpanded'] ? 'panel-visible' : 'panel-collapsed';
         }
         if ($inlineConfig['renderFieldsOnly']) {
             // Render "body" part only
@@ -193,8 +186,8 @@ class InlineRecordContainer extends AbstractContainer
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
             $html = '
-				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . $objectId . '_div">
-					<div class="panel-heading" data-toggle="formengine-inline" id="' . $objectId . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
+				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . htmlspecialchars($objectId) . '_div">
+					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($objectId) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
@@ -202,7 +195,7 @@ class InlineRecordContainer extends AbstractContainer
 							' . $this->renderForeignRecordHeader($data) . '
 						</div>
 					</div>
-					<div class="panel-collapse" id="' . $objectId . '_fields" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $html . $combinationHtml . '</div>
+					<div class="panel-collapse" id="' . htmlspecialchars($objectId) . '_fields" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $html . $combinationHtml . '</div>
 				</div>';
         }
 

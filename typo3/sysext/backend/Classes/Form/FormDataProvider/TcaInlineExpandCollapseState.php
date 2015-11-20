@@ -31,40 +31,55 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        if (!empty($result['inlineExpandCollapseStateArray'])) {
-            // Early return if a parent record has already set this, happens for existing inline children
-            // when opening a parent record.
-            return $result;
-        } elseif (!empty($result['inlineTopMostParentUid']) && !empty($result['inlineTopMostParentTableName'])) {
-            // Happens in inline ajax context, top parent uid and top parent table are set
-            $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
-            if (!is_array($fullInlineState)) {
-                $fullInlineState = [];
-            }
-            $inlineStateForTable = [];
-            if ($result['command'] !== 'new') {
-                $table = $result['inlineTopMostParentTableName'];
-                $uid = $result['inlineTopMostParentUid'];
-                if (!empty($fullInlineState[$table][$uid])) {
-                    $inlineStateForTable = $fullInlineState[$table][$uid];
+        if (empty($result['inlineExpandCollapseStateArray'])) {
+            if (!empty($result['inlineTopMostParentUid']) && !empty($result['inlineTopMostParentTableName'])) {
+                // Happens in inline ajax context, top parent uid and top parent table are set
+                $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
+                if (!is_array($fullInlineState)) {
+                    $fullInlineState = [];
                 }
-            }
-            $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
-        } else {
-            // Default case for a single record
-            $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
-            if (!is_array($fullInlineState)) {
-                $fullInlineState = [];
-            }
-            $inlineStateForTable = [];
-            if ($result['command'] !== 'new') {
-                $table = $result['tableName'];
-                $uid = $result['databaseRow']['uid'];
-                if (!empty($fullInlineState[$table][$uid])) {
-                    $inlineStateForTable = $fullInlineState[$table][$uid];
+                $inlineStateForTable = [];
+                if ($result['command'] !== 'new') {
+                    $table = $result['inlineTopMostParentTableName'];
+                    $uid = $result['inlineTopMostParentUid'];
+                    if (!empty($fullInlineState[$table][$uid])) {
+                        $inlineStateForTable = $fullInlineState[$table][$uid];
+                    }
                 }
+                $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
+            } else {
+                // Default case for a single record
+                $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
+                if (!is_array($fullInlineState)) {
+                    $fullInlineState = [];
+                }
+                $inlineStateForTable = [];
+                if ($result['command'] !== 'new') {
+                    $table = $result['tableName'];
+                    $uid = $result['databaseRow']['uid'];
+                    if (!empty($fullInlineState[$table][$uid])) {
+                        $inlineStateForTable = $fullInlineState[$table][$uid];
+                    }
+                }
+                $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
             }
-            $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
+        }
+
+        if (!$result['isInlineChildExpanded']) {
+            // If the record is an inline child that is not expanded, it is not necessary to calculate all fields
+            $isExistingRecord = $result['command'] === 'edit';
+            $inlineConfig = $result['inlineParentConfig'];
+            $collapseAll = isset($inlineConfig['appearance']['collapseAll']) && $inlineConfig['appearance']['collapseAll'];
+            $expandAll = isset($inlineConfig['appearance']['collapseAll']) && !$inlineConfig['appearance']['collapseAll'];
+            $expandCollapseStateArray = $result['inlineExpandCollapseStateArray'];
+            $foreignTable = $result['inlineParentConfig']['foreign_table'];
+            $isExpandedByUcState = isset($expandCollapseStateArray[$foreignTable])
+                && is_array($expandCollapseStateArray[$foreignTable])
+                && in_array($result['databaseRow']['uid'], $expandCollapseStateArray[$foreignTable]) !== false;
+
+            if (!$isExistingRecord || ($isExpandedByUcState && !$collapseAll) || $expandAll || $result['isInlineAjaxOpeningContext']) {
+                $result['isInlineChildExpanded'] = true;
+            }
         }
 
         return $result;

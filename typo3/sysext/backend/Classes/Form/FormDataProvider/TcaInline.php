@@ -295,7 +295,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         // is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
-            $mainChild['combinationChild'] = $this->compileCombinationChild($mainChild, $parentConfig);
+            $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig);
         }
         return $mainChild;
     }
@@ -304,16 +304,37 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      * With useCombination set, not only content of the intermediate table, but also
      * the connected child should be rendered in one go. Prepare this here.
      *
-     * @param array $intermediate Full data array of "mm" record
+     * @param array $child Full data array of "mm" record
      * @param array $parentConfig TCA configuration of "parent"
      * @return array Full data array of child
      */
-    protected function compileCombinationChild(array $intermediate, array $parentConfig)
+    protected function compileChildChild(array $child, array $parentConfig)
     {
         // foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
-        $intermediateUid = $intermediate['databaseRow'][$parentConfig['foreign_selector']][0];
-        $combinationChild = $this->compileChild($intermediate, $parentConfig['foreign_selector'], $intermediateUid);
-        return $combinationChild;
+        $childChildUid = $child['databaseRow'][$parentConfig['foreign_selector']][0];
+        // child-child table name is set in child tca "the selector field" foreign_table
+        $childChildTableName = $child['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'];
+        /** @var TcaDatabaseRecord $formDataGroup */
+        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+        /** @var FormDataCompiler $formDataCompiler */
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+
+        $formDataCompilerInput = [
+            'command' => 'edit',
+            'tableName' => $childChildTableName,
+            'vanillaUid' => (int)$childChildUid,
+            'isInlineChild' => true,
+            'isInlineChildExpanded' => $child['isInlineChildExpanded'],
+            // @todo: this is the wrong inline structure, isn't it? Shouldn't it contain the part from child child, too?
+            'inlineStructure' => $child['inlineStructure'],
+            'inlineFirstPid' => $child['inlineFirstPid'],
+            // values of the top most parent element set on first level and not overridden on following levels
+            'inlineTopMostParentUid' => $child['inlineTopMostParentUid'],
+            'inlineTopMostParentTableName' => $child['inlineTopMostParentTableName'],
+            'inlineTopMostParentFieldName' => $child['inlineTopMostParentFieldName'],
+        ];
+        $childChild = $formDataCompiler->compile($formDataCompilerInput);
+        return $childChild;
     }
 
     /**
