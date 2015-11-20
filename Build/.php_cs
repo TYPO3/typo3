@@ -64,6 +64,7 @@ return Symfony\CS\Config\Config::create()
         'ordered_use',
         'single_quote',
         'duplicate_semicolon',
-        'extra_empty_lines'
+        'extra_empty_lines',
+        'phpdoc_no_package'
     ])
     ->finder($finder);
