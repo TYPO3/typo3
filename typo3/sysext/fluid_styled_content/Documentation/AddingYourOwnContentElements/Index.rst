@@ -87,14 +87,14 @@ Then we configure the backend fields for our new content element:
    // Configure the default backend fields for the content element
    $GLOBALS['TCA']['tt_content']['types']['yourextensionkey_newcontentelement'] = array(
       'showitem' => '
-            --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
-            --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
-         --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
-            --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
-         --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-            --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
-            --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
-         --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended
+            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:palette.general;general,
+            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:palette.header;header,
+         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:tabs.appearance,
+            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:palette.frames;frames,
+         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:tabs.access,
+            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:palette.visibility;visibility,
+            --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:palette.access;access,
+         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xml:tabs.extended
    ');
 
 Since we need to use TypoScript as well, we add an entry in the static template list
