@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Testcase for the file class of the TYPO3 FAL
  *

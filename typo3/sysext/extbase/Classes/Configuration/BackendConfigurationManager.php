@@ -215,7 +215,6 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
         return $frameworkConfiguration;
     }
 
-
     /**
      * Returns a comma separated list of storagePid that are below a certain storage pid.
      *

@@ -1061,7 +1061,6 @@ class ArrayUtilityTest extends UnitTestCase
         $this->assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
-
     ///////////////////////
     // Tests concerning flatten
     ///////////////////////
@@ -1169,7 +1168,6 @@ class ArrayUtilityTest extends UnitTestCase
     {
         $this->assertEquals($expected, ArrayUtility::flatten($array));
     }
-
 
     ///////////////////////
     // Tests concerning intersectRecursive
@@ -1383,7 +1381,6 @@ class ArrayUtilityTest extends UnitTestCase
     {
         $this->assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
     }
-
 
     ///////////////////////
     // Tests concerning renumberKeysToAvoidLeapsIfKeysAreAllNumeric

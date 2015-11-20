@@ -935,7 +935,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Apps
         'apps-clipboard-images' => array(
             'provider' => SvgIconProvider::class,
@@ -1442,7 +1441,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Avatar
         'avatar-default' => array(
             'provider' => SvgIconProvider::class,
@@ -1450,7 +1448,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg'
             )
         ),
-
 
         // Content
         'content-beside-text-img-above-center' => array(
@@ -1604,7 +1601,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Default
         'default-not-found' => array(
             'provider' => SvgIconProvider::class,
@@ -1612,7 +1608,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/default/default-not-found.svg'
             )
         ),
-
 
         // Mimetypes
         'mimetypes-application' => array(
@@ -1940,7 +1935,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Miscellaneous
         'miscellaneous-placeholder' => array(
             'provider' => SvgIconProvider::class,
@@ -1948,7 +1942,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/miscellaneous/miscellaneous-placeholder.svg'
             )
         ),
-
 
         // Module
         'module-web' => array(
@@ -1981,7 +1974,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'name' => 'question-circle'
             )
         ),
-
 
         // Overlay
         'overlay-advanced' => array(
@@ -2141,7 +2133,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Spinner
         'spinner-circle-dark' => array(
             'provider' => SvgIconProvider::class,
@@ -2164,7 +2155,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'spinning' => true
             )
         ),
-
 
         // Status
         'status-user-admin' => array(
@@ -2344,7 +2334,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Empty
         'empty-empty' => array(
             'provider' => FontawesomeIconProvider::class,
@@ -2352,7 +2341,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'name' => 'empty-empty',
             )
         ),
-
 
         // Sysnote
         'sysnote-type-0' => array(
@@ -2385,7 +2373,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'name' => 'check-square'
             )
         ),
-
 
         // Flags will be auto-registered after we have the SVG files
         'flags-multiple' => array(

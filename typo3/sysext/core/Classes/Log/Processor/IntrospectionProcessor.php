@@ -74,7 +74,6 @@ class IntrospectionProcessor extends AbstractProcessor
         return $this;
     }
 
-
     /**
      * Add debug backtrace information to logRecord
      * It adds: filepath, line number, class and function name

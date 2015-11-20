@@ -119,7 +119,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $B->a = $A;
         $B->c = array($A);
 
-
         // Create validators
         $aValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array('translateErrorMessage'), array(array()));
         $this->validator->_set('options', array('elementValidator' => 'Integer'));

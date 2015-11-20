@@ -41,7 +41,6 @@ if (TYPO3_MODE === 'FE') {
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = \TYPO3\CMS\Frontend\Controller\ExtDirectEidController::class . '::processRequest';
 }
 
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
 	options.saveDocView = 1
 	options.saveDocNew = 1

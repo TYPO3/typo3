@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Database select step.
  * This step is only rendered if database is mysql. With dbal,

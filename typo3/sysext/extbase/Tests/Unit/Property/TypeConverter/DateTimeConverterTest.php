@@ -48,7 +48,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-
     /** String to DateTime testcases  **/
 
     /**

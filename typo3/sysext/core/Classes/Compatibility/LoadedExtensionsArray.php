@@ -135,7 +135,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
         return count($this->packageManager->getActivePackages());
     }
 
-
     /**
      * Return the current element
      *

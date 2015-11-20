@@ -489,7 +489,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->assertSame($expected, $result);
     }
 
-
     ///////////////////////////////////////////////////
     // Tests concerning addFieldsToAllPalettesOfField
     ///////////////////////////////////////////////////
@@ -998,7 +997,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->assertEquals($expected, $GLOBALS['TCA']);
     }
 
-
     ///////////////////////////////////////////////////
     // Tests concerning executePositionedStringInsertion
     ///////////////////////////////////////////////////
@@ -1049,7 +1047,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
         $this->assertEquals($expectedResult, $string);
     }
-
 
     /////////////////////////////////////////
     // Tests concerning addTcaSelectItem
@@ -1252,7 +1249,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($packageManager);
         ExtensionManagementUtilityAccessibleProxy::loadSingleExtLocalconfFiles();
     }
-
 
     /////////////////////////////////////////
     // Tests concerning addModule

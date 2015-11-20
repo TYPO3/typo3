@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Abstract base implementation of a task.
  *

@@ -239,7 +239,6 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             )
         );
 
-
         $this->assertEquals(
             $differenceArray,
             array(
@@ -304,7 +303,6 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             )
         );
-
 
         $this->assertEquals(
             $differenceArray,
@@ -371,7 +369,6 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             )
         );
 
-
         $this->assertSame(
             'int(11) NOT NULL auto_increment COMMENT \'I am a comment\'',
             $fieldDefinition
@@ -394,7 +391,6 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'Extra' => 'auto_increment',
             )
         );
-
 
         $this->assertSame(
             'int(11) NOT NULL auto_increment',

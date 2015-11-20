@@ -567,7 +567,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         return $sqlData;
     }
 
-
     /**
      * Checks if an update for an extension is available which also resolves dependencies.
      *

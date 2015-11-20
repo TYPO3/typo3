@@ -97,7 +97,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->packageManager->getPackage('PrettyUnlikelyThatThisPackageExists');
     }
 
-
     /**
      * @test
      */
@@ -180,7 +179,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packageStates = require('vfs://Test/Configuration/PackageStates.php');
         $this->assertEquals('inactive', $packageStates['packages'][$packageKey]['state']);
     }
-
 
     /**
      * @test

@@ -1526,7 +1526,6 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         );
     }
 
-
     /**
      * Data provider for sanitizeFileNameNonUTF8Filesystem
      *

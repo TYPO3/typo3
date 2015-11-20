@@ -109,7 +109,6 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->assertNotSame($hashWithIsNull, $hashWithoutIsNull);
     }
 
-
     /**
      * @test
      */

@@ -74,8 +74,6 @@ class ClassNamingUtility
         );
     }
 
-
-
     /**
      * Explodes a controllerObjectName like \Vendor\Ext\Controller\FooController
      * into several pieces like vendorName, extensionName, subpackageKey and controllerName

@@ -131,7 +131,6 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         return $result;
     }
 
-
     /**
      * Performs the database update.
      *

@@ -48,7 +48,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public $join_pages = 0;
 
-
     public $defaultResultNumber = 10;
 
     /**

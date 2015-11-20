@@ -610,7 +610,6 @@ class ResourceStorageTest extends BaseTestCase
         $this->subject->isWithinFileMountBoundaries($mockedFile);
     }
 
-
     /**
      * @test
      * @TODO: Rewrite or move to functional suite

@@ -107,10 +107,8 @@ $GLOBALS['TBE_MODULES'] = array(
     )
 );
 
-
 // Register the page tree core navigation component
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');
-
 
 /**
  * $TBE_STYLES configures backend styles and colors; Basically this contains
@@ -121,7 +119,6 @@ $GLOBALS['TBE_MODULES'] = array(
 $GLOBALS['TBE_STYLES'] = array(
     'skinImg' => array()
 );
-
 
 /**
  * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
@@ -424,7 +421,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
     'module-help'
 );
 
-
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
     'deleted',
     'hidden',
@@ -434,7 +430,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = a
     'fe_group',
     'protectedSection'
 );
-
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
     'hidden' => 'status-overlay-hidden',

@@ -44,7 +44,6 @@ class StoragePermissionsAspect
         'readFile' => true
     );
 
-
     /**
      * @param BackendUserAuthentication|null $backendUserAuthentication
      */

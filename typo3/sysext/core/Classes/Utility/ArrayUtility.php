@@ -498,7 +498,6 @@ class ArrayUtility
         return $renumberedArray;
     }
 
-
     /**
      * Merges two arrays recursively and "binary safe" (integer keys are
      * overridden as well), overruling similar values in the original array

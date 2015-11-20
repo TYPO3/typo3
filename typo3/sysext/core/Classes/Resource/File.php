@@ -101,7 +101,6 @@ class File extends AbstractFile
         return true;
     }
 
-
     /**
      * Returns the properties of this object.
      *

@@ -387,7 +387,6 @@ class ImportExport
         )
     );
 
-
     /**
      * Records to be migrated after all
      * Multidimensional array [table][uid][field] = array([related sys_file_reference uids])
@@ -825,7 +824,6 @@ class ImportExport
         return $fixedRelations;
     }
 
-
     /**
      * This analyses the existing added records, finds all database relations to records and adds these records to the export file.
      * This function can be called repeatedly until it returns an empty array.
@@ -1117,7 +1115,6 @@ class ImportExport
         $this->dat['files_fal'][$fileId] = $fileRec;
     }
 
-
     /**
      * Adds a files content to the export memory
      *
@@ -1379,7 +1376,6 @@ class ImportExport
         }
         return $newRow;
     }
-
 
     /**************************
      * File Output

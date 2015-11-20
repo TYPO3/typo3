@@ -255,7 +255,6 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
         $viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
     }
 
-
     /**
      * @test
      */

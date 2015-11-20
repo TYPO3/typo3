@@ -1418,7 +1418,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         return $GLOBALS['TYPO3_DB'];
     }
 
-
     /**
      * Load settings and apply stdWrap to them
      */

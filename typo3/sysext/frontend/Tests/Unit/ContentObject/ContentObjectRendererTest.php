@@ -189,7 +189,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         return $imageResource;
     }
 
-
     //////////////////////////////////////
     // Tests concerning getContentObject
     //////////////////////////////////////
@@ -2386,7 +2385,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $result = $this->subject->stdWrap_encodeForJavaScriptValue($input, $conf);
         $this->assertEquals($expected, $result);
     }
-
 
     ///////////////////////////////
     // Tests concerning getData()

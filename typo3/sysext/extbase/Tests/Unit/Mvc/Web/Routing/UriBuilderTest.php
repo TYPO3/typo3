@@ -719,7 +719,6 @@ class UriBuilderTest extends UnitTestCase
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
 
-
     /**
      * @test
      */

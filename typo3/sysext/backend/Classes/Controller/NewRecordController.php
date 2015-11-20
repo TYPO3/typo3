@@ -341,7 +341,6 @@ class NewRecordController extends AbstractModule
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
-
         if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
             // View
             $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);

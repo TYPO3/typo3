@@ -1404,7 +1404,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         return implode(LF, $parts);
     }
 
-
     /**
      * Returns SiteURL based on thisScript.
      *

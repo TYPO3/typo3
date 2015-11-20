@@ -52,7 +52,6 @@ class InaccessibleFolder extends Folder
         $this->throwInaccessibleException();
     }
 
-
     /**
      * Returns a publicly accessible URL for this folder
      *
@@ -242,7 +241,6 @@ class InaccessibleFolder extends Folder
         $this->throwInaccessibleException();
     }
 
-
     /**
      * Updates the properties of this folder, e.g. after re-indexing or moving it.
      *
@@ -256,7 +254,6 @@ class InaccessibleFolder extends Folder
     {
         $this->throwInaccessibleException();
     }
-
 
     /**
      * Sets the filters to use when listing files. These are only used if the filter mode is one of

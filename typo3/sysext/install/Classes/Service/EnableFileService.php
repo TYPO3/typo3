@@ -142,7 +142,6 @@ class EnableFileService
         return false;
     }
 
-
     /**
      * Checks if the lifetime of the install tool file is expired
      *

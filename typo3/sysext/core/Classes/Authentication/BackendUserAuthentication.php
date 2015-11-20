@@ -1603,7 +1603,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
             }
         }
 
-
         // Personal or Group filemounts are not accessible if file mount list is set in workspace record
         if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
             // If userHomePath is set, we attempt to mount it

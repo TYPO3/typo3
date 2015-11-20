@@ -1237,7 +1237,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
         }
 
-
         // Create and return header table row:
         return '<thead>' . $this->addElement(1, $icon, $theData, '', '', '', 'th') . '</thead>';
     }

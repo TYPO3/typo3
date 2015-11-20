@@ -164,7 +164,6 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
         return '';
     }
 
-
     /**
      * Statically evalute "else" children.
      * The "$hasEvaluated" argument is there to distinguish the case that "else" returned NULL or was not evaluated.

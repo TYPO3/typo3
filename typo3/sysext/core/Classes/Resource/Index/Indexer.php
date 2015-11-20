@@ -372,7 +372,6 @@ class Indexer
         return $mappedFileInfo;
     }
 
-
     /**
      * Returns an instance of the FileIndexRepository
      *

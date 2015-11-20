@@ -4331,7 +4331,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////
     // Tests concerning copyDirectory
     /////////////////////////////////////////////////////////////////////////////////////
@@ -4719,7 +4718,6 @@ text with a ' . $urlMatch . '$|s'),
         GeneralUtility::rmdir($directory);
         $this->assertTrue($check);
     }
-
 
     /**
      * If the element is not empty, its contents might be treated as "something" (instead of "nothing") e.g. by Fluid

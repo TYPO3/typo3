@@ -131,7 +131,6 @@ class ResourceCompressorTest extends BaseTestCase
         $this->assertFalse($result[$compressedFileName]['compress']);
     }
 
-
     /**
      * @test
      */

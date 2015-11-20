@@ -737,8 +737,6 @@ class ModuleTemplate
         return '';
     }
 
-
-
     /**
      * Returns the BE USER Object
      *

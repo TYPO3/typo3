@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * User is not allowed to add a new page
  */

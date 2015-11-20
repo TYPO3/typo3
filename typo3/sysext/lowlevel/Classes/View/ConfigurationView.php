@@ -239,7 +239,6 @@ class ConfigurationView extends BaseScriptClass
         $this->content .= '</form>';
     }
 
-
     /**
      * Injects the request object for the current request or subrequest
      * Simply calls main() and init() and outputs the content

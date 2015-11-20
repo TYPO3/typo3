@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Extension class creating text based menus
  */

@@ -143,7 +143,6 @@ class SpellCheckingController
      */
     public $xmlCharacterData = '';
 
-
     /**
      * AJAX entry point
      *

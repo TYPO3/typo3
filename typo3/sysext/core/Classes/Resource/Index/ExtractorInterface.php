@@ -29,7 +29,6 @@ interface ExtractorInterface
      */
     public function getFileTypeRestrictions();
 
-
     /**
      * Get all supported DriverClasses
      *

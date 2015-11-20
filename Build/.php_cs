@@ -63,6 +63,7 @@ return Symfony\CS\Config\Config::create()
         'whitespacy_lines',
         'ordered_use',
         'single_quote',
-        'duplicate_semicolon'
+        'duplicate_semicolon',
+        'extra_empty_lines'
     ])
     ->finder($finder);

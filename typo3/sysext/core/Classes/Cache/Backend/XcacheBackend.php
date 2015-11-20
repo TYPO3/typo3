@@ -235,7 +235,6 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface
         $existingTags = $this->findTagsByIdentifier($entryIdentifier);
         $existingTagsUpdated = false;
 
-
         foreach ($tags as $tag) {
             // Update tag-to-identifier index
             $identifiers = $this->findIdentifiersByTag($tag);

@@ -339,7 +339,6 @@ class DataHandler
      */
     public $pagetreeNeedsRefresh = false;
 
-
     // *********************
     // Internal Variables, do not touch.
     // *********************
@@ -1601,7 +1600,6 @@ class DataHandler
         }
         return $value;
     }
-
 
     /*********************************************
      *
@@ -4624,7 +4622,6 @@ class DataHandler
                 $newId = $theNewSQLID;
             }
         }
-
 
         return $newId;
     }

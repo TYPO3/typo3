@@ -445,7 +445,6 @@ class SetupModuleController extends AbstractModule
         $this->content .= '</form>';
     }
 
-
     /**
      * Injects the request object for the current request or subrequest
      * Simply calls main() and init() and writes the content to the response

@@ -163,8 +163,6 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame($expectedStorageId, $this->subject->_callRef('findBestMatchingStorageByLocalPath', $path));
     }
 
-
-
     /**
      * @return array
      */

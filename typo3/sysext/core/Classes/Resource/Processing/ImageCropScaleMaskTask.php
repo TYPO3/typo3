@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * A task that takes care of cropping, scaling and/or masking an image.
  */

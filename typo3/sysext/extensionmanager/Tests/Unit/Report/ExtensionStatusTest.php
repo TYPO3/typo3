@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Test case
  */

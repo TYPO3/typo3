@@ -67,7 +67,6 @@ class SaltFactory
         );
     }
 
-
     /**
      * Obtains a salting hashing method instance.
      *

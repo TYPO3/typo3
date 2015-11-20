@@ -68,7 +68,6 @@ class AbstractCompositeValidatorTest extends UnitTestCase
         $validator = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractCompositeValidatorClass::class, array('dummy'), array($inputOptions));
     }
 
-
     /**
      * @test
      */

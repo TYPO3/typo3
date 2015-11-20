@@ -305,7 +305,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $GLOBALS['TYPO3_LOADED_EXT'] = $loadedExtObj->toArray();
     }
 
-
     /**
      * Scans all directories in the packages directories for available packages.
      * For each package a Package object is created and stored in $this->packages.
@@ -721,7 +720,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
     }
 
-
     /**
      * Returns an array of \TYPO3\CMS\Core\Package objects of all active packages.
      * A package is active, if it is available and has been activated in the package
@@ -1100,7 +1098,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
         return array_reverse($dependentPackageKeys);
     }
-
 
     /**
      * Resolves package key from Composer manifest

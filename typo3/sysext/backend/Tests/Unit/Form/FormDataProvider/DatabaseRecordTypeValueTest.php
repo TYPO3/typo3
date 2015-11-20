@@ -423,7 +423,6 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $this->assertSame($expected, $this->subject->addData($input));
     }
 
-
     /**
      * @test
      */

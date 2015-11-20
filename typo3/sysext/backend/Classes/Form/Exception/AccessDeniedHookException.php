@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * User access to record was denied by a makeEditForm_accessCheck hook
  */

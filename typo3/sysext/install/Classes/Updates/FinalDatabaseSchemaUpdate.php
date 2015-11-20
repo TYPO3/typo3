@@ -111,7 +111,6 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         return $result;
     }
 
-
     /**
      * Performs the database update.
      *

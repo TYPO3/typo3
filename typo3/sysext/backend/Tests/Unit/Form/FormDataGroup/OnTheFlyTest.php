@@ -45,7 +45,6 @@ class OnTheFlyTest extends UnitTestCase
         $this->subject->compile([]);
     }
 
-
     /**
      * @test
      */

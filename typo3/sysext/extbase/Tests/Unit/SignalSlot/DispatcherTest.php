@@ -127,7 +127,6 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ->method('slot')
             ->with('modified_bar', 'modified_quux');
 
-
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $firstMockSlot, 'slot', false);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $secondMockSlot, 'slot', false);
 
@@ -183,7 +182,6 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $thirdMockSlot->expects($this->once())
             ->method('slot')
             ->with('modified_bar', 'modified_quux');
-
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $firstMockSlot, 'slot');
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $secondMockSlot, 'slot');

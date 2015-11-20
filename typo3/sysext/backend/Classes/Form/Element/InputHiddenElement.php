@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Generation of TCEform elements of the type "input type=hidden"
  */

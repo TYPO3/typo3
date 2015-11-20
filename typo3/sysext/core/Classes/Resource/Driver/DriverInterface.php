@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * An interface Drivers have to implement to fulfil the needs
  * of the FAL API.
@@ -257,7 +256,6 @@ interface DriverInterface
      */
     public function hash($fileIdentifier, $hashAlgorithm);
 
-
     /**
      * Moves a file *within* the current storage.
      * Note that this is only about an inner-storage move action,
@@ -269,7 +267,6 @@ interface DriverInterface
      * @return string
      */
     public function moveFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $newFileName);
-
 
     /**
      * Folder equivalent to moveFileWithinStorage().

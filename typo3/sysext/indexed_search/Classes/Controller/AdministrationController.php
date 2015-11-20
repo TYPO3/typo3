@@ -425,7 +425,6 @@ class AdministrationController extends ActionController
         ));
     }
 
-
     /**
      * Remove item from index
      *

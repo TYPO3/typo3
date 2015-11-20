@@ -149,7 +149,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals('Foo,Bar', $message2->getHeaderLine('X-Foo'));
     }
 
-
     /**
      * @test
      */

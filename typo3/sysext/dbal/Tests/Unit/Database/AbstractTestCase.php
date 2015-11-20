@@ -70,7 +70,6 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         return $subject;
     }
 
-
     /**
      * Clean a parsed SQL query for easier comparison with expected SQL.
      *

@@ -99,7 +99,6 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
         $this->viewHelper->render($stringValue);
     }
 
-
     /**
      * @test
      */

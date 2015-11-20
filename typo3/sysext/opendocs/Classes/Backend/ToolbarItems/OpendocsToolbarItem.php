@@ -196,7 +196,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         return true;
     }
 
-
     /*******************
      ***    HOOKS    ***
      *******************/

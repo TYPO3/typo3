@@ -55,7 +55,6 @@ class FileInfoHook
         return $this->renderFileInformationContent($fileObject);
     }
 
-
     /**
      * Renders a HTML Block with file information
      *

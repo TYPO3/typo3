@@ -259,7 +259,6 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
         return $this->moduleRegistry['_configuration'][$moduleName];
     }
 
-
     /**
      * Returns the priority - how eager the handler is to actually handle the request.
      *

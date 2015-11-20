@@ -33,7 +33,6 @@ abstract class AbstractDriver implements DriverInterface
      */
     protected $capabilities = 0;
 
-
     /**
      * The storage uid the driver was instantiated for
      *

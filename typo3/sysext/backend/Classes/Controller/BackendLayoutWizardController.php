@@ -227,12 +227,10 @@ class BackendLayoutWizardController extends AbstractModule
 
         $this->setPagePath($this->P['table'], $this->P['uid']);
 
-
         $this->moduleTemplate->setContent($this->content);
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
-
 
     /**
      * Creates the correct path to the current record
@@ -297,7 +295,6 @@ class BackendLayoutWizardController extends AbstractModule
             ->setOnClick('window.close();return true;')
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
-
 
         $this->content .= '
 		<table border="0" width="90%" height="90%" id="outer_container">

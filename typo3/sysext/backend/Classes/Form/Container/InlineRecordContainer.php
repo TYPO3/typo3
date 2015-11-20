@@ -279,7 +279,6 @@ class InlineRecordContainer extends AbstractContainer
         return $resultArray;
     }
 
-
     /**
      * Renders the HTML header for a foreign record, such as the title, toggle-function, drag'n'drop, etc.
      * Later on the command-icons are inserted here.

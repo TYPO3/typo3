@@ -103,7 +103,6 @@ class UriBuilder
             ) + $parameters;
         }
 
-
         return $this->buildUri($parameters, $referenceType);
     }
 

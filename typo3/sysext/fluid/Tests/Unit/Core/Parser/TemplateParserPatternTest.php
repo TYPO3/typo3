@@ -215,7 +215,6 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $expected = array('abc ', '{bla.blubb->f:for(param:42)}', ' def');
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(4)');
 
-
         $source = 'abc {f:for(bla:"post{{")} def';
         $expected = array('abc ', '{f:for(bla:"post{{")}', ' def');
         $this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(5)');

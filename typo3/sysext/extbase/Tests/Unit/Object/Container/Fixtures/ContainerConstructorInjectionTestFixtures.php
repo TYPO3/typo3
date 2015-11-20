@@ -17,11 +17,9 @@ class SimpleTypeConstructorArgument
     }
 }
 
-
 class ArgumentTestClass
 {
 }
-
 
 class MandatoryConstructorArgument
 {
@@ -42,7 +40,6 @@ class MandatoryConstructorArgument
     }
 }
 
-
 class OptionalConstructorArgument
 {
     /**
@@ -58,7 +55,6 @@ class OptionalConstructorArgument
         $this->argumentTestClass = $argumentTestClass;
     }
 }
-
 
 class MandatoryConstructorArgumentTwo
 {
@@ -83,7 +79,6 @@ class MandatoryConstructorArgumentTwo
     }
 }
 
-
 class TwoConstructorArgumentsSecondOptional
 {
     /**
@@ -106,7 +101,6 @@ class TwoConstructorArgumentsSecondOptional
         $this->argumentTestClassTwo = $argumentTestClassTwo;
     }
 }
-
 
 class TwoConstructorArgumentsFirstOptional
 {
@@ -138,7 +132,6 @@ class TwoConstructorArgumentsFirstOptional
         $this->argumentTestClassTwo = $argumentTestClassTwo;
     }
 }
-
 
 class TwoConstructorArgumentsBothOptional
 {

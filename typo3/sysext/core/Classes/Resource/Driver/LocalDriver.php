@@ -93,7 +93,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         return $this->capabilities;
     }
 
-
     /**
      * Processes the configuration for this driver.
      *
@@ -658,7 +657,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         return $fileInformation;
     }
 
-
     /**
      * Extracts a specific FileInformation from the FileSystems.
      *
@@ -1094,7 +1092,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         return $newIdentifier;
     }
 
-
     /**
      * Renames a folder in this storage.
      *
@@ -1214,7 +1211,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             return $this->copyFileToTemporaryPath($fileIdentifier);
         }
     }
-
 
     /**
      * Returns the permissions of a file/folder as an array (keys r, w) of boolean flags

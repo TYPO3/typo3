@@ -173,8 +173,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame($mockedNewStorage, $subject->getStorage());
     }
 
-
-
 /**
      * @test
      */
@@ -200,7 +198,6 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $targetStorage->expects($this->once())->method('moveFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
         $fixture->moveTo($targetFolder);
     }
-
 
     public function filenameExtensionDataProvider()
     {

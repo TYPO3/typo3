@@ -238,7 +238,6 @@ class ProcessedFileRepository extends AbstractRepository
         return $errorCount;
     }
 
-
     /**
      * Removes all array keys which cannot be persisted
      *

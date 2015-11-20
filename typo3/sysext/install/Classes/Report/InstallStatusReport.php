@@ -159,7 +159,6 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         return GeneralUtility::makeInstance(Status::class, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
     }
 
-
     /**
      * Checks if there is a new minor TYPO3 version to update to.
      *

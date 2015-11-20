@@ -26,7 +26,6 @@ class MailFeature extends Configuration\AbstractFeature implements Configuration
      */
     protected $name = 'Mail';
 
-
     /**
      * @var array List of preset classes
      */

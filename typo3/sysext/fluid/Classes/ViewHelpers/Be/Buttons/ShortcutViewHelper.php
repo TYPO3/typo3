@@ -90,7 +90,6 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
 
         $mayMakeShortcut = $GLOBALS['BE_USER']->mayMakeShortcut();
 
-
         if ($mayMakeShortcut) {
             $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
             $currentRequest = $renderingContext->getControllerContext()->getRequest();

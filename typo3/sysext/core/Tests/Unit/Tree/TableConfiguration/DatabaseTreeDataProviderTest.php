@@ -122,7 +122,6 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $expectedFirstLevelTreeNode->setChildNodes($expectedStorageOfSecondLevelChildren);
         $expectedStorage->append($expectedFirstLevelTreeNode);
 
-
         $this->initializeSubjectMock(array('getRelatedRecords', 'getRootUid'));
         $this->subject->_set('levelMaximum', 2);
         $this->subject->expects($this->at(0))->method('getRelatedRecords')->will($this->returnValue(array(1)));

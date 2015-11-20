@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * List utility test
  *

@@ -64,7 +64,6 @@ class FileIndexRepository implements SingletonInterface
         return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
     }
 
-
     /**
      * Returns an Instance of the Repository
      *
@@ -329,7 +328,6 @@ class FileIndexRepository implements SingletonInterface
         );
     }
 
-
     /**
      * Helper function for the Indexer to detect missing files
      *
@@ -403,7 +401,6 @@ class FileIndexRepository implements SingletonInterface
         $this->emitRecordDeletedSignal($fileUid);
     }
 
-
     /**
      * Update Reference Index (sys_refindex) for a file
      *
@@ -416,7 +413,6 @@ class FileIndexRepository implements SingletonInterface
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
         $refIndexObj->updateRefIndexTable($this->table, $id);
     }
-
 
     /*
      * Get the SignalSlot dispatcher
@@ -437,8 +433,6 @@ class FileIndexRepository implements SingletonInterface
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
     }
-
-
 
     /**
      * Signal that is called after an IndexRecord is updated

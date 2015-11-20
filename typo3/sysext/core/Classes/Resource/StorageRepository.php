@@ -78,7 +78,6 @@ class StorageRepository extends AbstractRepository
         return null;
     }
 
-
     /**
      * Initializes the Storage
      *

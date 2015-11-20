@@ -192,7 +192,6 @@ class SqlParser
         return '';
     }
 
-
     /*************************************
      *
      * SQL Parsing, full queries

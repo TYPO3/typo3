@@ -38,7 +38,6 @@ class TextExtractorRegistry implements SingletonInterface
      */
     protected $instances = array();
 
-
     /**
      * Returns an instance of this class
      *

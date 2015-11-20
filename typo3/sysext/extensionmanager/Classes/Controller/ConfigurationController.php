@@ -134,7 +134,6 @@ class ConfigurationController extends AbstractModuleController
         $this->redirect('index', 'List');
     }
 
-
     /**
      * Emits a signal after the configuration file was written
      *

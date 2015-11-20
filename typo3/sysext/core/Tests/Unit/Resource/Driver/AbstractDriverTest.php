@@ -25,7 +25,6 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
      */
     protected $subject;
 
-
     protected function setUp()
     {
         parent::setUp();

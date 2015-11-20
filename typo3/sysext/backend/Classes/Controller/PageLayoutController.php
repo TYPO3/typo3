@@ -650,7 +650,6 @@ class PageLayoutController
 
             $content .= $this->getHeaderFlashMessagesForCurrentPid();
 
-
             // Render the primary module content:
             if ($this->MOD_SETTINGS['function'] == 0) {
                 // QuickEdit

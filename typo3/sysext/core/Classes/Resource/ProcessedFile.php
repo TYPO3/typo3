@@ -457,7 +457,6 @@ class ProcessedFile extends AbstractFile
         return $this->properties['uid'];
     }
 
-
     /**
      * Checks if the ProcessedFile needs reprocessing
      *

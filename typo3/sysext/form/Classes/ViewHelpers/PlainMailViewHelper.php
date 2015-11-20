@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * A viewhelper for the plain mail view
  */

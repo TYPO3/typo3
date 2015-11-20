@@ -203,7 +203,6 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface
         }
     }
 
-
     /**
      * Flushes entries tagged by the specified tag of all registered
      * caches.

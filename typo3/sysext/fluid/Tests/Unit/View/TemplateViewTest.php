@@ -553,7 +553,6 @@ class TemplateViewTest extends UnitTestCase
         $this->assertEquals($expected, $actual);
     }
 
-
     /**
      * @test
      */

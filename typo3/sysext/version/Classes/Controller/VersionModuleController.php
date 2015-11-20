@@ -557,7 +557,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         return '<div class="btn-group btn-group-sm" role="group">' . $adminLink . '</div>';
     }
 
-
     /**
      * Injects the request object for the current request and gathers all data.
      *

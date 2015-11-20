@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Type;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 /**
  * Abstract class for Enumeration.
  * Inspired by SplEnum.

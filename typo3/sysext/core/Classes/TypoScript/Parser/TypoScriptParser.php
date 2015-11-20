@@ -1316,7 +1316,6 @@ class TypoScriptParser
         return isset($GLOBALS['TT']) ? $GLOBALS['TT'] : null;
     }
 
-
     /**
      * Modifies a HTML Hex color by adding/subtracting $R,$G and $B integers
      *

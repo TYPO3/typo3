@@ -76,9 +76,6 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', $temporaryFilesDirectory . 'c3511df85d21bc578faf71c6a19eeb3ff44af370');
     }
 
-
-
-
     protected function compileExportGroupFileAndFileReferenceItem()
     {
         $this->export->setRecordTypesIncludeFields(

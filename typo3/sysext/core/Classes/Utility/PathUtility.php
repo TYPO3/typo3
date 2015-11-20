@@ -263,7 +263,6 @@ class PathUtility
         return $result;
     }
 
-
     /*********************
      *
      * Cleaning methods

@@ -1641,7 +1641,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->addJsInlineCode('RequireJS-Module-' . $inlineCodeKey, $javaScriptCode);
     }
 
-
     /**
      * call this function if you need the extJS library
      *
@@ -2518,7 +2517,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         return $localLanguage;
     }
-
 
     /*****************************************************/
     /*                                                   */

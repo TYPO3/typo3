@@ -199,7 +199,6 @@ class FileStreamWrapper
         self::$registered = false;
     }
 
-
     /*
      * The following list of functions is implemented as of
      * @see http://www.php.net/manual/en/streamwrapper.dir-closedir.php

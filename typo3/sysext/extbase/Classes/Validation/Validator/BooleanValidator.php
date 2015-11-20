@@ -31,7 +31,6 @@ class BooleanValidator extends AbstractValidator
         'is' => array(null, 'Boolean value', 'boolean|string|integer')
     );
 
-
     /**
      * Check if $value matches the expectation given to the validator.
      * If it does not match, the function adds an error to the result.

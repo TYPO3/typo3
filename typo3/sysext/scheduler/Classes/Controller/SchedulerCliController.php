@@ -71,7 +71,6 @@ class SchedulerCliController
             || ($this->cli->cli_isArg('-h') && $this->cli->cli_isArg('-h') > 0);
     }
 
-
     /**
      * Execute scheduler tasks
      */

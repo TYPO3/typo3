@@ -185,7 +185,6 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', false);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
 
-
         $rendererRegistry->getRendererInstances();
 
         $renderer = $rendererRegistry->getRenderer($fileResourceMock);

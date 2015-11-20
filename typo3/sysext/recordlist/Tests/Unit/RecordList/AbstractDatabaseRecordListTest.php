@@ -101,7 +101,6 @@ class AbstractDatabaseRecordListTest extends UnitTestCase
         $subject->setTableDisplayOrder($test);
     }
 
-
     /**
      * @test
      * @expectedException \UnexpectedValueException

@@ -48,7 +48,6 @@ class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Vali
         // dummy
     }
 
-
     /**
      * Checks if the given value is valid according to the validator, and returns
      * the Error Messages object which occurred.

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**

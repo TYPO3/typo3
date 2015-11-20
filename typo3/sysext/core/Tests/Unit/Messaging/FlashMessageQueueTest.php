@@ -133,7 +133,6 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertNull($frontendUser->getSessionData('core.template.flashMessages'));
     }
 
-
     /**
      * @test
      */

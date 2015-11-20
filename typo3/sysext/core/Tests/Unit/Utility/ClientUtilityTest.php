@@ -217,7 +217,6 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertContains('win8', $infoArray['all_systems']);
     }
 
-
     /**
      * @test
      */

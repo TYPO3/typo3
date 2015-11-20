@@ -63,7 +63,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     protected $stopPageTree = false;
 
-
     /**
      * Background color for the node
      *

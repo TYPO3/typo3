@@ -93,7 +93,6 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         return $driverObject;
     }
 
-
     /**
      * Returns the Default Storage
      *

@@ -79,7 +79,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->exec_INSERTquery('aTable', array('fieldblob' => $testStringWithBinary));
     }
 
-
     ////////////////////////////////
     // Tests concerning listQuery
     ////////////////////////////////
@@ -114,7 +113,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject->_set('isConnected', true);
         $subject->listQuery('aField', 'foo,bar', 'aTable');
     }
-
 
     ////////////////////////////////
     // Tests concerning searchQuery
@@ -208,7 +206,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame($expectedResult, $subject->searchQuery($searchWords, $fields, $table, $constraint));
     }
 
-
     /////////////////////////////////////////////////
     // Tests concerning escapeStringForLikeComparison
     /////////////////////////////////////////////////
@@ -222,7 +219,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
         $this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
     }
-
 
     /////////////////////////////////////////////////
     // Tests concerning stripOrderByForOrderByKeyword
@@ -264,7 +260,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($expectedResult, $strippedQuery);
     }
 
-
     /////////////////////////////////////////////////
     // Tests concerning stripGroupByForGroupByKeyword
     /////////////////////////////////////////////////
@@ -304,7 +299,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $strippedQuery = $subject->stripGroupBy($groupByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
-
 
     /////////////////////////////////////////////////
     // Tests concerning stripOrderByForOrderByKeyword

@@ -22,7 +22,6 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('LiveDefaultPages');
     }
 
-
     /**
      * @test
      */

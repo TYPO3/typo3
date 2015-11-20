@@ -2774,7 +2774,6 @@ class TypoScriptFrontendController
             }
         }
 
-
         // Setting softMergeIfNotBlank:
         $table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'], true);
         foreach ($table_fields as $TF) {
@@ -4776,7 +4775,6 @@ class TypoScriptFrontendController
 
         return $result;
     }
-
 
     /**
      * Fetches/returns the cached contents of the sys_domain database table.

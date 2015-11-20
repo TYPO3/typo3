@@ -1446,7 +1446,6 @@ class ImportExportController extends BaseScriptClass
         return $defaultImportExportFolder;
     }
 
-
     /**
      * Check if a file has been uploaded
      *

@@ -221,7 +221,6 @@ class FolderUtilityRenderer
             $markup[] = '</form>';
             $markup[] = '</div>';
 
-
             $code .= implode(LF, $markup);
         }
 

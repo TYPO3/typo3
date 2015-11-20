@@ -2840,7 +2840,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $this->assertEquals($expected, $this->subject->addData($input));
     }
 
-
     /**
      * Data Provider
      *

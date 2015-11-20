@@ -174,7 +174,6 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         $this->assertSame(11, $inQuery->count());
     }
 
-
     /**
      * @test
      */
@@ -241,7 +240,6 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         );
 
         $this->assertSame(10, $inQuery->count());
-
 
         $newInQuery = $this->postRepository->createQuery();
 

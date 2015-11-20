@@ -46,7 +46,6 @@ class IndexedSearchUtility
         return hexdec(substr(md5($stringToHash), 0, 7));
     }
 
-
     /**
      * Takes a search-string (WITHOUT SLASHES or else it'll be a little sppooky , NOW REMEMBER to unslash!!)
      * Sets up search words with operators.

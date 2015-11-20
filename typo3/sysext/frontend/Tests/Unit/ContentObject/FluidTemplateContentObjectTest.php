@@ -398,7 +398,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
     }
 
-
     /**
      * @test
      */

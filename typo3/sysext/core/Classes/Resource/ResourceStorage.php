@@ -1133,7 +1133,6 @@ class ResourceStorage implements ResourceStorageInterface
         return $fileName;
     }
 
-
     /********************
      * FILE ACTIONS
      ********************/

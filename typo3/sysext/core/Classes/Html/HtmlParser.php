@@ -1489,7 +1489,6 @@ class HtmlParser
                 $treatNonBreakingSpaceAsEmpty = (bool)$configuration['stripEmptyTags.']['treatNonBreakingSpaceAsEmpty'];
             }
 
-
             $value = $this->stripEmptyTags($value, $tags, $treatNonBreakingSpaceAsEmpty);
         }
 

@@ -270,7 +270,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
     }
 
-
     ///////////////////////////////////////////
     // Tests concerning checkModifyAccessList
     ///////////////////////////////////////////

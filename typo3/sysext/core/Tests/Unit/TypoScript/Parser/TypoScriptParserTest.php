@@ -230,7 +230,6 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($expected, $actualValue);
     }
 
-
     /**
      * Data provider for executeValueModifierThrowsException
      *

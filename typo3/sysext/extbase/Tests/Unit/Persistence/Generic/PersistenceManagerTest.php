@@ -80,7 +80,6 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
         $manager->_set('backend', $mockBackend);
 
-
         $this->assertEquals($manager->getIdentifierByObject($object), $fakeUuid);
     }
 

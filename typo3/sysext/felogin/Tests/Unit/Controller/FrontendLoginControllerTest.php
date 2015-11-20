@@ -276,7 +276,6 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
     }
 
-
     /*************************
      * Test concerning getPreverveGetVars
      *************************/
@@ -393,7 +392,6 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->accessibleFixture->conf['preserveGETvars'] = $preserveVars;
         $this->assertSame($expected, $this->accessibleFixture->_call('getPreserveGetVars'));
     }
-
 
     /**************************************************
      * Tests concerning isInLocalDomain
