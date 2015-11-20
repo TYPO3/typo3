@@ -90,12 +90,18 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 				me.$el.off('click').on('click', opts.deleteIconSelector, function(evt) {
 					evt.preventDefault();
 
-					// @todo: make this text localizable
-					if (window.confirm('Are you sure?')) {
-						$(this).closest(opts.sectionSelector).hide().addClass(opts.sectionDeletedClass);
+					var confirmTitle = TYPO3.lang['flexform.section.delete.title'] || 'Are you sure?';
+					var confirmMessage = TYPO3.lang['flexform.section.delete.message'] || 'Are you sure you want to delete this section?';
+					var $confirm = top.TYPO3.Modal.confirm(confirmTitle, confirmMessage);
+					$confirm.on('confirm.button.cancel', function() {
+						top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					});
+					$confirm.on('confirm.button.ok', function(event) {
+						$(evt.target).closest(opts.sectionSelector).hide().addClass(opts.sectionDeletedClass);
 						me.setActionStatus();
 						TYPO3.FormEngine.Validation.validate();
-					}
+						top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+					});
 				});
 
 				// allow the toggle open/close of the main selection

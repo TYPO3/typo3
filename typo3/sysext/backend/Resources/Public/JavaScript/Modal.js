@@ -100,9 +100,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 *
 	 * @param {String} title the title for the confirm modal
 	 * @param {String} content the content for the conform modal, e.g. the main question
-	 * @param {int} severity default top.TYPO3.Severity.warning
-	 * @param {array} buttons an array with buttons, default no buttons
-	 * @param {array} additionalCssClasses additional css classes to add to the modal
+	 * @param {int} [severity=top.TYPO3.Severity.warning] severity default top.TYPO3.Severity.warning
+	 * @param {array} [buttons] an array with buttons, default no buttons
+	 * @param {array} [additionalCssClasses=''] additional css classes to add to the modal
 	 */
 	Modal.confirm = function(title, content, severity, buttons, additionalCssClasses) {
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.warning);
