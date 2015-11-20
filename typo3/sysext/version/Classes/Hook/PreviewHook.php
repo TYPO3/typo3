@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Version\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Hook for checking if the preview mode is activated
@@ -92,9 +94,12 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function initializePreviewUser(&$params, &$pObj)
     {
-        if ((is_null($params['BE_USER']) || $params['BE_USER'] === false) && $this->previewConfiguration !== false && $this->previewConfiguration['BEUSER_uid'] > 0) {
+        if ((is_null($params['BE_USER']) || $params['BE_USER'] === false)
+            && $this->previewConfiguration !== false
+            && $this->previewConfiguration['BEUSER_uid'] > 0
+        ) {
             // New backend user object
-            $BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class);
+            $BE_USER = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
             $BE_USER->userTS_dontGetCached = 1;
             $BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
             $BE_USER->unpack_uc('');
@@ -110,8 +115,15 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
         // if there is a valid BE user, and the full workspace should be
         // previewed, the workspacePreview option shouldbe set
         $workspaceUid = $this->previewConfiguration['fullWorkspace'];
-        if ($pObj->beUserLogin && is_object($params['BE_USER']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
-            if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
+        if ($pObj->beUserLogin
+            && is_object($params['BE_USER'])
+            && MathUtility::canBeInterpretedAsInteger($workspaceUid)
+        ) {
+            if ($workspaceUid == 0
+                || $workspaceUid >= -1
+                && $params['BE_USER']->checkWorkspace($workspaceUid)
+                && $params['BE_USER']->isInWebMount($pObj->id)
+            ) {
                 // Check Access to workspace. Live (0) is OK to preview for all.
                 $pObj->workspacePreview = (int)$workspaceUid;
             } else {
