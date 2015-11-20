@@ -64,7 +64,7 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getFirstInstallFilePaths($structure, $expected)
     {
-        $vfs = vfsStream::setup("root");
+        $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
         /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, array('dummy'), array(), '', false);
@@ -126,7 +126,7 @@ class EnableFileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function removeFirstInstallFile($structure, $expected)
     {
-        $vfs = vfsStream::setup("root");
+        $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
         /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, array('dummy'), array(), '', false);

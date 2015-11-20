@@ -1027,7 +1027,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 'test',
             ),
             'commas' => array(
-                "test,",
+                'test,',
                 'test',
             ),
             'multiple commas with trailing spaces' => array(

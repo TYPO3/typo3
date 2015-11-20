@@ -347,7 +347,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(1))
             ->method('exec_DELETEquery')
-            ->with('cf_Testing', "identifier = aIdentifier");
+            ->with('cf_Testing', 'identifier = aIdentifier');
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(2))
             ->method('fullQuoteStr')
@@ -355,7 +355,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TYPO3_DB']
             ->expects($this->at(3))
             ->method('exec_DELETEquery')
-            ->with('cf_Testing_tags', "identifier = aIdentifier");
+            ->with('cf_Testing_tags', 'identifier = aIdentifier');
 
         $backend->remove('aIdentifier');
     }

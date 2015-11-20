@@ -181,7 +181,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
             $config = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($data['config.']);
             $backendLayout['config'] = '';
             foreach ($config as $row => $value) {
-                $backendLayout['config'] .= $row . " = " . $value . "\r\n";
+                $backendLayout['config'] .= $row . ' = ' . $value . "\r\n";
             }
             return $backendLayout;
         }

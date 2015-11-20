@@ -1373,7 +1373,7 @@ class DatabaseConnection
     public function admin_get_dbs()
     {
         $dbArr = array();
-        $db_list = $this->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+        $db_list = $this->query('SELECT SCHEMA_NAME FROM information_schema.SCHEMATA');
         if ($db_list === false) {
             throw new \RuntimeException(
                 'MySQL Error: Cannot get tablenames: "' . $this->sql_error() . '"!',

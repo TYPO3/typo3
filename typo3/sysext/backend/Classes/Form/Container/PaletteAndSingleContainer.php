@@ -263,26 +263,26 @@ class PaletteAndSingleContainer extends AbstractContainer
             $numberOfItems = count($fields);
             $colWidth = (int)floor(12 / $numberOfItems);
             // Column class calculation
-            $colClass = "col-md-12";
+            $colClass = 'col-md-12';
             $colClear = array();
             if ($colWidth == 6) {
-                $colClass = "col-sm-6";
+                $colClass = 'col-sm-6';
                 $colClear = array(
                     2 => 'visible-sm-block visible-md-block visible-lg-block',
                 );
             } elseif ($colWidth === 4) {
-                $colClass = "col-sm-4";
+                $colClass = 'col-sm-4';
                 $colClear = array(
                     3 => 'visible-sm-block visible-md-block visible-lg-block',
                 );
             } elseif ($colWidth === 3) {
-                $colClass = "col-sm-6 col-md-3";
+                $colClass = 'col-sm-6 col-md-3';
                 $colClear = array(
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block visible-lg-block',
                 );
             } elseif ($colWidth <= 2) {
-                $colClass = "checkbox-column col-sm-6 col-md-3 col-lg-2";
+                $colClass = 'checkbox-column col-sm-6 col-md-3 col-lg-2';
                 $colClear = array(
                     2 => 'visible-sm-block',
                     4 => 'visible-md-block',

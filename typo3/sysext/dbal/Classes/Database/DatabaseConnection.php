@@ -2690,7 +2690,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
         switch ($this->handlerCfg['_DEFAULT']['type']) {
             case 'native':
                 /** @var \mysqli_result $db_list */
-                $db_list = $this->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+                $db_list = $this->query('SELECT SCHEMA_NAME FROM information_schema.SCHEMATA');
                 $oldDb = $this->handlerCfg[$this->lastHandlerKey]['config']['database'];
                 while ($row = $db_list->fetch_object()) {
                     $this->handlerCfg[$this->lastHandlerKey]['config']['database'] = $row->SCHEMA_NAME;

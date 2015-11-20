@@ -50,7 +50,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTest
         // Create a key and a field that belongs to that key:
         $expectedDatabaseSchemaForBeUsers = $currentDatabaseSchemaForBeUsers;
         $expectedDatabaseSchemaForBeUsers['be_users']['fields']['functional_test_field_1'] = "tinyint(1) unsigned NOT NULL default '0'";
-        $expectedDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1'] = "KEY functional_test_key_1 (functional_test_field_1)";
+        $expectedDatabaseSchemaForBeUsers['be_users']['keys']['functional_test_key_1'] = 'KEY functional_test_key_1 (functional_test_field_1)';
         $createFieldDiff = $this->sqlSchemaMigrationService->getDatabaseExtra($expectedDatabaseSchemaForBeUsers, $currentDatabaseSchemaForBeUsers);
         $createFieldDiff = $this->sqlSchemaMigrationService->getUpdateSuggestions($createFieldDiff);
         $this->sqlSchemaMigrationService->performUpdateQueries($createFieldDiff['add'], $createFieldDiff['add']);

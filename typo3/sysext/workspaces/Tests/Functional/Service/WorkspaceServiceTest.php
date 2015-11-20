@@ -37,7 +37,7 @@ class WorkspaceServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function emptyWorkspaceReturnsEmptyArray()
     {
-        $this->markTestSkipped("This test need a review. It is green even if all fixtures are commented out");
+        $this->markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         $result = $service->selectVersionsInWorkspace(90);
         $this->assertTrue(empty($result), 'The workspace 90 contains no changes and the result was supposed to be empty');
@@ -135,7 +135,7 @@ class WorkspaceServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
      */
     public function movedElementsCanNotBeFoundAtTheirOrigin()
     {
-        $this->markTestSkipped("This test need a review. It is green even if all fixtures are commented out");
+        $this->markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();

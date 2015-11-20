@@ -157,9 +157,9 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest
             array(array('type' => 'int4', 'has_default' => true, 'default_value' => 0), 0),
             array(array('type' => 'int4', 'has_default' => true, 'default_value' => '(-1)'), -1),
             array(array('type' => 'text', 'has_default' => false, 'default_value' => null), null),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "''::character varying"), ""),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "NULL::character varying"), null),
-            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "'something'::character varying"), "something"),
+            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "''::character varying"), ''),
+            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => 'NULL::character varying'), null),
+            array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "'something'::character varying"), 'something'),
             array(array('type' => 'varchar', 'has_default' => true, 'default_value' => "'some''thing'::character varying"), "some''thing"),
         );
     }

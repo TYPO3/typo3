@@ -764,7 +764,7 @@ class ResourceCompressor
         // Strip all comment blocks, but keep double/single quoted strings.
         $contents = preg_replace(
             "<($double_quot|$single_quot)|$comment>Ss",
-            "$1",
+            '$1',
             $contents
         );
         // Remove certain whitespace.

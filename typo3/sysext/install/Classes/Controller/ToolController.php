@@ -99,7 +99,7 @@ class ToolController extends AbstractController
         register_shutdown_function(function () {
             $error = error_get_last();
             if ($error !== null) {
-                $errorType = $error["type"];
+                $errorType = $error['type'];
 
                 if ($errorType & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR)) {
                     $getPostValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');

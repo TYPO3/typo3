@@ -119,8 +119,8 @@ class Package implements PackageInterface
     protected function loadFlagsFromComposerManifest()
     {
         $extraFlags = $this->getValueFromComposerManifest('extra');
-        if ($extraFlags !== null && isset($extraFlags->{"typo3/cms"}->{"Package"})) {
-            foreach ($extraFlags->{"typo3/cms"}->{"Package"} as $flagName => $flagValue) {
+        if ($extraFlags !== null && isset($extraFlags->{'typo3/cms'}->{'Package'})) {
+            foreach ($extraFlags->{'typo3/cms'}->{'Package'} as $flagName => $flagValue) {
                 if (property_exists($this, $flagName)) {
                     $this->{$flagName} = $flagValue;
                 }

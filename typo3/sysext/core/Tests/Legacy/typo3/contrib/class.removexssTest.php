@@ -36,7 +36,7 @@ class RemoveXSSTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function checkAttackScriptSrcJs()
     {
         $testString = '<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>';
-        $expectedString = "<sc<x>ript SRC=http://ha.ckers.org/xss.js></SCRIPT>";
+        $expectedString = '<sc<x>ript SRC=http://ha.ckers.org/xss.js></SCRIPT>';
         $actualString = RemoveXSS::process($testString);
 
         $this->assertEquals($expectedString, $actualString);
@@ -222,8 +222,8 @@ class RemoveXSSTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function checkAttackLayer()
     {
-        $testString = "<LAYER SRC=\"http://ha.ckers.org/scriptlet.html\"></LAYER>";
-        $expectedString = "<la<x>yer SRC=\"http://ha.ckers.org/scriptlet.html\"></LAYER>";
+        $testString = '<LAYER SRC="http://ha.ckers.org/scriptlet.html"></LAYER>';
+        $expectedString = '<la<x>yer SRC="http://ha.ckers.org/scriptlet.html"></LAYER>';
         $actualString = RemoveXSS::process($testString);
 
         $this->assertEquals($expectedString, $actualString);

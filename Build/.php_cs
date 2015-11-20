@@ -61,6 +61,7 @@ return Symfony\CS\Config\Config::create()
         'unused_use',
         'concat_with_spaces',
         'whitespacy_lines',
-        'ordered_use'
+        'ordered_use',
+        'single_quote'
     ])
     ->finder($finder);

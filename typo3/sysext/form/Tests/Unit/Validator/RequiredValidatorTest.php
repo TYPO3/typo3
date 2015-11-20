@@ -40,7 +40,7 @@ class RequiredValidatorTest extends AbstractValidatorTest
             'array with value 0'      => array(array(0)),
             'array with strings "a" and "b"' => array(array('a', 'b')),
             'array with empty string and "a"' => array(array('', 'a')),
-            'array with empty string and "0"' => array(array('', "0")),
+            'array with empty string and "0"' => array(array('', '0')),
             'array with empty string and 0' => array(array('', 0)),
         );
     }

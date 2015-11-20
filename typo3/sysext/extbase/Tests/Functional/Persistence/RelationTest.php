@@ -425,7 +425,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
         $post = $postRepository->findByUid(1);
-        $post->setTitle("newTitle");
+        $post->setTitle('newTitle');
 
         $postRepository->update($post);
         $this->persistentManager->persistAll();

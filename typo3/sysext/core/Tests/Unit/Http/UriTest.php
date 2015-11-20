@@ -104,7 +104,7 @@ class UriTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         return [
             'int'    => [3000],
-            'string' => ["3000"]
+            'string' => ['3000']
         ];
     }
 
