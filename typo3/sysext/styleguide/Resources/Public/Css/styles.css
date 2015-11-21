@@ -39,13 +39,6 @@
 	color: #F8F8F2;
 }
 
-.ci-color {
-	background-color: rgb(255, 134, 0);
-}
-.highlight-color {
-	background-color: rgb(50, 160, 255);
-}
-
 div.icon-set {
 }
 div.icon-set ul {
@@ -57,10 +50,10 @@ div.icon-set ul {
 div.icon-set li {
 	background-color: rgb(240, 240, 240);
 	float: left;
-	width: 12.5%;
+	width: 20%;
 	border: 2px solid #fff;
-	padding: 10px;
-	height: 120px;
+	padding: 20px 10px;
+	height: 140px;
 	overflow: hidden;
 }
 div.icon-set li:hover {
