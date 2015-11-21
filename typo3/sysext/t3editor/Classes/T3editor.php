@@ -306,23 +306,20 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     {
         $code = '';
         $class .= ' t3editor';
-        $alt = htmlspecialchars($alt);
-        if (!empty($alt)) {
-            $alt = ' alt="' . $alt . '"';
-        }
+        $alt = trim($alt);
         $code .=
             '<div class="t3editor">'
                 . '<div class="t3e_wrap">'
                     . $this->getPreparedTemplate()
                 . '</div>'
                 . '<textarea '
-                    . 'id="t3editor_' . $this->editorCounter . '" '
-                    . 'name="' . $name . '" '
-                    . 'class="' . $class . '" '
+                    . 'id="t3editor_' . (int)$this->editorCounter . '" '
+                    . 'name="' . htmlspecialchars($name) . '" '
+                    . 'class="' . htmlspecialchars($class) . '" '
                     . $additionalParams . ' '
-                    . $alt
+                    . ($alt !== '' ? ' alt="' . htmlspecialchars($alt) . '"' : '')
                     . ' data-labels="' . htmlspecialchars(json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_'))) . '"'
-                    . ' data-instance-number="' . $this->editorCounter . '"'
+                    . ' data-instance-number="' . (int)$this->editorCounter . '"'
                     . ' data-editor-path="' . htmlspecialchars($this->relExtPath) . '"'
                     . ' data-codemirror-path="' . htmlspecialchars($this->codemirrorPath) . '"'
                     . ' data-ajaxsavetype="' . htmlspecialchars($this->ajaxSaveType) . '"'
@@ -333,7 +330,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
             . '</div>';
         if (!empty($hiddenfields)) {
             foreach ($hiddenfields as $name => $value) {
-                $code .= '<input type="hidden" ' . 'name="' . $name . '" ' . 'value="' . $value . '" />';
+                $code .= '<input type="hidden" ' . 'name="' . htmlspecialchars($name) . '" ' . 'value="' . htmlspecialchars($value) . '" />';
             }
         }
         $this->editorCounter++;

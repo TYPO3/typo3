@@ -91,7 +91,7 @@ class FileEditHook
         if (!$t3editor->getMode()) {
             return;
         }
-        $attributes = 'rows="30" ' . 'wrap="off" ' . $pObj->doc->formWidth(48, true, 'width:98%;height:60%');
+        $attributes = 'rows="30" ' . 'wrap="off"' . $pObj->doc->formWidth(48, true, 'width:98%;height:60%');
         $title = $GLOBALS['LANG']->getLL('file') . ' ' . htmlspecialchars($pObj->target);
         $outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'text-monospace enable-tab', '$1', $attributes, $title, array(
             'target' => (int)$pObj->target

@@ -71,8 +71,8 @@ class TypoScriptTemplateInfoHook
         $t3editor->getJavascriptCode();
         foreach (array('constants', 'config') as $type) {
             if ($parameters['e'][$type]) {
-                $attributes = 'rows="' . $parameters['numberOfRows'] . '" ' . 'wrap="off" ' . $pObj->pObj->doc->formWidth(48, true, 'width:98%;height:60%');
-                $title = $GLOBALS['LANG']->getLL('template') . ' ' . htmlspecialchars($parameters['tplRow']['title']) . $GLOBALS['LANG']->getLL('delimiter') . ' ' . $GLOBALS['LANG']->getLL($type);
+                $attributes = 'rows="' . (int)$parameters['numberOfRows'] . '" wrap="off"' . $pObj->pObj->doc->formWidth(48, true, 'width:98%;height:60%');
+                $title = $GLOBALS['LANG']->getLL('template') . ' ' . $parameters['tplRow']['title'] . $GLOBALS['LANG']->getLL('delimiter') . ' ' . $GLOBALS['LANG']->getLL($type);
                 $outCode = $t3editor->getCodeEditor('data[' . $type . ']', 'text-monospace enable-tab', '$1', $attributes, $title, array(
                     'pageId' => (int)$pObj->pObj->id
                 ));
