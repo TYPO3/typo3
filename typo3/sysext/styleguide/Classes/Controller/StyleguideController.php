@@ -88,6 +88,12 @@ class StyleguideController extends ActionController
     }
 
     /**
+     * Infobox
+     */
+    public function infoboxAction() {
+    }
+
+    /**
      * FlashMessages
      */
     public function flashMessagesAction()
@@ -98,13 +104,6 @@ class StyleguideController extends ActionController
         $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
         $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
         $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
-    }
-
-    /**
-     * Callouts
-     */
-    public function calloutAction()
-    {
     }
 
     /**
@@ -150,4 +149,5 @@ class StyleguideController extends ActionController
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
+
 }

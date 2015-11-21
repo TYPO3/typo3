@@ -25,7 +25,7 @@ Presents many supported styles for TYPO3 backend modules.
 5. Tables
 6. Forms
 7. Buttons
-8. Callout
+8. Infobox
 9. FlashMessages / Notification
 10. Icons
 11. Debug

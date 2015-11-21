@@ -1,0 +1,37 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	<f:translate key="infobox" />
+</f:section>
+
+<f:section name="content">
+	<p class="lead">Is a fluid based widget for the backend that can be inserted as view helper.</p>
+
+	<h2>Optional icon</h2>
+
+	<f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
+	<f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
+
+	<h2>Levels</h2>
+
+	<h3>Notice</h3>
+	<f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
+
+	<h3>Information</h3>
+	<f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
+
+	<h3>Positive feedback</h3>
+	<f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
+
+	<h3>Warning</h3>
+	<f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
+
+	<h3>Error</h3>
+	<f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
+
+</f:section>
