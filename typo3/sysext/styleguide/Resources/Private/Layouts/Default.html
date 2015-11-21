@@ -21,7 +21,7 @@
 			<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
 				<div class="module-docheader-bar-column-left">
 					<div class="form-inline">
-						<f:be.menus.actionMenu>
+						<sg:be.menus.actionMenu>
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'index')}" controller="Styleguide" action="index" />
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'typography')}" controller="Styleguide" action="typography" />
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'tca')}" controller="Styleguide" action="tca" />
@@ -35,7 +35,7 @@
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'icons')}" controller="Styleguide" action="icons" />
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'debug')}" controller="Styleguide" action="debug" />
 							<f:be.menus.actionMenuItem label="{f:translate(key: 'helpers')}" controller="Styleguide" action="helpers" />
-						</f:be.menus.actionMenu>
+						</sg:be.menus.actionMenu>
 					</div>
 				</div>
 				<div class="module-docheader-bar-column-right">
@@ -53,6 +53,7 @@
 							<a href="#" class="btn btn-default btn-sm" onClick="document.location.reload();">
 								<core:icon identifier="actions-system-refresh" />
 							</a>
+							<sg:be.buttons.shortcut />
 						</div>
 					</div>
 				</div>
