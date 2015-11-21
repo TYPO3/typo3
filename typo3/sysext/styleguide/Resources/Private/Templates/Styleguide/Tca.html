@@ -1,4 +1,5 @@
 {namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Default"/>
 
@@ -10,10 +11,10 @@
 </f:section>
 
 <f:section name="content">
-	<h2>Create new record</h2>
+	<h2>Create new demo record</h2>
 
 	<a href="#" onclick="window.location.href='{sg:addRecord()}'; return false;" class="btn btn-default">
-		<span class="t3-icon t3-icon-tcarecords t3-icon-tcarecords-tx_styleguide_forms t3-icon-tx_styleguide_forms-default">&nbsp;</span>
+		<core:icon identifier="tcarecords-tx_styleguide_forms-default" />
 		Form engine tests
 	</a>
 </f:section>
