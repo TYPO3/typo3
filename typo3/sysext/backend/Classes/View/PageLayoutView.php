@@ -765,19 +765,24 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . '</div>'
                         . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
                 } else {
-                    $params = '&edit[pages][' . $this->id . ']=edit';
+                    $editLink = '';
+                    $recordIcon = '';
+                    if ($this->getBackendUser()->checkLanguageAccess(0)) {
+                        $params = '&edit[pages][' . $this->id . ']=edit';
 
-                    $recordIcon = BackendUtility::wrapClickMenuOnIcon(
-                        $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
-                        'pages',
-                        $this->id
-                    );
-                    $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
-                        ? '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
-                        . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
-                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
-                        : ''
-                    );
+                        $recordIcon = BackendUtility::wrapClickMenuOnIcon(
+                            $this->iconFactory->getIconForRecord('pages', $this->pageRecord,
+                                Icon::SIZE_SMALL)->render(),
+                            'pages',
+                            $this->id
+                        );
+                        $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+                            ? '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+                            . '" title="' . $this->getLanguageService()->getLL('edit', true) . '">'
+                            . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
+                            : ''
+                        );
+                    }
 
                     $lPLabel =
                         '<div class="btn-group">'
@@ -1176,7 +1181,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // Create command links:
         if ($this->tt_contentConfig['showCommands']) {
             // Edit whole of column:
-            if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+            if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT) && $this->getBackendUser()->checkLanguageAccess(0)) {
                 $iconsArr['edit'] = '<a href="#" onclick="'
                     . htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
                     . $this->getLanguageService()->getLL('editColumn', true) . '">'

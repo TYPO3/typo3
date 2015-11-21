@@ -835,7 +835,7 @@ class PageLayoutController
             } catch (AccessDeniedException $e) {
                 // If no edit access, print error message:
                 $content = '<h2>' . $lang->getLL('noAccess', true) . '</h2>';
-                $conten .= '<div>' . $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : '') . '</div>';
+                $content .= '<div>' . $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : '') . '</div>';
             }
         } else {
             // If no edit access, print error message:
@@ -1100,7 +1100,7 @@ class PageLayoutController
             }
 
             // Edit page properties and page language overlay icons
-            if ($this->pageIsNotLockedForEditors()) {
+            if ($this->pageIsNotLockedForEditors() && $this->getBackendUser()->checkLanguageAccess(0)) {
                 // Edit localized page_language_overlay only when one specific language is selected
                 if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
                     $overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(

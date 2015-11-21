@@ -271,7 +271,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions()) {
+            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions() && $this->getBackendUserAuthentication()->checkLanguageAccess(0)) {
                 // Edit
                 $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
                 $onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
@@ -1383,7 +1383,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         if ($table == 'pages') {
             $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
         }
-        $permsEdit = $table === 'pages' && $localCalcPerms & Permission::PAGE_EDIT || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT;
+        $permsEdit = $table === 'pages'
+                     && $this->getBackendUserAuthentication()->checkLanguageAccess(0)
+                     && $localCalcPerms & Permission::PAGE_EDIT
+                     || $table !== 'pages'
+                        && $this->calcPerms & Permission::CONTENT_EDIT;
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
         if ($table == 'pages' || $table == 'tt_content') {
