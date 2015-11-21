@@ -9,12 +9,12 @@ TYPO3 CMS Backend Styleguide
 
 [![Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.svg)](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide)
 
-Welcome to the living styleguide for TYPO3 CMS backend.
+Welcome to the living Styleguide for TYPO3 CMS backend.
 Presents many supported styles for TYPO3 backend modules.
 
 ![](Documentation/Index.png)
 
-<a href="http://typo3.org/extensions/repository/view/styleguide" target="_blank">Official repository for TYPO3 CMS extension "styleguide" with changelog.</a>
+[Official repository for TYPO3 CMS extension "styleguide" with changelog.](http://typo3.org/extensions/repository/view/styleguide)
 
 # Table of content
 
@@ -31,12 +31,32 @@ Presents many supported styles for TYPO3 backend modules.
 11. Debug
 12. Helpers
 
+# Installation
+This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module with in the Help/Manuals navigation section.
+
+## Composer
+With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where root composer.json file resides):
+
+```
+composer require 7elix/styleguide
+```
+
+Composer will automatically find, download and extract the appropriate version into extension manager. Activate Styleguide extension from TYPO3 backend in Extension Manager.
+
+Hint: If [helhum/typo3-console](https://github.com/helhum/typo3_console/) has been installed locally. Active Styleguide extension on shell:
+
+```
+./typo3cms extension:install styleguide
+```
+
+## TYPO3 Extension Repository
+Head to TYPO3 backend > Extension Manager > Get Extensions. Search for and install extension key „styleguide“. Activate Styleguide extension within TYPO3 backend in Extension Manager.
+
 # Legal
-
 Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
-Therefore every imperfect style also is a todo for us. The solution should be included in the TYPO3 CMS core.
+Therefore every imperfect style also is a todo. The solution could be included in the TYPO3 CMS core at any stage.
 
-Maintained by Styleguide Team - Questions? Contact <a href="https://twitter.com/7elix" target="_blank">Felix Kopp</a>, Active Contributor for TYPO3 CMS.
+Maintained by Felix Kopp - Questions?
+Contact [@7elix](https://twitter.com/7elix).
 
-This guide is highly inspired by Bootstrap and Zurb Foundation.
-
+This guide is highly inspired by Bootstrap, Zurb Foundation and Pattern Lab.
