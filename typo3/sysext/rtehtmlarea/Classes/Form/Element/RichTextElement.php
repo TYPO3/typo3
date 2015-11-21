@@ -655,7 +655,7 @@ class RichTextElement extends AbstractFormElement
         $jsArray[] = '}';
         $jsArray[] = 'configureEditorInstance["' . $this->domIdentifier . '"] = function() {';
         $jsArray[] = 'if (typeof RTEarea === "undefined" || typeof HTMLArea === "undefined") {';
-        $jsArray[] = '	window.setTimeout("configureEditorInstance[' . GeneralUtilit::quoteJSvalue($this->domIdentifier) . ']();", 40);';
+        $jsArray[] = '	window.setTimeout("configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']();", 40);';
         $jsArray[] = '} else {';
         $jsArray[] = 'editornumber = "' . $this->domIdentifier . '";';
         $jsArray[] = 'RTEarea[editornumber] = new Object();';
