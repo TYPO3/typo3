@@ -78,7 +78,7 @@ class WizardController
         $response->getBody()->write(json_encode(['message' => $message]));
         return $response
                 ->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
-                ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . 'GMT')
+                ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
                 ->withHeader('Cache-Control', 'no-cache, must-revalidate')
                 ->withHeader('Pragma', 'no-cache');
     }
@@ -104,7 +104,7 @@ class WizardController
         $response->getBody()->write(json_encode($result));
         return $response
                 ->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
-                ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . 'GMT')
+                ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
                 ->withHeader('Cache-Control', 'no-cache, must-revalidate')
                 ->withHeader('Pragma', 'no-cache');
     }
