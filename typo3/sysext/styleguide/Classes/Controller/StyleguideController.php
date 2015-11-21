@@ -23,6 +23,7 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
  */
 class StyleguideController extends ActionController
 {
+
     /**
      * Buttons
      */
@@ -41,13 +42,6 @@ class StyleguideController extends ActionController
      * Typography
      */
     public function typographyAction()
-    {
-    }
-
-    /**
-     * Forms
-     */
-    public function formsAction()
     {
     }
 

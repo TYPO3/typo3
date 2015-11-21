@@ -18,9 +18,6 @@
 			<trans-unit id="infobox" xml:space="preserve">
 				<source>Infobox</source>
 			</trans-unit>
-			<trans-unit id="forms" xml:space="preserve">
-				<source>Forms</source>
-			</trans-unit>
 			<trans-unit id="avatar" xml:space="preserve">
 				<source>Avatar</source>
 			</trans-unit>
