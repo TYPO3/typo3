@@ -62,3 +62,6 @@ div.icon-set li:hover {
 div.icon-set li span {
 	margin-bottom: 5px;
 }
+a {
+	text-decoration: underline;
+}
