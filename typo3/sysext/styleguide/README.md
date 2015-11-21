@@ -10,7 +10,7 @@ TYPO3 CMS Backend Styleguide
 [![Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.svg)](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide)
 
 Welcome to the living Styleguide for TYPO3 CMS backend.
-Presents many supported styles for TYPO3 backend modules.
+Presents supported styles for TYPO3 backend modules.
 
 ![](Documentation/Index.png)
 
@@ -31,7 +31,7 @@ Presents many supported styles for TYPO3 backend modules.
 11. Helpers
 
 # Installation
-This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module with in the Help/Manuals navigation section.
+This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module within the Help/Manuals navigation section.
 
 ## Composer
 With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where root composer.json file resides):
@@ -42,7 +42,7 @@ composer require 7elix/styleguide
 
 Composer will automatically find, download and extract the appropriate version into extension manager. Activate Styleguide extension from TYPO3 backend in Extension Manager.
 
-Hint: If [helhum/typo3-console](https://github.com/helhum/typo3_console/) has been installed locally. Active Styleguide extension on shell:
+Hint: If [helhum/typo3-console](https://github.com/helhum/typo3_console/) has been installed locally. Activate Styleguide extension on shell:
 
 ```
 ./typo3cms extension:install styleguide
