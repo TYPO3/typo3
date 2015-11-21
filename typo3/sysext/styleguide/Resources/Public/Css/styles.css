@@ -65,3 +65,10 @@ div.icon-set li span {
 a {
 	text-decoration: underline;
 }
+.nav-tabs > li.active > a,
+.btn a,
+a.btn,
+.nav-tabs > li > a:focus,
+.nav-tabs > li > a:hover  {
+	text-decoration: none;
+}
