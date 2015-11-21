@@ -5,7 +5,7 @@
   "readme": "../README.md",
   "homepage": "https://www.typo3.org",
   "author": "TYPO3 CMS Core Team",
-  "version": "7.5.0-dev",
+  "version": "7.6.0-dev",
   "license": "GPL-2.0+",
   "devDependencies": {
     "autoprefixer": "^6.0.3",
