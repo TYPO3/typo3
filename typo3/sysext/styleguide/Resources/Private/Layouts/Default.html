@@ -1,58 +1,66 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 {namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
 
 <f:be.container
 	includeCssFiles="{
 		1: '{f:uri.resource(path:\'Css/styles.css\')}'
 	}"
-	includeRequireJsModules="{0: 'TYPO3/CMS/Styleguide/FindIcons'}"
+	includeRequireJsModules="{
+		0: 'TYPO3/CMS/Styleguide/FindIcons',
+		1: 'bootstrap',
+		2: 'TYPO3/CMS/Backend/ContextHelp',
+		3: 'TYPO3/CMS/Backend/DocumentHeader',
+		4: 'TYPO3/CMS/Backend/SplitButtons',
+		5: 'TYPO3/CMS/Lang/Lang'
+	}"
 	loadExtJsTheme="0"
 	loadJQuery="1"
 >
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'index')}" controller="Styleguide" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'typography')}" controller="Styleguide" action="typography" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'tca')}" controller="Styleguide" action="tca" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'trees')}" controller="Styleguide" action="trees" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'tab')}" controller="Styleguide" action="tab" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'tables')}" controller="Styleguide" action="tables" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'avatar')}" controller="Styleguide" action="avatar" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'buttons')}" controller="Styleguide" action="buttons" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'infobox')}" controller="Styleguide" action="infobox" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'flashMessages')}" controller="Styleguide" action="flashMessages" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'icons')}" controller="Styleguide" action="icons" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'debug')}" controller="Styleguide" action="debug" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'helpers')}" controller="Styleguide" action="helpers" />
-					</f:be.menus.actionMenu>
+	<div class="module" data-module-id="" data-module-name="">
+		<div class="module-docheader t3js-module-docheader">
+			<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
+				<div class="module-docheader-bar-column-left">
+					<div class="form-inline">
+						<f:be.menus.actionMenu>
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'index')}" controller="Styleguide" action="index" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'typography')}" controller="Styleguide" action="typography" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'tca')}" controller="Styleguide" action="tca" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'trees')}" controller="Styleguide" action="trees" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'tab')}" controller="Styleguide" action="tab" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'tables')}" controller="Styleguide" action="tables" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'avatar')}" controller="Styleguide" action="avatar" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'buttons')}" controller="Styleguide" action="buttons" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'infobox')}" controller="Styleguide" action="infobox" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'flashMessages')}" controller="Styleguide" action="flashMessages" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'icons')}" controller="Styleguide" action="icons" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'debug')}" controller="Styleguide" action="debug" />
+							<f:be.menus.actionMenuItem label="{f:translate(key: 'helpers')}" controller="Styleguide" action="helpers" />
+						</f:be.menus.actionMenu>
+					</div>
 				</div>
-
-				<div class="right">
+				<div class="module-docheader-bar-column-right">
 				</div>
 			</div>
-
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-					<f:render section="iconButtons" />
+			<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
+				<div class="module-docheader-bar-column-left">
+					<div class="btn-toolbar" role="toolbar" aria-label="">
+						<f:render section="iconButtons" />
+					</div>
 				</div>
-				<div class="right">
-					<a href="#" onClick="document.location.reload();">
-						<core:icon identifier="actions-system-refresh" />
-					</a>
-					<f:be.buttons.shortcut />
+				<div class="module-docheader-bar-column-right">
+					<div class="btn-toolbar" role="toolbar" aria-label="">
+						<div class="btn-group" role="group" aria-label="">
+							<a href="#" class="btn btn-default btn-sm" onClick="document.location.reload();">
+								<core:icon identifier="actions-system-refresh" />
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<h1><f:render section="headline" /></h1>
-
-				<f:render section="content" />
-			</div>
+		<div class="module-body t3js-module-body">
+			<h1><f:render section="headline" /></h1>
+			<f:render section="content" />
 		</div>
 	</div>
 </f:be.container>
