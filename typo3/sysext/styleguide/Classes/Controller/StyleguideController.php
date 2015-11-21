@@ -130,8 +130,8 @@ class StyleguideController extends ActionController
      */
     public function tabAction()
     {
-        /** @var \TYPO3\CMS\Backend\Template\DocumentTemplate */
-        $doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        /** @var \TYPO3\CMS\Backend\Template\ModuleTemplate */
+        $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
 
         $menuItems = array(
             0 => array(
@@ -147,8 +147,7 @@ class StyleguideController extends ActionController
                 'content' => 'Third content'
             )
         );
-        $tabs = $doc->getDynTabMenu($menuItems, 'ident');
-
+        $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
 }
