@@ -253,15 +253,15 @@ class ClickMenu
         // If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
         if (is_array($this->rec) || $root) {
             // Get permissions
-            $lCP = $this->backendUser->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? $this->rec['uid'] : $this->rec['pid']));
+            $lCP = $this->backendUser->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? (int)$this->rec['uid'] : (int)$this->rec['pid']));
             // View
             if (!in_array('view', $this->disabledItems, true)) {
                 if ($table === 'pages') {
                     $menuItems['view'] = $this->DB_view($uid);
                 }
                 if ($table === 'tt_content') {
-                    $ws_rec = BackendUtility::getRecordWSOL($table, $this->rec['uid']);
-                    $menuItems['view'] = $this->DB_view($ws_rec['pid']);
+                    $ws_rec = BackendUtility::getRecordWSOL($table, (int)$this->rec['uid']);
+                    $menuItems['view'] = $this->DB_view((int)$ws_rec['pid']);
                 }
             }
             // Edit:
@@ -315,7 +315,7 @@ class ClickMenu
                 $menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
             }
             if (!in_array('history', $this->disabledItems, true)) {
-                $menuItems['history'] = $this->DB_history($table, $uid, $elInfo);
+                $menuItems['history'] = $this->DB_history($table, $uid);
             }
 
             $localItems = array();
@@ -421,7 +421,7 @@ class ClickMenu
         }
         // If record was found, check permissions and get menu items.
         if (is_array($this->rec) || $root) {
-            $lCP = $this->backendUser->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? $this->rec['uid'] : $this->rec['pid']));
+            $lCP = $this->backendUser->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? (int)$this->rec['uid'] : (int)$this->rec['pid']));
             // Edit:
             if (!$root && ($this->backendUser->isPSet($lCP, $table, 'edit') || $this->backendUser->isPSet($lCP, $table, 'editcontent'))) {
                 $this->editOK = true;
@@ -689,7 +689,7 @@ class ClickMenu
             $url = BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]);
         } else {
             //  If mod.newContentElementWizard.override is set, use a custom module instead
-            $tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
+            $tsConfig = BackendUtility::getModTSconfig((int)$this->pageinfo['uid'], 'mod');
             $newContentWizardModuleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
             $url = BackendUtility::getModuleUrl($newContentWizardModuleName, ['id' => $rec['pid'], 'sys_language_uid' => (int)$rec['sys_language_uid']]);
         }
@@ -878,7 +878,7 @@ class ClickMenu
      */
     public function DB_hideUnhide($table, $rec, $hideField)
     {
-        return $this->DB_changeFlag($table, $rec, $hideField, $this->label(($rec[$hideField] ? 'un' : '') . 'hide'), 'hide');
+        return $this->DB_changeFlag($table, $rec, $hideField, $this->label(($rec[$hideField] ? 'un' : '') . 'hide'));
     }
 
     /**
@@ -925,7 +925,6 @@ class ClickMenu
      */
     public function printFileClickMenu($combinedIdentifier)
     {
-        $icon = '';
         $identifier = '';
         $menuItems = array();
         $combinedIdentifier = rawurldecode($combinedIdentifier);
@@ -939,9 +938,6 @@ class ClickMenu
             $userMayEditStorage = false;
             $identifier = $fileObject->getCombinedIdentifier();
             if ($fileObject instanceof Folder) {
-                $icon = '<span title="' . htmlspecialchars($fileObject->getName()) . '" class="absmiddle">'
-                    . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
-                    . '</span>';
                 $folder = true;
                 if ($fileObject->getIdentifier() === $fileObject->getStorage()->getRootLevelFolder()->getIdentifier()) {
                     $isStorageRoot = true;
@@ -955,11 +951,6 @@ class ClickMenu
                 if (!$fileObject->getStorage()->isOnline()) {
                     $isOnline = false;
                 }
-            } else {
-                $title = $fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')';
-                $icon = '<span class="absmiddle" title="' . htmlspecialchars($title) . '">'
-                    . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
-                    . '</span>';
             }
             // Hide
             if (!in_array('hide', $this->disabledItems, true) && $isStorageRoot && $userMayEditStorage) {
@@ -968,8 +959,7 @@ class ClickMenu
                     'sys_file_storage',
                     $record,
                     'is_online',
-                    $this->label($record['is_online'] ? 'offline' : 'online'),
-                    'hide'
+                    $this->label($record['is_online'] ? 'offline' : 'online')
                 );
             }
             // Edit
@@ -1398,6 +1388,7 @@ class ClickMenu
     public function addMenuItems($menuItems, $newMenuItems, $position = '')
     {
         if (is_array($newMenuItems)) {
+            $pointer = 0;
             if ($position) {
                 $posArr = GeneralUtility::trimExplode(',', $position, true);
                 foreach ($posArr as $pos) {
@@ -1468,7 +1459,7 @@ class ClickMenu
      * @param string $icon <img>-tag for the icon
      * @param string $onClick JavaScript onclick event for label/icon
      * @param int $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
-     * @param bool $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
+     * @param int $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
      * @return array $menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
      */
     public function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0)
