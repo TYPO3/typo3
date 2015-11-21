@@ -56,7 +56,7 @@ Head to TYPO3 backend > Extension Manager > Get Extensions. Search for and insta
 Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
 Therefore every imperfect style also is a todo. The solution could be included in the TYPO3 CMS core at any stage.
 
-Maintained by Felix Kopp - Questions?
+Questions? - Maintained by Felix Kopp and contributors.
 Contact [@7elix](https://twitter.com/7elix).
 
 This guide is highly inspired by Bootstrap, Zurb Foundation and Pattern Lab.
