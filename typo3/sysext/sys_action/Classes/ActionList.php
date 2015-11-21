@@ -29,7 +29,7 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      * @param string $excludeList Comma separated list of fields NOT to include ("sortField" or "sortRev")
      * @return string
      */
-    public function listURL($alternativeId = '', $table = -1, $excludeList = '')
+    public function listURL($alternativeId = '', $table = '-1', $excludeList = '')
     {
         $urlParameters = array();
         if ((string)$alternativeId !== '') {
@@ -37,7 +37,7 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
         } else {
             $urlParameters['id'] = $this->id;
         }
-        if ($table === -1) {
+        if ($table === '-1') {
             $urlParameters['table'] = $this->table;
         } else {
             $urlParameters['table'] = $table;

@@ -545,7 +545,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Setting form-elements, if applicable:
         $formElements = array('', '');
         if ($formFields) {
-            $formElements = array('<form action="' . htmlspecialchars($this->listURL('', -1, 'firstElementNumber,search_field')) . '" method="post">', '</form>');
+            $formElements = array('<form action="' . htmlspecialchars($this->listURL('', '-1', 'firstElementNumber,search_field')) . '" method="post">', '</form>');
         }
         // Make level selector:
         $opt = array();

@@ -371,9 +371,11 @@ abstract class AbstractRecordList
      * Creates the URL to this script, including all relevant GPvars
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
+     * @param string $table Table name to display. Enter "-1" for the current table.
+     * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
      * @return string URL
      */
-    public function listURL($altId = '')
+    public function listURL($altId = '', $table = '-1', $exclList = '')
     {
         return $this->getThisScript() . 'id=' . ($altId !== '' ? $altId : $this->id);
     }

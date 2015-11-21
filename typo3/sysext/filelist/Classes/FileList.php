@@ -644,10 +644,12 @@ class FileList extends AbstractRecordList
      * the URL would be invalid
      *
      * @param string $altId
+     * @param string $table Table name to display. Enter "-1" for the current table.
+     * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
      *
      * @return string URL
      */
-    public function listURL($altId = '')
+    public function listURL($altId = '', $table = '-1', $exclList = '')
     {
         return GeneralUtility::linkThisScript(array(
             'target' => rawurlencode($this->folderObject->getCombinedIdentifier()),
