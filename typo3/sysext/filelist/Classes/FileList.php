@@ -307,7 +307,7 @@ class FileList extends AbstractRecordList
      */
     public function linkClipboardHeaderIcon($string, $_, $cmd, $warning = '')
     {
-        $onClickEvent = 'document.dblistForm.cmd.value=\'' . $cmd . '\';document.dblistForm.submit();';
+        $onClickEvent = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd) . ';document.dblistForm.submit();';
         if ($warning) {
             $onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
         }
@@ -433,7 +433,7 @@ class FileList extends AbstractRecordList
                     if ($this->clipObj->current !== 'normal' && $iOut) {
                         $cells[] = $this->linkClipboardHeaderIcon('<span title="' . $this->getLanguageService()->getLL('clip_selectMarked', true) . '">' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '</span>', $table, 'setCB');
                         $cells[] = $this->linkClipboardHeaderIcon('<span title="' . $this->getLanguageService()->getLL('clip_deleteMarked', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
-                        $onClick = 'checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;';
+                        $onClick = 'checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;';
                         $cells[] = '<a class="btn btn-default" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('clip_markRecords', true) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
                     }
                     $theData[$v] = implode('', $cells);

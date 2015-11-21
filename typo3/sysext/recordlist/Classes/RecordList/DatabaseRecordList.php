@@ -1075,7 +1075,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB');
                         // The "edit marked" link:
                         $editIdList = implode(',', $currentIdList);
-                        $editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+                        $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
                         $params = 'edit[' . $table . '][' . $editIdList . ']=edit';
                         $onClick = BackendUtility::editOnClick('', '', -1);
                         $onClickArray = explode('?', $onClick, 2);
@@ -1093,7 +1093,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
                         );
                         // The "Select all" link:
-                        $onClick = htmlspecialchars(('checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;'));
+                        $onClick = htmlspecialchars(('checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;'));
                         $cells['markAll'] = '<a class="btn btn-default" rel="" href="#" onclick="' . $onClick . '" title="'
                             . $lang->getLL('clip_markRecords', true) . '">'
                             . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1154,7 +1154,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         if ($permsEdit && $this->table && is_array($currentIdList)) {
                             $editIdList = implode(',', $currentIdList);
                             if ($this->clipNumPane()) {
-                                $editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+                                $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
                             }
                             $params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
                             // we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
@@ -1200,7 +1200,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         if ($this->isEditable($table) && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
                             $editIdList = implode(',', $currentIdList);
                             if ($this->clipNumPane()) {
-                                $editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
+                                $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
                             }
                             $params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol;
                             // we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
@@ -1293,9 +1293,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $next = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL)->render() . '</span></li>';
             $last = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL)->render() . '</span></li>';
         }
-        $reload = '<li><a href="#" onclick="document.dblistForm.action=\'' . $listURL
-            . '&pointer=\'+calculatePointer(document.getElementById(\'jumpPage-' . $renderPart
-            . '\').value); document.dblistForm.submit(); return true;" title="'
+        $reload = '<li><a href="#" onclick="document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
+            . '&pointer=') . '+calculatePointer(document.getElementById(' . GeneralUtility::quoteJSvalue('jumpPage-' . $renderPart)
+            . ').value); document.dblistForm.submit(); return true;" title="'
             . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:reload', true) . '">'
             . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a></li>';
         if ($renderPart === 'top') {
@@ -1318,8 +1318,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         }
         $pageNumberInput = '
 			<input type="text" value="' . $currentPage . '" size="3" class="form-control input-sm paginator-input" id="jumpPage-' . $renderPart . '" name="jumpPage-'
-            . $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=\'' . $listURL
-            . '&pointer=\'+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
+            . $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=' . GeneralUtility::quoteJSvalue($listURL
+            . '&pointer=') . '+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
 			';
         $pageIndicatorText = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:pageIndicator'),
@@ -1411,13 +1411,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         }
         $this->addActionToCellGroup($cells, $editAction, 'edit');
         // "Info": (All records)
-        $onClick = 'top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;';
+        $onClick = 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;';
         $viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('showInfo', true) . '">'
             . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
         // "Move" wizard link for pages/tt_content elements:
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
-            $onClick = 'return jumpExt(\'' . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
+            $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
             $linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), true);
             $icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
             $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
@@ -1691,12 +1691,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 }
 
                 $cells['copy'] = '<a class="btn btn-default" href="#" onclick="'
-                    . htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), array('returnUrl' => '')) . '\');')
+                    . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), array('returnUrl' => ''))) . ');')
                     . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', true) . '">'
                     . $copyIcon->render() . '</a>';
                 if (true) {
                     $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), array('returnUrl' => '')) . '\');')
+                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), array('returnUrl' => ''))) . ');')
                         . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', true) . '">'
                         . $cutIcon->render() . '</a>';
                 } else {
@@ -1781,7 +1781,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             'ref_table = ' . $db->fullQuoteStr($tableName, 'sys_refindex') .
             ' AND ref_uid = ' . $uid . ' AND deleted = 0'
         );
-        return $this->generateReferenceToolTip($referenceCount, '\'' . $tableName . '\', \'' . $uid . '\'');
+        return $this->generateReferenceToolTip($referenceCount, GeneralUtility::quoteJSvalue($tableName) . ', ' . GeneralUtility::quoteJSvalue($uid));
     }
 
     /**
@@ -1927,8 +1927,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '')
     {
-        $onClickEvent = 'document.dblistForm.cmd.value=\'' . $cmd . '\';document.dblistForm.cmd_table.value=\''
-            . $table . '\';document.dblistForm.submit();';
+        $onClickEvent = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd) . ';document.dblistForm.cmd_table.value='
+            . GeneralUtility::quoteJSvalue($table) . ';document.dblistForm.submit();';
         if ($warning) {
             $onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
         }

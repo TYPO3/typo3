@@ -1840,7 +1840,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function makePointerSelector_link($str, $p, $freeIndexUid)
     {
-        $onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
+        $onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue($this->prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue($p) . ';' . 'document.getElementById(' . GeneralUtility::quoteJSvalue($this->prefixId . '_freeIndexUid') . ').value=' . GeneralUtility::quoteJSvalue($freeIndexUid) . ';' . 'document.getElementById(' . GeneralUtility::quoteJSvalue($this->prefixId) . ').submit();return false;';
         return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
     }
 

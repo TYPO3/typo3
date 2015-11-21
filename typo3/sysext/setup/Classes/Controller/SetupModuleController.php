@@ -1000,15 +1000,15 @@ class SetupModuleController extends AbstractModule
             }
 
             function clearExistingImage() {
-                TYPO3.jQuery(\'#image_' . htmlspecialchars($fieldName) . '\').hide();
-                TYPO3.jQuery(\'#clear_button_' . htmlspecialchars($fieldName) . '\').hide();
-                TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(\'\');
+                TYPO3.jQuery(' . GeneralUtility::quoteJSvalue('#image_' . htmlspecialchars($fieldName)) . ').hide();
+                TYPO3.jQuery(' . GeneralUtility::quoteJSvalue('#clear_button_' . htmlspecialchars($fieldName)) . ').hide();
+                TYPO3.jQuery(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(\'\');
             }
 
             function setFileUid(field, value, fileUid) {
                 clearExistingImage();
-                TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(fileUid);
-                TYPO3.jQuery(\'#add_button_' . htmlspecialchars($fieldName) . '\').removeClass(\'btn-default\').addClass(\'btn-info\');
+                TYPO3.jQuery(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(fileUid);
+                TYPO3.jQuery(' . GeneralUtility::quoteJSvalue('#add_button_' . htmlspecialchars($fieldName)) . ').removeClass(\'btn-default\').addClass(\'btn-info\');
 
                 browserWin.close();
             }

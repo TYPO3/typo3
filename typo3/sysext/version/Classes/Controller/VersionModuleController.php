@@ -541,7 +541,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Perform some access checks:
             $a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
             $a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
-            $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">'
+            $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(' . GeneralUtility::quoteJSvalue($pageModule) . '); return false;">'
                 . $this->moduleTemplate->getIconFactory()->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
                 . '</a>';
             $adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'web_list\'); return false;">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</a>';
