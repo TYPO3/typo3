@@ -111,7 +111,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if ($this->pageinfo) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
         $access = is_array($this->pageinfo);
         // We keep this here, in case somebody relies on the old doc being here
         $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
