@@ -23,11 +23,8 @@ Styleguide: TYPO3 backend elements
 :Email:
       felix-source@phorax.com
 
-
-
 :Language:
       en
-
 
 .. toctree::
    :maxdepth: 5
@@ -36,3 +33,4 @@ Styleguide: TYPO3 backend elements
 
    Main/Index
 
+Please find further information at https://github.com/7elix/TYPO3.CMS.Styleguide
