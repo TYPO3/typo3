@@ -118,39 +118,43 @@ class ViewModuleController extends ActionController
 
         $permissionClause = $this->getBackendUser()->getPagePermsClause(1);
         $pageRecord = BackendUtility::readPageAccess($pageIdToShow, $permissionClause);
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        if ($pageRecord) {
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
 
-        $adminCommand = $this->getAdminCommand($pageIdToShow);
-        $domainName = $this->getDomainName($pageIdToShow);
-        $languageParameter = $this->getLanguageParameter();
-        // Mount point overlay: Set new target page id and mp parameter
-        /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
-        $sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-        $sysPage->init(false);
-        $mountPointMpParameter = '';
-        $finalPageIdToShow = $pageIdToShow;
-        $mountPointInformation = $sysPage->getMountPointInfo($pageIdToShow);
-        if ($mountPointInformation && $mountPointInformation['overlay']) {
-            // New page id
-            $finalPageIdToShow = $mountPointInformation['mount_pid'];
-            $mountPointMpParameter = '&MP=' . $mountPointInformation['MPvar'];
-        }
-        // Modify relative path to protocol with host if domain record is given
-        $protocolAndHost = '..';
-        if ($domainName) {
-            // TCEMAIN.previewDomain can contain the protocol, check prevents double protocol URLs
-            if (strpos($domainName, '://') !== false) {
-                $protocolAndHost = $domainName;
-            } else {
-                $protocol = 'http';
-                $page = (array)$sysPage->getPage($finalPageIdToShow);
-                if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                    $protocol = 'https';
-                }
-                $protocolAndHost = $protocol . '://' . $domainName;
+            $adminCommand = $this->getAdminCommand($pageIdToShow);
+            $domainName = $this->getDomainName($pageIdToShow);
+            $languageParameter = $this->getLanguageParameter();
+            // Mount point overlay: Set new target page id and mp parameter
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
+            $sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+            $sysPage->init(false);
+            $mountPointMpParameter = '';
+            $finalPageIdToShow = $pageIdToShow;
+            $mountPointInformation = $sysPage->getMountPointInfo($pageIdToShow);
+            if ($mountPointInformation && $mountPointInformation['overlay']) {
+                // New page id
+                $finalPageIdToShow = $mountPointInformation['mount_pid'];
+                $mountPointMpParameter = '&MP=' . $mountPointInformation['MPvar'];
             }
+            // Modify relative path to protocol with host if domain record is given
+            $protocolAndHost = '..';
+            if ($domainName) {
+                // TCEMAIN.previewDomain can contain the protocol, check prevents double protocol URLs
+                if (strpos($domainName, '://') !== false) {
+                    $protocolAndHost = $domainName;
+                } else {
+                    $protocol = 'http';
+                    $page = (array)$sysPage->getPage($finalPageIdToShow);
+                    if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+                        $protocol = 'https';
+                    }
+                    $protocolAndHost = $protocol . '://' . $domainName;
+                }
+            }
+            return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand . $languageParameter;
+        } else {
+            return '#';
         }
-        return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand . $languageParameter;
     }
 
     /**
