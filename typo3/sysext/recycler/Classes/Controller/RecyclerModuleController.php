@@ -129,7 +129,9 @@ class RecyclerModuleController extends ActionController
         $jsConfiguration = $this->getJavaScriptConfiguration();
         $this->view->getModuleTemplate()->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
         $this->view->getModuleTemplate()->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+        if ($this->isAccessibleForCurrentUser) {
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+        }
 
         $this->view->assign('title', $this->getLanguageService()->getLL('title'));
         $this->view->assign('allowDelete', $this->allowDelete);
