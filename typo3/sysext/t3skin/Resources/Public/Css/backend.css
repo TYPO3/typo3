@@ -10087,9 +10087,6 @@ ul.typo3-messages {
 [id=typo3-pagetree-indicatorBar] .alert {
   margin: 10px 10px 0;
 }
-.x-menu-floating {
-  z-index: 50 !important;
-}
 .x-shadow {
   z-index: 40 !important;
 }
