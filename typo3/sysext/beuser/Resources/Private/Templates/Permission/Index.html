@@ -36,44 +36,28 @@
 								</f:comment>
 
 								<td align="left" nowrap="nowrap">
-									<a
-										href="#"
-										class="t3-js-clickmenutrigger"
-										data-table="pages"
-										data-uid="{data.row.uid}"
-										data-listfr="1"
+									<f:link.action
+										action="edit"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth}"
+										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
 									>
 										<f:format.raw>{data.depthData}{data.HTML}</f:format.raw>
 										{data.row.title -> f:format.crop(maxCharacters:20)}
-									</a>
+									</f:link.action>
 								</td>
 
 								<td>
 									<f:comment>
 										Edit link is workspace aware: If in ws, link to edit the ws overlay record is rendered
 									</f:comment>
-									<f:if condition="{data.row._ORIG_uid}">
-										<f:then>
-											<f:link.action
-												action="edit"
-												arguments="{id: data.row._ORIG_uid, depth: depth}"
-												class="btn btn-default"
-												title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-											>
-												<core:icon identifier="actions-document-open" />
-											</f:link.action>
-										</f:then>
-										<f:else>
-											<f:link.action
-												action="edit"
-												arguments="{id: data.row.uid, depth: depth}"
-												class="btn btn-default"
-												title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-											>
-												<core:icon identifier="actions-document-open" />
-											</f:link.action>
-										</f:else>
-									</f:if>
+									<f:link.action
+										action="edit"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth}"
+										class="btn btn-default"
+										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
+									>
+										<core:icon identifier="actions-document-open" />
+									</f:link.action>
 								</td>
 
 								<td nowrap="nowrap">
