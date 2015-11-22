@@ -663,4 +663,88 @@ class HtmlParserTest extends UnitTestCase
             $this->subject->stripEmptyTags($content, $tagList, $treatNonBreakingSpaceAsEmpty)
         );
     }
+
+    public function prefixResourcePathDataProvider(): array
+    {
+        return [
+            '<td background="test.png">' => [
+                '<table><tr><td background="test.png">Test</td></tr></table>',
+                '/prefix/',
+                '<table><tr><td background="/prefix/test.png">Test</td></tr></table>',
+
+            ],
+            '<table background="test.png">' => [
+                '<table background="test.png"><tr><td>Test</td></tr></table>',
+                '/prefix/',
+                '<table background="/prefix/test.png"><tr><td>Test</td></tr></table>',
+            ],
+            '<body background="test.png">' => [
+                '<body background="test.png">',
+                '/prefix/',
+                '<body background="/prefix/test.png">',
+            ],
+            '<img src="test.png">' => [
+                '<img src="test.png">',
+                '/prefix/',
+                '<img src="/prefix/test.png">',
+            ],
+            '<input src="test.png">' => [
+                '<input type="image" src="test.png"/>',
+                '/prefix/',
+                '<input type="image" src="/prefix/test.png" />',
+            ],
+            '<script src="test.js">' => [
+                '<script src="test.js"/>',
+                '/assets/',
+                '<script src="/assets/test.js" />',
+            ],
+            '<embed src="test.swf">' => [
+                '<embed src="test.swf"></embed>',
+                '/media/',
+                '<embed src="/media/test.swf"></embed>',
+            ],
+            '<a href="test.pdf">' => [
+                '<a href="something/test.pdf">Test PDF</a>',
+                '/',
+                '<a href="/something/test.pdf">Test PDF</a>',
+            ],
+            '<link href="test.css">' => [
+                '<link rel="stylesheet" type="text/css" href="theme.css">',
+                '/css/',
+                '<link rel="stylesheet" type="text/css" href="/css/theme.css">',
+            ],
+            '<form action="test/">' => [
+                '<form action="test/"></form>',
+                '/',
+                '<form action="/test/"></form>',
+            ],
+            '<param name="movie" value="test.mp4">' => [
+                '<param name="movie" value="test.mp4" />',
+                '/test/',
+                '<param name="movie" value="/test/test.mp4" />'
+            ],
+            '<source srcset="large.jpg">' => [
+                '<source srcset="large.jpg">',
+                '/assets/',
+                '<source srcset="/assets/large.jpg">',
+            ],
+            '<source media="(min-width: 56.25em)" srcset="large.jpg 1x, large@2x.jpg 2x">' => [
+                '<source media="(min-width: 56.25em)" srcset="large.jpg 1x, large@2x.jpg 2x">',
+                '/assets/',
+                '<source media="(min-width: 56.25em)" srcset="/assets/large.jpg 1x, /assets/large@2x.jpg 2x">',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider prefixResourcePathDataProvider
+     */
+    public function prefixResourcePathTest(string $content, string $prefix, string $expectedResult): void
+    {
+        self::assertSame(
+            $expectedResult,
+            $this->subject->prefixResourcePath($prefix, $content)
+        );
+    }
 }

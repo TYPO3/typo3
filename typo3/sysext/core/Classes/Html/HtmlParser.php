@@ -690,7 +690,8 @@ class HtmlParser
     }
 
     /**
-     * Prefixes the relative paths of hrefs/src/action in the tags [td,table,body,img,input,form,link,script,a] in the $content with the $main_prefix or and alternative given by $alternatives
+     * Prefixes the relative paths of hrefs/src/action in the tags [td,table,body,img,input,form,link,script,a]
+     * in the $content with the $main_prefix or and alternative given by $alternatives
      *
      * @param string $main_prefix Prefix string
      * @param string $content HTML content
@@ -700,7 +701,7 @@ class HtmlParser
      */
     public function prefixResourcePath($main_prefix, $content, $alternatives = [], $suffix = '')
     {
-        $parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a,param', $content);
+        $parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a,param,source', $content);
         foreach ($parts as $k => $v) {
             if ($k % 2) {
                 $params = $this->get_tag_attributes($v);
@@ -708,60 +709,57 @@ class HtmlParser
                 $tagEnd = substr($v, -2) === '/>' ? ' />' : '>';
                 // The 'name' of the first tag
                 $firstTagName = $this->getFirstTagName($v);
-                $somethingDone = 0;
+                $prefixedRelPath = false;
                 $prefix = $alternatives[strtoupper($firstTagName)] ?? $main_prefix;
                 switch (strtolower($firstTagName)) {
                     case 'td':
-
                     case 'body':
-
                     case 'table':
-                        $src = $params[0]['background'];
-                        if ($src) {
+                        if (isset($params[0]['background'])) {
                             $params[0]['background'] = $this->prefixRelPath($prefix, $params[0]['background'], $suffix);
-                            $somethingDone = 1;
+                            $prefixedRelPath = true;
                         }
                         break;
                     case 'img':
-
                     case 'input':
-
                     case 'script':
-
                     case 'embed':
-                        $src = $params[0]['src'];
-                        if ($src) {
+                        if (isset($params[0]['src'])) {
                             $params[0]['src'] = $this->prefixRelPath($prefix, $params[0]['src'], $suffix);
-                            $somethingDone = 1;
+                            $prefixedRelPath = true;
                         }
                         break;
                     case 'link':
-
                     case 'a':
-                        $src = $params[0]['href'];
-                        if ($src) {
+                        if (isset($params[0]['href'])) {
                             $params[0]['href'] = $this->prefixRelPath($prefix, $params[0]['href'], $suffix);
-                            $somethingDone = 1;
+                            $prefixedRelPath = true;
                         }
                         break;
                     case 'form':
-                        $src = $params[0]['action'];
-                        if ($src) {
+                        if (isset($params[0]['action'])) {
                             $params[0]['action'] = $this->prefixRelPath($prefix, $params[0]['action'], $suffix);
-                            $somethingDone = 1;
+                            $prefixedRelPath = true;
                         }
                         break;
                     case 'param':
-                        $test = $params[0]['name'];
-                        if ($test && $test === 'movie') {
-                            if ($params[0]['value']) {
-                                $params[0]['value'] = $this->prefixRelPath($prefix, $params[0]['value'], $suffix);
-                                $somethingDone = 1;
+                        if (isset($params[0]['name']) && $params[0]['name'] === 'movie' && isset($params[0]['value'])) {
+                            $params[0]['value'] = $this->prefixRelPath($prefix, $params[0]['value'], $suffix);
+                            $prefixedRelPath = true;
+                        }
+                        break;
+                    case 'source':
+                        if (isset($params[0]['srcset'])) {
+                            $srcsetImagePaths = GeneralUtility::trimExplode(',', $params[0]['srcset']);
+                            for ($i = 0; $i < count($srcsetImagePaths); $i++) {
+                                $srcsetImagePaths[$i] = $this->prefixRelPath($prefix, $srcsetImagePaths[$i], $suffix);
                             }
+                            $params[0]['srcset'] = implode(', ', $srcsetImagePaths);
+                            $prefixedRelPath = true;
                         }
                         break;
                 }
-                if ($somethingDone) {
+                if ($prefixedRelPath) {
                     $tagParts = preg_split('/\\s+/s', $v, 2);
                     $tagParts[1] = $this->compileTagAttribs($params[0], $params[1]);
                     $parts[$k] = '<' . trim(strtolower($firstTagName) . ' ' . $tagParts[1]) . $tagEnd;
@@ -800,7 +798,7 @@ class HtmlParser
         if ($srcVal[0] !== '/' && $srcVal[0] !== '#') {
             $urlParts = parse_url($srcVal);
             // Only prefix URLs without a scheme
-            if (!$urlParts['scheme']) {
+            if (!isset($urlParts['scheme'])) {
                 $srcVal = $prefix . $srcVal . $suffix;
             }
         }
