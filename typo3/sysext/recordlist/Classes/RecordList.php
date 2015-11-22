@@ -403,7 +403,7 @@ class RecordList extends AbstractModule
                 }
             }
             // Initialize the listing object, dblist, for rendering the list:
-            $this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
+            $this->pointer = max(0, (int)$this->pointer);
             $dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
             $dblist->setDispFields();
             // Render versioning selector:
