@@ -248,7 +248,7 @@ class AdminPanelView
     public function display()
     {
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_tsfe.xlf');
-        $moduleContent = $footer = '';
+        $moduleContent = $updateButton = '';
 
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
             if ($this->isAdminModuleEnabled('preview')) {
@@ -281,9 +281,9 @@ class AdminPanelView
         $cssClassName = 'typo3-adminPanel-panel-' . ($isVisible ? 'open' : 'closed');
         $header = '<div class="typo3-adminPanel-header">' . '<div id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button fa"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $this->getBackendUser()->uc['TSFE_adminConfig']['display_top'] . '" /></div>' . '</div>';
         if ($moduleContent && $this->extNeedUpdate) {
-            $footer = '<div id="typo3-adminPanel-footer">
-							<input class="typo3-adminPanel-update btn btn-default" type="submit" value="' . $this->extGetLL('update') . '" />
-					</div>';
+            $updateButton = '<div class="typo3-adminPanel-itemRow updatebutton"><div class="typo3-adminPanel-section-content">
+							<input class="btn btn-default" type="submit" value="' . $this->extGetLL('update') . '" />
+					</div></div>';
         }
         $query = !GeneralUtility::_GET('id') ? '<input type="hidden" name="id" value="' . $this->getTypoScriptFrontendController()->id . '" />' : '';
 
@@ -304,7 +304,7 @@ class AdminPanelView
 	TYPO3 Admin panel start
 -->
 <a id="TSFE_ADMIN_PANEL"></a>
-<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<div class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</div></form>';
+<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<div class="typo3-adminPanel">' . $header . $updateButton . $moduleContent . '</div></form>';
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
             $out .= '<script type="text/javascript" src="' . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix) . 'typo3/sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
             $out .= '<script type="text/javascript">/*<![CDATA[*/' . GeneralUtility::minifyJavaScript('
