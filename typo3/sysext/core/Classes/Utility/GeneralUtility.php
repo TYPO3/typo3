@@ -3141,6 +3141,7 @@ Connection: close
 	 *
 	 * @param string $path URL / path to prepend full URL addressing to.
 	 * @return string
+	 * @throws \InvalidArgumentException
 	 */
 	static public function locationHeaderUrl($path) {
 		$uI = parse_url($path);
@@ -3150,6 +3151,9 @@ Connection: close
 		} elseif (!$uI['scheme']) {
 			// No scheme either
 			$path = self::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
+		}
+		if (strpbrk($path, "\r\n") !== false) {
+			throw new \InvalidArgumentException('HTTP header injection attempt in "' . $path . '"', 1448194036);
 		}
 		return $path;
 	}
