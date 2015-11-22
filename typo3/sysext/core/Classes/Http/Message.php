@@ -460,11 +460,8 @@ class Message implements MessageInterface
     {
         $value = (string)$value;
 
-        // Look for:
-        // \n not preceded by \r, OR
-        // \r not followed by \n, OR
-        // \r\n not followed by space or horizontal tab; these are all CRLF attacks
-        if (preg_match("#(?:(?:(?<!\r)\n)|(?:\r(?!\n))|(?:\r\n(?![ \t])))#", $value)) {
+        // Any occurence of \r or \n is invalid
+        if (strpbrk($value, "\r\n") !== false) {
             return false;
         }
 
