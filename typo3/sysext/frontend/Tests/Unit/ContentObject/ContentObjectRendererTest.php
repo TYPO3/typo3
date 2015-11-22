@@ -2060,6 +2060,90 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_bytes test
+     *
+     * @return array
+     */
+    public function stdWrap_bytesDataProvider()
+    {
+        return array(
+            'value 1234 default' => array(
+                '1234',
+                array(
+                    'bytes.' => array(
+                        'labels' => '',
+                        'base' => 0,
+                    ),
+                ),
+                '1.21 Ki',
+            ),
+            'value 1234 si' => array(
+                '1234',
+                array(
+                    'bytes.' => array(
+                        'labels' => 'si',
+                        'base' => 0,
+                    ),
+                ),
+                '1.23 k',
+            ),
+            'value 1234 iec' => array(
+                '1234',
+                array(
+                    'bytes.' => array(
+                        'labels' => 'iec',
+                        'base' => 0,
+                    ),
+                ),
+                '1.21 Ki',
+            ),
+            'value 1234 a-i' => array(
+                '1234',
+                array(
+                    'bytes.' => array(
+                        'labels' => 'a|b|c|d|e|f|g|h|i',
+                        'base' => 1000,
+                    ),
+                ),
+                '1.23b',
+            ),
+            'value 1234 a-i invalid base' => array(
+                '1234',
+                array(
+                    'bytes.' => array(
+                        'labels' => 'a|b|c|d|e|f|g|h|i',
+                        'base' => 54,
+                    ),
+                ),
+                '1.21b',
+            ),
+            'value 1234567890 default' => array(
+                '1234567890',
+                array(
+                    'bytes.' => array(
+                        'labels' => '',
+                        'base' => 0,
+                    ),
+                ),
+                '1.15 Gi',
+            ),
+        );
+    }
+
+    /**
+     * @param string|NULL $content
+     * @param array $configuration
+     * @param string $expected
+     * @dataProvider stdWrap_bytesDataProvider
+     * @test
+     */
+    public function stdWrap_bytes($content, array $configuration, $expected)
+    {
+        $result = $this->subject->stdWrap_bytes($content, $configuration);
+        $this->assertSame($expected, $result);
+    }
+
+    /**
      * Data provider for stdWrap_stdWrapValue test
      *
      * @return array
