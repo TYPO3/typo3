@@ -2144,6 +2144,121 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Data provider for stdWrap_substring test
+     *
+     * @return array
+     */
+    public function stdWrap_substringDataProvider()
+    {
+        return array(
+            'sub -1' => array(
+                'substring',
+                array(
+                    'substring' => '-1',
+                ),
+                'g',
+            ),
+            'sub -1,0' => array(
+                'substring',
+                array(
+                    'substring' => '-1,0',
+                ),
+                'g',
+            ),
+            'sub -1,-1' => array(
+                'substring',
+                array(
+                    'substring' => '-1,-1',
+                ),
+                '',
+            ),
+            'sub -1,1' => array(
+                'substring',
+                array(
+                    'substring' => '-1,1',
+                ),
+                'g',
+            ),
+            'sub 0' => array(
+                'substring',
+                array(
+                    'substring' => '0',
+                ),
+                'substring',
+            ),
+            'sub 0,0' => array(
+                'substring',
+                array(
+                    'substring' => '0,0',
+                ),
+                'substring',
+            ),
+            'sub 0,-1' => array(
+                'substring',
+                array(
+                    'substring' => '0,-1',
+                ),
+                'substrin',
+            ),
+            'sub 0,1' => array(
+                'substring',
+                array(
+                    'substring' => '0,1',
+                ),
+                's',
+            ),
+            'sub 1' => array(
+                'substring',
+                array(
+                    'substring' => '1',
+                ),
+                'ubstring',
+            ),
+            'sub 1,0' => array(
+                'substring',
+                array(
+                    'substring' => '1,0',
+                ),
+                'ubstring',
+            ),
+            'sub 1,-1' => array(
+                'substring',
+                array(
+                    'substring' => '1,-1',
+                ),
+                'ubstrin',
+            ),
+            'sub 1,1' => array(
+                'substring',
+                array(
+                    'substring' => '1,1',
+                ),
+                'u',
+            ),
+            'sub' => array(
+                'substring',
+                array(
+                    'substring' => '',
+                ),
+                'substring',
+            ),
+        );
+    }
+
+    /**
+     * @param string $content
+     * @param array $configuration
+     * @param string $expected
+     * @dataProvider stdWrap_substringDataProvider
+     * @test
+     */
+    public function stdWrap_substring($content, array $configuration, $expected)
+    {
+        $result = $this->subject->stdWrap_substring($content, $configuration);
+        $this->assertSame($expected, $result);
+    }
+
+    /**
      * Data provider for stdWrap_stdWrapValue test
      *
      * @return array
