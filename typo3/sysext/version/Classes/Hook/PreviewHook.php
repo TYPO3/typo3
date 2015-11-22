@@ -112,7 +112,12 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 		// if there is a valid BE user, and the full workspace should be
 		// previewed, the workspacePreview option shouldbe set
 		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
-		if ($pObj->beUserLogin && is_object($params['BE_USER']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
+		if (
+			$pObj->beUserLogin
+			&& is_object($params['BE_USER'])
+			&& \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)
+			&& $params['BE_USER']->isInWebMount($pObj->id)
+		) {
 			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
 				// Check Access to workspace. Live (0) is OK to preview for all.
 				$pObj->workspacePreview = (int)$workspaceUid;
