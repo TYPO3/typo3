@@ -142,20 +142,25 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
     {
         $moduleConfiguration = $this->getModuleConfiguration($moduleName);
 
+        /** @var Response $response */
+        $response = GeneralUtility::makeInstance(Response::class);
+
         // Check permissions and exit if the user has no permission for entry
         $this->backendUserAuthentication->modAccess($moduleConfiguration, true);
         $id = isset($this->request->getQueryParams()['id']) ? $this->request->getQueryParams()['id'] : $this->request->getParsedBody()['id'];
         if ($id && MathUtility::canBeInterpretedAsInteger($id)) {
-            // Check page access
             $permClause = $this->backendUserAuthentication->getPagePermsClause(true);
+            // Check page access
             $access = is_array(BackendUtility::readPageAccess((int)$id, $permClause));
             if (!$access) {
-                throw new \RuntimeException('You don\'t have access to this page', 1289917924);
+                // Check if page has been deleted
+                $deleteField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
+                $pageInfo = BackendUtility::getRecord('pages', (int)$id, $deleteField, $permClause ? ' AND ' . $permClause : '', false);
+                if (!$pageInfo[$deleteField]) {
+                    throw new \RuntimeException('You don\'t have access to this page', 1289917924);
+                }
             }
         }
-
-        /** @var Response $response */
-        $response = GeneralUtility::makeInstance(Response::class);
 
         // Use Core Dispatching
         if (isset($moduleConfiguration['routeTarget'])) {

@@ -73,8 +73,10 @@ class ReviewController extends AbstractController
         $this->view->assign('pageUid', GeneralUtility::_GP('id'));
         if (GeneralUtility::_GP('id')) {
             $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
-            $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
+            if ($pageRecord) {
+                $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+                $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
+            }
         }
         $this->view->assign('showLegend', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
         $wsList = $wsService->getAvailableWorkspaces();
