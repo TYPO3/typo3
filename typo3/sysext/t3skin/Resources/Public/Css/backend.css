@@ -12257,8 +12257,12 @@ select.form-control:not([size]) {
   background-image: url('../../../../../../typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-view-list-expand.svg');
   background-position: right 4px center;
   background-repeat: no-repeat;
-  background-size: 16px;
+  background-size: 16px 16px;
   padding-right: 24px;
+}
+select.form-control[size="1"]::-ms-expand,
+select.form-control:not([size])::-ms-expand {
+  display: none;
 }
 select.form-control[size="1"].input-sm,
 select.form-control:not([size]).input-sm,

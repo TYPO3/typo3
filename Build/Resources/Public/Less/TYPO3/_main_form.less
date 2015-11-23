@@ -169,8 +169,12 @@ select {
 			background-image: url('@{path-sysext}/core/Resources/Public/Icons/T3Icons/actions/actions-view-list-expand.svg');
 			background-position: right 4px center;
 			background-repeat: no-repeat;
-			background-size: 16px;
+			background-size: 16px 16px;
 			padding-right: 24px;
+
+			&::-ms-expand {
+				display: none;
+			}
 
 			&.input-sm,
 			.form-group-sm & {
