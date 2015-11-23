@@ -687,6 +687,7 @@ return array(
             )
         ),
         'pages' => array(
+            'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.startingpoint',
             'config' => array(
                 'type' => 'group',
