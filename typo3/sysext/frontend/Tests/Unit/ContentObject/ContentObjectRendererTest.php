@@ -28,6 +28,11 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
+     * @var string
+     */
+    protected $currentLocale;
+
+    /**
      * @var array A backup of registered singleton instances
      */
     protected $singletonInstances = array();
@@ -81,6 +86,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function setUp()
     {
+        $this->currentLocale = setlocale(LC_NUMERIC, 0);
+
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
@@ -110,6 +117,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function tearDown()
     {
+        setlocale(LC_NUMERIC, $this->currentLocale);
         GeneralUtility::resetSingletonInstances($this->singletonInstances);
         parent::tearDown();
     }
@@ -2076,6 +2084,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.21 Ki',
+                'en_US.UTF-8'
             ),
             'value 1234 si' => array(
                 '1234',
@@ -2086,6 +2095,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.23 k',
+                'en_US.UTF-8'
             ),
             'value 1234 iec' => array(
                 '1234',
@@ -2096,6 +2106,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.21 Ki',
+                'en_US.UTF-8'
             ),
             'value 1234 a-i' => array(
                 '1234',
@@ -2106,6 +2117,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.23b',
+                'en_US.UTF-8'
             ),
             'value 1234 a-i invalid base' => array(
                 '1234',
@@ -2116,6 +2128,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.21b',
+                'en_US.UTF-8'
             ),
             'value 1234567890 default' => array(
                 '1234567890',
@@ -2126,6 +2139,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     ),
                 ),
                 '1.15 Gi',
+                'en_US.UTF-8'
             ),
         );
     }
@@ -2137,8 +2151,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @dataProvider stdWrap_bytesDataProvider
      * @test
      */
-    public function stdWrap_bytes($content, array $configuration, $expected)
+    public function stdWrap_bytes($content, array $configuration, $expected, $locale)
     {
+        if (!setlocale(LC_NUMERIC, $locale)) {
+            $this->markTestSkipped('Locale ' . $locale . ' is not available.');
+        }
         $result = $this->subject->stdWrap_bytes($content, $configuration);
         $this->assertSame($expected, $result);
     }
