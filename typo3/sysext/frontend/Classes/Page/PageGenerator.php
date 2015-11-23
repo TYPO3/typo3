@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -393,7 +394,7 @@ class PageGenerator {
 			$pageRenderer->setBaseUrl($GLOBALS['TSFE']->baseUrl);
 		}
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
-			$favIcon = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
+			$favIcon = ltrim($GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']), '/');
 			if (is_file(PATH_site . $favIcon)) {
 				if (function_exists('finfo_open')) {
 					if ($finfo = @finfo_open(FILEINFO_MIME)) {
@@ -402,7 +403,7 @@ class PageGenerator {
 						$pageRenderer->setIconMimeType($iconMimeType);
 					}
 				}
-				$pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
+				$pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($GLOBALS['TSFE']->absRefPrefix . $favIcon));
 			}
 		}
 		// Including CSS files

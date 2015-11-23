@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class with helper functions for file paths.
  *
@@ -29,6 +30,34 @@ class PathUtility {
 	 */
 	static public function getRelativePathTo($targetPath) {
 		return self::getRelativePath(dirname(PATH_thisScript), $targetPath);
+	}
+
+	/**
+	 * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
+	 *
+	 * @param string $targetPath can be "../typo3conf/ext/myext/myfile.js" or "/myfile.js"
+	 * @return string something like "/mysite/typo3conf/ext/myext/myfile.js"
+	 */
+	public static function getAbsoluteWebPath($targetPath) {
+		if (self::isAbsolutePath($targetPath)) {
+			if (strpos($targetPath, PATH_site) === 0) {
+				$targetPath = self::stripPathSitePrefix($targetPath);
+				if (!defined('TYPO3_cliMode')) {
+					$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+				}
+			}
+		} elseif (strpos($targetPath, '://') !== false) {
+			return $targetPath;
+		} else {
+			// Make an absolute path out of it
+			$targetPath = GeneralUtility::resolveBackPath(dirname(PATH_thisScript) . '/' . $targetPath);
+			$targetPath = self::stripPathSitePrefix($targetPath);
+			if (!defined('TYPO3_cliMode')) {
+				$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+			}
+		}
+
+		return $targetPath;
 	}
 
 	/**
