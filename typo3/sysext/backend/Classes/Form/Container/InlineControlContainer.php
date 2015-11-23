@@ -121,6 +121,13 @@ class InlineControlContainer extends AbstractContainer
         }
         $inlineStackProcessor->pushStableStructureItem($newStructureItem);
 
+        // Transport the flexform DS identifier fields to the FormAjaxInlineController
+        if (!empty($newStructureItem['flexform'])
+            && isset($this->data['processedTca']['columns'][$field]['config']['ds']['meta']['dataStructurePointers'])
+        ) {
+            $config['flexDataStructurePointers'] = $this->data['processedTca']['columns'][$field]['config']['ds']['meta']['dataStructurePointers'];
+        }
+
         // e.g. data[<table>][<uid>][<field>]
         $nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix();
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>

@@ -111,6 +111,11 @@ class TcaFlexProcessTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
             'sheets' => [],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -187,6 +192,11 @@ class TcaFlexProcessTest extends UnitTestCase
                         ],
                         'sheetTitle' => 'aTitle',
                     ],
+                ],
+            ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
                 ],
             ],
         ];
@@ -267,6 +277,11 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -343,6 +358,11 @@ class TcaFlexProcessTest extends UnitTestCase
                         ],
                         'sheetDescription' => 'sheetShortDescr',
                     ],
+                ],
+            ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
                 ],
             ],
         ];
@@ -423,6 +443,11 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -483,6 +508,11 @@ class TcaFlexProcessTest extends UnitTestCase
                         'type' => 'array',
                         'el' => [],
                     ],
+                ],
+            ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
                 ],
             ],
         ];
@@ -555,6 +585,11 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -623,6 +658,11 @@ class TcaFlexProcessTest extends UnitTestCase
                             ],
                         ],
                     ],
+                ],
+            ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
                 ],
             ],
         ];
@@ -695,6 +735,11 @@ class TcaFlexProcessTest extends UnitTestCase
                         'type' => 'array',
                         'el' => [],
                     ],
+                ],
+            ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
                 ],
             ],
         ];
@@ -802,6 +847,11 @@ class TcaFlexProcessTest extends UnitTestCase
                     ],
                 ],
             ],
+            'meta' => [
+                'dataStructurePointers' => [
+                    'pointerField' => 'aFlex',
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $this->subject->addData($input));
@@ -864,6 +914,11 @@ class TcaFlexProcessTest extends UnitTestCase
         $this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(true);
 
         $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
+            'dataStructurePointers' => [
+                'pointerField' => 'aFlex'
+            ],
+        ];
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
 
         $this->assertEquals($expected, $this->subject->addData($input));

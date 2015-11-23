@@ -71,15 +71,18 @@ class FormInlineAjaxController
             $databaseRow = [];
             $vanillaUid = (int)$inlineFirstPid;
         }
+        $databaseRow = $this->addFlexFormDataStructurePointersFromAjaxContext($ajaxArguments, $databaseRow);
+
         $formDataCompilerInputForParent = [
             'vanillaUid' => $vanillaUid,
             'command' => $command,
             'tableName' => $parent['table'],
             'databaseRow' => $databaseRow,
             'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => [
-                $parentFieldName
-            ],
+            'columnsToProcess' => array_merge(
+                [$parentFieldName],
+                array_keys($databaseRow)
+            ),
             // Do not resolve existing children, we don't need them now
             'inlineResolveExistingChildren' => false,
         ];
@@ -782,11 +785,15 @@ class FormInlineAjaxController
         $pattern = '/^data' . '-' . '(?<firstPidValue>.+?)' . '-' . '(?<anything>.+)$/';
 
         $flexFormPath = [];
+        // Will be checked against the FlexForm configuration as an additional safeguard
+        $foreignTableName = '';
 
         if (preg_match($pattern, $domObjectId, $match)) {
-            $parts = explode('-', $match['anything']);
+            // The flexform path should be the second to last array element,
+            // the foreign table name the last.
+            $parts = array_slice(explode('-', $match['anything']), -2, 2);
 
-            if (!isset($parts[2]) || strpos($parts[2], ':') === false) {
+            if (count($parts) !== 2 || !isset($parts[0]) || strpos($parts[0], ':') === false) {
                 throw new \UnexpectedValueException(
                     'DOM Object ID' . $domObjectId . 'does not contain required information '
                     . 'to extract inline field configuration.',
@@ -794,7 +801,7 @@ class FormInlineAjaxController
                 );
             }
 
-            $fieldParts = GeneralUtility::trimExplode(':', $parts[2]);
+            $fieldParts = GeneralUtility::trimExplode(':', $parts[0]);
 
             // FlexForm parts start with data:
             if (empty($fieldParts) || !isset($fieldParts[1]) || $fieldParts[1] !== 'data') {
@@ -805,13 +812,14 @@ class FormInlineAjaxController
             }
 
             $flexFormPath = array_slice($fieldParts, 2);
+            $foreignTableName = $parts[1];
         }
 
         $childConfig = $parentConfig['ds']['sheets'];
 
         foreach ($flexFormPath as $flexFormNode) {
             // We are dealing with configuration information from a flexform,
-            // not value storage, identifiers that the reference language or
+            // not value storage, identifiers that reference language or
             // value nodes must be skipped.
             if (!isset($childConfig[$flexFormNode]) && preg_match('/^[lv][[:alpha:]]+$/', $flexFormNode)) {
                 continue;
@@ -827,6 +835,7 @@ class FormInlineAjaxController
         if (!isset($childConfig['config'])
             || !is_array($childConfig['config'])
             || $childConfig['config']['type'] !== 'inline'
+            || $childConfig['config']['foreign_table'] !== $foreignTableName
         ) {
             throw new \UnexpectedValueException(
                 'Configuration retrieved from FlexForm is incomplete or not of type "inline".',
@@ -834,5 +843,35 @@ class FormInlineAjaxController
             );
         }
         return $childConfig['config'];
+    }
+
+    /**
+     * Flexforms require additional database columns to be processed to determine the correct
+     * data structure to be used from a flexform. The required columns and their values are
+     * transmitted in the AJAX context of the request and need to be added to the fake database
+     * row for the inline parent.
+     *
+     * @param array $ajaxArguments The AJAX request arguments
+     * @param array $databaseRow The fake database row
+     * @return array The database row with the flexform data structure pointer columns added
+     */
+    protected function addFlexFormDataStructurePointersFromAjaxContext(array $ajaxArguments, array $databaseRow)
+    {
+        if (!isset($ajaxArguments['context'])) {
+            return $databaseRow;
+        }
+
+        $context = json_decode($ajaxArguments['context'], true);
+        if (GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
+            return $databaseRow;
+        }
+
+        if (isset($context['config']['flexDataStructurePointers'])
+            && is_array($context['config']['flexDataStructurePointers'])
+        ) {
+            $databaseRow = array_merge($context['config']['flexDataStructurePointers'], $databaseRow);
+        }
+
+        return $databaseRow;
     }
 }
