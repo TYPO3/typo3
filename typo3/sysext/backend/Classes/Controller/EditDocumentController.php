@@ -1415,7 +1415,7 @@ class EditDocumentController extends AbstractModule
                 // If only SOME fields are shown in the form, this will link the user to the FULL form:
                 if ($this->columnsOnly) {
                     $columnsOnlyButton = $buttonBar->makeLinkButton()
-                        ->setHref(htmlspecialchars(($this->R_URI . '&columnsOnly=')))
+                        ->setHref($this->R_URI . '&columnsOnly=')
                         ->setTitle($lang->getLL('editWholeRecord', true))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                             'actions-document-open',
