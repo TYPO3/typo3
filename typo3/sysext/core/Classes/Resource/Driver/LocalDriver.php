@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -54,11 +53,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * @var string
      */
     protected $baseUri = null;
-
-    /**
-     * @var CharsetConverter
-     */
-    protected $charsetConversion;
 
     /** @var array */
     protected $mappingFolderNameToRole = array(
@@ -1355,19 +1349,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             throw new \RuntimeException('Setting contents of file "' . $fileIdentifier . '" failed.', 1325419305);
         }
         return $result;
-    }
-
-    /**
-     * Gets the charset conversion object.
-     *
-     * @return CharsetConverter
-     */
-    protected function getCharsetConversion()
-    {
-        if (!isset($this->charsetConversion)) {
-            $this->charsetConversion = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
-        return $this->charsetConversion;
     }
 
     /**
