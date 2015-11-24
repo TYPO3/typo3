@@ -46,8 +46,7 @@ class ApcPreset extends Configuration\AbstractPreset
     );
 
     /**
-     * APC preset is available if extension is loaded, if APC has ~100MB
-     * memory and if ~5MB are free.
+     * APC preset is available if extension is loaded and at least ~5MB are free.
      *
      * @return bool TRUE
      */
@@ -56,12 +55,10 @@ class ApcPreset extends Configuration\AbstractPreset
         $result = false;
         if (extension_loaded('apc')) {
             $memoryInfo = @apc_sma_info();
-            $totalMemory = $memoryInfo['num_seg'] * $memoryInfo['seg_size'];
             $availableMemory = $memoryInfo['avail_mem'];
 
-            // If more than 99MB in total and more than 5MB free
-            if ($totalMemory > (99 * 1024 * 1024)
-                && $availableMemory > (5 * 1024 * 1024)) {
+            // If more than 5MB free
+            if ($availableMemory > (5 * 1024 * 1024)) {
                 $result = true;
             }
         }
