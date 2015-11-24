@@ -100,17 +100,6 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getClassTagRendersTagWhichCanBeUsedToTagACacheEntryWithACertainClass()
-    {
-        $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-        $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
-        $this->assertEquals('%CLASS%F3_Foo_Bar_Baz', \TYPO3\CMS\Core\Cache\CacheManager::getClassTag('F3\\Foo\\Bar\\Baz'));
-    }
-
-    /**
-     * @test
-     */
     public function invalidEntryIdentifiersAreRecognizedAsInvalid()
     {
         $identifier = 'someCacheIdentifier';
