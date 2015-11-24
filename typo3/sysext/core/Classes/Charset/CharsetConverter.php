@@ -52,10 +52,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CharsetConverter
 {
-    /**
-     * @var \TYPO3\CMS\Core\Localization\Locales
-     */
-    protected $locales;
 
     /**
      * ASCII Value for chars with no equivalent.
@@ -520,14 +516,6 @@ class CharsetConverter
         'vn' => 'utf-8',
         'zh' => 'big5'
     );
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->locales = GeneralUtility::makeInstance(Locales::class);
-    }
 
     /**
      * Normalize - changes input character set to lowercase letters.
@@ -1703,21 +1691,8 @@ class CharsetConverter
      */
     public function getPreferredClientLanguage($languageCodesList)
     {
-        $allLanguageCodes = array();
+        $allLanguageCodes = $this->getAllLanguageCodes();
         $selectedLanguage = 'default';
-        // Get all languages where TYPO3 code is the same as the ISO code
-        foreach ($this->charSetArray as $typo3Lang => $charSet) {
-            $allLanguageCodes[$typo3Lang] = $typo3Lang;
-        }
-        // Get all languages where TYPO3 code differs from ISO code
-        // or needs the country part
-        // the iso codes will here overwrite the default typo3 language in the key
-        foreach ($this->locales->getIsoMapping() as $typo3Lang => $isoLang) {
-            $isoLang = join('-', explode('_', $isoLang));
-            $allLanguageCodes[$typo3Lang] = $isoLang;
-        }
-        // Move the iso codes to the (because we're comparing the keys with "isset" later on)
-        $allLanguageCodes = array_flip($allLanguageCodes);
         $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
         // Order the preferred languages after they key
         $sortedPreferredLanguages = array();
@@ -1746,6 +1721,28 @@ class CharsetConverter
             $selectedLanguage = 'default';
         }
         return $selectedLanguage;
+    }
+
+    /**
+     * Merges all available charsets and locales, currently only used for getPreferredClientLanguage()
+     *
+     * @return array
+     */
+    protected function getAllLanguageCodes() {
+        // Get all languages where TYPO3 code is the same as the ISO code
+        $typo3LanguageCodes = array_keys($this->charSetArray);
+        $allLanguageCodes = array_combine($typo3LanguageCodes, $typo3LanguageCodes);
+        // Get all languages where TYPO3 code differs from ISO code
+        // or needs the country part
+        // the iso codes will here overwrite the default typo3 language in the key
+        /** @var Locales $locales */
+        $locales = GeneralUtility::makeInstance(Locales::class);
+        foreach ($locales->getIsoMapping() as $typo3Lang => $isoLang) {
+            $isoLang = join('-', explode('_', $isoLang));
+            $allLanguageCodes[$typo3Lang] = $isoLang;
+        }
+        // Move the iso codes to the (because we're comparing the keys with "isset" later on)
+        return array_flip($allLanguageCodes);
     }
 
     /********************************************
