@@ -111,6 +111,8 @@ functionality:
   * version 5.5 or later
   * memory_limit set to at least 128M
   * max_execution_time set to at least 240s
+  * max_input_vars set to at least 1500
+  * always_populate_raw_post_data set to -1 (PHP version >= 5.6, <7.0)
 
 * Additional PHP extensions:
   * PHP opcode cache, i.e.: apc, xcache, eaccelerator, Zend Optimizer, wincache (in case of an IIS installation)
