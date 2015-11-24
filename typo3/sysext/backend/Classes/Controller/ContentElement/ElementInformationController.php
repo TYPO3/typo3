@@ -505,7 +505,7 @@ class ElementInformationController
         $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'));
         if ($returnUrl) {
             $backLink .= '
-				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>
+				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '">
 					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '
 					' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', true) . '
 				</a>';
