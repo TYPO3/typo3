@@ -460,6 +460,31 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
+    public function headersWithUpperAndLowerCaseValuesDataProvider()
+    {
+        // 'name' => [$headerName, $headerValue, $expectedValue]
+        return [
+            'Foo'             => ['Foo', 'bar', 'bar'],
+            'foo'             => ['foo', 'bar', 'bar'],
+            'Foo-with-array'  => ['Foo', ['bar'], 'bar'],
+            'foo-with-array'  => ['foo', ['bar'], 'bar'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider headersWithUpperAndLowerCaseValuesDataProvider
+     */
+    public function headerCanBeRetrieved($header, $value, $expected)
+    {
+        $request = new Request(null, null, 'php://memory', [$header => $value]);
+        $this->assertEquals([$expected], $request->getHeader(strtolower($header)));
+        $this->assertEquals([$expected], $request->getHeader(strtoupper($header)));
+    }
+
+    /**
+     * @return array
+     */
     public function headersWithInjectionVectorsDataProvider()
     {
         return [

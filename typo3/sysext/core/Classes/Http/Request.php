@@ -108,7 +108,7 @@ class Request extends Message implements RequestInterface
         $this->method = $method;
         $this->uri    = $uri;
         $this->body   = $body;
-        list($this->headerNames, $headers) = $this->filterHeaders($headers);
+        list($this->lowercasedHeaderNames, $headers) = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
     }
@@ -341,7 +341,7 @@ class Request extends Message implements RequestInterface
             $host .= ':' . $uri->getPort();
         }
 
-        $clonedObject->headerNames['host'] = 'Host';
+        $clonedObject->lowercasedHeaderNames['host'] = 'Host';
         $clonedObject->headers['Host'] = array($host);
         return $clonedObject;
     }
