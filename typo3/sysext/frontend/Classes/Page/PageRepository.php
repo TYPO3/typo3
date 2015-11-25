@@ -472,7 +472,9 @@ class PageRepository
         }
         if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel, true))) {
             if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-                if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+                // Return record for ALL languages untouched
+                // TODO: Fix call stack to prevent this situation in the first place
+                if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
                     // Will not be able to work with other tables (Just didn't implement it yet;
                     // Requires a scan over all tables [ctrl] part for first FIND the table that
                     // carries localization information for this table (which could even be more
@@ -480,7 +482,7 @@ class PageRepository
                     // takes a little more....) Will try to overlay a record only if the
                     // sys_language_content value is larger than zero.
                     if ($sys_language_content > 0) {
-                        // Must be default language or [All], otherwise no overlaying:
+                        // Must be default language, otherwise no overlaying
                         if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
                             // Select overlay record:
                             $res = $this->getDatabaseConnection()->exec_SELECTquery('*', $table, 'pid=' . (int)$row['pid'] . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$sys_language_content . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$row['uid'] . $this->enableFields($table), '', '', '1');
