@@ -811,14 +811,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 			<!--
 				DB listing of elements:	"' . htmlspecialchars($table) . '"
 			-->
-				<div class="panel panel-space panel-default">
+				<div class="panel panel-space panel-default recordlist">
 					<div class="panel-heading">
 					' . $tableHeader . '
 					</div>
-					<div class="table-fit ' . $collapseClass . '" id="recordlist-' . htmlspecialchars($table) . '" data-state="' . $dataState . '">
-						<table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
-							' . $out . '
-						</table>
+					<div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($table) . '">
+						<div class="table-fit">
+							<table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
+								' . $out . '
+							</table>
+						</div>
 					</div>
 				</div>
 			';

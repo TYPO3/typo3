@@ -10745,6 +10745,9 @@ fieldset[disabled] .table .btn-default.focus {
   border: 0;
   margin: 0;
 }
+.recordlist .table-fit {
+  margin-bottom: 0;
+}
 .panel-hover .panel-default:hover > .panel-heading {
   background-color: #e5e5e5;
 }
