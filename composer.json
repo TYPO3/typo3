@@ -41,7 +41,7 @@
 		"symfony/finder": "~2.7.0",
 		"doctrine/instantiator": "~1.0.4",
 		"typo3/class-alias-loader": "^1.0",
-		"typo3/cms-composer-installers": "^1.2.2",
+		"typo3/cms-composer-installers": "^1.2.5",
 		"psr/http-message": "~1.0",
 		"cogpowered/finediff": "~0.3.1"
 	},

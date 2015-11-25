@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "65a02b1df25764c9df68dad0d409a83a",
-    "content-hash": "7a58e97bb53d061963b6e3b04fd2b2d6",
+    "hash": "0db794152481453fa2322a467c3857cd",
+    "content-hash": "675811e5cd846973cc67d2676a72bd93",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -644,20 +644,23 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.2.4",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "f41bf519acc9430a7d999a6a22a5720e1ee3a27a"
+                "reference": "68dce62bbfed9912583de4a1db16df8feb8f7e2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/f41bf519acc9430a7d999a6a22a5720e1ee3a27a",
-                "reference": "f41bf519acc9430a7d999a6a22a5720e1ee3a27a",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/68dce62bbfed9912583de4a1db16df8feb8f7e2d",
+                "reference": "68dce62bbfed9912583de4a1db16df8feb8f7e2d",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0"
+            },
+            "conflict": {
+                "composer/installers": "*"
             },
             "replace": {
                 "lw/typo3cms-installers": "*",
@@ -701,7 +704,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2015-10-08 20:34:38"
+            "time": "2015-11-03 21:19:57"
         }
     ],
     "packages-dev": [
