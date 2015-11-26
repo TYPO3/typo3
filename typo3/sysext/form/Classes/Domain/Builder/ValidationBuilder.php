@@ -147,7 +147,12 @@ class ValidationBuilder
                     if ($validator instanceof AbstractValidator) {
                         $validator->setRawArgument($rawArgument);
                         $validator->setFormUtility($this->formUtility);
-                        $mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
+
+                        if ((int)$ruleArguments['showMessage'] === 1) {
+                            $mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
+                        } else {
+                            $mandatoryMessage = NULL;
+                        }
 
                         $this->rules[$this->configuration->getPrefix()][$fieldName][] = array(
                             'validator' => $validator,
@@ -233,7 +238,9 @@ class ValidationBuilder
         if ($this->getRulesByElementName($key)) {
             $rules = $this->getRulesByElementName($key);
             foreach ($rules as $rule) {
-                $mandatoryMessages[] = $rule['mandatoryMessage'];
+                if ($rule['mandatoryMessage']) {
+                    $mandatoryMessages[] = $rule['mandatoryMessage'];
+                }
             }
         }
         return $mandatoryMessages;
