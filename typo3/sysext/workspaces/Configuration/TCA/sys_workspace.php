@@ -339,15 +339,12 @@ return array(
     ),
     'palettes' => array(
         'stage.edit' => array(
-            'canNotCollapse' => true,
             'showitem' => 'edit_allow_notificaton_settings, edit_notification_preselection,',
         ),
         'stage.publish' => array(
-            'canNotCollapse' => true,
             'showitem' => 'publish_allow_notificaton_settings, publish_notification_preselection,',
         ),
         'stage.execute' => array(
-            'canNotCollapse' => true,
             'showitem' => 'execute_allow_notificaton_settings, execute_notification_preselection,',
         )
     ),

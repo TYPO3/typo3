@@ -287,14 +287,12 @@ return array(
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
-            'canNotCollapse' => true
         ),
         // Used for everything that is a audio file
         'audioOverlayPalette' => array(
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
-            'canNotCollapse' => true
         ),
         // File palette, hidden but needs to be included all the time
         'filePalette' => array(

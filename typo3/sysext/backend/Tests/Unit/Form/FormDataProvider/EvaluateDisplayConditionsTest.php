@@ -55,7 +55,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'palettes' => [
                     '2' => array(
                         'showitem' => 'aField',
-                        'canNotCollapse' => true
                     ),
                 ],
                 'columns' => [

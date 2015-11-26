@@ -124,7 +124,6 @@ return array(
     ),
     'palettes' => array(
         'stage' => array(
-            'canNotCollapse' => true,
             'showitem' => 'allow_notificaton_settings, notification_preselection,',
         )
     ),
