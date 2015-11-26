@@ -226,15 +226,6 @@ from the default list where cleaned on entry.
 ::
 
               noAttrib = br
-
-## XHTML COMPLIANCE
-
-## Note that applying xhtml\_cleaning on exit would break non-standard
-attributes of typolink tags
-
-::
-
-              xhtml_cleaning = 1
            }
 
 ::
