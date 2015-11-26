@@ -71,6 +71,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		$this->setFrom();
 		$this->setTo();
 		$this->setCc();
+		$this->setReplyTo();
 		$this->setPriority();
 		$this->setOrganization();
 		// @todo The whole content rendering seems to be missing here!
@@ -191,6 +192,25 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		$validEmails = $this->filterValidEmails($this->typoScript['ccEmail']);
 		if (count($validEmails)) {
 			$this->mailMessage->setCc($validEmails);
+		}
+	}
+
+	/**
+	 * Adds the reply to header of the mail message when configured
+	 *
+	 * Checks the address if it is a valid email address
+	 *
+	 * @return void
+	 */
+	protected function setReplyTo() {
+		if (isset($this->typoScript['replyToEmail'])) {
+			$emails = $this->typoScript['replyToEmail'];
+		} elseif ($this->requestHandler->has($this->typoScript['replyToEmailField'])) {
+			$emails = $this->requestHandler->get($this->typoScript['replyToEmailField']);
+		}
+		$validEmails = $this->filterValidEmails($emails);
+		if (!empty($validEmails)) {
+			$this->mailMessage->setReplyTo($validEmails);
 		}
 	}
 
