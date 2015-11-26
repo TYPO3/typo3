@@ -106,6 +106,7 @@ class LoginController
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
         if ($preferredBrowserLanguage !== 'default' && empty($this->getBackendUserAuthentication()->user['uid'])) {
             $this->getLanguageService()->init($preferredBrowserLanguage);
+            GeneralUtility::makeInstance(PageRenderer::class)->setLanguage($preferredBrowserLanguage);
         }
 
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_login.xlf');
