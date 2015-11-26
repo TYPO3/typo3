@@ -63,9 +63,10 @@ class AttributesAttribute {
 	 * @return tx_form_Domain_Model_Attributes
 	 */
 	public function addAttribute($class, $value) {
-		$class = strtolower((string) $class);
-		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\' . ucfirst($class) . 'Attribute';
-		$this->attributes[$class] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $value, $this->elementId);
+		$attributeName = strtolower((string) $class);
+		$cleanClassName = str_replace(' ', '', ucwords(preg_replace("/[^a-z]/", ' ', $attributeName)));
+		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\' . $cleanClassName . 'Attribute';
+		$this->attributes[$attributeName] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $value, $this->elementId);
 		return $this;
 	}
 

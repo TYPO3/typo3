@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  */
 
 /**
- * Attribute 'acceptcharset'
+ * Attribute 'accept-charset'
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */

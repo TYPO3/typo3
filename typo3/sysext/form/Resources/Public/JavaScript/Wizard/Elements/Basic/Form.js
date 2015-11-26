@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 			configuration: {
 				attributes: {
 					accept: '',
-					acceptcharset: '',
+					"accept-charset": '',
 					action: '',
 					"class": '',
 					dir: '',

@@ -72,10 +72,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						}
 					});
 					break;
-				case 'acceptcharset':
+				case 'accept-charset':
 					formItems.push({
 						fieldLabel: TYPO3.l10n.localize('attributes_acceptcharset'),
-						name: 'acceptcharset',
+						name: 'accept-charset',
 						listeners: {
 							'triggerclick': {
 								scope: this,
@@ -580,7 +580,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 			// The object has not been found or constructed wrong
 			allowedGeneralAttributes = [
 				'accept',
-				'acceptcharset',
+				'accept-charset',
 				'accesskey',
 				'action',
 				'alt',
