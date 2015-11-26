@@ -252,7 +252,7 @@ class EditFileController extends AbstractModule
             ->setName('_save')
             ->setValue('1')
             ->setOnClick('document.editform.submit();')
-            ->setTitle($lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', true)))
+            ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit')))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         // Save and Close button
