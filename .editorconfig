@@ -20,7 +20,7 @@ indent_size = 4
 # HTML-Files
 [*.html]
 indent_style = tab
-indent_size = 4
+indent_size = 2
 
 # TMPL-Files
 [*.tmpl]
@@ -49,8 +49,8 @@ indent_size = 4
 
 # ReST-Files
 [*.rst]
-indent_style = tab
-indent_size = 4
+indent_style = space
+indent_size = 3
 
 # MD-Files
 [*.md]
@@ -60,4 +60,19 @@ indent_size = 4
 # package.json or .travis.yml
 [{package.json,.travis.yml}]
 indent_style = space
+indent_size = 2
+
+# TypoScript
+[*.ts]
+indent_style = space
+indent_size = 2
+
+# XLF-Files
+[*.xlf]
+indent_style = tab
+indent_size = 4
+
+# SQL-Files
+[*.sql]
+indent_style = tab
 indent_size = 2
