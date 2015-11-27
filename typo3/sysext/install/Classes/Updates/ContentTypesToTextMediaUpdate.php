@@ -24,7 +24,7 @@ class ContentTypesToTextMediaUpdate extends AbstractUpdate
     /**
      * @var string
      */
-    protected $title = 'Migrate CTypes text, image and textpic to textmedia and move file relations from "image" to "media_references"';
+    protected $title = 'Migrate CTypes text, image and textpic to textmedia and move file relations from "image" to "asset_references"';
 
     /**
      * Checks if an update is needed
