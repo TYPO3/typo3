@@ -55,14 +55,14 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             )
         );
 
-        /** @var $configurationManagerMock \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject */
+        /** @var $configurationManagerMock \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $configurationManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, array('getConfiguration'));
         $configurationManagerMock->expects($this->any())->method('getConfiguration')->with('Framework')->will($this->returnValue($frameworkSettings));
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject  $objectManager */
         $objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
-        /** @var $bootstrapMock \TYPO3\CMS\Extbase\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject */
+        /** @var $bootstrapMock \TYPO3\CMS\Extbase\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $bootstrapMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Core\Bootstrap::class, array('inject'));
         $bootstrapMock->_set('objectManager', $objectManager);
         $bootstrapMock->_set('configurationManager', $configurationManagerMock);
