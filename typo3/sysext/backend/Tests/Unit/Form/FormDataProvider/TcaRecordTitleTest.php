@@ -152,6 +152,41 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataOverridesRecordTitleWithFormattedLabelUserFuncForInlineChildWithForeignLabel()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'label' => 'foo',
+                    'formattedLabel_userFunc' => function (&$parameters) {
+                        $parameters['title'] = 'aFormattedLabel';
+                    },
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+            'isInlineChild' => true,
+            'inlineParentConfig' => [
+                'foreign_label' => 'aField',
+            ],
+        ];
+        $expected = $input;
+        $expected['recordTitle'] = 'aFormattedLabel';
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataReturnsRecordTitleForInlineChildWithSymmetricLabel()
     {
         $input = [
