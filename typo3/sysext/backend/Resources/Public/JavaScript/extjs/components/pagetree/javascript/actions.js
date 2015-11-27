@@ -744,36 +744,38 @@ TYPO3.Components.PageTree.Actions = {
 	/**
 	 * Updates the title of a node
 	 *
-	 * @param {Ext.tree.TreeNode} node
 	 * @param {String} newText
 	 * @param {String} oldText
 	 * @param {TYPO3.Components.PageTree.TreeEditor} treeEditor
 	 * @return {void}
 	 */
-	saveTitle: function(node, newText, oldText, treeEditor) {
+	saveTitle: function(newText, oldText, treeEditor) {
+		// Save current editNode in case treeEditor.editNode changes before the ajax call completes
+		var editedNode = treeEditor.editNode;
+
 		if (newText === oldText || newText == '') {
 			treeEditor.updateNodeText(
-				node,
-				node.editNode.attributes.nodeData.editableText,
+				editedNode,
+				editedNode.attributes.nodeData.editableText,
 				Ext.util.Format.htmlEncode(oldText)
 			);
 			return;
 		}
 
 		TYPO3.Components.PageTree.Commands.updateLabel(
-			node.editNode.attributes.nodeData,
+			editedNode.attributes.nodeData,
 			newText,
 			function(response) {
 				if (this.evaluateResponse(response)) {
-					treeEditor.updateNodeText(node, response.editableText, response.updatedText);
+					treeEditor.updateNodeText(editedNode, response.editableText, response.updatedText);
 				} else {
 					treeEditor.updateNodeText(
-						node,
-						node.editNode.attributes.nodeData.editableText,
+						editedNode,
+						editedNode.attributes.nodeData.editableText,
 						Ext.util.Format.htmlEncode(oldText)
 					);
 				}
-				this.singleClick(node.editNode, node.editNode.ownerTree);
+				this.singleClick(treeEditor.editNode, treeEditor.editNode.ownerTree);
 			},
 			this
 		);
