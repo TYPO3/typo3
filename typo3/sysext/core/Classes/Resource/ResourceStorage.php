@@ -1701,7 +1701,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::deleteFile()
      *
-     * @param $fileObject FileInterface
+     * @param FileInterface $fileObject
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\FileOperationErrorException
      * @return bool TRUE if deletion succeeded
