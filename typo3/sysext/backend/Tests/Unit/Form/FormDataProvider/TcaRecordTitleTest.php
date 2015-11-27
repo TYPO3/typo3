@@ -127,6 +127,9 @@ class TcaRecordTitleTest extends UnitTestCase
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'foo',
+                    'label_userFunc' => function (&$parameters) {
+                        $parameters['title'] = 'Value that MUST NOT be used, otherwise the code is broken.';
+                    }
                 ],
                 'columns' => [
                     'aField' => [
