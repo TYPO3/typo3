@@ -6694,7 +6694,7 @@ class ContentObjectRenderer
                                 }
                             }
                             $urlParts = parse_url($LD['totalURL']);
-                            if ($urlParts['host'] === '') {
+                            if (empty($urlParts['host'])) {
                                 $LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain . ($LD['totalURL'][0] === '/' ? '' : '/') . $LD['totalURL'];
                             }
                         }
