@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
@@ -183,6 +184,16 @@ class FileController
 
         BackendUtility::setUpdateSignal('updateFolderTree');
 
+        // go and edit the new created file
+        if ($request->getParsedBody()['edit']) {
+            $urlParameters = [
+                'target' => $this->file['newfile'][0]['target'] . $this->file['newfile'][0]['data']
+            ];
+            if ($this->redirect) {
+                $urlParameters['returnUrl'] = $this->redirect;
+            }
+            $this->redirect = BackendUtility::getModuleUrl('file_edit', $urlParameters);
+        }
         if ($this->redirect) {
             return $response
                     ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))

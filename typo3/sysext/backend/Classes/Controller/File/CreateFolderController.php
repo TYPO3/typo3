@@ -269,10 +269,10 @@ class CreateFolderController extends AbstractModule
 					</div>
 				</div>
 				';
-            // Submit button for creation of a new file:
+            // Submit button for "creation of a new file":
             $code .= '
 				<div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', true) . '" />
+					<button class="btn btn-default" name="edit" type="submit" value="1">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', true) . '</button>
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				</div>
 			';
