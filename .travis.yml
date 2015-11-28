@@ -44,6 +44,7 @@ notifications:
     on_failure: always
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - >
     if [[ "$TRAVIS_PHP_VERSION" = "5.3" || "$TRAVIS_PHP_VERSION" = "5.4" ]]; then
         pecl install igbinary > /dev/null;
