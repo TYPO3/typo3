@@ -138,7 +138,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
         $items = $this->getButton();
         $attributes = [
             'type' => 'submit',
-            'class' => 'btn btn-sm btn-default ' . htmlspecialchars($items['primary']->getClasses()),
+            'class' => 'btn btn-sm btn-default ' . $items['primary']->getClasses(),
             'name' => $items['primary']->getName(),
             'value' => $items['primary']->getValue()
         ];
@@ -173,7 +173,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
                 'data-form' => $option->getForm()
             ];
             if (!empty($option->getClasses())) {
-                $optionAttributes['class'] = htmlspecialchars($option->getClasses());
+                $optionAttributes['class'] = $option->getClasses();
             }
             if (!empty($option->getOnClick())) {
                 $optionAttributes['onclick'] = $option->getOnClick();

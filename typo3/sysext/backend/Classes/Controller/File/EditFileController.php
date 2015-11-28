@@ -252,7 +252,7 @@ class EditFileController extends AbstractModule
             ->setName('_save')
             ->setValue('1')
             ->setOnClick('document.editform.submit();')
-            ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit')))
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         // Save and Close button
@@ -264,7 +264,7 @@ class EditFileController extends AbstractModule
                 . GeneralUtility::quoteJSvalue($this->returnUrl)
                 . '; document.editform.submit();'
             )
-            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', true))
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                 'actions-document-save-close',
                 Icon::SIZE_SMALL
@@ -279,7 +279,7 @@ class EditFileController extends AbstractModule
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setOnClick('backToList(); return false;')
-            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', true))
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 

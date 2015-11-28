@@ -99,7 +99,7 @@ class LinkButton extends AbstractButton implements ButtonInterface
             $labelText = ' ' . $this->title;
         }
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
-            $attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
+            $attributes['data-' . $attributeName] = $attributeValue;
         }
         if ($this->onClick !== '') {
             $attributes['onclick'] = $this->onClick;

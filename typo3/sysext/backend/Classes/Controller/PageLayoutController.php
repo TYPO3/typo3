@@ -1001,7 +1001,7 @@ class PageLayoutController
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
             $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
                 ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', true))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
                 ->setHref('#');
             $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -1053,8 +1053,8 @@ class PageLayoutController
         // View page
         if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
             $viewButton = $this->buttonBar->makeLinkButton()
-                ->setOnClick(htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))))
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                 ->setHref('#');
 
@@ -1080,7 +1080,7 @@ class PageLayoutController
         if (!$this->modTSconfig['properties']['disableAdvanced']) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
@@ -1094,7 +1094,7 @@ class PageLayoutController
                 ];
                 $moveButton = $this->buttonBar->makeLinkButton()
                     ->setHref(BackendUtility::getModuleUrl('move_element', $urlParameters))
-                    ->setTitle($lang->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page'), true))
+                    ->setTitle($lang->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')))
                     ->setIcon($this->iconFactory->getIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($moveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
@@ -1116,15 +1116,15 @@ class PageLayoutController
                     );
                     $editLanguageButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setTitle($lang->getLL('editPageLanguageOverlayProperties', true))
-                        ->setOnClick(htmlspecialchars(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit')))
+                        ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
+                        ->setOnClick(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit'))
                         ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }
                 $editPageButton = $this->buttonBar->makeLinkButton()
                     ->setHref('#')
-                    ->setTitle($lang->getLL('editPageProperties', true))
-                    ->setOnClick(htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit')))
+                    ->setTitle($lang->getLL('editPageProperties'))
+                    ->setOnClick(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'))
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
             }
@@ -1140,8 +1140,8 @@ class PageLayoutController
                 // Close Record
                 $closeButton = $this->buttonBar->makeLinkButton()
                     ->setHref('#')
-                    ->setOnClick(htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;'))
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                    ->setOnClick('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;')
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
 
@@ -1151,7 +1151,7 @@ class PageLayoutController
                     ->setName('_savedok')
                     ->setValue('1')
                     ->setForm('PageLayoutController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveButton);
                 $saveAndCloseButton = $this->buttonBar->makeInputButton()
@@ -1159,7 +1159,7 @@ class PageLayoutController
                     ->setValue('1')
                     ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value=\'' . $this->closeUrl . '\';')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveAndCloseButton);
                 $saveAndShowPageButton = $this->buttonBar->makeInputButton()
@@ -1167,7 +1167,7 @@ class PageLayoutController
                     ->setValue('1')
                     ->setForm('PageLayoutController')
                     ->setOnClick('document.editform.redirect.value+=\'&popView=1\';')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL));
                 $saveButtonDropdown->addItem($saveAndShowPageButton);
                 $this->buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -1176,8 +1176,8 @@ class PageLayoutController
                 if ($this->deleteButton) {
                     $deleteButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setOnClick(htmlspecialchars('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');'))
-                        ->setTitle($lang->getLL('deleteItem', true))
+                        ->setOnClick('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');')
+                        ->setTitle($lang->getLL('deleteItem'))
                         ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
                 }
@@ -1186,7 +1186,7 @@ class PageLayoutController
                 if ($this->undoButton) {
                     $undoButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setOnClick(htmlspecialchars('window.location.href=' .
+                        ->setOnClick('window.location.href=' .
                             GeneralUtility::quoteJSvalue(
                                 BackendUtility::getModuleUrl(
                                     'record_history',
@@ -1197,13 +1197,13 @@ class PageLayoutController
                                         'returnUrl' => $this->R_URI,
                                     )
                                 )
-                            ) . '; return false;'))
-                        ->setTitle(htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))))
+                            ) . '; return false;')
+                        ->setTitle(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))))
                         ->setIcon($this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
                     $historyButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setOnClick(htmlspecialchars('jumpToUrl(' .
+                        ->setOnClick('jumpToUrl(' .
                             GeneralUtility::quoteJSvalue(
                                 BackendUtility::getModuleUrl(
                                     'record_history',
@@ -1212,8 +1212,8 @@ class PageLayoutController
                                             'returnUrl' => $this->R_URI,
                                         )
                                 ) . '#latest'
-                            ) . ');return false;'))
-                        ->setTitle($lang->getLL('recordHistory', true))
+                            ) . ');return false;')
+                        ->setTitle($lang->getLL('recordHistory'))
                         ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($historyButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }

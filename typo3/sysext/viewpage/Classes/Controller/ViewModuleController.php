@@ -59,7 +59,7 @@ class ViewModuleController extends ActionController
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($this->getTargetUrl())
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 

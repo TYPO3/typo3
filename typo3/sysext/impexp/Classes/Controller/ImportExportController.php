@@ -266,7 +266,7 @@ class ImportExportController extends BaseScriptClass
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     );
                     $viewButton = $buttonBar->makeLinkButton()
-                        ->setTitle($this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                        ->setTitle($this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
                         ->setHref('#')
                         ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                         ->setOnClick($onClick);

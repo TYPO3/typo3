@@ -189,7 +189,7 @@ class InfoModuleController extends BaseScriptClass
                 '',
                 BackendUtility::BEgetRootLine($this->pageinfo['uid'])
             ))
-            ->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+            ->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         // Shortcut

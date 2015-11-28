@@ -571,7 +571,7 @@ class FileListController extends ActionController
         );
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref($refreshLink)
-            ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload')))
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload'))
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -587,7 +587,7 @@ class FileListController extends ActionController
                 $levelUpButton = $buttonBar->makeLinkButton()
                     ->setHref(BackendUtility::getModuleUrl('file_FilelistList', ['id' => $parentFolder->getCombinedIdentifier()]))
                     ->setOnClick($levelUpClick)
-                    ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.upOneLevel')))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.upOneLevel'))
                     ->setIcon($iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             }
@@ -613,7 +613,7 @@ class FileListController extends ActionController
                     )
                 ))
                 ->setClasses('t3js-drag-uploader-trigger')
-                ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload')))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload'))
                 ->setIcon($iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL));
             $buttonBar->addButton($uploadButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
@@ -631,7 +631,7 @@ class FileListController extends ActionController
                         'returnUrl' => $this->filelist->listURL(),
                     )
                 ))
-                ->setTitle(htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.new')))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.new'))
                 ->setIcon($iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
@@ -655,9 +655,9 @@ class FileListController extends ActionController
                     $pasteButton = $buttonBar->makeLinkButton()
                         ->setHref($this->filelist->clipObj->pasteUrl('_FILE',
                             $this->folderObject->getCombinedIdentifier()))
-                        ->setOnClick('return ' . htmlspecialchars($this->filelist->clipObj->confirmMsg('_FILE',
-                                $this->folderObject->getReadablePath(), 'into', $elToConfirm)))
-                        ->setTitle($lang->getLL('clip_paste', true))
+                        ->setOnClick('return ' . $this->filelist->clipObj->confirmMsg('_FILE',
+                                $this->folderObject->getReadablePath(), 'into', $elToConfirm))
+                        ->setTitle($lang->getLL('clip_paste'))
                         ->setIcon($iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
                 }

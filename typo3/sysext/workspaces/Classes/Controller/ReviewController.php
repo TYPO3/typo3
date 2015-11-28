@@ -112,7 +112,7 @@ class ReviewController extends AbstractController
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setOnClick('TYPO3.Workspaces.Actions.generateWorkspacePreviewLinksForAllLanguages();return false;')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview', true))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
                 ->setIcon($iconFactory->getIcon('module-workspaces-action-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }

@@ -134,7 +134,7 @@ class BackendUserActionController extends ActionController
                 $returnUrl = rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser'));
                 $parameters = GeneralUtility::explodeUrl2Array('edit[be_users][0]=new&returnUrl=' . $returnUrl);
                 $addUserLink = BackendUtility::getModuleUrl('record_edit', $parameters);
-                $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral', true);
+                $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
                 $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
                 $addUserButton = $buttonBar->makeLinkButton()
                     ->setHref($addUserLink)
@@ -144,7 +144,7 @@ class BackendUserActionController extends ActionController
             }
             if ($this->request->getControllerActionName() === 'compare') {
                 $addUserLink = BackendUtility::getModuleUrl('system_BeuserTxBeuser');
-                $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true);
+                $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack');
                 $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
                 $addUserButton = $buttonBar->makeLinkButton()
                     ->setHref($addUserLink)
@@ -166,7 +166,7 @@ class BackendUserActionController extends ActionController
             )));
             $parameters = GeneralUtility::explodeUrl2Array('edit[be_groups][0]=new&returnUrl=' . $returnUrl);
             $addUserLink = BackendUtility::getModuleUrl('record_edit', $parameters);
-            $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral', true);
+            $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
             $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
             $addUserGroupButton = $buttonBar->makeLinkButton()
                 ->setHref($addUserLink)

@@ -159,7 +159,7 @@ class InputButton extends AbstractButton implements ButtonInterface
             $labelText = ' ' . $this->title;
         }
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
-            $attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
+            $attributes['data-' . $attributeName] = $attributeValue;
         }
         $attributesString = '';
         foreach ($attributes as $key => $value) {

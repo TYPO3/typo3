@@ -315,10 +315,7 @@ class NewRecordController extends AbstractModule
             if ($this->showNewRecLink('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
                     ->setHref(GeneralUtility::linkThisScript(array('pagesOnly' => '1')))
-                    ->setTitle($lang->sL(
-                        'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage',
-                        true
-                    ))
+                    ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
@@ -336,7 +333,7 @@ class NewRecordController extends AbstractModule
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -366,7 +363,7 @@ class NewRecordController extends AbstractModule
                         '',
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     ))
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-document-view',
                         Icon::SIZE_SMALL

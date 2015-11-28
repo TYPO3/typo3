@@ -423,7 +423,7 @@ class TaskModuleController extends BaseScriptClass
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
         $fullscreenButton = $buttonBar->makeLinkButton()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', true))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow'))
             ->setOnClick($onClick)
             ->setHref('#')
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))

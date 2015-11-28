@@ -169,9 +169,9 @@ class PermissionController extends ActionController
         if ($this->id > 0) {
             $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
             $viewButton = $buttonBar->makeLinkButton()
-                ->setOnClick(htmlspecialchars(BackendUtility::viewOnClick($this->pageInfo['uid'], '',
-                    BackendUtility::BEgetRootLine($this->pageInfo['uid']))))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                ->setOnClick(BackendUtility::viewOnClick($this->pageInfo['uid'], '',
+                    BackendUtility::BEgetRootLine($this->pageInfo['uid'])))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
                 ->setIcon($iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                 ->setHref('#');
 

@@ -340,7 +340,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $viewButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
-                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
@@ -357,13 +357,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                         ->setValue('1')
                         ->setForm('TypoScriptTemplateModuleController')
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'));
 
                     $saveAndCloseButton = $buttonBar->makeInputButton()
                         ->setName('_saveandclosedok')
                         ->setValue('1')
                         ->setForm('TypoScriptTemplateModuleController')
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
 
                     $splitButtonElement = $buttonBar->makeSplitButton()
@@ -375,13 +375,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     // CLOSE button
                     $closeButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', array('id' => $this->id)))
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
                     $buttonBar->addButton($closeButton);
                 } else {
                     $newButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', true))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
                     $buttonBar->addButton($newButton);
                 }
@@ -391,7 +391,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     ->setName('_savedok')
                     ->setValue('1')
                     ->setForm('TypoScriptTemplateModuleController')
-                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
@@ -404,7 +404,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $backButton = $buttonBar->makeLinkButton()
                         ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
                         ->setClasses('typo3-goBack')
-                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                     $buttonBar->addButton($backButton);
                 }

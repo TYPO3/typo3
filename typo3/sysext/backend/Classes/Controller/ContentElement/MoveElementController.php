@@ -270,7 +270,7 @@ class MoveElementController extends AbstractModule
             if ($this->R_URI) {
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref($this->R_URI)
-                    ->setTitle($this->getLanguageService()->getLL('goBack', true))
+                    ->setTitle($this->getLanguageService()->getLL('goBack'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-view-go-back',
                         Icon::SIZE_SMALL

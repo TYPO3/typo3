@@ -164,7 +164,7 @@ class RecyclerModuleController extends ActionController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref('#')
             ->setDataAttributes(['action' => 'reload'])
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload', true))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload'))
             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_LEFT);
     }
