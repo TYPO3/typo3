@@ -12391,6 +12391,7 @@ select.icon-select option {
 .form-irre-header-body {
   width: 100%;
   font-weight: normal;
+  white-space: normal;
 }
 .form-irre-header-body dl {
   margin-bottom: 0;
