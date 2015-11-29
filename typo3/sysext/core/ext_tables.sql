@@ -672,7 +672,7 @@ CREATE TABLE sys_category (
 	l10n_diffsource mediumblob NOT NULL,
 
 	title tinytext NOT NULL,
-	description text NOT NULL,
+	description text,
 	parent int(11) DEFAULT '0' NOT NULL,
 	items int(11) DEFAULT '0' NOT NULL,
 

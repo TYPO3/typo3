@@ -36,9 +36,9 @@ CREATE TABLE fe_groups (
 	hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	lockToDomain varchar(50) DEFAULT '' NOT NULL,
 	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
-	description text NOT NULL,
-	subgroup tinytext NOT NULL,
-	TSconfig text NOT NULL,
+	description text,
+	subgroup tinytext,
+	TSconfig text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -333,7 +333,7 @@ CREATE TABLE backend_layout (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,
-	description text NOT NULL,
+	description text,
 	config text NOT NULL,
 	icon text NOT NULL,
 
