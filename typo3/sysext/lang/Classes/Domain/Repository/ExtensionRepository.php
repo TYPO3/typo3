@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Lang\Domain\Model\Extension;
 
 /**
  * Extension repository
@@ -39,7 +42,7 @@ class ExtensionRepository
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -47,7 +50,7 @@ class ExtensionRepository
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
      */
-    public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility)
+    public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
@@ -64,7 +67,7 @@ class ExtensionRepository
             foreach ($extensions as $entry) {
                 /** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */
                 $extension = $this->objectManager->get(
-                    \TYPO3\CMS\Lang\Domain\Model\Extension::class,
+                    Extension::class,
                     $entry['key'],
                     $entry['title'],
                     $this->getExtensionIconWithPath($entry)
@@ -99,7 +102,7 @@ class ExtensionRepository
      * Find one extension by offset
      *
      * @param int $offset The offset
-     * @return TYPO3\CMS\Lang\Domain\Model\Extension The extension
+     * @return \TYPO3\CMS\Lang\Domain\Model\Extension The extension
      */
     public function findOneByOffset($offset)
     {

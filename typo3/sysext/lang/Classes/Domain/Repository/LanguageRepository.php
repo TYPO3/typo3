@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Lang\Domain\Model\Language;
+use TYPO3\CMS\Lang\Service\RegistryService;
 
 /**
  * Language repository
@@ -54,7 +59,7 @@ class LanguageRepository
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -62,7 +67,7 @@ class LanguageRepository
     /**
      * @param \TYPO3\CMS\Core\Localization\Locales $locales
      */
-    public function injectLocales(\TYPO3\CMS\Core\Localization\Locales $locales)
+    public function injectLocales(Locales $locales)
     {
         $this->locales = $locales;
     }
@@ -70,7 +75,7 @@ class LanguageRepository
     /**
      * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
      */
-    public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService)
+    public function injectRegistryService(RegistryService $registryService)
     {
         $this->registryService = $registryService;
     }
@@ -80,7 +85,7 @@ class LanguageRepository
      */
     public function __construct()
     {
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         try {
             $globalSettings = $configurationManager->getLocalConfigurationValueByPath($this->configurationPath);
             $this->selectedLocales = (array)$globalSettings['availableLanguages'];
@@ -103,12 +108,12 @@ class LanguageRepository
             $languages = $this->locales->getLanguages();
             array_shift($languages);
             foreach ($languages as $locale => $language) {
-                $label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:lang_' . $locale));
+                $label = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:lang_' . $locale));
                 if ($label === '') {
                     $label = htmlspecialchars($language);
                 }
                 $this->languages[$locale] = $this->objectManager->get(
-                    \TYPO3\CMS\Lang\Domain\Model\Language::class,
+                    Language::class,
                     $locale,
                     $label,
                     in_array($locale, $this->selectedLocales),
@@ -162,7 +167,7 @@ class LanguageRepository
         }
         $dir = count($languages) - count($this->selectedLocales);
         $diff = $dir < 0 ? array_diff($this->selectedLocales, $languages) : array_diff($languages, $this->selectedLocales);
-        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
+        GeneralUtility::makeInstance(ConfigurationManager::class)->setLocalConfigurationValueByPath(
             $this->configurationPath,
             array('availableLanguages' => $languages)
         );
@@ -208,5 +213,15 @@ class LanguageRepository
             }
         }
         return $this->updateSelectedLanguages($locales);
+    }
+
+    /**
+     * Returns LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

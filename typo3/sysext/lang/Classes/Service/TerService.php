@@ -14,14 +14,19 @@ namespace TYPO3\CMS\Lang\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
+use TYPO3\CMS\Lang\Exception\Language as LanguageException;
+use TYPO3\CMS\Lang\Exception\XmlParser as XmlParserException;
 
 /**
  * Extends of extensionmanager ter connection to enrich with translation
  * related methods
  */
-class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility implements \TYPO3\CMS\Core\SingletonInterface
+class TerService extends TerUtility implements SingletonInterface
 {
     /**
      * Fetches extensions translation status
@@ -65,7 +70,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
             $line = xml_get_current_line_number($parser);
             $error = xml_error_string(xml_get_error_code($parser));
             xml_parser_free($parser);
-            throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error in XML parser while decoding l10n XML file. Line ' . $line . ': ' . $error, 1345736517);
+            throw new XmlParserException('Error in XML parser while decoding l10n XML file. Line ' . $line . ': ' . $error, 1345736517);
         } else {
             // Init vars
             $stack = array(array());
@@ -76,7 +81,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
                 // Traverse the parsed XML structure:
             foreach ($values as $val) {
                 // First, process the tag-name (which is used in both cases, whether "complete" or "close")
-                $tagName = ($val['tag'] == 'languagepack' && $val['type'] == 'open') ? $val['attributes']['language'] : $val['tag'];
+                $tagName = (string)($val['tag'] == 'languagepack' && $val['type'] == 'open') ? $val['attributes']['language'] : $val['tag'];
                 if (!$documentTag) {
                     $documentTag = $tagName;
                 }
@@ -132,7 +137,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
                 $absoluteLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
                 $absoluteExtensionLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');
                 if (empty($absolutePathToZipFile) || empty($absoluteLanguagePath) || empty($absoluteExtensionLanguagePath)) {
-                    throw new \TYPO3\CMS\Lang\Exception\Language('Given path is invalid.', 1352565336);
+                    throw new LanguageException('Given path is invalid.', 1352565336);
                 }
                 if (!is_dir($absoluteLanguagePath)) {
                     GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
@@ -145,7 +150,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
                     $result = true;
                 }
             }
-        } catch (\TYPO3\CMS\Core\Exception $exception) {
+        } catch (Exception $exception) {
             // @todo logging
         }
         return $result;
@@ -184,7 +189,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
 
         $l10nResponse = GeneralUtility::getURL($mirrorUrl . $packageUrl, 0, array(TYPO3_user_agent));
         if ($l10nResponse === false) {
-            throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error: Translation could not be fetched.', 1345736785);
+            throw new XmlParserException('Error: Translation could not be fetched.', 1345736785);
         } else {
             return array($l10nResponse);
         }
@@ -221,18 +226,18 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
                                 $absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
                             );
                             if ($return === false) {
-                                throw new \TYPO3\CMS\Lang\Exception\Language('Could not write file ' . $zipEntryName, 1345304560);
+                                throw new LanguageException('Could not write file ' . $zipEntryName, 1345304560);
                             }
                         } else {
-                            throw new \TYPO3\CMS\Lang\Exception\Language('Could not write file ' . $zipEntryName, 1352566904);
+                            throw new LanguageException('Could not write file ' . $zipEntryName, 1352566904);
                         }
                     }
                 } else {
-                    throw new \TYPO3\CMS\Lang\Exception\Language('Extension directory missing in zip file!', 1352566905);
+                    throw new LanguageException('Extension directory missing in zip file!', 1352566905);
                 }
             }
         } else {
-            throw new \TYPO3\CMS\Lang\Exception\Language('Unable to open zip file ' . $file, 1345304561);
+            throw new LanguageException('Unable to open zip file ' . $file, 1345304561);
         }
         return $result;
     }

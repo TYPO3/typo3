@@ -13,12 +13,18 @@ namespace TYPO3\CMS\Lang\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\Domain\Model\Extension;
+use TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Lang\Domain\Repository\LanguageRepository;
+use TYPO3\CMS\Lang\Service\RegistryService;
+use TYPO3\CMS\Lang\Service\TranslationService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -61,7 +67,7 @@ class LanguageController extends ActionController
     /**
      * @param \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository
      */
-    public function injectLanguageRepository(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository)
+    public function injectLanguageRepository(LanguageRepository $languageRepository)
     {
         $this->languageRepository = $languageRepository;
     }
@@ -69,7 +75,7 @@ class LanguageController extends ActionController
     /**
      * @param \TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $extensionRepository
      */
-    public function injectExtensionRepository(\TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
@@ -77,7 +83,7 @@ class LanguageController extends ActionController
     /**
      * @param \TYPO3\CMS\Lang\Service\TranslationService $translationService
      */
-    public function injectTranslationService(\TYPO3\CMS\Lang\Service\TranslationService $translationService)
+    public function injectTranslationService(TranslationService $translationService)
     {
         $this->translationService = $translationService;
     }
@@ -85,7 +91,7 @@ class LanguageController extends ActionController
     /**
      * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
      */
-    public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService)
+    public function injectRegistryService(RegistryService $registryService)
     {
         $this->registryService = $registryService;
     }
@@ -141,10 +147,12 @@ class LanguageController extends ActionController
             'success' => false,
             'progress' => 0,
         );
+        $progress = 0;
         if (!empty($data['locale'])) {
             $allCount = 0;
             for ($i = 0; $i < $numberOfExtensionsToUpdate; $i++) {
                 $offset = (int)$data['count'] * $numberOfExtensionsToUpdate + $i;
+                /** @var Extension $extension */
                 $extension = $this->extensionRepository->findOneByOffset($offset);
                 if (empty($extension)) {
                     // No more extensions to update

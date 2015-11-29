@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Extension model
  */
-class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Extension extends AbstractEntity
 {
     /**
      * @var string
@@ -183,7 +186,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function setVersionFromString($version)
     {
-        $this->version = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version);
+        $this->version = VersionNumberUtility::convertVersionNumberToInteger($version);
     }
 
     /**

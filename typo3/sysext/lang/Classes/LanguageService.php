@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lang;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -106,13 +108,13 @@ class LanguageService
     public function init($lang)
     {
         // Initialize the conversion object:
-        $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
         // Initialize the parser factory object
         $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
         // Find the requested language in this list based
         // on the $lang key being inputted to this function.
         /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-        $locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+        $locales = GeneralUtility::makeInstance(Locales::class);
         // Language is found. Configure it:
         if (in_array($lang, $locales->getLocales())) {
             // The current language key

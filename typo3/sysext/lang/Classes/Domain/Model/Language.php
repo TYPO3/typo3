@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Language model
  */
-class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Language extends AbstractEntity
 {
     /**
      * @var string

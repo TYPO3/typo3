@@ -14,10 +14,14 @@ namespace TYPO3\CMS\Lang\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+
 /**
  * Base class for JSON views
  */
-abstract class AbstractJsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
+abstract class AbstractJsonView extends AbstractView
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -27,7 +31,7 @@ abstract class AbstractJsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -58,7 +62,7 @@ abstract class AbstractJsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
      */
     protected function sendResponse(array $data)
     {
-        $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
+        $response = $this->objectManager->get(Response::class);
         $response->setHeader('Content-Type', 'application/json; charset=utf-8');
         $response->setContent(json_encode($data));
         $response->sendHeaders();

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lang\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
+
 /**
  * Registry service
  */
@@ -32,7 +34,7 @@ class RegistryService
     /**
      * @param \TYPO3\CMS\Core\Registry $registry
      */
-    public function injectRegistry(\TYPO3\CMS\Core\Registry $registry)
+    public function injectRegistry(Registry $registry)
     {
         $this->registry = $registry;
     }
