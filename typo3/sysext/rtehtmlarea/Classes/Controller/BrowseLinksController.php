@@ -406,10 +406,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $fieldRenderingDefinitions['class'] = $this->getClassField();
         $fieldRenderingDefinitions['target'] = $this->getTargetField();
         $fieldRenderingDefinitions['rel'] = $this->getRelField();
-        if (
-            isset($this->buttonConfig['queryParametersSelector.']['enabled'])
-            && !$this->buttonConfig['queryParametersSelector.']['enabled']
-        ) {
+        if (empty($this->buttonConfig['queryParametersSelector.']['enabled'])) {
             unset($fieldRenderingDefinitions['params']);
         }
         return $fieldRenderingDefinitions;
