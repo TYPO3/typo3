@@ -586,6 +586,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		});
 
 		FormEngine.initializeRemainingCharacterViews();
+		FormEngine.initializeSelectCheckboxes();
 
 		// in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
 		$(document).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
@@ -706,6 +707,43 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		}).on('blur', function() {
 			$(this).attr('type', 'password');
 		});
+	};
+
+	/**
+	 * Initialize select checkbox element checkboxes
+	 */
+	FormEngine.initializeSelectCheckboxes = function() {
+		$('.t3js-toggle-checkboxes').each(function() {
+			var $checkbox = $(this);
+			var $table = $checkbox.closest('table');
+			var $checkboxes = $table.find('.t3js-checkbox');
+			var checkIt = $checkboxes.length === $table.find('.t3js-checkbox:checked').length;
+			$checkbox.prop('checked', checkIt);
+		});
+		$(document).on('change', '.t3js-toggle-checkboxes', function(e) {
+			e.preventDefault();
+			var $checkbox = $(this);
+			var $table = $checkbox.closest('table');
+			var $checkboxes = $table.find('.t3js-checkbox');
+			var checkIt = $checkboxes.length !== $table.find('.t3js-checkbox:checked').length;
+			$checkboxes.prop('checked', checkIt);
+			$checkbox.prop('checked', checkIt);
+		});
+		$(document).on('change', '.t3js-checkbox', function(e) {
+			FormEngine.updateCheckboxState(this);
+		});
+	};
+
+	/**
+	 *
+	 * @param {HTMLElement} source
+     */
+	FormEngine.updateCheckboxState = function(source) {
+		var $sourceElement = $(source);
+		var $table = $sourceElement.closest('table');
+		var $checkboxes = $table.find('.t3js-checkbox');
+		var checkIt = $checkboxes.length === $table.find('.t3js-checkbox:checked').length;
+		$table.find('.t3js-toggle-checkboxes').prop('checked', checkIt);
 	};
 
 	/**

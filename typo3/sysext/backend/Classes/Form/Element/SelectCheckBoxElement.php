@@ -127,15 +127,13 @@ class SelectCheckBoxElement extends AbstractFormElement
                 }
                 if (is_array($group['items']) && !empty($group['items'])) {
                     $tableRows = [];
-                    $checkGroup = array();
-                    $uncheckGroup = array();
                     $resetGroup = array();
 
                     // Render rows
                     foreach ($group['items'] as $item) {
                         $tableRows[] = '<tr class="' . $item['class'] . '">';
                         $tableRows[] =    '<td class="col-checkbox">';
-                        $tableRows[] =        '<input type="checkbox" '
+                        $tableRows[] =        '<input type="checkbox" class="t3js-checkbox" '
                                             . 'id="' . $item['id'] . '" '
                                             . 'name="' . htmlspecialchars($item['name']) . '" '
                                             . 'value="' . htmlspecialchars($item['value']) . '" '
@@ -152,25 +150,16 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td>' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';
-                        $checkGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=1;';
-                        $uncheckGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=0;';
                         $resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=' . $item['checked'] . ';';
-                    }
-
-                    // Build toggle group checkbox
-                    $toggleGroupCheckbox = '';
-                    if (!empty($resetGroup)) {
-                        $toggleGroupCheckbox = '<input type="checkbox" '
-                            . 'class="checkbox" '
-                            . 'onclick="if (checked) {' . htmlspecialchars(implode('', $checkGroup) . '} else {' . implode('', $uncheckGroup)) . '}">';
                     }
 
                     // Build reset group button
                     $resetGroupBtn = '';
                     if (!empty($resetGroup)) {
+                        $resetGroup[] = 'TYPO3.FormEngine.updateCheckboxState(this);';
                         $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', true);
                         $resetGroupBtn = '<a href="#" '
-                            . 'class="btn btn-default" '
+                            . 'class="btn btn-default btn-sm" '
                             . 'onclick="' . implode('', $resetGroup) . ' return false;" '
                             . 'title="' . $title . '">'
                             . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' '
@@ -180,11 +169,14 @@ class SelectCheckBoxElement extends AbstractFormElement
                     if (is_array($group['header'])) {
                         $html[] = '<div id="' . $groupId . '" class="panel-collapse collapse" role="tabpanel">';
                     }
+                    $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall');
                     $html[] =    '<div class="table-responsive">';
                     $html[] =        '<table class="table table-transparent table-hover">';
                     $html[] =            '<thead>';
                     $html[] =                '<tr>';
-                    $html[] =                    '<th class="col-checkbox">' . $toggleGroupCheckbox . '</th>';
+                    $html[] =                    '<th class="col-checkbox">';
+                    $html[] =                       '<input type="checkbox" class="t3js-toggle-checkboxes" data-trigger="hover" data-placement="right" data-title="' . htmlspecialchars($title) . '" data-toggle="tooltip" />';
+                    $html[] =                    '</th>';
                     $html[] =                    '<th class="col-icon"></th>';
                     $html[] =                    '<th class="text-right" colspan="2">' . $resetGroupBtn . '</th>';
                     $html[] =                '</tr>';
@@ -215,6 +207,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
         $resultArray = $this->initializeResultArray();
         $resultArray['html'] = $html;
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tooltip';
 
         return $resultArray;
     }
