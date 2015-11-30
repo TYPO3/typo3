@@ -624,6 +624,11 @@ class PageRepository
 
             // Versioning Preview Overlay
             $this->versionOL('pages', $page, true);
+            // Skip if page got disabled due to version overlay
+            // (might be delete or move placeholder)
+            if (empty($page)) {
+                continue;
+            }
 
             // Add a mount point parameter if needed
             $page = $this->addMountPointParameterToPage((array)$page);
