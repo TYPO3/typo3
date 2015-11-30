@@ -246,6 +246,17 @@ class DatabaseConnectionTest extends AbstractTestCase
 
     /**
      * @test
+     * @see https://forge.typo3.org/issues/71979
+     */
+    public function canCompileCastOperatorWithOrComparator()
+    {
+        $result = $this->subject->SELECTquery('uid', 'sys_category', 'FIND_IN_SET(\'0\',parent) != 0 OR CAST(parent AS CHAR) = \'\'');
+        $expected = 'SELECT uid FROM sys_category WHERE FIND_IN_SET(\'0\',parent) != 0 OR CAST(parent AS CHAR) = \'\'';
+        $this->assertEquals($expected, $this->cleanSql($result));
+    }
+
+    /**
+     * @test
      * @see http://forge.typo3.org/issues/21514
      */
     public function likeBinaryOperatorIsKept()

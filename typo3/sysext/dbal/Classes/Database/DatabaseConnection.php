@@ -1798,6 +1798,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                             }
                         }
                         break;
+                    case 'CAST':
+                        // Intentional fallthrough
                     case 'IFNULL':
                         // Intentional fallthrough
                     case 'LOCATE':
