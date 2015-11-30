@@ -22,6 +22,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_PageId = 89;
     const VALUE_PageIdTarget = 90;
     const VALUE_PageIdWebsite = 1;
+    const VALUE_ContentIdZero = 296;
     const VALUE_ContentIdFirst = 297;
     const VALUE_ContentIdSecond = 298;
     const VALUE_ContentIdThird = 299;
