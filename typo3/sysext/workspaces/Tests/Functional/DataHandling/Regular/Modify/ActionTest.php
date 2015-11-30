@@ -437,4 +437,106 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 //			->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/deleteContentAndCopyDraftPage.csv
+	 */
+	public function deleteContentAndCopyDraftPage() {
+		parent::deleteContentAndCopyDraftPage();
+		$this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
+
+//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/deleteContentAndCopyLivePage.csv
+	 */
+	public function deleteContentAndCopyLivePage() {
+		parent::deleteContentAndCopyLivePage();
+		$this->assertAssertionDataSet('deleteContentAndCopyLivePage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/changeContentSortingAndCopyDraftPage.csv
+	 */
+	public function changeContentSortingAndCopyDraftPage() {
+		parent::changeContentSortingAndCopyDraftPage();
+		$this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/changeContentSortingAndCopyLivePage.csv
+	 */
+	public function changeContentSortingAndCopyLivePage() {
+		parent::changeContentSortingAndCopyLivePage();
+		$this->assertAssertionDataSet('changeContentSortingAndCopyLivePage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/moveContentAndCopyDraftPage.csv
+	 */
+	public function moveContentAndCopyDraftPage() {
+		parent::moveContentAndCopyDraftPage();
+		$this->assertAssertionDataSet('moveContentAndCopyDraftPage');
+
+//		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+//		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0', 'Regular Element #2'));
+//		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+//		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+//			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/moveContentAndCopyLivePage.csv
+	 */
+	public function moveContentAndCopyLivePage() {
+		parent::moveContentAndCopyLivePage();
+		$this->assertAssertionDataSet('moveContentAndCopyLivePage');
+
+		$responseSectionsLive = $this->getFrontendResponse($this->recordIds['copiedPageId'])->getResponseSections();
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$this->assertThat($responseSectionsLive, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
+		$responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
+	}
+
 }

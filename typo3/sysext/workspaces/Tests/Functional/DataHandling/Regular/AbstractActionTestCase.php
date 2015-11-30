@@ -351,4 +351,81 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->backendUser->workspace = static::VALUE_WorkspaceId;
 	}
 
+	/**
+	 * Deletes a content element and copies the page in draft workspace
+	 */
+	public function deleteContentAndCopyDraftPage() {
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+	}
+
+	/**
+	 * Deletes a content element and copies the page in live workspace
+	 */
+	public function deleteContentAndCopyLivePage() {
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
+	/**
+	 * Changes content sorting and copies the page in draft workspace.
+	 */
+	public function changeContentSortingAndCopyDraftPage() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+	}
+
+	/**
+	 * Changes content sorting and copies the page in live workspace.
+	 */
+	public function changeContentSortingAndCopyLivePage() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
+	/**
+	 * Moves content either from and to the current page and copies the page in draft workspace.
+	 */
+	public function moveContentAndCopyDraftPage() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+	}
+
+	/**
+	 * Moves content either from and to the current page and copies the page in draft workspace.
+	 */
+	public function moveContentAndCopyLivePage() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
+
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
 }
