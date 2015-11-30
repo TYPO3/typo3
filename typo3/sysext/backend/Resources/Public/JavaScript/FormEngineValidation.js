@@ -170,7 +170,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				break;
 			case 'time':
 			case 'timesec':
-				if (!parseInt(value)) {
+				if (!parseInt(value) && value.toString() !== '0') {
 					return '';
 				}
 				var theTime = new Date(parseInt(value) * 1000);
