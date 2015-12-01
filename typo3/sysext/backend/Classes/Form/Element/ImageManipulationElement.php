@@ -46,7 +46,7 @@ class ImageManipulationElement extends AbstractFormElement
     );
 
     /**
-     * Handler for unknown types.
+     * This will render an imageManipulation field
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
