@@ -10090,6 +10090,14 @@ ul.typo3-messages {
 .x-shadow {
   z-index: 40 !important;
 }
+[id=typo3-pagetree-indicatorBar-temporaryMountPoint] .media-right {
+  position: absolute;
+  right: 16px;
+  -webkit-transform: translateY(-100%);
+      -ms-transform: translateY(-100%);
+          transform: translateY(-100%);
+  background-color: #6daae0;
+}
 #typo3-browse-links-php {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
