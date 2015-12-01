@@ -174,10 +174,10 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
                         // This localized child has a default language record. Remove this record from list of default language records
                         $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, array($uidOfDefaultLanguageRecord));
-                        // Compile localized record
-                        $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
-                        $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                     }
+                    // Compile localized record
+                    $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                    $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
                 if ($showPossible) {
                     foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
