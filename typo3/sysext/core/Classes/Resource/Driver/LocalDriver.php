@@ -948,6 +948,25 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     }
 
     /**
+     * Moves a file or folder to the given directory, renaming the source in the process if
+     * a file or folder of the same name already exists in the target path.
+     *
+     * @param string $filePath
+     * @param string $recycleDirectory
+     * @return bool
+     */
+    protected function recycleFileOrFolder($filePath, $recycleDirectory)
+    {
+        $destinationFile = $recycleDirectory . '/' . PathUtility::basename($filePath);
+        if (file_exists($destinationFile)) {
+            $timeStamp = \DateTimeImmutable::createFromFormat('U.u', microtime(true))->format('YmdHisu');
+            $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . PathUtility::basename($filePath);
+        }
+        $result = rename($filePath, $destinationFile);
+        return $result;
+    }
+
+    /**
      * Creates a map of old and new file/folder identifiers after renaming or
      * moving a folder. The old identifier is used as the key, the new one as the value.
      *
@@ -1144,7 +1163,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function deleteFile($fileIdentifier)
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
-        $result = unlink($filePath);
+        $recycleDirectory = $this->getRecycleDirectory($filePath);
+        if (!empty($recycleDirectory)) {
+            $result = $this->recycleFileOrFolder($filePath, $recycleDirectory);
+        } else {
+            $result = unlink($filePath);
+        }
         if ($result === false) {
             throw new \RuntimeException('Deletion of file ' . $fileIdentifier . ' failed.', 1320855304);
         }
@@ -1163,7 +1187,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function deleteFolder($folderIdentifier, $deleteRecursively = false)
     {
         $folderPath = $this->getAbsolutePath($folderIdentifier);
-        $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
+        $recycleDirectory = $this->getRecycleDirectory($folderPath);
+        if (!empty($recycleDirectory)) {
+            $result = $this->recycleFileOrFolder($folderPath, $recycleDirectory);
+        } else {
+            $result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
+        }
         if ($result === false) {
             throw new Exception\FileOperationErrorException(
                 'Deleting folder "' . $folderIdentifier . '" failed.',
@@ -1372,5 +1401,44 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function dumpFileContents($identifier)
     {
         readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), 0);
+    }
+
+    /**
+     * Get the path of the nearest recycler folder of a given $path.
+     * Return an empty string if there is no recycler folder available.
+     *
+     * @param string $path
+     * @return string
+     */
+    protected function getRecycleDirectory($path)
+    {
+        $recyclerSubdirectory = array_search(FolderInterface::ROLE_RECYCLER, $this->mappingFolderNameToRole, true);
+        if ($recyclerSubdirectory === false) {
+            return '';
+        }
+        $rootDirectory = rtrim($this->getAbsolutePath($this->getRootLevelFolder()), '/');
+        $searchDirectory = PathUtility::dirname($path);
+        // Check if file or folder to be deleted is inside a recycler directory
+        if ($this->getRole($searchDirectory) === FolderInterface::ROLE_RECYCLER) {
+            $searchDirectory = PathUtility::dirname($searchDirectory);
+            // Check if file or folder to be deleted is inside the root recycler
+            if ($searchDirectory == $rootDirectory) {
+                return '';
+            }
+            $searchDirectory = PathUtility::dirname($searchDirectory);
+        }
+        // Search for the closest recycler directory
+        while ($searchDirectory) {
+            $recycleDirectory = $searchDirectory . '/' . $recyclerSubdirectory;
+            if (is_dir($recycleDirectory)) {
+                return $recycleDirectory;
+            } elseif ($searchDirectory === $rootDirectory) {
+                return '';
+            } else {
+                $searchDirectory = PathUtility::dirname($searchDirectory);
+            }
+        }
+
+        return '';
     }
 }
