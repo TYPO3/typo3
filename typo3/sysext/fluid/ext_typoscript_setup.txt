@@ -4,9 +4,10 @@ fluidAjaxWidgetResponse {
 	typeNum = 7076
 	headerData >
 	config {
-		no_cache=1
+		no_cache = 1
 		disableAllHeaderCode = 1
 		additionalHeaders = Content-type:text/plain
+		debug = 0
 	}
 	10 = USER_INT
 	10 {
