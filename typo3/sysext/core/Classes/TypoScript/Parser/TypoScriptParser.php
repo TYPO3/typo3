@@ -877,9 +877,8 @@ class TypoScriptParser
                 // load default TypoScript for content rendering templates like
                 // css_styled_content if those have been included through f.e.
                 // <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
-                $filePointer = strtolower($filename);
-                if (StringUtility::beginsWith($filePointer, 'ext:')) {
-                    $filePointerPathParts = explode('/', substr($filePointer, 4));
+                if (StringUtility::beginsWith(strtolower($filename), 'ext:')) {
+                    $filePointerPathParts = explode('/', substr($filename, 4));
 
                     // remove file part, determine whether to load setup or constants
                     list($includeType, ) = explode('.', array_pop($filePointerPathParts));
