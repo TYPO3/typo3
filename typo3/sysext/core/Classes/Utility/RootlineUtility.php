@@ -15,14 +15,12 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
-use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
@@ -283,79 +281,23 @@ class RootlineUtility
             return $pageRecord;
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        // @todo Remove this special interpretation of relations by consequently using RelationHandler
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
             // Ensure that only fields defined in $rootlineFields (and "addRootLineFields") are actually evaluated
             if (array_key_exists($column, $pageRecord) && $this->columnHasRelationToResolve($configuration)) {
-                $configuration = $configuration['config'];
-                if ($configuration['MM'] ?? false) {
-                    /** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDBGroup */
-                    $loadDBGroup = GeneralUtility::makeInstance(RelationHandler::class);
-                    $loadDBGroup->start(
+                $fieldConfig = $configuration['config'];
+                $relatedUids = [];
+                if (($fieldConfig['MM'] ?? false) || (!empty($fieldConfig['foreign_table'] ?? $fieldConfig['allowed'] ?? ''))) {
+                    $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+                    $relationHandler->setWorkspaceId($this->workspaceUid);
+                    $relationHandler->start(
                         $pageRecord[$column],
-                        // @todo That depends on the type (group, select, inline)
-                        $configuration['allowed'] ?? $configuration['foreign_table'],
-                        $configuration['MM'],
+                        $fieldConfig['foreign_table'] ?? $fieldConfig['allowed'],
+                        $fieldConfig['MM'] ?? '',
                         $uid,
                         'pages',
-                        $configuration
+                        $fieldConfig
                     );
-                    $relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']] ?? [];
-                } else {
-                    // @todo The assumption is wrong, since group can be used without "MM", but having "allowed"
-                    $table = $configuration['foreign_table'];
-
-                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
-                    $queryBuilder->getRestrictions()->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                        ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-                    $queryBuilder->select('uid')
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                $configuration['foreign_field'],
-                                $queryBuilder->createNamedParameter(
-                                    $uid,
-                                    \PDO::PARAM_INT
-                                )
-                            )
-                        );
-
-                    if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
-                        foreach ($configuration['foreign_match_fields'] as $field => $value) {
-                            $queryBuilder->andWhere(
-                                $queryBuilder->expr()->eq(
-                                    $field,
-                                    $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
-                                )
-                            );
-                        }
-                    }
-                    if (isset($configuration['foreign_table_field'])) {
-                        $queryBuilder->andWhere(
-                            $queryBuilder->expr()->eq(
-                                trim($configuration['foreign_table_field']),
-                                $queryBuilder->createNamedParameter(
-                                    'pages',
-                                    \PDO::PARAM_STR
-                                )
-                            )
-                        );
-                    }
-                    if (isset($configuration['foreign_sortby'])) {
-                        $queryBuilder->orderBy($configuration['foreign_sortby']);
-                    }
-                    try {
-                        $statement = $queryBuilder->execute();
-                    } catch (DBALException $e) {
-                        throw new PagePropertyRelationNotFoundException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($table), 1343589452);
-                    }
-                    $relatedUids = [];
-                    while ($row = $statement->fetchAssociative()) {
-                        $relatedUids[] = $row['uid'];
-                    }
+                    $relatedUids = $relationHandler->getValueArray();
                 }
                 $pageRecord[$column] = implode(',', $relatedUids);
             }
