@@ -261,6 +261,7 @@ Ext.onReady(function() {
 	top.list_frame = top.list.getIframe();
 	top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
 
+	// not in use anymore
 	top.TYPO3ModuleMenu = TYPO3.ModuleMenu.App;
 	top.content = {
 		nav_frame: TYPO3.Backend.NavigationContainer.PageTree,

@@ -49,7 +49,7 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
         if (!empty($triggers[AbstractController::TRIGGER_RefreshModuleMenu])) {
             $pageRenderer->addJsInlineCode(
                 AbstractController::TRIGGER_RefreshModuleMenu,
-                'if (top.TYPO3ModuleMenu.refreshMenu) { top.TYPO3ModuleMenu.refreshMenu(); }'
+                'if (top && top.TYPO3.ModuleMenu.App) { top.TYPO3.ModuleMenu.App.refreshMenu(); }'
             );
         }
         return '';

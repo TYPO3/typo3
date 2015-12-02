@@ -366,10 +366,8 @@ class SetupModuleController extends AbstractModule
         $this->content .= '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         if ($this->languageUpdate) {
             $this->moduleTemplate->addJavaScriptCode('languageUpdate', '
-                if (top.refreshMenu) {
-                    top.refreshMenu();
-                } else {
-                    top.TYPO3ModuleMenu.refreshMenu();
+                if (top && top.TYPO3.ModuleMenu.App) {
+                    top.TYPO3.ModuleMenu.App.refreshMenu();
                 }
             ');
         }

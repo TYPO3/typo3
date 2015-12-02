@@ -239,14 +239,8 @@ class NewContentElementController extends AbstractModule
             $this->moduleTemplate->addJavaScriptCode(
                 'NewContentElementWizardInlineJavascript',
                 '
-				function goToalt_doc() {	//
+				function goToalt_doc() {
 					' . $this->onClickEvent . '
-				}
-
-				if(top.refreshMenu) {
-					top.refreshMenu();
-				} else {
-					top.TYPO3ModuleMenu.refreshMenu();
 				}'
             );
 
