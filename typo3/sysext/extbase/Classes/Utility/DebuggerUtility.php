@@ -169,6 +169,9 @@ class DebuggerUtility {
 	static protected function renderObject($object, $level, $plainText = FALSE, $ansiColors = FALSE) {
 		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			$object = $object->_loadRealInstance();
+			if (!$object) {
+				return gettype($object);
+			}
 		}
 		$header = self::renderHeader($object, $level, $plainText, $ansiColors);
 		if ($level < self::$maxDepth && !self::isBlacklisted($object) && !(self::isAlreadyRendered($object) && $plainText !== TRUE)) {
