@@ -29,12 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractUserAuthentication
 {
     /**
-     * Which global database to connect to
-     * @var string
-     */
-    public $global_database = '';
-
-    /**
      * Table to use for session data
      * @var string
      */
