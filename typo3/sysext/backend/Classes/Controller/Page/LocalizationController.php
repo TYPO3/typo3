@@ -99,7 +99,7 @@ class LocalizationController
                     . ' AND sys_language.uid <> ' . (int)$languageId
                     . $additionalWhere
                     . $excludeQueryPart,
-                'tt_content.sys_language_uid',
+                'sys_language.uid',
                 'sys_language.title'
             );
             while ($row = $databaseConnection->sql_fetch_assoc($res)) {
