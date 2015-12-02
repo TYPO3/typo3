@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Cshmanual\Service;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -30,7 +31,11 @@ class JavaScriptService
      */
     public function addJavaScript($title, $documentTemplateObject)
     {
-        if (TYPO3_MODE === 'BE' && is_object($GLOBALS['BE_USER'])) {
+        if (TYPO3_MODE !== 'BE') {
+            return;
+        }
+        $beUser = $this->getBeUser();
+        if ($beUser && !empty($beUser->user)) {
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
             $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', array(
@@ -40,5 +45,13 @@ class JavaScriptService
                 )
             )));
         }
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBeUser()
+    {
+        return isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
     }
 }
