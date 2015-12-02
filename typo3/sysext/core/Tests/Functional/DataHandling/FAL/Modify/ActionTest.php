@@ -91,12 +91,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Abstr
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
 
-        // @todo Values in sys_file_reference are not copied during localization...
-        /*
-            $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
-            ->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD'));
-        */
+            ->setTable(self::TABLE_FileReference)->setField('title')->setValues('[Translate to Dansk:] This is Kasper', '[Translate to Dansk:] Taken at T3BOARD'));
     }
 
     /**
