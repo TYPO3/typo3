@@ -13,7 +13,7 @@
 						<f:if condition="{f:uri.image(src: 'file:{f:if(condition: file.originalFile, then: \'file:{file.originalFile.uid}\', else: \'file:{file.uid}\')}')} != '/'">
 							<f:then>
 								<a href="{file.publicUrl}">
-									<f:image src="{file.uid}" treatIdAsReference="{f:if(condition: file.originalFile, then: '1', else: '0')}" width="150" alt="{file.properties.alternative}" />
+									<f:media file="{file}" width="150" alt="{file.properties.alternative}" />
 								</a>
 							</f:then>
 							<f:else>
