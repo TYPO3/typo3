@@ -2190,8 +2190,6 @@ class ContentObjectRenderer
                 $this->substMarkerCache[$storeKey] = $storeArr;
                 $timeTracker->setTSlogMessage('Cached from DB', 0);
             } else {
-                // Initialize storeArr
-                $storeArr = array();
                 // Finding subparts and substituting them with the subpart as a marker
                 foreach ($sPkeys as $sPK) {
                     $content = $this->substituteSubpart($content, $sPK, $sPK);
@@ -2203,15 +2201,29 @@ class ContentObjectRenderer
                         $wPK
                     ));
                 }
-                // Traverse keys and quote them for reg ex.
-                foreach ($aKeys as $tK => $tV) {
-                    $aKeys[$tK] = preg_quote($tV, '/');
+
+                $storeArr = array();
+                $result = preg_match_all('/###([\w:-]+)###/', $content, $usedMarkers);
+                if ($result !== false && !empty($usedMarkers[1])) {
+                    $tagArray = array_flip($usedMarkers[1]);
+
+                    $aKeys = array_flip($aKeys);
+                    $bKeys = array();
+                    // Traverse keys and quote them for reg ex.
+                    foreach ($tagArray as $tV => $tK) {
+                        $tV = '###' . $tV . '###';
+                        if (isset($aKeys[$tV])) {
+                            $bKeys[$tK] = preg_quote($tV, '/');
+                        }
+                    }
+                    $regex = '/' . implode('|', $bKeys) . '/';
+                    // Doing regex's
+                    if (preg_match_all($regex, $content, $keyList) !== false) {
+                        $storeArr['c'] = preg_split($regex, $content);
+                        $storeArr['k'] = $keyList[0];
+                    }
                 }
-                $regex = '/' . implode('|', $aKeys) . '/';
-                // Doing regex's
-                $storeArr['c'] = preg_split($regex, $content);
-                preg_match_all($regex, $content, $keyList);
-                $storeArr['k'] = $keyList[0];
+
                 // Setting cache:
                 $this->substMarkerCache[$storeKey] = $storeArr;
                 // Storing the cached data:
