@@ -997,7 +997,7 @@ class PageLayoutController
             $content .= $output;
         }
         // Making search form:
-        if (!$this->modTSconfig['properties']['disableSearchBox'] && !empty($tableOutput)) {
+        if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dbList->counter > 0 || $this->currentPageHasSubPages())) {
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
             $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
                 ->setClasses('t3js-toggle-search-toolbox')
@@ -1528,5 +1528,24 @@ class PageLayoutController
             }
             $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
         }
+    }
+
+    /**
+     * Checks whether the current page has sub pages
+     *
+     * @return bool
+     */
+    protected function currentPageHasSubPages()
+    {
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            'uid',
+            'pages',
+            'pid = ' . (int)$this->id
+                . BackendUtility::deleteClause('pages')
+                . BackendUtility::versioningPlaceholderClause('pages')
+                . BackendUtility::getWorkspaceWhereClause('pages')
+        );
+
+        return $count > 0;
     }
 }
