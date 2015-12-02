@@ -20,19 +20,26 @@
 define(['jquery'], function ($) {
 	'use strict';
 
-	// fetch from opening window
-	if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Storage) {
-		return window.opener.TYPO3.Storage;
-	}
+	try {
+		// fetch from opening window
+		if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Storage) {
+			return window.opener.TYPO3.Storage;
+		}
 
-	// fetch from parent
-	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Storage) {
-		return parent.window.TYPO3.Storage;
-	}
+		// fetch from parent
+		if (parent && parent.window.TYPO3 && parent.window.TYPO3.Storage) {
+			return parent.window.TYPO3.Storage;
+		}
 
-	// fetch object from outer frame
-	if (top && top.TYPO3.Storage) {
-		return top.TYPO3.Storage;
+		// fetch object from outer frame
+		if (top && top.TYPO3.Storage) {
+			return top.TYPO3.Storage;
+		}
+	} catch (e) {
+		// This only happens if the opener, parent or top is some other url (eg a local file)
+		// which loaded the current window. Then the browser's cross domain policy jumps in
+		// and raises an exception.
+		// For this case we are safe and we can create our global object below.
 	}
 
 	// we didn't find an existing object, so create it
