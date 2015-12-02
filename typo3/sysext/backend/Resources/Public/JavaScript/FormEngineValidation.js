@@ -472,7 +472,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 
 		$(FormEngineValidation.rulesSelector).each(function() {
 			var $field = $(this);
-			if (!$field.closest('.t3js-flex-section-deleted').length) {
+			if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted').length) {
 				var newValue = FormEngineValidation.validateField($field);
 				if (newValue.length && $field.val() !== newValue) {
 					$field.attr('value', newValue);

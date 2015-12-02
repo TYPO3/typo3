@@ -953,7 +953,9 @@ var inline = {
 		}
 
 		// Mark this container as deleted
-		TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div').addClass('inlineIsDeletedRecord');
+		TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div')
+			.addClass('inlineIsDeletedRecord')
+			.addClass('t3js-inline-record-deleted');
 
 		// If the record is new and was never saved before, just remove it from DOM:
 		if (this.isNewRecord(objectId) || options && options.forceDirectRemoval) {
@@ -1259,6 +1261,7 @@ var inline = {
 	fadeAndRemove: function (element) {
 		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(200, function () {
 			TYPO3.jQuery(this).remove();
+			TYPO3.FormEngine.Validation.validate();
 		});
 	},
 
