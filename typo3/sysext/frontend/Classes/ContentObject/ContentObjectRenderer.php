@@ -6693,9 +6693,8 @@ class ContentObjectRenderer
         // Split parts
         $parts = explode('->', $funcName);
         if (count($parts) === 2) {
-            // Class
-            // Check whether class is available and try to reload includeLibs if possible:
-            if ($this->isClassAvailable($parts[0], $conf)) {
+            // Check whether PHP class is available
+            if (class_exists($parts[0])) {
                 $classObj = GeneralUtility::makeInstance($parts[0]);
                 if (is_object($classObj) && method_exists($classObj, $parts[1])) {
                     $classObj->cObj = $this;
@@ -7071,40 +7070,6 @@ class ContentObjectRenderer
             $librariesIncluded = true;
         }
         return $librariesIncluded;
-    }
-
-    /**
-     * Checks whether a PHP class is available. If the check fails, the method tries to
-     * determine the correct includeLibs to make the class available automatically.
-     *
-     * TypoScript example that can cause this:
-     * | plugin.tx_myext_pi1 = USER
-     * | plugin.tx_myext_pi1 {
-     * |   includeLibs = EXT:myext/pi1/class.tx_myext_pi1.php
-     * |   userFunc = tx_myext_pi1->main
-     * | }
-     * | 10 = USER
-     * | 10.userFunc = tx_myext_pi1->renderHeader
-     *
-     * @param string $className The name of the PHP class to be checked
-     * @param array $config TypoScript configuration (naturally of a USER or COA cObject)
-     * @return bool Whether the class is available
-     * @link http://forge.typo3.org/issues/19510
-     * @todo This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
-     */
-    protected function isClassAvailable($className, array $config = null)
-    {
-        if (class_exists($className)) {
-            return true;
-        }
-        if ($config) {
-            $pluginConfiguration = &$this->getTypoScriptFrontendController()->tmpl->setup['plugin.'][$className . '.'];
-            if (isset($pluginConfiguration['includeLibs']) && $pluginConfiguration['includeLibs']) {
-                $config['includeLibs'] = $pluginConfiguration['includeLibs'];
-                return $this->includeLibs($config);
-            }
-        }
-        return false;
     }
 
     /***********************************************
