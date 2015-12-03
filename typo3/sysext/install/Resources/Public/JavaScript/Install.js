@@ -534,6 +534,12 @@ $(function() {
 		}
 	});
 
+	$(document).on('click', '.t3js-all-configuration-toggle', function() {
+		var $panels = $('.panel-collapse', '#allConfiguration');
+		var action = ($panels.eq(0).hasClass('in')) ? 'hide' : 'show';
+		$panels.collapse(action);
+	});
+
 	// Simple password strength indicator
 	$('.t3-install-form-password-strength').on('keyup', function() {
 		var value = $(this).val();
