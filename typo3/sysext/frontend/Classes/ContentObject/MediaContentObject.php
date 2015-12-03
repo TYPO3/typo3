@@ -285,9 +285,13 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		$flexValue = NULL;
 		$flexKey = 'mm' . ucfirst($key);
 		if ($sectionKey === NULL) {
-			$flexValue = $confArray['parameter.'][$flexKey];
+			if (isset($confArray['parameter.'][$flexKey])) {
+				$flexValue = $confArray['parameter.'][$flexKey];
+			}
 		} else {
-			$flexValue = $confArray['parameter.'][$flexKey][$sectionKey];
+			if (isset($confArray['parameter.'][$flexKey][$sectionKey])) {
+				$flexValue = $confArray['parameter.'][$flexKey][$sectionKey];
+			}
 		}
 		if ($flexValue === NULL) {
 			$flexValue = isset($confArray[$key . '.']) ? $this->cObj->stdWrap($confArray[$key], $confArray[$key . '.']) : $confArray[$key];
