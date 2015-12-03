@@ -110,9 +110,18 @@ plugin.tx_indexedsearch {
 
 
 	view {
-		templateRootPath = {$plugin.tx_indexedsearch.view.templateRootPath}
-		partialRootPath = {$plugin.tx_indexedsearch.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_indexedsearch.view.layoutRootPath}
+		templateRootPaths {
+			0 = EXT:indexed_search/Resources/Private/Templates/
+			10 = {$plugin.tx_indexedsearch.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:indexed_search/Resources/Private/Partials/
+			10 = {$plugin.tx_indexedsearch.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:indexed_search/Resources/Private/Layouts/
+			10 = {$plugin.tx_indexedsearch.view.layoutRootPath}
+		}
 	}
 
 }

@@ -1,10 +1,10 @@
 plugin.tx_indexedsearch {
 	view {
 		 # cat=plugin.tx_indexedsearch/file; type=string; label=Path to template root (FE)
-		templateRootPath = EXT:indexed_search/Resources/Private/Templates/
+		templateRootPath =
 		 # cat=plugin.tx_indexedsearch/file; type=string; label=Path to template partials (FE)
-		partialRootPath = EXT:indexed_search/Resources/Private/Partials/
+		partialRootPath =
 		 # cat=plugin.tx_indexedsearch/file; type=string; label=Path to template layouts (FE)
-		layoutRootPath = EXT:indexed_search/Resources/Private/Layouts/
+		layoutRootPath =
 	}
 }
