@@ -21,8 +21,8 @@ Link browser tabs are registered in page TSconfig like this:
 
 .. code:: typoscript
 
-	TCEMAIN.linkHandlers.<tabIdentifier> {
-		handler = TYPO3\\CMS\\Recordlist\\LinkHandler\\FileLinkHandler
+	TCEMAIN.linkHandler.<tabIdentifier> {
+		handler = TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler
 		label = LLL:EXT:lang/locallang_browse_links.xlf:file
 		displayAfter = page
 		scanAfter = page

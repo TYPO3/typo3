@@ -234,7 +234,7 @@ abstract class AbstractLinkBrowserController
     {
         $linkHandlers = $this->getLinkHandlers();
         if (empty($linkHandlers)) {
-            throw new \UnexpectedValueException('No link handlers are configured. Check page TSconfig TCEMAIN.linkHandlers.', 1442787911);
+            throw new \UnexpectedValueException('No link handlers are configured. Check page TSconfig TCEMAIN.linkHandler.', 1442787911);
         }
 
         $lang = $this->getLanguageService();
