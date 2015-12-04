@@ -3040,6 +3040,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                         $result = $this->exec_TRUNCATEquery($this->lastParsedAndMappedQueryArray['TABLE']);
                         break;
                     default:
+                        if (!is_array($compiledQuery)) {
+                            $compiledQuery = array($compiledQuery);
+                        }
                         $result = $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
                 }
                 break;

@@ -109,6 +109,9 @@ class Adodb extends AbstractCompiler
             case 'CHANGE':
                 $query = $this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
                 break;
+            case 'RENAME':
+                $query = $this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->RenameTableSQL($tableName, $fieldName);
+                break;
             case 'DROP':
 
             case 'DROPKEY':
