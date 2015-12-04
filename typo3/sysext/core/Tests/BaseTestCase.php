@@ -76,7 +76,8 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Returns a mock object which allows for calling protected methods and access
-     * of protected properties.
+     * of protected properties. Concrete methods to mock can be specified with
+     * the last parameter
      *
      * @param string $originalClassName Full qualified name of the original class
      * @param array $arguments
@@ -84,6 +85,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $callOriginalConstructor
      * @param bool $callOriginalClone
      * @param bool $callAutoload
+     * @param array $mockedMethods
      *
      * @throws \InvalidArgumentException
      *
@@ -92,7 +94,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getAccessibleMockForAbstractClass(
         $originalClassName, array $arguments = array(), $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
+        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = array()
     ) {
         if ($originalClassName === '') {
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1384268260);
@@ -104,7 +106,8 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
             $mockClassName,
             $callOriginalConstructor,
             $callOriginalClone,
-            $callAutoload
+            $callAutoload,
+            $mockedMethods
         );
     }
 
