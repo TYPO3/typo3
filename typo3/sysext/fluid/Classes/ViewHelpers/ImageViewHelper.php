@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 
@@ -100,31 +101,36 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
 		}
-		$image = $this->imageService->getImage($src, $image, $treatIdAsReference);
-		$processingInstructions = array(
-			'width' => $width,
-			'height' => $height,
-			'minWidth' => $minWidth,
-			'minHeight' => $minHeight,
-			'maxWidth' => $maxWidth,
-			'maxHeight' => $maxHeight,
-		);
-		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-		$imageUri = $this->imageService->getImageUri($processedImage);
 
-		$this->tag->addAttribute('src', $imageUri);
-		$this->tag->addAttribute('width', $processedImage->getProperty('width'));
-		$this->tag->addAttribute('height', $processedImage->getProperty('height'));
+		try {
+			$image = $this->imageService->getImage($src, $image, $treatIdAsReference);
+			$processingInstructions = array(
+				'width' => $width,
+				'height' => $height,
+				'minWidth' => $minWidth,
+				'minHeight' => $minHeight,
+				'maxWidth' => $maxWidth,
+				'maxHeight' => $maxHeight,
+			);
+			$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
+			$imageUri = $this->imageService->getImageUri($processedImage);
 
-		$alt = $image->getProperty('alternative');
-		$title = $image->getProperty('title');
+			$this->tag->addAttribute('src', $imageUri);
+			$this->tag->addAttribute('width', $processedImage->getProperty('width'));
+			$this->tag->addAttribute('height', $processedImage->getProperty('height'));
 
-		// The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-		if (empty($this->arguments['alt'])) {
-			$this->tag->addAttribute('alt', $alt);
-		}
-		if (empty($this->arguments['title']) && $title) {
-			$this->tag->addAttribute('title', $title);
+			$alt = $image->getProperty('alternative');
+			$title = $image->getProperty('title');
+
+			// The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
+			if (empty($this->arguments['alt'])) {
+				$this->tag->addAttribute('alt', $alt);
+			}
+			if (empty($this->arguments['title']) && $title) {
+				$this->tag->addAttribute('title', $title);
+			}
+		} catch (ResourceDoesNotExistException $e) {
+		} catch (\UnexpectedValueException $e) {
 		}
 
 		return $this->tag->render();
