@@ -1114,17 +1114,34 @@ class PageLayoutController
                         '',
                         ''
                     );
+                    // Edit button
+                    $urlParameters = [
+                        'edit' => [
+                            'pages_language_overlay' => [
+                                $overlayRecord['uid'] => 'edit'
+                            ]
+                        ],
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    ];
+                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                     $editLanguageButton = $this->buttonBar->makeLinkButton()
-                        ->setHref('#')
+                        ->setHref($url)
                         ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
-                        ->setOnClick(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit'))
                         ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 }
+                $urlParameters = [
+                    'edit' => [
+                        'pages' => [
+                            $this->id => 'edit'
+                        ]
+                    ],
+                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ];
+                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                 $editPageButton = $this->buttonBar->makeLinkButton()
-                    ->setHref('#')
+                    ->setHref($url)
                     ->setTitle($lang->getLL('editPageProperties'))
-                    ->setOnClick(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'))
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
             }
