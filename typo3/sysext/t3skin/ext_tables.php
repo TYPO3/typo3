@@ -12,13 +12,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
         )
     );
 
-    // Alternative dimensions for frameset sizes:
-    // Left menu frame width
-    $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] = 190;
-
-    // Top frame height
-    $GLOBALS['TBE_STYLES']['dims']['topFrameH'] = 45;
-
     // Setting up auto detection of alternative icons:
     $GLOBALS['TBE_STYLES']['skinImgAutoCfg'] = array(
         'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3skin') . 'icons/',

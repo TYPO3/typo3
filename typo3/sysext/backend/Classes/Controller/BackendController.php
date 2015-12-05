@@ -617,7 +617,7 @@ class BackendController
             'veriCode' => $beUser->veriCode(),
             'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
             'moduleMenuWidth' => $this->menuWidth - 1,
-            'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
+            'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 45,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
             'listModulePath' => ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/',
             'debugInWindow' => $beUser->uc['debugInWindow'] ? 1 : 0,
