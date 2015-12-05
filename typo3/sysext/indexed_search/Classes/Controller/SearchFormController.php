@@ -566,13 +566,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // Now, traverse result and put the rows to be displayed into an array
             // Each row should contain the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (bool) and "result_number" (counter)
             while (false !== ($row = $this->databaseConnection->sql_fetch_assoc($res))) {
-                if (!$this->checkExistence($row)) {
-                    // Check if the record is still available or if it has been deleted meanwhile.
-                    // Currently this works for files only, since extending it to content elements would cause a lot of overhead...
-                    // Otherwise, skip the row.
-                    $totalSearchResultCount--;
-                    continue;
-                }
                 // Set first row:
                 if ($positionInSearchResults === 0) {
                     $firstRow = $row;
@@ -1266,7 +1259,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function checkExistance($row)
     {
-        GeneralUtility::logDeprecatedFunction();
         return $this->checkExistence($row);
     }
 
@@ -1276,9 +1268,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @param array $row Result row array
      * @return bool Returns TRUE if record is still available
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8 (it is not used in the core any more, see #44381)
      */
     protected function checkExistence($row)
     {
+        GeneralUtility::logDeprecatedFunction();
         $recordExists = true;
         // Always expect that page content exists
         if ($row['item_type']) {
