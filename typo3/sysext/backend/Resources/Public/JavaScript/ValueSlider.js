@@ -59,7 +59,7 @@ define(['jquery', 'twbs/bootstrap-slider'], function($) {
 				break;
 		}
 
-		TBE_EDITOR.fieldChanged.apply(sliderCallbackParams);
+		TBE_EDITOR.fieldChanged.apply(TBE_EDITOR, sliderCallbackParams);
 	};
 
 	/**
@@ -88,7 +88,7 @@ define(['jquery', 'twbs/bootstrap-slider'], function($) {
 	};
 
 	// init if document is ready
-	$(function() {
+	$(document).ready(function() {
 		ValueSlider.initializeSlider();
 	});
 
