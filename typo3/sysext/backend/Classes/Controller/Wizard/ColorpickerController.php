@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Script Class for colorpicker wizard
@@ -148,9 +149,9 @@ class ColorpickerController extends AbstractWizardController
         // Resolving image (checking existence etc.)
         $this->imageError = '';
         if ($this->exampleImg) {
-            $this->pickerImage = GeneralUtility::getFileAbsFileName($this->exampleImg, 1, 1);
+            $this->pickerImage = GeneralUtility::getFileAbsFileName($this->exampleImg);
             if (!$this->pickerImage || !@is_file($this->pickerImage)) {
-                $this->imageError = 'ERROR: The image, "' . $this->exampleImg . '", could not be found!';
+                $this->imageError = 'ERROR: The image "' . $this->exampleImg . '" could not be found!';
             }
         }
         $update = array();
@@ -375,7 +376,7 @@ class ColorpickerController extends AbstractWizardController
                 }
                 $pickerFormImage = '
 				<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromImage', true) . '</p>
-				<input type="image" src="../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->pickerImage) . '" name="coords" style="cursor:crosshair;" /><br />';
+				<input type="image" src="' . PathUtility::getAbsoluteWebPath($this->pickerImage) . '" name="coords" style="cursor:crosshair;" /><br />';
             } else {
                 $pickerFormImage = '';
             }
