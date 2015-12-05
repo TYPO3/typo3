@@ -416,8 +416,9 @@ class DebuggerUtility
             self::$blacklistedPropertyNames = $blacklistedPropertyNames;
         }
         self::clearState();
+        $css = '';
         if (!$plainText && self::$stylesheetEchoed === false) {
-            echo '
+            $css = '
 				<style type=\'text/css\'>
 					.extbase-debugger-tree{position:relative}
 					.extbase-debugger-tree input{position:absolute;top:0;left:0;height:14px;width:14px;margin:0;cursor:pointer;opacity:0;z-index:2}
@@ -457,9 +458,9 @@ class DebuggerUtility
 			';
         }
         if ($return === true) {
-            return $output;
+            return $css . $output;
         } else {
-            echo $output;
+            echo $css . $output;
         }
         return '';
     }
