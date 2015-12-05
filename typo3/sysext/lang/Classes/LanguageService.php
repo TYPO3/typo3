@@ -43,21 +43,6 @@ class LanguageService
     public $charSet = 'utf-8';
 
     /**
-     * Array with alternative charsets for other languages.
-     * Moved to \TYPO3\CMS\Core\Charset\CharsetConverter, set internally from csConvObj!
-     *
-     * @var array
-     */
-    public $charSetArray = array();
-
-    /**
-     * This is the url to the TYPO3 manual
-     *
-     * @var string
-     */
-    public $typo3_help_url = 'http://typo3.org/documentation/document-library/';
-
-    /**
      * If TRUE, will show the key/location of labels in the backend.
      *
      * @var bool
@@ -122,7 +107,6 @@ class LanguageService
     {
         // Initialize the conversion object:
         $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-        $this->charSetArray = $this->csConvObj->charSetArray;
         // Initialize the parser factory object
         $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
         // Find the requested language in this list based
