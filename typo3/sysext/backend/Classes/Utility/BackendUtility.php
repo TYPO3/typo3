@@ -1733,7 +1733,7 @@ class BackendUtility
                 }
 
                 // Preview web image or media elements
-                if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], $fileReferenceObject->getExtension())) {
+                if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], $fileReferenceObject->getExtension())) {
                     $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, array(
                                         'width' => $sizeParts[0],
                                         'height' => $sizeParts[1] . 'c',

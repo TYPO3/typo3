@@ -309,7 +309,7 @@ class InlineRecordContainer extends AbstractContainer
         $thumbnail = false;
 
         // Renders a thumbnail for the header
-        if (!empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && !empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
             $fieldValue = $rec[$inlineConfig['appearance']['headerThumbnail']['field']];
             $firstElement = array_shift(GeneralUtility::trimExplode('|', array_shift(GeneralUtility::trimExplode(',', $fieldValue))));
             $fileUid = array_pop(BackendUtility::splitTable_Uid($firstElement));

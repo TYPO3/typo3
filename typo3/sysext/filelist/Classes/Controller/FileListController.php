@@ -352,7 +352,7 @@ class FileListController extends ActionController
         if ($this->folderObject) {
             // Create fileListing object
             $this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
-            $this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
+            $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
             // Create clipboard object and initialize that
             $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
             $this->filelist->clipObj->fileMode = 1;
@@ -428,6 +428,7 @@ class FileListController extends ActionController
 
             $this->view->assign('headline', $this->getModuleHeadline());
             $this->view->assign('listHtml', $this->filelist->HTMLcode);
+
             $this->view->assign('checkboxes', [
                 'bigControlPanel' => [
                     'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable',
@@ -436,7 +437,7 @@ class FileListController extends ActionController
                         $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"'),
                 ],
                 'displayThumbs' => [
-                    'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable',
+                    'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable',
                     'label' => $this->getLanguageService()->getLL('displayThumbs', true),
                     'html' => BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]',
                         $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"'),
