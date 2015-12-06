@@ -19,7 +19,7 @@
  */
 call_user_func(function () {
     // Ensure cli only as security measure
-    if (PHP_SAPI !== 'cli') {
+    if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
         die('This script supports command line usage only. Please check your command.');
     }
 
