@@ -198,11 +198,11 @@ div.x-grid3-row-over img.t3-icon-extensions-workspaces {
 }
 
 img.t3-icon-workspaces-sendtonextstage {
-	background-position: 0 4px !important;
+	background: url(../Images/version-workspace-sendtonextstage.png) no-repeat;
 }
 
 img.t3-icon-workspaces-sendtoprevstage {
-	background-position: 0 4px !important;
+	background: url(../Images/version-workspace-sendtoprevstage.png) no-repeat;
 }
 
 table.t3-workspaces-foldout-contentDiff td.content {

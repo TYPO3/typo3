@@ -2321,18 +2321,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'name' => 'play-circle',
             )
         ),
-        'extensions-workspaces-sendtonextstage' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:workspaces/Resources/Public/Images/version-workspace-sendtonextstage.png'
-            )
-        ),
-        'extensions-workspaces-sendtoprevstage' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:workspaces/Resources/Public/Images/version-workspace-sendtoprevstage.png'
-            )
-        ),
         'extensions-workspaces-generatepreviewlink' => array(
             'provider' => BitmapIconProvider::class,
             'options' => array(
