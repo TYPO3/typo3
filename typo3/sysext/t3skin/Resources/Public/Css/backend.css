@@ -12185,7 +12185,7 @@ span.typo3-moduleHeader img {
   vertical-align: middle;
 }
 .input-group-icon img {
-  width: auto;
+  width: 100%;
   max-height: 18px;
 }
 .input-group-addon {
