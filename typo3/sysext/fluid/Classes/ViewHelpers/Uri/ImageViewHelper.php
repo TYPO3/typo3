@@ -96,7 +96,13 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 			$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
 			return $this->imageService->getImageUri($processedImage);
 		} catch (ResourceDoesNotExistException $e) {
+			// thrown if file does not exist
 		} catch (\UnexpectedValueException $e) {
+			// thrown if a file has been replaced with a folder
+		} catch (\RuntimeException $e) {
+			// RuntimeException thrown if a file is outside of a storage
+		} catch (\InvalidArgumentException $e) {
+			// thrown if file storage does not exist
 		}
 		return '';
 	}
