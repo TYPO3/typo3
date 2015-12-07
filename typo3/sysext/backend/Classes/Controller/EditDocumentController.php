@@ -1331,6 +1331,18 @@ class EditDocumentController extends AbstractModule
                     && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
                     && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')
                 ) {
+                    $returnUrl = $this->retUrl;
+                    if ($this->firstEl['table'] === 'pages') {
+                        parse_str((string)parse_url($returnUrl, PHP_URL_QUERY), $queryParams);
+                        if (isset($queryParams['M'])
+                            && isset($queryParams['id'])
+                            && (string)$this->firstEl['uid'] === (string)$queryParams['id']
+                        ) {
+                            // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
+                            // tree from the outside to be able to mark the pid as active
+                            $returnUrl = BackendUtility::getModuleUrl($queryParams['M'], ['id' => 0]);
+                        }
+                    }
                     $deleteButton = $buttonBar->makeLinkButton()
                         ->setHref('#')
                         ->setClasses('t3js-editform-delete-record')
@@ -1340,7 +1352,7 @@ class EditDocumentController extends AbstractModule
                             Icon::SIZE_SMALL
                         ))
                         ->setDataAttributes([
-                            'return-url' => BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['pid'])),
+                            'return-url' => $returnUrl,
                             'uid' => $this->firstEl['uid'],
                             'table' => $this->firstEl['table']
                         ]);
