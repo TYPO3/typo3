@@ -29,6 +29,9 @@ class WarningMessagePostProcessor
      */
     public function displayWarningMessages_postProcess(array &$warningMessages)
     {
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            return;
+        }
         // Get highest severity
         $registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
         $highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', null);
