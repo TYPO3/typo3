@@ -1856,6 +1856,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-template.svg'
             )
         ),
+        'mimetypes-x-content-text-media' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text-picture.svg'
+            )
+        ),
         'mimetypes-x-content-text-picture' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
