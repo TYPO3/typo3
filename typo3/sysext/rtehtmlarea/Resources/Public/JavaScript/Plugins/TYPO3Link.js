@@ -321,14 +321,13 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					}
 					if (cur_target.trim()) node.target = cur_target.trim();
 						else node.removeAttribute('target');
-					if (cur_class.trim()) {
-						node.className = cur_class.trim();
+					if (!UserAgent.isOpera) {
+						node.removeAttribute('class');
 					} else {
-						if (!UserAgent.isOpera) {
-							node.removeAttribute('class');
-						} else {
-							node.className = '';
-						}
+						node.className = '';
+					}
+					if (cur_class.trim()) {
+						Dom.addClass(node, cur_class.trim());
 					}
 					if (cur_title.trim()) {
 						node.title = cur_title.trim();

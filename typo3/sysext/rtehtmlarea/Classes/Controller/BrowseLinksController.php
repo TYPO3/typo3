@@ -215,6 +215,14 @@ class BrowseLinksController extends AbstractLinkBrowserController
             return;
         }
 
+        if (!empty($this->currentLinkParts['class'])) {
+            // remove required classes
+            $currentClasses = GeneralUtility::trimExplode(' ', $this->currentLinkParts['class'], true);
+            if (count($currentClasses) > 1) {
+                $this->currentLinkParts['class'] = end($currentClasses);
+            }
+        }
+
         if (empty($this->currentLinkParts['data-htmlarea-external'])) {
             // strip siteUrl prefix except for external and mail links
             if (strpos($this->currentLinkParts['url'], 'mailto:') === false) {
