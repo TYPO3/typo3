@@ -808,6 +808,7 @@ return array(
                 'itemsProcFunc' => \TYPO3\CMS\Frontend\Hooks\TableColumnHooks::class . '->sortPluginList',
                 'default' => '',
                 'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
+                'authMode_enforce' => 'strict'
             )
         ),
         'select_key' => array(
