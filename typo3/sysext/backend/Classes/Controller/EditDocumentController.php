@@ -1325,7 +1325,7 @@ class EditDocumentController extends AbstractModule
             && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
             && count($this->elementsData) === 1
         ) {
-            if ($this->firstEl['cmd'] != 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
+            if ($this->firstEl['cmd'] !== 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
                 // Delete:
                 if ($this->firstEl['deleteAccess']
                     && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
