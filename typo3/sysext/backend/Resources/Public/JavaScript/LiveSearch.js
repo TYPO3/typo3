@@ -38,6 +38,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 			forceFixPosition: false,
 			preserveInput: true,
 			showNoSuggestionNotice: true,
+			triggerSelectOnValidInput: false,
 			noSuggestionNotice: '<div class="dropdown-info">' + TYPO3.LLL.liveSearch.listEmptyText + '</div>'
 					+ '<div class="search-list-help-content"><strong>' + TYPO3.LLL.liveSearch.helpTitle + '</strong>'
 					+ '<p>' + TYPO3.LLL.liveSearch.helpDescription + '<br>' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>'
