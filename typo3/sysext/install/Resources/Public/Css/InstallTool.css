@@ -7546,8 +7546,6 @@ button.close {
   width: 32px;
   overflow: hidden;
   border-radius: 50%;
-  background-image: url('../../../../../../typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg');
-  background-size: 100%;
 }
 .avatar-image:after {
   display: block;

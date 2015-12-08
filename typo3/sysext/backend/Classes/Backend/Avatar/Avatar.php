@@ -78,14 +78,19 @@ class Avatar
             $backendUser = $this->getBackendUser()->user;
         }
 
-        $imageTag = '';
         $avatarImage = $this->getImage($backendUser, $size);
 
-        if ($avatarImage) {
-            $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '" ' .
-                'width="' . (int)$avatarImage->getWidth() . '" ' .
-                'height="' . (int)$avatarImage->getHeight() . '" />';
+        if (!$avatarImage) {
+            $avatarImage = GeneralUtility::makeInstance(
+                Image::class,
+                'typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg',
+                $size,
+                $size
+            );
         }
+        $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '" ' .
+            'width="' . (int)$avatarImage->getWidth() . '" ' .
+            'height="' . (int)$avatarImage->getHeight() . '" />';
 
         return $imageTag;
     }
