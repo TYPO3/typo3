@@ -1504,6 +1504,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-bullets.svg'
             )
         ),
+        'content-elements-login' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-elements-login.svg'
+            )
+        ),
+        'content-elements-mailform' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-elements-mailform.svg'
+            )
+        ),
+        'content-elements-searchform' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-elements-searchform.svg'
+            )
+        ),
         'content-header' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1534,6 +1552,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-html.svg'
             )
         ),
+        'content-special-indexed_search' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-indexed_search.svg'
+            )
+        ),
         'content-special-menu' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1544,6 +1568,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-shortcut.svg'
+            )
+        ),
+        'content-special-uploads' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-uploads.svg'
             )
         ),
         'content-table' => array(
@@ -1564,40 +1594,10 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-textpic.svg'
             )
         ),
-        'content-elements-login' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/login_form.gif'
-            )
-        ),
-        'content-elements-mailform' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/mailform.gif'
-            )
-        ),
-        'content-elements-searchform' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/searchform.gif'
-            )
-        ),
-        'content-special-uploads' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/filelinks.gif'
-            )
-        ),
         'content-special-media' => array(
             'provider' => BitmapIconProvider::class,
             'options' => array(
                 'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/multimedia.gif'
-            )
-        ),
-        'content-special-indexed_search' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:indexed_search/Resources/Public/Images/ce_wiz.png'
             )
         ),
 
@@ -1662,6 +1662,42 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-media-video.svg'
+            )
+        ),
+        'mimetypes-open-document-database' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-database.svg'
+            )
+        ),
+        'mimetypes-open-document-drawing' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-drawing.svg'
+            )
+        ),
+        'mimetypes-open-document-formula' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-formula.svg'
+            )
+        ),
+        'mimetypes-open-document-presentation' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-presentation.svg'
+            )
+        ),
+        'mimetypes-open-document-spreadsheet' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-spreadsheet.svg'
+            )
+        ),
+        'mimetypes-open-document-text' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-open-document-text.svg'
             )
         ),
         'mimetypes-other-other' => array(
@@ -1856,12 +1892,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-template.svg'
             )
         ),
-        'mimetypes-x-content-text-media' => array(
-            'provider' => SvgIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text-picture.svg'
-            )
-        ),
         'mimetypes-x-content-text-picture' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1932,6 +1962,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-tx_scheduler_task_group.svg'
+            )
+        ),
+        'mimetypes-x-content-text-media' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text-picture.svg'
             )
         ),
         'mimetypes-x-sys_file_storage' => array(
