@@ -327,7 +327,7 @@ class SingleFieldContainer extends AbstractContainer
             );
             $fieldConfig = $this->data['processedTca']['columns'][$field];
             // Don't show content if it's for IRRE child records:
-            if ($fieldConfig['config']['type'] !== 'inline') {
+            if ($fieldConfig['config']['type'] !== 'inline' && $fieldConfig['config']['type'] !== 'flex') {
                 /** @var IconFactory $iconFactory */
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 if ($defaultLanguageValue !== '') {
