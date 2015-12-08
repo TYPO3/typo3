@@ -36,7 +36,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  *
  * Example TypoScript configuration:
  *
- * 10 = \TYPO3\CMS\Frontend\ContentObject\DataProcessing\CommaSeparatedValueProcessor
+ * 10 = TYPO3\CMS\Frontend\ContentObject\DataProcessing\CommaSeparatedValueProcessor
  * 10 {
  *   if.isTrue.field = bodytext
  *   fieldName = bodytext
