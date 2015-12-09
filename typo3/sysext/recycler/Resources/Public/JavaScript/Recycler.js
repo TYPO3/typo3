@@ -203,7 +203,7 @@ define(['jquery',
 	 * Initialize the recycler module
 	 */
 	Recycler.initialize = function() {
-		NProgress.configure({parent: 'body', showSpinner: false});
+		NProgress.configure({parent: '.module-loading-indicator', showSpinner: false});
 
 		Recycler.getElements();
 		Recycler.registerEvents();

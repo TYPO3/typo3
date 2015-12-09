@@ -378,7 +378,7 @@ define([
 	 *
 	 */
 	Repository.initDom = function() {
-		NProgress.configure({parent: '.t3js-module-body', showSpinner: false});
+		NProgress.configure({parent: '.module-loading-indicator', showSpinner: false});
 
 		$('#terTable').DataTable({
 			lengthChange: false,
