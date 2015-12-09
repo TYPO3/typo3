@@ -18,6 +18,28 @@
 define(['jquery'], function($) {
 	'use strict';
 
+	try {
+		// fetch from opening window
+		if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Icons) {
+			return window.opener.TYPO3.Icons;
+		}
+
+		// fetch from parent
+		if (parent && parent.window.TYPO3 && parent.window.TYPO3.Icons) {
+			return parent.window.TYPO3.Icons;
+		}
+
+		// fetch object from outer frame
+		if (top && top.TYPO3.Icons) {
+			return top.TYPO3.Icons;
+		}
+	} catch (e) {
+		// This only happens if the opener, parent or top is some other url (eg a local file)
+		// which loaded the current window. Then the browser's cross domain policy jumps in
+		// and raises an exception.
+		// For this case we are safe and we can create our global object below.
+	}
+
 	/**
 	 *
 	 * @type {{cache: {}, sizes: {small: string, default: string, large: string, overlay: string}, states: {default: string, disabled: string}}}
@@ -123,6 +145,9 @@ define(['jquery'], function($) {
 	Icons.putInCache = function(cacheIdentifier, markup) {
 		Icons.cache[cacheIdentifier] = markup;
 	};
+
+	// attach to global frame
+	TYPO3.Icons = Icons;
 
 	return Icons;
 });
