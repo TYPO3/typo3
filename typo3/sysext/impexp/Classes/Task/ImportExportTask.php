@@ -15,26 +15,33 @@ namespace TYPO3\CMS\Impexp\Task;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Taskcenter\Controller\TaskModuleController;
+use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
  * This class provides a textarea to save personal notes
  */
-class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
+class ImportExportTask implements TaskInterface
 {
     /**
      * Back-reference to the calling reports module
      *
-     * @var \TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject
+     * @var TaskModuleController $taskObject
      */
     protected $taskObject;
 
     /**
      * Constructor
+     *
+     * @param TaskModuleController $taskObject
      */
-    public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject)
+    public function __construct(TaskModuleController $taskObject)
     {
         $this->taskObject = $taskObject;
-        $GLOBALS['LANG']->includeLLFile('EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
     }
 
     /**
@@ -66,7 +73,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     public function main()
     {
         $content = '';
-        $id = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('display');
+        $id = (int)GeneralUtility::_GP('display');
         // If a preset is found, it is rendered using an iframe
         if ($id > 0) {
             $url = BackendUtility::getModuleUrl(
@@ -76,40 +83,40 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                     'preset[load]' => 1,
                     'preset[select]' => $id)
             );
-            return $this->taskObject->urlInIframe($url, 1);
+            return $this->taskObject->urlInIframe($url);
         } else {
             // Header
-            $content .= $this->taskObject->description($GLOBALS['LANG']->getLL('.alttitle'), $GLOBALS['LANG']->getLL('.description'));
-            $thumbnails = ($lines = array());
-            // Thumbnail folder and files:
-            $tempDir = $this->getDefaultImportExportFolder()->getPublicUrl();
-            if ($tempDir) {
-                $thumbnails = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($tempDir, 'png,gif,jpg', 1);
-            }
-            $clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-            $usernames = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+            $lang = $this->getLanguageService();
+            $content .= $this->taskObject->description($lang->getLL('.alttitle'), $lang->getLL('.description'));
+            $clause = $this->getBackendUser()->getPagePermsClause(1);
+            $usernames = BackendUtility::getUserNames();
             // Create preset links:
             $presets = $this->getPresets();
             // If any presets found
             if (is_array($presets)) {
+                $lines = [];
                 foreach ($presets as $key => $presetCfg) {
                     $configuration = unserialize($presetCfg['preset_data']);
-                    $thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
                     $title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
                     $icon = 'EXT:impexp/Resources/Public/Images/export.gif';
                     $description = array();
                     // Is public?
                     if ($presetCfg['public']) {
-                        $description[] = $GLOBALS['LANG']->getLL('task.public') . ': ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+                        $description[] = $lang->getLL('task.public') . ': ' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes');
                     }
                     // Owner
-                    $description[] = $GLOBALS['LANG']->getLL('task.owner') . ': ' . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid'] ? $GLOBALS['LANG']->getLL('task.own') : '[' . htmlspecialchars($usernames[$presetCfg['user_uid']]['username']) . ']');
+                    $description[] = $lang->getLL('task.owner') . ': '
+                                     . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid']
+                            ? $lang->getLL('task.own')
+                            : '[' . htmlspecialchars($usernames[$presetCfg['user_uid']]['username']) . ']'
+                                     );
                     // Page & path
                     if ($configuration['pagetree']['id']) {
-                        $description[] = $GLOBALS['LANG']->getLL('task.page') . ': ' . $configuration['pagetree']['id'];
-                        $description[] = $GLOBALS['LANG']->getLL('task.path') . ': ' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20));
+                        $description[] = $lang->getLL('task.page') . ': ' . $configuration['pagetree']['id'];
+                        $description[] = $lang->getLL('task.path') . ': ' . htmlspecialchars(
+                                BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20));
                     } else {
-                        $description[] = $GLOBALS['LANG']->getLL('single-record');
+                        $description[] = $lang->getLL('single-record');
                     }
                     // Meta information
                     if ($configuration['meta']['title'] || $configuration['meta']['description'] || $configuration['meta']['notes']) {
@@ -122,7 +129,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                         }
                         if ($configuration['meta']['notes']) {
                             $metaInformation .= '<br /><br />
-												<strong>' . $GLOBALS['LANG']->getLL('notes') . ': </strong>
+												<strong>' . $lang->getLL('notes') . ': </strong>
 												<em>' . htmlspecialchars($configuration['meta']['notes']) . '</em>';
                         }
                         $description[] = '<br />' . $metaInformation;
@@ -139,11 +146,11 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $content .= $this->taskObject->renderListMenu($lines);
             } else {
                 // No presets found
-                $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                    $GLOBALS['LANG']->getLL('no-presets'),
+                $flashMessage = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    $lang->getLL('no-presets'),
                     '',
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+                    FlashMessage::NOTICE
                 );
                 $content .= $flashMessage->render();
             }
@@ -158,10 +165,11 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     protected function getPresets()
     {
-        $presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+        $db = $this->getDatabase();
+        $presets = $db->exec_SELECTgetRows(
             '*',
             'tx_impexp_presets',
-            '(public > 0 OR user_uid=' . $GLOBALS['BE_USER']->user['uid'] . ')',
+            '(public > 0 OR user_uid=' . $this->getBackendUser()->user['uid'] . ')',
             '',
             'item_uid DESC, title'
         );
@@ -186,7 +194,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             if ($createFolder === true) {
                 try {
                     $defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
-                } catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+                } catch (Exception $folderAccessException) {
                 }
             } else {
                 $defaultImportExportFolder = $defaultTemporaryFolder->getSubfolder($importExportFolderName);
@@ -202,5 +210,21 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getDatabase()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

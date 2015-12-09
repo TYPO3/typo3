@@ -19,16 +19,23 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Impexp\ImportExport;
+use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -49,17 +56,17 @@ class ImportExportController extends BaseScriptClass
     public $pageinfo;
 
     /**
-     * @var \TYPO3\CMS\Impexp\ImportExport
+     * @var ImportExport
      */
     protected $export;
 
     /**
-     * @var \TYPO3\CMS\Impexp\ImportExport
+     * @var ImportExport
      */
     protected $import;
 
     /**
-     * @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
+     * @var ExtendedFileUtility
      */
     protected $fileProcessor;
 
@@ -308,7 +315,7 @@ class ImportExportController extends BaseScriptClass
         // Saving/Loading/Deleting presets:
         $this->processPresets($inData);
         // Create export object and configure it:
-        $this->export = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+        $this->export = GeneralUtility::makeInstance(ImportExport::class);
         $this->export->init(0, 'export');
         $this->export->setCharset($this->lang->charSet);
         $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
@@ -374,7 +381,7 @@ class ImportExportController extends BaseScriptClass
             // Based on click-expandable tree
             $idH = null;
             if ($inData['pagetree']['levels'] == -1) {
-                $pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\View\ExportPageTreeView::class);
+                $pagetree = GeneralUtility::makeInstance(ExportPageTreeView::class);
                 $tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
                 $this->treeHTML = $pagetree->printTree($tree);
                 $idH = $pagetree->buffer_idH;
@@ -394,7 +401,7 @@ class ImportExportController extends BaseScriptClass
                 }
                 if (is_array($sPage)) {
                     $pid = $inData['pagetree']['id'];
-                    $tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
+                    $tree = GeneralUtility::makeInstance(PageTreeView::class);
                     $tree->init('AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap));
                     $HTML = $this->iconFactory->getIconForRecord('pages', $sPage, Icon::SIZE_SMALL)->render();
                     $tree->tree[] = array('row' => $sPage, 'HTML' => $HTML);
@@ -407,7 +414,7 @@ class ImportExportController extends BaseScriptClass
                     if (!empty($tree->buffer_idH)) {
                         $idH[$pid]['subrow'] = $tree->buffer_idH;
                     }
-                    $pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\View\ExportPageTreeView::class);
+                    $pagetree = GeneralUtility::makeInstance(ExportPageTreeView::class);
                     $this->treeHTML = $pagetree->printTree($tree->tree);
                     $this->shortcutName .= ' (' . $sPage['title'] . ')';
                 }
@@ -469,6 +476,7 @@ class ImportExportController extends BaseScriptClass
             // Export by saving:
             if ($inData['save_export']) {
                 $saveFolder = $this->getDefaultImportExportFolder();
+                $lang = $this->getLanguageService();
                 if ($saveFolder !== false && $saveFolder->checkActionPermission('write')) {
                     $temporaryFileName = GeneralUtility::tempnam('export');
                     file_put_contents($temporaryFileName, $out);
@@ -487,16 +495,16 @@ class ImportExportController extends BaseScriptClass
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', true), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
-                        $GLOBALS['LANG']->getLL('exportdata_savedFile'),
+                        sprintf($lang->getLL('exportdata_savedInSBytes', true), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
+                        $lang->getLL('exportdata_savedFile'),
                         FlashMessage::OK
                     );
                 } else {
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', true), $saveFolder->getPublicUrl()),
-                        $GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'),
+                        sprintf($lang->getLL('exportdata_badPathS', true), $saveFolder->getPublicUrl()),
+                        $lang->getLL('exportdata_problemsSavingFile'),
                         FlashMessage::ERROR
                     );
                 }
@@ -677,7 +685,7 @@ class ImportExportController extends BaseScriptClass
 					<td>' . $this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages') . '<br/>
 						' . $this->lang->getLL('makeconfig_maxNumberOfRecords', true) . '<br/>
 						<input type="text" name="tx_impexp[pagetree][maxNumber]" value="'
-                        . htmlspecialchars($inData['pagetree']['maxNumber']) . '"' . $this->doc->formWidth(10) . ' /><br/>
+                        . htmlspecialchars($inData['pagetree']['maxNumber']) . '" ' . $this->doc->formWidth(10) . ' /><br/>
 					</td>
 				</tr>';
         }
@@ -763,8 +771,8 @@ class ImportExportController extends BaseScriptClass
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'staticRelations') . '</td>
 					<td>' . $this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']) . '<br/>
 						<label for="checkShowStaticRelations">' . $this->lang->getLL('makeconfig_showStaticRelations', true)
-                            . '</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"'
-                            . ($inData['showStaticRelations'] ? ' checked="checked"' : '') . ' />
+                            . '</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1" '
+                            . ($inData['showStaticRelations'] ? 'checked="checked" ' : '') . '/>
 						</td>
 				</tr>';
         // Exclude:
@@ -820,8 +828,8 @@ class ImportExportController extends BaseScriptClass
 					<td><label for="checkExcludeHTMLfileResources"><strong>'
                         . $this->lang->getLL('makeadvanc_excludeHtmlCssFile', true)    . '</strong></label>'
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'htmlCssResources') . '</td>
-					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"'
-                        . ($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '') . ' /></td>
+					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1" '
+                        . ($inData['excludeHTMLfileResources'] ? 'checked="checked" ' : '') . '/></td>
 				</tr>';
 
         // Files options
@@ -834,8 +842,8 @@ class ImportExportController extends BaseScriptClass
 				<td><label for="saveFilesOutsideExportFile"><strong>'
                     . $this->lang->getLL('makeadvanc_saveFilesOutsideExportFile', true) . '</strong><br />'
                     . $this->lang->getLL('makeadvanc_saveFilesOutsideExportFile_limit', true) . '</label></td>
-				<td><input type="checkbox" name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1"'
-                    . ($inData['saveFilesOutsideExportFile'] ? ' checked="checked"' : '') . ' /></td>
+				<td><input type="checkbox" name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1" '
+                    . ($inData['saveFilesOutsideExportFile'] ? 'checked="checked" ' : '') . '/></td>
 			</tr>';
         // Extensions
         $row[] = '
@@ -902,8 +910,8 @@ class ImportExportController extends BaseScriptClass
 						<input type="text" name="tx_impexp[preset][title]" value="'
                             . htmlspecialchars($inData['preset']['title']) . '" /><br/>
 						<label for="checkPresetPublic">' . $this->lang->getLL('makesavefo_public', true) . '</label>
-						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"'
-                            . ($inData['preset']['public'] ? ' checked="checked"' : '') . ' /><br/>
+						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1" '
+                            . ($inData['preset']['public'] ? 'checked="checked "' : '') . '/><br/>
 					</td>
 				</tr>';
         // Output options:
@@ -1010,8 +1018,8 @@ class ImportExportController extends BaseScriptClass
             if ($inData['new_import']) {
                 unset($inData['import_mode']);
             }
-            /** @var $import \TYPO3\CMS\Impexp\ImportExport */
-            $import = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+            /** @var $import ImportExport */
+            $import = GeneralUtility::makeInstance(ImportExport::class);
             $import->init(0, 'import');
             $import->update = $inData['do_update'];
             $import->import_mode = $inData['import_mode'];
@@ -1068,13 +1076,13 @@ class ImportExportController extends BaseScriptClass
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'update') . '
 					</td>
 					<td>
-						<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'
-                            . ($inData['do_update'] ? ' checked="checked"' : '') . ' />
+						<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1" '
+                            . ($inData['do_update'] ? 'checked="checked" ' : '') . '/>
 						<label for="checkDo_update">' . $this->lang->getLL('importdata_updateRecords', true) . '</label>
 						<br/>
 						<em>(' . $this->lang->getLL('importdata_thisOptionRequiresThat', true) . ')</em>' . ($inData['do_update'] ? '	<hr/>
-						<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"'
-                            . ($inData['global_ignore_pid'] ? ' checked="checked"' : '') . ' />
+						<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1" '
+                            . ($inData['global_ignore_pid'] ? 'checked="checked" ' : '') . ' />
 						<label for="checkGlobal_ignore_pid">' . $this->lang->getLL('importdata_ignorePidDifferencesGlobally', true) . '</label><br/>
 						<em>(' . $this->lang->getLL('importdata_ifYouSetThis', true) . ')</em>
 						' : '') . '
@@ -1089,8 +1097,8 @@ class ImportExportController extends BaseScriptClass
             $doUpdate = !$inData['do_update'] && $beUser->isAdmin()
                 ? '
 					<br/>
-					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1"'
-                        . ($inData['force_all_UIDS'] ? ' checked="checked"' : '') . ' />
+					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1" '
+                        . ($inData['force_all_UIDS'] ? 'checked="checked" ' : '') . '/>
 					<label for="checkForce_all_UIDS"><span class="text-danger">'
                         . $this->lang->getLL('importdata_force_all_UIDS', true) . '</span></label><br/>
 					<em>(' . $this->lang->getLL('importdata_force_all_UIDS_descr', true) . ')</em>'
@@ -1100,8 +1108,8 @@ class ImportExportController extends BaseScriptClass
 						' . $this->lang->getLL('importdata_options', true) . BackendUtility::cshItem('xMOD_tx_impexp', 'options') . '
 					</td>
 					<td>
-						<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'
-                            . ($inData['notShowDiff'] ? ' checked="checked"' : '') . ' />
+						<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1" '
+                            . ($inData['notShowDiff'] ? 'checked="checked" ' : '') . '/>
 						<label for="checkNotShowDiff">' . $this->lang->getLL('importdata_doNotShowDifferences', true) . '</label><br/>
 						<em>(' . $this->lang->getLL('importdata_greenValuesAreFrom', true) . ')</em>
 						<br/><br/>
@@ -1131,8 +1139,8 @@ class ImportExportController extends BaseScriptClass
                     . BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging') . '
 				</td>
 				<td>
-					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"'
-                        . ($inData['enableLogging'] ? ' checked="checked"' : '') . ' />
+					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1" '
+                        . ($inData['enableLogging'] ? 'checked="checked" ' : '') . '/>
 					<label for="checkEnableLogging">' . $this->lang->getLL('importdata_writeIndividualDbActions', true) . '</label><br/>
 					<em>(' . $this->lang->getLL('importdata_thisIsDisabledBy', true) . ')</em>
 				</td>
@@ -1199,7 +1207,7 @@ class ImportExportController extends BaseScriptClass
                     $extKeysToInstall = array();
                     if (is_array($import->dat['header']['extensionDependencies'])) {
                         foreach ($import->dat['header']['extensionDependencies'] as $extKey) {
-                            if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
+                            if (!ExtensionManagementUtility::isLoaded($extKey)) {
                                 $extKeysToInstall[] = $extKey;
                             }
                         }
@@ -1436,7 +1444,7 @@ class ImportExportController extends BaseScriptClass
             if ($createFolder === true) {
                 try {
                     $defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
-                } catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+                } catch (Exception $folderAccessException) {
                 }
             } else {
                 $defaultImportExportFolder = $defaultTemporaryFolder->getSubfolder($importExportFolderName);
@@ -1457,7 +1465,7 @@ class ImportExportController extends BaseScriptClass
     {
         $file = GeneralUtility::_GP('file');
         // Initializing:
-        $this->fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
+        $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
         $this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode((int)GeneralUtility::_GP('overwriteExistingFiles') === 1 ? DuplicationBehavior::REPLACE : DuplicationBehavior::CANCEL);
@@ -1549,7 +1557,7 @@ class ImportExportController extends BaseScriptClass
      */
     public function extensionSelector($prefix, $value)
     {
-        $loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+        $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
 
         // make box:
         $opt = array();
@@ -1631,8 +1639,8 @@ class ImportExportController extends BaseScriptClass
             return $thumbnailFiles;
         }
 
-        /** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
-        $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
+        /** @var $filter FileExtensionFilter */
+        $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
         $filter->setAllowedFileExtensions(array('png', 'gif', 'jpg'));
         $defaultTemporaryFolder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
         $thumbnailFiles = $defaultTemporaryFolder->getFiles();
@@ -1653,8 +1661,8 @@ class ImportExportController extends BaseScriptClass
         $folder = $this->getDefaultImportExportFolder();
         if ($folder !== null) {
 
-            /** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
-            $filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
+            /** @var $filter FileExtensionFilter */
+            $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions(array('t3d', 'xml'));
             $folder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
 
@@ -1673,7 +1681,7 @@ class ImportExportController extends BaseScriptClass
     protected function getFile($combinedIdentifier)
     {
         try {
-            $file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+            $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
         } catch (\Exception $exception) {
             $file = null;
         }
