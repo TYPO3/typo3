@@ -26,6 +26,7 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function deprecatedOptionsAreStillSupported() {
+		// Expectation here is, that no exception is thrown, as it would be with unsupported options
 		$this->getMock(
 			'TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator',
 			array(),
@@ -37,7 +38,16 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRange() {
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(array('startRange' => 0, 'endRange' => 1000)));
+		$numberRangeValidator->expects($this->never())->method('addError');
+		$numberRangeValidator->isValid(10.5);
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRangeWhenOptionsProvidedWithSetOptions() {
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'));
 		$numberRangeValidator->expects($this->never())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$numberRangeValidator->isValid(10.5);
@@ -47,7 +57,16 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsFalseForANumberOutOfRange() {
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(array('startRange' => 0, 'endRange' => 1000)));
+		$numberRangeValidator->expects($this->once())->method('addError');
+		$numberRangeValidator->isValid(1000.1);
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorReturnsFalseForANumberOutOfRangeWhenOptionsProvidedWithSetOptions() {
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'));
 		$numberRangeValidator->expects($this->once())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$numberRangeValidator->isValid(1000.1);
@@ -57,7 +76,16 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsTrueForANumberInReversedRange() {
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(array('startRange' => 1000, 'endRange' => 0)));
+		$numberRangeValidator->expects($this->never())->method('addError');
+		$numberRangeValidator->isValid(100);
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorReturnsTrueForANumberInReversedRangeWhenOptionsProvidedWithSetOptions() {
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'));
 		$numberRangeValidator->expects($this->never())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 1000, 'endRange' => 0));
 		$numberRangeValidator->isValid(100);
@@ -67,7 +95,16 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsFalseForAString() {
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(array('startRange' => 0, 'endRange' => 1000)));
+		$numberRangeValidator->expects($this->once())->method('addError');
+		$numberRangeValidator->isValid('not a number');
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorReturnsFalseForAStringWhenOptionsProvidedWithSetOptions() {
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'));
 		$numberRangeValidator->expects($this->once())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$numberRangeValidator->isValid('not a number');
@@ -80,9 +117,22 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$startRange = 1;
 		$endRange = 42;
 
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(array('startRange' => $startRange, 'endRange' => $endRange)));
 		// we only test for the error key, after the translation method is mocked.
-		$numberRangeValidator->expects($this->once())->method('addError')->with(NULL, 1221561046, array(1, 42));
+		$numberRangeValidator->expects($this->once())->method('addError')->with(NULL, 1221561046, array($startRange, $endRange));
+		$numberRangeValidator->isValid(4711);
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorCreatesTheCorrectErrorForANumberOutOfRangeWhenOptionsProvidedWithSetOptions() {
+		$startRange = 1;
+		$endRange = 42;
+
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'));
+		// we only test for the error key, after the translation method is mocked.
+		$numberRangeValidator->expects($this->once())->method('addError')->with(NULL, 1221561046, array($startRange, $endRange));
 		$numberRangeValidator->setOptions(array('startRange' => $startRange, 'endRange' => $endRange));
 		$numberRangeValidator->isValid(4711);
 	}
@@ -91,10 +141,21 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForAStringSubject() {
-		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'), array(array('startRange' => 0, 'endRange' => 42)));
+		// we only test for the error key, after the translation method is mocked.
+		$numberRangeValidator->expects($this->once())->method('addError')->with(NULL, 1221563685);
+		$numberRangeValidator->isValid('this is not between 0 an 42');
+	}
+
+	/**
+	 * @test
+	 */
+	public function numberRangeValidatorCreatesTheCorrectErrorForAStringSubjectWhenOptionsProvidedWithSetOptions() {
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError', 'translateErrorMessage'));
 		// we only test for the error key, after the translation method is mocked.
 		$numberRangeValidator->expects($this->once())->method('addError')->with(NULL, 1221563685);
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 42));
 		$numberRangeValidator->isValid('this is not between 0 an 42');
 	}
+
 }

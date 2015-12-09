@@ -52,14 +52,31 @@ class NumberRangeValidator extends AbstractValidator {
 		 * @todo: remove this fallback to startRange/endRange in 6.3 when the setOptions() method is removed too
 		 * @deprecated since Extbase 1.4, will be removed two versions after Extbase 6.1
 		 */
-		if (isset($this->options['minimum'])) {
+		if (isset($this->options['minimum']) && isset($this->options['startRange'])) {
+			if ($this->options['minimum'] !== 0) {
+				$minimum = $this->options['minimum'];
+			} elseif ($this->options['startRange'] !== 0) {
+				$minimum = $this->options['startRange'];
+			} else {
+				$minimum = 0;
+			}
+		} elseif (isset($this->options['minimum'])) {
 			$minimum = $this->options['minimum'];
 		} elseif (isset($this->options['startRange'])) {
 			$minimum = $this->options['startRange'];
 		} else {
 			$minimum = 0;
 		}
-		if (isset($this->options['maximum'])) {
+
+		if (isset($this->options['maximum']) && isset($this->options['endRange'])) {
+			if ($this->options['maximum'] !== PHP_INT_MAX) {
+				$maximum = $this->options['maximum'];
+			} elseif ($this->options['endRange'] !== PHP_INT_MAX) {
+				$maximum = $this->options['endRange'];
+			} else {
+				$maximum = PHP_INT_MAX;
+			}
+		} elseif (isset($this->options['maximum'])) {
 			$maximum = $this->options['maximum'];
 		} elseif (isset($this->options['endRange'])) {
 			$maximum = $this->options['endRange'];

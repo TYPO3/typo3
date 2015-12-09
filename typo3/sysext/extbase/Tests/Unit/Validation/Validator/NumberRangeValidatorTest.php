@@ -67,4 +67,5 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
 		$this->assertTrue($validator->validate('not a number')->hasErrors());
 	}
+
 }
