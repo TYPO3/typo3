@@ -2835,6 +2835,10 @@ class BackendUtility
      */
     public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = array())
     {
+        if (!ExtensionManagementUtility::isLoaded('context_help')) {
+            return '';
+        }
+
         // Initialize some variables
         $helpText = '';
         $abbrClassAdd = '';
