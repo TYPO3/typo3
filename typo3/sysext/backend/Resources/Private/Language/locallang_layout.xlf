@@ -315,6 +315,9 @@
 					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
 				</source>
 			</trans-unit>
+			<trans-unit id="error.invalidBackendLayout">
+				<source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
