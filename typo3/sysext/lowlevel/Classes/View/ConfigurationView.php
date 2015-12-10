@@ -88,6 +88,7 @@ class ConfigurationView extends BaseScriptClass
     {
         $this->menuConfig();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
     }
 
     /**
