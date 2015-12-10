@@ -164,7 +164,7 @@ class DateViewHelperTest extends UnitTestCase
      */
     public function viewHelperUsesChildNodesWithTimestamp()
     {
-        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('1359891658'));
+        $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('1359891658' . LF));
         $actualResult = $this->subject->render();
         $this->assertEquals('2013-02-03', $actualResult);
     }

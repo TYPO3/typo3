@@ -124,6 +124,9 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface
         $date = $arguments['date'];
         $format = $arguments['format'];
         $base = $arguments['base'] === null ? time() : $arguments['base'];
+        if (is_string($base)) {
+            $base = trim($base);
+        }
 
         if ($format === '') {
             $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
@@ -134,6 +137,10 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface
             if ($date === null) {
                 return '';
             }
+        }
+
+        if (is_string($date)) {
+            $date = trim($date);
         }
 
         if ($date === '') {
