@@ -429,7 +429,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 // Suspicious, so linking to page instead...
                 $copiedRow = $row;
                 unset($copiedRow['cHashParams']);
-                $title = $this->linkPage($row['page_id'], $title, $copiedRow);
+                $title = $this->linkPage($row['page_id'], htmlspecialchars($title), $copiedRow);
             }
         } else {
             // Else the page:
@@ -443,7 +443,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $markUpSwParams['sword_list'][] = $d['sword'];
                 }
             }
-            $title = $this->linkPage($row['data_page_id'], $title, $row, $markUpSwParams);
+            $title = $this->linkPage($row['data_page_id'], htmlspecialchars($title), $row, $markUpSwParams);
         }
         $resultData['title'] = $title;
         $resultData['icon'] = $this->makeItemTypeIcon($row['item_type'], '', $specRowConf);
@@ -1233,7 +1233,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Links the $linkText to page $pageUid
      *
      * @param int $pageUid Page id
-     * @param string $linkText Title String to link
+     * @param string $linkText Title to link (must already be escaped for HTML output)
      * @param array $row Result row
      * @param array $markUpSwParams Additional parameters for marking up seach words
      * @return string <A> tag wrapped title string.
@@ -1274,7 +1274,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $uriBuilder = $this->controllerContext->getUriBuilder();
             $uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($row['data_page_type'])->setUseCacheHash(true)->setArguments($urlParameters)->build();
         }
-        return '<a href="' . htmlspecialchars($uri) . '"' . $target . '>' . htmlspecialchars($linkText) . '</a>';
+        return '<a href="' . htmlspecialchars($uri) . '"' . $target . '>' . $linkText . '</a>';
     }
 
     /**
