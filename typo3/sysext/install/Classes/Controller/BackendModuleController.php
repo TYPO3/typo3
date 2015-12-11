@@ -95,11 +95,22 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * Redirect to specified URI
      *
      * @param string $uri
-     * @todo: deprecate this method in CMS8, it overload the method of AbstractController in wrong way.
-     * @todo: to late to deprecate in CMS7
+     * @param string $_1 Dummy parameter to ensure compatible method signature
+     * @param string $_2 Dummy parameter to ensure compatible method signature
+     * @param array $_3 Dummy parameter to ensure compatible method signature
+     * @param int $_4 Dummy parameter to ensure compatible method signature
+     * @param int $_5 Dummy parameter to ensure compatible method signature
+     * @param int $_6 Dummy parameter to ensure compatible method signature
      */
-    protected function redirect($uri)
-    {
+    protected function redirect(
+        $uri,
+        $_1 = null,
+        $_2 = null,
+        array $_3 = null,
+        $_4 = null,
+        $_5 = 0,
+        $_6 = 303
+    ) {
         \TYPO3\CMS\Core\Utility\HttpUtility::redirect($uri);
     }
 }
