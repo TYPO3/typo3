@@ -38,10 +38,12 @@ class ExportPageTreeView extends BrowseTreeView
      * Wrapping title from page tree.
      *
      * @param string $title Title to wrap
-     * @param mixed $v (See parent class)
+     * @param string $row Item record
+     * @param int $bank Bank pointer (which mount point number)
      * @return string Wrapped title
+     * @access private
      */
-    public function wrapTitle($title, $v)
+    public function wrapTitle($title, $row, $bank = 0)
     {
         return trim($title) === '' ? '<em>[' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', true) . ']</em>' : htmlspecialchars($title);
     }
