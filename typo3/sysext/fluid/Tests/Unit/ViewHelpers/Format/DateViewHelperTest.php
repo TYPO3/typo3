@@ -91,6 +91,15 @@ class DateViewHelperTest extends UnitTestCase
     /**
      * @test
      */
+    public function viewHelperSupportsDateTimeImmutable()
+    {
+        $actualResult = $this->subject->render(new \DateTimeImmutable('1980-02-01'), 'd.m.Y');
+        $this->assertEquals('01.02.1980', $actualResult);
+    }
+
+    /**
+     * @test
+     */
     public function viewHelperReturnsEmptyStringIfChildrenIsNULL()
     {
         $this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(null));

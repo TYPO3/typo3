@@ -18,7 +18,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Formats a \DateTime object.
+ * Formats an object implementing \DateTimeInterface.
  *
  * = Examples =
  *
@@ -90,9 +90,9 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface
     /**
      * Render the supplied DateTime object as a formatted date.
      *
-     * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
+     * @param mixed $date either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor
      * @param string $format Format String which is taken to format the Date/Time
-     * @param mixed $base A base time (a DateTime object or a string) used if $date is a relative date specification. Defaults to current time.
+     * @param mixed $base A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.
      *
      * @return string Formatted date
      * @throws Exception
@@ -147,9 +147,9 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface
             $date = 'now';
         }
 
-        if (!$date instanceof \DateTime) {
+        if (!$date instanceof \DateTimeInterface) {
             try {
-                $base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
+                $base = $base instanceof \DateTimeInterface ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
                 $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
                 $date = new \DateTime('@' . $dateTimestamp);
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
