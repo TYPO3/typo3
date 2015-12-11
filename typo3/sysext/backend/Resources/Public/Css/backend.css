@@ -9789,14 +9789,6 @@ body#typo3-browse-links-php img,
 body#ext-rte-app-rte-select-image-php img {
   vertical-align: middle;
 }
-table#typo3-linkMail,
-table#typo3-linkURL,
-table#typo3-linkTarget {
-  margin-top: 5px;
-}
-input.typo3-link-input {
-  width: 250px;
-}
 table#typo3-linkPages tr td.c-wCell,
 table#typo3-linkFiles tr td.c-wCell,
 table#typo3-EBrecords tr td.c-wCell,
@@ -11687,6 +11679,10 @@ span.warningboxheader {
   padding-bottom: 30px;
   margin: 0 15px 30px 15px;
 }
+.element-browser-section:last-child {
+  padding-bottom: 0;
+  border: none;
+}
 .grideditor td {
   vertical-align: middle;
 }
@@ -12195,6 +12191,23 @@ select.icon-select option {
 }
 textarea.formengine-textarea {
   resize: none;
+}
+.link-browser-section {
+  border-bottom: 1px solid #d7d7d7;
+  margin: 0 15px 15px 15px;
+}
+.link-browser-section.link-browser-current-link,
+.link-browser-section.link-browser-tabs {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.link-browser-section.link-browser-pagetree h3,
+.link-browser-section.link-browser-filetree h3 {
+  margin-top: 0;
+}
+.link-browser-section:last-child {
+  padding-bottom: 0;
+  border: none;
 }
 body#typo3-backend-php {
   margin: 0;

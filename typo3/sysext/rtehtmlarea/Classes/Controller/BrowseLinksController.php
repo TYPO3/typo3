@@ -361,13 +361,16 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function renderCurrentUrl()
     {
-        $removeLink = '<a href="#" class="btn btn-default t3js-removeCurrentLink">' . $this->getLanguageService()->getLL('removeLink', true) . '</a>';
+        $removeLink = ' <a href="#" class="btn btn-default t3js-removeCurrentLink">' . $this->getLanguageService()->getLL('removeLink', true) . '</a>';
         return '
-            <table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
-                <tr>
-                    <td>' . $this->getLanguageService()->getLL('currentLink', true) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . $removeLink . '</td>
-                </tr>
-            </table>';
+            <div class="link-browser-section link-browser-current-link">
+                <strong>' .
+                    $this->getLanguageService()->getLL('currentLink', true) .
+                    ': ' .
+                    htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
+                '</strong>' .
+                '<span class="pull-right">' . $removeLink . '</span>' .
+            '</div>';
     }
 
     /**
@@ -442,15 +445,17 @@ class BrowseLinksController extends AbstractLinkBrowserController
             : '';
         // @todo define label "linkRelationship" below in xlf
         return '
-				<form action="" name="lrelform" id="lrelform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkRel">
-						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', true) . ':</label></td>
-							<td colspan="3"><input type="text" name="lrel" value="' . $currentRel . '" /></td>
-						</tr>
-					</table>
-				</form>
-			';
+            <form action="" name="lrelform" id="lrelform" class="t3js-dummyform form-horizontal">
+                 <div class="form-group form-group-sm">
+                    <label class="col-xs-4 control-label">' .
+                        $this->getLanguageService()->getLL('linkRelationship', true) .
+                    '</label>
+                    <div class="col-xs-8">
+                        <input type="text" name="lrel" class="form-control" value="' . $currentRel . '" />
+                    </div>
+                </div>
+            </form>
+            ';
     }
 
     /**
@@ -470,7 +475,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         if (!$targetSelectorConfig['disabled']) {
             $targetSelector = '
-						<select name="ltarget_type" class="t3js-targetPreselect">
+						<select name="ltarget_type" class="t3js-targetPreselect form-control">
 							<option value=""></option>
 							<option value="_top">' . $lang->getLL('top', true) . '</option>
 							<option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
@@ -479,16 +484,17 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
-						<tr' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
-							<td>
-								<input type="text" name="ltarget" class="t3js-linkTarget" value="' . htmlspecialchars($target) . '" />
-								' . $targetSelector . '
-							</td>
-						</tr>
-					</table>
+				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm" ' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
+                        <label class="col-xs-4 control-label">' . $lang->getLL('target', true) . '</label>
+						<div class="col-xs-3">
+							<input type="text" name="ltarget" class="t3js-linkTarget form-control"
+							    value="' . htmlspecialchars($target) . '" />
+						</div>
+						<div class="col-xs-3">
+							' . $targetSelector . '
+						</div>
+					</div>
 				</form>
 				';
     }
@@ -523,20 +529,23 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
         }
         return '
-				<form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
-						<tr>
-							<td style="width: 96px;"><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', true) . '</label></td>
-							<td>
-								<span id="rtehtmlarea-browse-links-title-input" style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
-									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="ltitle" value="' . htmlspecialchars($title) . '" />
-								</span>
-								<span id="rtehtmlarea-browse-links-title-readonly" style="display: ' . ($readOnly ? 'inline' : 'none') . ';">' . htmlspecialchars($title) . '</span>
-							</td>
-						</tr>
-					</table>
-				</form>
-				';
+                <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm">
+                        <label class="col-xs-4 control-label">
+                            ' . $this->getLanguageService()->getLL('anchor_title', true) . '
+                         </label>
+                         <div class="col-xs-8">
+                                <span style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
+                                    <input type="text" name="ltitle" class="form-control"
+                                        value="' . htmlspecialchars($title) . '" />
+                                </span>
+                                <span id="rtehtmlarea-browse-links-title-readonly"
+                                    style="display: ' . ($readOnly ? 'inline' : 'none') . ';">
+                                    ' . htmlspecialchars($title) . '</span>
+                        </div>
+                    </div>
+                </form>
+                ';
     }
 
     /**
@@ -553,7 +562,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
 							<td style="width: 96px;">' . $this->getLanguageService()->getLL('anchor_class', true) . '</td>
-							<td><select name="lclass" class="t3js-class-selector">
+							<td><select name="lclass" class="t3js-class-selector form-control">
 								' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
 							</select></td>
 						</tr>

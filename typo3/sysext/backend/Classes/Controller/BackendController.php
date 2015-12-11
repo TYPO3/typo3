@@ -590,8 +590,8 @@ class BackendController
         if (!empty($rtePopupWindowSize)) {
             list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
         }
-        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-200);
-        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-250);
+        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-100);
+        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-150);
 
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($beUser->getTSConfigVal('options.overridePageModule'));

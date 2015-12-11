@@ -138,8 +138,7 @@ abstract class AbstractLinkBrowserController
      */
     protected function initHookObjects()
     {
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'])
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'])
         ) {
             $hooks = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
@@ -177,10 +176,11 @@ abstract class AbstractLinkBrowserController
         if (!empty($this->currentLinkParts)) {
             $content .= $this->renderCurrentUrl();
         }
-        $content .= $this->doc->getTabMenuRaw($menuData);
+
+        $content .= '<div class="link-browser-section link-browser-tabs">' . $this->doc->getTabMenuRaw($menuData) . '</div>';
         $content .= $renderLinkAttributeFields;
 
-        $content .= '<div class="linkBrowser-tabContent">' . $browserContent . '</div>';
+        $content .= $browserContent;
         $content .= $this->doc->endPage();
 
         $response->getBody()->write($this->doc->insertStylesAndJS($content));
@@ -319,6 +319,7 @@ abstract class AbstractLinkBrowserController
     {
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'typo3-browse-links-php';
+        $this->doc->divClass = 'link-browser';
 
         foreach ($this->getBodyTagAttributes() as $attributeName => $value) {
             $this->doc->bodyTagAdditions .= ' ' . $attributeName . '="' . htmlspecialchars($value) . '"';
@@ -337,11 +338,13 @@ abstract class AbstractLinkBrowserController
     protected function renderCurrentUrl()
     {
         return '<!-- Print current URL -->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
-					<tr>
-						<td>' . $this->getLanguageService()->getLL('currentLink', true) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . '</td>
-					</tr>
-				</table>';
+            <div class="link-browser-section link-browser-current-link">
+                <strong>' .
+                    $this->getLanguageService()->getLL('currentLink', true) .
+                    ': ' .
+                    htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
+                '</strong>
+            </div>';
     }
 
     /**
@@ -470,16 +473,14 @@ abstract class AbstractLinkBrowserController
         // add update button if appropriate
         if (!empty($this->currentLinkParts) && $this->displayedLinkHandler === $this->currentLinkHandler && $this->currentLinkHandler->isUpdateSupported()) {
             $content .= '
-				<form action="" name="lparamsform" id="lparamsform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
-					<tr><td>
-						<input class="btn btn-default t3js-linkCurrent" type="submit" value="' . $this->getLanguageService()->getLL('update', true) . '" />
-					</td></tr>
-					</table>
-				</form><br /><br />';
+                <form action="" name="lparamsform" id="lparamsform" class="form-horizontal">
+                    <div class="form-group form-group-sm">
+                        <input class="btn btn-default t3js-linkCurrent" type="submit" value="' . $this->getLanguageService()->getLL('update', true) . '" />
+                    </div>
+                </form>';
         }
 
-        return $content;
+        return '<div class="link-browser-section link-browser-attributes">' . $content . '</div>';
     }
 
     /**
@@ -493,66 +494,70 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions = [];
         $fieldRenderingDefinitions['target'] = '
-			<!--
-				Selecting target for link:
-			-->
-				<form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
-						<tr>
-							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
-							<td>
-								<input type="text" name="ltarget" class="t3js-linkTarget" value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
-								<select name="ltarget_type" class="t3js-targetPreselect">
-									<option value=""></option>
-									<option value="_top">' . $lang->getLL('top', true) . '</option>
-									<option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
-								</select>
-							</td>
-						</tr>
-					</table>
-				</form>';
+            <!--
+                Selecting target for link:
+            -->
+                <form action="" name="ltargetform" id="ltargetform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm" id="typo3-linkTarget">
+                        <label class="col-xs-4 control-label">' . $lang->getLL('target', true) . '</label>
+                        <div class="col-xs-3">
+                            <input type="text" name="ltarget" class="t3js-linkTarget form-control"
+                                value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
+                        </div>
+                        <div class="col-xs-5">
+                                <select name="ltarget_type" class="t3js-targetPreselect form-control">
+                                    <option value=""></option>
+                                    <option value="_top">' . $lang->getLL('top', true) . '</option>
+                                    <option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
+                                </select>
+                        </div>
+                    </div>
+                </form>';
 
         $fieldRenderingDefinitions['title'] = '
-				<!--
-					Selecting title for link:
-				-->
-				<form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
-						<tr>
-							<td style="width: 96px;">' . $lang->getLL('title', true) . '</td>
-							<td><input type="text" name="ltitle" class="typo3-link-input" value="' . htmlspecialchars($this->linkAttributeValues['title']) . '" /></td>
-						</tr>
-					</table>
-				</form>
-			';
+                <!--
+                    Selecting title for link:
+                -->
+                <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm" id="typo3-linkTitle">
+                        <label class="col-xs-4 control-label">' . $lang->getLL('title', true) . '</label>
+                        <div class="col-xs-8">
+                            <input type="text" name="ltitle" class="form-control"
+                                value="' . htmlspecialchars($this->linkAttributeValues['title']) . '" />
+                        </div>
+                    </div>
+                </form>
+            ';
 
         $fieldRenderingDefinitions['class'] = '
-				<!--
-					Selecting class for link:
-				-->
-				<form action="" name="lclassform" id="lclassform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
-						<tr>
-							<td style="width: 96px;">' . $lang->getLL('class', true) . '</td>
-							<td><input type="text" name="lclass" class="typo3-link-input" value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" /></td>
-						</tr>
-					</table>
-				</form>
-			';
+                <!--
+                    Selecting class for link:
+                -->
+                <form action="" name="lclassform" id="lclassform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm" id="typo3-linkClass">
+                        <label class="col-xs-4 control-label">' . $lang->getLL('class', true) . '</label>
+                        <div class="col-xs-8">
+                            <input type="text" name="lclass" class="form-control"
+                                value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" /></td>
+                        </div>
+                    </div>
+                </form>
+            ';
 
         $fieldRenderingDefinitions['params'] = '
-				<!--
-					Selecting params for link:
-				-->
-				<form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform">
-					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
-						<tr>
-							<td style="width: 96px;">' . $lang->getLL('params', true) . '</td>
-							<td><input type="text" name="lparams" class="typo3-link-input" value="' . htmlspecialchars($this->linkAttributeValues['params']) . '" /></td>
-						</tr>
-					</table>
-				</form>
-			';
+                <!--
+                    Selecting params for link:
+                -->
+                <form action="" name="lparamsform" id="lparamsform" class="t3js-dummyform form-horizontal">
+                    <div class="form-group form-group-sm" id="typo3-linkParams">
+                        <label class="col-xs-4 control-label">' . $lang->getLL('params', true) . '</label>
+                        <div class="col-xs-8">
+                            <input type="text" name="lparams" class="form-control"
+                                value="' . htmlspecialchars($this->linkAttributeValues['params']) . '" />
+                        </div>
+                    </div>
+                </form>
+            ';
 
         return $fieldRenderingDefinitions;
     }

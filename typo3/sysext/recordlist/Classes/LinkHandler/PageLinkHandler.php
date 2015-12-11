@@ -127,17 +127,15 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $tree = $pageTree->getBrowsableTree();
 
         return '
-
-				<!--
-					Wrapper table for page tree / record list:
-				-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
-					<tr>
-						<td class="c-wCell" valign="top"><h3>' . $this->getLanguageService()->getLL('pageTree') . ':</h3>'
-                            . $this->getTemporaryTreeMountCancelNotice() . $tree . '</td>
-						<td class="c-wCell" valign="top">' . $this->expandPage($this->expandPage) . '</td>
-					</tr>
-				</table>';
+            <div class="link-browser-section link-browser-pagetree">
+                <div class="col-xs-6">
+                    <h3>' . $this->getLanguageService()->getLL('pageTree') . ':</h3>'
+                            . $this->getTemporaryTreeMountCancelNotice() . $tree . '
+                </div>
+                <div class="col-xs-6">' .
+                    $this->expandPage($this->expandPage) . '
+                </div>
+            </div>';
     }
 
     /**

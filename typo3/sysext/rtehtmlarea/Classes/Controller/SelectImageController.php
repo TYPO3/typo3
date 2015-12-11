@@ -217,11 +217,13 @@ class SelectImageController extends AbstractLinkBrowserController
     protected function renderCurrentUrl()
     {
         return '<!-- Print current URL -->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
-					<tr>
-						<td>' . htmlspecialchars($this->getLanguageService()->getLL('currentImage')) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . '</td>
-					</tr>
-				</table>';
+            <div class="link-browser-section link-browser-current-link">
+                <strong>' .
+                    htmlspecialchars($this->getLanguageService()->getLL('currentImage')) .
+                    ': ' .
+                    htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
+                '</strong>' .
+            '</div>';
     }
 
     /**

@@ -73,6 +73,7 @@ class FolderUtilityRenderer
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
         $a = 1;
+        $markup[] = '<div class="row form-group"><div class="col-xs-8">';
         $markup[] = '<input class="form-control" type="text" name="file[newfolder][' . $a . '][data]" />';
         $markup[] = '<input type="hidden" name="file[newfolder][' . $a . '][target]" value="'
             . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
@@ -85,10 +86,11 @@ class FolderUtilityRenderer
             )
         );
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
+        $markup[] = '</div><div class="col-xs-4">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
             . $lang->sL('LLL:EXT:lang/locallang_core.xlf:create_folder.submit', true) . '" />';
 
-        $markup[] = '   </form>';
+        $markup[] = '</div></div></form>';
         $markup[] = '</div>';
 
         return implode(LF, $markup);
@@ -198,16 +200,18 @@ class FolderUtilityRenderer
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
             $markup[] = '<h3>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', true) . ':</h3>';
             $markup[] = '<p><strong>' . $lang->getLL('path', true) . ':</strong>' . htmlspecialchars($header) . '</p>';
-            $markup[] = '<div class="form-group">';
+            $markup[] = '<div class="row form-group"><div class="col-xs-8">';
             $markup[] = '<input type="hidden" name="file[newMedia][0][target]" value="'
                 . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
             $markup[] = '<input type="hidden" name="file[newMedia][0][allowed]" value="'
                 . htmlspecialchars(implode(',', $allowedExtensions)) . '" />';
             $markup[] = '<input type="text" name="file[newMedia][0][url]" class="form-control" placeholder="'
                 . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true) . '" />';
+            $markup[] = '</div><div class="col-xs-4">';
             $markup[] = '<button class="btn btn-default">'
                 . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true) . '</button>';
-            $markup[] = '</div>';
+
+            $markup[] = '</div></div>';
             $markup[] = '<div class="form-group">';
             $markup[] = '    <label>';
             $markup[] = $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.allowedProviders') . '<br/>';
@@ -217,7 +221,6 @@ class FolderUtilityRenderer
             $markup[] = '    </div>';
             $markup[] = '</div>';
             $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
-            $markup[] = '</div>';
             $markup[] = '</form>';
             $markup[] = '</div>';
 

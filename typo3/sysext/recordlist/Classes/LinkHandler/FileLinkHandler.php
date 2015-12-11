@@ -181,21 +181,21 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         }
         // Create folder tree:
         $content .= '
-				<!--
-					Wrapper table for folder tree / file/folder list:
-				-->
-						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
-							<tr>
-								<td class="c-wCell" valign="top"><h3>' . $this->getLanguageService()->getLL('folderTree') . ':</h3>' . $tree . '</td>
-								<td class="c-wCell" valign="top">' . $files . '</td>
-							</tr>
-						</table>
-						';
+            <div class="row link-browser-section link-browser-filetree">
+                <div class="col-xs-6">
+                    <h3>' . $this->getLanguageService()->getLL('folderTree') . ':</h3>' .
+                    $tree . '
+                </div>
+                <div class="col-xs-6">
+                    ' . $files . '
+                </div>
+            </div>';
+
         // Adding create folder + upload form if applicable
         if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
             $content .= $uploadForm;
         }
-        $content .=  '<br />' . $createFolder . '<br />';
+        $content .= $createFolder;
         return $content;
     }
 

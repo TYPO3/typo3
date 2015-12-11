@@ -1,0 +1,26 @@
+//
+// Link Browser
+//
+
+.link-browser {
+	&-section {
+		border-bottom: 1px solid @gray-light;
+		margin: 0 15px 15px 15px;
+
+		&.link-browser-current-link, &.link-browser-tabs {
+			padding-bottom: 0;
+			border-bottom: none;
+		}
+
+		&.link-browser-pagetree, &.link-browser-filetree {
+			h3 {
+				margin-top: 0;
+			}
+		}
+
+		&:last-child {
+			padding-bottom: 0;
+			border: none;
+		}
+	}
+}

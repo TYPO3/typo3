@@ -92,24 +92,27 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/MailLinkHandler');
 
         $lang = $this->getLanguageService();
-        $extUrl = '
-			<!--
-				Enter mail address:
-			-->
-			<form action="" id="lmailform">
-				<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
-					<tr>
-						<td style="width: 96px;">' . $lang->getLL('emailAddress', true) . ':</td>
-						<td>
-							<input type="text" name="lemail" size="20" value="'
-                                . htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : '')
-                                . '" />
-							<input class="btn btn-default" type="submit" value="' . $lang->getLL('setLink', true) . '" />
-						</td>
-					</tr>
-				</table>
-			</form>';
-        return $extUrl;
+        $mailAddress = '
+            <!--
+                Enter mail address:
+            -->
+            <div class="link-browser-section link-browser-tab-content-mail">
+                <form action="" id="lmailform" class="form-horizontal">
+                        <div class="form-group form-group-sm">
+                            <label class="col-xs-4 control-label">' . $lang->getLL('emailAddress', true) . ':</label>
+                            <div class="col-xs-6">
+                                <input type="text" name="lemail" size="20" class="form-control" value="'
+                                    . htmlspecialchars(!empty($this->linkParts) ? $this->linkParts['url'] : '')
+                                    . '" />
+                            </div>
+                            <div class="col-xs-2">
+                                <input class="btn btn-default" type="submit" value="' . $lang->getLL('setLink', true) . '" />
+                            </div>
+                        </div>
+                </form>
+            </div>';
+
+        return $mailAddress;
     }
 
     /**
