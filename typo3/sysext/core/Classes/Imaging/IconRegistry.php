@@ -2372,6 +2372,63 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
+        // System Information
+        'sysinfo-php-version' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'code'
+            )
+        ),
+        'sysinfo-database' =>  array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'database'
+            )
+        ),
+        'sysinfo-application-context' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'tasks'
+            )
+        ),
+        'sysinfo-composer-mode' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'music'
+            )
+        ),
+        'sysinfo-git' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'git'
+            )
+        ),
+        'sysinfo-webserver' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'server'
+            )
+        ),
+        'sysinfo-os-linux' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'linux'
+            )
+        ),
+        'sysinfo-os-apple' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'apple'
+            )
+        ),
+        'sysinfo-os-windows' => array(
+            'provider' => FontawesomeIconProvider::class,
+            'options' => array(
+                'name' => 'windows'
+            )
+        ),
+
+
         // Sysnote
         'sysnote-type-0' => array(
             'provider' => FontawesomeIconProvider::class,
