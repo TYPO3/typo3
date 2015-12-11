@@ -1359,7 +1359,18 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         $markerArray['###FORM_SUBMIT###'] = $this->pi_getLL('submit_button_label', '', true);
         // Adding search field value
-        $markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+        $markerArray['###SWORD_VALUE###'] = '';
+        $markerArray['###PLACEHOLDER###'] = '';
+        if (!empty($this->piVars['sword'])) {
+            $markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+        } else {
+            // Add a HTML5 placeholder attribute if the configured doctype allows it
+            if ($GLOBALS['TSFE']->config['config']['doctype'] === 'html5') {
+                $markerArray['###PLACEHOLDER###'] = 'placeholder="' . $this->pi_getLL('default_search_word_entry') . '"';
+            } else {
+                $markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
+            }
+        }
         // Additonal keyword => "Add to current search words"
         if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox']) {
             $markerArray['###SWORD_PREV_VALUE###'] = htmlspecialchars($this->conf['show.']['clearSearchBox'] ? '' : $this->piVars['sword']);
