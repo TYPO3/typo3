@@ -22,13 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * view helper for displaying a download extension data link
  * @internal
  */
-class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+class DownloadExtensionDataViewHelper extends Link\ActionViewHelper
 {
-    /**
-     * @var string
-     */
-    protected $tagName = 'a';
-
     /**
      * Renders an install link
      *

@@ -22,17 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * View helper for update script link
  * @internal
  */
-class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+class UpdateScriptViewHelper extends Link\ActionViewHelper
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
-
-    /**
-     * @var string
-     */
-    protected $tagName = 'a';
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager

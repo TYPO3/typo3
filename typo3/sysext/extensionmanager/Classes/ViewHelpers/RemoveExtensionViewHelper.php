@@ -22,13 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * view helper for displaying a remove extension link
  * @internal
  */
-class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+class RemoveExtensionViewHelper extends Link\ActionViewHelper
 {
-    /**
-     * @var string
-     */
-    protected $tagName = 'a';
-
     /**
      * Renders an install link
      *

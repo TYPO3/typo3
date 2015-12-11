@@ -17,18 +17,14 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * View helper for configure extension link
  * @internal
  */
-class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+class ConfigureExtensionViewHelper extends Link\ActionViewHelper
 {
-    /**
-     * @var string
-     */
-    protected $tagName = 'a';
-
     /**
      * Renders a configure extension link if the extension has configuration options
      *
@@ -50,9 +46,9 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
             );
             if ($showDescription) {
                 $title = $extension['description'] . PHP_EOL .
-                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.clickToConfigure', 'extensionmanager');
+                    LocalizationUtility::translate('extensionList.clickToConfigure', 'extensionmanager');
             } else {
-                $title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.configure', 'extensionmanager');
+                $title = LocalizationUtility::translate('extensionList.configure', 'extensionmanager');
             }
             $this->tag->addAttribute('href', $uri);
             $this->tag->addAttribute('title', $title);

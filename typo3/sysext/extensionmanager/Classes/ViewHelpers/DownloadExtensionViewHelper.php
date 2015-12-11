@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * view helper
  * @internal
  */
-class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper
+class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper
 {
     /**
      * @var string
@@ -33,11 +33,39 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
     protected $configurationUtility;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+     */
+    protected $extensionService;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     */
+    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    {
+        $this->extensionService = $extensionService;
+    }
+
+    /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
      */
     public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility)
     {
         $this->configurationUtility = $configurationUtility;
+    }
+
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
+        $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
+        $this->registerTagAttribute('name', 'string', 'Name of form');
+        $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
+        $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
+        $this->registerUniversalTagAttributes();
     }
 
     /**
@@ -55,7 +83,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
         $pathSelector = '<ul class="is-hidden">';
         foreach ($installPaths as $installPathType => $installPath) {
             $pathSelector .= '<li>
-				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '"' . ($installPathType == 'Local' ? ' checked="checked"' : '') . '/>
+				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix()) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType == 'Local' ? 'checked="checked"' : '') . ' />
 				<label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
 			</li>';
         }
@@ -86,5 +114,44 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
         $this->tag->setContent($label . $pathSelector);
         $this->tag->addAttribute('class', 'download');
         return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
+    }
+
+    /**
+     * Get the field name prefix
+     *
+     * @return string
+     */
+    protected function getFieldNamePrefix()
+    {
+        if ($this->hasArgument('fieldNamePrefix')) {
+            return $this->arguments['fieldNamePrefix'];
+        } else {
+            return $this->getDefaultFieldNamePrefix();
+        }
+    }
+
+    /**
+     * Retrieves the default field name prefix for this form
+     *
+     * @return string default field name prefix
+     */
+    protected function getDefaultFieldNamePrefix()
+    {
+        $request = $this->controllerContext->getRequest();
+        if ($this->hasArgument('extensionName')) {
+            $extensionName = $this->arguments['extensionName'];
+        } else {
+            $extensionName = $request->getControllerExtensionName();
+        }
+        if ($this->hasArgument('pluginName')) {
+            $pluginName = $this->arguments['pluginName'];
+        } else {
+            $pluginName = $request->getPluginName();
+        }
+        if ($extensionName !== null && $pluginName != null) {
+            return $this->extensionService->getPluginNamespace($extensionName, $pluginName);
+        } else {
+            return '';
+        }
     }
 }

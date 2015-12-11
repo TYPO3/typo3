@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * actions for a given extension.
  * @internal
  */
-class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
+class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
     const SIGNAL_ProcessActions = 'processActions';
 
