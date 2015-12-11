@@ -344,7 +344,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
         $result = false;
         switch ($operator) {
             case 'REQ':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 if (strtoupper($operand) === 'TRUE') {
@@ -354,32 +354,32 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 }
                 break;
             case '>':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 $result = $fieldValue > $operand;
                 break;
             case '<':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 $result = $fieldValue < $operand;
                 break;
             case '>=':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 $result = $fieldValue >= $operand;
                 break;
             case '<=':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 $result = $fieldValue <= $operand;
                 break;
             case '-':
             case '!-':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 list($minimum, $maximum) = explode('-', $operand);
@@ -390,7 +390,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 break;
             case '=':
             case '!=':
-                if (is_array($fieldValue) && count($fieldValue) === 1) {
+                if (is_array($fieldValue) && count($fieldValue) <= 1) {
                     $fieldValue = array_shift($fieldValue);
                 }
                 $result = $fieldValue == $operand;

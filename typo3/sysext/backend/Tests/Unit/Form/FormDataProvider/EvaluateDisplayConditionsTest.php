@@ -420,6 +420,36 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 [],
                 false,
             ],
+            'Field is not present if empty array given' => [
+                'REQ:foo:TRUE',
+                ['foo' => []],
+                false,
+            ],
+            'Field is not greater zero if empty array given' => [
+                'FIELD:foo:>:0',
+                ['foo' => []],
+                false,
+            ],
+            'Field is not greater than or equal to zero if empty array given' => [
+                'FIELD:foo:>=:0',
+                ['foo' => []],
+                false,
+            ],
+            'Field is less than 1 if empty array given' => [
+                'FIELD:foo:<:1',
+                ['foo' => []],
+                true,
+            ],
+            'Field is less than or equal to 1 if empty array given' => [
+                'FIELD:foo:<=:1',
+                ['foo' => []],
+                true,
+            ],
+            'Field does not equal 0 if empty array given' => [
+                'FIELD:foo:=:0',
+                ['foo' => []],
+                false,
+            ],
             'Field value string comparison' => [
                 'FIELD:foo:=:bar',
                 ['foo' => 'bar'],
