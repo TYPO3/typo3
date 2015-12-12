@@ -805,6 +805,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$search->register_and_explode_search_string($searchWords);
 				if (is_array($search->sword_array)) {
 					$sWordArray = $this->procSearchWordsByLexer($search->sword_array);
+				} else {
+					$sWordArray = array();
 				}
 			}
 		}
