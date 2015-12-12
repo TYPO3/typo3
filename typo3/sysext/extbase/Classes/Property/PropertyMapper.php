@@ -125,7 +125,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         } catch (TargetNotFoundException $e) {
             throw $e;
         } catch (\Exception $e) {
-            throw new Exception('Exception while property mapping at property path "' . implode('.', $currentPropertyPath) . '":' . $e->getMessage(), 1297759968, $e);
+            throw new Exception('Exception while property mapping at property path "' . implode('.', $currentPropertyPath) . '": ' . $e->getMessage(), 1297759968, $e);
         }
     }
 

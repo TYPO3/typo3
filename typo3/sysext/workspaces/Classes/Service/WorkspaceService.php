@@ -712,7 +712,7 @@ class WorkspaceService implements SingletonInterface
             if (is_array($pageRecord)) {
                 $this->pageCache[$uid] = $pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid;
             } else {
-                throw new \InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
+                throw new \InvalidArgumentException('uid is supposed to point to an existing page - given value was: ' . $uid, 1290628113);
             }
         }
         return $this->pageCache[$uid];

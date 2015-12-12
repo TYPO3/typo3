@@ -30,7 +30,7 @@ abstract class AbstractRecord
     {
         $record = static::getDatabaseConnection()->exec_SELECTgetSingleRow('*', $tableName, 'deleted=0 AND uid=' . (int)$uid);
         if (empty($record)) {
-            throw new \RuntimeException('Record "' . $tableName . ':' . $uid . '" not found');
+            throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found');
         }
         return $record;
     }

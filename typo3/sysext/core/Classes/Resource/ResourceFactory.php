@@ -350,7 +350,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             if (empty($fileData)) {
                 $fileData = $this->getFileIndexRepository()->findOneByUid($uid);
                 if ($fileData === false) {
-                    throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID:' . $uid, 1317178604);
+                    throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID: ' . $uid, 1317178604);
                 }
             }
             $this->fileInstances[$uid] = $this->createFileObject($fileData);

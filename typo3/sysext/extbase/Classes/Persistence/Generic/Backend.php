@@ -923,7 +923,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 $matchFields = array_merge($relationTableMatchFields, $matchFields);
             }
         } else {
-            throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException('Unexpected parent column relation type:' . $parentColumnMap->getTypeOfRelation(), 1345368106);
+            throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException('Unexpected parent column relation type: ' . $parentColumnMap->getTypeOfRelation(), 1345368106);
         }
 
         $result = $this->storageBackend->getMaxValueFromTable(
