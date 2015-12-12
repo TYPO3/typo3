@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
  * A view helper for creating a link for an image popup.
@@ -74,6 +75,9 @@ class ClickEnlargeViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $image = $arguments['image'];
+        if ($image instanceof FileInterface) {
+            self::getContentObjectRenderer()->setCurrentFile($image);
+        }
         $configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($arguments['configuration']);
         $content = $renderChildrenClosure();
         $configuration['enable'] = true;
