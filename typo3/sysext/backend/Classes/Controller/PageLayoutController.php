@@ -593,7 +593,7 @@ class PageLayoutController
         if ($this->id && $access) {
             // Initialize permission settings:
             $this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
-            $this->EDIT_CONTENT = $this->pageIsNotLockedForEditors();
+            $this->EDIT_CONTENT = $this->contentIsNotLockedForEditors();
 
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 
@@ -1354,13 +1354,23 @@ class PageLayoutController
     }
 
     /**
-     * Check the editlock access
+     * Check if page can be edited by current user
      *
      * @return bool
      */
     public function pageIsNotLockedForEditors()
     {
         return $this->getBackendUser()->isAdmin() || ($this->CALC_PERMS & Permission::PAGE_EDIT) === Permission::PAGE_EDIT && !$this->pageinfo['editlock'];
+    }
+
+    /**
+     * Check if content can be edited by current user
+     *
+     * @return bool
+     */
+    protected function contentIsNotLockedForEditors()
+    {
+        return $this->getBackendUser()->isAdmin() || ($this->CALC_PERMS & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT && !$this->pageinfo['editlock'];
     }
 
     /**
