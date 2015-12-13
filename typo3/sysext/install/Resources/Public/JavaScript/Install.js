@@ -622,6 +622,17 @@ $(function() {
 		$('div.item').not(':contains(' + typedQuery + ')').removeClass('searchhit').addClass('hidden');
 		$('.searchhit').parent().collapse('show');
 	});
+	var $searchFields = $('#configSearch');
+	var searchResultShown = ('' !== $searchFields.first().val());
+
+	// make search field clearable
+	$searchFields.clearable({
+		onClear: function() {
+			if (searchResultShown) {
+				$(this).closest('form').submit();
+			}
+		}
+	});
 
 	// Define width of fixed menu
 	var $menuWrapper = $('#menuWrapper');

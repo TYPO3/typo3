@@ -181,3 +181,32 @@ hr {
 		}
 	}
 }
+
+//
+// Styles for the "clearable" jquery plugin.
+//
+.form-control-clearable {
+	position: relative;
+	.form-control {
+		padding-right: 2.3em;
+	}
+	.close {
+		position: absolute;
+		z-index: 3;
+		font-size: 1.2em;
+		top: 50%;
+		right: 0.5em;
+		margin-top: -0.55em;
+		&:before {
+			line-height: 1.5em;
+		}
+	}
+}
+.input-group {
+	.form-control-clearable {
+		display: table-cell;
+		.form-control {
+			display: block;
+		}
+	}
+}
