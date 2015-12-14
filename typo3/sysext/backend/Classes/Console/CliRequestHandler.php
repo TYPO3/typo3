@@ -137,10 +137,10 @@ class CliRequestHandler implements RequestHandlerInterface
 
     /**
      * Define cli-related parameters and return the include script as well as the command line name. Used for
-     * authentication against the backend user in the "laodCommandLineBackendUser()" action.
+     * authentication against the backend user in the "loadCommandLineBackendUser()" action.
      *
      * @param string $cliKey the CLI key
-     * @return string the absolute path to the include script
+     * @return array the absolute path to the include script and the command line name
      */
     protected function getIncludeScriptByCommandLineKey($cliKey)
     {
