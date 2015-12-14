@@ -138,11 +138,11 @@ class PreviewController extends AbstractController
         if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isNewPage($this->pageId)) {
             $wsNewPageUri = $uriBuilder->uriFor('newPage', array(), \TYPO3\CMS\Workspaces\Controller\PreviewController::class, 'workspaces', 'web_workspacesworkspaces');
             $wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
-            $this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);
+            $this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams . '&ADMCMD_prev=IGNORE');
         } else {
-            $this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
+            $this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE');
         }
-        $this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
+        $this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
         $this->view->assign('wsSettingsUrl', $wsSettingsUrl);
         $this->view->assign('backendDomain', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
         $splitPreviewTsConfig = BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
