@@ -137,6 +137,8 @@ TYPO3BackendLogin = {
 		if ($('t3-username').getValue() == '') {
 			$('t3-username').setValue('openid_url');
 		}
+		// make sure there is no password set (IE11 might have set one due to the custom placeholder JS)
+		$('t3-password').setValue('');
 
 		TYPO3BackendLogin.setLogintypeCookie('openid');
 	},
