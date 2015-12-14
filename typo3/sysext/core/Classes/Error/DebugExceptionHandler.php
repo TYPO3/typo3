@@ -34,10 +34,11 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception $exception The exception object
+     * @param \Exception|\Throwable $exception The exception object
      * @return void
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionWeb(\Exception $exception)
+    public function echoExceptionWeb($exception)
     {
         $this->sendStatusHeaders($exception);
         $filePathAndName = $exception->getFile();
@@ -112,10 +113,11 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception for the command line
      *
-     * @param \Exception $exception The exception object
+     * @param \Exception|\Throwable $exception The exception object
      * @return void
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionCLI(\Exception $exception)
+    public function echoExceptionCLI($exception)
     {
         $filePathAndName = $exception->getFile();
         $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';

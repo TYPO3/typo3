@@ -46,10 +46,11 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     /**
      * Echoes an exception for the web.
      *
-     * @param \Exception $exception The exception
+     * @param \Exception|\Throwable $exception The exception
      * @return void
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionWeb(\Exception $exception)
+    public function echoExceptionWeb($exception)
     {
         $this->sendStatusHeaders($exception);
         $this->writeLogEntries($exception, self::CONTEXT_WEB);
@@ -64,10 +65,11 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     /**
      * Echoes an exception for the command line.
      *
-     * @param \Exception $exception The exception
+     * @param \Exception|\Throwable $exception The exception
      * @return void
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionCLI(\Exception $exception)
+    public function echoExceptionCLI($exception)
     {
         $filePathAndName = $exception->getFile();
         $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
@@ -84,10 +86,11 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
     /**
      * Determines, whether Exception details should be outputted
      *
-     * @param \Exception $exception The exception
+     * @param \Exception|\Throwable $exception The exception
      * @return bool
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    protected function discloseExceptionInformation(\Exception $exception)
+    protected function discloseExceptionInformation($exception)
     {
         // Allow message to be shown in production mode if the exception is about
         // trusted host configuration.  By doing so we do not disclose
@@ -110,10 +113,11 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
     /**
      * Returns the title for the error message
      *
-     * @param \Exception $exception Exception causing the error
+     * @param \Exception|\Throwable $exception Exception causing the error
      * @return string
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    protected function getTitle(\Exception $exception)
+    protected function getTitle($exception)
     {
         if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && $exception->getTitle() !== '') {
             return htmlspecialchars($exception->getTitle());
@@ -125,10 +129,11 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
     /**
      * Returns the message for the error message
      *
-     * @param \Exception $exception Exception causing the error
+     * @param \Exception|\Throwable $exception Exception causing the error
      * @return string
+     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    protected function getMessage(\Exception $exception)
+    protected function getMessage($exception)
     {
         if ($this->discloseExceptionInformation($exception)) {
             // Exception has an error code given
