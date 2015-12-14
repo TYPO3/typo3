@@ -2229,31 +2229,34 @@ class ContentObjectRenderer
                         $storeArr['c'] = preg_split($regex, $content);
                         $storeArr['k'] = $keyList[0];
                     }
+                    if (!empty($storeArr)) {
+                        // Setting cache:
+                        $this->substMarkerCache[$storeKey] = $storeArr;
+                        // Storing the cached data:
+                        $this->getTypoScriptFrontendController()->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
+                    }
                 }
-
-                // Setting cache:
-                $this->substMarkerCache[$storeKey] = $storeArr;
-                // Storing the cached data:
-                $this->getTypoScriptFrontendController()->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
                 $timeTracker->setTSlogMessage('Parsing', 0);
             }
         }
-        // Substitution/Merging:
-        // Merging content types together, resetting
-        $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
-        $wSCA_reg = array();
-        $content = '';
-        // Traversing the keyList array and merging the static and dynamic content
-        foreach ($storeArr['k'] as $n => $keyN) {
-            $content .= $storeArr['c'][$n];
-            if (!is_array($valueArr[$keyN])) {
-                $content .= $valueArr[$keyN];
-            } else {
-                $content .= $valueArr[$keyN][(int)$wSCA_reg[$keyN] % 2];
-                $wSCA_reg[$keyN]++;
+        if (!empty($storeArr['k']) && is_array($storeArr['k'])) {
+            // Substitution/Merging:
+            // Merging content types together, resetting
+            $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+            $wSCA_reg = array();
+            $content = '';
+            // Traversing the keyList array and merging the static and dynamic content
+            foreach ($storeArr['k'] as $n => $keyN) {
+                $content .= $storeArr['c'][$n];
+                if (!is_array($valueArr[$keyN])) {
+                    $content .= $valueArr[$keyN];
+                } else {
+                    $content .= $valueArr[$keyN][(int)$wSCA_reg[$keyN] % 2];
+                    $wSCA_reg[$keyN]++;
+                }
             }
+            $content .= $storeArr['c'][count($storeArr['k'])];
         }
-        $content .= $storeArr['c'][count($storeArr['k'])];
         $timeTracker->pull();
         return $content;
     }
