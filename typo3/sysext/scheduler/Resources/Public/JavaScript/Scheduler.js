@@ -42,18 +42,10 @@ define(['jquery'], function($) {
 	};
 
 	/**
-	 * This method reacts on changes to the type of a task, i.e. single or recurring,
-	 * by showing or hiding the relevant form fields
-	 *
-	 * @param {Object} theSelector
+	 * This method reacts on changes to the type of a task, i.e. single or recurring
 	 */
-	Scheduler.actOnChangedTaskType = function(theSelector) {
-		// Get task type from selected value, or set default value
-		// Single taskType = 1, Recurring task = 0
-		var taskType = parseInt(theSelector.val()) == 1 ? 0 : 1;
-		$('#task_end_row').toggle(taskType);
-		$('#task_frequency_row').toggle(taskType);
-		$('#task_multiple_row').toggle(taskType);
+	Scheduler.actOnChangedTaskType = function() {
+		Scheduler.toggleFieldsByTaskType($(this).val());
 	};
 
 	/**
@@ -114,6 +106,18 @@ define(['jquery'], function($) {
 	};
 
 	/**
+	 * Toggle the relevant form fields by task type
+	 *
+	 * @param {Integer} taskType
+	 */
+	Scheduler.toggleFieldsByTaskType = function(taskType) {
+		// Single task option = 1, Recurring task option = 2
+		taskType = parseInt(taskType);
+		$('#task_end_col').toggle(taskType === 2);
+		$('#task_frequency_row').toggle(taskType === 2);
+	};
+
+	/**
 	 * Registers listeners
 	 */
 	Scheduler.initializeEvents = function() {
@@ -125,9 +129,7 @@ define(['jquery'], function($) {
 			Scheduler.actOnChangedTaskClass($(this));
 		});
 
-		$('#task_type').change(function() {
-			Scheduler.actOnChangedTaskType($(this));
-		});
+		$('#task_type').change(Scheduler.actOnChangedTaskType);
 
 		$('#task_tableGarbageCollection_allTables').change(function() {
 			Scheduler.actOnChangeSchedulerTableGarbageCollectionAllTables($(this));
@@ -138,7 +140,18 @@ define(['jquery'], function($) {
 		});
 	};
 
+	/**
+	 * Initialize default states
+	 */
+	Scheduler.initializeDefaultStates = function() {
+		var $taskType = $('#task_type');
+		if ($taskType.length) {
+			Scheduler.toggleFieldsByTaskType($taskType.val());
+		}
+	};
+
 	$(Scheduler.initializeEvents);
+	$(Scheduler.initializeDefaultStates);
 
 	return Scheduler;
 });

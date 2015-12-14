@@ -798,7 +798,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $label = '<label for="tceforms-datetimefield-task_start">' . BackendUtility::wrapInHelp($this->cshKey, 'task_start', $this->getLanguageService()->getLL('label.start')) . '</label>';
         $value = ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : '');
         $table[] =
-            '<div class="form-section"><div class="row"><div class="form-group col-sm-6">'
+            '<div class="form-section"><div class="row"><div class="form-group col-sm-6" id="task_start_col">'
                 . $label
                 . '<div class="form-control-wrap">'
                     . '<div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">'
@@ -814,7 +814,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $value = ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : '');
         $label = '<label for="tceforms-datetimefield-task_end">' . $this->getLanguageService()->getLL('label.end') . '</label>';
         $table[] =
-            '<div class="form-group col-sm-6">'
+            '<div class="form-group col-sm-6" id="task_end_col">'
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_end', $label)
                 . '<div class="form-control-wrap">'
                     . '<div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">'
