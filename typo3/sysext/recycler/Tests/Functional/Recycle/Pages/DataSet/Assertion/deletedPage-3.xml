@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<pages>
+		<uid>3</uid>
+		<pid>1</pid>
+		<title>Dummy 1-3 (deleted)</title>
+		<doktype>1</doktype>
+		<deleted>1</deleted>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+</dataset>

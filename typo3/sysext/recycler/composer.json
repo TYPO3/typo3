@@ -15,5 +15,10 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Recycler\\": "Classes/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Recycler\\Tests\\": "Tests/"
+		}
 	}
 }

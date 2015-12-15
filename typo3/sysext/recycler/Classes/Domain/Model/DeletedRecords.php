@@ -255,10 +255,24 @@ class DeletedRecords
      */
     protected function checkRecordAccess($table, array $rows)
     {
+        if ($table === 'pages') {
+            // The "checkAccess" method validates access to the passed table/rows. When access to
+            // a page record gets validated it is necessary to disable the "delete" field temporarily
+            // for the recycler.
+            // Else it wouldn't be possible to perform the check as many methods of BackendUtility
+            // like "BEgetRootLine", etc. will only work on non-deleted records.
+            $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
+            unset($GLOBALS['TCA'][$table]['ctrl']['delete']);
+        }
+
         foreach ($rows as $row) {
             if (RecyclerUtility::checkAccess($table, $row)) {
                 $this->setDeletedRows($table, $row);
             }
+        }
+
+        if ($table === 'pages') {
+            $GLOBALS['TCA'][$table]['ctrl']['delete'] = $deleteField;
         }
     }
 
@@ -321,6 +335,21 @@ class DeletedRecords
             $cmd = array();
             foreach ($recordsArray as $record) {
                 list($table, $uid) = explode(':', $record);
+                // get all parent pages and cover them
+                $pid = RecyclerUtility::getPidOfUid($uid, $table);
+                if ($pid > 0) {
+                    $parentUidsToRecover = $this->getDeletedParentPages($pid);
+                    $count = count($parentUidsToRecover);
+                    for ($i = 0; $i < $count; ++$i) {
+                        $parentUid = $parentUidsToRecover[$i];
+                        $cmd['pages'][$parentUid]['undelete'] = 1;
+                        $affectedRecords++;
+                    }
+                    if (isset($cmd['pages'])) {
+                        // reverse the page list to recover it from top to bottom
+                        $cmd['pages'] = array_reverse($cmd['pages'], true);
+                    }
+                }
                 $cmd[$table][$uid]['undelete'] = 1;
                 if ($table === 'pages' && $recursive) {
                     $this->loadData($uid, '', $depth, '');
@@ -342,6 +371,28 @@ class DeletedRecords
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns deleted parent pages
+     *
+     * @param int $uid
+     * @param array $pages
+     * @return array
+     */
+    protected function getDeletedParentPages($uid, &$pages = array())
+    {
+        $db = $this->getDatabaseConnection();
+        $res = $db->exec_SELECTquery('uid, pid', 'pages', 'uid=' . (int)$uid . ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['delete'] . '=1');
+        if ($res !== false && $db->sql_num_rows($res) > 0) {
+            $record = $db->sql_fetch_assoc($res);
+            $pages[] = $record['uid'];
+            if ((int)$record['pid'] !== 0) {
+                $this->getDeletedParentPages($record['pid'], $pages);
+            }
+        }
+
+        return $pages;
     }
 
     /************************************************************

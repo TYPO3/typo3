@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<be_groups>
+		<uid>1</uid>
+		<pid>0</pid>
+		<tstamp>1452959228</tstamp>
+		<title>editor-group</title>
+		<tables_modify>pages</tables_modify>
+		<crdate>1452959228</crdate>
+		<cruser_id>1</cruser_id>
+	</be_groups>
+</dataset>

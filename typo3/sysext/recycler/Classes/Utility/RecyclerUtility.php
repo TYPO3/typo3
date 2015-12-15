@@ -47,7 +47,6 @@ class RecyclerUtility
         BackendUtility::fixVersioningPid($table, $calcPRec);
         if (is_array($calcPRec)) {
             if ($table === 'pages') {
-                // If pages:
                 $calculatedPermissions = $backendUser->calcPerms($calcPRec);
                 $hasAccess = (bool)($calculatedPermissions & Permission::PAGE_EDIT);
             } else {
