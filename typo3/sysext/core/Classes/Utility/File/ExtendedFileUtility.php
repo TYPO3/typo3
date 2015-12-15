@@ -390,9 +390,10 @@ class ExtendedFileUtility extends BasicFileUtility
      *
      * @param string $localizationKey
      * @param array $replaceMarkers
+     * @param int $severity
      * @throws \InvalidArgumentException
      */
-    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [])
+    protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = FlashMessage::ERROR)
     {
         $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
         $message = vsprintf($label, $replaceMarkers);
@@ -400,7 +401,7 @@ class ExtendedFileUtility extends BasicFileUtility
             FlashMessage::class,
             $message,
             '',
-            FlashMessage::ERROR,
+            $severity,
             true
         );
         $this->addFlashMessage($flashMessage);
@@ -704,7 +705,7 @@ class ExtendedFileUtility extends BasicFileUtility
             }
             if ($resultObject) {
                 $this->writeLog(2, 0, 1, 'File "%s" copied to "%s"', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()));
-                $this->addMessageToFlashMessageQueue('FileUtility.FileCopiedTo', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()));
+                $this->addMessageToFlashMessageQueue('FileUtility.FileCopiedTo', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()), FlashMessage::OK);
             }
         } else {
             // Else means this is a Folder
@@ -735,7 +736,7 @@ class ExtendedFileUtility extends BasicFileUtility
             }
             if ($resultObject) {
                 $this->writeLog(2, 0, 2, 'Directory "%s" copied to "%s"', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()));
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCopiedTo', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()));
+                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCopiedTo', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()), FlashMessage::OK);
             }
         }
         return $resultObject;
@@ -780,7 +781,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $resultObject = $sourceFileObject->moveTo($targetFolderObject, null, DuplicationBehavior::CANCEL);
                 }
                 $this->writeLog(3, 0, 1, 'File "%s" moved to "%s"', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()));
-                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()));
+                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()), FlashMessage::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(3, 1, 114, 'You are not allowed to move files', '');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToMoveFiles');
@@ -812,7 +813,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $resultObject = $sourceFolderObject->moveTo($targetFolderObject, null, DuplicationBehavior::RENAME);
                 }
                 $this->writeLog(3, 0, 2, 'Directory "%s" moved to "%s"', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()));
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryMovedTo', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()));
+                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryMovedTo', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()), FlashMessage::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(3, 1, 125, 'You are not allowed to move directories', '');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToMoveDirectories');
@@ -864,7 +865,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 // Try to rename the File
                 $resultObject = $sourceFileObject->rename($targetFile);
                 $this->writeLog(5, 0, 1, 'File renamed from "%s" to "%s"', array($sourceFile, $targetFile));
-                $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', array($sourceFile, $targetFile));
+                $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', array($sourceFile, $targetFile), FlashMessage::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(5, 1, 102, 'You are not allowed to rename files!', '');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToRenameFiles');
@@ -887,7 +888,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 // Try to rename the Folder
                 $resultObject = $sourceFileObject->rename($targetFile);
                 $this->writeLog(5, 0, 2, 'Directory renamed from "%s" to "%s"', array($sourceFile, $targetFile));
-                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', array($sourceFile, $targetFile));
+                $this->addMessageToFlashMessageQueue('FileUtility.DirectoryRenamedFromTo', array($sourceFile, $targetFile), FlashMessage::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(5, 1, 111, 'You are not allowed to rename directories!', '');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToRenameDirectories');
@@ -930,8 +931,8 @@ class ExtendedFileUtility extends BasicFileUtility
         try {
             $folderName = $cmds['data'];
             $resultObject = $targetFolderObject->createFolder($folderName);
-            $this->writeLog(6, 0, 1, 'Directory "%s" created in "%s"', array($folderName, $targetFolderObject->getIdentifier() . '/'));
-            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', array($folderName, $targetFolderObject->getIdentifier() . '/'));
+            $this->writeLog(6, 0, 1, 'Directory "%s" created in "%s"', array($folderName, $targetFolderObject->getIdentifier()));
+            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', array($folderName, $targetFolderObject->getIdentifier()), FlashMessage::OK);
         } catch (\TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException $e) {
             $this->writeLog(6, 1, 104, 'Invalid folder name "%s"!', [$folderName]);
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToCreateDirectories', [$folderName]);
@@ -939,14 +940,14 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->writeLog(6, 1, 103, 'You are not allowed to create directories!', '');
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToCreateDirectories');
         } catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
-            $this->writeLog(6, 1, 102, 'Destination path "%s" was not within your mountpoints!', array($targetFolderObject->getIdentifier() . '/'));
-            $this->addMessageToFlashMessageQueue('FileUtility.DestinationPathWasNotWithinYourMountpoints', array($targetFolderObject->getIdentifier() . '/'));
+            $this->writeLog(6, 1, 102, 'Destination path "%s" was not within your mountpoints!', array($targetFolderObject->getIdentifier()));
+            $this->addMessageToFlashMessageQueue('FileUtility.DestinationPathWasNotWithinYourMountpoints', array($targetFolderObject->getIdentifier()));
         } catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException $e) {
             $this->writeLog(6, 1, 101, 'File or directory "%s" existed already!', array($folderName));
             $this->addMessageToFlashMessageQueue('FileUtility.FileOrDirectoryExistedAlready', array($folderName));
         } catch (\RuntimeException $e) {
-            $this->writeLog(6, 1, 100, 'Directory "%s" not created. Write-permission problem in "%s"?', array($folderName, $targetFolderObject->getIdentifier() . '/'));
-            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryNotCreated', array($folderName, $targetFolderObject->getIdentifier() . '/'));
+            $this->writeLog(6, 1, 100, 'Directory "%s" not created. Write-permission problem in "%s"?', array($folderName, $targetFolderObject->getIdentifier()));
+            $this->addMessageToFlashMessageQueue('FileUtility.DirectoryNotCreated', array($folderName, $targetFolderObject->getIdentifier()));
         }
         return $resultObject;
     }
@@ -976,7 +977,7 @@ class ExtendedFileUtility extends BasicFileUtility
         try {
             $resultObject = $targetFolderObject->createFile($fileName);
             $this->writeLog(8, 0, 1, 'File created: "%s"', array($fileName));
-            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', array($fileName));
+            $this->addMessageToFlashMessageQueue('FileUtility.FileCreated', array($fileName), FlashMessage::OK);
         } catch (IllegalFileExtensionException $e) {
             $this->writeLog(8, 1, 106, 'Extension of file "%s" was not allowed!', array($fileName));
             $this->addMessageToFlashMessageQueue('FileUtility.ExtensionOfFileWasNotAllowed', array($fileName));
@@ -1031,7 +1032,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $fileObject->setContents($content);
             clearstatcache();
             $this->writeLog(9, 0, 1, 'File saved to "%s", bytes: %s, MD5: %s ', array($fileObject->getIdentifier(), $fileObject->getSize(), md5($content)));
-            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedToBytesMd5', array($fileObject->getIdentifier(), $fileObject->getSize(), md5($content)));
+            $this->addMessageToFlashMessageQueue('FileUtility.FileSavedToBytesMd5', array($fileObject->getIdentifier(), $fileObject->getSize(), md5($content)), FlashMessage::OK);
             return true;
         } catch (InsufficientUserPermissionsException $e) {
             $this->writeLog(9, 1, 104, 'You are not allowed to edit files!', '');
@@ -1126,7 +1127,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 $resultObjects[] = $fileObject;
                 $this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
                 $this->writeLog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
-                $this->addMessageToFlashMessageQueue('FileUtility.UploadingFileTo', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
+                $this->addMessageToFlashMessageQueue('FileUtility.UploadingFileTo', array($fileInfo['name'], $targetFolderObject->getIdentifier()), FlashMessage::OK);
             } catch (InsufficientFileWritePermissionsException $e) {
                 $this->writeLog(1, 1, 107, 'You are not allowed to override "%s"!', array($fileInfo['name']));
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToOverride', array($fileInfo['name']));
@@ -1202,13 +1203,13 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->addMessageToFlashMessageQueue('FileUtility.YouDontHaveFullAccessToTheDestinationDirectory', array($theDest));
             return false;
         }
-        // !!! Method has been put in the sotrage driver, can be saftely removed
+        // !!! Method has been put in the storage driver, can be safely removed
         if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
             // No way to do this under windows.
             $cmd = $this->unzipPath . 'unzip -qq ' . escapeshellarg($theFile) . ' -d ' . escapeshellarg($theDest);
             CommandUtility::exec($cmd);
             $this->writeLog(7, 0, 1, 'Unzipping file "%s" in "%s"', array($theFile, $theDest));
-            $this->addMessageToFlashMessageQueue('FileUtility.UnzippingFileIn', array($theFile, $theDest));
+            $this->addMessageToFlashMessageQueue('FileUtility.UnzippingFileIn', array($theFile, $theDest), FlashMessage::OK);
             return true;
         } else {
             $this->writeLog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', array($theFile, $theDest));
@@ -1264,7 +1265,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
 
             $this->writeLog(1, 0, 1, 'Replacing file "%s" to "%s"', array($fileInfo['name'], $fileObjectToReplace->getIdentifier()));
-            $this->addMessageToFlashMessageQueue('FileUtility.ReplacingFileTo', array($fileInfo['name'], $fileObjectToReplace->getIdentifier()));
+            $this->addMessageToFlashMessageQueue('FileUtility.ReplacingFileTo', array($fileInfo['name'], $fileObjectToReplace->getIdentifier()), FlashMessage::OK);
         } catch (InsufficientFileWritePermissionsException $e) {
             $this->writeLog(1, 1, 107, 'You are not allowed to override "%s"!', array($fileInfo['name']));
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToOverride', array($fileInfo['name']));
