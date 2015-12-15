@@ -258,15 +258,18 @@ class ExtDirectServer extends AbstractHandler
             'total' => 1,
             'data' => array(
                 array(
+                    // these parts contain HTML (don't escape)
                     'diff' => $diffReturnArray,
                     'live_record' => $liveReturnArray,
-                    'path_Live' => $parameter->path_Live,
-                    'label_Stage' => $parameter->label_Stage,
-                    'stage_position' => $stagePosition['position'],
-                    'stage_count' => $stagePosition['count'],
-                    'comments' => $commentsForRecord,
                     'icon_Live' => $icon_Live,
-                    'icon_Workspace' => $icon_Workspace
+                    'icon_Workspace' => $icon_Workspace,
+                    // this part is already escaped in getCommentsForRecord()
+                    'comments' => $commentsForRecord,
+                    // escape/santinize the others
+                    'path_Live' => htmlspecialchars($parameter->path_Live),
+                    'label_Stage' => htmlspecialchars($parameter->label_Stage),
+                    'stage_position' => (int)$stagePosition['position'],
+                    'stage_count' => (int)$stagePosition['count']
                 )
             )
         );
@@ -362,11 +365,11 @@ class ExtDirectServer extends AbstractHandler
             $sysLogEntry = array();
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
-            $sysLogEntry['stage_title'] = $this->getStagesService()->getStageTitle($data['stage']);
-            $sysLogEntry['user_uid'] = $sysLogRow['userid'];
-            $sysLogEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
-            $sysLogEntry['tstamp'] = BackendUtility::datetime($sysLogRow['tstamp']);
-            $sysLogEntry['user_comment'] = $data['comment'];
+            $sysLogEntry['stage_title'] = htmlspecialchars($this->getStagesService()->getStageTitle($data['stage']));
+            $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
+            $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
+            $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
+            $sysLogEntry['user_comment'] = nl2br(htmlspecialchars($data['comment']));
             $sysLogReturnArray[] = $sysLogEntry;
         }
         return $sysLogReturnArray;
