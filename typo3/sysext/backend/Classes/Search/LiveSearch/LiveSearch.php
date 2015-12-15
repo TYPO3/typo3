@@ -84,23 +84,6 @@ class LiveSearch
      * Find records from database based on the given $searchQuery.
      *
      * @param string $searchQuery
-     * @return string Edit link to an page record if exists. Otherwise an empty string will returned
-     */
-    public function findPage($searchQuery)
-    {
-        $link = '';
-        $pageId = $this->queryParser->getId($searchQuery);
-        $pageRecord = $this->findPageById($pageId);
-        if (!empty($pageRecord)) {
-            $link = $this->getEditLink(self::PAGE_JUMP_TABLE, $this->findPageById($pageId));
-        }
-        return $link;
-    }
-
-    /**
-     * Find records from database based on the given $searchQuery.
-     *
-     * @param string $searchQuery
      * @return array Result list of database search.
      */
     public function find($searchQuery)

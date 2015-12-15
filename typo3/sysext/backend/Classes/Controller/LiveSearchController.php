@@ -47,7 +47,6 @@ class LiveSearchController
         $liveSearch->setQueryString($queryString);
         // Jump & edit - find page and retrieve an edit link (this is only for pages
         if ($queryParser->isValidPageJump($queryString)) {
-            $searchResults[] = array_merge($liveSearch->findPage($queryString), ['type' => 'pageJump']);
             $commandQuery = $queryParser->getCommandForPageJump($queryString);
             if ($commandQuery) {
                 $queryString = $commandQuery;
