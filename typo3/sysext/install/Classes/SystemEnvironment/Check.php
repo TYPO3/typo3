@@ -234,8 +234,8 @@ class Check
      */
     protected function checkMemorySettings()
     {
-        $minimumMemoryLimit = 32;
-        $recommendedMemoryLimit = 64;
+        $minimumMemoryLimit = 64;
+        $recommendedMemoryLimit = 128;
         $memoryLimit = $this->getBytesFromSizeMeasurement(ini_get('memory_limit'));
         if ($memoryLimit <= 0) {
             $status = new Status\WarningStatus();
