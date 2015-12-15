@@ -41,9 +41,15 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	 * Hide all form fields and show a progress message and icon
 	 */
 	BackendLogin.showLoginProcess = function() {
-		$(options.submitButton).button('loading');
 		$(options.error).addClass('hidden');
 		$(options.errorNoCookies).addClass('hidden');
+	};
+
+	/**
+	 * Show the loading spinner in the submit button
+	 */
+	BackendLogin.showLoadingIndicator = function() {
+		$(options.submitButton).button('loading');
 	};
 
 	/**
@@ -129,6 +135,7 @@ define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($
 	 * Registers listeners for the Login Interface
 	 */
 	BackendLogin.initializeEvents = function() {
+		$(document).ajaxStart(BackendLogin.showLoadingIndicator);
 		$(options.loginForm).on('submit', BackendLogin.handleSubmit);
 
 		// The Interface selector is not always present, so this check is needed
