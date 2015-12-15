@@ -707,7 +707,7 @@ tt_content.image.20 {
 		altText = TEXT
 		altText {
 			field = altText
-			stripHtml = 1
+			htmlSpecialChars = 1
 			split.token.char = 10
 			split.token.if.isTrue = {$styles.content.imgtext.imageTextSplit}
 			split.returnKey.data = register : IMAGE_NUM_CURRENT
@@ -800,7 +800,7 @@ tt_content.image.20 {
 			1 {
 				field = imagecaption
 				required = 1
-				parseFunc =< lib.parseFunc
+				htmlSpecialChars = 1
 				br = 1
 				trim = 1
 				split.token.char = 10
