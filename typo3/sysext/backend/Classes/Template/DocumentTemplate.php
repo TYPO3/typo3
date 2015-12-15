@@ -625,7 +625,11 @@ function jumpToUrl(URL) {
 		} else {
 			$mMN = '';
 		}
-		$onClick = 'top.ShortcutManager.createShortcut(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . ', ' . '\'' . $backPath . '\', ' . '\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\'' . ');return false;';
+		$onClick = 'top.ShortcutManager.createShortcut('
+			. GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . ', '
+			. GeneralUtility::quoteJSvalue($backPath) . ', '
+			. GeneralUtility::quoteJSvalue(rawurlencode($modName)) . ', '
+			. GeneralUtility::quoteJSvalue(rawurlencode($pathInfo['path'] . '?' . $storeUrl) . $mMN) . ');return false;';
 		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 		return $sIcon;
 	}

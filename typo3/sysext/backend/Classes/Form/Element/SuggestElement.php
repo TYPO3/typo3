@@ -109,8 +109,16 @@ class SuggestElement {
 		// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace(array('-', '.'), ' ', GeneralUtility::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
-			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF
-				. $jsObj . '.defaultValue = "' . GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF;
+			var ' . $jsObj . ' = new TCEForms.Suggest('
+				. GeneralUtility::quoteJSvalue($fieldname) . ', '
+				. GeneralUtility::quoteJSvalue($table) . ', '
+				. GeneralUtility::quoteJSvalue($field) . ', '
+				. GeneralUtility::quoteJSvalue($row['uid']) . ', '
+				. (int)$row['pid'] . ', '
+				. (int)$minChars . ', '
+				. GeneralUtility::quoteJSvalue($type) . ', '
+				. GeneralUtility::quoteJSvalue($jsRow) . ');' . LF
+				. $jsObj . '.defaultValue = ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . ';' . LF;
 		return $selector;
 	}
 

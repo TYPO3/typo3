@@ -866,7 +866,7 @@ class EditDocumentController {
 								$rec = reset($trData->regTableItems_data);
 								$rec['uid'] = $cmd == 'new' ? uniqid('NEW', TRUE) : $theUid;
 								if ($cmd == 'new') {
-									$rec['pid'] = $theUid == 'prev' ? $thePrevUid : $theUid;
+									$rec['pid'] = $theUid == 'prev' ? (int)$thePrevUid : (int)$theUid;
 								}
 								$this->elementsData[] = array(
 									'table' => $table,
@@ -904,7 +904,7 @@ class EditDocumentController {
 									$panel = $this->tceforms->wrapTotal($panel, $rec, $table);
 									// Setting the pid value for new records:
 									if ($cmd == 'new') {
-										$panel .= '<input type="hidden" name="data[' . $table . '][' . $rec['uid'] . '][pid]" value="' . $rec['pid'] . '" />';
+										$panel .= '<input type="hidden" name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($rec['uid']) . '][pid]" value="' . (int)$rec['pid'] . '" />';
 										$this->newC++;
 									}
 									// Display "is-locked" message:

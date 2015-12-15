@@ -76,7 +76,7 @@ class User {
 		<input type="hidden" name="returnUrl" value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" />
 		';
 		$JScode = '
-			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("UserElements");
+			var plugin = window.parent.RTEarea[' . GeneralUtility::quoteJSvalue($this->editorNo) . '].editor.getPlugin("UserElements");
 			var HTMLArea = window.parent.HTMLArea;
 			var editor = plugin.editor;
 

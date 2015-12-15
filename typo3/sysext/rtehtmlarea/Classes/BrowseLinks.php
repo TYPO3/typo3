@@ -293,7 +293,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode .= '
-			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
+			var plugin = window.parent.RTEarea[' . GeneralUtility::quoteJSvalue($this->editorNo) . '].editor.getPlugin("TYPO3Link");
 			var HTMLArea = window.parent.HTMLArea;
 			var add_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . ';
 			var add_target=' . GeneralUtility::quoteJSvalue($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . ';

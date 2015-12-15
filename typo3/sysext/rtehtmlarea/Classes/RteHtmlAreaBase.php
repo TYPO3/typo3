@@ -1321,7 +1321,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function setSaveRTE($RTEcounter, $formName, $textareaId, $textareaName) {
-		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaName . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
+		return 'if (RTEarea[' . GeneralUtility::quoteJSvalue($textareaId) . ']) { document.' . $formName . '[' . GeneralUtility::quoteJSvalue($textareaName) . '].value = RTEarea[' . GeneralUtility::quoteJSvalue($textareaId) . '].editor.getHTML(); } else { OK = 0; };';
 	}
 
 	/**
@@ -1335,7 +1335,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @todo Define visibility
 	 */
 	public function setDeleteRTE($RTEcounter, $formName, $textareaId) {
-		return 'if (RTEarea["' . $textareaId . '"]) { RTEarea["' . $textareaId . '"].deleted = true;}';
+		return 'if (RTEarea[' . GeneralUtility::quoteJSvalue($textareaId) . ']) { RTEarea[' . GeneralUtility::quoteJSvalue($textareaId) . '].deleted = true;}';
 	}
 
 	/**

@@ -268,7 +268,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	<title>Untitled</title>
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
+		var plugin = window.parent.RTEarea[' . GeneralUtility::quoteJSvalue($this->editorNo) . '].editor.getPlugin("TYPO3Image");
 		function insertImage(file,width,height,alt,title,additionalParams) {
 			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'' . ($this->defaultClass ? '+\' class="' . $this->defaultClass . '"\'' : '') . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
 		}
@@ -316,14 +316,14 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$lockPlainHeight = $lockPlainWidth || $plainImageMode == 'lockRatio' || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
 		}
 		$JScode = '
-			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
+			var plugin = window.parent.RTEarea[' . GeneralUtility::quoteJSvalue($editorNo) . '].editor.getPlugin("TYPO3Image");
 			var HTMLArea = window.parent.HTMLArea;
 
 			HTMLArea.TYPO3Image.insertElement = function (table, uid, type, filename, filePath, fileExt, fileIcon) {
-				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + ' . GeneralUtility::quoteJSvalue($editorNo) . ' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + ' . GeneralUtility::quoteJSvalue($this->bparams) . ');
 			}
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
-				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + ' . GeneralUtility::quoteJSvalue($editorNo) . ' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + ' . GeneralUtility::quoteJSvalue($this->bparams) . ');
 			}
 			function initEventListeners() {
 				if (Ext.isWebKit) {
