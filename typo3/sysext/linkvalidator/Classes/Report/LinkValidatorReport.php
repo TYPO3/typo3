@@ -500,12 +500,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             'returnUrl' => $requestUri
         ]);
         $actionLinkOpen = '<a href="' . htmlspecialchars($url);
-        $actionLinkOpen .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
+        $actionLinkOpen .= '" title="' . htmlspecialchars($this->getLanguageService()->getLL('list.edit')) . '">';
         $actionLinkClose = '</a>';
         $elementHeadline = $row['headline'];
-        if (empty($elementHeadline)) {
-            $elementHeadline = '<i>' . $this->getLanguageService()->getLL('list.no.headline') . '</i>';
-        }
         // Get the language label for the field from TCA
         if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
             $fieldName = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
@@ -518,18 +515,22 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $fieldName = !empty($fieldName) ? $fieldName : $row['field'];
         // column "Element"
         $element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
-        $element .= $elementHeadline;
-        $element .= ' ' . sprintf($this->getLanguageService()->getLL('list.field'), $fieldName);
+        if (empty($elementHeadline)) {
+            $element .= '<i>' . htmlspecialchars($this->getLanguageService()->getLL('list.no.headline')) . '</i>';
+        } else {
+            $element .= htmlspecialchars($elementHeadline);
+        }
+        $element .= ' ' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('list.field'), $fieldName));
         $markerArray['actionlinkOpen'] = $actionLinkOpen;
         $markerArray['actionlinkClose'] = $actionLinkClose;
         $markerArray['actionlinkIcon'] = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
         $markerArray['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
         $markerArray['element'] = $element;
-        $markerArray['headlink'] = $row['link_title'];
-        $markerArray['linktarget'] = $hookObj->getBrokenUrl($row);
+        $markerArray['headlink'] = htmlspecialchars($row['link_title']);
+        $markerArray['linktarget'] = htmlspecialchars($hookObj->getBrokenUrl($row));
         $response = unserialize($row['url_response']);
         if ($response['valid']) {
-            $linkMessage = '<span class="valid">' . $this->getLanguageService()->getLL('list.msg.ok') . '</span>';
+            $linkMessage = '<span class="valid">' . htmlspecialchars($this->getLanguageService()->getLL('list.msg.ok')) . '</span>';
         } else {
             $linkMessage = '<span class="error">' . $hookObj->getErrorMessage($response['errorParams']) . '</span>';
         }
@@ -537,7 +538,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
         $lastRunDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']);
         $lastRunTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['last_check']);
-        $markerArray['lastcheck'] = sprintf($this->getLanguageService()->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);
+        $markerArray['lastcheck'] = htmlspecialchars(sprintf($this->getLanguageService()->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime));
 
         // Return the table html code as string
         return $this->templateService->substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', true, true);
