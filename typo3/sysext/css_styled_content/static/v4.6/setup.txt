@@ -771,11 +771,11 @@ tt_content.bullets {
 			token.char = 10
 			cObjNum = |*|1|| 2|*|
 			1.current = 1
-			1.parseFunc =< lib.parseFunc
+			1.htmlSpecialChars = 1
 			1.wrap = <li class="odd">|</li>
 
 			2.current = 1
-			2.parseFunc =< lib.parseFunc
+			2.htmlSpecialChars = 1
 			2.wrap = <li class="even">|</li>
 		}
 		dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
