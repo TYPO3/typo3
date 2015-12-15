@@ -3,17 +3,17 @@
 	<f:for each="{unresolvedDependencies}" key="key" as="messages">
 		<f:if condition="{key} == {extension.extensionKey}">
 			<f:for each="{messages}" as="message">
-				<li>{message.message}</li>
+				<li>{message.message -> f:format.htmlspecialchars()}</li>
 			</f:for>
 		</f:if>
 	</f:for>
 	<f:for each="{unresolvedDependencies}" key="key" as="messages">
 		<f:if condition="{key} != {extension.extensionKey}">
 			<li>
-				<strong><f:translate key="dependencyCheck.requiredExtension" arguments="{key: key}" /></strong>
+				<strong>{f:translate(key: 'dependencyCheck.requiredExtension', arguments: {key: key}) -> f:format.htmlspecialchars()}</strong>
 				<ul>
 					<f:for each="{messages}" as="message">
-						<li>{message.message}</li>
+						<li>{message.message -> f:format.htmlspecialchars()}</li>
 					</f:for>
 				</ul>
 			</li>
