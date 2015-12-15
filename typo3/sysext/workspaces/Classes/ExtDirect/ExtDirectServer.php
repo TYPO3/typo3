@@ -195,15 +195,18 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			'total' => 1,
 			'data' => array(
 				array(
+					// these parts contain HTML (don't escape)
 					'diff' => $diffReturnArray,
 					'live_record' => $liveReturnArray,
-					'path_Live' => $parameter->path_Live,
-					'label_Stage' => $parameter->label_Stage,
-					'stage_position' => $stagePosition['position'],
-					'stage_count' => $stagePosition['count'],
-					'comments' => $commentsForRecord,
 					'icon_Live' => $icon_Live,
-					'icon_Workspace' => $icon_Workspace
+					'icon_Workspace' => $icon_Workspace,
+					// this part is already escaped in getCommentsForRecord()
+					'comments' => $commentsForRecord,
+					// escape/santinize the others
+					'path_Live' => htmlspecialchars($parameter->path_Live),
+					'label_Stage' => htmlspecialchars($parameter->label_Stage),
+					'stage_position' => (int)$stagePosition['position'],
+					'stage_count' => (int)$stagePosition['count']
 				)
 			)
 		);
