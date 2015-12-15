@@ -691,7 +691,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$content .= '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', TRUE) . '</p>';
 		}
 		// Print a message telling which words we searched for, and in which sections etc.
-		$what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . $this->pi_getLL('inSection', '', TRUE) . ' "' . substr($this->getPathFromPageId(substr($this->piVars['sections'], 4)), 1) . '"' : '');
+		$what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . $this->pi_getLL('inSection', '', TRUE) . ' "' . substr(htmlspecialchars($this->getPathFromPageId(substr($this->piVars['sections'], 4))), 1) . '"' : '');
 		$what = '<div' . $this->pi_classParam('whatis') . '>' . $this->cObj->stdWrap($what, $this->conf['whatis_stdWrap.']) . '</div>';
 		$content = $what . $content;
 		// Return content:
