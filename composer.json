@@ -205,7 +205,8 @@
 			"TYPO3\\CMS\\Saltedpasswords\\Tests\\": "typo3/sysext/saltedpasswords/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Sv\\Tests\\": "typo3/sysext/sv/Tests/",
-			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/"
+			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
+			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/"
 		},
 		"classmap": ["typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
 	},

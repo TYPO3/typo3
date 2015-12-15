@@ -154,6 +154,13 @@ abstract class FunctionalTestCase extends BaseTestCase
     protected $additionalFoldersToCreate = array();
 
     /**
+     * The fixture which is used when initializing a backend user
+     *
+     * @var string
+     */
+    protected $backendUserFixture = 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml';
+
+    /**
      * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
      *
      * @var \TYPO3\CMS\Core\Tests\FunctionalTestCaseBootstrapUtility
@@ -226,7 +233,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      */
     protected function setUpBackendUserFromFixture($userUid)
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
+        $this->importDataSet(ORIGINAL_ROOT . $this->backendUserFixture);
         $database = $this->getDatabaseConnection();
         $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 

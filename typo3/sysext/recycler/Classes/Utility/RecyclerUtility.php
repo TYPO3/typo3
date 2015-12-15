@@ -47,8 +47,6 @@ class RecyclerUtility
         BackendUtility::fixVersioningPid($table, $calcPRec);
         if (is_array($calcPRec)) {
             if ($table === 'pages') {
-                // If pages:
-                // @todo: find a decent way for non-admins to get deleted pages respecting the permissions WITHOUT some isInWebMount stuff.
                 $calculatedPermissions = $backendUser->calcPerms($calcPRec);
                 $hasAccess = (bool)($calculatedPermissions & Permission::PAGE_EDIT);
             } else {
@@ -140,7 +138,8 @@ class RecyclerUtility
      * @param int $pid
      * @return bool
      */
-    public static function isParentPageDeleted($pid) {
+    public static function isParentPageDeleted($pid)
+    {
         if ((int)$pid === 0) {
             return false;
         }
@@ -160,7 +159,8 @@ class RecyclerUtility
      * @param string $table
      * @return int
      */
-    public static function getPidOfUid($uid, $table) {
+    public static function getPidOfUid($uid, $table)
+    {
         $db = static::getDatabaseConnection();
         $res = $db->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
         if ($res !== false) {
