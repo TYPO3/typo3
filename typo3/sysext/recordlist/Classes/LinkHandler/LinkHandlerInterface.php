@@ -28,7 +28,7 @@ interface LinkHandlerInterface
     public function getLinkAttributes();
 
     /**
-     * @param string[] $fieldDefinitions Array of link attribute field defintions
+     * @param string[] $fieldDefinitions Array of link attribute field definitions
      * @return string[]
      */
     public function modifyLinkAttributes(array $fieldDefinitions);

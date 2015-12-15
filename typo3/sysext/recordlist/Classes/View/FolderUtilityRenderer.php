@@ -228,6 +228,34 @@ class FolderUtilityRenderer
     }
 
     /**
+     * Get the HTML data required for the file search field of the TYPO3 Element Browser.
+     *
+     * @param string $searchWord
+     * @return string HTML data required for the search field in the file list of the Element Browser
+     */
+    public function getFileSearchField($searchWord)
+    {
+        $action = $this->parameterProvider->getScriptUrl()
+            . GeneralUtility::implodeArrayForUrl('', $this->parameterProvider->getUrlParameters([]));
+
+        $markup = [];
+        $markup[] = '<form method="post" action="' . htmlspecialchars($action) . '" style="padding-bottom: 15px;">';
+        $markup[] = '   <div class="input-group">';
+        $markup[] = '       <input class="form-control" type="text" name="searchWord" value="'
+            . htmlspecialchars($searchWord) . '">';
+        $markup[] = '       <span class="input-group-btn">';
+        $markup[] = '           <button class="btn btn-default" type="submit">'
+            . htmlspecialchars(
+                $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:search')
+            )
+            . '</button>';
+        $markup[] = '       </span>';
+        $markup[] = '   </div>';
+        $markup[] = '</form>';
+        return implode(LF, $markup);
+    }
+
+    /**
      * @return LanguageService
      */
     protected function getLanguageService()

@@ -16,9 +16,8 @@
  */
 define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, UserAgent, Event, Util) {
+	function (Plugin, UserAgent, Util) {
 
 	var TYPO3Image = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -81,7 +80,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				this.image = null;
 			}
 			if (this.image) {
-				additionalParameter = '&act=image';
+				additionalParameter = '&act=image&fileUid=' + this.image.getAttribute('data-htmlarea-file-uid');
 			}
 			this.openContainerWindow(
 				buttonId,
@@ -95,8 +94,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				),
 				this.makeUrlFromModulePath(this.imageModulePath, additionalParameter)
 			);
-			var self = this;
-			Event.one(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'drop.TYPO3Image', function (event) { return self.onDrop(event); });
 			return false;
 		},
 
@@ -111,25 +108,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		},
 
 		/**
-		 * Handlers for drag and drop operations
-		 */
-		onDrop: function (event) {
-			if (UserAgent.isWebKit) {
-				this.editor.iframe.onDrop(event);
-			}
-			// IE 11 needs the event to complete before the dialog gets closed, otherwise the image is always inserted at the end of body
-			var self = this;
-			window.setTimeout(function () {
-				self.close();
-			}, 50);
-			return true;
-		},
-
-		/**
 		 * Remove the event listeners
 		 */
 		removeListeners: function () {
-			Event.off(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, '.TYPO3Image');
 		},
 
 		/**

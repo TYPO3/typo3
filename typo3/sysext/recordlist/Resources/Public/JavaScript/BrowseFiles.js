@@ -58,8 +58,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Lega
 	 */
 	BrowseFiles.Selector = {
 		// Toggle selection button is pressed
-		toggle: function(event) {
-			event.preventDefault();
+		toggle: function(e) {
+			e.preventDefault();
 			var items = BrowseFiles.Selector.getItems();
 			if (items.length) {
 				items.each(function(position, item) {
@@ -68,8 +68,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Lega
 			}
 		},
 		// Import selection button is pressed
-		handle: function(event) {
-			event.preventDefault();
+		handle: function(e) {
+			e.preventDefault();
 			var items = BrowseFiles.Selector.getItems();
 			var selectedItems = [];
 			if (items.length) {
@@ -100,8 +100,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Lega
 	$(function() {
 		$.extend(BrowseFiles.elements, $('body').data('elements'));
 
-		$('[data-close]').on('click', function (event) {
-			event.preventDefault();
+		$('[data-close]').on('click', function (e) {
+			e.preventDefault();
 			BrowseFiles.File.insertElement('file_' + $(this).data('fileIndex'), $(this).data('close'));
 		});
 
