@@ -24,6 +24,12 @@ foreach ($htmlAreaRteContextHelpFiles as $key => $file) {
 }
 unset($htmlAreaRteContextHelpFiles);
 
+if (TYPO3_MODE === 'BE') {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RteImageSelector']['hooks']['editImageHandler'] = [
+        'handler' => \TYPO3\CMS\Rtehtmlarea\ImageHandler\EditImageHandler::class
+    ];
+}
+
 // Extend TYPO3 User Settings Configuration
 if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
     $GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], array(

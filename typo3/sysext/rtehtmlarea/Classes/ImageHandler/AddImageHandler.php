@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Recordlist\Browser;
+namespace TYPO3\CMS\Rtehtmlarea\ImageHandler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,9 +14,13 @@ namespace TYPO3\CMS\Recordlist\Browser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -26,23 +30,50 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
+use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
+use TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController;
 
-/**
- * Browser for files
- */
-class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
+class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInterface
 {
     /**
-     * When you click a folder name/expand icon to see the content of a certain file folder,
-     * this value will contain the path of the expanded file folder.
-     * If the value is NOT set, then it will be restored from the module session data.
-     * Example value: "/www/htdocs/typo3/32/3dsplm/fileadmin/css/"
+     * Current mode: One of 'magic' or 'plain'
      *
+     * @var string
+     */
+    protected $mode;
+
+    /**
+     * @var SelectImageController
+     */
+    protected $selectImageController;
+
+    /**
+     * Relevant for RTE mode "plain": the maximum width an image must have to be selectable.
+     *
+     * @var int
+     */
+    protected $plainMaxWidth;
+
+    /**
+     * Relevant for RTE mode "plain": the maximum height an image must have to be selectable.
+     *
+     * @var int
+     */
+    protected $plainMaxHeight;
+
+    /**
      * @var string|NULL
      */
     protected $expandFolder;
+
+    /**
+     * @var string
+     */
+    protected $defaultClass;
 
     /**
      * @var Folder
@@ -57,8 +88,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $elements = array();
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     protected $searchWord;
 
     /**
@@ -67,53 +98,83 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $fileRepository;
 
     /**
-     * @return void
+     * URL of current request
+     *
+     * @var string
      */
-    protected function initialize()
-    {
-        parent::initialize();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
-        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-    }
+    protected $thisScript = '';
 
     /**
-     * @return void
+     * @var IconFactory
      */
-    protected function initVariables()
+    protected $iconFactory;
+
+    /**
+     * Initialize the handler
+     *
+     * @param AbstractLinkBrowserController $linkBrowser
+     * @param string $identifier
+     * @param array $configuration Page TSconfig
+     *
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
-        parent::initVariables();
+        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
         $this->expandFolder = GeneralUtility::_GP('expandFolder');
         $this->searchWord = (string)GeneralUtility::_GP('searchWord');
-    }
 
-    /**
-     * Session data for this class can be set from outside with this method.
-     *
-     * @param mixed[] $data Session data array
-     * @return array[] Session data and boolean which indicates that data needs to be stored in session because it's changed
-     */
-    public function processSessionData($data)
-    {
-        if ($this->expandFolder !== null) {
-            $data['expandFolder'] = $this->expandFolder;
-            $store = true;
-        } else {
-            $this->expandFolder = $data['expandFolder'];
-            $store = false;
+        if ($identifier !== 'plain' && $identifier !== 'magic') {
+            throw new \InvalidArgumentException('The given identifier "' . $identifier . '" is not supported by this handler."', 1455499720);
         }
-        return array($data, $store);
+        if (!$linkBrowser instanceof SelectImageController) {
+            throw new \InvalidArgumentException('The given $linkBrowser must be of type SelectImageController."', 1455499721);
+        }
+        $this->mode = $identifier;
+        $this->selectImageController = $linkBrowser;
+
+        $buttonConfiguration = $linkBrowser->getButtonConfiguration();
+        $this->plainMaxWidth = empty($buttonConfiguration['options.']['plain.']['maxWidth'])
+            ? 640
+            : $buttonConfiguration['options.']['plain.']['maxWidth'];
+        $this->plainMaxHeight = empty($buttonConfiguration['options.']['plain.']['maxHeight'])
+            ? 680
+            : $buttonConfiguration['options.']['plain.']['maxHeight'];
+
+        $this->getLanguageService()->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
+
     }
 
     /**
-     * @return string HTML content
+     * Render the link handler
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return string
      */
-    public function render()
+    public function render(ServerRequestInterface $request)
     {
+        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/AddImage');
+
         $backendUser = $this->getBackendUser();
 
         // The key number 3 of the bparams contains the "allowed" string. Disallowed is not passed to
         // the element browser at all but only filtered out in TCEMain afterwards
-        $allowedFileExtensions = GeneralUtility::trimExplode(',', explode('|', $this->bparams)[3], true);
+        $bparams = explode('|', $this->selectImageController->getUrlParameters()['bparams']);
+        if (isset($bparams[3])) {
+            $allowedFileExtensions = GeneralUtility::trimExplode(',', $bparams[3], true);
+        } else {
+            $allowedFileExtensions = GeneralUtility::trimExplode(
+                ',',
+                $this->mode === 'plain'
+                    ? SelectImageController::PLAIN_MODE_IMAGE_FILE_EXTENSIONS
+                    : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                true
+            );
+        }
         if (!empty($allowedFileExtensions) && $allowedFileExtensions[0] !== 'sys_file' && $allowedFileExtensions[0] !== '*') {
             // Create new filter object
             $filterObject = GeneralUtility::makeInstance(FileExtensionFilter::class);
@@ -164,7 +225,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
 
         // Getting flag for showing/not showing thumbnails:
-        $noThumbs = $backendUser->getTSConfigVal('options.noThumbsInEB');
+        $noThumbs = $backendUser->getTSConfigVal('options.noThumbsInRTEimageSelect');
         $_MOD_SETTINGS = array();
         if (!$noThumbs) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
@@ -184,11 +245,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $files = '';
         }
 
-        $this->initDocumentTemplate();
-        // Starting content:
-        $content = $this->doc->startPage('TBE file selector');
-        $content .= $this->doc->getFlashMessages();
-
+        $content = '';
         // Insert the upload form on top, if so configured
         if ($backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
             $content .= $uploadForm;
@@ -208,6 +265,15 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 			</table>
 			</div>
 			';
+        // Add help message
+        switch ($this->mode) {
+            case 'plain':
+                $content .= sprintf($this->getLanguageService()->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
+                break;
+            case 'magic':
+                $content .= sprintf($this->getLanguageService()->getLL('magicImage_msg'));
+                break;
+        }
         // Adding create folder + upload forms if applicable:
         if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
             $content .= $uploadForm;
@@ -215,9 +281,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $content .= $createFolder;
         // Add some space
         $content .= '<br /><br />';
-        // Ending page, returning content:
-        $content .= $this->doc->endPage();
-        return $this->doc->insertStylesAndJS($content);
+
+        return $content;
     }
 
     /**
@@ -283,9 +348,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 );
                 $pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
                 $clickIcon = '<img src="' . $imageUrl . '"'
-                    . ' width="' . $processedFile->getProperty('width') . '"'
-                    . ' height="' . $processedFile->getProperty('height') . '"'
-                    . ' hspace="5" vspace="5" border="1" />';
+                             . ' width="' . $processedFile->getProperty('width') . '"'
+                             . ' height="' . $processedFile->getProperty('height') . '"'
+                             . ' hspace="5" vspace="5" border="1" />';
             } else {
                 $clickIcon = '';
                 $pDim = '';
@@ -363,6 +428,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         return $out;
     }
 
+
     /**
      * Get a list of Files in a folder filtered by extension
      *
@@ -405,7 +471,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
             $addParams = GeneralUtility::implodeArrayForUrl('', $this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]));
             $thumbNailCheck = '<div class="checkbox" style="padding:5px 0 15px 0"><label for="checkDisplayThumbs">'
-                . BackendUtility::getFuncCheck(
+                              . BackendUtility::getFuncCheck(
                     '',
                     'SET[displayThumbs]',
                     $_MOD_SETTINGS['displayThumbs'],
@@ -413,7 +479,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     $addParams,
                     'id="checkDisplayThumbs"'
                 )
-                . $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', true) . '</label></div>';
+                              . $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', true) . '</label></div>';
             $out .= $thumbNailCheck;
         } else {
             $out .= '<div style="padding-top: 15px;"></div>';
@@ -424,48 +490,27 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Checks if the given file is selectable in the filelist.
      *
-     * By default all files are selectable. This method may be overwritten in child classes.
+     * In "plain" RTE mode only image files with a maximum width and height are selectable.
      *
      * @param FileInterface $file
-     * @param mixed[] $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
+     * @param array $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
      * @return bool TRUE if file is selectable.
      */
     protected function fileIsSelectableInFileList(FileInterface $file, array $imgInfo)
     {
-        return true;
+        return $this->mode !== 'plain'
+               || (GeneralUtility::inList(SelectImageController::PLAIN_MODE_IMAGE_FILE_EXTENSIONS, strtolower($file->getExtension()))
+                && $imgInfo[0] <= $this->plainMaxWidth && $imgInfo[1] <= $this->plainMaxHeight);
     }
 
     /**
      * @return string[] Array of body-tag attributes
      */
-    protected function getBodyTagAttributes()
+    public function getBodyTagAttributes()
     {
         return [
-            'data-mode' => 'file',
             'data-elements' => json_encode($this->elements)
         ];
-    }
-
-    /**
-     * @param array $values Array of values to include into the parameters
-     * @return string[] Array of parameters which have to be added to URLs
-     */
-    public function getUrlParameters(array $values)
-    {
-        return [
-            'mode' => 'file',
-            'expandFolder' => isset($values['identifier']) ? $values['identifier'] : $this->expandFolder,
-            'bparams' => $this->bparams
-        ];
-    }
-
-    /**
-     * @param array $values Values to be checked
-     * @return bool Returns TRUE if the given values match the currently selected item
-     */
-    public function isCurrentlySelectedItem(array $values)
-    {
-        return false;
     }
 
     /**
@@ -475,6 +520,104 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     public function getScriptUrl()
     {
-        return $this->thisScript;
+        return $this->selectImageController->getScriptUrl();
+    }
+
+    /**
+     * Provides an array or GET parameters for URL generation
+     *
+     * @param array $values Array of values to include into the parameters or which might influence the parameters
+     *
+     * @return string[] Array of parameters which have to be added to URLs
+     */
+    public function getUrlParameters(array $values)
+    {
+        $parameters = [
+            'expandFolder' => isset($values['identifier']) ? $values['identifier'] : (string)$this->expandFolder
+        ];
+        return array_merge($this->selectImageController->getUrlParameters($values), $parameters);
+    }
+
+    /**
+     * Return TRUE if the handler supports to update a link.
+     *
+     * This is useful for file or page links, when only attributes are changed.
+     *
+     * @return bool
+     */
+    public function isUpdateSupported()
+    {
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLinkAttributes()
+    {
+        return [];
+    }
+
+    /**
+     * @param string[] $fieldDefinitions Array of link attribute field definitions
+     * @return string[]
+     */
+    public function modifyLinkAttributes(array $fieldDefinitions)
+    {
+        return $fieldDefinitions;
+    }
+
+    /**
+     * Check if given value is currently the selected item
+     *
+     * This method is only used in the page tree.
+     *
+     * @param array $values Values to be checked
+     *
+     * @return bool Returns TRUE if the given values match the currently selected item
+     */
+    public function isCurrentlySelectedItem(array $values)
+    {
+        return false;
+    }
+
+    /**
+     * Checks if this is the handler for the given link
+     *
+     * The handler may store this information locally for later usage.
+     *
+     * @param array $linkParts Link parts as returned from TypoLinkCodecService
+     *
+     * @return bool
+     */
+    public function canHandleLink(array $linkParts)
+    {
+        return false;
+    }
+
+    /**
+     * Format the current link for HTML output
+     *
+     * @return string
+     */
+    public function formatCurrentUrl()
+    {
+        return '';
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

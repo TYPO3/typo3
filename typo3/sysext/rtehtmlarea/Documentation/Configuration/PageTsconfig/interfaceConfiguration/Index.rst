@@ -1346,57 +1346,35 @@ buttons.image.TYPO3Browser.disabled
 
 
 
-.. _buttons-image-options-removeitems:
+.. _buttons-image-options-imageHandler:
 
-buttons.image.options.removeItems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         buttons.image.options.removeItems
-
-   Data type
-         list of strings
-
-   Description
-         List of tab items to remove from the dialog of the image button.
-         Possible tab items are: magic, plain, dragdrop, image
-
-         Note: If key image is in the list, the properties editing tab for any
-         current image will not be presented.
-
-         Note: More tabs may be provided by extensions such as DAM.
-
-         Note: dragdrop is not available in Opera.
-
-
-
-.. _buttons-image-options-orderitems:
-
-buttons.image.options.orderItems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+buttons.image.options.imageHandler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: table-row
 
    Property
-         buttons.image.options.orderItems
+         buttons.image.options.imageHandler
 
    Data type
-         list of strings
+         array
 
    Description
-         List of tab items in the order in which they should appear in the
-         dialogue window. Items not in the list will not be available.
+         Configuration of available image handlers.
 
-         Note: Items that are removed will not be available (see
-         buttons.image.options.removeItems).
+         Extension developers may add their own handler by adding their own
+         entry to this array.
+         The syntax is:
 
-         Note: The default order is: image, magic, plain, dragdrop.
+         .. code:: ts
+            <handler-id> {
+               handler = Vendor\Ext\YourHandlerClass::class
+               label = LLL:EXT:ext/Resources/Private/Language/locallang.xlf:the_label
+               displayAfter = image
+               scanAfter = image
+            }
 
-         Note: The list may include items added by extensions such as DAM.
-
-         Note: The default order may be modified by extensions such as DAM.
+         For a detailed description of the options, please refer to the link handler documentation.
 
 
 
@@ -1490,30 +1468,6 @@ buttons.image.options.plain.maxHeight
          Maximum height of selectable plain images in pixels.
 
          Default: 680
-
-
-
-.. _buttons-image-title-usedamcolumn:
-
-buttons.image.title.useDAMColumn
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         buttons.image.title.useDAMColumn
-
-   Data type
-         string
-
-   Description
-         Name of the column of the tx\_dam table that will be used to set the
-         image title attribute.
-
-         Default: caption
-
-         Note: This property is ignored if integration of DAM with the htmlArea
-         RTE is not set in the DAM extension.
 
 
 
@@ -2015,7 +1969,7 @@ buttons.acronym.recursive
 .. _buttons-acronym-lockbeusertodbmounts:
 
 buttons.acronym.lockBeUserToDBmounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: table-row
 
