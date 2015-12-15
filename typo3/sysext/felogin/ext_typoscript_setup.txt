@@ -38,66 +38,85 @@ plugin.tx_felogin_pi1 {
 
 	welcomeHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	welcomeMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 
 	successHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	successMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 
 	logoutHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	logoutMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 
 	errorHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	errorMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 
 	forgotHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	forgotMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	forgotErrorMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	forgotResetMessageEmailSentMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	changePasswordNotValidMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	changePasswordTooShortMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	changePasswordNotEqualMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 
 	changePasswordHeader_stdWrap {
 		wrap = <h3>|</h3>
+		htmlSpecialChars = 1
 	}
 	changePasswordMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
 	}
 	changePasswordDoneMessage_stdWrap {
 		wrap = <div>|</div>
+		htmlSpecialChars = 1
     }
 
 	cookieWarning_stdWrap {
 		wrap = <p style="color:red; font-weight:bold;">|</p>
+		htmlSpecialChars = 1
 	}
 
 	# stdWrap for fe_users fields used in Messages

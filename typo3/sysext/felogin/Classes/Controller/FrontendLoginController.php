@@ -175,7 +175,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Process the redirect
         if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
             if (!$this->frontendController->fe_user->isCookieSet() && $this->userIsLoggedIn) {
-                $content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning', '', true), $this->conf['cookieWarning_stdWrap.']);
+                $content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning'), $this->conf['cookieWarning_stdWrap.']);
             } else {
                 // Add hook for extra processing before redirect
                 if (
@@ -248,7 +248,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotErrorMessage_stdWrap.']);
                 } else {
                     $markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(
-                        $this->pi_getLL('ll_forgot_reset_message_emailSent', '', true),
+                        $this->pi_getLL('ll_forgot_reset_message_emailSent'),
                         $this->conf['forgotResetMessageEmailSentMessage_stdWrap.']
                     );
                 }
@@ -915,7 +915,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function getDisplayText($label, $stdWrapArray = array())
     {
-        $text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_' . $label, '', true), $stdWrapArray);
+        $text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_' . $label), $stdWrapArray);
         $replace = $this->getUserFieldMarkers();
         return strtr($text, $replace);
     }
