@@ -6311,6 +6311,9 @@ class ContentObjectRenderer
                 // Resource was not found
                 return $linkText;
             }
+        // Disallow direct javascript: links
+        } elseif (strtolower(trim($linkHandlerKeyword)) === 'javascript') {
+            return $linkText;
         } else {
             $linkParameter = $linkParameterParts['url'];
         }
