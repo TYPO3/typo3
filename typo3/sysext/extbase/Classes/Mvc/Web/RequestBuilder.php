@@ -53,7 +53,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var string
      */
-    protected $defaultControllerName;
+    protected $defaultControllerName = '';
 
     /**
      * The default format of the response object
@@ -136,7 +136,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->extensionName = $configuration['extensionName'];
         $this->pluginName = $configuration['pluginName'];
-        $this->defaultControllerName = current(array_keys($configuration['controllerConfiguration']));
+        $this->defaultControllerName = (string)current(array_keys($configuration['controllerConfiguration']));
         $this->allowedControllerActions = array();
         foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
             $this->allowedControllerActions[$controllerName] = $controllerActions['actions'];
@@ -199,7 +199,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
     protected function resolveControllerName(array $parameters)
     {
         if (!isset($parameters['controller']) || $parameters['controller'] === '') {
-            if ($this->defaultControllerName === '') {
+            if (empty($this->defaultControllerName)) {
                 throw new MvcException('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
             }
             return $this->defaultControllerName;
