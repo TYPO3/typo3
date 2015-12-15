@@ -82,14 +82,14 @@ class SuggestWizard
 			<div class="input-group">
 				<span class="input-group-addon">' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . '</span>
 				<input type="search" class="t3-form-suggest form-control"
-					placeholder="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '"
-					data-fieldname="' . $fieldname . '"
-					data-table="' . $table . '"
-					data-field="' . $field . '"
-					data-uid="' . $row['uid'] . '"
-					data-pid="' . $row['pid'] . '"
-					data-fieldtype="' . $type . '"
-					data-minchars="' . $minChars . '"
+					placeholder="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord', true) . '"
+					data-fieldname="' . htmlspecialchars($fieldname) . '"
+					data-table="' . htmlspecialchars($table) . '"
+					data-field="' . htmlspecialchars($field) . '"
+					data-uid="' . htmlspecialchars($row['uid']) . '"
+					data-pid="' . (int)$row['pid'] . '"
+					data-fieldtype="' . htmlspecialchars($type) . '"
+					data-minchars="' . (int)$minChars . '"
 					data-recorddata="' . htmlspecialchars($jsRow) . '"
 				/>
 			</div>

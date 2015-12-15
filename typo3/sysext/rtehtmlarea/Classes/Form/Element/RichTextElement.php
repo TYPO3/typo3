@@ -653,16 +653,16 @@ class RichTextElement extends AbstractFormElement
         $jsArray[] = 'if (typeof configureEditorInstance === "undefined") {';
         $jsArray[] = '	configureEditorInstance = new Object();';
         $jsArray[] = '}';
-        $jsArray[] = 'configureEditorInstance["' . $this->domIdentifier . '"] = function() {';
+        $jsArray[] = 'configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . '] = function() {';
         $jsArray[] = 'if (typeof RTEarea === "undefined" || typeof HTMLArea === "undefined") {';
         $jsArray[] = '	window.setTimeout("configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']();", 40);';
         $jsArray[] = '} else {';
-        $jsArray[] = 'editornumber = "' . $this->domIdentifier . '";';
+        $jsArray[] = 'editornumber = ' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ';';
         $jsArray[] = 'RTEarea[editornumber] = new Object();';
         $jsArray[] = 'RTEarea[editornumber].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";';
         $jsArray[] = 'RTEarea[editornumber].number = editornumber;';
         $jsArray[] = 'RTEarea[editornumber].deleted = false;';
-        $jsArray[] = 'RTEarea[editornumber].textAreaId = "' . $this->domIdentifier . '";';
+        $jsArray[] = 'RTEarea[editornumber].textAreaId = ' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ';';
         $jsArray[] = 'RTEarea[editornumber].id = "RTEarea" + editornumber;';
         $jsArray[] = 'RTEarea[editornumber].RTEWidthOverride = "'
             . (isset($backendUser->uc['rteWidth']) && trim($backendUser->uc['rteWidth'])
@@ -765,7 +765,7 @@ class RichTextElement extends AbstractFormElement
         $jsArray[] = 'RTEarea.initEditor(editornumber);';
         $jsArray[] = '}';
         $jsArray[] = '}';
-        $jsArray[] = 'configureEditorInstance["' . $this->domIdentifier . '"]();';
+        $jsArray[] = 'configureEditorInstance[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']();';
 
         $this->resultArray['additionalJavaScriptPost'][] =  implode(LF, $jsArray);
     }
@@ -1125,8 +1125,8 @@ class RichTextElement extends AbstractFormElement
     protected function addOnSubmitJavaScriptCode()
     {
         $onSubmitCode = array();
-        $onSubmitCode[] = 'if (RTEarea["' . $this->domIdentifier . '"]) {';
-        $onSubmitCode[] =    'document.editform["' . $this->data['parameterArray']['itemFormElName'] . '"].value = RTEarea["' . $this->domIdentifier . '"].editor.getHTML();';
+        $onSubmitCode[] = 'if (RTEarea[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ']) {';
+        $onSubmitCode[] =    'document.editform[' . GeneralUtility::quoteJSvalue($this->data['parameterArray']['itemFormElName']) . '].value = RTEarea[' . GeneralUtility::quoteJSvalue($this->domIdentifier) . '].editor.getHTML();';
         $onSubmitCode[] = '} else {';
         $onSubmitCode[] =    'OK = 0;';
         $onSubmitCode[] = '};';

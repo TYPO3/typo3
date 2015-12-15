@@ -1178,8 +1178,8 @@ class EditDocumentController extends AbstractModule
                                     // @todo: looks ugly
                                     $html .= LF
                                         . '<input type="hidden"'
-                                        . ' name="data[' . $table . '][' . $formData['databaseRow']['uid'] . '][pid]"'
-                                        . ' value="' . $formData['databaseRow']['pid'] . '" />';
+                                        . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($formData['databaseRow']['uid']) . '][pid]"'
+                                        . ' value="' . (int)$formData['databaseRow']['pid'] . '" />';
                                     $this->newC++;
                                 }
 
