@@ -827,7 +827,7 @@ tt_content.table {
 		cellspacing =
 	}
 	20.innerStdWrap.wrap = |
-	20.innerStdWrap.parseFunc = < lib.parseFunc
+	20.innerStdWrap.htmlSpecialChars = 1
 
 	20.stdWrap {
 		editIcons = tt_content: cols, bodytext, [layout], [table_bgColor|table_border|table_cellspacing|table_cellpadding]
