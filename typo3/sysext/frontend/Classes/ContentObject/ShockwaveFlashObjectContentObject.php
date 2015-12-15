@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains SWFOBJECT class object.
  *
@@ -77,6 +80,10 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
 		$conf['attributes.'] = array_merge((array) $typeConf['default.']['attributes.'], (array) $conf['attributes.']);
 		$conf['embedParams'] = 'flashvars, params, attributes';
+		if (isset($conf['flashvars.']['file'])) {
+			$conf['flashvars.']['fileHash'] = GeneralUtility::hmac($conf['flashvars.']['file'], 'flashvars');
+			$conf['flashvars.']['fileAuthPrefix'] = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+		}
 		// Hook for manipulating the conf array, it's needed for some players like flowplayer
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'] as $classRef) {

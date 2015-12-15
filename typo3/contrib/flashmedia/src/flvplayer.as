@@ -1,29 +1,79 @@
-﻿//--------------------------------------------------------------------------
-// initial variables that might be useful to change
-//--------------------------------------------------------------------------
+﻿import flash.external.ExternalInterface;
 
-// Stage variables
+/**
+ * General variable assignment
+ * _root.* properties as taken from HTTP request arguments
+ */
+
+var file:String = '';
+var fileHash:String = '';
+var fileAuthScriptUrl:String = 'index.php?eID=validateHash&scope=flashvars';
+var fileAuthUrl:String;
+
+var makePre:Boolean = false;
+var autoStart:Boolean = false;
+var smoothing:Boolean;
+var deblocking:Number;
+var volume:Number;
+var prebuffer:Number;
+var preview:Boolean = true;
+var previewSeek:Number;
+var clickAlpha:Number;
+var clickText:String;
+
+file = _root.file;
+fileHash = _root.fileHash;
+fileAuthUrl = getCurrentClientDomain() + _root.fileAuthPrefix + fileAuthScriptUrl;
+
+makePre = (_root.previewSeek === 'true');
+autoStart = (_root.autoPlay === 'true');
+smoothing = (!_root.preview || _root.preview === 'true');
+deblocking = int(_root.deblocking) || 5;
+volume = int(_root.volume) || 50;
+prebuffer = int(_root.prebuffer) || 5;
+preview = (!_root.preview || _root.preview === 'true');
+previewSeek = int(_root.previewSeek) || 0.1;
+clickAlpha = int(_root.clickAlpha) ||65;
+clickText = _root.clickText || '';
+
+/**
+ * Defines movie stage, screen and displaying concerns.
+ */
 
 Stage.scaleMode = "noScale";
 Stage.align = "TL";
 
-// Add link to rightclick menu
-
 var newMenu:ContextMenu = new ContextMenu();
-newMenu.hideBuiltInItems();
-newMenu.customItems.push(new ContextMenuItem("TYPO3 Media Player...",goTo));
-this.menu = newMenu;
-function goTo() { getURL("http://typo3.org"); };
+var stageSize:Object = new Object();
 
-//_root.allowFullScreen = "true";
+stageSize.onResize = function() {
+	w = Stage.width;
+	h = Stage.height;
+	setDims(w, h);
+};
+Stage.addListener(stageSize);
+
+// toggle for the width and height of the video
+// you can change them to the width and height you want
+var w = Stage.width;
+var h = Stage.height;
+
+newMenu.hideBuiltInItems();
+newMenu.customItems.push(
+	new ContextMenuItem('TYPO3 Media Player...', function() {
+		getURL('http://typo3.org');
+	})
+);
+this.menu = newMenu;
+
 var screenMode:String = 'normal';
 
 function fullScreen()
 {
 	if(screenMode == 'normal')
 	{
-      Stage["displayState"] = "fullScreen";
-	  screenMode = 'full';
+		Stage["displayState"] = "fullScreen";
+		screenMode = 'full';
 	}
 	else
 	{
@@ -32,102 +82,70 @@ function fullScreen()
 	}
 }
 
-var stageSize:Object = new Object();
-stageSize.onResize = function() 
-{
-    w = Stage.width;
- h = Stage.height;
- setDims(w,h);                                
-}
-Stage.addListener(stageSize);
+/**
+ * URL and callback validation
+ */
 
-
-if(_root.previewSeek == 'true')
-{
- makePre = true;
-}
-else
-{
- makePre = false;
-}
-
-
-// toggle for which file to play if none was set in html
-// you can change the 'test.flv' in your filename
-if(!_root.file) {
-	file = "video.flv";
-} else {
-	file = _root.file;
+/**
+ * @param {string} url
+ * @return boolean
+ */
+function validateScheme(url) {
+	return (
+		url.indexOf('://') === -1
+		|| url.indexOf('/') === 0
+		|| url.indexOf('ftp://') === 0
+		|| url.indexOf('http://') === 0
+		|| url.indexOf('https://') === 0
+	);
 }
 
-// toggle for autostarting the video
-// you can change the 'true' in 'false'
-if(_root.autoPlay == "true") {
-	autoStart = true;
-} else {
-	autoStart = false;
+/**
+ * @param {String} addition
+ * @param {String} value
+ * @param {String} expected
+ * @param {Function} callback
+ * @return boolean
+ */
+function validateHash(addition:String, value:String, expected:String, callback:Function) {
+	if (!validateScheme(fileAuthUrl)) {
+		return false;
+	}
+
+	var loader:LoadVars = new LoadVars();
+	loader.onLoad = function(success:Boolean) {
+		if (success) {
+			if (loader.hash === fileHash) {
+				callback.call(null);
+			}
+		}
+	};
+	loader.load(fileAuthUrl + '&value=' + value + '&addition=' + addition);
 }
 
-if(!_root.smoothing) {
-	smoothing = true;
-} else {
-	smoothing = _root.smoothing;
+/**
+ * @return string
+ */
+function getCurrentClientDomain() {
+	var url = ExternalInterface.call('window.location.protocol.toString')
+		+ '//' + ExternalInterface.call('window.location.host.toString');
+	return url;
 }
-if(!_root.deblocking) {
-	deblocking = 5;
-} else {
-	deblocking = _root.deblocking;
-}
-if(!_root.volume) {
-	volume = 80;
-} else {
-	volume = _root.volume;
-}
-if(!_root.prebuffer) {
-	prebuffer = 5;
-} else {
-	prebuffer = _root.prebuffer;
-}
-if(!_root.preview || _root.preview == "true") {
-	preview = true;
-}
-if(!_root.previewSeek) {
-	previewSeek = 0.1
-} else {
-	previewSeek = _root.previewSeek
-}
-
-if (!_root.clickAlpha) {
-	clickAlpha = 65;
-} else {
-	clickAlpha = _root.clickAlpha;
-}
-
-if (!_root.clickText) {
-	clickText = "";
-} else {
-	clickText = _root.clickText;
-}
-
-// toggle for the width and height of the video
-// you can change them to the width and height you want
-w = Stage.width;
-h = Stage.height;
 
 //--------------------------------------------------------------------------
 // stream setup and functions
 //--------------------------------------------------------------------------
 
 // create and set netstream
-nc = new NetConnection();
+var nc = new NetConnection();
 nc.connect(null);
-ns = new NetStream(nc);
+var ns = new NetStream(nc);
 ns.setBufferTime(2);
 
 // create and set sound object
 this.createEmptyMovieClip("snd", 0);
 snd.attachAudio(ns);
-audio = new Sound(snd);
+var audio = new Sound(snd);
 
 //attach videodisplay
 videoDisplay.attachVideo(ns);
@@ -135,15 +153,10 @@ videoDisplay.attachVideo(ns);
 // Retrieve duration meta data from netstream
 ns.onMetaData = function(obj) {
 	this.totalTime = obj.duration;
-	// these three lines were used for automatically sizing
-	// it is now done by sizing the video to stage dimensions
-	// if(obj.height > 0 && obj.height < Stage.height-20) {
-	// setDims(obj.width, obj.height);
-	// }
 };
 
 // retrieve status messages from netstream
-ns.onStatus = function(object) { 
+ns.onStatus = function(object) {
 	if(object.code == "NetStream.Play.Stop") {
 		// rewind and pause on when movie is finished
 		ns.seek(0);
@@ -162,11 +175,11 @@ ns.onStatus = function(object) {
 		showClick(true);
 	}
 	if (info.code == "NetStream.Buffer.Full") {
-    	if(makePre) {
+		if(makePre) {
 			ns.seek(previewSeek);
 			makePre = false;
-    }
-   }
+		}
+	}
 };
 
 
@@ -176,15 +189,7 @@ ns.onStatus = function(object) {
 
 function showClick(show) {
 	if (show) {
-		if (_root.click) {
-			if (!alignedClick) {
-				clickImage.loadMovie(_root.click);
-				clickImage._alpha = clickAlpha;
-			}
-			clickImage._visible = true;
-		} else {
-			playText.text = clickText;
-		}
+		playText.text = clickText;
 	} else {
 		if (playText.text.length) {
 			playText.text = "";
@@ -198,10 +203,15 @@ function showClick(show) {
 // play the movie and hide playbutton
 function playMovie() {
 	if(!isStarted) {
-		audio.setVolume(volume);
-		ns.setBufferTime(prebuffer);
-		ns.play(file);
-		isStarted = true;
+		var delegate = function() {
+			audio.setVolume(volume);
+			ns.setBufferTime(prebuffer);
+			ns.play(file);
+			isStarted = true;
+		};
+		if (validateScheme(unescape(file))) {
+			validateHash('flashvars', file, fileHash, delegate);
+		}
 	} else {
 		showClick(false);
 		ns.pause();
@@ -216,7 +226,7 @@ function pauseMovie() {
 	ns.pause();
 	playBut._visible = true;
 	pauseBut._visible = false;
-};
+}
 
 // video click action
 videoBg.onPress = function() {
@@ -293,7 +303,7 @@ progressBar.loa.onPress = function() {
 };
 
 // stop playhead scrubbing
-progressBar.loa.onRelease = progressBar.loa.onReleaseOutside = function () { 
+progressBar.loa.onRelease = progressBar.loa.onReleaseOutside = function () {
 	delete this.onEnterFrame;
 	pauseBut._visible == false ? videoDisplay.pause() : null;
 };
@@ -359,10 +369,10 @@ function setDims(w,h) {
 	playText1._y = h/2-20;
 	playText2._x = playText1._x + 1;
 	playText2._y = playText1._y + 1;
-		
+
 	// resize the controlbar items .. 
 	if(_root.fs == "true") {
-		colorBar._y = playBut._y = pauseBut._y = progressBar._y = FSBut._y = volumeBar._y = h-30; 
+		colorBar._y = playBut._y = pauseBut._y = progressBar._y = FSBut._y = volumeBar._y = h-30;
 		playBut._x = pauseBut._x = colorBar._x = w/2-150;
 		colorBar._width = 300;
 		colorBar._alpha = 25;
@@ -376,7 +386,7 @@ function setDims(w,h) {
 		progressBar._width = w-56;
 		colorBar._width = w;
 		volumeBar._x = w-38;
-		if(_root.allowFullScreen == "true") { 
+		if(_root.allowFullScreen == "true") {
 			FSBut._visible = true;
 			progressBar._width -=17;
 			FSBut._x = w-55;
@@ -401,24 +411,26 @@ setDims(w,h);
 pauseBut._visible = false;
 videoDisplay.smoothing = smoothing;
 videoDisplay.deblocking = deblocking;
-if (autoStart == true) {
-	playMovie();
-} else {
-	showClick(true);
-	if (preview) {
-		inPreview = true;
-		audio.setVolume(0);
-		ns.play(file);
-		ns.seek(previewSeek);
+
+function main() {
+	if (autoStart == true) {
+		playMovie();
 	} else {
-		if(_root.image) { 
-			imageStr = _root.image;
-		} else {
-			imageStr = file.substring(0,file.length-3)+"jpg";
-			if (imageStr.substring(0,2) == "..") {
-				imageStr = imageStr.substring(3);
+		showClick(true);
+		if (preview) {
+			var delegate = function() {
+				inPreview = true;
+				audio.setVolume(0);
+				ns.play(file);
+				ns.seek(previewSeek);
+			};
+			if (validateScheme(unescape(file))) {
+				validateHash('flashvars', file, fileHash, delegate);
 			}
 		}
-		imageClip.loadMovie(imageStr);
 	}
 }
+
+main();
+
+

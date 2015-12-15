@@ -201,6 +201,7 @@ if (TYPO3_MODE === 'FE') {
 	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider('TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider');
 	// Register eID provider for ExtDirect for the frontend
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = PATH_tslib . 'extdirecteid.php';
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['validateHash'] = PATH_tslib . 'PHP/ValidateHashEID.php';
 }
 // Register search keys
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
