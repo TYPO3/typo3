@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+
 /**
  * Test case
  *
@@ -679,6 +682,23 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				''
 			)
 		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function deletePagesOnRootLevelIsDenied() {
+		/** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $dataHandlerMock */
+		$dataHandlerMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('canDeletePage', 'newlog2'));
+		$dataHandlerMock
+			->expects($this->never())
+			->method('canDeletePage');
+		$dataHandlerMock
+			->expects($this->once())
+			->method('newlog2')
+			->with('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+
+		$dataHandlerMock->deletePages(0);
 	}
 
 	/**
