@@ -4890,7 +4890,9 @@ class DataHandler
                     $versionState = VersionState::cast($verRec['t3ver_state']);
                     if ($versionState->equals(VersionState::MOVE_POINTER)) {
                         $versionMovePlaceholder = BackendUtility::getMovePlaceholder($table, $uid, 'uid', $verRec['t3ver_wsid']);
-                        $this->deleteEl($table, $versionMovePlaceholder['uid'], true, $forceHardDelete);
+                        if (!empty($versionMovePlaceholder)) {
+                            $this->deleteEl($table, $versionMovePlaceholder['uid'], true, $forceHardDelete);
+                        }
                     }
                 }
             }
@@ -5073,6 +5075,11 @@ class DataHandler
      */
     public function deletePages($uid, $force = false, $forceHardDelete = false)
     {
+        $uid = (int)$uid;
+        if ($uid === 0) {
+               $this->newlog2('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+               return;
+        }
         // Getting list of pages to delete:
         if ($force) {
             // Returns the branch WITHOUT permission checks (0 secures that)
@@ -5146,9 +5153,11 @@ class DataHandler
     protected function copyMovedRecordToNewLocation($table, $uid)
     {
         if ($this->BE_USER->workspace > 0) {
-            // Check move placeholder at workspace
+            $originalRecord = BackendUtility::getRecord($table, $uid);
             $movePlaceholder = BackendUtility::getMovePlaceholder($table, $uid);
-            if ($movePlaceholder !== false) {
+            // Check whether target page to copied to is different to current page
+            // Cloning on the same page is superfluous and does not help at all
+            if (!empty($originalRecord) && !empty($movePlaceholder) && (int)$originalRecord['pid'] !== (int)$movePlaceholder['pid']) {
                 // If move placeholder exists, copy to new location
                 // This will create a New placeholder on the new location
                 // and a version for this new placeholder

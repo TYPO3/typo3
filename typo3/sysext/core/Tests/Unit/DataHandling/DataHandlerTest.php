@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +33,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $singletonInstances = array();
 
     /**
-     * @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
@@ -667,7 +668,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $table = 'phpunit_dummy';
 
-        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(
             DataHandler::class,
             array('dummy')
@@ -718,6 +719,24 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function deletePagesOnRootLevelIsDenied()
+    {
+        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $dataHandlerMock */
+        $dataHandlerMock = $this->getMock(DataHandler::class, ['canDeletePage', 'newlog2']);
+        $dataHandlerMock
+            ->expects($this->never())
+            ->method('canDeletePage');
+        $dataHandlerMock
+            ->expects($this->once())
+            ->method('newlog2')
+            ->with('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+
+        $dataHandlerMock->deletePages(0);
+    }
+
+    /**
+     * @test
+     */
     public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete()
     {
         $table = $this->getUniqueId('foo_');
@@ -735,7 +754,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '1' => array('table' => $this->getUniqueId('bar_'), 'id' => 67)
         );
 
-        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $mockDataHandler */
+        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $mockDataHandler */
         $mockDataHandler = $this->getAccessibleMock(DataHandler::class, array('getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'), array(), '', false);
         $mockDataHandler->expects($this->once())->method('getInlineFieldType')->will($this->returnValue('field'));
         $mockDataHandler->expects($this->once())->method('createRelationHandlerInstance')->will($this->returnValue($mockRelationHandler));
