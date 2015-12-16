@@ -149,7 +149,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                 $newCells = array();
                 for ($a = 0; $a < $cols; $a++) {
                     if (trim($cells[$a]) === '') {
-                        $cells[$a] = '&nbsp;';
+                        $cells[$a] = ' ';
                     }
                     $cellAttribs = $noStyles ? '' : ($a > 0 && $cols - 1 == $a ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');
                     if ($headerPos == 'top' && !$k || $headerPos == 'left' && !$a) {
