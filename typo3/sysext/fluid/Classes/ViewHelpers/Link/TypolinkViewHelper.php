@@ -101,7 +101,7 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
         // Merge the $parameter with other arguments
         $typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
 
-        // array(param1 -> value1, param2 -> value2) --> "param1=value1 param2=>value2" for typolink.ATagParams
+        // array(param1 -> value1, param2 -> value2) --> param1="value1" param2="value2" for typolink.ATagParams
         $extraAttributes = array();
         foreach ($additionalAttributes as $attributeName => $attributeValue) {
             $extraAttributes[] = $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
@@ -109,7 +109,7 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
         $aTagParams = implode(' ', $extraAttributes);
 
         // If no link has to be rendered, the inner content will be returned as such
-        $content = $renderChildrenClosure();
+        $content = (string)$renderChildrenClosure();
 
         if ($parameter) {
             /** @var ContentObjectRenderer $contentObject */

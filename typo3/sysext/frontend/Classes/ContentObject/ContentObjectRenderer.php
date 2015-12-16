@@ -2392,6 +2392,7 @@ class ContentObjectRenderer
      */
     public function stdWrap($content = '', $conf = array())
     {
+        $content = (string)$content;
         // If there is any hook object, activate all of the process and override functions.
         // The hook interface ContentObjectStdWrapHookInterface takes care that all 4 methods exist.
         if ($this->stdWrapHookObjects) {
@@ -6406,6 +6407,7 @@ class ContentObjectRenderer
      */
     public function typoLink($linktxt, $conf)
     {
+        $linktxt = (string)$linktxt;
         $tsfe = $this->getTypoScriptFrontendController();
 
         $LD = array();
@@ -7124,6 +7126,7 @@ class ContentObjectRenderer
      */
     public function getMailTo($mailAddress, $linktxt)
     {
+        $mailAddress = (string)$mailAddress;
         if ((string)$linktxt === '') {
             $linktxt = $mailAddress;
         }
