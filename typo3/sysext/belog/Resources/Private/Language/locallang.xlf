@@ -276,6 +276,15 @@
 			<trans-unit id="action_3_1" xml:space="preserve">
 				<source><![CDATA[Clear&nbsp;Cache]]></source>
 			</trans-unit>
+			<trans-unit id="type_4" xml:space="preserve">
+				<source>EXTENSION</source>
+			</trans-unit>
+			<trans-unit id="type_5" xml:space="preserve">
+				<source>ERROR</source>
+			</trans-unit>
+			<trans-unit id="action_5_0" xml:space="preserve">
+				<source>Error handler</source>
+			</trans-unit>
 			<trans-unit id="type_254" xml:space="preserve">
 				<source>SETTING</source>
 			</trans-unit>
