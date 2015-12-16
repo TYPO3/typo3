@@ -2136,7 +2136,7 @@ class ContentObjectRenderer
      * but only the splitting of the template in various parts. So if you
      * want only one cache-entry per template, make sure you always pass the
      * exact same set of marker/subpart keys. Else you will be flooding the
-     * users cache table.
+     * user's cache table.
      *
      * This function takes three kinds of substitutions in one:
      * $markContentArray is a regular marker-array where the 'keys' are
@@ -2176,16 +2176,13 @@ class ContentObjectRenderer
         // Finding keys and check hash:
         $sPkeys = array_keys($subpartContentArray);
         $wPkeys = array_keys($wrappedSubpartContentArray);
-        $aKeys = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
-        if (empty($aKeys)) {
+        $keysToReplace = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
+        if (empty($keysToReplace)) {
             $timeTracker->pull();
             return $content;
         }
-        asort($aKeys);
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array(
-            $content,
-            $aKeys
-        )));
+        asort($keysToReplace);
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array($content, $keysToReplace)));
         if ($this->substMarkerCache[$storeKey]) {
             $storeArr = $this->substMarkerCache[$storeKey];
             $timeTracker->setTSlogMessage('Cached', 0);
@@ -2210,31 +2207,26 @@ class ContentObjectRenderer
                 }
 
                 $storeArr = array();
-                $result = preg_match_all('/###([\w:-]+)###/', $content, $usedMarkers);
-                if ($result !== false && !empty($usedMarkers[1])) {
-                    $tagArray = array_flip($usedMarkers[1]);
-
-                    $aKeys = array_flip($aKeys);
-                    $bKeys = array();
+                // search all markers in the content
+                $result = preg_match_all('/###([^#](?:[^#]*+|#{1,2}[^#])+)###/', $content, $markersInContent);
+                if ($result !== false && !empty($markersInContent[1])) {
+                    $keysToReplaceFlipped = array_flip($keysToReplace);
+                    $regexKeys = array();
+                    $wrappedKeys = array();
                     // Traverse keys and quote them for reg ex.
-                    foreach ($tagArray as $tV => $tK) {
-                        $tV = '###' . $tV . '###';
-                        if (isset($aKeys[$tV])) {
-                            $bKeys[$tK] = preg_quote($tV, '/');
+                    foreach ($markersInContent[1] as $key) {
+                        if (isset($keysToReplaceFlipped['###' . $key . '###'])) {
+                            $regexKeys[] = preg_quote($key, '/');
+                            $wrappedKeys[] = '###' . $key . '###';
                         }
                     }
-                    $regex = '/' . implode('|', $bKeys) . '/';
-                    // Doing regex's
-                    if (preg_match_all($regex, $content, $keyList) !== false) {
-                        $storeArr['c'] = preg_split($regex, $content);
-                        $storeArr['k'] = $keyList[0];
-                    }
-                    if (!empty($storeArr)) {
-                        // Setting cache:
-                        $this->substMarkerCache[$storeKey] = $storeArr;
-                        // Storing the cached data:
-                        $this->getTypoScriptFrontendController()->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
-                    }
+                    $regex = '/###(?:' . implode('|', $regexKeys) . ')###/';
+                    $storeArr['c'] = preg_split($regex, $content); // contains all content parts around markers
+                    $storeArr['k'] = $wrappedKeys; // contains all markers incl. ###
+                    // Setting cache:
+                    $this->substMarkerCache[$storeKey] = $storeArr;
+                    // Storing the cached data:
+                    $this->getTypoScriptFrontendController()->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
                 }
                 $timeTracker->setTSlogMessage('Parsing', 0);
             }
@@ -2247,14 +2239,21 @@ class ContentObjectRenderer
             $content = '';
             // Traversing the keyList array and merging the static and dynamic content
             foreach ($storeArr['k'] as $n => $keyN) {
+                // add content before marker
                 $content .= $storeArr['c'][$n];
                 if (!is_array($valueArr[$keyN])) {
+                    // fetch marker replacement from $markContentArray or $subpartContentArray
                     $content .= $valueArr[$keyN];
                 } else {
-                    $content .= $valueArr[$keyN][(int)$wSCA_reg[$keyN] % 2];
+                    if (!isset($wSCA_reg[$keyN])) {
+                        $wSCA_reg[$keyN] = 0;
+                    }
+                    // fetch marker replacement from $wrappedSubpartContentArray
+                    $content .= $valueArr[$keyN][$wSCA_reg[$keyN] % 2];
                     $wSCA_reg[$keyN]++;
                 }
             }
+            // add remaining content
             $content .= $storeArr['c'][count($storeArr['k'])];
         }
         $timeTracker->pull();
