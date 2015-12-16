@@ -40,7 +40,7 @@ class UserFileMountService
         $storageUid = (int)$PA['row']['base'][0];
         if (!$storageUid) {
             // If working for sys_file_collection table
-            $storageUid = (int)$PA['row']['storage'];
+            $storageUid = (int)$PA['row']['storage'][0];
         }
         if ($storageUid > 0) {
             /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
