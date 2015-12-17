@@ -229,7 +229,7 @@ class T3editorElement extends AbstractFormElement
                 $parserfile = array($relPath . 'tokenizetyposcript.js', $relPath . 'parsetyposcript.js');
                 break;
             case self::MODE_JAVASCRIPT:
-                $parserfile = array('tokenizetyposcript.js', 'parsejavascript.js');
+                $parserfile = array('tokenizejavascript.js', 'parsejavascript.js');
                 break;
             case self::MODE_CSS:
                 $parserfile = array('parsecss.js');
