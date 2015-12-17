@@ -4598,11 +4598,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'uidInList' => '42',
                     'pidInList' => 43,
                     'where' => 'tt_content.cruser_id=5',
-                    'andWhere' => 'tt_content.crdate>0',
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ),
-                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND tt_content.crdate>0 GROUP BY tt_content.title ORDER BY tt_content.sorting',
+                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 GROUP BY tt_content.title ORDER BY tt_content.sorting',
             ),
             array(
                 array(
@@ -4626,11 +4625,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'uidInList' => 42,
                     'pidInList' => 43,
                     'where' => 'tt_content.cruser_id=5',
-                    'andWhere' => 'tt_content.crdate>0',
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ),
-                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND (tt_content.sys_language_uid = 13) AND tt_content.crdate>0 AND tt_content.deleted=0 AND tt_content.hidden=0 AND tt_content.startdate<=4242 AND (tt_content.enddate=0 OR tt_content.enddate>4242) GROUP BY tt_content.title ORDER BY tt_content.sorting',
+                'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND (tt_content.sys_language_uid = 13) AND tt_content.deleted=0 AND tt_content.hidden=0 AND tt_content.startdate<=4242 AND (tt_content.enddate=0 OR tt_content.enddate>4242) GROUP BY tt_content.title ORDER BY tt_content.sorting',
             ),
             array(
                 array(

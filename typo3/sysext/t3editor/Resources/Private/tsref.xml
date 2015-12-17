@@ -515,14 +515,6 @@ Used by the Direct Mail module in TYPO3 to segmentize a page by categories.]]></
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="jumpurl_enable" type="boolean">
-			<description><![CDATA[Jumpurl is a concept where external links are redirected from the index_ts.php script, which first logs which url it was. This logging of external links is only interesting if you use the internal stat-table in TYPO3.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="jumpurl_mailto_disable" type="boolean">
-			<description><![CDATA[Disables the use of jumpUrl when linking to email-adresses.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
 		<property name="language" type="string">
 			<description><![CDATA[Language key. See stdWrap.lang for more information.
 Select between:
@@ -2417,7 +2409,7 @@ Notice: This works only for special=language.]]></description>
 
 Example:
 This results in a menu, where the first two items are skipped starting with item number 3:
-  begin = 3  
+  begin = 3
 
 Notice: Affects all sub menus as well. (See "minItems" for notice)]]></description>
 			<default><![CDATA[
@@ -2800,7 +2792,7 @@ This property works with normal menus, sectionsIndex menus and special-menus of 
 
 Example:
 This results in a menu, where the first two items are skipped starting with item number 3:
-  begin = 3  
+  begin = 3
 
 Takes precedence over HMENU.begin]]></description>
 			<default><![CDATA[
@@ -6158,27 +6150,6 @@ If this is set, it'll substitute the use of the thumbs-script for display of thu
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="jumpurl" type="filelink.jumpurl">
-			<description><![CDATA[boolean
-			Decides if the link should call the script with the jumpurl parameter in order to register any clicks in the stat.
-This has the advantage that any clicks on the file will register in the stat.
-The disadvantage is, that users cant right-click and select "Save Target As" in the browser.
-
-Extra properties:
-.secure (boolean)If set, then the file pointed to by jumpurl is NOT redirected to, but rather it's read from the file and returned with a correct header. This option adds a hash and locationData to the url and there MUST be access to the record in order to download the file. If the fileposition on the server is furthermore secured by a .htaccess file preventing ANY access, you've got secure download here!
-
-.secure.mimeTypes (list of mimetypes, syntax [ext] = [mimetype]
-
-Example:
-.secure = 1
-.secure.mimeTypes = pdf=application/pdf, doc=application/msword
-
-.parameter = [string/stdWrap]; By default the jumpurl link will use the current pid and typeNum.
-If you need alternative values (e.g. for logging) you can specify them here.
-For options see typolink.parameter]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="labelStdWrap" type="stdWrap">
 			<description><![CDATA[stdWrap options for the label (by default the label is the filename) before being wrapped with the A-tags.
 Use this to eg. import another label from a database field or such.]]></description>
@@ -6222,41 +6193,6 @@ Use this to eg. import another label from a database field or such.]]></descript
 		</property>
 		<property name="wrap" type="wrap">
 			<description><![CDATA[Wraps the links.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="filelink.jumpurl">
-		<property name="secure" type="boolean">
-			<description><![CDATA[If set, then the file pointed to by jumpurl is NOT redirected to, but rather it's read from the file and returned with a correct header. This option adds a hash and locationData to the url and there MUST be access to the record in order to download the file. If the fileposition on the server is furthermore secured by a .htaccess file preventing ANY access, you've got secure download here!
-
-  .secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
-
-Example:
-
-jumpurl.secure = 1
-
-jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="secure.mimetypes" type="string">
-			<description><![CDATA[.secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
-
-Example:
-
-jumpurl.secure = 1
-
-jumpurl.secure.mimeTypes = pdf=application/pdf, doc=application/msword]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="parameter" type="stdWrap">
-			<description><![CDATA[string/stdWrap
-			By default the jumpurl link will use the current pid and typeNum.
-If you need alternative values (e.g. for logging) you can specify them here.
-For options see typolink.parameter
-			]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7401,17 +7337,6 @@ lib.carViews {
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="offsetWrap" type="intList">
-			<description><![CDATA[This wraps the input in a table with columns to the left and top that offsets the content by the values of x,y.
-
-.tableParams / .tdParams /stdWrap
-- used to manipulate tableParams/tdParams (default width=99%)  of the offset.
-
-.stdWrap
-- stdWrap properties wrapping the offsetWrap'ed output]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="outerWrap" type="stdWrap">
 			<description><![CDATA[Wraps the complete content]]></description>
 			<default><![CDATA[
@@ -7653,16 +7578,6 @@ Uses "renderCharset" for the operation.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="tableStyle" type="tableStyle">
-			<description><![CDATA[Wraps content with table-tags]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="textStyle" type="textStyle">
-			<description><![CDATA[Wraps content in font-tags]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="trim" type="boolean">
 			<description><![CDATA[PHP-function trim(); Removes whitespace around value]]></description>
 			<default><![CDATA[
@@ -7744,49 +7659,6 @@ Example:
 ]]></default>
 		</property>
 	</type>
-	<type id="tableStyle">
-		<property name="align" type="stdWrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="border" type="stdWrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="cellpadding" type="stdWrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="cellspacing" type="stdWrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="color.default" type="string">
-			<description><![CDATA[[default],[1],[2] = User defined
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="color.field" type="string">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="params" type="string">
-			<description><![CDATA[HTML table parameters
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="tags" extends="array">
 		<property name="[myHtmlTag]" type="cObject">
 			<description><![CDATA[Every entry in the Array... corresponds to a tag, that will be parsed. The elements MUST be in lowercase.
@@ -7812,86 +7684,6 @@ tags.bold.stripNL = 1]]></description>
 ]]></default>
 		</property>
 	</type>
-	<type id="textStyle">
-		<property name="align.field" type="align">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="altWrap" type="wrap">
-			<description><![CDATA[If this value is set, the wrapping with a font-tag based on font,size and color is NOT done. Rather the element is wrapped with this value.
-Use it to assign a stylesheet by setting this value to eg.
-
-<div class="text"> | </div>]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="color.1" type="string">
-			<description><![CDATA[[1],[2] = User defined]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="color.default" type="stdWrap">
-			<description><![CDATA[[default] = User defined]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="color.field" type="string">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array
-
-See "content.php" for the colors available]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="face.default" type="stdWrap">
-			<description><![CDATA[[default] = User defined]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="face.field" type="string">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array
-
-[1] = "Times New Roman";
-[2] = "Verdana,Arial,Helvetica,Sans serif";
-[3] = "Arial,Helvetica,Sans serif";]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="properties.default" type="stdWrap">
-			<description><![CDATA[[default] = User defined (This value will be used whenever ".field" is false!)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="properties.field" type="int">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array
-
-The property values goes like this:
-bit 0: <B>
-bit 1: <I>
-bit 2: <U>
-bit 3: (uppercase)
-
-Thus a value of 5 would result in bold and underlined text]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="size.default" type="stdWrap">
-			<description><![CDATA[[default] = User defined]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="size.field" type="string">
-			<description><![CDATA[Set to fieldname from the $cObj->data-array
-
-[1] = 1;
-[2] = 2;
-[3] = 3;
-[10] = "+1";
-[11] = "-1";]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="typolink">
 		<property name="ATagBeforeWrap" type="boolean">
 			<description><![CDATA[If set, the link is first wrapped with ".wrap" and then the <A>-tag.]]></description>
@@ -7909,17 +7701,6 @@ class="board"]]></description>
 		<property name="JSwindow_params" type="string">
 			<description><![CDATA[Preset values for opening the window. This example lists almost all possible attributes:
 status=1,menubar=1,scrollbars=1,resizable=1,location=1,directories=1,toolbar=1]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="jumpurl" type="filelink.jumpurl">
-			<description><![CDATA[boolean
-			Decides if the link should call the script with the jumpurl parameter in order to register any clicks in the stat. This works the same as "filelink.jumpurl", see more details there.
-Example:
-typolink.jumpurl =1
-typolink.jumpurl.secure =1
-typolink.jumpurl.secure.mimeTypes = list of mimetypes, syntax [ext] = [mimetype]
-]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
