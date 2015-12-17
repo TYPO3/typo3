@@ -3145,7 +3145,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                     $cfgArray['config']['username'],
                     $cfgArray['config']['password'],
                     $cfgArray['config']['database'],
-                    isset($cfgArray['config']['port']) ? $cfgArray['config']['port'] : ''
+                    isset($cfgArray['config']['port']) ? $cfgArray['config']['port'] : null
                 );
                 if ($connected) {
                     // Set handler instance:
