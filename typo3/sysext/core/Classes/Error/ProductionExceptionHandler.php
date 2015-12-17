@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 
 /**
  * A quite exception handler which catches but ignores any exception.
@@ -71,7 +70,15 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	 * @return void
 	 */
 	public function echoExceptionCLI(\Exception $exception) {
+		$filePathAndName = $exception->getFile();
+		$exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
 		$this->writeLogEntries($exception, self::CONTEXT_CLI);
+		echo '
+Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . LF;
+		echo 'thrown in file ' . $filePathAndName . LF;
+		echo 'in line ' . $exception->getLine() . '
+
+';
 		die(1);
 	}
 
