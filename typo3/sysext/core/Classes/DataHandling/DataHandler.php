@@ -4786,6 +4786,9 @@ class DataHandler {
 	public function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
 		$row = BackendUtility::getRecord($table, $uid, '*', '', FALSE);
+		if (empty($row)) {
+			return;
+		}
 		foreach ($row as $field => $value) {
 			$this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'], $undeleteRecord);
 		}
