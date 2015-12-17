@@ -996,7 +996,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $urlParameters = [
                             'edit' => [
                                 $table => [
-                                    $this->id => 'edit'
+                                    $row['uid'] => 'edit'
                                 ]
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
