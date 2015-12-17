@@ -32,12 +32,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 	 */
 	SplitButtons.initializeSaveHandling = function() {
 		var elements = [
+			'button[form]',
 			'button[name^="_save"]',
 			'a[data-name^="_save"]',
 			'button[name="CMD"][value^="save"]',
 			'a[data-name="CMD"][data-value^="save"]'
 		].join(',');
-		$(document).on('click', elements, function(e) {
+		$('.t3js-module-docheader').on('click', elements, function(e) {
 			var $me = $(this),
 				linkedForm = $me.attr('form') || $me.attr('data-form') || null,
 				$form = linkedForm ? $('#' + linkedForm) : $me.closest('form'),
