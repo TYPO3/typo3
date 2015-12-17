@@ -575,4 +575,23 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #0'));
     }
 
+    /**
+     * @test
+     * @see DataSet/createPlaceholdersAndDeleteDraftParentPage.csv
+     */
+    public function createPlaceholdersAndDeleteDraftParentPage()
+    {
+        parent::createPlaceholdersAndDeleteDraftParentPage();
+        $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
+    }
+
+    /**
+     * @test
+     * @see DataSet/createPlaceholdersAndDeleteLiveParentPage.csv
+     */
+    public function createPlaceholdersAndDeleteLiveParentPage()
+    {
+        parent::createPlaceholdersAndDeleteLiveParentPage();
+        $this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
+    }
 }

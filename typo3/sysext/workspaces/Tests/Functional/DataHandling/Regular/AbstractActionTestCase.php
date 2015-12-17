@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular;
  */
 abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
 {
+    const VALUE_ParentPageId = 88;
     const VALUE_PageId = 89;
     const VALUE_PageIdTarget = 90;
     const VALUE_PageIdWebsite = 1;
@@ -461,4 +462,35 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->backendUser->workspace = static::VALUE_WorkspaceId;
     }
 
+    /**
+     * Creates new and move placeholders for pages and deleted the parent page in draft workspace.
+     */
+    public function createPlaceholdersAndDeleteDraftParentPage()
+    {
+        $this->backendUser->uc['recursiveDelete'] = true;
+
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
+        $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, array('title' => 'Testing #1'));
+        $newTableIds = $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
+        $this->recordIds['deletedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_ParentPageId];
+    }
+
+    /**
+     * Creates new and move placeholders for pages and deleted the parent page in live workspace.
+     */
+    public function createPlaceholdersAndDeleteLiveParentPage()
+    {
+        $this->backendUser->uc['recursiveDelete'] = true;
+
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
+        $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, array('title' => 'Testing #1'));
+
+        // Switch to live workspace
+        $this->backendUser->workspace = 0;
+
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
+
+        // Switch back to draft workspace
+        $this->backendUser->workspace = static::VALUE_WorkspaceId;
+    }
 }
