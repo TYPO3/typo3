@@ -5282,6 +5282,9 @@ class DataHandler
     {
         $conf = $GLOBALS['TCA'][$table]['columns'];
         $row = BackendUtility::getRecord($table, $uid, '*', '', false);
+        if (empty($row)) {
+            return;
+        }
         foreach ($row as $field => $value) {
             $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'], $undeleteRecord);
         }
