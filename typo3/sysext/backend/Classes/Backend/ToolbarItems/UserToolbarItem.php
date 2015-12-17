@@ -127,7 +127,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $dropdown[] = '<li class="reset-dropdown">';
         $dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top">';
         $dropdown[] = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline') . ' ';
-        $dropdown[] = $languageService->sL($buttonLabel, true);
+        $dropdown[] = htmlspecialchars($languageService->sL($buttonLabel));
         $dropdown[] = '</a>';
         $dropdown[] = '</li>';
 

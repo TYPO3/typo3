@@ -118,7 +118,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', true);
+        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks'));
         return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render('inline') . '</span>';
     }
 
@@ -130,9 +130,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $languageService = $this->getLanguageService();
-        $shortcutGroup = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksGroup', true);
-        $shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', true);
-        $shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', true);
+        $shortcutGroup = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksGroup'));
+        $shortcutEdit = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit'));
+        $shortcutDelete = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete'));
         $editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit" ' . $shortcutEdit . '>'
             . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render('inline') . '</a>';
         $deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete" title="' . $shortcutDelete . '">'
@@ -185,9 +185,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
 
         if (count($shortcutMenu) === 2) {
             // No shortcuts added yet, show a small help message how to add shortcuts
-            $title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', true);
+            $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks'));
             $icon = '<span title="' . $title . '">' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render('inline') . '</span>';
-            $label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription', true));
+            $label = str_replace('%icon%', $icon, htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription')));
             $compiledShortcutMenu = '<p>' . $label . '</p>';
         } else {
             $compiledShortcutMenu = implode(LF, $shortcutMenu);
@@ -431,17 +431,17 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             $groupId = (int)$groupId;
             $label = $groupLabel;
             if ($groupLabel == '1') {
-                $label = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId), true);
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId)));
                 if (empty($label)) {
                     // Fallback label
-                    $label = $languageService->getLL('bookmark_group', true) . ' ' . abs($groupId);
+                    $label = htmlspecialchars($languageService->getLL('bookmark_group')) . ' ' . abs($groupId);
                 }
             }
             if ($groupId < 0) {
                 // Global group
-                $label = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', true) . ': ' . (!empty($label) ? $label : abs($groupId));
+                $label = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global')) . ': ' . (!empty($label) ? $label : abs($groupId));
                 if ($groupId === self::SUPERGLOBAL_GROUP) {
-                    $label = $languageService->getLL('bookmark_global', true) . ': ' . $languageService->getLL('bookmark_all', true);
+                    $label = htmlspecialchars($languageService->getLL('bookmark_global')) . ': ' . htmlspecialchars($languageService->getLL('bookmark_all'));
                 }
             }
             $this->shortcutGroups[$groupId] = $label;
@@ -561,10 +561,10 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $shortcut['pid'] = BackendUtility::getRecord($shortcut['table'], $shortcut['recordid'])['pid'];
                 if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
                     $shortcut['type'] = 'edit';
-                    $shortcutNamePrepend = $languageService->getLL('shortcut_edit', true);
+                    $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_edit'));
                 } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
                     $shortcut['type'] = 'new';
-                    $shortcutNamePrepend = $languageService->getLL('shortcut_create', true);
+                    $shortcutNamePrepend = htmlspecialchars($languageService->getLL('shortcut_create'));
                 }
             } else {
                 $shortcut['type'] = 'other';
@@ -790,7 +790,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     {
         $databaseConnection = $this->getDatabaseConnection();
         $languageService = $this->getLanguageService();
-        $titleAttribute = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', true);
+        $titleAttribute = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut'));
         switch ($row['module_name']) {
             case 'xMOD_alt_doc.php':
                 $table = $shortcut['table'];

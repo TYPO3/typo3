@@ -60,7 +60,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
         return '
 			<form class="typo3-topbar-navigation-search t3js-topbar-navigation-search live-search-wrapper" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search', true) . '" id="live-search-box" autocomplete="off">
+					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
 				</div>
 			</form>
 			<div class="dropdown-menu" role="menu"></div>
