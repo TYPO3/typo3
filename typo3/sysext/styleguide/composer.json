@@ -32,6 +32,6 @@
     }
   },
   "require": {
-    "typo3/cms-core": ">=7.6.0,<8.0"
+    "typo3/cms-core": ">=7.6.1,<8.0"
   }
 }
