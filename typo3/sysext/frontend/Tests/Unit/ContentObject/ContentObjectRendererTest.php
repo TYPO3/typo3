@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  *
@@ -46,9 +49,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$this->tsfe->page = array();
-		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
+		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Tests\\Unit\\ContentObject\\Fixtures\\PageRepositoryFixture', array('getRawRecord'));
 		$this->tsfe->sys_page = $sysPageMock;
 		$GLOBALS['TSFE'] = $this->tsfe;
+		$GLOBALS['TT'] = new NullTimeTracker();
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
@@ -3395,6 +3399,218 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $this->cObj->typoLink($linkText, $configuration));
 	}
 
+	/**
+	 * @return array
+	 */
+	public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider() {
+		return array(
+			'no markers defined' => array(
+				'dummy content with ###UNREPLACED### marker',
+				array(),
+				array(),
+				array(),
+				'dummy content with ###UNREPLACED### marker',
+				false,
+				false
+			),
+			'no markers used' => array(
+				'dummy content with no marker',
+				array(
+					'###REPLACED###' => '_replaced_'
+				),
+				array(),
+				array(),
+				'dummy content with no marker',
+				true,
+				false
+			),
+			'one marker' => array(
+				'dummy content with ###REPLACED### marker',
+				array(
+					'###REPLACED###' => '_replaced_'
+				),
+				array(),
+				array(),
+				'dummy content with _replaced_ marker'
+			),
+			'one marker with lots of chars' => array(
+				'dummy content with ###RE.:##-=_()LACED### marker',
+				array(
+					'###RE.:##-=_()LACED###' => '_replaced_'
+				),
+				array(),
+				array(),
+				'dummy content with _replaced_ marker'
+			),
+			'markers which are special' => array(
+				'dummy ###aa##.#######A### ######',
+				array(
+					'###aa##.###' => 'content ',
+					'###A###' => 'is',
+					'######' => '-is not considered-'
+				),
+				array(),
+				array(),
+				'dummy content #is ######'
+			),
+			'two markers in content, but more defined' => array(
+				'dummy ###CONTENT### with ###REPLACED### marker',
+				array(
+					'###REPLACED###' => '_replaced_',
+					'###CONTENT###' => 'content',
+					'###NEVERUSED###' => 'bar'
+				),
+				array(),
+				array(),
+				'dummy content with _replaced_ marker'
+			),
+			'one subpart' => array(
+				'dummy content with ###ASUBPART### around some text###ASUBPART###.',
+				array(),
+				array(
+					'###ASUBPART###' => 'some other text'
+				),
+				array(),
+				'dummy content with some other text.'
+			),
+			'one wrapped subpart' => array(
+				'dummy content with ###AWRAPPEDSUBPART### around some text###AWRAPPEDSUBPART###.',
+				array(),
+				array(),
+				array(
+					'###AWRAPPEDSUBPART###' => array(
+						'more content',
+						'content'
+					)
+				),
+				'dummy content with more content around some textcontent.'
+			),
+			'one subpart with markers, not replaced recursively' => array(
+				'dummy ###CONTENT### with ###ASUBPART### around ###SOME### text###ASUBPART###.',
+				array(
+					'###CONTENT###' => 'content',
+					'###SOME###' => '-this should never make it into output-',
+					'###OTHER_NOT_REPLACED###' => '-this should never make it into output-'
+				),
+				array(
+					'###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text'
+				),
+				array(),
+				'dummy content with some ###OTHER_NOT_REPLACED### text.'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider substituteMarkerArrayCachedReturnsExpectedContentDataProvider
+	 *
+	 * @param string $content
+	 * @param array $markContentArray
+	 * @param array $subpartContentArray
+	 * @param array $wrappedSubpartContentArray
+	 * @param string $expectedContent
+	 * @param bool $shouldQueryCache
+	 * @param bool $shouldStoreCache
+	 */
+	public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent, $shouldQueryCache = true, $shouldStoreCache = true) {
+		/** @var \TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
+		$pageRepo = $this->tsfe->sys_page;
+		$pageRepo->resetCallCount();
+
+		$resultContent = $this->cObj->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+
+		$this->assertSame((int)$shouldQueryCache, $pageRepo::$getHashCallCount, 'getHash call count mismatch');
+		$this->assertSame((int)$shouldStoreCache, $pageRepo::$storeHashCallCount, 'storeHash call count mismatch');
+		$this->assertSame($expectedContent, $resultContent);
+	}
+
+	/**
+	 * @test
+	 */
+	public function substituteMarkerArrayCachedRetrievesCachedValueFromRuntimeCache() {
+		/** @var \TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
+		$pageRepo = $this->tsfe->sys_page;
+		$pageRepo->resetCallCount();
+
+		$content = 'Please tell me this ###FOO###.';
+		$markContentArray = array(
+			'###FOO###' => 'foo',
+			'###NOTUSED###' => 'blub'
+		);
+		$storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array($content, array_keys($markContentArray))));
+		$this->cObj->substMarkerCache[$storeKey] = array(
+			'c' => array(
+				'Please tell me this ',
+				'.'
+			),
+			'k' => array(
+				'###FOO###'
+			),
+		);
+		$resultContent = $this->cObj->substituteMarkerArrayCached($content, $markContentArray);
+		$this->assertSame(0, $pageRepo::$getHashCallCount);
+		$this->assertSame('Please tell me this foo.', $resultContent);
+	}
+
+	/**
+	 * @test
+	 */
+	public function substituteMarkerArrayCachedRetrievesCachedValueFromDbCache() {
+		/** @var \TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
+		$pageRepo = $this->tsfe->sys_page;
+		$pageRepo->resetCallCount();
+
+		$content = 'Please tell me this ###FOO###.';
+		$markContentArray = array(
+			'###FOO###' => 'foo',
+			'###NOTUSED###' => 'blub'
+		);
+		$pageRepo::$dbCacheContent = array(
+			'c' => array(
+				'Please tell me this ',
+				'.'
+			),
+			'k' => array(
+				'###FOO###'
+			),
+		);
+		$resultContent = $this->cObj->substituteMarkerArrayCached($content, $markContentArray);
+		$this->assertSame(1, $pageRepo::$getHashCallCount, 'getHash call count mismatch');
+		$this->assertSame(0, $pageRepo::$storeHashCallCount, 'storeHash call count mismatch');
+		$this->assertSame('Please tell me this foo.', $resultContent);
+	}
+
+	/**
+	 * @test
+	 */
+	public function substituteMarkerArrayCachedStoresResultInCaches() {
+		/** @var \TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
+		$pageRepo = $this->tsfe->sys_page;
+		$pageRepo->resetCallCount();
+
+		$content = 'Please tell me this ###FOO###.';
+		$markContentArray = array(
+			'###FOO###' => 'foo',
+			'###NOTUSED###' => 'blub'
+		);
+		$resultContent = $this->cObj->substituteMarkerArrayCached($content, $markContentArray);
+
+		$storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize(array($content, array_keys($markContentArray))));
+		$storeArr = array(
+			'c' => array(
+				'Please tell me this ',
+				'.'
+			),
+			'k' => array(
+				'###FOO###'
+			),
+		);
+		$this->assertSame(1, $pageRepo::$getHashCallCount);
+		$this->assertSame('Please tell me this foo.', $resultContent);
+		$this->assertSame($storeArr, $this->cObj->substMarkerCache[$storeKey]);
+		$this->assertSame(1, $pageRepo::$storeHashCallCount);
+	}
 
 	/**
 	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
