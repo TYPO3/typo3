@@ -333,4 +333,28 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 			->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/createPlaceholdersAndDeleteDraftParentPage.csv
+	 */
+	public function createPlaceholdersAndDeleteDraftParentPage() {
+		// @todo These two log entries could be avoided in DataHandlerHook, but are expected
+		// "[newlog()] Error: You cannot swap versions for a record you do not have access to edit!"
+		$this->expectedErrorLogEntries = 2;
+
+		parent::createPlaceholdersAndDeleteDraftParentPage();
+		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+		$this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/createPlaceholdersAndDeleteLiveParentPage.csv
+	 */
+	public function createPlaceholdersAndDeleteLiveParentPage() {
+		parent::createPlaceholdersAndDeleteLiveParentPage();
+		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+		$this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
+	}
+
 }

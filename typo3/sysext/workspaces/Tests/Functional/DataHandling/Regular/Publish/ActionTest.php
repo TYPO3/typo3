@@ -361,4 +361,14 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 			->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/createPlaceholdersAndDeleteDraftParentPage.csv
+	 */
+	public function createPlaceholdersAndDeleteDraftParentPage() {
+		parent::createPlaceholdersAndDeleteDraftParentPage();
+		$this->actionService->publishRecord(self::TABLE_Page, self::VALUE_ParentPageId);
+		$this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
+	}
+
 }
