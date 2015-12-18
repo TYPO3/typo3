@@ -464,7 +464,7 @@ CREATE TABLE sys_file_collection (
 
 	# for type=folder:
 	storage int(11) DEFAULT '0' NOT NULL,
-	folder text NOT NULL,
+	folder text,
 	recursive tinyint(4) DEFAULT '0' NOT NULL,
 
 	# for type=category:
