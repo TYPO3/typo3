@@ -3382,7 +3382,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								. htmlspecialchars('data[' . $table . '][' . $row['uid'] . '][' . $field . ']' . $formPrefix . '[_TOGGLE]')
 								. '" value="' . ($toggleClosed ? 1 : 0) . '" />
 								</div>';
-							$output = str_replace('/*###REMOVE###*/', GeneralUtility::slashJS(htmlspecialchars(implode('', $this->additionalJS_delete))), $output);
+							$output = str_replace('/*###REMOVE###*/', htmlspecialchars(implode('', $this->additionalJS_delete), ENT_QUOTES), $output);
 							// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized"
 							// according to the data structure. It means that flexform XML will report unclean and
 							// a cleaning operation will remove the recorded togglestates. This is not a fatal problem.
