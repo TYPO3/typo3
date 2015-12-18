@@ -855,4 +855,71 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         unset($expected['processedTca']['columns']['testField']['config']['ds']['sheets']['sTest']);
         $this->assertSame($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function matchFlexformSheetConditionStringsWithLogicalOperatorForFieldsWithDotInName()
+    {
+        $input = [
+            'databaseRow' => [
+                'foo' => 'bar',
+                'testField' => [
+                    'data' => [
+                        'sDEF' => [
+                            'lDEF' => [
+                                'testField' => [
+                                    'vDEF' => [
+                                        0 => '',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'testField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'meta' => [],
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'testField' => [
+                                                    'config' => [
+                                                        'type' => 'input',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    'sTest' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [],
+                                            'sheetTitle' => 'sVideo',
+                                            'displayCond' => [
+                                                'OR' => [
+                                                    'FIELD:sDEF.testField:=:LIST',
+                                                    'FIELD:sDEF.testField:REQ:false',
+                                                ],
+                                            ] ,
+                                        ],
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $this->assertSame($expected, $this->subject->addData($input));
+    }
 }
