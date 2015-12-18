@@ -573,7 +573,6 @@ class GraphicalFunctions
      * @param int $srcHeight Source height
      * @return void
      * @access private
-     * @see \TYPO3\CMS\Backend\Utility\IconUtility::imagecopyresized()
      */
     public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
     {

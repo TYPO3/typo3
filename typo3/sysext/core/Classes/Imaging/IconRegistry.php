@@ -2836,17 +2836,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 }
             }
         }
-        if (!empty($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'])) {
-            foreach ($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $iconIdentifier => $iconFile) {
-                if (StringUtility::beginsWith($iconFile, '../typo3conf/ext/')) {
-                    $iconFile = str_replace('../typo3conf/ext/', 'EXT:', $iconFile);
-                }
-                if (StringUtility::beginsWith($iconFile, 'sysext/')) {
-                    $iconFile = str_replace('sysext/', 'EXT:', $iconFile);
-                }
-                $resultArray[$iconIdentifier] = $iconFile;
-            }
-        }
 
         foreach ($resultArray as $iconIdentifier => $iconFilePath) {
             if (StringUtility::endsWith(strtolower($iconFilePath), 'svg')) {

@@ -1026,22 +1026,6 @@ class Bootstrap
     }
 
     /**
-     * Initialize sprite manager
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function initializeSpriteManager()
-    {
-        // This method is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-        // This method does not log a deprecation message, because it is used only in the request handlers
-        // and would break icons from IconUtility::getSpriteIcon() if we remove it yet.
-        \TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
-        return $this;
-    }
-
-    /**
      * Initialize the Routing for the TYPO3 Backend
      * Loads all routes registered inside all packages and stores them inside the Router
      *

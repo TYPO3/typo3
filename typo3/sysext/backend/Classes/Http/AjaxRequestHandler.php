@@ -140,7 +140,6 @@ class AjaxRequestHandler implements RequestHandlerInterface
             ->checkSslBackendAndRedirectIfNeeded()
             ->initializeBackendRouter()
             ->loadExtensionTables(true)
-            ->initializeSpriteManager()
             ->initializeBackendUser()
             ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
             ->initializeLanguageObject()

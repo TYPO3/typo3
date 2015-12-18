@@ -128,11 +128,6 @@ class DefaultFactory
                         'targetPermission' => $directoryPermission,
                     ),
                     array(
-                        'name' => 'sprites',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
                         'name' => 'temp',
                         'type' => DirectoryNode::class,
                         'targetPermission' => $directoryPermission,

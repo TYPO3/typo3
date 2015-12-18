@@ -12,16 +12,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
         )
     );
 
-    // Setting up auto detection of alternative icons:
-    $GLOBALS['TBE_STYLES']['skinImgAutoCfg'] = array(
-        'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3skin') . 'icons/',
-        'relDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'icons/',
-        'forceFileExtension' => 'gif',
-        // Force to look for PNG alternatives...
-        'iconSizeWidth' => 16,
-        'iconSizeHeight' => 16
-    );
-
     // Changing icon for filemounts, needs to be done here as overwriting the original icon would also change the filelist tree's root icon
     $GLOBALS['TCA']['sys_filemounts']['ctrl']['iconfile'] = 'apps-filetree-mount';
 

@@ -162,9 +162,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($this->controller->isBackendUserLoggedIn()) {
             $GLOBALS['BE_USER']->initializeFrontendEdit();
             if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView) {
-                $this->bootstrap
-                    ->initializeLanguageObject()
-                    ->initializeSpriteManager();
+                $this->bootstrap->initializeLanguageObject();
             }
             if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
                 $GLOBALS['BE_USER']->frontendEdit->initConfigOptions();

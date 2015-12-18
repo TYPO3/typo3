@@ -43,8 +43,6 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
         parent::setUp();
 
         $this->setUpBackendUserFromFixture(1);
-        // Needed to avoid PHP Warnings
-        $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = array();
 
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 

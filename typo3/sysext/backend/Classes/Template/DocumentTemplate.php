@@ -169,15 +169,6 @@ function jumpToUrl(URL) {
 
     // Skinning
     /**
-     * stylesheets from core
-     *
-     * @var array
-     */
-    protected $stylesheetsCore = array(
-        'generatedSprites' => '../typo3temp/sprites/'
-    );
-
-    /**
      * Include these CSS directories from skins by default
      *
      * @var array
@@ -949,10 +940,6 @@ function jumpToUrl(URL) {
     public function getSkinStylesheetDirectories()
     {
         $stylesheetDirectories = array();
-        // Add default core stylesheets
-        foreach ($this->stylesheetsCore as $stylesheetDir) {
-            $stylesheetDirectories[] = $stylesheetDir;
-        }
         // Stylesheets from skins
         // merge default css directories ($this->stylesheetsSkin) with additional ones and include them
         if (is_array($GLOBALS['TBE_STYLES']['skins'])) {

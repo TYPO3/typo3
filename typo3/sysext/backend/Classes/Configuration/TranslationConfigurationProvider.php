@@ -42,10 +42,7 @@ class TranslationConfigurationProvider
 
     /**
      * Returns array of system languages
-     *
-     * The property flagIcon returns a string <flags-xx>. The calling party should call
-     * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
-     * which will represent the flag of this language.
+     * The property flagIcon returns a string <flags-xx>.
      *
      * @param int $pageId Page id (used to get TSconfig configuration setting flag and label for default language)
      * @return array Array with languages (uid, title, ISOcode, flagIcon)
@@ -202,10 +199,6 @@ class TranslationConfigurationProvider
     protected function getDefaultLanguageFlag(array $modSharedTSconfig)
     {
         if (strlen($modSharedTSconfig['properties']['defaultLanguageFlag'])) {
-            // fallback "old iconstyles"
-            if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
-                $modSharedTSconfig['properties']['defaultLanguageFlag'] = str_replace('.gif', '', $modSharedTSconfig['properties']['defaultLanguageFlag']);
-            }
             $defaultLanguageFlag = 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'];
         } else {
             $defaultLanguageFlag = 'empty-empty';
