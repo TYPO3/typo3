@@ -113,6 +113,15 @@ plugin.tx_form {
 					180 = type
 				}
 
+					# defaultHtmlAttributeValues
+					# Used by: frontend, wizard (not implemented right now)
+					# Overwritable by user: FALSE
+					#
+					# The following values are automatically set if there is no entry in the user configured element.
+				defaultHtmlAttributeValues {
+					type = text
+				}
+
 					# partialPath
 					# Used by: frontend, wizard (not implemented right now)
 					# Overwritable by user: TRUE
