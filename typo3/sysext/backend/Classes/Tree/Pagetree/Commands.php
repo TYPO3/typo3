@@ -205,7 +205,6 @@ class Commands
     {
         /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
         $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tce->stripslashes_values = 0;
         $tce->start($data, $cmd);
         $tce->copyTree = MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
         if (!empty($cmd)) {

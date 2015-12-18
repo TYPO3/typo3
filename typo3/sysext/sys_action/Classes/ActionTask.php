@@ -489,7 +489,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         // Save/update user by using TCEmain
         if (is_array($data)) {
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->stripslashes_values = 0;
             $tce->start($data, array(), $this->getBackendUser());
             $tce->admin = 1;
             $tce->process_datamap();

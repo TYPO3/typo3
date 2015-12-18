@@ -386,7 +386,6 @@ class FormInlineAjaxController
 
             /** @var $tce DataHandler */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = false;
             $tce->start(array(), $cmd);
             $tce->process_cmdmap();
 

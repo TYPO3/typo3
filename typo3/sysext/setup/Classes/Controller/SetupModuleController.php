@@ -290,7 +290,6 @@ class SetupModuleController extends AbstractModule
                 // Make instance of TCE for storing the changes.
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                $dataHandler->stripslashes_values = false;
                 // This is so the user can actually update his user record.
                 $isAdmin = $beUser->user['admin'];
                 $beUser->user['admin'] = 1;

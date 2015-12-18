@@ -128,7 +128,6 @@ Cleaning XML for FlexForm fields.
                 }
                 // Execute Data array:
                 $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                $tce->stripslashes_values = false;
                 $tce->dontProcessTransformations = true;
                 $tce->bypassWorkspaceRestrictions = true;
                 $tce->bypassFileHandling = true;

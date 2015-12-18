@@ -523,7 +523,6 @@ class EditDocumentController extends AbstractModule
         // Only options related to $this->data submission are included here.
         /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->stripslashes_values = false;
 
         if (!empty($control)) {
             $tce->setControl($control);

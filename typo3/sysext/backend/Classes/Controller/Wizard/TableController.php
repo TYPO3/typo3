@@ -294,7 +294,6 @@ class TableController extends AbstractWizardController
                 // Get DataHandler object:
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                $dataHandler->stripslashes_values = false;
                 // Put content into the data array:
                 $data = array();
                 if ($this->P['flexFormPath']) {

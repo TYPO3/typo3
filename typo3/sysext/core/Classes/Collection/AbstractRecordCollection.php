@@ -371,7 +371,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         }
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
         $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tce->stripslashes_values = 0;
         $tce->start($data, array());
         $tce->process_datamap();
     }

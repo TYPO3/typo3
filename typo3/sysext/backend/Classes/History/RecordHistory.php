@@ -239,7 +239,6 @@ class RecordHistory
         // Writes the data:
         if ($cmdmapArray) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = 0;
             $tce->debug = 0;
             $tce->dontProcessTransformations = 1;
             $tce->start(array(), $cmdmapArray);
@@ -274,7 +273,6 @@ class RecordHistory
         $data = $this->removeFilefields($rollbackData[0], $data);
         // Writes the data:
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->stripslashes_values = 0;
         $tce->debug = 0;
         $tce->dontProcessTransformations = 1;
         $tce->start($data, array());

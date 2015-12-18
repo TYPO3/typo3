@@ -119,7 +119,6 @@ Will report orphan uids from TCA tables.';
                 } else {
                     // Execute CMD array:
                     $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                    $tce->stripslashes_values = false;
                     $tce->start(array(), array());
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this
                     // since they should also be included in the set of orphans of course!

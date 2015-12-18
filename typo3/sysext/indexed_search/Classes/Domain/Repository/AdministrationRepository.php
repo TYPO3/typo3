@@ -528,7 +528,6 @@ class AdministrationRepository
         $data = array();
         $data['pages'][$pageId]['keywords'] = implode(', ', array_keys($keywords));
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->stripslashes_values = 0;
         $dataHandler->start($data, array());
         $dataHandler->process_datamap();
     }

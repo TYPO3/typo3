@@ -136,7 +136,6 @@ class TypoScriptTemplateInfoHook
                         $recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
                         // Create new tce-object
                         $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                        $tce->stripslashes_values = 0;
                         // Initialize
                         $tce->start($recData, array());
                         // Saved the stuff

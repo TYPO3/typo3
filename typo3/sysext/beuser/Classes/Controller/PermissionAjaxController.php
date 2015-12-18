@@ -87,7 +87,6 @@ class PermissionAjaxController
             // Init TCE for execution of update
             /** @var $tce DataHandler */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = false;
             // Determine the scripts to execute
             switch ($this->conf['action']) {
                 case 'show_change_owner_selector':

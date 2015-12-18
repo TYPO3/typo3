@@ -121,9 +121,7 @@ class DataHandlerHook
      */
     protected function getTceMain()
     {
-        $tceMain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-        $tceMain->stripslashes_values = 0;
-        return $tceMain;
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
     }
 
     /**

@@ -143,7 +143,6 @@ class SimpleDataHandlerController
         $this->uPT = GeneralUtility::_GP('uPT');
         // Creating TCEmain object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
-        $this->tce->stripslashes_values = 0;
         // Configuring based on user prefs.
         if ($beUser->uc['recursiveDelete']) {
             // TRUE if the delete Recursive flag is set.

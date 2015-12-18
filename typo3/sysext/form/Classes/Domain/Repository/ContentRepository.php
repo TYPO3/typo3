@@ -85,7 +85,6 @@ class ContentRepository
             // Make TCEmain object:
             /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
             $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->stripslashes_values = 0;
             // Put content into the data array:
             $data = array();
             $data[$parameters['table']][$parameters['uid']][$parameters['field']] = $typoscript;

@@ -891,7 +891,6 @@ class ReferenceIndex
                     } else {
                         // Execute CMD array:
                         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                        $dataHandler->stripslashes_values = false;
                         $dataHandler->dontProcessTransformations = true;
                         $dataHandler->bypassWorkspaceRestrictions = true;
                         $dataHandler->bypassFileHandling = true;

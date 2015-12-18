@@ -227,7 +227,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                     $recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->stripslashes_values = false;
                     $tce->alternativeFileName = $alternativeFileName;
                     // Initialize
                     $tce->start($recData, array());

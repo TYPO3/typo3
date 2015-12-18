@@ -85,15 +85,6 @@ class DataHandler
     public $checkSimilar = true;
 
     /**
-     * If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an
-     * unescaped data array instead. This switch may totally disappear in future versions of this class!
-     *
-     * @var bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $stripslashes_values = true;
-
-    /**
      * This will read the record after having updated or inserted it. If anything is not properly submitted an error
      * is written to the log. This feature consumes extra time by selecting records
      *
@@ -136,14 +127,6 @@ class DataHandler
      * @var bool
      */
     public $dontProcessTransformations = false;
-
-    /**
-     * If set, .vDEFbase values are unset in flexforms.
-     *
-     * @var bool
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public $clear_flexFormData_vDEFbase = false;
 
     /**
      * TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value.
@@ -390,12 +373,6 @@ class DataHandler
      * @var array
      */
     protected $excludedTablesAndFields = array();
-
-    /**
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     * @var int
-     */
-    public $include_filefunctions;
 
     /**
      * Data submitted from the form view, used to control behaviours,
@@ -1174,7 +1151,6 @@ class DataHandler
 
                                 /** @var $tce DataHandler */
                                 $tce = GeneralUtility::makeInstance(__CLASS__);
-                                $tce->stripslashes_values = false;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = array();
                                 $cmd[$table][$id]['version'] = array(
@@ -1471,18 +1447,6 @@ class DataHandler
                 continue;
             }
 
-            // Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
-            // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-            if ($this->stripslashes_values) {
-                GeneralUtility::deprecationLog(
-                    'The option stripslash_values is typically set to FALSE as data should be properly prepared before sending to DataHandler. Do not rely on DataHandler removing extra slashes. The option will be removed in TYPO3 CMS 8.'
-                );
-                if (is_array($fieldValue)) {
-                    GeneralUtility::stripSlashesOnArray($fieldValue);
-                } else {
-                    $fieldValue = stripslashes($fieldValue);
-                }
-            }
             switch ($field) {
                 case 'uid':
                 case 'pid':
@@ -1754,23 +1718,6 @@ class DataHandler
     /**
      * Evaluate "text" type values.
      *
-     * @param array $res The result array. The processed value (if any!) is set in the "value" key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param string $field Field name
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->checkValueForText($value, $tcaFieldConf);
-    }
-
-    /**
-     * Evaluate "text" type values.
-     *
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
@@ -1788,24 +1735,6 @@ class DataHandler
             $this->runtimeCache->set($cacheId, $evalCodesArray);
         }
         return $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
-    }
-
-    /**
-     * Evaluate "input" type values.
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the "value" key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param string $field Field name
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        list($table, $id, , , $realPid) = $PP;
-        return $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
     }
 
     /**
@@ -1891,24 +1820,6 @@ class DataHandler
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param string $field Field name
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_check($res, $value, $tcaFieldConf, $PP, $field = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        list($table, $id, , , $realPid) = $PP;
-        return $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
-    }
-
-    /**
-     * Evaluates 'check' type values.
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $id UID of record
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
@@ -1960,23 +1871,6 @@ class DataHandler
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_radio($res, $value, $tcaFieldConf, $PP)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // TODO find a way to get the field name; it should not be set in $recFID as this is only created for some record types, see checkValue()
-        return $this->checkValueForRadio($res, $value, $tcaFieldConf, $PP[0], $PP[1], $PP[4], '');
-    }
-
-    /**
-     * Evaluates 'radio' type values.
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
      * @param array $table The table of the record
      * @param int $id The id of the record
      * @param int $pid The pid of the record
@@ -2009,25 +1903,6 @@ class DataHandler
         }
 
         return $res;
-    }
-
-    /**
-     * Evaluates 'group' or 'select' type values.
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param array $uploadedFiles
-     * @param string $field Field name
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        list($table, $id, $curValue, $status, , $recFID) = $PP;
-        return $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field);
     }
 
     /**
@@ -2168,7 +2043,6 @@ class DataHandler
      * @return array Modified value array
      *
      * @throws \RuntimeException
-     * @see checkValue_group_select()
      */
     public function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID)
     {
@@ -2191,7 +2065,6 @@ class DataHandler
             // Creating fileFunc object.
             if (!$this->fileFunc) {
                 $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
-                $this->include_filefunctions = 1;
             }
             // Setting permitted extensions.
             $all_files = array();
@@ -2445,25 +2318,6 @@ class DataHandler
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
      * @param string|array $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param array $uploadedFiles Uploaded files for the field
-     * @param string $field Field name
-     * @return array Modified $res array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        list($table, $id, $curValue, $status, $realPid, $recFID, $tscPID) = $PP;
-        $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field);
-    }
-
-    /**
-     * Evaluates 'flex' type values.
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string|array $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $id UID of record
      * @param mixed $curValue Current value of the field
@@ -2488,10 +2342,6 @@ class DataHandler
             $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : array();
             if (!is_array($currentValueArray)) {
                 $currentValueArray = array();
-            }
-            if (isset($currentValueArray['meta']['currentLangId'])) {
-                // @deprecated call since TYPO3 7, will be removed with TYPO3 8
-                unset($currentValueArray['meta']['currentLangId']);
             }
             // Remove all old meta for languages...
             // Evaluation of input values:
@@ -3134,10 +2984,7 @@ class DataHandler
                     // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
                     // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
                     if (substr($vKey, -9) != '.vDEFbase') {
-                        // @deprecated: flexFormXMLincludeDiffBase is only enabled by ext:compatibility6 since TYPO3 CMS 7, vDEFbase can be unset / ignored with TYPO3 CMS 8
-                        if ($this->clear_flexFormData_vDEFbase) {
-                            $dataValues[$key][$vKey . '.vDEFbase'] = '';
-                        } elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
+                        if ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
                                 $diffValue = $dataValues[$key]['vDEF'];
@@ -4050,7 +3897,6 @@ class DataHandler
         // Creating fileFunc object.
         if (!$this->fileFunc) {
             $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
-            $this->include_filefunctions = 1;
         }
         // Select all RTEmagic files in the reference table from the table/ID
         $where = join(' AND ', array(
@@ -4792,7 +4638,6 @@ class DataHandler
         if (is_array($removeArray) && !empty($removeArray)) {
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(__CLASS__);
-            $tce->stripslashes_values = false;
             $tce->start(array(), $removeArray);
             $tce->process_cmdmap();
             unset($tce);
@@ -5170,7 +5015,6 @@ class DataHandler
                 );
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(__CLASS__);
-                $dataHandler->stripslashes_values = false;
                 $dataHandler->neverHideAtCopy = true;
                 $dataHandler->start(array(), $command);
                 $dataHandler->process_cmdmap();
@@ -5620,19 +5464,16 @@ class DataHandler
     /**
      * Returns an instance of DataHandler for handling local datamaps/cmdmaps
      *
-     * @param bool $stripslashesValues If TRUE, incoming values in the data-array have their slashes stripped.
-     * @param bool $dontProcessTransformations If set, then transformations are NOT performed on the input.
      * @return DataHandler
      */
-    protected function getLocalTCE($stripslashesValues = false, $dontProcessTransformations = true)
+    protected function getLocalTCE()
     {
         $copyTCE = GeneralUtility::makeInstance(__CLASS__);
-        $copyTCE->stripslashes_values = $stripslashesValues;
         $copyTCE->copyTree = $this->copyTree;
         // Copy forth the cached TSconfig
         $copyTCE->cachedTSconfig = $this->cachedTSconfig;
         // Transformations should NOT be carried out during copy
-        $copyTCE->dontProcessTransformations = $dontProcessTransformations;
+        $copyTCE->dontProcessTransformations = true;
         return $copyTCE;
     }
 
@@ -8070,10 +7911,6 @@ class DataHandler
      */
     public function newlog2($message, $table, $uid, $pid = null, $error = 0)
     {
-        if ($pid === false) {
-            GeneralUtility::deprecationLog('Setting the $pid parameter of DataHandler::newlog2 to FALSE is deprecated since TYPO3 CMS 7. Either provide an integer or NULL. FALSE will not be supported any more in TYPO3 CMS 8');
-            $pid = null;
-        }
         if (is_null($pid)) {
             $propArr = $this->getRecordProperties($table, $uid);
             $pid = $propArr['pid'];

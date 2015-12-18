@@ -195,7 +195,6 @@ class MassActionHandler extends AbstractHandler
         } else {
             /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
             $tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->stripslashes_values = 0;
             // Execute the commands:
             $tce->start(array(), $limitedCmd);
             $tce->process_cmdmap();

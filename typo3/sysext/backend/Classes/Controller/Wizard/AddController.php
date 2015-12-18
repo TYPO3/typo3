@@ -199,7 +199,6 @@ class AddController extends AbstractWizardController
                 if (is_array($currentParentRow)) {
                     /** @var DataHandler $dataHandler */
                     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                    $dataHandler->stripslashes_values = false;
                     $data = array();
                     $recordId = $this->table . '_' . $this->id;
                     // Setting the new field data:

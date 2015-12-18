@@ -182,7 +182,6 @@ Automatic Repair:
                 } else {
                     // Execute CMD array:
                     $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                    $tce->stripslashes_values = false;
                     $tce->start(array(), array());
                     $tce->deleteEl($table, $uid, true, true);
                     // Return errors if any:
@@ -221,7 +220,6 @@ Automatic Repair:
             } else {
                 // Execute CMD array:
                 $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                $tce->stripslashes_values = false;
                 $tce->start(array(), array());
                 $tce->deleteAction($table, $uid);
                 // Return errors if any:

@@ -480,7 +480,6 @@ class PageLayoutController
     {
         if ($this->clear_cache) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = false;
             $tce->start(array(), array());
             $tce->clear_cacheCmd($this->id);
         }

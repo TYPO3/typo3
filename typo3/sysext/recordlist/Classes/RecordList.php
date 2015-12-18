@@ -260,7 +260,6 @@ class RecordList extends AbstractModule
     {
         if ($this->clear_cache) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = 0;
             $tce->start(array(), array());
             $tce->clear_cacheCmd($this->id);
         }
@@ -384,7 +383,6 @@ class RecordList extends AbstractModule
                         $cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
                     }
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->stripslashes_values = 0;
                     $tce->start(array(), $cmd);
                     $tce->process_cmdmap();
                     if (isset($cmd['pages'])) {

@@ -211,7 +211,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                     $recData['sys_template'][$saveId][$field] = $tplRow[$field] . $line;
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->stripslashes_values = false;
                     // Initialize
                     $tce->start($recData, array());
                     // Saved the stuff

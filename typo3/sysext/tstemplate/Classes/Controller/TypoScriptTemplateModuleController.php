@@ -146,7 +146,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         if (GeneralUtility::_GP('clear_all_cache')) {
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->stripslashes_values = false;
             $tce->start(array(), array());
             $tce->clear_cacheCmd('all');
         }
@@ -540,7 +539,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $recData = array();
         /** @var DataHandler $tce */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->stripslashes_values = false;
 
         if (GeneralUtility::_GP('createExtension')) {
             $recData['sys_template']['NEW'] = array(

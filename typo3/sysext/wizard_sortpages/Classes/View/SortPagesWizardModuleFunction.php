@@ -53,7 +53,6 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 }
                 if (!empty($menuItems)) {
                     $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                    $tce->stripslashes_values = 0;
                     $menuItems = array_reverse($menuItems);
                     $cmd = array();
                     foreach ($menuItems as $r) {

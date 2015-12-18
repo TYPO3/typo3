@@ -365,7 +365,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
             /** @var $tcemain \TYPO3\CMS\Core\DataHandling\DataHandler */
             $tcemain = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tcemain->stripslashes_values = 0;
             $tcemain->start($data, array());
             $tcemain->process_datamap();
             // Check if a new uid was indeed generated (i.e. a new record was created)

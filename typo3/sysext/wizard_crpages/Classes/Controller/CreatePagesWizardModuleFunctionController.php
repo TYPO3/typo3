@@ -100,7 +100,6 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                 if (!empty($data['pages'])) {
                     reset($data);
                     $dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-                    $dataHandler->stripslashes_values = 0;
                     // set default TCA values specific for the user
                     $TCAdefaultOverride = $this->getBackendUser()->getTSConfigProp('TCAdefaults');
                     if (is_array($TCAdefaultOverride)) {

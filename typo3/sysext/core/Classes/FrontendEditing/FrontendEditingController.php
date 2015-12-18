@@ -581,7 +581,6 @@ class FrontendEditingController
     {
         if (!isset($this->tce)) {
             $this->tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $this->tce->stripslashes_values = 0;
         }
     }
 }
