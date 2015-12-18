@@ -143,21 +143,6 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
-     * and it replaces old conf.php.
-     *
-     * @param string $moduleSignature The module name
-     * @param string $modulePath Absolute path to module (not used by Extbase currently)
-     * @return array Configuration of the module
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, please use the according method in \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule
-     */
-    public static function configureModule($moduleSignature, $modulePath)
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-        return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule($moduleSignature, $modulePath);
-    }
-
-    /**
      * Registers an Extbase module (main or sub) to the backend interface.
      * FOR USE IN ext_tables.php FILES
      *

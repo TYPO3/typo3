@@ -61,19 +61,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     private $_cleanProperties = array();
 
     /**
-     * This is the magic __wakeup() method. It's invoked by the unserialize statement in the reconstitution process
-     * of the object. If you want to implement your own __wakeup() method in your Domain Object you have to call
-     * parent::__wakeup() first!
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Objects are instantiated differently calling parent::__wakeup() is no longer necessary.
-     */
-    public function __wakeup()
-    {
-        GeneralUtility::logDeprecatedFunction();
-    }
-
-    /**
      * Getter for uid.
      *
      * @return int the uid or NULL if none set yet.
