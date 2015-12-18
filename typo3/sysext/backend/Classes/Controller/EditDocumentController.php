@@ -176,15 +176,6 @@ class EditDocumentController extends AbstractModule
     public $viewUrl;
 
     /**
-     * If this is pointing to a page id it will automatically load all content elements
-     * (NORMAL column/default language) from that page into the form!
-     *
-     * @var int
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public $editRegularContentFromId;
-
-    /**
      * Alternative title for the document handler.
      *
      * @var string
@@ -694,7 +685,6 @@ class EditDocumentController extends AbstractModule
         $this->popViewId = GeneralUtility::_GP('popViewId');
         $this->popViewId_addParams = GeneralUtility::_GP('popViewId_addParams');
         $this->viewUrl = GeneralUtility::_GP('viewUrl');
-        $this->editRegularContentFromId = GeneralUtility::_GP('editRegularContentFromId');
         $this->recTitle = GeneralUtility::_GP('recTitle');
         $this->noView = GeneralUtility::_GP('noView');
         $this->perms_clause = $beUser->getPagePermsClause(1);
@@ -965,9 +955,6 @@ class EditDocumentController extends AbstractModule
             /** @var FormResultCompiler formResultCompiler */
             $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
 
-            if ($this->editRegularContentFromId) {
-                $this->editRegularContentFromId();
-            }
             // Creating the editing form, wrap it with buttons, document selector etc.
             $editForm = $this->makeEditForm();
             if ($editForm) {
@@ -1007,18 +994,6 @@ class EditDocumentController extends AbstractModule
         $this->getButtons();
         $this->languageSwitch($this->firstEl['table'], $this->firstEl['uid'], $this->firstEl['pid']);
         $this->moduleTemplate->setContent($body);
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /***************************
@@ -1494,7 +1469,6 @@ class EditDocumentController extends AbstractModule
                     'overrideVals',
                     'columnsOnly',
                     'returnNewPageId',
-                    'editRegularContentFromId',
                     'noView']);
             $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortCutButton);
         }
@@ -1831,35 +1805,6 @@ class EditDocumentController extends AbstractModule
     }
 
     /**
-     * Function, which populates the internal editconf array with editing commands for all tt_content elements from
-     * the normal column in normal language from the page pointed to by $this->editRegularContentFromId
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function editRegularContentFromId()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $dbConnection = $this->getDatabaseConnection();
-        $res = $dbConnection->exec_SELECTquery(
-            'uid',
-            'tt_content',
-            'pid=' . (int)$this->editRegularContentFromId . BackendUtility::deleteClause('tt_content')
-            . BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0',
-            '',
-            'sorting'
-        );
-        if ($dbConnection->sql_num_rows($res)) {
-            $ecUids = array();
-            while ($ecRec = $dbConnection->sql_fetch_assoc($res)) {
-                $ecUids[] = $ecRec['uid'];
-            }
-            $this->editconf['tt_content'][implode(',', $ecUids)] = 'edit';
-        }
-        $dbConnection->sql_free_result($res);
-    }
-
-    /**
      * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
      *
      * @return void
@@ -1868,7 +1813,7 @@ class EditDocumentController extends AbstractModule
     public function compileStoreDat()
     {
         $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
-            'edit,defVals,overrideVals,columnsOnly,noView,editRegularContentFromId,workspace',
+            'edit,defVals,overrideVals,columnsOnly,noView,workspace',
             $this->R_URL_getvars
         );
         $this->storeUrl = GeneralUtility::implodeArrayForUrl('', $this->storeArray);

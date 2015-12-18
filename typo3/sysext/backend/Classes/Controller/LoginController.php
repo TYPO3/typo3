@@ -189,10 +189,6 @@ class LoginController
         // Logo
         if (!empty($extConf['loginLogo'])) {
             $logo = $extConf['loginLogo'];
-        } elseif (!empty($GLOBALS['TBE_STYLES']['logo_login'])) {
-            // Fallback to old TBE_STYLES login logo
-            $logo = $GLOBALS['TBE_STYLES']['logo_login'];
-            GeneralUtility::deprecationLog('$GLOBALS["TBE_STYLES"]["logo_login"] is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8, please use the backend extension\'s configuration instead.');
         } else {
             // Use TYPO3 logo depending on highlight color
             if (!empty($extConf['loginHighlightColor'])) {

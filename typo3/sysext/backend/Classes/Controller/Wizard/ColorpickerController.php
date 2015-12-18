@@ -248,20 +248,6 @@ class ColorpickerController extends AbstractWizardController
     }
 
     /**
-     * Returns the sourcecode to the browser
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-        echo $this->content;
-    }
-
-    /**
      * Returns a frameset so our JavaScript Reference isn't lost
      * Took some brains to figure this one out ;-)
      * If Peter wouldn't have been I would've gone insane...

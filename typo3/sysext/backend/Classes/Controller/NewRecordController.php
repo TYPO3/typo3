@@ -619,18 +619,6 @@ class NewRecordController extends AbstractModule
     }
 
     /**
-     * Ending page output and echo'ing content to browser.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Links the string $code to a create-new form for a record in $table created on page $pid
      *
      * @param string $linkText Link text

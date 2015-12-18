@@ -553,20 +553,6 @@ class ElementInformationController
     }
 
     /**
-     * End page and print content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->doc->startPage($this->titleTag) .
-            $this->doc->insertStylesAndJS($this->content) .
-            $this->doc->endPage();
-    }
-
-    /**
      * Get field name for specified table/column name
      *
      * @param string $tableName Table name

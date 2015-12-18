@@ -270,23 +270,6 @@ class NewContentElementController extends AbstractModule
                         $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
                     }
 
-                    if (isset($wInfo['icon'])) {
-                        GeneralUtility::deprecationLog('The PageTS-Config: mod.wizards.newContentElement.wizardItems.*.elements.*.icon'
-                            . ' is deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.'
-                            . ' Register your icon in IconRegistry::registerIcon and use the new setting:'
-                            . ' mod.wizards.newContentElement.wizardItems.*.elements.*.iconIdentifier');
-                        $wInfo['iconIdentifier'] = 'content-' . $k;
-                        $icon = $wInfo['icon'];
-                        if (StringUtility::beginsWith($icon, '../typo3conf/ext/')) {
-                            $icon = str_replace('../typo3conf/ext/', 'EXT:', $icon);
-                        }
-                        if (!StringUtility::beginsWith($icon, 'EXT:') && strpos($icon, '/') !== false) {
-                            $icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($wInfo['icon']);
-                        }
-                        $iconRegistry->registerIcon($wInfo['iconIdentifier'], BitmapIconProvider::class, array(
-                            'source' => $icon
-                        ));
-                    }
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
                     $menuItems[$key]['content'] .= '
 						<div class="media">
@@ -373,17 +356,6 @@ class NewContentElementController extends AbstractModule
      * OTHER FUNCTIONS:
      *
      ***************************/
-    /**
-     * Returns the content of wizardArray() function...
-     *
-     * @return array Returns the content of wizardArray() function...
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use "wizardArray()" directly
-     */
-    public function getWizardItems()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->wizardArray();
-    }
 
     /**
      * Returns the array of elements in the wizard display.

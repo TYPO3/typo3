@@ -93,16 +93,6 @@ class BackendController
     protected $pageRenderer;
 
     /**
-     * @return PageRenderer
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function getPageRenderer()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->pageRenderer;
-    }
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -828,20 +818,6 @@ class BackendController
             $cssFileAdded = true;
         }
         return $cssFileAdded;
-    }
-
-    /**
-     * Adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
-     *
-     * @param string $toolbarItemName Toolbar item name, f.e. tx_toolbarExtension_coolItem
-     * @param string $toolbarItemClassName Toolbar item class name, f.e. tx_toolbarExtension_coolItem
-     * @return void
-     * @throws \UnexpectedValueException
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Toolbar items are registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] now.
-     */
-    public function addToolbarItem($toolbarItemName, $toolbarItemClassName)
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 
     /**

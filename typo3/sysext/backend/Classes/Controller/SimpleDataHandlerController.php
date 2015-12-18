@@ -226,25 +226,6 @@ class SimpleDataHandlerController
     }
 
     /**
-     * Redirecting the user after the processing has been done.
-     * Might also display error messages directly, if any.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function finish()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Prints errors, if...
-        if ($this->prErr) {
-            $this->tce->printLogErrorMessages($this->redirect);
-        }
-        if ($this->redirect) {
-            HttpUtility::redirect($this->redirect);
-        }
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
      *

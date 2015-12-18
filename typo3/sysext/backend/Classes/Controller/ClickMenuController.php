@@ -35,14 +35,6 @@ class ClickMenuController
     public $reloadListFrame;
 
     /**
-     * Content accumulation
-     *
-     * @var string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $content = '';
-
-    /**
      * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public $doc;
@@ -72,59 +64,6 @@ class ClickMenuController
 
         // Initialize template object
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-    }
-
-    /**
-     * Constructor function for script class.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, all done in the constructor now
-     */
-    protected function init()
-    {
-        GeneralUtility::logDeprecatedFunction();
-    }
-
-    /**
-     * Main function - generating the click menu in whatever form it has.
-     *
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as an AJAX Route is now the main entry point
-     * @return void
-     */
-    public function main()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Initialize Clipboard object:
-        $clipObj = GeneralUtility::makeInstance(Clipboard::class);
-        $clipObj->initializeClipboard();
-        // This locks the clipboard to the Normal for this request.
-        $clipObj->lockToNormal();
-        // Update clipboard if some actions are sent.
-        $CB = GeneralUtility::_GET('CB');
-        $clipObj->setCmd($CB);
-        $clipObj->cleanCurrent();
-        // Saves
-        $clipObj->endClipboard();
-        // Create clickmenu object
-        $clickMenu = GeneralUtility::makeInstance(ClickMenu::class);
-        // Set internal vars in clickmenu object:
-        $clickMenu->clipObj = $clipObj;
-        $clickMenu->extClassArray = $this->extClassArray;
-        // Set content of the clickmenu with the incoming var, "item"
-        $this->content .= $clickMenu->init();
-    }
-
-    /**
-     * End page and output content.
-     *
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as an AJAX Route is now the main entry point
-     * @return void
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        header('Content-Type: text/xml');
-        echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
     }
 
     /**

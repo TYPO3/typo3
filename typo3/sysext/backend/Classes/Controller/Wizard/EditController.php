@@ -151,16 +151,4 @@ class EditController extends AbstractWizardController
         }
     }
 
-    /**
-     * Printing a little JavaScript to close the open window.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function closeWindow()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->closeWindow;
-        die;
-    }
 }

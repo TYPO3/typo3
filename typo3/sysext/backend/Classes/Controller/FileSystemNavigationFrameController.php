@@ -215,18 +215,6 @@ class FileSystemNavigationFrameController
     }
 
     /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Register docHeader buttons
      */
     protected function getButtons()

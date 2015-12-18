@@ -237,18 +237,6 @@ class MoveElementController extends AbstractModule
     }
 
     /**
-     * Print out the accumulated content:
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
     protected function getButtons()
