@@ -963,7 +963,7 @@ var inline = {
 			// If the record already exists in storage, mark it to be deleted on clicking the save button:
 		} else {
 			document.getElementsByName('cmd' + shortName + '[delete]')[0].disabled = false;
-			TYPO3.jQuery('#' + objectId + '_div').fadeOut(200);
+			TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div').fadeOut(200);
 		}
 
 		var recordCount = this.memorizeRemoveRecord(

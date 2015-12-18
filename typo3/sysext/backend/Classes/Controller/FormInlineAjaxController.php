@@ -235,18 +235,23 @@ class FormInlineAjaxController
         $parent = $inlineStackProcessor->getStructureLevel(-1);
         $parentFieldName = $parent['field'];
 
+        $databaseRow = [
+            // TcaInlineExpandCollapseState needs this
+            'uid' => (int)$parent['uid'],
+        ];
+
+        $databaseRow = $this->addFlexFormDataStructurePointersFromAjaxContext($ajaxArguments, $databaseRow);
+
         $formDataCompilerInputForParent = [
             'vanillaUid' => (int)$parent['uid'],
             'command' => 'edit',
             'tableName' => $parent['table'],
-            'databaseRow' => [
-                // TcaInlineExpandCollapseState needs this
-                'uid' => (int)$parent['uid'],
-            ],
+            'databaseRow' => $databaseRow,
             'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => [
-                $parentFieldName
-            ],
+            'columnsToProcess' => array_merge(
+                [$parentFieldName],
+                array_keys($databaseRow)
+            ),
             // @todo: still needed?
             'inlineStructure' => $inlineStackProcessor->getStructure(),
             // Do not resolve existing children, we don't need them now
@@ -257,10 +262,16 @@ class FormInlineAjaxController
         /** @var FormDataCompiler $formDataCompiler */
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
         $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
+        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
+
+        if ($parentConfig['type'] === 'flex') {
+            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId, false);
+            $parentData['processedTca']['columns'][$parentFieldName]['config'] = $parentConfig;
+        }
+
         // Set flag in config so that only the fields are rendered
         // @todo: Solve differently / rename / whatever
         $parentData['processedTca']['columns'][$parentFieldName]['config']['renderFieldsOnly'] = true;
-        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
@@ -790,9 +801,10 @@ class FormInlineAjaxController
      *
      * @param array $parentConfig
      * @param string $domObjectId
+     * @param bool $newRecord
      * @return array
      */
-    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId)
+    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId, $newRecord = true)
     {
         // Substitute FlexForm addition and make parsing a bit easier
         $domObjectId = str_replace('---', ':', $domObjectId);
@@ -804,13 +816,14 @@ class FormInlineAjaxController
         $foreignTableName = '';
 
         if (preg_match($pattern, $domObjectId, $match)) {
-            // The flexform path should be the second to last array element,
-            // the foreign table name the last.
-            $parts = array_slice(explode('-', $match['anything']), -2, 2);
+            // For new records the flexform path should be the second to last array element,
+            // followed by the foreign table name. For existing records it should be the third
+            // array element from the end as the UID of the inline record is provided as well.
+            $parts = array_slice(explode('-', $match['anything']), ($newRecord ? -2 : -3), 2);
 
             if (count($parts) !== 2 || !isset($parts[0]) || strpos($parts[0], ':') === false) {
                 throw new \UnexpectedValueException(
-                    'DOM Object ID' . $domObjectId . 'does not contain required information '
+                    'DOM Object ID ' . $domObjectId . ' does not contain required information '
                     . 'to extract inline field configuration.',
                     1446996136
                 );
