@@ -496,183 +496,6 @@ class BackendUtility
     }
 
     /**
-     * Returns an array with the exclude-fields as defined in TCA and FlexForms
-     * Used for listing the exclude-fields in be_groups forms
-     *
-     * @return array Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries and from FlexForms (fieldname, table:extkey;sheetname;fieldname)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function getExcludeFields()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $finalExcludeArray = array();
-
-        // Fetch translations for table names
-        $tableToTranslation = array();
-        $lang = static::getLanguageService();
-        // All TCA keys
-        foreach ($GLOBALS['TCA'] as $table => $conf) {
-            $tableToTranslation[$table] = $lang->sl($conf['ctrl']['title']);
-        }
-        // Sort by translations
-        asort($tableToTranslation);
-        foreach ($tableToTranslation as $table => $translatedTable) {
-            $excludeArrayTable = array();
-
-            // All field names configured and not restricted to admins
-            if (is_array($GLOBALS['TCA'][$table]['columns'])
-                    && empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
-                    && (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
-            ) {
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
-                    if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
-                        // Get human readable names of fields
-                        $translatedField = $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
-                        // Add entry
-                        $excludeArrayTable[] = array($translatedTable . ': ' . $translatedField, $table . ':' . $field);
-                    }
-                }
-            }
-            // All FlexForm fields
-            $flexFormArray = static::getRegisteredFlexForms($table);
-            foreach ($flexFormArray as $tableField => $flexForms) {
-                // Prefix for field label, e.g. "Plugin Options:"
-                $labelPrefix = '';
-                if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
-                    $labelPrefix = $lang->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
-                }
-                // Get all sheets and title
-                foreach ($flexForms as $extIdent => $extConf) {
-                    $extTitle = $lang->sl($extConf['title']);
-                    // Get all fields in sheet
-                    foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
-                        if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
-                            continue;
-                        }
-                        foreach ($sheet['ROOT']['el'] as $fieldName => $field) {
-                            // Use only fields that have exclude flag set
-                            if (empty($field['TCEforms']['exclude'])) {
-                                continue;
-                            }
-                            $fieldLabel = !empty($field['TCEforms']['label']) ? $lang->sl($field['TCEforms']['label']) : $fieldName;
-                            $fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
-                            $excludeArrayTable[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
-                        }
-                    }
-                }
-            }
-            // Sort fields by the translated value
-            if (!empty($excludeArrayTable)) {
-                usort($excludeArrayTable, function (array $array1, array $array2) {
-                    $array1 = reset($array1);
-                    $array2 = reset($array2);
-                    if (is_string($array1) && is_string($array2)) {
-                        return strcasecmp($array1, $array2);
-                    }
-                    return 0;
-                });
-                $finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
-            }
-        }
-
-        return $finalExcludeArray;
-    }
-
-    /**
-     * Returns an array with explicit Allow/Deny fields.
-     * Used for listing these field/value pairs in be_groups forms
-     *
-     * @return array Array with information from all of $GLOBALS['TCA']
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function getExplicitAuthFieldValues()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Initialize:
-        $lang = static::getLanguageService();
-        $adLabel = array(
-            'ALLOW' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.allow'),
-            'DENY' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.deny')
-        );
-        // All TCA keys:
-        $allowDenyOptions = array();
-        foreach ($GLOBALS['TCA'] as $table => $_) {
-            // All field names configured:
-            if (is_array($GLOBALS['TCA'][$table]['columns'])) {
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
-                    $fCfg = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                    if ($fCfg['type'] == 'select' && $fCfg['authMode']) {
-                        // Check for items:
-                        if (is_array($fCfg['items'])) {
-                            // Get Human Readable names of fields and table:
-                            $allowDenyOptions[$table . ':' . $field]['tableFieldLabel'] =
-                                $lang->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . ': '
-                                . $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
-                            // Check for items:
-                            foreach ($fCfg['items'] as $iVal) {
-                                // Values '' is not controlled by this setting.
-                                if ((string)$iVal[1] !== '') {
-                                    // Find iMode
-                                    $iMode = '';
-                                    switch ((string)$fCfg['authMode']) {
-                                        case 'explicitAllow':
-                                            $iMode = 'ALLOW';
-                                            break;
-                                        case 'explicitDeny':
-                                            $iMode = 'DENY';
-                                            break;
-                                        case 'individual':
-                                            if ($iVal[4] === 'EXPL_ALLOW') {
-                                                $iMode = 'ALLOW';
-                                            } elseif ($iVal[4] === 'EXPL_DENY') {
-                                                $iMode = 'DENY';
-                                            }
-                                            break;
-                                    }
-                                    // Set iMode
-                                    if ($iMode) {
-                                        $allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = array($iMode, $lang->sl($iVal[0]), $adLabel[$iMode]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $allowDenyOptions;
-    }
-
-    /**
-     * Returns an array with system languages:
-     *
-     * The property flagIcon returns a string <flags-xx>. The calling party should call
-     * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
-     * which will represent the flag of this language.
-     *
-     * @return array Array with languages (title, uid, flagIcon - used with IconUtility::getSpriteIcon)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function getSystemLanguages()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        /** @var TranslationConfigurationProvider $translationConfigurationProvider */
-        $translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
-        $languages = $translationConfigurationProvider->getSystemLanguages();
-        $sysLanguages = array();
-        foreach ($languages as $language) {
-            if ($language['uid'] !== -1) {
-                $sysLanguages[] = array(
-                    0 => htmlspecialchars($language['title']) . ' [' . $language['uid'] . ']',
-                    1 => $language['uid'],
-                    2 => $language['flagIcon']
-                );
-            }
-        }
-        return $sysLanguages;
-    }
-
-    /**
      * Gets the original translation pointer table.
      * For e.g. pages_language_overlay this would be pages.
      *
@@ -911,10 +734,9 @@ class BackendUtility
      * See unit tests for details.
      *
      * @param string $defaultExtrasString "defaultExtras" string from columns config
-     * @param string $_ @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      * @return array
      */
-    public static function getSpecConfParts($defaultExtrasString, $_ = '')
+    public static function getSpecConfParts($defaultExtrasString)
     {
         if (!empty($_)) {
             GeneralUtility::deprecationLog('Second parameter of BackendUtility::getSpecConfParts() is deprecated. Will be removed with TYPO3 CMS 8');
@@ -1125,82 +947,6 @@ class BackendUtility
         return $dataStructArray;
     }
 
-    /**
-     * Returns all registered FlexForm definitions with title and fields
-     *
-     * @param string $table The content table
-     * @return array The data structures with speaking extension title
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields()
-     *  @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function getRegisteredFlexForms($table = 'tt_content')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
-            return array();
-        }
-        $flexForms = array();
-        foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
-            if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] == 'flex') {
-                $flexForms[$tableField] = array();
-                unset($fieldConf['config']['ds']['default']);
-                // Get pointer fields
-                $pointerFields = !empty($fieldConf['config']['ds_pointerField']) ? $fieldConf['config']['ds_pointerField'] : 'list_type,CType';
-                $pointerFields = GeneralUtility::trimExplode(',', $pointerFields);
-                // Get FlexForms
-                foreach ($fieldConf['config']['ds'] as $flexFormKey => $dataStruct) {
-                    // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
-                    $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
-                    $extIdent = $identFields[0];
-                    if (!empty($identFields[1]) && $identFields[1] != 'list' && $identFields[1] != '*') {
-                        $extIdent = $identFields[1];
-                    }
-                    // Load external file references
-                    if (!is_array($dataStruct)) {
-                        $file = GeneralUtility::getFileAbsFileName(str_ireplace('FILE:', '', $dataStruct));
-                        if ($file && @is_file($file)) {
-                            $dataStruct = GeneralUtility::getUrl($file);
-                        }
-                        $dataStruct = GeneralUtility::xml2array($dataStruct);
-                        if (!is_array($dataStruct)) {
-                            continue;
-                        }
-                    }
-                    // Get flexform content
-                    $dataStruct = GeneralUtility::resolveAllSheetsInDS($dataStruct);
-                    if (empty($dataStruct['sheets']) || !is_array($dataStruct['sheets'])) {
-                        continue;
-                    }
-                    // Use DS pointer to get extension title from TCA
-                    $title = $extIdent;
-                    $keyFields = GeneralUtility::trimExplode(',', $flexFormKey);
-                    foreach ($pointerFields as $pointerKey => $pointerName) {
-                        if (empty($keyFields[$pointerKey]) || $keyFields[$pointerKey] == '*' || $keyFields[$pointerKey] == 'list') {
-                            continue;
-                        }
-                        if (!empty($GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'])) {
-                            $items = $GLOBALS['TCA'][$table]['columns'][$pointerName]['config']['items'];
-                            if (!is_array($items)) {
-                                continue;
-                            }
-                            foreach ($items as $itemConf) {
-                                if (!empty($itemConf[0]) && !empty($itemConf[1]) && $itemConf[1] == $keyFields[$pointerKey]) {
-                                    $title = $itemConf[0];
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                    $flexForms[$tableField][$extIdent] = array(
-                        'title' => $title,
-                        'ds' => $dataStruct
-                    );
-                }
-            }
-        }
-        return $flexForms;
-    }
-
     /*******************************************
      *
      * Caching related
@@ -1340,30 +1086,6 @@ class BackendUtility
             }
         }
         return $TSconfig;
-    }
-
-    /**
-     * Implodes a multi dimensional TypoScript array, $p, into a one-dimensional array (return value)
-     *
-     * @param array $p TypoScript structure
-     * @param string $k Prefix string
-     * @return array Imploded TypoScript objectstring/values
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function implodeTSParams($p, $k = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $implodeParams = array();
-        if (is_array($p)) {
-            foreach ($p as $kb => $val) {
-                if (is_array($val)) {
-                    $implodeParams = array_merge($implodeParams, self::implodeTSParams($val, $k . $kb));
-                } else {
-                    $implodeParams[$k . $kb] = $val;
-                }
-            }
-        }
-        return $implodeParams;
     }
 
     /*******************************************
@@ -1819,29 +1541,6 @@ class BackendUtility
             }
         }
         return $thumbData;
-    }
-
-    /**
-     * Returns single image tag to thumbnail using a thumbnail script (like thumbs.php)
-     *
-     * @param string $thumbScript Must point to "thumbs.php" relative to the script position
-     * @param string $theFile Must be the proper reference to the file that thumbs.php should show
-     * @param string $tparams The additional attributes for the image tag
-     * @param string $size The size of the thumbnail send along to thumbs.php
-     * @return string Image tag
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
-     */
-    public static function getThumbNail($thumbScript, $theFile, $tparams = '', $size = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $size = trim($size);
-        $check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        $params = '&file=' . rawurlencode($theFile);
-        $params .= $size ? '&size=' . $size : '';
-        $params .= '&md5sum=' . md5($check);
-        $url = $thumbScript . '?' . $params;
-        $th = '<img src="' . htmlspecialchars($url) . '" title="' . trim(basename($theFile)) . '"' . ($tparams ? ' ' . $tparams : '') . ' alt="" />';
-        return $th;
     }
 
     /**
@@ -2731,30 +2430,6 @@ class BackendUtility
      * Backend Modules API functions
      *
      *******************************************/
-    /**
-     * Returns help-text icon if configured for.
-     * TCA_DESCR must be loaded prior to this function
-     *
-     * Please note: since TYPO3 4.5 the UX team decided to not use CSH in its former way,
-     * but to wrap the given text (where before the help icon was, and you could hover over it)
-     * Please also note that since TYPO3 4.5 the option to enable help (none, icon only, full text)
-     * was completely removed.
-     *
-     * @param string $table Table name
-     * @param string $field Field name
-     * @param string $_ UNUSED
-     * @param bool $force Force display of icon no matter BE_USER setting for help
-     * @return string HTML content for a help icon/text
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use cshItem() instead
-     */
-    public static function helpTextIcon($table, $field, $_ = '', $force = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
-            return self::wrapInHelp($table, $field);
-        }
-        return '';
-    }
 
     /**
      * Returns CSH help text (description), if configured for, as an array (title, description)
@@ -2887,7 +2562,6 @@ class BackendUtility
      * @param string $_ (unused)
      * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
      * @return string HTML content for help text
-     * @see helpTextIcon()
      */
     public static function cshItem($table, $field, $_ = '', $wrap = '')
     {
@@ -3567,22 +3241,6 @@ class BackendUtility
         return '<a href="' . htmlspecialchars(self::getModuleUrl('web_list', $urlParameters)) . '" title="' . htmlspecialchars($linkTitle) . '">' . $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . htmlspecialchars($linkText) . '</a>';
     }
 
-    /**
-     * Generates a token and returns a parameter for the URL
-     *
-     * @param string $formName Context of the token
-     * @param string $tokenName The name of the token GET variable
-     * @throws \InvalidArgumentException
-     * @return string A URL GET variable including ampersand
-     * @deprecated since TYPO3 7, will be removed in TYPO3 8. All backend modules and routes are secured by default now. If you need a url parameter with a token, use the form protection directly.
-     */
-    public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $formProtection = FormProtectionFactory::get();
-        return '&' . $tokenName . '=' . $formProtection->generateToken($formName);
-    }
-
     /*******************************************
      *
      * Core
@@ -3679,125 +3337,6 @@ class BackendUtility
             $db->sql_free_result($res);
         }
         return $GLOBALS['LOCKED_RECORDS'][$table . ':' . $uid];
-    }
-
-    /**
-     * Returns select statement for MM relations (as used by TCEFORMs etc)
-     *
-     * @param array $fieldConfig Configuration array for the field, taken from $GLOBALS['TCA']
-     * @param string $field Field name
-     * @param array $TSconfig TSconfig array from which to get further configuration settings for the field name
-     * @return string Part of query
-     * @internal
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function exec_foreign_table_where_query($fieldConfig, $field = '', $TSconfig = array())
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $foreign_table = $fieldConfig['config']['foreign_table'];
-        $rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
-        $fTWHERE = $fieldConfig['config']['foreign_table_where'];
-        $fTWHERE = static::replaceMarkersInWhereClause($fTWHERE, $foreign_table, $field, $TSconfig);
-        $db = static::getDatabaseConnection();
-        $wgolParts = $db->splitGroupOrderLimit($fTWHERE);
-        // rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
-        // rootLevel = 0 means that elements are not allowed on root level
-        // rootLevel = 1 means that elements are only on the root level (pid=0)
-        if ($rootLevel == 1 || $rootLevel == -1) {
-            $pidWhere = $foreign_table . '.pid' . (($rootLevel == -1) ? '<>-1' : '=0');
-            $queryParts = array(
-                'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
-                'FROM' => $foreign_table,
-                'WHERE' => $pidWhere . ' ' . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
-                'GROUPBY' => $wgolParts['GROUPBY'],
-                'ORDERBY' => $wgolParts['ORDERBY'],
-                'LIMIT' => $wgolParts['LIMIT']
-            );
-        } else {
-            $pageClause = static::getBackendUserAuthentication()->getPagePermsClause(1);
-            if ($foreign_table != 'pages') {
-                $queryParts = array(
-                    'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
-                    'FROM' => $foreign_table . ', pages',
-                    'WHERE' => 'pages.uid=' . $foreign_table . '.pid
-								AND pages.deleted=0 ' . self::deleteClause($foreign_table) . ' AND ' . $pageClause . ' ' . $wgolParts['WHERE'],
-                    'GROUPBY' => $wgolParts['GROUPBY'],
-                    'ORDERBY' => $wgolParts['ORDERBY'],
-                    'LIMIT' => $wgolParts['LIMIT']
-                );
-            } else {
-                $queryParts = array(
-                    'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
-                    'FROM' => 'pages',
-                    'WHERE' => 'pages.deleted=0
-								AND ' . $pageClause . ' ' . $wgolParts['WHERE'],
-                    'GROUPBY' => $wgolParts['GROUPBY'],
-                    'ORDERBY' => $wgolParts['ORDERBY'],
-                    'LIMIT' => $wgolParts['LIMIT']
-                );
-            }
-        }
-        return $db->exec_SELECT_queryArray($queryParts);
-    }
-
-    /**
-     * Replaces all special markers in a where clause.
-     * Special markers are:
-     * ###REC_FIELD_[field name]###
-     * ###THIS_UID### - is current element uid (zero if new).
-     * ###CURRENT_PID### - is the current page id (pid of the record).
-     * ###STORAGE_PID###
-     * ###SITEROOT###
-     * ###PAGE_TSCONFIG_ID### - a value you can set from Page TSconfig dynamically.
-     * ###PAGE_TSCONFIG_IDLIST### - a value you can set from Page TSconfig dynamically.
-     * ###PAGE_TSCONFIG_STR### - a value you can set from Page TSconfig dynamically.
-     *
-     * @param string $whereClause Where clause with markers
-     * @param string $table Name of the table of the current record row
-     * @param string $field Field name
-     * @param array $tsConfig TSconfig array from which to get further configuration settings for the field name
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function replaceMarkersInWhereClause($whereClause, $table, $field = '', $tsConfig = array())
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $db = static::getDatabaseConnection();
-        if (strstr($whereClause, '###REC_FIELD_')) {
-            $whereClauseParts = explode('###REC_FIELD_', $whereClause);
-            foreach ($whereClauseParts as $key => $value) {
-                if ($key) {
-                    $whereClauseSubarts = explode('###', $value, 2);
-                    if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubarts[1][0] === '\'') {
-                        $whereClauseParts[$key] = $db->quoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
-                    } else {
-                        $whereClauseParts[$key] = $db->fullQuoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
-                    }
-                }
-            }
-            $whereClause = implode('', $whereClauseParts);
-        }
-        return str_replace(
-            array(
-                '###CURRENT_PID###',
-                '###THIS_UID###',
-                '###STORAGE_PID###',
-                '###SITEROOT###',
-                '###PAGE_TSCONFIG_ID###',
-                '###PAGE_TSCONFIG_IDLIST###',
-                '###PAGE_TSCONFIG_STR###'
-            ),
-            array(
-                (int)$tsConfig['_CURRENT_PID'],
-                (int)$tsConfig['_THIS_UID'],
-                (int)$tsConfig['_STORAGE_PID'],
-                (int)$tsConfig['_SITEROOT'],
-                (int)$tsConfig[$field]['PAGE_TSCONFIG_ID'],
-                $db->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
-                $db->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
-            ),
-            $whereClause
-        );
     }
 
     /**
@@ -4022,42 +3561,6 @@ class BackendUtility
             ArrayUtility::mergeRecursiveWithOverrule($thisConfig, $RTEprop['config.'][$table . '.'][$field . '.']['types.'][$type . '.']);
         }
         return $thisConfig;
-    }
-
-    /**
-     * Returns first possible RTE object if available.
-     * Usage: $RTEobj = BackendUtility::RTEgetObj();
-     *
-     * @return mixed If available, returns RTE object, otherwise an array of messages from possible RTEs
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function RTEgetObj()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // If no RTE object has been set previously, try to create it:
-        if (!isset($GLOBALS['T3_VAR']['RTEobj'])) {
-            // Set the object string to blank by default:
-            $GLOBALS['T3_VAR']['RTEobj'] = array();
-            // Traverse registered RTEs:
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $rteObjCfg) {
-                    $rteObj = GeneralUtility::getUserObj($rteObjCfg['objRef']);
-                    if (is_object($rteObj)) {
-                        if ($rteObj->isAvailable()) {
-                            $GLOBALS['T3_VAR']['RTEobj'] = $rteObj;
-                            break;
-                        } else {
-                            $GLOBALS['T3_VAR']['RTEobj'] = array_merge($GLOBALS['T3_VAR']['RTEobj'], $rteObj->errorLog);
-                        }
-                    }
-                }
-            }
-            if (empty($GLOBALS['T3_VAR']['RTEobj'])) {
-                $GLOBALS['T3_VAR']['RTEobj'][] = 'No RTEs configured at all';
-            }
-        }
-        // Return RTE object (if any!)
-        return $GLOBALS['T3_VAR']['RTEobj'];
     }
 
     /**
@@ -4557,55 +4060,6 @@ class BackendUtility
     }
 
     /**
-     * Count number of versions on a page
-     *
-     * @param int $workspace Workspace ID
-     * @param int $pageId Page ID
-     * @return array Overview of records
-     * @deprecated since TYPO3 CMS 7. Will be removed with TYPO3 CMS 8. Please use \TYPO3\CMS\Workspaces\Service\WorkspaceService::hasPageRecordVersions to check for record versions.
-     */
-    public static function countVersionsOfRecordsOnPage($workspace, $pageId)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if ((int)$workspace === 0) {
-            return array();
-        }
-        $output = array();
-        foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-            if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
-                $movePointer = new VersionState(VersionState::MOVE_POINTER);
-                $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
-                    . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
-
-                // Select all records from this table in the database from the workspace
-                // This joins the online version with the offline version as tables A and B
-                $output[$tableName] = static::getDatabaseConnection()->exec_SELECTgetRows(
-                    'B.uid as live_uid, A.uid as offline_uid',
-                    $tableName . ' A,' . $tableName . ' B',
-                    'A.pid=-1' . ' AND B.pid=' . (int)$pageId
-                        . ' AND A.t3ver_wsid=' . (int)$workspace . ' AND ' . $joinStatement
-                        . self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B')
-                );
-                if (!is_array($output[$tableName]) || empty($output[$tableName])) {
-                    unset($output[$tableName]);
-                }
-            }
-        }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'])) {
-            $reference = null;
-            $parameters = array(
-                'workspace' => 'workspace',
-                'pageId' => $pageId,
-                'versions' => &$output,
-            );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $parameters, $reference);
-            }
-        }
-        return $output;
-    }
-
-    /**
      * Performs mapping of new uids to new versions UID in case of import inside a workspace.
      *
      * @param string $table Table name
@@ -4684,19 +4138,6 @@ class BackendUtility
                 sprintf($lang->sL('LLL:EXT:lang/locallang_login.xlf:free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') .
                 $lang->sL('LLL:EXT:lang/locallang_login.xlf:keep.notice');
         return $cNotice;
-    }
-
-    /**
-     * Returns "web" if the $path (absolute) is within the DOCUMENT ROOT - and thereby qualifies as a "web" folder.
-     *
-     * @param string $path Path to evaluate
-     * @return bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function getPathType_web_nonweb($path)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return GeneralUtility::isFirstPartOfStr($path, GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT')) ? 'web' : '';
     }
 
     /**
@@ -4783,20 +4224,6 @@ class BackendUtility
     public static function isTableWorkspaceEnabled($table)
     {
         return !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
-    }
-
-    /**
-     * Determines whether a table is aware of using move placeholders,
-     * which means 'versioningWS' is set to 2.
-     * As of TYPO3 CMS 7, move placeholders is used as default so the method is obsolete.
-     *
-     * @param string $table
-     * @return bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use isTableWorkspaceEnabled() directly
-     */
-    public static function isTableMovePlaceholderAware($table)
-    {
-        return self::isTableWorkspaceEnabled($table);
     }
 
     /**

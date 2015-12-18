@@ -58,7 +58,7 @@ class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
     {
         $veriCode = '&vC=';
         if ($GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) {
-            $veriCode .= $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction');
+            $veriCode .= $GLOBALS['BE_USER']->veriCode();
         }
 
         if (empty($arguments['returnUrl'])) {
