@@ -494,7 +494,7 @@ class FunctionalTestCaseBootstrapUtility
 
         // Drop database in case a previous test had a fatal and did not clean up properly
         $database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
-        $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
+        $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
         if (!$createDatabaseResult) {
             $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
             $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
