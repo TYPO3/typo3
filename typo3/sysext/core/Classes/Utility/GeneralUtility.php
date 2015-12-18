@@ -258,62 +258,6 @@ class GeneralUtility
      * IMAGE FUNCTIONS
      *
      *************************/
-    /**
-     * Compressing a GIF file if not already LZW compressed.
-     * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimun size (that is RLE or no compression used)
-     *
-     * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
-     * GIF:
-     * If $type is not set, the compression is done with ImageMagick (provided that $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] is pointing to the path of a lzw-enabled version of 'convert') else with GD (should be RLE-enabled!)
-     * If $type is set to either 'IM' or 'GD' the compression is done with ImageMagick and GD respectively
-     * PNG:
-     * No changes.
-     *
-     * $theFile is expected to be a valid GIF-file!
-     * The function returns a code for the operation.
-     *
-     * @param string $theFile Filepath
-     * @param string $type See description of function
-     * @return string Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress() instead.
-     */
-    public static function gif_compress($theFile, $type)
-    {
-        static::logDeprecatedFunction();
-        $returnCode = GraphicalFunctions::gifCompress($theFile, $type);
-        return $returnCode;
-    }
-
-    /**
-     * Converts a png file to gif.
-     * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set TRUE.
-     *
-     * @param string $theFile The filename with path
-     * @return string New filename
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::pngToGifByImagemagick() instead.
-     */
-    public static function png_to_gif_by_imagemagick($theFile)
-    {
-        static::logDeprecatedFunction();
-        $newFile = GraphicalFunctions::pngToGifByImagemagick($theFile);
-        return $newFile;
-    }
-
-    /**
-     * Returns filename of the png/gif version of the input file (which can be png or gif).
-     * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
-     *
-     * @param string $theFile Filepath of image file
-     * @param bool $output_png If set, then input file is converted to PNG, otherwise to GIF
-     * @return string If the new image file exists, its filepath is returned
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif() instead.
-     */
-    public static function read_png_gif($theFile, $output_png = false)
-    {
-        static::logDeprecatedFunction();
-        $newFile = GraphicalFunctions::readPngGif($theFile, $output_png);
-        return $newFile;
-    }
 
     /*************************
      *
@@ -888,42 +832,6 @@ class GeneralUtility
     }
 
     /**
-     * Modifies a HTML Hex color by adding/subtracting $R,$G and $B integers
-     *
-     * @param string $color A hexadecimal color code, #xxxxxx
-     * @param int $R Offset value 0-255
-     * @param int $G Offset value 0-255
-     * @param int $B Offset value 0-255
-     * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
-     * @see modifyHTMLColorAll()
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function modifyHTMLColor($color, $R, $G, $B)
-    {
-        self::logDeprecatedFunction();
-        // This takes a hex-color (# included!) and adds $R, $G and $B to the HTML-color (format: #xxxxxx) and returns the new color
-        $nR = MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
-        $nG = MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
-        $nB = MathUtility::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
-        return '#' . substr(('0' . dechex($nR)), -2) . substr(('0' . dechex($nG)), -2) . substr(('0' . dechex($nB)), -2);
-    }
-
-    /**
-     * Modifies a HTML Hex color by adding/subtracting $all integer from all R/G/B channels
-     *
-     * @param string $color A hexadecimal color code, #xxxxxx
-     * @param int $all Offset value 0-255 for all three channels.
-     * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
-     * @see modifyHTMLColor()
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function modifyHTMLColorAll($color, $all)
-    {
-        self::logDeprecatedFunction();
-        return self::modifyHTMLColor($color, $all, $all, $all);
-    }
-
-    /**
      * Returns TRUE if the first part of $str matches the string $partStr
      *
      * @param string $str Full string to check
@@ -1108,57 +1016,6 @@ class GeneralUtility
             $domain = self::idnaEncode($domain);
         }
         return filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== false;
-    }
-
-    /**
-     * Checks if current e-mail sending method does not accept recipient/sender name
-     * in a call to PHP mail() function. Windows version of mail() and mini_sendmail
-     * program are known not to process such input correctly and they cause SMTP
-     * errors. This function will return TRUE if current mail sending method has
-     * problem with recipient name in recipient/sender argument for mail().
-     *
-     * @todo 4.3 should have additional configuration variable, which is combined
-     *   by || with the rest in this function.
-     *
-     * @return bool TRUE if mail() does not accept recipient name
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function isBrokenEmailEnvironment()
-    {
-        self::logDeprecatedFunction();
-        return TYPO3_OS == 'WIN' || false !== strpos(ini_get('sendmail_path'), 'mini_sendmail');
-    }
-
-    /**
-     * Changes from/to arguments for mail() function to work in any environment.
-     *
-     * @param string $address Address to adjust
-     * @return string Adjusted address
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function normalizeMailAddress($address)
-    {
-        self::logDeprecatedFunction();
-        if (self::isBrokenEmailEnvironment() && false !== ($pos1 = strrpos($address, '<'))) {
-            $pos2 = strpos($address, '>', $pos1);
-            $address = substr($address, $pos1 + 1, ($pos2 ? $pos2 : strlen($address)) - $pos1 - 1);
-        }
-        return $address;
-    }
-
-    /**
-     * Formats a string for output between <textarea>-tags
-     * All content outputted in a textarea form should be passed through this function
-     * Not only is the content htmlspecialchar'ed on output but there is also a single newline added in the top. The newline is necessary because browsers will ignore the first newline after <textarea> if that is the first character. Therefore better set it!
-     *
-     * @param string $content Input string to be formatted.
-     * @return string Formatted for <textarea>-tags
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function formatForTextarea($content)
-    {
-        self::logDeprecatedFunction();
-        return LF . htmlspecialchars($content);
     }
 
     /**
@@ -1433,34 +1290,6 @@ class GeneralUtility
      * ARRAY FUNCTIONS
      *
      *************************/
-    /**
-     * Check if an string item exists in an array.
-     * Please note that the order of function parameters is reverse compared to the PHP function in_array()!!!
-     *
-     * Comparison to PHP in_array():
-     * -> $array = array(0, 1, 2, 3);
-     * -> variant_a := \TYPO3\CMS\Core\Utility\ArrayUtility::inArray($array, $needle)
-     * -> variant_b := in_array($needle, $array)
-     * -> variant_c := in_array($needle, $array, TRUE)
-     * +---------+-----------+-----------+-----------+
-     * | $needle | variant_a | variant_b | variant_c |
-     * +---------+-----------+-----------+-----------+
-     * | '1a'	| FALSE	 | TRUE	  | FALSE	 |
-     * | ''	  | FALSE	 | TRUE	  | FALSE	 |
-     * | '0'	 | TRUE	  | TRUE	  | FALSE	 |
-     * | 0	   | TRUE	  | TRUE	  | TRUE	  |
-     * +---------+-----------+-----------+-----------+
-     *
-     * @param array $in_array One-dimensional array of items
-     * @param string $item Item to check for
-     * @return bool TRUE if $item is in the one-dimensional array $in_array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::inArray() instead
-     */
-    public static function inArray(array $in_array, $item)
-    {
-        static::logDeprecatedFunction();
-        return ArrayUtility::inArray($in_array, $item);
-    }
 
     /**
      * Explodes a $string delimited by $delim and casts each item in the array to (int).
@@ -1563,50 +1392,6 @@ class GeneralUtility
     }
 
     /**
-     * Removes the value $cmpValue from the $array if found there. Returns the modified array
-     *
-     * @param array $array Array containing the values
-     * @param string $cmpValue Value to search for and if found remove array entry where found.
-     * @return array Output array with entries removed if search string is found
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::removeArrayEntryByValue() instead
-     */
-    public static function removeArrayEntryByValue(array $array, $cmpValue)
-    {
-        static::logDeprecatedFunction();
-        return ArrayUtility::removeArrayEntryByValue($array, $cmpValue);
-    }
-
-    /**
-     * Filters an array to reduce its elements to match the condition.
-     * The values in $keepItems can be optionally evaluated by a custom callback function.
-     *
-     * Example (arguments used to call this function):
-     * $array = array(
-     * array('aa' => array('first', 'second'),
-     * array('bb' => array('third', 'fourth'),
-     * array('cc' => array('fifth', 'sixth'),
-     * );
-     * $keepItems = array('third');
-     * $getValueFunc = function($value) { return $value[0]; }
-     *
-     * Returns:
-     * array(
-     * array('bb' => array('third', 'fourth'),
-     * )
-     *
-     * @param array $array The initial array to be filtered/reduced
-     * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
-     * @param string $getValueFunc (optional) Callback function used to get the value to keep
-     * @return array The filtered/reduced array with the kept items
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::keepItemsInArray() instead
-     */
-    public static function keepItemsInArray(array $array, $keepItems, $getValueFunc = null)
-    {
-        static::logDeprecatedFunction();
-        return ArrayUtility::keepItemsInArray($array, $keepItems, $getValueFunc);
-    }
-
-    /**
      * Implodes a multidim-array into GET-parameters (eg. &param[key][key2]=value2&param[key][key3]=value3)
      *
      * @param string $name Name prefix for entries. Set to blank if you wish none.
@@ -1681,115 +1466,6 @@ class GeneralUtility
     }
 
     /**
-     * AddSlash array
-     * This function traverses a multidimensional array and adds slashes to the values.
-     * NOTE that the input array is and argument by reference.!!
-     * Twin-function to stripSlashesOnArray
-     *
-     * @param array $theArray Multidimensional input array, (REFERENCE!)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     * @return array
-     */
-    public static function addSlashesOnArray(array &$theArray)
-    {
-        self::logDeprecatedFunction();
-        foreach ($theArray as &$value) {
-            if (is_array($value)) {
-                self::addSlashesOnArray($value);
-            } else {
-                $value = addslashes($value);
-            }
-        }
-        unset($value);
-        reset($theArray);
-    }
-
-    /**
-     * StripSlash array
-     * This function traverses a multidimensional array and strips slashes to the values.
-     * NOTE that the input array is and argument by reference.!!
-     * Twin-function to addSlashesOnArray
-     *
-     * @param array $theArray Multidimensional input array, (REFERENCE!)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     * @return array
-     */
-    public static function stripSlashesOnArray(array &$theArray)
-    {
-        foreach ($theArray as &$value) {
-            if (is_array($value)) {
-                self::stripSlashesOnArray($value);
-            } else {
-                $value = stripslashes($value);
-            }
-        }
-        unset($value);
-        reset($theArray);
-    }
-
-    /**
-     * Either slashes ($cmd=add) or strips ($cmd=strip) array $arr depending on $cmd
-     *
-     * @param array $arr Multidimensional input array
-     * @param string $cmd "add" or "strip", depending on usage you wish.
-     * @return array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function slashArray(array $arr, $cmd)
-    {
-        self::logDeprecatedFunction();
-        if ($cmd == 'strip') {
-            self::stripSlashesOnArray($arr);
-        }
-        if ($cmd == 'add') {
-            self::addSlashesOnArray($arr);
-        }
-        return $arr;
-    }
-
-    /**
-     * Rename Array keys with a given mapping table
-     *
-     * @param array	$array Array by reference which should be remapped
-     * @param array	$mappingTable Array with remap information, array/$oldKey => $newKey)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::remapArrayKeys() instead
-     */
-    public static function remapArrayKeys(&$array, $mappingTable)
-    {
-        static::logDeprecatedFunction();
-        ArrayUtility::remapArrayKeys($array, $mappingTable);
-    }
-
-    /**
-     * An array_merge function where the keys are NOT renumbered as they happen to be with the real php-array_merge function. It is "binary safe" in the sense that integer keys are overridden as well.
-     *
-     * @param array $arr1 First array
-     * @param array $arr2 Second array
-     * @return array Merged result.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - native php '+' operator instead
-     */
-    public static function array_merge(array $arr1, array $arr2)
-    {
-        static::logDeprecatedFunction();
-        return $arr2 + $arr1;
-    }
-
-    /**
-     * Filters keys off from first array that also exist in second array. Comparison is done by keys.
-     * This method is a recursive version of php array_diff_assoc()
-     *
-     * @param array $array1 Source array
-     * @param array $array2 Reduce source array by this array
-     * @return array Source array reduced by keys also present in second array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::arrayDiffAssocRecursive() instead
-     */
-    public static function arrayDiffAssocRecursive(array $array1, array $array2)
-    {
-        static::logDeprecatedFunction();
-        return ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-    }
-
-    /**
      * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
      *
      * @param array $row Input array of values
@@ -1826,19 +1502,6 @@ class GeneralUtility
             }
         }
         return $out;
-    }
-
-    /**
-     * Sorts an array by key recursive - uses natural sort order (aAbB-zZ)
-     *
-     * @param array $array array to be sorted recursively, passed by reference
-     * @return bool TRUE if param is an array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::naturalKeySortRecursive() instead
-     */
-    public static function naturalKeySortRecursive(&$array)
-    {
-        static::logDeprecatedFunction();
-        return ArrayUtility::naturalKeySortRecursive($array);
     }
 
     /*************************
@@ -3280,22 +2943,6 @@ Connection: close
      * SYSTEM INFORMATION
      *
      *************************/
-    /**
-     * Returns the HOST+DIR-PATH of the current script (The URL, but without 'http://' and without script-filename)
-     *
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use GeneralUtility::getIndpEnv* instead
-     */
-    public static function getThisUrl()
-    {
-        self::logDeprecatedFunction();
-        // Url of this script
-        $p = parse_url(self::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
-        $dir = self::dirname($p['path']) . '/';
-        // Strip file
-        $url = str_replace('//', '/', $p['host'] . ($p['port'] ? ':' . $p['port'] : '') . $dir);
-        return $url;
-    }
 
     /**
      * Returns the link-url to the current script.
@@ -4146,24 +3793,6 @@ Connection: close
     }
 
     /**
-     * Includes a locallang file and returns the $LOCAL_LANG array found inside.
-     *
-     * @param string $fileRef Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a 'locallang.xlf' file conataining a valid XML TYPO3 language structure.
-     * @param string $langKey Language key
-     * @param string $charset Character set (option); if not set, determined by the language key
-     * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
-     * @return array Value of $LOCAL_LANG found in the included file. If that array is found it will returned.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public static function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0)
-    {
-        self::logDeprecatedFunction();
-        /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
-        $languageFactory = self::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
-        return $languageFactory->getParsedData($fileRef, $langKey, $charset, $errorMode);
-    }
-
-    /**
      * Returns auto-filename for locallang localizations
      *
      * @param string $fileRef Absolute file reference to locallang file
@@ -4837,163 +4466,6 @@ Connection: close
     }
 
     /**
-     * Implementation of quoted-printable encode.
-     * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
-     *
-     * @param string $string Content to encode
-     * @param int $maxlen Length of the lines, default is 76
-     * @return string The QP encoded string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
-     */
-    public static function quoted_printable($string, $maxlen = 76)
-    {
-        static::logDeprecatedFunction();
-        // Make sure the string contains only Unix line breaks
-        // Replace Windows breaks (\r\n)
-        $string = str_replace(CRLF, LF, $string);
-        // Replace Mac breaks (\r)
-        $string = str_replace(CR, LF, $string);
-        // Default line break for Unix systems.
-        $linebreak = LF;
-        if (TYPO3_OS == 'WIN') {
-            // Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the line break needs to be \r\n.
-            $linebreak = CRLF;
-        }
-        $newString = '';
-        // Split lines
-        $theLines = explode(LF, $string);
-        foreach ($theLines as $val) {
-            $newVal = '';
-            $theValLen = strlen($val);
-            $len = 0;
-            // Walk through each character of this line
-            for ($index = 0; $index < $theValLen; $index++) {
-                $char = substr($val, $index, 1);
-                $ordVal = ord($char);
-                if ($len > $maxlen - 4 || $len > $maxlen - 14 && $ordVal == 32) {
-                    // Add a line break
-                    $newVal .= '=' . $linebreak;
-                    // Reset the length counter
-                    $len = 0;
-                }
-                if ($ordVal >= 33 && $ordVal <= 60 || $ordVal >= 62 && $ordVal <= 126 || $ordVal == 9 || $ordVal == 32) {
-                    // This character is ok, add it to the message
-                    $newVal .= $char;
-                    $len++;
-                } else {
-                    // Special character, needs to be encoded
-                    $newVal .= sprintf('=%02X', $ordVal);
-                    $len += 3;
-                }
-            }
-            // Replaces a possible SPACE-character at the end of a line
-            $newVal = preg_replace('/' . chr(32) . '$/', '=20', $newVal);
-            // Replaces a possible TAB-character at the end of a line
-            $newVal = preg_replace('/' . TAB . '$/', '=09', $newVal);
-            $newString .= $newVal . $linebreak;
-        }
-        // Remove last newline
-        return preg_replace('/' . $linebreak . '$/', '', $newString);
-    }
-
-    /**
-     * Encode header lines
-     * Email headers must be ASCII, therefore they will be encoded to quoted_printable (default) or base64.
-     *
-     * @param string $line Content to encode
-     * @param string $enc Encoding type: "base64" or "quoted-printable". Default value is "quoted-printable".
-     * @param string $charset Charset used for encoding
-     * @return string The encoded string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
-     */
-    public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8')
-    {
-        static::logDeprecatedFunction();
-        // Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
-        if (strpos($line, '###') !== false) {
-            return $line;
-        }
-        // Check if any non-ASCII characters are found - otherwise encoding is not needed
-        if (!preg_match(('/[^' . chr(32) . '-' . chr(127) . ']/'), $line)) {
-            return $line;
-        }
-        // Wrap email addresses in a special marker
-        $line = preg_replace('/([^ ]+@[^ ]+)/', '###$1###', $line);
-        $matches = preg_split('/(.?###.+###.?|\\(|\\))/', $line, -1, PREG_SPLIT_NO_EMPTY);
-        foreach ($matches as $part) {
-            $oldPart = $part;
-            $partWasQuoted = $part[0] == '"';
-            $part = trim($part, '"');
-            switch ((string)$enc) {
-                case 'base64':
-                    $part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
-                    break;
-                case 'quoted-printable':
-
-                default:
-                    $qpValue = self::quoted_printable($part, 1000);
-                    if ($part != $qpValue) {
-                        // Encoded words in the header should not contain non-encoded:
-                        // * spaces. "_" is a shortcut for "=20". See RFC 2047 for details.
-                        // * question mark. See RFC 1342 (http://tools.ietf.org/html/rfc1342)
-                        $search = array(' ', '?');
-                        $replace = array('_', '=3F');
-                        $qpValue = str_replace($search, $replace, $qpValue);
-                        $part = '=?' . $charset . '?Q?' . $qpValue . '?=';
-                    }
-            }
-            if ($partWasQuoted) {
-                $part = '"' . $part . '"';
-            }
-            $line = str_replace($oldPart, $part, $line);
-        }
-        // Remove the wrappers
-        $line = preg_replace('/###(.+?)###/', '$1', $line);
-        return $line;
-    }
-
-    /**
-     * Takes a clear-text message body for a plain text email, finds all 'http://' links and if they are longer than 76 chars they are converted to a shorter URL with a hash parameter. The real parameter is stored in the database and the hash-parameter/URL will be redirected to the real parameter when the link is clicked.
-     * This function is about preserving long links in messages.
-     *
-     * @param string $message Message content
-     * @param string $urlmode URL mode; "76" or "all
-     * @param string $index_script_url URL of index script (see makeRedirectUrl())
-     * @return string Processed message content
-     * @see makeRedirectUrl()
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
-     */
-    public static function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '')
-    {
-        static::logDeprecatedFunction();
-        switch ((string)$urlmode) {
-            case '':
-                $lengthLimit = false;
-                break;
-            case 'all':
-                $lengthLimit = 0;
-                break;
-            case '76':
-
-            default:
-                $lengthLimit = (int)$urlmode;
-        }
-        if ($lengthLimit === false) {
-            // No processing
-            $messageSubstituted = $message;
-        } else {
-            $messageSubstituted = preg_replace_callback(
-                '/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/iU',
-                function (array $matches) use ($lengthLimit, $index_script_url) {
-                    return GeneralUtility::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
-                },
-                $message
-            );
-        }
-        return $messageSubstituted;
-    }
-
-    /**
      * Create a shortened "redirect" URL with specified length from an incoming URL
      *
      * @param string $inUrl Input URL
@@ -5341,20 +4813,6 @@ Connection: close
                 '\\r' => '\\u000D'
             )
         );
-    }
-
-    /**
-     * Ends and cleans all output buffers
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use ob_* functions directly or self::flushOutputBuffers
-     */
-    public static function cleanOutputBuffers()
-    {
-        self::logDeprecatedFunction();
-        while (ob_end_clean()) {
-        }
-        header('Content-Encoding: None', true);
     }
 
     /**
