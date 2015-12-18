@@ -164,8 +164,9 @@ class InlineRecordContainer extends AbstractContainer
                     && !empty($GLOBALS['TCA'][$foreignTable]['ctrl']['enablecolumns']['disabled'])
                 ) {
                     $checked = !empty($record['hidden']) ? ' checked="checked"' : '';
-                    $html .= '<input type="checkbox" name="data' . htmlspecialchars($appendFormFieldNames)
-                        . '[hidden]_0" value="1"' . $checked . ' />';
+                    $html .= '<input type="checkbox" data-formengine-input-name="data'
+                        . htmlspecialchars($appendFormFieldNames)
+                        . '[hidden]" value="1"' . $checked . ' />';
                     $html .= '<input type="input" name="data' . htmlspecialchars($appendFormFieldNames)
                         . '[hidden]" value="' . htmlspecialchars($record['hidden']) . '" />';
                 }

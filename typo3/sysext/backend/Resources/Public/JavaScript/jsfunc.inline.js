@@ -62,7 +62,7 @@ var inline = {
 		// if content is not loaded yet, get it now from server
 		if (inline.isLoading) {
 			return false;
-		} else if (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery('#' + escapedObjectId + '_fields').html().substr(0, 16) == '<!--notloaded-->') {
+		} else if (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery('#' + escapedObjectId + '_fields').html().substr(0, 16) === '<!--notloaded-->') {
 			inline.isLoading = true;
 			var headerIdentifier = '#' + escapedObjectId + '_header';
 			// add loading-indicator
@@ -506,13 +506,13 @@ var inline = {
 		var hiddenValue, formObj, valueObj;
 		var escapeObjectId = this.escapeObjectId(objectId);
 		var $objectDiv = TYPO3.jQuery('#' + escapeObjectId + '_fields');
-		if ($objectDiv.length == 0 || $objectDiv.html().substr(0, 16) != '<!--notloaded-->') {
+		if ($objectDiv.length == 0 || $objectDiv.html().substr(0, 16) !== '<!--notloaded-->') {
 			return;
 		}
 
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 
-		var $formObj = TYPO3.jQuery('[name="' + elName + '[hidden]_0"]');
+		var $formObj = TYPO3.jQuery('[data-formengine-input-name="' + elName + '[hidden]"]');
 		var $valueObj = TYPO3.jQuery('[name="' + elName + '[hidden]"]');
 
 		// It might be the case that a child record
@@ -526,13 +526,13 @@ var inline = {
 		// Update DOM
 		$objectDiv.html(htmlData);
 
-		formObj = document.getElementsByName(elName + '[hidden]_0');
+		formObj = document.querySelector('[data-formengine-input-name="' + elName + '[hidden]"]');
 		valueObj = document.getElementsByName(elName + '[hidden]');
 
 		// Set the hidden value again
-		if (formObj.length && valueObj.length) {
+		if (typeof formObj !== 'undefined' && formObj !== null && valueObj.length) {
 			valueObj[0].value = hiddenValue ? 1 : 0;
-			formObj[0].checked = hiddenValue;
+			formObj.checked = hiddenValue;
 		}
 
 		// now that the content is loaded, set the expandState
@@ -885,16 +885,16 @@ var inline = {
 
 	enableDisableRecord: function (objectIdentifier) {
 		var elName = this.parseObjectId('full', objectIdentifier, 2, 0, true) + '[hidden]';
-		var formObj = document.getElementsByName(elName + '_0');
+		var formObj = document.querySelector('[data-formengine-input-name="' + elName + '"]');
 		var valueObj = document.getElementsByName(elName);
 		var escapedObjectIdentifier = this.escapeObjectId(objectIdentifier);
 		var $container = TYPO3.jQuery('#' + escapedObjectIdentifier + '_div');
 		var $icon = $container.find('.t3js-' + escapedObjectIdentifier + '_disabled .t3js-icon');
 
 		// It might be the case that there's no hidden field
-		if (formObj.length && valueObj.length) {
-			formObj[0].click();
-			valueObj[0].value = formObj[0].checked ? 1 : 0;
+		if (typeof formObj !== 'undefined' && formObj !== null && valueObj.length) {
+			formObj.click();
+			valueObj[0].value = formObj.checked ? 1 : 0;
 			TBE_EDITOR.fieldChanged_fName(elName, elName);
 		}
 
