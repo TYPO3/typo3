@@ -160,6 +160,7 @@ return array(
                 'renderType' => 'selectSingle',
                 'items' => array(),
                 'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
+                'default' => '',
             )
         ),
         'recursive' => array(
