@@ -59,17 +59,6 @@ define(['jquery'], function($) {
 		openFileInfoPopup(identifier);
 	});
 
-	$('a.btn.filelist-file-delete').click(function(event) {
-		event.preventDefault();
-
-		var url = $(this).attr('data-url');
-		var confirmationDialogue = $(this).attr('data-confirmation-dialogue');
-
-		if (confirmationDialogue) {
-			top.content.list_frame.location.href=url;
-		}
-	});
-
 	$('a.filelist-file-references').click(function(event) {
 		event.preventDefault();
 
