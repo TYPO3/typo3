@@ -284,13 +284,6 @@ class GraphicalFunctions
     public $csConvObj;
 
     /**
-     * Is set to the native character set of the input strings.
-     *
-     * @var string
-     */
-    public $nativeCharset = '';
-
-    /**
      * Init function. Must always call this when using the class.
      * This function will read the configuration information from $GLOBALS['TYPO3_CONF_VARS']['GFX'] can set some values in internal variables.
      *
@@ -356,16 +349,7 @@ class GraphicalFunctions
         if ($gfxConf['im_noScaleUp']) {
             $this->mayScaleUp = 0;
         }
-        if (TYPO3_MODE == 'FE') {
-            $this->csConvObj = $GLOBALS['TSFE']->csConvObj;
-        } elseif (is_object($GLOBALS['LANG'])) {
-            // BE assumed:
-            $this->csConvObj = $GLOBALS['LANG']->csConvObj;
-        } else {
-            // The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-            $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-        }
-        $this->nativeCharset = 'utf-8';
+        $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
     }
 
     /*************************************************
@@ -610,7 +594,7 @@ class GraphicalFunctions
         list($spacing, $wordSpacing) = $this->calcWordSpacing($conf);
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
-        $theText = $this->recodeString($conf['text']);
+        $theText = $conf['text'];
         if ($conf['imgMap'] && is_array($conf['imgMap.'])) {
             $this->addToMap($this->calcTextCordsForMap($conf['BBOX'][2], $txtPos, $conf['imgMap.']), $conf['imgMap.']);
         }
@@ -764,7 +748,7 @@ class GraphicalFunctions
     {
         $sF = $this->getTextScalFactor($conf);
         list($spacing, $wordSpacing) = $this->calcWordSpacing($conf, $sF);
-        $theText = $this->recodeString($conf['text']);
+        $theText = $conf['text'];
         $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'], $sF);
         $theBBoxInfo = $charInf;
         if ($conf['angle']) {
@@ -790,7 +774,7 @@ class GraphicalFunctions
                     $x += $wordW + $wordSpacing;
                 }
             } else {
-                $utf8Chars = $this->singleChars($theText);
+                $utf8Chars = $this->csConvObj->utf8_to_numberarray($theText, true, true);
                 // For each UTF-8 char, do:
                 foreach ($utf8Chars as $char) {
                     $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'], $sF);
@@ -907,7 +891,7 @@ class GraphicalFunctions
                 $x += $wordW + $wordSpacing;
             }
         } else {
-            $utf8Chars = $this->singleChars($text);
+            $utf8Chars = $this->csConvObj->utf8_to_numberarray($text, true, true);
             // For each UTF-8 char, do:
             foreach ($utf8Chars as $char) {
                 $charInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $char, $splitRenderingConf, $sF);
@@ -938,7 +922,7 @@ class GraphicalFunctions
             } else {
                 do {
                     // Determine bounding box.
-                    $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($conf['text']), $conf['splitRendering.']);
+                    $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $conf['text'], $conf['splitRendering.']);
                     if ($conf['angle'] < 0) {
                         $pixelWidth = abs($bounds[4] - $bounds[0]);
                     } elseif ($conf['angle'] > 0) {
@@ -1131,7 +1115,7 @@ class GraphicalFunctions
                                 $currentState = -1;
                                 $bankAccum = '';
                                 // Explode the string value by the word value to highlight:
-                                $utf8Chars = $this->singleChars($part['str']);
+                                $utf8Chars = $this->csConvObj->utf8_to_numberarray($part['str'], true, true);
                                 foreach ($utf8Chars as $utfChar) {
                                     // Find number and evaluate position:
                                     $uNumber = (int)$this->csConvObj->utf8CharToUnumber($utfChar);
@@ -1306,7 +1290,7 @@ class GraphicalFunctions
      */
     protected function getRenderedTextWidth($text, $conf)
     {
-        $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($text), $conf['splitRendering.']);
+        $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $text, $conf['splitRendering.']);
         if ($conf['angle'] < 0) {
             $pixelWidth = abs($bounds[4] - $bounds[0]);
         } elseif ($conf['angle'] > 0) {
@@ -2085,46 +2069,6 @@ class GraphicalFunctions
             }
         }
         return $col;
-    }
-
-    /**
-     * Recode string
-     * Used with text strings for fonts when languages has other character sets.
-     *
-     * @param string The text to recode
-     * @return string The recoded string. Should be UTF-8 output. MAY contain entities (eg. &#123; or &#quot; which should render as real chars).
-     */
-    public function recodeString($string)
-    {
-        // Recode string to UTF-8 from $this->nativeCharset:
-        if ($this->nativeCharset && $this->nativeCharset != 'utf-8') {
-            // Convert to UTF-8
-            $string = $this->csConvObj->utf8_encode($string, $this->nativeCharset);
-        }
-        return $string;
-    }
-
-    /**
-     * Split a string into an array of individual characters
-     * The function will look at $this->nativeCharset and if that is set, the input string is expected to be UTF-8 encoded, possibly with entities in it. Otherwise the string is supposed to be a single-byte charset which is just splitted by a for-loop.
-     *
-     * @param string $theText The text string to split
-     * @param bool $returnUnicodeNumber Return Unicode numbers instead of chars.
-     * @return array Numerical array with a char as each value.
-     */
-    public function singleChars($theText, $returnUnicodeNumber = false)
-    {
-        if ($this->nativeCharset) {
-            // Get an array of separated UTF-8 chars
-            return $this->csConvObj->utf8_to_numberarray($theText, 1, $returnUnicodeNumber ? 0 : 1);
-        } else {
-            $output = array();
-            $c = strlen($theText);
-            for ($a = 0; $a < $c; $a++) {
-                $output[] = substr($theText, $a, 1);
-            }
-            return $output;
-        }
     }
 
     /**
