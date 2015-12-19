@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Charset;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -50,7 +51,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class for conversion between charsets
  */
-class CharsetConverter
+class CharsetConverter implements SingletonInterface
 {
 
     /**
