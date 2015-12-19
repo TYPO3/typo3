@@ -149,41 +149,6 @@ class RecyclerUtility
     }
 
     /**
-     * Gets the current backend charset.
-     *
-     * @return string The current backend charset
-     */
-    public static function getCurrentCharset()
-    {
-        $lang = static::getLanguageService();
-        return $lang->csConvObj->parse_charset($lang->charSet);
-    }
-
-    /**
-     * Determines whether the current charset is not UTF-8
-     *
-     * @return bool Whether the current charset is not UTF-8
-     */
-    public static function isNotUtf8Charset()
-    {
-        return self::getCurrentCharset() !== 'utf-8';
-    }
-
-    /**
-     * Gets an UTF-8 encoded string (only if the current charset is not UTF-8!).
-     *
-     * @param string $string String to be converted to UTF-8 if required
-     * @return string UTF-8 encoded string
-     */
-    public static function getUtf8String($string)
-    {
-        if (self::isNotUtf8Charset()) {
-            $string = static::getLanguageService()->csConvObj->utf8_encode($string, self::getCurrentCharset());
-        }
-        return $string;
-    }
-
-    /**
      * Returns an instance of DatabaseConnection
      *
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection

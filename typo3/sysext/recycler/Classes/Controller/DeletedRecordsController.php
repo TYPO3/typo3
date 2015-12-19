@@ -58,7 +58,6 @@ class DeletedRecordsController
 
         if (is_array($deletedRowsArray)) {
             $lang = $this->getLanguageService();
-            $backendUser = $this->getBackendUser();
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
             foreach ($deletedRowsArray as $table => $rows) {
@@ -70,14 +69,14 @@ class DeletedRecordsController
                         'uid' => $row['uid'],
                         'pid' => $row['pid'],
                         'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
-                        'pageTitle' => RecyclerUtility::getUtf8String($pageTitle),
+                        'pageTitle' => $pageTitle,
                         'table' => $table,
                         'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
                         'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
                         'owner' => htmlspecialchars($backendUser['username']),
                         'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
-                        'tableTitle' => RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-                        'title' => htmlspecialchars(RecyclerUtility::getUtf8String(BackendUtility::getRecordTitle($table, $row))),
+                        'tableTitle' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+                        'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
                         'path' => RecyclerUtility::getRecordPath($row['pid'])
                     );
                 }
@@ -118,16 +117,6 @@ class DeletedRecordsController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

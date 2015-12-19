@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
@@ -39,8 +40,8 @@ class Tables
                 // Determine whether the table has deleted records:
                 $deletedCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
                 if ($deletedCount) {
-                    /* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-                    $deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
+                    /* @var $deletedDataObject DeletedRecords */
+                    $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
                     $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
                     if (isset($deletedData[$tableName])) {
                         if ($deletedRecordsInTable = count($deletedData[$tableName])) {
@@ -48,7 +49,7 @@ class Tables
                             $tables[] = array(
                                 $tableName,
                                 $deletedRecordsInTable,
-                                RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
+                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'])
                             );
                         }
                     }
