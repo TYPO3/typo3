@@ -42,7 +42,7 @@ class PathUtility
         if (self::isAbsolutePath($targetPath)) {
             if (StringUtility::beginsWith($targetPath, PATH_site)) {
                 $targetPath = self::stripPathSitePrefix($targetPath);
-                if (!defined('TYPO3_cliMode')) {
+                if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                     $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
                 }
             }
@@ -52,7 +52,7 @@ class PathUtility
             // Make an absolute path out of it
             $targetPath = GeneralUtility::resolveBackPath(dirname(PATH_thisScript) . '/' . $targetPath);
             $targetPath = self::stripPathSitePrefix($targetPath);
-            if (!defined('TYPO3_cliMode')) {
+            if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
                 $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
             }
         }

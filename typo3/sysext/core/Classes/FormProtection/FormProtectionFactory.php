@@ -125,7 +125,7 @@ class FormProtectionFactory
      */
     protected static function isInstallToolSession()
     {
-        return defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript;
+        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
     }
 
     /**

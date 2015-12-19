@@ -122,7 +122,7 @@ class UnitTestsBootstrap
     }
 
     /**
-     * Defines TYPO3_MODE, TYPO3_cliMode and sets the environment variable TYPO3_CONTEXT.
+     * Defines TYPO3_MODE and sets the environment variable TYPO3_CONTEXT.
      *
      * @return UnitTestsBootstrap fluent interface
      */
@@ -131,7 +131,6 @@ class UnitTestsBootstrap
         /** @var string */
         define('TYPO3_MODE', 'BE');
         /** @var string */
-        define('TYPO3_cliMode', true);
         putenv('TYPO3_CONTEXT=Testing');
 
         return $this;
@@ -191,6 +190,7 @@ class UnitTestsBootstrap
 
         Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup();
 
         return $this;

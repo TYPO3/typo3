@@ -460,11 +460,11 @@ class FunctionalTestCaseBootstrapUtility
         $_SERVER['argv'][0] = 'index.php';
 
         define('TYPO3_MODE', 'BE');
-        define('TYPO3_cliMode', true);
 
         $classLoader = require rtrim(realpath($this->instancePath . '/typo3'), '\\/') . '/../vendor/autoload.php';
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup('')
             ->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)

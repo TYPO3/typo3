@@ -3447,7 +3447,7 @@ class GeneralUtility
         $host = '';
         // If not called from the command-line, resolve on getIndpEnv()
         // Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
-        if ($requestHost && (!defined('TYPO3_cliMode') || !TYPO3_cliMode)) {
+        if ($requestHost && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
             $host = self::getIndpEnv('HTTP_HOST');
         }
         if (!$host) {
@@ -4515,7 +4515,7 @@ class GeneralUtility
     {
         // For CLI logging name is <fqdn-hostname>:<TYPO3-path>
         // Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname(($requestHost = false)) . ':' . PATH_site;
         } else {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');

@@ -46,7 +46,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isEnvironmentInCliMode()
     {
-        return $this->isEnvironmentInBackendMode() && defined('TYPO3_cliMode') && TYPO3_cliMode === true;
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 
     /**

@@ -50,6 +50,7 @@ class Application implements ApplicationInterface
 
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_INSTALL)
             ->baseSetup($this->entryPointPath);
 
         foreach ($this->availableRequestHandlers as $requestHandler) {
@@ -86,6 +87,5 @@ class Application implements ApplicationInterface
     protected function defineLegacyConstants()
     {
         define('TYPO3_MODE', 'BE');
-        define('TYPO3_enterInstallScript', '1');
     }
 }

@@ -116,6 +116,7 @@ class Bootstrap
         if (is_null(static::$instance)) {
             $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
             self::$instance = new static($applicationContext);
+            self::$instance->defineTypo3RequestTypes();
         }
         return static::$instance;
     }
@@ -185,10 +186,14 @@ class Bootstrap
      *
      * @param string $relativePathPart Relative path of entry script back to document root
      * @return Bootstrap
+     * @throws \RuntimeException when TYPO3_REQUESTTYPE was not set before, setRequestType() needs to be called before
      * @internal This is not a public API method, do not use in own extensions
      */
     public function baseSetup($relativePathPart = '')
     {
+        if (!defined('TYPO3_REQUESTTYPE')) {
+            throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
+        }
         SystemEnvironmentBuilder::run($relativePathPart);
         if (!self::$usesComposerClassLoading && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
@@ -396,8 +401,7 @@ class Bootstrap
             ->setDefaultTimezone()
             ->initializeL10nLocales()
             ->convertPageNotFoundHandlingToBoolean()
-            ->setMemoryLimit()
-            ->defineTypo3RequestTypes();
+            ->setMemoryLimit();
         if ($allowCaching) {
             $this->ensureClassLoadingInformationExists();
         }
@@ -717,8 +721,8 @@ class Bootstrap
     }
 
     /**
-     * Define TYPO3_REQUESTTYPE* constants
-     * so devs exactly know what type of request it is
+     * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
+     * also see setRequestType(). Is done at the very beginning so these parameters are always available.
      *
      * @return Bootstrap
      */
@@ -729,7 +733,19 @@ class Bootstrap
         define('TYPO3_REQUESTTYPE_CLI', 4);
         define('TYPO3_REQUESTTYPE_AJAX', 8);
         define('TYPO3_REQUESTTYPE_INSTALL', 16);
-        define('TYPO3_REQUESTTYPE', (TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) | (TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) | (defined('TYPO3_cliMode') && TYPO3_cliMode ? TYPO3_REQUESTTYPE_CLI : 0) | (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript ? TYPO3_REQUESTTYPE_INSTALL : 0) | ($GLOBALS['TYPO3_AJAX'] ? TYPO3_REQUESTTYPE_AJAX : 0));
+    }
+
+    /**
+     * Defines the TYPO3_REQUESTTYPE constant so the environment knows which context the request is running.
+     *
+     * @throws \RuntimeException if the method was already called during a request
+     * @return Bootstrap
+     */
+    public function setRequestType($requestType) {
+        if (defined('TYPO3_REQUESTTYPE')) {
+            throw new \RuntimeException('TYPO3_REQUESTTYPE has already been set, cannot be called multiple times', 1450561878);
+        }
+        define('TYPO3_REQUESTTYPE', $requestType);
         return $this;
     }
 
@@ -778,7 +794,6 @@ class Bootstrap
         unset($GLOBALS['TBE_MODULES_EXT']);
         unset($GLOBALS['TCA_DESCR']);
         unset($GLOBALS['LOCAL_LANG']);
-        unset($GLOBALS['TYPO3_AJAX']);
         return $this;
     }
 

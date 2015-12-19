@@ -7,7 +7,7 @@ if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = \TYPO3\CMS\Install\Report\SecurityStatusReport::class;
 
     // Only add the environment status report if not in CLI mode
-    if (!defined('TYPO3_cliMode') || !TYPO3_cliMode) {
+    if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = \TYPO3\CMS\Install\Report\EnvironmentStatusReport::class;
     }
 

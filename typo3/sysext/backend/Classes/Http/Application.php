@@ -58,10 +58,8 @@ class Application implements ApplicationInterface
 
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | (!empty($_GET['ajaxID']) ? TYPO3_REQUESTTYPE_AJAX : 0))
             ->baseSetup($this->entryPointPath);
-
-        // can be done here after the base setup is done
-        $this->defineAdditionalEntryPointRelatedConstants();
 
         // Redirect to install tool if base configuration is not found
         if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
@@ -108,14 +106,4 @@ class Application implements ApplicationInterface
         define('TYPO3_MODE', 'BE');
     }
 
-    /**
-     * Define values that are based on the current script
-     */
-    protected function defineAdditionalEntryPointRelatedConstants()
-    {
-        // Activate "AJAX" handler when called with the GET variable ajaxID
-        if (!empty(GeneralUtility::_GET('ajaxID'))) {
-            $GLOBALS['TYPO3_AJAX'] = true;
-        }
-    }
 }

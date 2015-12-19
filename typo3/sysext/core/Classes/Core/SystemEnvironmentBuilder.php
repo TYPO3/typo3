@@ -276,7 +276,7 @@ class SystemEnvironmentBuilder
      */
     protected static function getPathThisScript()
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode === true) {
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             return self::getPathThisScriptCli();
         } else {
             return self::getPathThisScriptNonCli();

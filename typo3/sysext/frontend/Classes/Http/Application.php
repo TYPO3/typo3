@@ -53,6 +53,7 @@ class Application implements ApplicationInterface
 
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_FE)
             ->baseSetup($this->entryPointPath);
 
         // Redirect to install tool if base configuration is not found
