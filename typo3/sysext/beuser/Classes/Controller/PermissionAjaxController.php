@@ -258,40 +258,6 @@ class PermissionAjaxController
     }
 
     /**
-     * Print the string with the new owner of a page record
-     *
-     * @param int $page The TYPO3 page id
-     * @param int $ownerUid The new page user uid
-     * @param string $username The TYPO3 BE username (used to display in the element)
-     * @param bool $validUser Must be set to FALSE, if the user has no name or is deleted
-     * @return string The new group wrapped in HTML
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This is now solved with fluid.
-     */
-    public static function renderOwnername($page, $ownerUid, $username, $validUser = true)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $elementId = 'o_' . $page;
-        return '<span id="' . $elementId . '"><a class="ug_selector changeowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-username="' . htmlspecialchars($username) . '">' . ($validUser ? ($username == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(GeneralUtility::fixed_lgd_cs($username, 20))) : '<span class=not_set title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($username, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
-    }
-
-    /**
-     * Print the string with the new group of a page record
-     *
-     * @param int $page The TYPO3 page id
-     * @param int $groupUid The new page group uid
-     * @param string $groupname The TYPO3 BE groupname (used to display in the element)
-     * @param bool $validGroup Must be set to FALSE, if the group has no name or is deleted
-     * @return string The new group wrapped in HTML
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This is now solved with fluid.
-     */
-    public static function renderGroupname($page, $groupUid, $groupname, $validGroup = true)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $elementId = 'g_' . $page;
-        return '<span id="' . $elementId . '"><a class="ug_selector changegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-groupname="' . htmlspecialchars($groupname) . '">' . ($validGroup ? ($groupname == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupname, 20))) : '<span class=not_set title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupname, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
-    }
-
-    /**
      * Print the string with the new edit lock state of a page record
      *
      * @param int $page The TYPO3 page id
@@ -307,50 +273,6 @@ class PermissionAjaxController
             $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">' . $this->iconFactory->getIcon('actions-unlock', Icon::SIZE_SMALL)->render() . '</a></span>';
         }
         return $ret;
-    }
-
-    /**
-     * Print a set of permissions. Also used in index.php
-     *
-     * @param int $int Permission integer (bits)
-     * @param int $pageId The TYPO3 page id
-     * @param string $who The scope (user, group or everybody)
-     * @return string HTML marked up x/* indications.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This is now solved with fluid.
-     */
-    public static function renderPermissions($int, $pageId = 0, $who = 'user')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $str = '';
-        $permissions = array(1, 16, 2, 4, 8);
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        foreach ($permissions as $permission) {
-            if ($int & $permission) {
-                $str .= '<span title="' . $GLOBALS['LANG']->getLL($permission, true)
-                    . ' class="change-permission text-success"'
-                    . ' data-page="' . (int)$pageId . '"'
-                    . ' data-permissions="' . (int)$int . '"'
-                    . ' data-mode="delete"'
-                    . ' data-who="' . htmlspecialchars($who) . '"'
-                    . ' data-bits="' . $permission . '"'
-                    . ' style="cursor:pointer">'
-                    . $iconFactory->getIcon('status-status-permission-granted', Icon::SIZE_SMALL)->render()
-                    . '</span>';
-            } else {
-                $str .= '<span title="' . $GLOBALS['LANG']->getLL($permission, true) . '"'
-                    . ' class="change-permission text-danger"'
-                    . ' data-page="' . (int)$pageId . '"'
-                    . ' data-permissions="' . (int)$int . '"'
-                    . ' data-mode="add"'
-                    . ' data-who="' . htmlspecialchars($who) . '"'
-                    . ' data-bits="' . $permission . '"'
-                    . ' style="cursor:pointer">'
-                    . $iconFactory->getIcon('status-status-permission-denied', Icon::SIZE_SMALL)->render()
-                    . '</span>';
-            }
-        }
-        return '<span id="' . $pageId . '_' . $who . '">' . $str . '</span>';
     }
 
     /**
