@@ -396,6 +396,11 @@ class FileListController extends ActionController
                     return false;
                 }
                 ');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
+            $pageRenderer->addInlineLanguageLabelFile(
+                ExtensionManagementUtility::extPath('lang') . 'locallang_alt_doc.xlf',
+                'buttons'
+            );
 
             // Include DragUploader only if we have write access
             if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
@@ -491,9 +496,17 @@ class FileListController extends ActionController
 
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);
+        $this->view->assign('veriCode', $this->getBackendUser()->veriCode());
+        $this->view->assign('deleteUrl', BackendUtility::getModuleUrl('tce_file'));
         $this->view->assign('settings', [
             'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)
         ]);
+
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
+        $pageRenderer->addInlineLanguageLabelFile(
+            ExtensionManagementUtility::extPath('lang') . 'locallang_alt_doc.xlf',
+            'buttons'
+        );
     }
 
     /**

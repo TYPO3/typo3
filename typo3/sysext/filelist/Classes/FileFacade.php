@@ -143,6 +143,14 @@ class FileFacade
     /**
      * @return string
      */
+    public function getIdentifier()
+    {
+        return $this->resource->getStorage()->getUid() . ':' . $this->resource->getIdentifier();
+    }
+
+    /**
+     * @return string
+     */
     public function getLastModified()
     {
         return BackendUtility::date($this->resource->getModificationTime());

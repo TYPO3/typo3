@@ -54,6 +54,12 @@
 			<trans-unit id="label.confirm.close_without_save.content">
 				<source>You have currently unsaved changes. Are you sure that you want to discard all changes?</source>
 			</trans-unit>
+			<trans-unit id="buttons.confirm.delete_file.no">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.delete_file.yes">
+				<source>Yes, delete this file</source>
+			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_record.no">
 				<source>Cancel</source>
 			</trans-unit>

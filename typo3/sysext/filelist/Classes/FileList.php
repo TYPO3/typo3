@@ -928,14 +928,22 @@ class FileList extends AbstractRecordList
             }
 
             if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
-                $confirmationCheck = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText) . ')';
+                $confirmationCheck = '1';
             } else {
-                $confirmationCheck = '1 == 1';
+                $confirmationCheck = '0';
             }
 
-            $removeOnClick = 'if (' . $confirmationCheck . ') { top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&file[delete][0][data]=' . rawurlencode($fileOrFolderObject->getCombinedIdentifier()) . '&vC=' . $this->getBackendUser()->veriCode() . '&redirect=') . '+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);};';
-
-            $cells['delete'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($removeOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete') . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+            $deleteUrl = BackendUtility::getModuleUrl('tce_file');
+            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete');
+            $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-content="' . htmlspecialchars($confirmationMessage)
+                . '" data-check="' . $confirmationCheck
+                . '" data-delete-url="' . htmlspecialchars($deleteUrl)
+                . '" data-title="' . htmlspecialchars($title)
+                . '" data-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier())
+                . '" data-veri-code="' . $this->getBackendUser()->veriCode()
+                . '" title="' . htmlspecialchars($title) . '">'
+                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['delete'] = $this->spaceIcon;
         }
