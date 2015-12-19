@@ -401,15 +401,7 @@ class BasicFileUtility
         } else {
             // Get conversion object or initialize if needed
             if (!is_object($this->csConvObj)) {
-                if (TYPO3_MODE == 'FE') {
-                    $this->csConvObj = $GLOBALS['TSFE']->csConvObj;
-                } elseif (is_object($GLOBALS['LANG'])) {
-                    // BE assumed:
-                    $this->csConvObj = $GLOBALS['LANG']->csConvObj;
-                } else {
-                    // The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-                    $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-                }
+                $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
             }
             // Define character set
             if (!$charset) {

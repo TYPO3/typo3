@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Abstract class for XML based parser.
  */
-abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface
+abstract class AbstractXmlParser implements LocalizationParserInterface
 {
     /**
      * @var string
@@ -52,7 +52,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
-        $this->charset = $this->getCharset($languageKey, $charset);
+        $this->charset = $this->getCharset($charset);
         if ($this->languageKey !== 'default') {
             $this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
             if (!@is_file($this->sourcePath)) {
@@ -71,26 +71,16 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
     /**
      * Gets the character set to use.
      *
-     * @param string $languageKey
      * @param string $charset
      * @return string
      */
-    protected function getCharset($languageKey, $charset = '')
+    protected function getCharset($charset = '')
     {
-        /** @var $charsetConverter CharsetConverter */
-        if (is_object($GLOBALS['LANG'])) {
-            $charsetConverter = $GLOBALS['LANG']->csConvObj;
-        } elseif (is_object($GLOBALS['TSFE'])) {
-            $charsetConverter = $GLOBALS['TSFE']->csConvObj;
-        } else {
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
         if ($charset !== '') {
-            $targetCharset = $charsetConverter->parse_charset($charset);
+            return GeneralUtility::makeInstance(CharsetConverter::class)->parse_charset($charset);
         } else {
-            $targetCharset = 'utf-8';
+            return 'utf-8';
         }
-        return $targetCharset;
     }
 
     /**

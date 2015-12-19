@@ -1361,15 +1361,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     protected function getCharsetConversion()
     {
         if (!isset($this->charsetConversion)) {
-            if (TYPO3_MODE === 'FE') {
-                $this->charsetConversion = $GLOBALS['TSFE']->csConvObj;
-            } elseif (is_object($GLOBALS['LANG'])) {
-                // BE assumed:
-                $this->charsetConversion = $GLOBALS['LANG']->csConvObj;
-            } else {
-                // The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-                $this->charsetConversion = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-            }
+            $this->charsetConversion = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         }
         return $this->charsetConversion;
     }
