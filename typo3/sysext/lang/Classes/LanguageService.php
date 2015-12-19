@@ -475,7 +475,7 @@ class LanguageService
     public function getLabelsWithPrefix($prefix, $strip = '')
     {
         $extraction = array();
-        $labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$GLOBALS['LANG']->lang]);
+        $labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$this->lang]);
         // Regular expression to strip the selection prefix and possibly something from the label name:
         $labelPattern = '#^' . preg_quote($prefix, '#') . '(' . preg_quote($strip, '#') . ')?#';
         // Iterate through all locallang labels:
