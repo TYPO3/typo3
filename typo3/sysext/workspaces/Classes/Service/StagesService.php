@@ -757,42 +757,6 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Returns the notification mode from stage configuration
-     *
-     * Return values:
-     * 0 = notify someone / old way / default setting
-     * 1 = notify all responsible users (some users checked per default and you're not allowed to uncheck them)
-     * 2 = notify all responsible users (all users are checked and nothing can be changed during stage change)
-     *
-     * @param int $stageId Stage id to return the notification mode for
-     * @return int
-     * @throws \InvalidArgumentException
-     */
-    public function getNotificationMode($stageId)
-    {
-        if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
-            throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
-        }
-        switch ($stageId) {
-            case self::STAGE_PUBLISH_EXECUTE_ID:
-
-            case self::STAGE_PUBLISH_ID:
-                $workspaceRecord = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-                return $workspaceRecord['publish_notification_mode'];
-                break;
-            case self::STAGE_EDIT_ID:
-                $workspaceRecord = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-                return $workspaceRecord['edit_notification_mode'];
-                break;
-            default:
-                $workspaceStage = BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
-                if (is_array($workspaceStage) && isset($workspaceStage['notification_mode'])) {
-                    return $workspaceStage['notification_mode'];
-                }
-        }
-    }
-
-    /**
      * @return RecordService
      */
     public function getRecordService()

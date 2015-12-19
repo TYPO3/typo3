@@ -64,18 +64,6 @@ return array(
                 'type' => 'passthrough'
             )
         ),
-        'notification_mode' => array(
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_mode',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
-                )
-            )
-        ),
         'notification_defaults' => array(
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'displayCond' => 'FIELD:allow_notificaton_settings:BIT:1',

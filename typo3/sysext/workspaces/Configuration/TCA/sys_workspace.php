@@ -178,19 +178,6 @@ return array(
             ),
             'default' => 0
         ),
-        // @deprecated not used anymore
-        'edit_notification_mode' => array(
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.edit_notification_mode',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
-                )
-            )
-        ),
         'edit_notification_defaults' => array(
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'displayCond' => 'FIELD:edit_allow_notificaton_settings:BIT:1',
@@ -233,19 +220,6 @@ return array(
                 ),
                 'default' => 2,
                 'cols' => 3,
-            )
-        ),
-        // @deprecated not used anymore
-        'publish_notification_mode' => array(
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_notification_mode',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
-                    array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.2', 2)
-                )
             )
         ),
         'publish_notification_defaults' => array(

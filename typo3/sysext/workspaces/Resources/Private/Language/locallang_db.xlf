@@ -27,26 +27,11 @@
 			<trans-unit id="tabs.notification_settings">
 				<source>Notification settings</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.edit_notification_mode">
-				<source>Edit stage: Recipient suggestion checkboxes</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.notification_mode.0">
-				<source>All are selected per default (can be changed)</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.notification_mode.1">
-				<source>Some are selected per default (defaults cannot be unchecked)</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.notification_mode.2">
-				<source>All are selected per default (cannot be changed)</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace.edit_notification_defaults">
 				<source>Edit stage: default notification mail recipients</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.edit_allow_notificaton_settings">
 				<source>Allow notification settings during stage change back to edit stage</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_notification_mode">
-				<source>Ready to publish stage: Recipient suggestion checkboxes</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.publish_notification_defaults">
 				<source>Ready to publish stage: default notification mail recipients</source>
@@ -59,9 +44,6 @@
 			</trans-unit>
 			<trans-unit id="sys_workspace.execute_notification_defaults">
 				<source>Publishing execute stage: default notification mail recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.notification_mode">
-				<source>Recipient suggestion checkboxes</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace_stage.notification_defaults">
 				<source>Default notification mail recipients</source>
