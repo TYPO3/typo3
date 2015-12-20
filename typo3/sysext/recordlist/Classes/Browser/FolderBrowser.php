@@ -211,6 +211,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         return [
             'mode' => 'folder',
             'expandFolder' => isset($values['identifier']) ? $values['identifier'] : $this->expandFolder,
+            'bparams' => $this->bparams
         ];
     }
 
