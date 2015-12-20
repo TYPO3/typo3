@@ -986,19 +986,24 @@ class HtmlParser
      * @param string $tagList The comma separated list of tags to be stripped.
      *                        If empty, all empty tags will be stripped
      * @param bool $treatNonBreakingSpaceAsEmpty If TRUE tags containing only &nbsp; entities will be treated as empty.
+     * @param bool $keepTags If true, the provided tags will be kept instead of stripped.
      * @return string the stripped content
      */
-    public function stripEmptyTags($content, $tagList = null, $treatNonBreakingSpaceAsEmpty = false)
+    public function stripEmptyTags($content, $tagList = '', $treatNonBreakingSpaceAsEmpty = false, $keepTags = false)
     {
-        $tagRegEx = '[^ >]+'; // all characters until you reach a > or space;
-        if ($tagList) {
-            $tags = preg_split('/,/', $tagList);
-            $tagRegEx = preg_replace('/ */', '', join('|', $tags));
+        if (!empty($tagList)) {
+            $tagRegEx = join('|', GeneralUtility::trimExplode(',', $tagList, true));
+            if ($keepTags) {
+                $tagRegEx = '(?!' . $tagRegEx . ')[^ >]+';
+            }
+        } else {
+            $tagRegEx = '[^ >]+'; // all characters until you reach a > or space;
         }
         $count = 1;
         $nbspRegex = $treatNonBreakingSpaceAsEmpty ? '|(&nbsp;)' : '';
-        while ($count != 0) {
-            $content = preg_replace(sprintf('/<(%s)[^>]*>( %s)*<\/\\1[^>]*>/i', $tagRegEx, $nbspRegex), '', $content, -1, $count);
+        $finalRegex = sprintf('/<(%s)[^>]*>( %s)*<\/\\1[^>]*>/i', $tagRegEx, $nbspRegex);
+        while ($count !== 0) {
+            $content = preg_replace($finalRegex, '', $content, -1, $count);
         }
         return $content;
     }
@@ -1012,26 +1017,21 @@ class HtmlParser
      */
     protected function stripEmptyTagsIfConfigured($value, $configuration)
     {
-        if (isset($configuration['stripEmptyTags']) && $configuration['stripEmptyTags']) {
-            $tags = null;
-            if (
-                isset($configuration['stripEmptyTags.']['tags'])
-                && $configuration['stripEmptyTags.']['tags'] !== ''
-            ) {
-                $tags = $configuration['stripEmptyTags.']['tags'];
-            }
-
-            $treatNonBreakingSpaceAsEmpty = false;
-            if (
-                isset($configuration['stripEmptyTags.']['treatNonBreakingSpaceAsEmpty'])
-                && $configuration['stripEmptyTags.']['treatNonBreakingSpaceAsEmpty']
-            ) {
-                $treatNonBreakingSpaceAsEmpty = (bool)$configuration['stripEmptyTags.']['treatNonBreakingSpaceAsEmpty'];
-            }
-
-            $value = $this->stripEmptyTags($value, $tags, $treatNonBreakingSpaceAsEmpty);
+        if (empty($configuration['stripEmptyTags'])) {
+            return $value;
         }
 
-        return $value;
+        $tags = null;
+        $keepTags = false;
+        if (!empty($configuration['stripEmptyTags.']['keepTags'])) {
+            $tags = $configuration['stripEmptyTags.']['keepTags'];
+            $keepTags = true;
+        } elseif (!empty($configuration['stripEmptyTags.']['tags'])) {
+            $tags = $configuration['stripEmptyTags.']['tags'];
+        }
+
+        $treatNonBreakingSpaceAsEmpty = !empty($configuration['stripEmptyTags.']['treatNonBreakingSpaceAsEmpty']);
+
+        return $this->stripEmptyTags($value, $tags, $treatNonBreakingSpaceAsEmpty, $keepTags);
     }
 }

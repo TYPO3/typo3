@@ -294,23 +294,38 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function emptyTagsDataProvider()
     {
         return array(
-            array(0 , null, false, '<h1></h1>', '<h1></h1>'),
-            array(1 , null, false, '<h1></h1>', ''),
-            array(1 , null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'),
-            array(1 , null, false, '<h1 class="something"></h1>', ''),
-            array(1 , null, false, '<h1 class="something"></h1><h2></h2>', ''),
-            array(1 , 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'),
-            array(1 , 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''),
-            array(1 , null, false, '<div><p></p></div>', ''),
-            array(1 , null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'),
-            array(1 , null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''),
-            array(1 , null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''),
-            array(1 , null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'),
-            array(1 , null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'),
-            array(1 , null, false, '<div>Some content</div>', '<div>Some content</div>'),
-            array(1 , null, true, '<div>Some content</div>', '<div>Some content</div>'),
-            array(1 , null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
-            array(1 , null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+            array(0, null, false, '<h1></h1>', '<h1></h1>'),
+            array(1, null, false, '<h1></h1>', ''),
+            array(1, null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'),
+            array(1, null, false, '<h1 class="something"></h1>', ''),
+            array(1, null, false, '<h1 class="something"></h1><h2></h2>', ''),
+            array(1, 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'),
+            array(1, 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''),
+            array(1, null, false, '<div><p></p></div>', ''),
+            array(1, null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'),
+            array(1, null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''),
+            array(1, null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''),
+            array(1, null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+            array(1, null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+            array(1, null, false, '<div>Some content</div>', '<div>Some content</div>'),
+            array(1, null, true, '<div>Some content</div>', '<div>Some content</div>'),
+            array(1, null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+            array(1, null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+            array(0, '', false, '<h1></h1>', '<h1></h1>'),
+            array(1, '', false, '<h1></h1>', ''),
+            array(1, '', false, '<h1>hallo</h1>', '<h1>hallo</h1>'),
+            array(1, '', false, '<h1 class="something"></h1>', ''),
+            array(1, '', false, '<h1 class="something"></h1><h2></h2>', ''),
+            array(1, '', false, '<div><p></p></div>', ''),
+            array(1, '', false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'),
+            array(1, '', true, '<div><p>&nbsp;&nbsp;</p></div>', ''),
+            array(1, '', true, '<div>&nbsp;&nbsp;<p></p></div>', ''),
+            array(1, '', false, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+            array(1, '', true, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+            array(1, '', false, '<div>Some content</div>', '<div>Some content</div>'),
+            array(1, '', true, '<div>Some content</div>', '<div>Some content</div>'),
+            array(1, '', false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+            array(1, '', true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
         );
     }
 
@@ -330,6 +345,48 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'stripEmptyTags' => $stripOn,
             'stripEmptyTags.' => array(
                 'tags' => $tagList,
+                'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
+            ),
+        );
+
+        $result = $this->parseConfigAndCleanHtml($tsConfig, $content);
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * @return array
+     */
+    public function stripEmptyTagsKeepsConfiguredTagsDataProvider() {
+        return [
+            array(
+                'tr,td',
+                false,
+                '<div><p><tr><td></td></tr></p></div><div class="test"></div><tr></tr><p></p><td></td><i></i>',
+                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>'
+            ),
+            array(
+                'tr,td',
+                true,
+                '<div><p><tr><td></td></tr></p></div><p class="test"> &nbsp; </p><tr></tr><p></p><td></td><i></i>',
+                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>'
+            ),
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider stripEmptyTagsKeepsConfiguredTagsDataProvider
+     * @param string $tagList List of tags that should be kept, event if they are empty.
+     * @param bool $treatNonBreakingSpaceAsEmpty If true &nbsp; will be considered empty.
+     * @param string $content The HTML content that should be parsed.
+     * @param string $expectedResult The expected HTML code result.
+     */
+    public function stripEmptyTagsKeepsConfiguredTags($tagList, $treatNonBreakingSpaceAsEmpty, $content, $expectedResult) {
+        $tsConfig = array(
+            'keepNonMatchedTags' => 1,
+            'stripEmptyTags' => 1,
+            'stripEmptyTags.' => array(
+                'keepTags' => $tagList,
                 'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
             ),
         );
