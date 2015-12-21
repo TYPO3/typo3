@@ -172,9 +172,11 @@ class LanguageService
      *
      * @param string $str Input string
      * @return string Output string
+     * @deprecated since TYPO3 v8, will be removed in v9
      */
     public function makeEntities($str)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Convert string back again, but using the full entity conversion:
         return $this->csConvObj->utf8_to_entities($str);
     }
