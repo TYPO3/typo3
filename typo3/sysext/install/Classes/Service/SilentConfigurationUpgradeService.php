@@ -50,6 +50,24 @@ class SilentConfigurationUpgradeService
      * @var array
      */
     protected $obsoleteLocalConfigurationSettings = array(
+        // #72367
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\AccessRightParametersUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\BackendUserStartModuleUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\Compatibility6ExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ContentTypesToTextMediaUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileListIsStartModuleUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilesReplacePermissionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\LanguageIsoCodeUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MediaceExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateMediaToAssetsForTextMediaCe',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateShortcutUrlsAgainUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\OpenidExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\PageShortcutParentUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ProcessedFileChecksumUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TableFlexFormToTtContentFieldsUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\WorkspacesNotificationSettingsUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\RteAcronymButtonRenamedToAbbreviation',
         // #62402
         'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ExtensionManagerTables',
         'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileIdentifierHashUpdate',
