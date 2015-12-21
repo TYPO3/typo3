@@ -1193,7 +1193,7 @@ class PageLayoutController
                 if ($this->deleteButton) {
                     $deleteButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setOnClick('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');')
+                        ->setOnClick('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id) . ');')
                         ->setTitle($lang->getLL('deleteItem'))
                         ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
