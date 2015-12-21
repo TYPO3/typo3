@@ -46,7 +46,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
                     $this->echoExceptionWeb($exception);
             }
         } else {
-            throw new \Exception('handleException was called the wrong way.');
+            throw new \Exception('handleException was called the wrong way.', 1450714322);
         }
     }
 
