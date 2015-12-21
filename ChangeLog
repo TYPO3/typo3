@@ -1,3 +1,16 @@
+2015-12-21  b1ca8df                  [RELEASE] Release of TYPO3 6.2.17 (TYPO3 Release Team)
+2015-12-18  2c7781e  #72322          [BUGFIX] Prevent Javascript error for Flexform sections (Oliver Hader)
+2015-12-17  b2b531c  #72273          [!!!][BUGFIX] Severe data-loss on workspaces publishing action (Oliver Hader)
+2015-12-17  f1c4c17  #72285          [BUGFIX] DBAL: use correct default value for native connection (Melanie Kalka)
+2015-12-17  dc0134b  #72291          [TASK] Extend workspace functional tests on placeholder deletion (Oliver Hader)
+2015-12-17  bfa250a  #72252          [BUGFIX] substituteMarkerArrayCached() must accept special chars (Markus Klein)
+2015-12-17  5c14b25  #72289          [BUGFIX] Missing check before foreach loop (Oliver Hader)
+2015-12-17  e6bee88  #72265          [BUGFIX] Disclose exceptions on CLI in production context (Helmut Hummel)
+2015-12-16  cc59676  #72256          [TASK] Provide labels for all log types (Anja Leichsenring)
+2015-12-16  2b1e896  #72263          [BUGFIX] Empty row in table content element shows &nbsp; (Wouter Wolters)
+2015-12-15  ae2de3c                  [TASK] Set TYPO3 version to 6.2.17-dev (TYPO3 Release Team)
+
+
 2015-12-15  a919684                  [RELEASE] Release of TYPO3 6.2.16 (TYPO3 Release Team)
 2015-12-15  29ae05c  #59417          [SECURITY] Open shockwave inclusion in flvplayer.swf (Oliver Hader)
 2015-12-15  420f5ed  #41690          [SECURITY] Escape caption of media using css_styled_content (Georg Ringer)
