@@ -235,7 +235,10 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 * @returns {String}
 	 */
 	FormEngineValidation.validateField = function($field, value) {
-		value = value || FormEngineValidation.ltrim($field.val());
+		value = value || $field.val();
+		if (!$.isArray(value)) {
+			value = FormEngineValidation.ltrim(value);
+		}
 
 		var rules = $field.data('formengine-validation-rules');
 		var markParent = false;
@@ -473,8 +476,25 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		$(FormEngineValidation.rulesSelector).each(function() {
 			var $field = $(this);
 			if (!$field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted').length) {
-				var newValue = FormEngineValidation.validateField($field);
-				if (newValue.length && $field.val() !== newValue) {
+				var modified = false;
+				var currentValue = $field.val();
+				var newValue = FormEngineValidation.validateField($field, currentValue);
+				if ($.isArray(newValue) && $.isArray(currentValue)) {
+					// handling for multi-selects
+					if (newValue.length !== currentValue.length) {
+						modified = true;
+					} else {
+						for (var i = 0; i < newValue.length; i++) {
+							if (newValue[i] !== currentValue[i]) {
+								modified = true;
+								break;
+							}
+						}
+					}
+				} else if (newValue.length && currentValue !== newValue) {
+					modified = true;
+				}
+				if (modified) {
 					$field.attr('value', newValue);
 					FormEngineValidation.setCaretPosition($field, 0);
 				}
