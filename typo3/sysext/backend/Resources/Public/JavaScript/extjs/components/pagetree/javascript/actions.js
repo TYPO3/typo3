@@ -775,7 +775,13 @@ TYPO3.Components.PageTree.Actions = {
 						Ext.util.Format.htmlEncode(oldText)
 					);
 				}
-				this.singleClick(treeEditor.editNode, treeEditor.editNode.ownerTree);
+				var currentTree = treeEditor.editNode.getOwnerTree();
+				if (currentTree.currentSelectedNode !== null) {
+					if (currentTree.currentSelectedNode.id === treeEditor.editNode.id) {
+						this.singleClick(treeEditor.editNode, treeEditor.editNode.ownerTree, currentTree);
+					}
+					currentTree.currentSelectedNode.select();
+				}
 			},
 			this
 		);
