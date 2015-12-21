@@ -1175,6 +1175,7 @@ class DataHandler
                                 /** @var $tce DataHandler */
                                 $tce = GeneralUtility::makeInstance(__CLASS__);
                                 $tce->stripslashes_values = false;
+                                $tce->enableLogging = $this->enableLogging;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = array();
                                 $cmd[$table][$id]['version'] = array(
@@ -4793,6 +4794,7 @@ class DataHandler
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(__CLASS__);
             $tce->stripslashes_values = false;
+            $tce->enableLogging = $this->enableLogging;
             $tce->start(array(), $removeArray);
             $tce->process_cmdmap();
             unset($tce);
@@ -5171,6 +5173,7 @@ class DataHandler
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(__CLASS__);
                 $dataHandler->stripslashes_values = false;
+                $dataHandler->enableLogging = $this->enableLogging;
                 $dataHandler->neverHideAtCopy = true;
                 $dataHandler->start(array(), $command);
                 $dataHandler->process_cmdmap();
@@ -5629,6 +5632,7 @@ class DataHandler
         $copyTCE = GeneralUtility::makeInstance(__CLASS__);
         $copyTCE->stripslashes_values = $stripslashesValues;
         $copyTCE->copyTree = $this->copyTree;
+        $copyTCE->enableLogging = $this->enableLogging;
         // Copy forth the cached TSconfig
         $copyTCE->cachedTSconfig = $this->cachedTSconfig;
         // Transformations should NOT be carried out during copy
