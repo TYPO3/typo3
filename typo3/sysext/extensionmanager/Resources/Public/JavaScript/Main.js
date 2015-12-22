@@ -23,9 +23,10 @@ define([
 	'nprogress',
 	'TYPO3/CMS/Backend/Modal',
 	'TYPO3/CMS/Backend/SplitButtons',
+	'TYPO3/CMS/Backend/Tooltip',
 	'datatables',
 	'TYPO3/CMS/Backend/jquery.clearable'
-], function($, NProgress, Modal, SplitButtons) {
+], function($, NProgress, Modal, SplitButtons, Tooltip) {
 
 	/**
 	 *
@@ -803,6 +804,15 @@ define([
 
 		ExtensionManager.Update.initializeEvents();
 		ExtensionManager.UploadForm.initializeEvents();
+
+		Tooltip.initialize('#typo3-extension-list [title]', {
+			delay: {
+				show: 500,
+				hide: 100
+			},
+			trigger: 'hover',
+			container: 'body'
+		});
 	});
 
 	if (typeof TYPO3.ExtensionManager === 'undefined') {

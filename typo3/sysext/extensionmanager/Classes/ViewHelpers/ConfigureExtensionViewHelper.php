@@ -57,6 +57,8 @@ class ConfigureExtensionViewHelper extends Link\ActionViewHelper
         } elseif ($forceConfiguration) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $content = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+        } else {
+            $content = '<span title="' . htmlspecialchars($extension['description']) . '">' . $content . '</span>';
         }
 
         return $content;
