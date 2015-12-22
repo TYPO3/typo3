@@ -64,6 +64,7 @@ return array(
                 'type' => 'passthrough'
             )
         ),
+        // @deprecated not used anymore
         'notification_mode' => array(
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_mode',
             'config' => array(

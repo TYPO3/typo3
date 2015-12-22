@@ -767,9 +767,11 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
      * @param int $stageId Stage id to return the notification mode for
      * @return int
      * @throws \InvalidArgumentException
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. No replacement for this method. Notifications have been adjusted with issue #35245
      */
     public function getNotificationMode($stageId)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
             throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
         }
