@@ -12,7 +12,6 @@ styles.content.get {
 	table = tt_content
 	select.orderBy = sorting
 	select.where = colPos=0
-	select.languageField = sys_language_uid
 }
 
 # get content, left
@@ -46,8 +45,8 @@ styles.content.editPanelPage {
 
 
 
-
-
+# default link target for external URLs
+config.extTarget = {$styles.content.links.extTarget}
 
 
 
@@ -111,8 +110,6 @@ lib.parseFunc_RTE {
 		# The blockquote content is passed into parseFunc again...
 		blockquote.stripNL=1
 		blockquote.callRecursive=1
-		blockquote.callRecursive.tagStdWrap.HTMLparser = 1
-		blockquote.callRecursive.tagStdWrap.HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
 
 		table.stripNL=1
 		table.stdWrap.HTMLparser = 1
@@ -146,7 +143,6 @@ lib.parseFunc_RTE {
 		dd < .div
 		ol < .div
 		ul < .div
-		li.stdWrap.parseFunc < lib.parseFunc
 	}
 	nonTypoTagStdWrap.encapsLines {
 		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li
@@ -251,9 +247,9 @@ lib.stdheader {
 	# HTML5 subheader
 	20 = CASE
 	20 {
-		key {
-			field = header_layout
-		}
+		key.field = header_layout
+		key.ifEmpty = {$content.defaultHeaderType}
+		key.ifEmpty.override.data = register: defaultHeaderType
 
 		default = TEXT
 		default {
@@ -282,13 +278,6 @@ lib.stdheader {
 			}
 			value = html5
 			equals.data = TSFE:config|config|doctype
-			# Hide subheader for old style form element (it is used for recipient mail)
-			isFalse = 0
-			isFalse.override = 1
-			isFalse.override {
-				if.equals.field = CType
-				if.value = mailform
-			}
 		}
 	}
 
@@ -538,7 +527,6 @@ tt_content.stdWrap {
 					space = after
 					constant = {$content.spaceAfter}
 					classStdWrap {
-						required = 1
 						wrap = csc-space-after-|
 					}
 				}
@@ -1199,11 +1187,11 @@ tt_content.bullets {
 			2.wrap = <li class="even">|</li>
 		}
 		dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
-	 	editIcons = tt_content: bodytext, [layout]
-	 	editIcons.beforeLastTag = 1
-	 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xlf:eIcon.bullets
+		editIcons = tt_content: bodytext, [layout]
+		editIcons.beforeLastTag = 1
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xlf:eIcon.bullets
 
-	 	prefixComment = 2 | Bullet list:
+		prefixComment = 2 | Bullet list:
 	}
 }
 
@@ -1298,8 +1286,8 @@ tt_content.uploads {
 				replacement {
 					# equivalent to former useSpacesInLinkText = 0; remove using > to disable it
 					10 {
- 						search = _
- 						replace.char = 32
+						search = _
+						replace.char = 32
 					}
 
 					# equivalent to former stripFileExtensionFromLinkText = 0; move "_20" to "20" to enable it. Disabled by default.
@@ -1420,358 +1408,6 @@ tt_content.table {
 		prefixComment = 2 | Table:
 	}
 }
-
-# ******************
-# CType: multimedia
-# ******************
-tt_content.multimedia = COA
-tt_content.multimedia {
-	10 = < lib.stdheader
-
-	20 = MULTIMEDIA
-	20.file.field = multimedia
-	20.file.wrap = uploads/media/
-	20.file.listNum = 0
-	20.params.field = bodytext
-
-	20.stdWrap {
-		editIcons = tt_content: multimedia, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
-
-		prefixComment = 2 | Multimedia element:
-	}
-}
-
-# *****************
-# CType: swfobject
-# *****************
-tt_content.swfobject = COA
-tt_content.swfobject {
-	10 = < lib.stdheader
-
-	20 = SWFOBJECT
-	20 {
-		file =
-		width =
-		height =
-
-		flexParams.field = pi_flexform
-
-		alternativeContent.field = bodytext
-
-		layout = ###SWFOBJECT###
-
-		video {
-			player = {$styles.content.media.videoPlayer}
-
-			defaultWidth  = {$styles.content.media.defaultVideoWidth}
-			defaultHeight  = {$styles.content.media.defaultVideoHeight}
-
-			default {
-				params.quality = high
-				params.menu = false
-				params.allowScriptAccess = sameDomain
-				params.allowFullScreen = true
-			}
-			mapping {
-
-			}
-		}
-
-		audio {
-			player = {$styles.content.media.audioPlayer}
-
-			defaultWidth = {$styles.content.media.defaultAudioWidth}
-			defaultHeight = {$styles.content.media.defaultAudioHeight}
-
-			default {
-				params.quality = high
-				params.allowScriptAccess = sameDomain
-				params.menu = false
-			}
-			mapping {
-				flashvars.file = soundFile
-			}
-		}
-
-	}
-	20.stdWrap {
-		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
-
-		prefixComment = 2 | SWFobject element:
-	}
-}
-
-# *****************
-# CType: qtobject
-# *****************
-tt_content.qtobject = COA
-tt_content.qtobject {
-	10 = < lib.stdheader
-
-	20 = QTOBJECT
-	20 {
-		file =
-		width =
-		height =
-
-		flexParams.field = pi_flexform
-
-		alternativeContent.field = bodytext
-
-		layout = ###QTOBJECT###
-
-		video {
-			player = {$styles.content.media.videoPlayer}
-
-			defaultWidth  = {$styles.content.media.defaultVideoWidth}
-			defaultHeight  = {$styles.content.media.defaultVideoHeight}
-
-			default {
-				params.quality = high
-				params.menu = false
-				params.allowScriptAccess = sameDomain
-				params.allowFullScreen = true
-			}
-			mapping {
-
-			}
-		}
-
-		audio {
-			player = {$styles.content.media.audioPlayer}
-
-			defaultWidth = {$styles.content.media.defaultAudioWidth}
-			defaultHeight = {$styles.content.media.defaultAudioHeight}
-
-			default {
-				params.quality = high
-				params.allowScriptAccess = sameDomain
-				params.menu = false
-			}
-			mapping {
-				flashvars.file = soundFile
-			}
-		}
-	}
-	20.stdWrap {
-		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
-
-		prefixComment = 2 | QTobject element:
-	}
-}
-
-# *****************
-# CType: media
-# *****************
-tt_content.media = COA
-tt_content.media {
-	10 = < lib.stdheader
-
-	20 = MEDIA
-	20 {
-
-		flexParams.field = pi_flexform
-		alternativeContent < tt_content.text.20
-		alternativeContent.field = bodytext
-
-		type = video
-		renderType = auto
-		allowEmptyUrl = 0
-		forcePlayer = 1
-
-		fileExtHandler {
-			default = MEDIA
-			avi = MEDIA
-			asf = MEDIA
-			class = MEDIA
-			wmv = MEDIA
-			mp3 = SWF
-			mp4 = SWF
-			m4v = SWF
-			swa = SWF
-			flv = SWF
-			swf = SWF
-			mov = QT
-			m4v = QT
-			m4a = QT
-		}
-
-		mimeConf.swfobject < tt_content.swfobject.20
-		mimeConf.qtobject < tt_content.qtobject.20
-		mimeConf.flowplayer < tt_content.swfobject.20
-		mimeConf.flowplayer.audio.player = {$styles.content.media.flowPlayer}
-		mimeConf.flowplayer.video.player = {$styles.content.media.flowPlayer}
-
-	}
-	20.stdWrap {
-		editIcons = tt_content: pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
-
-		prefixComment = 2 | Media element:
-	}
-}
-
-# ******************
-# CType: mailform
-# ******************
-tt_content.mailform = COA
-tt_content.mailform.10 = < lib.stdheader
-tt_content.mailform.20 = FORM
-tt_content.mailform.20 {
-	useDefaultContentObject = 1
-	accessibility = 1
-	noWrapAttr=1
-	formName = mailform
-	dontMd5FieldNames = 1
-	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
-	labelWrap.wrap = |
-	commentWrap.wrap = |
-	radioWrap.wrap = |<br />
-	radioWrap.accessibilityWrap = <fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
-	REQ = 1
-	REQ.labelWrap.wrap = |
-	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
-	RADIO.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-radio">###FIELD###</span></div>
-	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
-	target < lib.parseTarget
-	target =
-	target.override = {$styles.content.mailform.target}
-	goodMess = {$styles.content.mailform.goodMess}
-	badMess = {$styles.content.mailform.badMess}
-	redirect.field = pages
-	redirect.listNum = 0
-	recipient.field = subheader
-	data.field = bodytext
-	locationData = 1
-	hiddenFields.stdWrap.wrap = <div style="display:none;">|</div>
-
-	params.radio = class="csc-mailform-radio"
-	params.check = class="csc-mailform-check"
-	params.submit = class="csc-mailform-submit"
-
-	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
-	stdWrap {
-		editIcons = tt_content: bodytext, pages, subheader
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.form
-
-		prefixComment = 2 | Mail form inserted:
-	}
-}
-
-
-# ******************
-# CType: search
-# ******************
-tt_content.search = COA
-tt_content.search.10 = < lib.stdheader
-# Result:
-tt_content.search.20 = SEARCHRESULT
-tt_content.search.20 {
-	allowedCols = pages.title-subtitle-keywords-description : tt_content.header-bodytext-imagecaption : tt_address.name-title-address-email-company-city-country : tt_links.title-note-note2-url : tt_board.subject-message-author-email : tt_calender.title-note : tt_products.title-note-itemnumber
-	languageField.tt_content = sys_language_uid
-	renderObj = COA
-	renderObj {
-
-		10 = TEXT
-		10.field = pages_title
-		10.htmlSpecialChars = 1
-		10.typolink {
-			parameter.field = uid
-			target < lib.parseTarget
-			target =
-			target.override = {$styles.content.searchresult.resultTarget}
-			additionalParams.data = register:SWORD_PARAMS
-			additionalParams.required = 1
-			additionalParams.wrap = &no_cache=1
-		}
-		10.htmlSpecialChars = 1
-		10.wrap = <h3 class="csc-searchResultHeader">|</h3>
-
-		20 = COA
-		20 {
-			10 = TEXT
-			10.field = tt_content_bodytext
-			10.stripHtml = 1
-			10.htmlSpecialChars = 1
-		}
-		20.stdWrap.crop = 200 | ...
-		20.stdWrap.wrap = <p class="csc-searchResult">|</p>
-	}
-
-	layout = COA
-	layout {
-		wrap = <table border="0" cellspacing="0" cellpadding="2" class="csc-searchResultInfo"><tr> | </tr></table> ###RESULT###
-
-		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.resultRange
-		10.wrap = <td class="csc-searchResultRange"><p>|</p></td>
-
-		20 = TEXT
-		20.value = ###PREV###&nbsp;&nbsp;&nbsp;###NEXT###
-		20.wrap = <td class="csc-searchResultPrevNext"><p>|</p></td>
-	}
-
-	noResultObj = COA
-	noResultObj {
-		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.emptySearch
-		10.wrap = <h3 class="csc-noSearchResultMsg">|</h3>
-	}
-
-	next = TEXT
-	next.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchResultNext
-
-	prev = TEXT
-	prev.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchResultPrev
-
-	target < lib.parseTarget
-	target =
-	target.override = {$styles.content.searchresult.target}
-
-	range = 20
-
-	stdWrap.prefixComment = 2 | Search result:
-}
-
-# Form:
-tt_content.search.30 < tt_content.mailform.20
-tt_content.search.30 {
-	goodMess = {$styles.content.searchform.goodMess}
-	redirect >
-	recipient >
-	data >
-	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchWord
-		10.type = sword=input
-		20.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchIn
-		20.type = scols=select
-		20.valueArray {
-			10.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.headersKeywords
-			10.value = pages.title-subtitle-keywords-description:tt_content.header
-			20.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.pageContent
-			20.value = tt_content.header-bodytext-imagecaption
-		}
-		30.type = stype=hidden
-		30.value = L0
-		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchButton
-	}
-	type.field = pages
-	type.listNum = 0
-	locationData = HTTP_POST_VARS
-	no_cache = 1
-
-	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-searchform">  | </table>
-	stdWrap {
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.search
-
-		prefixComment = 2 | Search form inserted:
-	}
-}
-
 
 # ****************
 # CType: menu

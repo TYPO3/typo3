@@ -1,17 +1,14 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Get the extension configuration
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-
 // Disable image positions that make no sense on CType=image (it leaves just "above left", "center" and "right")
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	TCEFORM.tt_content.imageorient.types.image.removeItems = 8,9,10,17,18,25,26
 ');
 
-// Mark the delivered TypoScript templates as "content rendering template" (providing the hooks of "static template 43" = content (default))
+// Mark the delivered TypoScript templates as "content rendering template"
 $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/';
-$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v6.2/';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/Configuration/TypoScript/v7/';
 
 // Register for hook to show preview of tt_content element of CType="image" in page module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['image'] =
