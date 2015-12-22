@@ -2023,22 +2023,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
     }
 
     /**
-     * Return MetaType for native field type (ADOdb only!)
-     *
-     * @param string $type Native type as reported by admin_get_fields()
-     * @param string $table Table name for which query type string. Important for detection of DBMS handler of the query!
-     * @param int $maxLength
-     * @throws \RuntimeException
-     * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use getMetadata() instead
-     */
-    public function MetaType($type, $table, $maxLength = -1)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->getMetadata($type, $table, 'dummyFieldToBypassCache', $maxLength);
-    }
-
-    /**
      * Return Metadata for native field type (ADOdb only!)
      *
      * @param string $type  Native type as reported by admin_get_fields()
@@ -2071,32 +2055,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                 throw new \RuntimeException('No handler found!!!', 1310027685);
         }
         return $str;
-    }
-
-    /**
-     * Return MetaType for native MySQL field type
-     *
-     * @param string $t native type as reported as in mysqldump files
-     * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function MySQLMetaType($t)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->dbmsSpecifics->getMetaFieldType($t);
-    }
-
-    /**
-     * Return actual MySQL type for meta field type
-     *
-     * @param string $meta Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
-     * @return string Native type as reported as in mysqldump files, uppercase
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function MySQLActualType($meta)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->dbmsSpecifics->getNativeFieldType($meta);
     }
 
     /**
