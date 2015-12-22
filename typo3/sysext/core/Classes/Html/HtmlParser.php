@@ -31,147 +31,6 @@ class HtmlParser
     // Void elements that do not have closing tags, as defined by HTML5, except link element
     const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
 
-    /**
-     * Returns the first subpart encapsulated in the marker, $marker
-     * (possibly present in $content as a HTML comment)
-     *
-     * @param string $content Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
-     * @param string $marker Marker string, eg. "###CONTENT_PART###
-     *
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function getSubpart($content, $marker)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->getSubpart($content, $marker);
-    }
-
-    /**
-     * Substitutes a subpart in $content with the content of $subpartContent.
-     *
-     * @param string $content Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
-     * @param string $marker Marker string, eg. "###CONTENT_PART###
-     * @param array $subpartContent If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
-     * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
-     * @param bool $keepMarker If set, the marker around the subpart is not removed, but kept in the output
-     *
-     * @return string Processed input content
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function substituteSubpart($content, $marker, $subpartContent, $recursive = true, $keepMarker = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker);
-    }
-
-    /**
-     * Substitues multiple subparts at once
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
-     *
-     * @return string The processed HTML content string.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function substituteSubpartArray($content, array $subpartsContent)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteSubpartArray($content, $subpartsContent);
-    }
-
-    /**
-     * Substitutes a marker string in the input content
-     * (by a simple str_replace())
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param string $marker The marker string, typically on the form "###[the marker string]###
-     * @param mixed $markContent The content to insert instead of the marker string found.
-     *
-     * @return string The processed HTML content string.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function substituteMarker($content, $marker, $markContent)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteMarker($content, $marker, $markContent);
-    }
-
-    /**
-     * Traverses the input $markContentArray array and for each key the marker
-     * by the same name (possibly wrapped and in upper case) will be
-     * substituted with the keys value in the array. This is very useful if you
-     * have a data-record to substitute in some content. In particular when you
-     * use the $wrap and $uppercase values to pre-process the markers. Eg. a
-     * key name like "myfield" could effectively be represented by the marker
-     * "###MYFIELD###" if the wrap value was "###|###" and the $uppercase
-     * boolean TRUE.
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
-     * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
-     * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
-     * @param bool $deleteUnused If set, all unused marker are deleted.
-     *
-     * @return string The processed output stream
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = false, $deleteUnused = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
-    }
-
-    /**
-     * Replaces all markers and subparts in a template with the content provided in the structured array.
-     *
-     * The array is built like the template with its markers and subparts. Keys represent the marker name and the values the
-     * content.
-     * If the value is not an array the key will be treated as a single marker.
-     * If the value is an array the key will be treated as a subpart marker.
-     * Repeated subpart contents are of course elements in the array, so every subpart value must contain an array with its
-     * markers.
-     *
-     * $markersAndSubparts = array (
-     *    '###SINGLEMARKER1###' => 'value 1',
-     *    '###SUBPARTMARKER1###' => array(
-     *        0 => array(
-     *            '###SINGLEMARKER2###' => 'value 2',
-     *        ),
-     *        1 => array(
-     *            '###SINGLEMARKER2###' => 'value 3',
-     *        )
-     *    ),
-     *    '###SUBPARTMARKER2###' => array(
-     *    ),
-     * )
-     * Subparts can be nested, so below the 'SINGLEMARKER2' it is possible to have another subpart marker with an array as the
-     * value, which in its turn contains the elements of the sub-subparts.
-     * Empty arrays for Subparts will cause the subtemplate to be cleared.
-     *
-     * @static
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $markersAndSubparts The array of single markers and subpart contents.
-     * @param string $wrap A wrap value - [part1] | [part2] - for the markers before substitution.
-     * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
-     * @param bool $deleteUnused If set, all unused single markers are deleted.
-     *
-     * @return string The processed output stream
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
-     */
-    public static function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = false, $deleteUnused = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return $templateService->substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
-    }
-
     /************************************
      *
      * Parsing HTML code
@@ -572,14 +431,14 @@ class HtmlParser
      * @param array $tags Is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
      * @param string $keepAll Boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
      * @param int $hSC Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
-     * @param array $addConfig Configuration array send along as $conf to the internal functions ->processContent() and ->processTag()
+     * @param array $addConfig Configuration array send along as $conf to the internal functions
      * @return string Processed HTML content
      */
     public function HTMLcleaner($content, $tags = array(), $keepAll = 0, $hSC = 0, $addConfig = array())
     {
         $newContent = array();
         $tokArr = explode('<', $content);
-        $newContent[] = $this->processContent(current($tokArr), $hSC, $addConfig);
+        $newContent[] = $this->bidir_htmlspecialchars(current($tokArr), $hSC);
         // We skip the first element in foreach loop
         $tokArrSliced = array_slice($tokArr, 1, null, true);
         $c = 1;
@@ -834,11 +693,11 @@ class HtmlParser
                                 }
                                 if ($setTag) {
                                     // Setting the tag
-                                    $newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . ($emptyTag ? ' /' : '') . $gt, $addConfig, $endTag, $lt == '&lt;');
+                                    $newContent[$c++] = $lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . ($emptyTag ? ' /' : '') . $gt;
                                 }
                             }
                         } else {
-                            $newContent[$c++] = $this->processTag('<' . ($endTag ? '/' : '') . $tagContent . '>', $addConfig, $endTag);
+                            $newContent[$c++] = '<' . ($endTag ? '/' : '') . $tagContent . '>';
                         }
                     } elseif ($keepAll) {
                         // This is if the tag was not defined in the array for processing:
@@ -849,14 +708,14 @@ class HtmlParser
                             $lt = '<';
                             $gt = '>';
                         }
-                        $newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . $tagContent . $gt, $addConfig, $endTag, $lt == '&lt;');
+                        $newContent[$c++] = $lt . ($endTag ? '/' : '') . $tagContent . $gt;
                     }
-                    $newContent[$c++] = $this->processContent(substr($tok, $tagEnd + 1), $hSC, $addConfig);
+                    $newContent[$c++] = $this->bidir_htmlspecialchars(substr($tok, $tagEnd + 1), $hSC);
                 } else {
-                    $newContent[$c++] = $this->processContent('<' . $tok, $hSC, $addConfig);
+                    $newContent[$c++] = $this->bidir_htmlspecialchars('<' . $tok, $hSC);
                 }
             } else {
-                $newContent[$c++] = $this->processContent(($skipTag ? '' : '<') . $tok, $hSC, $addConfig);
+                $newContent[$c++] = $this->bidir_htmlspecialchars(($skipTag ? '' : '<') . $tok, $hSC);
                 // It was not a tag anyways
                 $skipTag = false;
             }
@@ -881,15 +740,16 @@ class HtmlParser
      */
     public function bidir_htmlspecialchars($value, $dir)
     {
-        $dir = (int)$dir;
-        if ($dir === 1) {
-            $value = htmlspecialchars($value);
-        } elseif ($dir === 2) {
-            $value = htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false);
-        } elseif ($dir === -1) {
-            $value = htmlspecialchars_decode($value);
+        switch ((int)$dir) {
+            case 1:
+                return htmlspecialchars($value);
+            case 2:
+                return htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false);
+            case -1:
+                return htmlspecialchars_decode($value);
+            default:
+                return $value;
         }
-        return $value;
     }
 
     /**
@@ -1141,25 +1001,17 @@ class HtmlParser
      *
      * @param array $tagAttrib Tag attributes
      * @param array $meta Meta information about these attributes (like if they were quoted)
-     * @param bool $xhtmlClean If set, then the attribute names will be set in lower case, value quotes in double-quotes and the value will be htmlspecialchar()'ed
      * @return string Imploded attributes, eg: 'attribute="value" attrib2="value2"'
      * @access private
      */
-    public function compileTagAttribs($tagAttrib, $meta = array(), $xhtmlClean = 0)
+    public function compileTagAttribs($tagAttrib, $meta = array())
     {
         $accu = array();
         foreach ($tagAttrib as $k => $v) {
-            if ($xhtmlClean) {
-                $attr = strtolower($k);
-                if ((string)$v !== '' || isset($meta[$k]['dashType'])) {
-                    $attr .= '="' . htmlspecialchars($v) . '"';
-                }
-            } else {
-                $attr = $meta[$k]['origTag'] ?: $k;
-                if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-                    $dash = $meta[$k]['dashType'] ?: (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
-                    $attr .= '=' . $dash . $v . $dash;
-                }
+            $attr = $meta[$k]['origTag'] ?: $k;
+            if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
+                $dash = $meta[$k]['dashType'] ?: (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
+                $attr .= '=' . $dash . $v . $dash;
             }
             $accu[] = $attr;
         }
@@ -1186,7 +1038,7 @@ class HtmlParser
      * @param string $content Content string, multiple lines.
      * @param int $number Number of indents
      * @param string $indentChar Indent character/string
-     * @return strin Indented code (typ. HTML)
+     * @return string Indented code (typ. HTML)
      */
     public function indentLines($content, $number = 1, $indentChar = TAB)
     {
@@ -1314,9 +1166,6 @@ class HtmlParser
         }
         // Create additional configuration:
         $addConfig = array();
-        if ($TSconfig['xhtml_cleaning']) {
-            $addConfig['xhtml'] = 1;
-        }
         if (isset($TSconfig['stripEmptyTags'])) {
             $addConfig['stripEmptyTags'] = $TSconfig['stripEmptyTags'];
             if (isset($TSconfig['stripEmptyTags.'])) {
@@ -1329,117 +1178,6 @@ class HtmlParser
             (int)$TSconfig['htmlSpecialChars'],
             $addConfig
         );
-    }
-
-    /**
-     * Tries to convert the content to be XHTML compliant and other stuff like that.
-     * STILL EXPERIMENTAL. See comments below.
-     *
-     * What it does NOT do (yet) according to XHTML specs.:
-     * - Wellformedness: Nesting is NOT checked
-     * - name/id attribute issue is not observed at this point.
-     * - Certain nesting of elements not allowed. Most interesting, <PRE> cannot contain img, big,small,sub,sup ...
-     * - Wrapping scripts and style element contents in CDATA - or alternatively they should have entitites converted.
-     * - Setting charsets may put some special requirements on both XML declaration/ meta-http-equiv. (C.9)
-     * - UTF-8 encoding is in fact expected by XML!!
-     * - stylesheet element and attribute names are NOT converted to lowercase
-     * - ampersands (and entities in general I think) MUST be converted to an entity reference! (&amps;). This may mean further conversion of non-tag content before output to page. May be related to the charset issue as a whole.
-     * - Minimized values not allowed: Must do this: selected="selected"
-     *
-     * What it does at this point:
-     * - All tags (frame,base,meta,link + img,br,hr,area,input) is ended with "/>" - others?
-     * - Lowercase for elements and attributes
-     * - All attributes in quotes
-     * - Add "alt" attribute to img-tags if it's not there already.
-     *
-     * @param string $content Content to clean up
-     * @return string Cleaned up content returned.
-     * @access private
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function XHTML_clean($content)
-    {
-        GeneralUtility::logDeprecatedFunction('TYPO3\CMS\Core\Html\HtmlParser::XHTML_clean has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
-        return $this->HTMLcleaner($content, array(), 1, 0, array('xhtml' => 1));
-    }
-
-    /**
-     * Processing all tags themselves
-     * (Some additions by Sacha Vorbeck)
-     *
-     * @param string Tag to process
-     * @param array Configuration array passing instructions for processing. If count()==0, function will return value unprocessed. See source code for details
-     * @param bool Is endtag, then set this.
-     * @param bool If set, just return value straight away
-     * @return string Processed value.
-     * @access private
-     */
-    public function processTag($value, $conf, $endTag, $protected = 0)
-    {
-        // Return immediately if protected or no parameters
-        if ($protected || empty($conf)) {
-            return $value;
-        }
-        // OK then, begin processing for XHTML output:
-        // STILL VERY EXPERIMENTAL!!
-        if ($conf['xhtml']) {
-            GeneralUtility::deprecationLog('This section has been deprecated with TYPO3 CMS 7 and will be removed with CMS 8.');
-            // Endtags are just set lowercase right away
-            if ($endTag) {
-                $value = strtolower($value);
-            } elseif (substr($value, 0, 4) != '<!--') {
-                // ... and comments are ignored.
-                // Finding inner value with out < >
-                $inValue = substr($value, 1, substr($value, -2) == '/>' ? -2 : -1);
-                // Separate attributes and tagname
-                list($tagName, $tagP) = preg_split('/\\s+/s', $inValue, 2);
-                $tagName = strtolower($tagName);
-                // Process attributes
-                $tagAttrib = $this->get_tag_attributes($tagP);
-                if ($tagName === 'img' && !isset($tagAttrib[0]['alt'])) {
-                    $tagAttrib[0]['alt'] = '';
-                }
-                // Set alt attribute for all images (not XHTML though...)
-                if ($tagName === 'script' && !isset($tagAttrib[0]['type'])) {
-                    $tagAttrib[0]['type'] = 'text/javascript';
-                }
-                // Set type attribute for all script-tags
-                $outA = array();
-                foreach ($tagAttrib[0] as $attrib_name => $attrib_value) {
-                    // Set attributes: lowercase, always in quotes, with htmlspecialchars converted.
-                    $outA[] = $attrib_name . '="' . $this->bidir_htmlspecialchars($attrib_value, 2) . '"';
-                }
-                $newTag = '<' . trim($tagName . ' ' . implode(' ', $outA));
-                // All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-                if (
-                    $tagName === 'img' || $tagName === 'br' || $tagName === 'hr' || $tagName === 'meta' || $tagName === 'link' || $tagName === 'base'
-                    || $tagName === 'area' || $tagName === 'input' || $tagName === 'param' || $tagName === 'col' || substr($value, -2) === '/>'
-                ) {
-                    $newTag .= ' />';
-                } else {
-                    $newTag .= '>';
-                }
-                $value = $newTag;
-            }
-        }
-        return $value;
-    }
-
-    /**
-     * Processing content between tags for HTML_cleaner
-     *
-     * @param string $value The value
-     * @param int $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
-     * @param mixed $conf Not used, ignore.
-     * @return string The processed value.
-     * @access private
-     */
-    public function processContent($value, $dir, $conf)
-    {
-        if ($dir != 0) {
-            $value = $this->bidir_htmlspecialchars($value, $dir);
-        }
-        return $value;
     }
 
     /**

@@ -136,7 +136,7 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function xHtmlCleaningDoesNotModifyCDATA($source, $expected)
     {
-        $result = $this->subject->XHTML_clean($source);
+        $result = $this->subject->HTMLcleaner($source, array(), 1);
         $this->assertSame($expected, $result);
     }
 
