@@ -98,31 +98,6 @@ class ParseHtmlController
     }
 
     /**
-     * Main function
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use main_parse_html() instead
-     */
-    public function main()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content .= $this->main_parse_html($this->modData['openKeys']);
-        header('Content-Type: text/plain; charset=utf-8');
-    }
-
-    /**
-     * Print content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Rich Text Editor (RTE) html parser
      *
      * @param array $openKeys Unused

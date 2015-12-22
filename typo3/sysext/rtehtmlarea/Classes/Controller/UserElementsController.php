@@ -136,31 +136,6 @@ class UserElementsController
         return $response;
     }
 
-    /**
-     * Main function
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use main_user() instead
-     */
-    public function main()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content = '';
-        $this->content .= $this->main_user($this->modData['openKeys']);
-    }
-
-    /**
-     * Print content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
     /********************************
      *
      * Other functions
