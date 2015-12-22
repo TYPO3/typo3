@@ -2215,11 +2215,10 @@ class GeneralUtility
                 return false;
             }
             $method = $includeHeader == 2 ? 'HEAD' : 'GET';
-            $msg = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/') . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF . 'Host: ' . $parsedURL['host'] . '
-
-Connection: close
-
-';
+            $msg = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/')
+                   . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
+                   . 'Host: ' . $parsedURL['host'] . CRLF
+                   . 'Connection: close' . CRLF;
             if (is_array($requestHeaders)) {
                 $msg .= implode(CRLF, $requestHeaders) . CRLF;
             }
