@@ -215,13 +215,7 @@ abstract class AbstractLinkBrowserController
     protected function initVariables(ServerRequestInterface $request)
     {
         $queryParams = $request->getQueryParams();
-        $act = isset($queryParams['act']) ? $queryParams['act'] : '';
-        // @deprecated since CMS 7, remove with CMS 8
-        if (strpos($act, '|')) {
-            GeneralUtility::deprecationLog('Using multiple values for the "act" parameter in the link wizard is deprecated. Only a single value is allowed. Values were: ' . $act);
-            $act = array_shift(explode('|', $act));
-        }
-        $this->displayedLinkHandlerId = $act;
+        $this->displayedLinkHandlerId = isset($queryParams['act']) ? $queryParams['act'] : '';
         $this->parameters = isset($queryParams['P']) ? $queryParams['P'] : [];
         $this->linkAttributeValues = isset($queryParams['linkAttributes']) ? $queryParams['linkAttributes'] : [];
     }

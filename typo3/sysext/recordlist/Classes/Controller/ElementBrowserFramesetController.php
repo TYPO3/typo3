@@ -106,19 +106,7 @@ class ElementBrowserFramesetController
 		';
     }
 
-    /**
-     * Outputs the page content.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
+   /**
      * @return DocumentTemplate
      */
     protected function getDocumentTemplate()

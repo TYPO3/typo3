@@ -146,14 +146,6 @@ class RecordList extends AbstractModule
     public $doc;
 
     /**
-     * Module configuration
-     *
-     * @var array
-     * @deprecated since TYPO3 CMS 7, will be removed in CMS 8.
-     */
-    public $MCONF = array();
-
-    /**
      * Menu configuration
      *
      * @var string[]
@@ -600,18 +592,6 @@ class RecordList extends AbstractModule
         $this->moduleTemplate->setContent($this->content);
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
-    }
-
-    /**
-     * Outputting the accumulated content to screen
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
     }
 
     /**
