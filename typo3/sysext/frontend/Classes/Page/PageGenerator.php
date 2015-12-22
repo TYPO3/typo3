@@ -74,8 +74,6 @@ class PageGenerator
         // Base url:
         if (isset($tsfe->config['config']['baseURL'])) {
             $tsfe->baseUrl = $tsfe->config['config']['baseURL'];
-            // Deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-            $tsfe->anchorPrefix = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
         }
         // Internal and External target defaults
         $tsfe->intTarget = '' . $tsfe->config['config']['intTarget'];
@@ -164,31 +162,6 @@ class PageGenerator
         } else {
             static::getPageRenderer()->setRenderXhtml(false);
         }
-    }
-
-    /**
-     * Processing JavaScript handlers
-     *
-     * @return array Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use JS directly
-     */
-    public static function JSeventFunctions()
-    {
-        $functions = array();
-        $setEvents = array();
-        $setBody = array();
-        foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
-            if (!empty($handlers)) {
-                GeneralUtility::deprecationLog('The usage of $GLOBALS[\'TSFE\']->JSeventFuncCalls is deprecated as of TYPO3 CMS 7. Use Javascript directly.');
-                $functions[] = '	function T3_' . $event . 'Wrapper(e) {	' . implode('   ', $handlers) . '	}';
-                $setEvents[] = '	document.' . $event . '=T3_' . $event . 'Wrapper;';
-                if ($event == 'onload') {
-                    // Dubiuos double setting breaks on some browser - do we need it?
-                    $setBody[] = 'onload="T3_onloadWrapper();"';
-                }
-            }
-        }
-        return array(!empty($functions) ? implode(LF, $functions) . LF . implode(LF, $setEvents) : '', $setBody);
     }
 
     /**
@@ -752,8 +725,7 @@ class PageGenerator
         } else {
             $tsfe->INTincScript_loadJSCode();
         }
-        $JSef = self::JSeventFunctions();
-        $scriptJsCode = $JSef[0];
+        $scriptJsCode = '';
 
         if ($tsfe->spamProtectEmailAddresses && $tsfe->spamProtectEmailAddresses !== 'ascii') {
             $scriptJsCode = '
@@ -956,10 +928,6 @@ class PageGenerator
             }
             if (trim($tsfe->pSetup['bodyTagAdd'])) {
                 $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($tsfe->pSetup['bodyTagAdd']) . '>';
-            }
-            // Event functions
-            if (!empty($JSef[1])) {
-                $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
             }
         }
         $pageRenderer->addBodyContent(LF . $bodyTag);

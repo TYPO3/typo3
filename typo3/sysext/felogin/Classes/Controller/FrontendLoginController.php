@@ -108,6 +108,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param string $content The PlugIn content
      * @param array $conf The PlugIn configuration
      * @return string The content that is displayed on the website
+     * @throws \RuntimeException when no storage PID was configured.
      */
     public function main($content, $conf)
     {
@@ -129,9 +130,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $this->spid = $this->conf['storagePid'];
             }
         } else {
-            GeneralUtility::deprecationLog('Extension "felogin" must have a storagePid set via TypoScript or the plugin configuration.');
-            $pids = $this->frontendController->getStorageSiterootPids();
-            $this->spid = $pids['_STORAGE_PID'];
+            throw new \RuntimeException('No storage folder (option storagePid) for frontend users given.', 1450904202);
         }
         // GPvars:
         $this->logintype = GeneralUtility::_GP('logintype');

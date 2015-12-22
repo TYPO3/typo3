@@ -69,7 +69,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 GeneralUtility::_GP('type'),
                 GeneralUtility::_GP('no_cache'),
                 GeneralUtility::_GP('cHash'),
-                GeneralUtility::_GP('jumpurl'),
+                null,
                 GeneralUtility::_GP('MP'),
                 GeneralUtility::_GP('RDCT')
             );

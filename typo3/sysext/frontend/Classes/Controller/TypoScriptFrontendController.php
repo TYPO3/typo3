@@ -134,12 +134,6 @@ class TypoScriptFrontendController
     public $sys_page = '';
 
     /**
-     * @var string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. JumpURL handling is moved to extensions.
-     */
-    public $jumpurl = '';
-
-    /**
      * Contains all URL handler instances that are active for the current request.
      *
      * The methods isGeneratePage(), isOutputting() and isINTincScript() depend on this property.
@@ -435,24 +429,6 @@ class TypoScriptFrontendController
     public $additionalCSS = array();
 
     /**
-     * You can add JavaScript functions to each entry in these arrays. Please see
-     * how this is done in the GMENU_LAYERS script. The point is that many
-     * applications on a page can set handlers for onload, onmouseover and onmouseup
-     *
-     * @var array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $JSeventFuncCalls = array(
-        'onmousemove' => array(),
-        'onmouseup' => array(),
-        'onkeydown' => array(),
-        'onkeyup' => array(),
-        'onkeypress' => array(),
-        'onload' => array(),
-        'onunload' => array()
-    );
-
-    /**
      * @var  string
      */
     public $JSCode;
@@ -715,14 +691,6 @@ class TypoScriptFrontendController
     public $baseUrl = '';
 
     /**
-     * The proper anchor prefix needed when using speaking urls. (only set if
-     * baseUrl is set)
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) directly
-     * @var string
-     */
-    public $anchorPrefix = '';
-
-    /**
      * IDs we already rendered for this page (to make sure they are unique)
      * @var array
      */
@@ -894,12 +862,12 @@ class TypoScriptFrontendController
      * @param int $type The value of GeneralUtility::_GP('type')
      * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0
      * @param string $cHash The value of GeneralUtility::_GP('cHash')
-     * @param string $jumpurl The value of GeneralUtility::_GP('jumpurl'), unused since TYPO3 CMS 7. Will have no effect in TYPO3 CMS 8 anymore
+     * @param string $_ previously was used to define the jumpURL
      * @param string $MP The value of GeneralUtility::_GP('MP')
      * @param string $RDCT The value of GeneralUtility::_GP('RDCT')
      * @see index_ts.php
      */
-    public function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '')
+    public function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $_ = null, $MP = '', $RDCT = '')
     {
         // Setting some variables:
         $this->TYPO3_CONF_VARS = $TYPO3_CONF_VARS;
@@ -916,7 +884,6 @@ class TypoScriptFrontendController
             GeneralUtility::sysLog($warning, 'cms', GeneralUtility::SYSLOG_SEVERITY_WARNING);
         }
         $this->cHash = $cHash;
-        $this->jumpurl = $jumpurl;
         $this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string)$MP : '';
         $this->RDCT = $RDCT;
         $this->clientInfo = GeneralUtility::clientInfo();
@@ -1022,20 +989,6 @@ class TypoScriptFrontendController
                 die;
             }
         }
-    }
-
-    /**
-     * Gets instance of PageRenderer
-     *
-     * @return PageRenderer
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.
-     */
-    public function getPageRenderer()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->initPageRenderer();
-
-        return $this->pageRenderer;
     }
 
     /********************************************
@@ -2243,10 +2196,6 @@ class TypoScriptFrontendController
             if (isset($GET_VARS['cHash'])) {
                 $this->cHash = $GET_VARS['cHash'];
             }
-            // @deprecated since TYPO3 7, remove in TYPO3 8 together with jumpurl property.
-            if (isset($GET_VARS['jumpurl'])) {
-                $this->jumpurl = $GET_VARS['jumpurl'];
-            }
             if (isset($GET_VARS['MP'])) {
                 $this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
             }
@@ -2664,7 +2613,6 @@ class TypoScriptFrontendController
     /********************************************
      *
      * Further initialization and data processing
-     * (jumpurl/submission of forms)
      *
      *******************************************/
 
@@ -2904,35 +2852,6 @@ class TypoScriptFrontendController
                 $this->activeUrlHandlers[] = $urlHandler;
             }
         }
-    }
-
-    /**
-     * Checks if the current page points to an external URL and stores this value in the redirectUrl variable.
-     * The redirection will then be handled by the redirectToExternalUrl() method.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. See handleExternalUrlPage()
-     */
-    public function setExternalJumpUrl()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->initializeRedirectUrlHandlers();
-    }
-
-    /**
-     * Sends a header "Location" to jumpUrl, if jumpurl is set.
-     * Will exit if a location header is sent (for instance if jumpUrl was triggered)
-     *
-     * "jumpUrl" is a concept where external links are redirected from the TYPO3 Frontend, but first logs the URL.
-     *
-     * @throws \Exception
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. JumpURL handling is moved to extensions.
-     */
-    public function jumpUrl()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->redirectToExternalUrl();
     }
 
     /**
@@ -3255,68 +3174,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Lock the page generation process
-     * The lock is used to queue page requests until this page is successfully stored in the cache.
-     *
-     * @param Locker $lockObj Reference to a locking object
-     * @param string $key String to identify the lock in the system
-     * @return bool Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
-     * @see releasePageGenerationLock()
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function acquirePageGenerationLock(&$lockObj, $key)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if ($this->no_cache || $this->headerNoCache()) {
-            GeneralUtility::sysLog('Locking: Page is not cached, no locking required', 'cms', GeneralUtility::SYSLOG_SEVERITY_INFO);
-            // No locking is needed if caching is disabled
-            return true;
-        }
-        try {
-            if (!is_object($lockObj)) {
-                $lockObj = GeneralUtility::makeInstance(Locker::class, $key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
-            }
-            $success = false;
-            if ($key !== '') {
-                // TRUE = Page could get locked without blocking
-                // FALSE = Page could get locked but process was blocked before
-                $success = $lockObj->acquire();
-                if ($lockObj->getLockStatus()) {
-                    $lockObj->sysLog('Acquired lock');
-                }
-            }
-        } catch (\Exception $e) {
-            GeneralUtility::sysLog('Locking: Failed to acquire lock: ' . $e->getMessage(), 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-            // If locking fails, return with FALSE and continue without locking
-            $success = false;
-        }
-        return $success;
-    }
-
-    /**
-     * Release the page generation lock
-     *
-     * @param Locker $lockObj Reference to a locking object
-     * @return bool Returns TRUE on success, FALSE otherwise
-     * @see acquirePageGenerationLock()
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function releasePageGenerationLock(&$lockObj)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $success = false;
-        // If lock object is set and was acquired (may also happen if no_cache was enabled during runtime), release it:
-        if (is_object($lockObj) && $lockObj instanceof Locker && $lockObj->getLockStatus()) {
-            $success = $lockObj->release();
-            $lockObj->sysLog('Released lock');
-            $lockObj = null;
-        } elseif ($this->no_cache || $this->headerNoCache()) {
-            $success = true;
-        }
-        return $success;
-    }
-
-    /**
      * Release pending locks
      *
      * @internal
@@ -3389,7 +3246,7 @@ class TypoScriptFrontendController
 
     /**
      * Does some processing AFTER the pagegen script is included.
-     * This includes calling XHTML cleaning (if configured), caching the page, indexing the page (if configured) and setting sysLastChanged
+     * This includes caching the page, indexing the page (if configured) and setting sysLastChanged
      *
      * @return void
      */
@@ -3421,7 +3278,7 @@ class TypoScriptFrontendController
         // One thing is that the charset mentioned in the HTML header would be wrong since the output charset (metaCharset)
         // has not been converted to from renderCharset. And indexed search will internally convert from metaCharset
         // to renderCharset so the content MUST be in metaCharset already!
-        $this->content = $this->convOutputCharset($this->content, 'mainpage');
+        $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
         if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
             foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef) {
@@ -3486,9 +3343,9 @@ class TypoScriptFrontendController
                 '<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->'
             ),
             array(
-                $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'),
-                $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'),
-                $this->convOutputCharset($this->divSection, 'TDS'),
+                $this->convOutputCharset(implode(LF, $this->additionalHeaderData)),
+                $this->convOutputCharset(implode(LF, $this->additionalFooterData)),
+                $this->convOutputCharset($this->divSection),
             ),
             $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
         );
@@ -3569,7 +3426,7 @@ class TypoScriptFrontendController
                             $incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
                             break;
                     }
-                    $this->content .= $this->convOutputCharset($incContent, 'INC-' . $INTiS_c);
+                    $this->content .= $this->convOutputCharset($incContent);
                     $this->content .= substr($INTiS_cPart, 35);
                     $timeTracker->pull($incContent);
                 } else {
@@ -3626,30 +3483,6 @@ class TypoScriptFrontendController
         return is_array($this->config['INTincScript']) && empty($this->activeUrlHandlers);
     }
 
-    /**
-     * Returns the mode of XHTML cleaning
-     *
-     * @return string Keyword: "all", "cached" or "output
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8; The TypoScript option "config.xhtml_cleaning" has been deprecated
-     */
-    public function doXHTML_cleaning()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->config['config']['xhtml_cleaning'];
-    }
-
-    /**
-     * Returns the mode of Local Anchor prefixing
-     *
-     * @return string Keyword: "all", "cached" or "output
-     * @deprecated The TypoScript option "config.prefixLocalAnchors" and the according method in TSFE have been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.
-     */
-    public function doLocalAnchorFix()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return isset($this->config['config']['prefixLocalAnchors']) ? $this->config['config']['prefixLocalAnchors'] : null;
-    }
-
     /********************************************
      *
      * Finished off; outputting, storing session data, statistics...
@@ -3701,14 +3534,6 @@ class TypoScriptFrontendController
             $this->sendCacheHeaders();
         }
         // Set headers, if any
-        if (!empty($this->config['config']['additionalHeaders'])) {
-            $headerArray = explode('|', $this->config['config']['additionalHeaders']);
-            GeneralUtility::deprecationLog('The TypoScript option "config.additionalHeaders" has been deprecated with TYPO3 CMS 7, and will be removed with CMS 8, please use the more flexible syntax config.additionalHeaders.10... to separate each header value.');
-            foreach ($headerArray as $headLine) {
-                $headLine = trim($headLine);
-                header($headLine);
-            }
-        }
         if (is_array($this->config['config']['additionalHeaders.'])) {
             ksort($this->config['config']['additionalHeaders.']);
             foreach ($this->config['config']['additionalHeaders.'] as $options) {
@@ -4022,19 +3847,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Checks if a PHPfile may be included.
-     *
-     * @param string $incFile Relative path to php file
-     * @return bool Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function checkFileInclude($incFile)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude'] || substr($incFile, 0, 4 + strlen(TYPO3_mainDir)) == TYPO3_mainDir . 'ext/' || substr($incFile, 0, 7 + strlen(TYPO3_mainDir)) == TYPO3_mainDir . 'sysext/' || substr($incFile, 0, 14) == 'typo3conf/ext/';
-    }
-
-    /**
      * Creates an instance of ContentObjectRenderer in $this->cObj
      * This instance is used to start the rendering of the TypoScript template structure
      *
@@ -4140,35 +3952,6 @@ class TypoScriptFrontendController
         $this->getDatabaseConnection()->exec_UPDATEquery('cache_md5params', 'md5hash=' . $this->getDatabaseConnection()->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME']));
     }
 
-    /**
-     * Substitutes all occurencies of <a href="#"... in $this->content with <a href="[path-to-url]#"...
-     *
-     * @return void Works directly on $this->content
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function prefixLocalAnchorsWithScript()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!$this->beUserLogin) {
-            if (!is_object($this->cObj)) {
-                $this->newCObj();
-            }
-            $scriptPath = $this->cObj->getUrlToCurrentLocation();
-        } else {
-            // To break less existing sites, we allow the REQUEST_URI to be used for the prefix
-            $scriptPath = GeneralUtility::getIndpEnv('REQUEST_URI');
-            // Disable the cache so that these URI will not be the ones to be cached
-            $this->disableCache();
-        }
-        $originalContent = $this->content;
-        $this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);
-        // There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
-        if (preg_last_error() > 0) {
-            GeneralUtility::sysLog('preg_replace returned error-code: ' . preg_last_error() . ' in function prefixLocalAnchorsWithScript. Replacement not done!', 'cms', GeneralUtility::SYSLOG_SEVERITY_FATAL);
-            $this->content = $originalContent;
-        }
-    }
-
     /********************************************
      * PUBLIC ACCESSIBLE WORKSPACES FUNCTIONS
      *******************************************/
@@ -4236,29 +4019,6 @@ class TypoScriptFrontendController
      * Various external API functions - for use in plugins etc.
      *
      *******************************************/
-    /**
-     * Traverses the ->rootLine and returns an array with the first occurrance of storage pid and siteroot pid
-     *
-     * @return array Array with keys '_STORAGE_PID' and '_SITEROOT' set to the first occurrences found.
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8. The usage of "storage_pid" is discouraged, the option for "is_siteroot" is handled via the RootlineUtility directly.
-     */
-    public function getStorageSiterootPids()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $res = array();
-        if (!is_array($this->rootLine)) {
-            return array();
-        }
-        foreach ($this->rootLine as $rC) {
-            if (!$res['_STORAGE_PID']) {
-                $res['_STORAGE_PID'] = (int)$rC['storage_pid'];
-            }
-            if (!$res['_SITEROOT']) {
-                $res['_SITEROOT'] = $rC['is_siteroot'] ? (int)$rC['uid'] : 0;
-            }
-        }
-        return $res;
-    }
 
     /**
      * Returns the pages TSconfig array based on the currect ->rootLine

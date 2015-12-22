@@ -857,7 +857,7 @@ class PageRepository
      * @param array $pagerow The page row to return URL type for
      * @param bool $disable A flag to simply disable any output from here. - deprecated - don't use anymore.
      * @return string|bool The URL type from $this->urltypes array. False if not found or disabled.
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
      */
     public function getExtURL($pagerow, $disable = false)
     {
