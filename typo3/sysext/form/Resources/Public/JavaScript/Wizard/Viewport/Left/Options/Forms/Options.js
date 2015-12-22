@@ -65,7 +65,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 				type: 'bool'
 			}, {
 				name: 'value',
-				mapping: 'attributes.value',
+				convert: this.convertValue,
 				type: 'string'
 			}
 		]);
@@ -227,6 +227,22 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 			}
 		}
 		return false;
+	},
+
+	/**
+	 * Remap value from different locations
+	 *
+	 * @param v
+	 * @param record
+	 * @returns {string}
+	 */
+	convertValue: function (v, record) {
+		if (record.attributes && record.attributes.value) {
+			return record.attributes.value;
+		} else if (record.data) {
+			return record.data;
+		}
+		return '';
 	}
 });
 

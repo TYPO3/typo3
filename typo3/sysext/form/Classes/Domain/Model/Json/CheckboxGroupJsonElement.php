@@ -90,8 +90,12 @@ class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\Fieldse
                             $childElementArguments['attributes']['selected'] = 'selected';
                             unset($childElementArguments['checked']);
                         }
+                        if (isset($childElementArguments['value'])) {
+                            $childElementArguments['attributes']['value'] = $childElementArguments['value'];
+                            unset($childElementArguments['value']);
+                        }
                         if (isset($childElementArguments['label.'])) {
-                            $childElementArguments['data'] = $childElementArguments['label.']['value'];
+                            $childElementArguments['text'] = $childElementArguments['label.']['value'];
                             unset($childElementArguments['label.']);
                         }
                         $this->configuration['options'][] = $childElementArguments;
