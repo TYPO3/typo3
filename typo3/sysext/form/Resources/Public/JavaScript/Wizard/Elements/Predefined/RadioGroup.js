@@ -72,11 +72,20 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 				},
 				options: [
 					{
-						data: TYPO3.l10n.localize('elements_option_1')
-					}, {
-						data: TYPO3.l10n.localize('elements_option_2')
-					}, {
-						data: TYPO3.l10n.localize('elements_option_3')
+						text: TYPO3.l10n.localize('elements_option_1'),
+						attributes: {
+							value: TYPO3.l10n.localize('elements_value_1')
+						}
+					},{
+						text: TYPO3.l10n.localize('elements_option_2'),
+						attributes: {
+							value: TYPO3.l10n.localize('elements_value_2')
+						}
+					},{
+						text: TYPO3.l10n.localize('elements_option_3'),
+						attributes: {
+							value: TYPO3.l10n.localize('elements_value_3')
+						}
 					}
 				],
 				various: {
@@ -118,9 +127,11 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 				});
 				var radioConfiguration = {
 					label: {
-						value: option.data
+						value: option.text
 					},
-					attributes: {}
+					attributes: {
+						value: option.attributes.value
+					}
 				};
 				if (
 					option.attributes &&
