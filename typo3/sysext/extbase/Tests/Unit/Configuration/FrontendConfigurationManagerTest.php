@@ -453,6 +453,21 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     /**
      * @test
      */
+    public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromGetTreeList()
+    {
+        $this->mockContentObject->expects($this->any())->method('getTreeList')->will($this->returnValue(''));
+        $this->mockContentObject->data = array('pages' => '0', 'recursive' => 1);
+
+        $frameworkConfiguration = array('persistence' => array('storagePid' => '98'));
+        $this->assertSame(
+            array('persistence' => array('storagePid' => '0')),
+            $this->frontendConfigurationManager->_call('overrideStoragePidIfStartingPointIsSet', $frameworkConfiguration)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function overrideConfigurationFromFlexFormChecksForDataIsString()
     {
         /** @var $flexFormService \TYPO3\CMS\Extbase\Service\FlexFormService|\PHPUnit_Framework_MockObject_MockObject */
