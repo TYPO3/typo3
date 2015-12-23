@@ -248,6 +248,7 @@ class InlineControlContainer extends AbstractContainer
         if ($numberOfFullLocalizedChildren >= $config['maxitems'] || $uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
+            $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
         }
 
         // Render the level links (create new record):
@@ -496,12 +497,17 @@ class InlineControlContainer extends AbstractContainer
 
                 $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
                 if (!empty($onlineMediaAllowed)) {
+                    $buttonStyle = '';
+                    if (isset($inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'])) {
+                        $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'] . '"';
+                    }
                     $this->requireJsModules[] = 'TYPO3/CMS/Backend/OnlineMedia';
                     $buttonText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.button', true);
                     $placeholder = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true);
                     $buttonSubmit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true);
                     $item .= '
 						<span class="btn btn-default t3js-online-media-add-btn ' . $this->inlineData['config'][$nameObject]['md5'] . '"
+							' . $buttonStyle . '
 							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
 							data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
