@@ -528,7 +528,7 @@ class ModuleTemplate
         // since this is used for icons.
         $moduleName = $modName === 'xMOD_alt_doc.php' ? 'record_edit' : $modName;
         // Add the module identifier automatically if typo3/index.php is used:
-        if (GeneralUtility::_GET('M') !== null && isset($GLOBALS['TBE_MODULES']['_PATHS'][$moduleName])) {
+        if (GeneralUtility::_GET('M') !== null) {
             $storeUrl = '&M=' . $moduleName . $storeUrl;
         }
         if ((int)$motherModName === 1) {

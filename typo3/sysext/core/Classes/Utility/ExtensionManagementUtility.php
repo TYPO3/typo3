@@ -866,10 +866,9 @@ class ExtensionManagementUtility
      * and it replaces old conf.php.
      *
      * @param string $moduleSignature The module name
-     * @param string $modulePath Absolute path to module (not used by Extbase currently)
      * @return array Configuration of the module
      */
-    public static function configureModule($moduleSignature, $modulePath)
+    public static function configureModule($moduleSignature)
     {
         $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
         $iconPathAndFilename = $moduleConfiguration['icon'];
@@ -877,7 +876,6 @@ class ExtensionManagementUtility
             list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
             $iconPathAndFilename = self::extPath($extensionKey) . $relativePath;
         }
-        // @todo skin support
         $moduleLabels = array(
             'tabs_images' => array(
                 'tab' => $iconPathAndFilename
@@ -901,11 +899,11 @@ class ExtensionManagementUtility
      * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
      * @param string $sub The submodule key. If $sub is not set a blank $main module is created.
      * @param string $position Can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
-     * @param string $path The absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system. This option is deprecated as of TYPO3 CMS 7, and will have no effect in TYPO3 CMS 8 anymore.
+     * @param string $path The absolute path to the module. Was used prior to TYPO3 v8, use $moduleConfiguration[routeTarget] now
      * @param array $moduleConfiguration additional configuration, previously put in "conf.php" of the module directory
      * @return void
      */
-    public static function addModule($main, $sub = '', $position = '', $path = '', $moduleConfiguration = array())
+    public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = array())
     {
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
@@ -938,15 +936,10 @@ class ExtensionManagementUtility
             // Create new main modules with only one submodule, $sub (or none if $sub is blank)
             $GLOBALS['TBE_MODULES'][$main] = $sub;
         }
-        $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
-        // Adding path:
-        if ($path) {
-            GeneralUtility::deprecationLog('Registered "' . $fullModuleSignature . '" as a script-based module. Script-based modules are deprecated since TYPO3 CMS 7. Support will be removed with TYPO3 CMS 8, use the "routeTarget" option or dispatched modules instead.');
-            self::addModulePath($fullModuleSignature, $path);
-        }
 
         // add additional configuration
         if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
+            $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
             $GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
         }
     }
@@ -985,28 +978,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds a module path to $GLOBALS['TBE_MODULES'] for used with the module dispatcher, index.php
-     * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
-     * Examples for this is context menu functionality (like import/export) which runs as an independent module through index.php
-     * FOR USE IN ext_tables.php FILES
-     * Example:  \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'app/');
-     *
-     * @param string $name The name of the module, refer to conf.php of the module.
-     * @param string $path The absolute path to the module directory inside of which "index.php" and "conf.php" is found.
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use routeTarget or dispatched modules instead.
-     */
-    public static function addModulePath($name, $path)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (StringUtility::beginsWith($path, 'EXT:')) {
-            list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
-            $path = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
-        }
-        $GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
-    }
-
-    /**
      * Adds a "Function menu module" ('third level module') to an existing function menu for some other backend module
      * The arguments values are generally determined by which function menu this is supposed to interact with
      * See Inside TYPO3 for information on how to use this function.
@@ -1025,7 +996,6 @@ class ExtensionManagementUtility
     {
         $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(
             'name' => $className,
-            'path' => null,
             'title' => $title,
             'ws' => $WS
         );

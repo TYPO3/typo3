@@ -286,15 +286,7 @@ function jumpToUrl(URL) {
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 
         // Setting default scriptID:
-        if (($temp_M = (string)GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
-            $this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
-        } else {
-            $this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_thisScript));
-        }
-        if (TYPO3_mainDir != 'typo3/' && substr($this->scriptID, 0, strlen(TYPO3_mainDir)) == TYPO3_mainDir) {
-            // This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
-            $this->scriptID = 'typo3/' . substr($this->scriptID, strlen(TYPO3_mainDir));
-        }
+        $this->scriptID = GeneralUtility::_GET('M') !== null ? GeneralUtility::_GET('M') : GeneralUtility::_GET('route');
         $this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/', '-', $this->scriptID);
         // Individual configuration per script? If so, make a recursive merge of the arrays:
         if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {
@@ -477,7 +469,7 @@ function jumpToUrl(URL) {
         // We still need to pass the xMOD name to createShortcut below, since this is used for icons.
         $moduleName = $modName === 'xMOD_alt_doc.php' ? 'record_edit' : $modName;
         // Add the module identifier automatically if typo3/index.php is used:
-        if (GeneralUtility::_GET('M') !== null && isset($GLOBALS['TBE_MODULES']['_PATHS'][$moduleName])) {
+        if (GeneralUtility::_GET('M') !== null) {
             $storeUrl = '&M=' . $moduleName . $storeUrl;
         }
         if ((int)$motherModName === 1) {
