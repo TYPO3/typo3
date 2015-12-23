@@ -223,12 +223,6 @@ class QueryGenerator
 
     /**
      * @var string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $extJSCODE = '';
-
-    /**
-     * @var string
      */
     protected $formName = '';
 
@@ -1020,19 +1014,6 @@ class QueryGenerator
     }
 
     /**
-     * Format query-string (output as HTML)
-     *
-     * @param string $str
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function formatQ($str)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return htmlspecialchars($str);
-    }
-
-    /**
      * Make operator select
      *
      * @param string $name
@@ -1524,7 +1505,6 @@ class QueryGenerator
                 $out[] = '</div>';
             }
         }
-        $out[] = $this->JSbottom($this->formName);
         return implode(LF, $out);
     }
 
@@ -1603,25 +1583,6 @@ class QueryGenerator
         }
         $query = $this->getDatabaseConnection()->SELECTquery($fieldList, $this->table, $qString, trim($this->extFieldLists['queryGroup']), $this->extFieldLists['queryOrder'] ? trim($this->extFieldLists['queryOrder_SQL']) : '', $this->extFieldLists['queryLimit']);
         return $query;
-    }
-
-    /**
-     * JavaScript bottom
-     *
-     * @param string $formname
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function JSbottom($formname)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $out = array();
-        if ($this->extJSCODE) {
-            $out[] = '<script language="javascript" type="text/javascript">';
-            $out[] = '	' . $this->extJSCODE;
-            $out[] = '</script>';
-        }
-        return implode(LF, $out);
     }
 
     /**

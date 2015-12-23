@@ -743,8 +743,6 @@ class ImportExport
                         $this->dat['records'][$table . ':' . $row['uid']] = array();
                         $this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
                         $this->dat['records'][$table . ':' . $row['uid']]['rels'] = $relations;
-                        $this->errorLog = array_merge($this->errorLog, $refIndexObj->errorLog);
-                        // Merge error logs.
                         // Add information about the relations in the record in the header:
                         $this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table . ':' . $row['uid']]['rels']);
                         // Add information about the softrefs to header:

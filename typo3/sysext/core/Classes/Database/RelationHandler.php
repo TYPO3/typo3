@@ -989,34 +989,6 @@ class RelationHandler
     }
 
     /**
-     * Converts id numbers from negative to positive.
-     *
-     * @param array $valueArray Array of [table]_[id] pairs.
-     * @param string $fTable Foreign table (the one used for positive numbers)
-     * @param string $nfTable Negative foreign table
-     * @return array The array with ID integer values, converted to positive for those where the table name was set but did NOT match the positive foreign table.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function convertPosNeg($valueArray, $fTable, $nfTable)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (is_array($valueArray) && $fTable) {
-            foreach ($valueArray as $key => $val) {
-                $val = strrev($val);
-                $parts = explode('_', $val, 2);
-                $theID = strrev($parts[0]);
-                $theTable = strrev($parts[1]);
-                if (MathUtility::canBeInterpretedAsInteger($theID)
-                    && (!$theTable || $theTable === (string)$fTable || $theTable === (string)$nfTable)
-                ) {
-                    $valueArray[$key] = $theTable && $theTable !== (string)$fTable ? $theID * -1 : $theID;
-                }
-            }
-        }
-        return $valueArray;
-    }
-
-    /**
      * Reads all records from internal tableArray into the internal ->results array
      * where keys are table names and for each table, records are stored with uids as their keys.
      * If $this->fetchAllFields is false you can save a little memory

@@ -99,15 +99,6 @@ class ReferenceIndex
     public $temp_flexRelations = array();
 
     /**
-     * Unused log for errors in ReferenceIndex
-     *
-     * @var array
-     * @see error()
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $errorLog = array();
-
-    /**
      * This variable used to indicate whether referencing should take workspace overlays into account
      * It is not used since commit 0c34dac08605ba from 10.04.2006, the bug is investigated in https://forge.typo3.org/issues/65725
      *
@@ -1085,12 +1076,6 @@ class ReferenceIndex
             $configuration['type'] === 'flex'
             ||
             isset($configuration['softref'])
-            ||
-            (
-                // @deprecated global soft reference parsers are deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8
-                is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
-                && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
-            )
         );
     }
 
@@ -1138,19 +1123,6 @@ class ReferenceIndex
             return substr(PATH_site, 0, -1);
         }
         return PATH_site . $folder;
-    }
-
-    /**
-     * Sets error message in the internal error log
-     *
-     * @param string $msg Error message
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function error($msg)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->errorLog[] = $msg;
     }
 
     /**
