@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extbase\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A general purpose configuration manager used in frontend mode.
  *
@@ -62,7 +65,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         if ($pluginName !== null) {
             $pluginSignature = strtolower($extensionName . '_' . $pluginName);
             if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
-                \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+                ArrayUtility::mergeRecursiveWithOverrule(
                     $pluginConfiguration,
                     $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.'])
                 );
@@ -120,15 +123,18 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         if (is_string($pages) && $pages !== '') {
             $list = array();
             if ($this->contentObject->data['recursive'] > 0) {
-                $explodedPages = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages);
+                $explodedPages = GeneralUtility::trimExplode(',', $pages);
                 foreach ($explodedPages as $pid) {
-                    $list[] = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
+                    $pids = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
+                    if ($pids !== '') {
+                        $list[] = $pids;
+                    }
                 }
             }
             if (!empty($list)) {
                 $pages = $pages . ',' . implode(',', $list);
             }
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, array(
+            ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, array(
                 'persistence' => array(
                     'storagePid' => $pages
                 )
@@ -195,7 +201,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     {
         if (is_array($configuration[$configurationPartName])) {
             if (is_array($frameworkConfiguration[$configurationPartName])) {
-                \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
+                ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
             } else {
                 $frameworkConfiguration[$configurationPartName] = $configuration[$configurationPartName];
             }
@@ -218,10 +224,10 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         }
         // As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
         // The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
-        $switchableControllerActionPartsFromFlexForm = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
+        $switchableControllerActionPartsFromFlexForm = GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
         $newSwitchableControllerActionsFromFlexForm = array();
         foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
-            list($controller, $action) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
+            list($controller, $action) = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
             if (empty($controller) || empty($action)) {
                 throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
             }
@@ -247,7 +253,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         }
 
         $recursiveStoragePids = '';
-        $storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid);
+        $storagePids = GeneralUtility::intExplode(',', $storagePid);
         foreach ($storagePids as $startPid) {
             $pids = $this->getContentObject()->getTreeList($startPid, $recursionDepth, 0);
             if ((string)$pids !== '') {
