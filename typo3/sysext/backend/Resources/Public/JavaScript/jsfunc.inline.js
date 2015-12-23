@@ -983,7 +983,7 @@ var inline = {
 			this.showElementsWithClassName('.inlineNewButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewRelationButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewFileUploadButton' + (md5 ? '.' + md5 : ''), objectParent);
-			this.hideElementsWithClassName('.t3js-online-media-add-btn' + (md5 ? '.' + md5 : ''), objectParent);
+			this.showElementsWithClassName('.t3js-online-media-add-btn' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineForeignSelector' + (md5 ? '.' + md5 : ''), 't3-form-field-item');
 		}
 		TYPO3.FormEngine.Validation.validate();
