@@ -32,8 +32,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
  * Module: TypoScript Tools
- *
- * $TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
  */
 class TypoScriptTemplateModuleController extends BaseScriptClass
 {
