@@ -172,7 +172,7 @@ class LanguageService
      *
      * @param string $str Input string
      * @return string Output string
-     * @deprecated since TYPO3 v8, will be removed in v9
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public function makeEntities($str)
     {
@@ -264,12 +264,6 @@ class LanguageService
                 // Getting data if not cached
             if (!isset($this->LL_files_cache[$parts[0]])) {
                 $this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
-                    // If the current language is found in another file, load that as well:
-                $lFileRef = $this->localizedFileRef($parts[0]);
-                if ($lFileRef && $this->LL_files_cache[$parts[0]][$this->lang] === 'EXT') {
-                    $tempLL = $this->readLLfile($lFileRef);
-                    $this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
-                }
             }
             $output = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
         } else {
@@ -371,12 +365,6 @@ class LanguageService
             } else {
                 $globalLanguage = $localLanguage;
             }
-                // Localized addition?
-            $lFileRef = $this->localizedFileRef($fileRef);
-            if ($lFileRef && (string)$globalLanguage[$this->lang] === 'EXT') {
-                $localLanguage = $this->readLLfile($lFileRef);
-                ArrayUtility::mergeRecursiveWithOverrule($globalLanguage, $localLanguage);
-            }
                 // Merge local onto default
             if ($mergeLocalOntoDefault && $this->lang !== 'default' && is_array($globalLanguage[$this->lang]) && is_array($globalLanguage['default'])) {
                 // array_merge can be used so far the keys are not
@@ -428,23 +416,6 @@ class LanguageService
             }
         }
         return $localLanguage;
-    }
-
-    /**
-     * Returns localized fileRef (.[langkey].php)
-     *
-     * @param string $fileRef Filename/path of a 'locallang.php' file
-     * @return string Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
-     * @deprecated since TYPO3 CMS 7, this method will be removed in CMS 8. Please use XLF files for translation handling.
-     */
-    protected function localizedFileRef($fileRef)
-    {
-        if ($this->lang !== 'default' && substr($fileRef, -4) === '.php') {
-            GeneralUtility::logDeprecatedFunction();
-            return substr($fileRef, 0, -4) . '.' . $this->lang . '.php';
-        } else {
-            return null;
-        }
     }
 
     /**
