@@ -168,13 +168,6 @@ class ExtendedTemplateService extends TemplateService
     public $ext_noPMicons = 0;
 
     /**
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     *
-     * @var int
-     */
-    public $ext_noSpecialCharsOnLabels = 0;
-
-    /**
      * @var array
      */
     public $ext_listOfTemplatesArr = array();
@@ -567,17 +560,6 @@ class ExtendedTemplateService extends TemplateService
         }
 
         return implode('; ', $lnArr);
-    }
-
-    /**
-     * @param array $theValue
-     * @return array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use htmlspecialchars() directly
-     */
-    public function makeHtmlspecialchars($theValue)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->ext_noSpecialCharsOnLabels ? $theValue : htmlspecialchars($theValue);
     }
 
     /**
@@ -1111,17 +1093,6 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         $this->helpConfig = $out;
-    }
-
-    /**
-     * @param string $key
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function ext_getKeyImage($key)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return '<span class="label label-danger">' . $key . '</span>';
     }
 
     /**

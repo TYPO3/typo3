@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Matching TypoScript conditions
  *
  * Used with the TypoScript parser.
- * Matches browserinfo, IPnumbers for use with templates
+ * Matches IPnumbers etc. for use with templates
  */
 abstract class AbstractConditionMatcher
 {
@@ -201,13 +201,6 @@ abstract class AbstractConditionMatcher
      */
     protected function evaluateConditionCommon($key, $value)
     {
-        $lowerKey = strtolower($key);
-        if ($lowerKey === 'browser' || $lowerKey === 'device' || $lowerKey === 'version' || $lowerKey === 'system' || $lowerKey === 'useragent') {
-            GeneralUtility::deprecationLog(
-                'Usage of client related conditions (browser, device, version, system, useragent) is deprecated since 7.0.'
-            );
-            $browserInfo = $this->getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
-        }
         $keyParts = GeneralUtility::trimExplode('|', $key);
         switch ($keyParts[0]) {
             case 'applicationContext':
@@ -219,82 +212,6 @@ abstract class AbstractConditionMatcher
                     }
                 }
                 return false;
-                break;
-            case 'browser':
-                $values = GeneralUtility::trimExplode(',', $value, true);
-                // take all identified browsers into account, eg chrome deliver
-                // webkit=>532.5, chrome=>4.1, safari=>532.5
-                // so comparing string will be
-                // "webkit532.5 chrome4.1 safari532.5"
-                $all = '';
-                foreach ($browserInfo['all'] as $key => $value) {
-                    $all .= $key . $value . ' ';
-                }
-                foreach ($values as $test) {
-                    if (stripos($all, $test) !== false) {
-                        return true;
-                    }
-                }
-                return false;
-                break;
-            case 'version':
-                $values = GeneralUtility::trimExplode(',', $value, true);
-                foreach ($values as $test) {
-                    if (strcspn($test, '=<>') == 0) {
-                        switch ($test[0]) {
-                            case '=':
-                                if (doubleval(substr($test, 1)) == $browserInfo['version']) {
-                                    return true;
-                                }
-                                break;
-                            case '<':
-                                if (doubleval(substr($test, 1)) > $browserInfo['version']) {
-                                    return true;
-                                }
-                                break;
-                            case '>':
-                                if (doubleval(substr($test, 1)) < $browserInfo['version']) {
-                                    return true;
-                                }
-                                break;
-                        }
-                    } elseif (strpos(' ' . $browserInfo['version'], $test) == 1) {
-                        return true;
-                    }
-                }
-                return false;
-                break;
-            case 'system':
-                $values = GeneralUtility::trimExplode(',', $value, true);
-                // Take all identified systems into account, e.g. mac for iOS, Linux
-                // for android and Windows NT for Windows XP
-                $allSystems = ' ' . implode(' ', $browserInfo['all_systems']);
-                foreach ($values as $test) {
-                    if (stripos($allSystems, $test) !== false) {
-                        return true;
-                    }
-                }
-                return false;
-                break;
-            case 'device':
-                if (!isset($this->deviceInfo)) {
-                    $this->deviceInfo = $this->getDeviceType(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
-                }
-                $values = GeneralUtility::trimExplode(',', $value, true);
-                foreach ($values as $test) {
-                    if ($this->deviceInfo == $test) {
-                        return true;
-                    }
-                }
-                return false;
-                break;
-            case 'useragent':
-                $test = trim($value);
-                if ($test !== '') {
-                    return $this->searchStringWildcard((string)$browserInfo['useragent'], $test);
-                } else {
-                    return false;
-                }
                 break;
             case 'language':
                 if (GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') === $value) {
@@ -634,29 +551,6 @@ abstract class AbstractConditionMatcher
             $result = (bool)preg_match($regex, $haystack);
         }
         return $result;
-    }
-
-    /**
-     * Generates an array with abstracted browser information
-     *
-     * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-     * @return array Contains keys "browser", "version", "system
-     */
-    protected function getBrowserInfo($userAgent)
-    {
-        return \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgent);
-    }
-
-    /**
-     * Gets a code for a browsing device based on the input useragent string.
-     *
-     * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-     * @return string Code for the specific device type
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    protected function getDeviceType($userAgent)
-    {
-        return \TYPO3\CMS\Core\Utility\ClientUtility::getDeviceType($userAgent);
     }
 
     /**

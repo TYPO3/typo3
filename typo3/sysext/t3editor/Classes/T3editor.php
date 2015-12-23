@@ -160,16 +160,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return bool TRUE if the t3editor is enabled
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function isEnabled()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return true;
-    }
-
-    /**
      * Creates a new instance of the class
      */
     public function __construct()

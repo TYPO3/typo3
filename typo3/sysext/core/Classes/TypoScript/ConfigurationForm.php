@@ -184,17 +184,6 @@ class ConfigurationForm extends ExtendedTemplateService
     }
 
     /**
-     * @param string $key
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-     */
-    public function ext_getKeyImage($key)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return '<span class="label label-danger">' . $key . '</span>';
-    }
-
-    /**
      * @param string $imgConf
      * @return string
      */

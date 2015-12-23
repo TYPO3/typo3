@@ -102,12 +102,6 @@ class TemplateService
     public $ext_regComments = false;
 
     /**
-     * @deprecated since TYPO3 CMS 7, will be removed with CMS 8.
-     * @var string
-     */
-    public $tempPath = 'typo3temp/';
-
-    /**
      * This MUST be initialized by the init() function
      *
      * @var string
@@ -1412,26 +1406,6 @@ class TemplateService
             return GeneralUtility::getUrl($fileName);
         }
         return null;
-    }
-
-    /**
-     * Ordinary "wrapping" function. Used in the AbstractMenuContentObject class and extension classes instead of the similar function in ContentObjectRenderer
-     *
-     * @param string $content The content to wrap
-     * @param string $wrap The wrap value, eg. "<strong> | </strong>
-     * @return string Wrapped input string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap() instead
-     * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap()
-     */
-    public function wrap($content, $wrap)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if ($wrap) {
-            $wrapArr = explode('|', $wrap);
-            return trim($wrapArr[0]) . $content . trim($wrapArr[1]);
-        } else {
-            return $content;
-        }
     }
 
     /**
