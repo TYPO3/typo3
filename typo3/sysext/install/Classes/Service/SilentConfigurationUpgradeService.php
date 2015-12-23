@@ -70,6 +70,8 @@ class SilentConfigurationUpgradeService
         'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\RteAcronymButtonRenamedToAbbreviation',
         // #72400
         'BE/spriteIconGenerator_handler',
+        // #72417
+        'SYS/lockingMode',
     );
 
     /**
