@@ -40,6 +40,26 @@ define(function () {
 		labels: {},
 
 		/**
+		 * Initialize an event handler for dropping an image in WebKit browsers
+		 *
+		 * @return void
+         * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+		 */
+		initEventListeners: function() {
+			if (typeof console !== 'undefined') {
+				console.log('SelectImage.initEventListeners() is deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8');
+			}
+			require(
+				['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent', 'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+				function (UserAgent, Event) {
+					if (UserAgent.isWebKit) {
+						Event.one(window.document.body, 'dragend.TYPO3Image', function (event) { SelectImage.Plugin.get().onDrop(event); });
+					}
+				}
+			);
+		},
+
+		/**
 		 * Jump to the specified url after adding some parameters specific to the RTE context
 		 *
 		 * @return bool
