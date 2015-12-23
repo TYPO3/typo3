@@ -560,10 +560,6 @@ class Bootstrap
                 'TYPO3.ExtDirectStateProvider.ExtDirect',
                 \TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class
             );
-            ExtensionManagementUtility::registerExtDirectComponent(
-                'TYPO3.Components.DragAndDrop.CommandController',
-                ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class
-            );
         }
         return $this;
     }
