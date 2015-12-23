@@ -68,58 +68,6 @@ class SilentConfigurationUpgradeService
         'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\WorkspacesNotificationSettingsUpdate',
         'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties',
         'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\RteAcronymButtonRenamedToAbbreviation',
-        // #62402
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ExtensionManagerTables',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileIdentifierHashUpdate',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilemountUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilePermissionUpdate',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileTableSplittingUpdate',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\InitUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MediaFlexformUpdate',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ReferenceIntegrityUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\RteFileLinksUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\RteMagicImagesUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TtContentUploadsUpdateWizard',
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TruncateSysFileProcessedFileTable',
-        // #68183
-        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateShortcutUrlsUpdate',
-        // #63818
-        'BE/staticFileEditPath',
-        // #64226
-        'BE/accessListRenderMode',
-        // #66431
-        'BE/loginNewsTitle',
-        // #24900
-        'SYS/compat_version',
-        // #64643
-        'GFX/enable_typo3temp_db_tracking',
-        // #48542
-        'GFX/TTFdpi',
-        // #64872
-        'SYS/useCachingFramework',
-        // #65912
-        'FE/allowedTempPaths',
-        // #66034
-        'FE/activateContentAdapter',
-        // #66902
-        'SYS/loginCopyrightShowVersion',
-        // #66903
-        'BE/RTEenabled',
-        // #66906
-        'GFX/png_to_gif',
-        // #67411
-        'SYS/caching/cacheConfigurations/cache_classes',
-        // #68178
-        'SYS/form_enctype',
-        // #69904
-        'BE/diff_path',
-        // #69930
-        'SYS/serverTimeZone',
-        // #70138
-        'BE/flexFormXMLincludeDiffBase',
-        // #71110
-        'BE/maxFileSize',
     );
 
     /**
