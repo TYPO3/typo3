@@ -41,6 +41,10 @@ class UpgradeWizard extends Action\AbstractAction
         // ext_localconf, db and ext_tables must be loaded for the updates
         $this->loadExtLocalconfDatabaseAndExtTables();
 
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = [];
+        }
+
         // To make sure initialUpdateDatabaseSchema is first wizard, it is added here instead of ext_localconf.php
         $initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
         if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
