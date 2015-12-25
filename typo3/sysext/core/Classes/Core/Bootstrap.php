@@ -517,11 +517,6 @@ class Bootstrap
         define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
         define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
         define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
-        // Constant TYPO3_extTableDef_script is deprecated since TYPO3 CMS 7 and will be dropped with TYPO3 CMS 8
-        define('TYPO3_extTableDef_script',
-            isset($GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']
-            : 'extTables.php');
         return $this;
     }
 
@@ -966,40 +961,8 @@ class Bootstrap
     {
         ExtensionManagementUtility::loadBaseTca($allowCaching);
         ExtensionManagementUtility::loadExtTables($allowCaching);
-        $this->executeExtTablesAdditionalFile();
         $this->runExtTablesPostProcessingHooks();
         return $this;
-    }
-
-    /**
-     * Execute TYPO3_extTableDef_script if defined and exists
-     *
-     * Note: For backwards compatibility some global variables are
-     * explicitly set as global to be used without $GLOBALS[] in
-     * the extension table script. It is discouraged to access variables like
-     * $TBE_MODULES directly, but we can not prohibit
-     * this without heavily breaking backwards compatibility.
-     *
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     * @return void
-     */
-    protected function executeExtTablesAdditionalFile()
-    {
-        // It is discouraged to use those global variables directly, but we
-        // can not prohibit this without breaking backwards compatibility
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-        global $PAGES_TYPES, $TBE_STYLES;
-        global $_EXTKEY;
-        // Load additional ext tables script if the file exists
-        $extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
-        if (file_exists($extTablesFile) && is_file($extTablesFile)) {
-            GeneralUtility::deprecationLog(
-                'Using typo3conf/' . TYPO3_extTableDef_script . ' is deprecated and will be removed with TYPO3 CMS 8. Please move your TCA overrides'
-                . ' to Configuration/TCA/Overrides of your project specific extension, or slot the signal "tcaIsBeingBuilt" for further processing.'
-            );
-            include $extTablesFile;
-        }
     }
 
     /**

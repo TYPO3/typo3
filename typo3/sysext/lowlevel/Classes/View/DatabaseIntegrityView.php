@@ -235,18 +235,6 @@ class DatabaseIntegrityView extends BaseScriptClass
     }
 
     /**
-     * Print content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Injects the request object for the current request or subrequest
      * Simply calls main() and init() and outputs the content
      *
