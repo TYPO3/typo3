@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -112,7 +113,11 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                 } else {
                     $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, '', $this->getLanguageService()->getLL('wiz_newPages_noCreate'), FlashMessage::ERROR);
                 }
-                $theCode .= $flashMessage->render();
+                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
                 // Display result:
                 $menuItems = $pageRepository->getMenu($this->pObj->id, '*', 'sorting', '', false);
                 $lines = array();
@@ -170,7 +175,12 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                 $this->getPageRenderer()->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
             }
         } else {
-            $theCode .= GeneralUtility::makeInstance(FlashMessage::class, '', $this->getLanguageService()->getLL('wiz_newPages_errorMsg1'), FlashMessage::ERROR)->render();
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, '', $this->getLanguageService()->getLL('wiz_newPages_errorMsg1'), FlashMessage::ERROR);
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         // CSH
         $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', null, '<div class="t3-help">|</div>');

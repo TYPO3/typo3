@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -99,7 +100,11 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 $theCode .= '<h4>' . $lang->getLL('wiz_changeOrder') . '</h4><p>' . implode(' ', $lines) . '</p>';
             } else {
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('no_subpages'), '', FlashMessage::NOTICE);
-                $theCode .= $flashMessage->render();
+                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
             // CSH:
             $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', null, '<br />|');
