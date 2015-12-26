@@ -10,7 +10,9 @@
 			<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
 		</p>
 
-		{warningMessages -> f:format.raw()}
+		<f:if condition="{warningMessages}">
+			<f:be.infobox title="{warningTitle}" state="2">{warningMessages -> f:format.raw()}</f:be.infobox>
+		</f:if>
 
 		<f:for each="{modules}" as="mainModule">
 			<f:if condition="{mainModule.subModules}">
