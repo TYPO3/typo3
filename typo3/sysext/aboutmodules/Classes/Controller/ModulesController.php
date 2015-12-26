@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -74,7 +73,7 @@ class ModulesController extends ActionController
     public function indexAction()
     {
         $warnings = array();
-        $contentWarnings = '';
+        $securityWarnings = '';
         // Hook for additional warnings
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
@@ -90,13 +89,6 @@ class ModulesController extends ActionController
             } else {
                 $securityWarnings = '<p>' . implode('', $warnings) . '</p>';
             }
-            $securityMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $securityWarnings,
-                $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
-                FlashMessage::ERROR
-            );
-            $contentWarnings = '<div style="margin: 20px 0;">' . $securityMessage->render() . '</div>';
             unset($warnings);
         }
 
@@ -104,7 +96,8 @@ class ModulesController extends ActionController
             array(
                 'TYPO3Version' => TYPO3_version,
                 'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
-                'warningMessages' => $contentWarnings,
+                'warningMessages' => $securityWarnings,
+                'warningTitle' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
                 'modules' => $this->getModulesData()
             )
         );
