@@ -36,14 +36,15 @@ body#ext-taskcenter-task-index-php h3 {
 
 #taskcenter-main #taskcenter-menu {
 	width: 250px;
+	float: left;
 }
 
 #taskcenter-main #taskcenter-item {
 	position: absolute;
 	margin-left: 270px;
 	margin-right: 20px;
-	top: 90px;
 	min-width: 300px;
+	float: right;
 }
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */

@@ -210,8 +210,16 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         if (!empty($actionList)) {
             $content .= $this->taskObject->renderListMenu($actionList);
         } else {
-            $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('action_not-found-description', true), $this->getLanguageService()->getLL('action_not-found'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-            $content .= $flashMessage->render();
+            $flashMessage = GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $this->getLanguageService()->getLL('action_not-found-description', true),
+                $this->getLanguageService()->getLL('action_not-found'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         // Admin users can create a new action
         if ($this->getBackendUser()->isAdmin()) {
