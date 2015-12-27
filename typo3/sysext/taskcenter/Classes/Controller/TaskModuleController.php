@@ -187,6 +187,7 @@ class TaskModuleController extends BaseScriptClass
         }
         // Render the task
         $actionContent = '';
+        $flashMessage = null;
         list($extKey, $taskClass) = explode('.', $chosenTask, 2);
         if (class_exists($taskClass)) {
             $taskInstance = GeneralUtility::makeInstance($taskClass, $this);
@@ -201,7 +202,6 @@ class TaskModuleController extends BaseScriptClass
                         $this->getLanguageService()->getLL('error_header'),
                         FlashMessage::ERROR
                     );
-                    $actionContent .= $flashMessage->render();
                 }
             } else {
                 // Error if the task is not an instance of \TYPO3\CMS\Taskcenter\TaskInterface
@@ -211,7 +211,6 @@ class TaskModuleController extends BaseScriptClass
                     $this->getLanguageService()->getLL('error_header'),
                     FlashMessage::ERROR
                 );
-                $actionContent .= $flashMessage->render();
             }
         } else {
             $flashMessage = GeneralUtility::makeInstance(
@@ -220,8 +219,16 @@ class TaskModuleController extends BaseScriptClass
                 $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
                 FlashMessage::INFO
             );
-            $actionContent .= $flashMessage->render();
         }
+
+        if ($flashMessage) {
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        }
+
         $content = '<div id="taskcenter-main">
 						<div id="taskcenter-menu">' . $this->indexAction() . '</div>
 						<div id="taskcenter-item" class="' . htmlspecialchars(($extKey . '-' . $taskClass)) . '">' . $actionContent . '
@@ -404,7 +411,11 @@ class TaskModuleController extends BaseScriptClass
                 '',
                 FlashMessage::INFO
             );
-            $this->content .= $flashMessage->render();
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         return $content;
     }
