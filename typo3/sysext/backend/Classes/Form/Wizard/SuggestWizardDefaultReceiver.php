@@ -339,19 +339,6 @@ class SuggestWizardDefaultReceiver
     }
 
     /**
-     * Return the icon for a record - just a wrapper for two functions from \TYPO3\CMS\Backend\Utility\IconUtility
-     *
-     * @param array $row The record to get the icon for
-     * @return string The path to the icon
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory::getIconForRecord() directly
-     */
-    protected function getIcon($row)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->iconFactory->getIconForRecord($this->mmForeignTable ?: $this->table, $row, Icon::SIZE_SMALL)->render();
-    }
-
-    /**
      * Returns the path for a record. Is the whole path for all records except pages - for these the last part is cut
      * off, because it contains the pagetitle itself, which would be double information
      *

@@ -41,14 +41,6 @@ class ContextMenuAction
     protected $icon = '';
 
     /**
-     * Class
-     *
-     * @var string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    protected $class = '';
-
-    /**
      * Callback Action
      *
      * @var string
@@ -135,30 +127,6 @@ class ContextMenuAction
     public function setIcon($icon)
     {
         $this->icon = $icon;
-    }
-
-    /**
-     * Returns the class
-     *
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function getClass()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->class;
-    }
-
-    /**
-     * Sets the class
-     *
-     * @param string $class
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function setClass($class)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->class = $class;
     }
 
     /**

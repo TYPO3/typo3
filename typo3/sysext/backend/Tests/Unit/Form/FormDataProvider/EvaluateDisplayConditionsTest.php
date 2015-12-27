@@ -324,56 +324,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     }
 
     /**
-     * The HIDE_L10N_SIBLINGS condition is deprecated, this test only ensures that it can be successfully parsed
-     *
-     * @test
-     */
-    public function matchHideL10NSiblingsReturnsTrue()
-    {
-        $input = [
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'displayCond' => 'HIDE_L10N_SIBLINGS',
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                ]
-            ]
-        ];
-
-        $expected = $input;
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function matchHideL10NSiblingsExceptAdminReturnsTrue()
-    {
-        $input = [
-            'databaseRow' => [],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'displayCond' => 'HIDE_L10N_SIBLINGS:except_admin',
-                        'config' => [
-                            'type' => 'input',
-                        ]
-                    ],
-                ]
-            ]
-        ];
-
-        $expected = $input;
-
-        $this->assertSame($expected, $this->subject->addData($input));
-    }
-
-    /**
      * Returns data sets for the test matchConditionStrings
      * Each data set is an array with the following elements:
      * - the condition string
@@ -387,26 +337,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         return [
             'Invalid condition string' => [
                 'xINVALIDx:',
-                [],
-                false,
-            ],
-            'Not loaded extension compares to loaded as FALSE' => [
-                'EXT:neverloadedext:LOADED:TRUE',
-                [],
-                false,
-            ],
-            'Not loaded extension compares to not loaded as TRUE' => [
-                'EXT:neverloadedext:LOADED:FALSE',
-                [],
-                true,
-            ],
-            'Loaded extension compares to TRUE' => [
-                'EXT:backend:LOADED:TRUE',
-                [],
-                true,
-            ],
-            'Loaded extension compares to FALSE' => [
-                'EXT:backend:LOADED:FALSE',
                 [],
                 false,
             ],
@@ -499,11 +429,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'FIELD:uid:>=:42',
                 ['uid' => '23'],
                 false,
-            ],
-            'Field is value for default language without flexform' => [
-                'HIDE_L10N_SIBLINGS',
-                [],
-                true,
             ],
             'New is TRUE for new comparison with TRUE' => [
                 'REC:NEW:TRUE',

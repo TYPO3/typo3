@@ -35,14 +35,6 @@ class InfoModuleController extends BaseScriptClass
     public $pageinfo;
 
     /**
-     * Document Template Object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @deprecated
-     */
-    public $doc;
-
-    /**
      * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected $backendUser;
@@ -130,19 +122,6 @@ class InfoModuleController extends BaseScriptClass
             // If no access or if ID == zero
             $this->content = $this->doc->header($this->languageService->getLL('title'));
         }
-    }
-
-    /**
-     * Print module content (from $this->content)
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-        echo $this->content;
     }
 
     /**

@@ -71,7 +71,7 @@ class Clickmenu
             $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
             $localItems[] = $backRef->linkItem(
                 htmlspecialchars($this->getLanguageService()->getLLL('export', $LL)),
-                $backRef->excludeIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL)),
+                $this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL),
                 $backRef->urlRefForCM($url),
                 1
             );
@@ -86,7 +86,7 @@ class Clickmenu
                 $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
                 $localItems[] = $backRef->linkItem(
                     htmlspecialchars($this->getLanguageService()->getLLL('import', $LL)),
-                    $backRef->excludeIcon($this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)),
+                    $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL),
                     $backRef->urlRefForCM($url),
                     1
                 );

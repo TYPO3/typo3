@@ -266,17 +266,11 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
         $result = false;
         list($matchType, $condition) = explode(':', $displayCondition, 2);
         switch ($matchType) {
-            case 'EXT':
-                $result = $this->matchExtensionCondition($condition);
-                break;
             case 'FIELD':
                 $result = $this->matchFieldCondition($condition, $record, $flexformContext);
                 break;
             case 'HIDE_FOR_NON_ADMINS':
                 $result = $this->matchHideForNonAdminsCondition();
-                break;
-            case 'HIDE_L10N_SIBLINGS':
-                $result = $this->matchHideL10nSiblingsCondition();
                 break;
             case 'REC':
                 $result = $this->matchRecordCondition($condition, $record);
@@ -287,31 +281,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
             case 'USER':
                 $result = $this->matchUserCondition($condition, $record);
                 break;
-        }
-        return $result;
-    }
-
-    /**
-     * Evaluates conditions concerning extensions
-     *
-     * Example:
-     * "EXT:saltedpasswords:LOADED:TRUE" => TRUE, if extension saltedpasswords is loaded.
-     *
-     * @param string $condition
-     * @return bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8 - Do not use EXT:LOADED display conditions any longer
-     */
-    protected function matchExtensionCondition($condition)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $result = false;
-        list($extensionKey, $operator, $operand) = explode(':', $condition, 3);
-        if ($operator === 'LOADED') {
-            if (strtoupper($operand) === 'TRUE') {
-                $result = ExtensionManagementUtility::isLoaded($extensionKey);
-            } elseif (strtoupper($operand) === 'FALSE') {
-                $result = !ExtensionManagementUtility::isLoaded($extensionKey);
-            }
         }
         return $result;
     }
@@ -428,19 +397,6 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     protected function matchHideForNonAdminsCondition()
     {
         return (bool)$this->getBackendUser()->isAdmin();
-    }
-
-    /**
-     * Evaluates whether the field is a value for the default language.
-     * Works only for <langChildren>=1, otherwise it has no effect.
-     *
-     * @return bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    protected function matchHideL10nSiblingsCondition()
-    {
-        GeneralUtility::deprecationLog('HIDE_L10N_SIBLINGS in Flexform display conditions has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
-        return true;
     }
 
     /**

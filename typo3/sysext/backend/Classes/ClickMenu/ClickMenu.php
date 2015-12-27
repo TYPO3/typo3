@@ -1326,22 +1326,6 @@ class ClickMenu
     }
 
     /**
-     * Wrapping the input string in a table with background color 4 and a black border style.
-     * For the pop-up menu
-     *
-     * @param string $str HTML content to wrap in table.
-     * @return string
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function wrapColorTableCM($str)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return '<div class="typo3-CSM-wrapperCM">
-			' . $str . '
-			</div>';
-    }
-
-    /**
      * Traverses the menuItems and generates an output array for implosion in the CM div-layers table.
      *
      * @param array $menuItems Array
@@ -1473,19 +1457,6 @@ class ClickMenu
             $onlyCM,
             $dontHide
         );
-    }
-
-    /**
-     * Returns the input string IF not a user setting has disabled display of icons.
-     *
-     * @param string $iconCode The icon-image tag
-     * @return string The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function excludeIcon($iconCode)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->backendUser->uc['noMenuMode'] && $this->backendUser->uc['noMenuMode'] !== 'icons' ? '' : ' ' . $iconCode;
     }
 
     /**
