@@ -161,11 +161,25 @@ abstract class FunctionalTestCase extends BaseTestCase
     private $bootstrapUtility = null;
 
     /**
-     * Path to TYPO3 CMS test installation for this test case
+     * Calculate a "unique" identifier for the test database and the
+     * instance patch based on the given test case class name.
      *
-     * @var string
+     * @return string
      */
-    private $instancePath;
+    protected function getInstanceIdentifier()
+    {
+        return FunctionalTestCaseBootstrapUtility::getInstanceIdentifier(get_class($this));
+    }
+
+    /**
+     * Calculates path to TYPO3 CMS test installation for this test case.
+     *
+     * @return string
+     */
+    protected function getInstancePath()
+    {
+        return FunctionalTestCaseBootstrapUtility::getInstancePath(get_class($this));
+    }
 
     /**
      * Set up creates a test instance and database.
@@ -180,7 +194,7 @@ abstract class FunctionalTestCase extends BaseTestCase
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
         $this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-        $this->instancePath = $this->bootstrapUtility->setUp(
+        $this->bootstrapUtility->setUp(
             get_class($this),
             $this->coreExtensionsToLoad,
             $this->testExtensionsToLoad,
@@ -356,7 +370,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         }
 
         $arguments = array(
-            'documentRoot' => $this->instancePath,
+            'documentRoot' => $this->getInstancePath(),
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
         );
 
