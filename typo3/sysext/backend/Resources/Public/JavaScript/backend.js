@@ -67,28 +67,6 @@ function jump(url, modName, mainModName, pageId) {
 }
 
 /**
- * shortcut manager to delegate the action of creating shortcuts to the new
- * BackendUtility::getModuleUrl('main') shortcut menu or the old shortcut frame depending on what is available
- */
-var ShortcutManager = {
-
-	/**
-	 * central entry point to create a shortcut, delegates the call to correct endpoint
-	 * kept for backwards compatibility, use top.TYPO3.ShortcutMenu.createShortcut directly
-	 * in the future
-	 */
-	createShortcut: function(confirmQuestion, backPath, moduleName, url) {
-		if (console) {
-			console.debug('ShortcutManager.createShortcut is deprecated since TYPO3 CMS 7, use TYPO3.ShortcutMenu directly.');
-		}
-		if (TYPO3.ShortcutMenu !== undefined) {
-			TYPO3.ShortcutMenu.createShortcut(moduleName, url, confirmQuestion);
-		}
-	}
-}
-
-
-/**
  * Function similar to PHPs  rawurlencode();
  */
 function rawurlencode(str) {

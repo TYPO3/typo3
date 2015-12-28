@@ -332,24 +332,6 @@ var TBE_EDITOR = {
 		return false;
 	},
 
-	/**
-	 * Determines backend path
-	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-	 */
-	getBackendPath: function() {
-		if (typeof console != 'undefined') {
-			console.log('TS.getBackendPath() is deprecated since TYPO3 CMS 7, and will be removed in TYPO3 CMS 8.');
-		}
-		if (TYPO3) {
-			if (TYPO3.configuration && TYPO3.configuration.PATH_typo3) {
-				backendPath = TYPO3.configuration.PATH_typo3;
-			} else if (TYPO3.settings && TYPO3.settings.PATH_typo3) {
-				backendPath = TYPO3.settings.PATH_typo3;
-			}
-		}
-		return backendPath;
-	}
 };
 
 function typoSetup	() {

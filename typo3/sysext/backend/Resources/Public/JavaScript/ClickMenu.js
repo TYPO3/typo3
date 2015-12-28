@@ -255,38 +255,3 @@ define(['jquery'], function($) {
 	TYPO3.ClickMenu = ClickMenu;
 	return ClickMenu;
 });
-
-
-/**
- * available calls to the old API
- */
-Clickmenu = {
-	show: function(table, uid, listFr, enDisItems, addParams) {
-		if (console !== undefined) {
-			console.log('Clickmenu.show is deprecated and will be removed with CMS 8, please use TYPO3.ClickMenu.');
-		}
-		TYPO3.ClickMenu.show(table, uid, listFr, enDisItems, addParams);
-	},
-	populateData: function(data, level) {
-		if (console !== undefined) {
-			console.log('Clickmenu.popuplateData is deprecated and will be removed with CMS 8, please use TYPO3.ClickMenu.');
-		}
-		TYPO3.ClickMenu.populateData(data, level);
-	}
-};
-
-/**
- * @param url
- * @deprecated since 4.2, Used in Core: \TYPO3\CMS\Backend\ClickMenu\ClickMenu::linkItem()
- */
-function showClickmenu_raw(url) {
-	if (console !== undefined) {
-		console.log('showClickmenu_raw is deprecated and will be removed with CMS 8, please use TYPO3.ClickMenu.');
-	}
-	var parts = url.split('?');
-	if (parts.length === 2) {
-		TYPO3.ClickMenu.fetch(parts[1]);
-	} else {
-		TYPO3.ClickMenu.fetch(url);
-	}
-}

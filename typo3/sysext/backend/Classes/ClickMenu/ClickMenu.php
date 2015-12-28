@@ -1448,7 +1448,6 @@ class ClickMenu
      */
     public function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0)
     {
-        $onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);
         return array(
             '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $str . $icon . '</a>',
             $str,
