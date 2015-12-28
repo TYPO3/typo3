@@ -5,7 +5,14 @@
 			<f:for each="{pages}" as="page">
 				<li>
 					<f:link.page pageUid="{page.uid}">
-						{page.title}
+						<f:if condition="{page.nav_title}">
+							<f:then>
+								{page.nav_title}
+							</f:then>
+							<f:else>
+								{page.title}
+							</f:else>
+						</f:if>
 					</f:link.page>
 				</li>
 			</f:for>
