@@ -316,18 +316,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     }
 
     /**
-     * This method actually prints out the module's HTML content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function render()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * This method checks the status of the '_cli_scheduler' user
      * It will differentiate between a non-existing user and an existing,
      * but disabled user (as per enable fields)
@@ -1429,44 +1417,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             }
         }
         return $result;
-    }
-
-    /**
-     * This method checks whether the given string can be considered a valid date or not
-     * Allowed values are anything that matches natural language (see PHP function strtotime())
-     * or TYPO3's date syntax: HH:ii yyyy-mm-dd
-     * If the string is a valid date, the corresponding timestamp is returned.
-     * Otherwise an exception is thrown
-     *
-     * @param string $string String to check
-     * @return int Unix timestamp
-     * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as the unified datetime picker with a separate timestamp field is used.
-     */
-    public function checkDate($string)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Try with strtotime
-        $timestamp = strtotime($string);
-        // That failed. Try TYPO3's standard date/time input format
-        if ($timestamp === false) {
-            // Split time and date
-            $dateParts = GeneralUtility::trimExplode(' ', $string, true);
-            // Proceed if there are indeed two parts
-            // Extract each component of date and time
-            if (count($dateParts) == 2) {
-                list($time, $date) = $dateParts;
-                list($hour, $minutes) = GeneralUtility::trimExplode(':', $time, true);
-                list($day, $month, $year) = GeneralUtility::trimExplode('-', $date, true);
-                // Get a timestamp from all these parts
-                $timestamp = @mktime($hour, $minutes, 0, $month, $day, $year);
-            }
-            // If the timestamp is still false, throw an exception
-            if ($timestamp === false) {
-                throw new \InvalidArgumentException('"' . $string . '" seems not to be a correct date.', 1294587694);
-            }
-        }
-        return $timestamp;
     }
 
     /*************************

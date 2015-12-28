@@ -223,18 +223,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     }
 
     /**
-     * Outputs accumulated module content to browser.
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      *
      * @return array All available buttons as an assoc. array

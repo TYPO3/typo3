@@ -664,36 +664,6 @@ class AbstractPlugin
     }
 
     /**
-     * Returns a Search box, sending search words to piVars "sword" and setting the "no_cache" parameter as well in the form.
-     * Submits the search request to the current REQUEST_URI
-     *
-     * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the search box
-     * @return string Output HTML, wrapped in <div>-tags with a class attribute
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function pi_list_searchBox($tableParams = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Search box design:
-        $sTables = '
-
-		<!--
-			List search box:
-		-->
-		<div' . $this->pi_classParam('searchbox') . '>
-			<form action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" style="margin: 0 0 0 0;">
-			<' . rtrim('table ' . $tableParams) . '>
-				<tr>
-					<td><input type="text" name="' . $this->prefixId . '[sword]" value="' . htmlspecialchars($this->piVars['sword']) . '"' . $this->pi_classParam('searchbox-sword') . ' /></td>
-					<td><input type="submit" value="' . $this->pi_getLL('pi_list_searchBox_search', 'Search', true) . '"' . $this->pi_classParam('searchbox-button') . ' />' . '<input type="hidden" name="no_cache" value="1" />' . '<input type="hidden" name="' . $this->prefixId . '[pointer]" value="" />' . '</td>
-				</tr>
-			</table>
-			</form>
-		</div>';
-        return $sTables;
-    }
-
-    /**
      * Returns a mode selector; a little menu in a table normally put in the top of the page/list.
      *
      * @param array $items Key/Value pairs for the menu; keys are the piVars[mode] values and the "values" are the labels for them.

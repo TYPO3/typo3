@@ -191,18 +191,6 @@ class ImportExportController extends BaseScriptClass
     }
 
     /**
-     * Print the content
-     *
-     * @return void
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->content;
-    }
-
-    /**
      * Injects the request object for the current request and gathers all data
      *
      * IMPORTING DATA:

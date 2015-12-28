@@ -72,6 +72,10 @@ class SilentConfigurationUpgradeService
         'BE/spriteIconGenerator_handler',
         // #72417
         'SYS/lockingMode',
+        // #72473
+        'FE/secureFormmail',
+        'FE/strictFormmail',
+        'FE/formmailMaxAttachmentSize',
     );
 
     /**

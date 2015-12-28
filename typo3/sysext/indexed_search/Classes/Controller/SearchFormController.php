@@ -1250,41 +1250,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
     /**
-     * Check if the record is still available or if it has been deleted meanwhile.
-     * Currently this works for files only, since extending it to page content would cause a lot of overhead.
-     *
-     * @param array $row Result row array
-     * @return bool Returns TRUE if record is still available
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function checkExistance($row)
-    {
-        return $this->checkExistence($row);
-    }
-
-    /**
-     * Check if the record is still available or if it has been deleted meanwhile.
-     * Currently this works for files only, since extending it to page content would cause a lot of overhead.
-     *
-     * @param array $row Result row array
-     * @return bool Returns TRUE if record is still available
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8 (it is not used in the core any more, see #44381)
-     */
-    protected function checkExistence($row)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $recordExists = true;
-        // Always expect that page content exists
-        if ($row['item_type']) {
-            // External media:
-            if (!is_file($row['data_filename']) || !file_exists($row['data_filename'])) {
-                $recordExists = false;
-            }
-        }
-        return $recordExists;
-    }
-
-    /**
      * Returns "DESC" or "" depending on the settings of the incoming highest/lowest result order (piVars['desc']
      *
      * @param bool $inverse If TRUE, inverse the order which is defined by piVars['desc']

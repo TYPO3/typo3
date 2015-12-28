@@ -259,19 +259,13 @@ class ExtensionManagementUtility
      *
      * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
      * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
-     * @param bool $addTofeInterface DEPRECATED: Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.
      * @return void
      */
-    public static function addTCAcolumns($table, $columnArray, $addTofeInterface = false)
+    public static function addTCAcolumns($table, $columnArray)
     {
         if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
             // Candidate for array_merge() if integer-keys will some day make trouble...
             $GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
-            if ($addTofeInterface) {
-                GeneralUtility::deprecationLog(
-                    'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:' . $GLOBALS['_EXTKEY'] . '.'
-                );
-            }
         }
     }
 
@@ -314,8 +308,8 @@ class ExtensionManagementUtility
                 // Get the palette names used in current showitem
                 $paletteCount = preg_match_all('/(?:^|,)                    # Line start or a comma
 					(?:
-					    \\s*\\-\\-palette\\-\\-;[^;]*;([^,$]*)|              # --palette--;label;paletteName
-					    \\s*\\b[^;,]+\\b(?:;[^;]*;([^;,]+);?[^;,]*;?)?[^,]*  # @deprecated since TYPO3 CMS 7: field;label;paletteName[;options[;colors]]
+					    \\s*\\-\\-palette\\-\\-;[^;]*;([^,$]*)|             # --palette--;label;paletteName
+					    \\s*\\b[^;,]+\\b(?:;[^;]*;([^;,]+))?[^,]*           # field;label;paletteName
 					)/x', $typeDetails['showitem'], $paletteMatches);
                 if ($paletteCount > 0) {
                     $paletteNames = array_filter(array_merge($paletteMatches[1], $paletteMatches[2]));
