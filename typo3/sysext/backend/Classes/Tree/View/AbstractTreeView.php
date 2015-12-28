@@ -515,7 +515,7 @@ abstract class AbstractTreeView
             $anchor = $bMark ? '#' . $bMark : '';
             $name = $bMark ? ' name="' . $bMark . '"' : '';
             $aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
-            return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . ' href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
+            return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
         } else {
             return $icon;
         }
