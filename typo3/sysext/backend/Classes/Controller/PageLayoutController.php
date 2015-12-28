@@ -618,9 +618,8 @@ class PageLayoutController
                 }
                 ' . ($this->popView ? BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)) : '') . '
                 function deleteRecord(table,id,url) {   //
-                    if (confirm(' . GeneralUtility::quoteJSvalue($lang->getLL('deleteWarning')) . ')) {
-                        window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $this->getBackendUser()->veriCode() . '&prErr=1&uPT=1";
-                    }
+                    window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[')
+                                             . ' + table + "][" + id + "][delete]=1&redirect=" + encodeURIComponent(url) + "&vC=' . $this->getBackendUser()->veriCode() . '&prErr=1&uPT=1";
                     return false;
                 }
             ');
@@ -1191,9 +1190,14 @@ class PageLayoutController
 
                 // Delete record
                 if ($this->deleteButton) {
+                    $dataAttributes = array();
+                    $dataAttributes['table'] = $this->eRParts[0];
+                    $dataAttributes['uid'] = $this->eRParts[1];
+                    $dataAttributes['return-url'] = BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id;
                     $deleteButton = $this->buttonBar->makeLinkButton()
                         ->setHref('#')
-                        ->setOnClick('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id) . ');')
+                        ->setClasses('t3js-editform-delete-record')
+                        ->setDataAttributes($dataAttributes)
                         ->setTitle($lang->getLL('deleteItem'))
                         ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
                     $this->buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
