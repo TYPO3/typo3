@@ -45,6 +45,9 @@
 			<trans-unit id="externalChange">
 				<source>Intermediate external change!</source>
 			</trans-unit>
+			<trans-unit id="viaUser">
+				<source>via</source>
+			</trans-unit>
 			<trans-unit id="sumUpChanges">
 				<source>Rollback (Preview)</source>
 			</trans-unit>
