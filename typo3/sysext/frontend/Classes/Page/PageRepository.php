@@ -361,7 +361,7 @@ class PageRepository {
 				// Was the whole record
 				$page_id = $pageInput['uid'];
 				// Make sure that only fields which exist in the incoming record are overlaid!
-				$fieldArr = array_intersect($fieldArr, array_keys($pageInput));
+				$fieldArr = array_intersect($fieldArr, array_keys($this->purgeComputedProperties($pageInput)));
 			} else {
 				// Was the id
 				$page_id = $pageInput;
@@ -1239,7 +1239,7 @@ class PageRepository {
 			}
 			// Find pointed-to record.
 			if ($moveID) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . (int)$moveID . $this->enableFields($table));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($this->purgeComputedProperties($row))), $table, 'uid=' . (int)$moveID . $this->enableFields($table));
 				$origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				if ($origRow) {
