@@ -378,7 +378,7 @@ class PageRepository
             $origPage = reset($pagesInput);
             if (is_array($origPage)) {
                 // Make sure that only fields which exist in the first incoming record are overlaid!
-                $fieldArr = array_intersect($fieldArr, array_keys($origPage));
+                $fieldArr = array_intersect($fieldArr, array_keys($this->purgeComputedProperties($origPage)));
             }
             foreach ($pagesInput as $origPage) {
                 if (is_array($origPage)) {
@@ -1406,7 +1406,7 @@ class PageRepository
             }
             // Find pointed-to record.
             if ($moveID) {
-                $res = $this->getDatabaseConnection()->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . (int)$moveID . $this->enableFields($table));
+                $res = $this->getDatabaseConnection()->exec_SELECTquery(implode(',', array_keys($this->purgeComputedProperties($row))), $table, 'uid=' . (int)$moveID . $this->enableFields($table));
                 $origRow = $this->getDatabaseConnection()->sql_fetch_assoc($res);
                 $this->getDatabaseConnection()->sql_free_result($res);
                 if ($origRow) {
