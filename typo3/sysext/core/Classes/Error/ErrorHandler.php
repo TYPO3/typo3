@@ -186,6 +186,7 @@ class ErrorHandler implements ErrorHandlerInterface
         if (is_object($databaseConnection) && $databaseConnection->isConnected()) {
             $userId = 0;
             $workspace = 0;
+            $data = array();
             $backendUser = $this->getBackendUser();
             if (is_object($backendUser)) {
                 if (isset($backendUser->user['uid'])) {
@@ -193,6 +194,9 @@ class ErrorHandler implements ErrorHandlerInterface
                 }
                 if (isset($backendUser->workspace)) {
                     $workspace = $backendUser->workspace;
+                }
+                if (!empty($backendUser->user['ses_backuserid'])) {
+                    $data['originalUser'] = $backendUser->user['ses_backuserid'];
                 }
             }
             $fields_values = array(
@@ -202,6 +206,7 @@ class ErrorHandler implements ErrorHandlerInterface
                 'error' => $severity,
                 'details_nr' => 0,
                 'details' => str_replace('%', '%%', $logMessage),
+                'log_data' => (empty($data) ? '' : serialize($data)),
                 'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                 'tstamp' => $GLOBALS['EXEC_TIME'],
                 'workspace' => $workspace

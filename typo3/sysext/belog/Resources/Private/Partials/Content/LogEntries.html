@@ -167,10 +167,11 @@
 								</f:if>
 							</td>
 							<td valign="top">
-								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
-									<f:then><belog:username uid="{logItem.backendUserUid}" /></f:then>
-									<f:else>[{logItem.backendUserUid}]</f:else>
-								</f:if><br>
+								<f:render partial="Content/Username" arguments="{userId:logItem.backendUserUid}" />
+								<f:if condition="{logItem.logData.originalUser}">
+									({f:translate(key:'viaUser')} <f:render partial="Content/Username" arguments="{userId:logItem.logData.originalUser}" />)
+								</f:if>
+								<br>
 								<span class="text-muted">
 									<f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
 										<f:then><belog:workspaceTitle uid="{logItem.workspaceUid}" /></f:then>

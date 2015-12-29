@@ -429,7 +429,11 @@ class RecordHistory
             $singleLine = array();
 
             // Get user names
-            $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange', true);
+            $userName = $entry['user'] ? $beUserArray[$entry['user']]['username'] : $languageService->getLL('externalChange');
+            // Executed by switch-user
+            if (!empty($entry['originalUser'])) {
+                $userName .= ' (' . $languageService->getLL('viaUser') . ' ' . $beUserArray[$entry['originalUser']]['username'] . ')';
+            }
             $singleLine['backendUserName'] = htmlspecialchars($userName);
             $singleLine['backendUserUid'] = $entry['user'];
             // add user name
@@ -702,7 +706,7 @@ class RecordHistory
         $databaseConnection = $this->getDatabaseConnection();
         $uid = $this->resolveElement($table, $uid);
         // Selecting the $this->maxSteps most recent states:
-        $rows = $databaseConnection->exec_SELECTgetRows('sys_history.*, sys_log.userid', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
+        $rows = $databaseConnection->exec_SELECTgetRows('sys_history.*, sys_log.userid, sys_log.log_data', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
 						AND sys_history.tablename = ' . $databaseConnection->fullQuoteStr($table, 'sys_history') . '
 						AND sys_history.recuid = ' . (int)$uid, '', 'sys_log.uid DESC', $this->maxSteps);
         $changeLog = array();
@@ -714,11 +718,13 @@ class RecordHistory
                     continue;
                 }
                 $hisDat = unserialize($row['history_data']);
+                $logData = unserialize($row['log_data']);
                 if (is_array($hisDat['newRecord']) && is_array($hisDat['oldRecord'])) {
                     // Add information about the history to the changeLog
                     $hisDat['uid'] = $row['uid'];
                     $hisDat['tstamp'] = $row['tstamp'];
                     $hisDat['user'] = $row['userid'];
+                    $hisDat['originalUser'] = (empty($logData['originalUser']) ? null : $logData['originalUser']);
                     $hisDat['snapshot'] = $row['snapshot'];
                     $hisDat['fieldlist'] = $row['fieldlist'];
                     $hisDat['tablename'] = $row['tablename'];
@@ -734,7 +740,7 @@ class RecordHistory
         // SELECT INSERTS/DELETES
         if ($this->showInsertDelete) {
             // Select most recent inserts and deletes // WITHOUT snapshots
-            $rows = $databaseConnection->exec_SELECTgetRows('uid, userid, action, tstamp', 'sys_log', 'type = 1
+            $rows = $databaseConnection->exec_SELECTgetRows('uid, userid, action, tstamp, log_data', 'sys_log', 'type = 1
 						AND (action=1 OR action=3)
 						AND tablename = ' . $databaseConnection->fullQuoteStr($table, 'sys_log') . '
 						AND recuid = ' . (int)$uid, '', 'uid DESC', $this->maxSteps);
@@ -747,6 +753,7 @@ class RecordHistory
                     continue;
                 }
                 $hisDat = array();
+                $logData = unserialize($row['log_data']);
                 switch ($row['action']) {
                     case 1:
                         // Insert
@@ -759,6 +766,7 @@ class RecordHistory
                 }
                 $hisDat['tstamp'] = $row['tstamp'];
                 $hisDat['user'] = $row['userid'];
+                $hisDat['originalUser'] = (empty($logData['originalUser']) ? null : $logData['originalUser']);
                 $hisDat['tablename'] = $table;
                 $hisDat['recuid'] = $uid;
                 $changeLog[$row['uid']] = $hisDat;
