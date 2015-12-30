@@ -42,14 +42,14 @@ class UsernameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 */
 	public function render($uid) {
 		if (isset(static::$usernameRuntimeCache[$uid])) {
-			return static::$usernameRuntimeCache[$uid];
+			return htmlspecialchars(static::$usernameRuntimeCache[$uid]);
 		}
 
 		/** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
 		$user = $this->backendUserRepository->findByUid($uid);
 		// $user may be NULL if user was deleted from DB, set it to empty string to always return a string
 		static::$usernameRuntimeCache[$uid] = ($user === NULL) ? '' : $user->getUserName();
-		return static::$usernameRuntimeCache[$uid];
+		return htmlspecialchars(static::$usernameRuntimeCache[$uid]);
 	}
 
 }

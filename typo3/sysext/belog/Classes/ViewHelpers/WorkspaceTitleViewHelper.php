@@ -42,7 +42,7 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 */
 	public function render($uid) {
 		if (isset(static::$workspaceTitleRuntimeCache[$uid])) {
-			return static::$workspaceTitleRuntimeCache[$uid];
+			return htmlspecialchars(static::$workspaceTitleRuntimeCache[$uid]);
 		}
 
 		if ($uid === 0) {
@@ -56,7 +56,7 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 			static::$workspaceTitleRuntimeCache[$uid] = ($workspace === NULL) ? '' : $workspace->getTitle();
 		}
 
-		return static::$workspaceTitleRuntimeCache[$uid];
+		return htmlspecialchars(static::$workspaceTitleRuntimeCache[$uid]);
 	}
 
 }
