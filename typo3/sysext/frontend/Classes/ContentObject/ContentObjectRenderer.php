@@ -1223,7 +1223,7 @@ class ContentObjectRenderer
     }
 
     /**
-     * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict, xhtml_11, xhtml_2 or html5
+     * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict, xhtml_11 or html5
      * or if the config parameter 'disableImgBorderAttr' is not set.
      *
      * @param string $borderAttr The border attribute
@@ -1234,7 +1234,7 @@ class ContentObjectRenderer
         $tsfe = $this->getTypoScriptFrontendController();
         $docType = $tsfe->xhtmlDoctype;
         if (
-            $docType !== 'xhtml_strict' && $docType !== 'xhtml_11' && $docType !== 'xhtml_2'
+            $docType !== 'xhtml_strict' && $docType !== 'xhtml_11'
             && $tsfe->config['config']['doctype'] !== 'html5'
             && !$tsfe->config['config']['disableImgBorderAttr']
         ) {
@@ -1438,7 +1438,7 @@ class ContentObjectRenderer
             // Create TARGET-attribute only if the right doctype is used
             $target = '';
             $xhtmlDocType = $this->getTypoScriptFrontendController()->xhtmlDoctype;
-            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11' && $xhtmlDocType !== 'xhtml_2') {
+            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11') {
                 $target = isset($conf['target.'])
                     ? (string)$this->stdWrap($conf['target'], $conf['target.'])
                     : (string)$conf['target'];
@@ -6187,7 +6187,7 @@ class ContentObjectRenderer
         if ($JSwindowParams) {
             // Create TARGET-attribute only if the right doctype is used
             $xhtmlDocType = $tsfe->xhtmlDoctype;
-            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11' && $xhtmlDocType !== 'xhtml_2') {
+            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11') {
                 $target = ' target="FEopenLink"';
             } else {
                 $target = '';

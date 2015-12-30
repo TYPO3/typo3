@@ -119,7 +119,7 @@ class PageGenerator
         if ($tsfe->config['config']['doctype']) {
             if (in_array(
                 (string)$tsfe->config['config']['doctype'],
-                array('xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'xhtml_2', 'html5'),
+                array('xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'),
                 true)
             ) {
                 $tsfe->dtdAllowsFrames = true;
@@ -149,10 +149,6 @@ class PageGenerator
 
                 case 'xhtml+rdfa_10':
                     $tsfe->xhtmlVersion = 110;
-                    break;
-                case 'xhtml_2':
-                    GeneralUtility::deprecationLog('The option "config.xhtmlDoctype=xhtml_2" is deprecated since TYPO3 CMS 7, and will be removed with CMS 8');
-                    $tsfe->xhtmlVersion = 200;
                     break;
                 default:
                     static::getPageRenderer()->setRenderXhtml(false);
@@ -288,11 +284,6 @@ class PageGenerator
                     $docTypeParts[] = '<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
-                    break;
-                case 'xhtml_2':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 2.0//EN"
-    "http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
                     break;
                 case 'xhtml+rdfa_10':
                     $docTypeParts[] = '<!DOCTYPE html

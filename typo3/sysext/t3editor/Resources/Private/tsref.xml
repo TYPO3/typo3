@@ -368,7 +368,6 @@ Use this feature in templates supplying other content-types than HTML. That coul
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
 "xhtml+rdf_10" for XHTML+RDFa 1.0 doctype.
-"xhtml_2" for XHTML 2 doctype.
 "html5" for HTML5
 "none" for NO doctype at all.
 
@@ -968,7 +967,6 @@ If config.doctype is set to a string then config.xhtmlDoctype must be set to one
 "xhtml_strict" for XHTML 1.0 Strict doctype.
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
-"xhtml_2" for XHTML 2 doctype.
 
 
 This is an example to use MathML 2.0 in an XHTML 1.1 document:

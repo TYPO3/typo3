@@ -256,8 +256,6 @@ abstract class AbstractMenuContentObject
                 // intended fall-through
             case 'xhtml_11':
                 // intended fall-through
-            case 'xhtml_2':
-                // intended fall-through
             case 'html5':
                 // intended fall-through
             case '':
