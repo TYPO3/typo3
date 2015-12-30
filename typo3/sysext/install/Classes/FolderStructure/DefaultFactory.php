@@ -113,11 +113,6 @@ class DefaultFactory
                         'targetPermission' => $directoryPermission,
                     ),
                     array(
-                        'name' => 'llxml',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
                         'name' => 'locks',
                         'type' => DirectoryNode::class,
                         'targetPermission' => $directoryPermission,

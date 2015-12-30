@@ -65,7 +65,6 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             'typo3temp/' => 2,
             'typo3temp/pics/' => 2,
             'typo3temp/temp/' => 2,
-            'typo3temp/llxml/' => 2,
             'typo3temp/cs/' => 2,
             'typo3temp/GB/' => 2,
             'typo3temp/locks/' => 2,
