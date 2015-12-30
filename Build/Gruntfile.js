@@ -68,7 +68,7 @@ module.exports = function(grunt) {
 						browsers: [
 							'Last 2 versions',
 							'Firefox ESR',
-							'IE 9'
+							'IE 11'
 						]
 					})
 				]

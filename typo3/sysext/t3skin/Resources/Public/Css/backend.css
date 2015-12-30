@@ -312,31 +312,26 @@ th {
 .fa-rotate-90 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
   -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .fa-rotate-180 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
   -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .fa-rotate-270 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   -webkit-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
   transform: rotate(270deg);
 }
 .fa-flip-horizontal {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
   -webkit-transform: scale(-1, 1);
-  -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
 .fa-flip-vertical {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
   -webkit-transform: scale(1, -1);
-  -ms-transform: scale(1, -1);
   transform: scale(1, -1);
 }
 :root .fa-rotate-90,
@@ -6904,7 +6899,6 @@ button.close {
 }
 .modal.fade .modal-dialog {
   -webkit-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
   transform: translate(0, -25%);
   transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
@@ -6912,7 +6906,6 @@ button.close {
 }
 .modal.in .modal-dialog {
   -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
 .modal-open .modal {
@@ -8851,7 +8844,6 @@ button.close {
   box-shadow: 0 0 10px #ff8700, 0 0 5px #ff8700;
   opacity: 1.0;
   -webkit-transform: rotate(3deg) translate(0px, -4px);
-  -ms-transform: rotate(3deg) translate(0px, -4px);
   transform: rotate(3deg) translate(0px, -4px);
 }
 /* Remove these to get rid of the spinner */
@@ -9973,7 +9965,6 @@ ul.typo3-messages {
   right: 5px;
   top: 50%;
   -webkit-transform: translate(0, -50%);
-      -ms-transform: translate(0, -50%);
           transform: translate(0, -50%);
 }
 .typo3-pagetree-toppanel-item .x-form-field-wrap {
@@ -10050,7 +10041,6 @@ ul.typo3-messages {
   position: absolute;
   right: 16px;
   -webkit-transform: translateY(-100%);
-      -ms-transform: translateY(-100%);
           transform: translateY(-100%);
   background-color: #6daae0;
 }
@@ -10716,7 +10706,6 @@ fieldset[disabled] .table .btn-default.focus {
 .panel-collapsed .panel-heading .caret {
   transition: all 0.25s ease-in-out;
   -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 .panel-collapsed .panel-collapse {
@@ -11452,7 +11441,6 @@ a.badge-danger:focus {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
   overflow: hidden;
   background-color: #eaeaea;
@@ -11495,7 +11483,6 @@ a.badge-danger:focus {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
 }
 .dropzone-hint-icon:before {
@@ -12601,7 +12588,6 @@ iframe {
 [id="typo3-menu"] .typo3-module-menu-group-title .caret {
   transition: all 0.25s ease-in-out;
   -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
   transform: rotate(90deg);
   position: absolute;
   top: 15px;
@@ -12609,7 +12595,6 @@ iframe {
 }
 [id="typo3-menu"] .expanded .typo3-module-menu-group-title .caret {
   -webkit-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
   transform: rotate(0deg);
 }
 .typo3-module-menu-snapped .typo3-module-menu-group-container {
