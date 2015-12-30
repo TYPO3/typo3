@@ -24,17 +24,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests except for CLI
- * or AJAX calls. Unlike all other RequestHandlers in the TYPO3 CMS Core, the actual logic for choosing
- * the controller is still done inside places like each single file.
- * This RequestHandler here serves solely to check and set up all requirements needed for a TYPO3 Backend.
- * This class might be changed in the future.
+ * or AJAX calls.
  *
- * At first, this request handler serves as a replacement to typo3/init.php. It is called but does not exit
- * so any typical script that is not dispatched, is just running through the handleRequest() method and then
- * calls its own code.
- *
- * However, if a get/post parameter "route" is set, the unified Backend Routing is called and searches for a
- * matching route inside the Router. The corresponding controller / action is called then which returns content.
+ * If a get/post parameter "route" is set, the Backend Routing is called and searches for a
+ * matching route inside the Router. The corresponding controller / action is called then which returns the response.
  *
  * The following get/post parameters are evaluated here:
  *   - route
@@ -62,40 +55,20 @@ class RequestHandler implements RequestHandlerInterface
      * Handles any backend request
      *
      * @param ServerRequestInterface $request
-     * @return NULL|ResponseInterface
+     * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request)
     {
-        // enable dispatching via Request/Response logic only for typo3/index.php
-        // This fallback will be removed in TYPO3 CMS 8, as only index.php will be allowed
-        $path = substr($request->getUri()->getPath(), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
-        $routingEnabled = ($path === TYPO3_mainDir . 'index.php' || $path === TYPO3_mainDir);
-        $proceedIfNoUserIsLoggedIn = false;
+        // Allow the login page to be displayed if routing is not used and on index.php
+        $pathToRoute = (string)$request->getQueryParams()['route'] ?: '/login';
+        $request = $request->withAttribute('routePath', $pathToRoute);
 
-        if ($routingEnabled) {
-            $pathToRoute = (string)$request->getQueryParams()['route'];
-            // Allow the login page to be displayed if routing is not used and on index.php
-            if (empty($pathToRoute)) {
-                $pathToRoute = '/login';
-            }
-            $request = $request->withAttribute('routePath', $pathToRoute);
-
-            // Evaluate the constant for skipping the BE user check for the bootstrap
-            // should be handled differently in the future by checking the Bootstrap directly
-            if ($pathToRoute === '/login') {
-                $proceedIfNoUserIsLoggedIn = true;
-            }
-        }
-
-        $this->boot($proceedIfNoUserIsLoggedIn);
+        // skip the BE user check on the login page
+        // should be handled differently in the future by checking the Bootstrap directly
+        $this->boot($pathToRoute === '/login');
 
         // Check if the router has the available route and dispatch.
-        if ($routingEnabled) {
-            return $this->dispatch($request);
-        }
-
-        // No route found, so the system proceeds in called entrypoint as fallback.
-        return null;
+        return $this->dispatch($request);
     }
 
     /**
