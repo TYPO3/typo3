@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -108,12 +107,13 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
         }
         $userId = 0;
         $workspace = 0;
-        if (is_object($GLOBALS['BE_USER'])) {
-            if (isset($GLOBALS['BE_USER']->user['uid'])) {
-                $userId = $GLOBALS['BE_USER']->user['uid'];
+        $backendUser = $this->getBackendUser();
+        if (is_object($backendUser)) {
+            if (isset($backendUser->user['uid'])) {
+                $userId = $backendUser->user['uid'];
             }
-            if (isset($GLOBALS['BE_USER']->workspace)) {
-                $workspace = $GLOBALS['BE_USER']->workspace;
+            if (isset($backendUser->workspace)) {
+                $workspace = $backendUser->workspace;
             }
         }
         $fields_values = array(
@@ -153,8 +153,16 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
     }
 
     /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
      * Gets the Database Object
-     * @return DatabaseConnection
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     protected function getDatabaseConnection()
     {

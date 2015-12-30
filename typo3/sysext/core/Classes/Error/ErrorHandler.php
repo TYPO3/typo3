@@ -135,8 +135,9 @@ class ErrorHandler implements ErrorHandlerInterface
                 GeneralUtility::devLog($message, 'core', $severity + 1);
             }
             // Write error message to TSlog (admin panel)
-            if (is_object($GLOBALS['TT'])) {
-                $GLOBALS['TT']->setTSlogMessage($message, $severity + 1);
+            $timeTracker = $this->getTimeTracker();
+            if (is_object($timeTracker)) {
+                $timeTracker->setTSlogMessage($message, $severity + 1);
             }
             // Write error message to sys_log table (ext: belog, Tools->Log)
             if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
@@ -180,15 +181,17 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     protected function writeLog($logMessage, $severity)
     {
-        if (is_object($GLOBALS['TYPO3_DB']) && $GLOBALS['TYPO3_DB']->isConnected()) {
+        $databaseConnection = $this->getDatabaseConnection();
+        if (is_object($databaseConnection) && $databaseConnection->isConnected()) {
             $userId = 0;
             $workspace = 0;
-            if (is_object($GLOBALS['BE_USER'])) {
-                if (isset($GLOBALS['BE_USER']->user['uid'])) {
-                    $userId = $GLOBALS['BE_USER']->user['uid'];
+            $backendUser = $this->getBackendUser();
+            if (is_object($backendUser)) {
+                if (isset($backendUser->user['uid'])) {
+                    $userId = $backendUser->user['uid'];
                 }
-                if (isset($GLOBALS['BE_USER']->workspace)) {
-                    $workspace = $GLOBALS['BE_USER']->workspace;
+                if (isset($backendUser->workspace)) {
+                    $workspace = $backendUser->workspace;
                 }
             }
             $fields_values = array(
@@ -202,7 +205,31 @@ class ErrorHandler implements ErrorHandlerInterface
                 'tstamp' => $GLOBALS['EXEC_TIME'],
                 'workspace' => $workspace
             );
-            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
+            $databaseConnection->exec_INSERTquery('sys_log', $fields_values);
         }
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     */
+    protected function getTimeTracker()
+    {
+        return $GLOBALS['TT'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
