@@ -326,7 +326,7 @@ function jumpToUrl(URL) {
         // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
         foreach ($this->jsFilesNoConcatenation as $file) {
             $this->pageRenderer->addJsFile(
-                $GLOBALS['BACK_PATH'] . $file,
+                $file,
                 'text/javascript',
                 true,
                 false,
@@ -336,7 +336,7 @@ function jumpToUrl(URL) {
         }
         // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
         foreach ($this->jsFiles as $file) {
-            $this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
+            $this->pageRenderer->addJsFile($file);
         }
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
             $this->pageRenderer->enableDebugMode();
@@ -903,13 +903,13 @@ function jumpToUrl(URL) {
     {
         // Calculation needed, when TYPO3 source is used via a symlink
         // absolute path to the stylesheets
-        $filePath = dirname(GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $path;
+        $filePath = GeneralUtility::getFileAbsFileName($path, false, true);
         // Clean the path
         $resolvedPath = GeneralUtility::resolveBackPath($filePath);
         // Read all files in directory and sort them alphabetically
         $files = GeneralUtility::getFilesInDir($resolvedPath, 'css', false, 1);
         foreach ($files as $file) {
-            $this->pageRenderer->addCssFile($GLOBALS['BACK_PATH'] . $path . $file, 'stylesheet', 'all');
+            $this->pageRenderer->addCssFile($path . $file, 'stylesheet', 'all');
         }
     }
 

@@ -110,9 +110,8 @@ function str_replace(match,replace,string)	{	//
 /**
  * Launcing information window for records/files (fileref as "table" argument)
  */
-function launchView(table, uid, bP) {
-	var thePreviewWindow = "";
-	thePreviewWindow = window.open(TYPO3.settings.ShowItem.moduleUrl + '&table=' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
+function launchView(table, uid) {
+	var thePreviewWindow = window.open(TYPO3.settings.ShowItem.moduleUrl + '&table=' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
 			"ShowItem" + TS.uniqueID,
 			"width=650,height=600,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 	if (thePreviewWindow && thePreviewWindow.focus) {

@@ -776,10 +776,9 @@ class EditDocumentController extends AbstractModule
 			var TS = new typoSetup();
 
 				// Info view:
-			function launchView(table,uid,bP) {	//
-				var backPath= bP ? bP : "";
+			function launchView(table,uid) {	//
 				var thePreviewWindow = window.open(
-					backPath+' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
+					' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
 					"ShowItem" + TS.uniqueID,
 					"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0"
 				);

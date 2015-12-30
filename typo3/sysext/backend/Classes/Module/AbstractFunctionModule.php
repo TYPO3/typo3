@@ -288,10 +288,11 @@ abstract class AbstractFunctionModule
 
     /**
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function getBackPath()
     {
-        return $GLOBALS['BACK_PATH'];
+        return '';
     }
 
     /**

@@ -1109,8 +1109,7 @@ class ExtendedTemplateService extends TemplateService
         } elseif (substr($imgConf, 0, 4) == 'EXT:') {
             $iFile = GeneralUtility::getFileAbsFileName($imgConf);
             if ($iFile) {
-                $f = PathUtility::stripPathSitePrefix($iFile);
-                $tFile = $GLOBALS['BACK_PATH'] . '../' . $f;
+                $tFile = '../' . PathUtility::stripPathSitePrefix($iFile);
             }
         }
         if ($iFile !== null) {

@@ -418,7 +418,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
-        $this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];
+        $this->backPath = isset($backPath) ? $backPath : '';
         $this->inlineJavascriptWrap = array(
             '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
             '/*]]>*/' . LF . '</script>' . LF

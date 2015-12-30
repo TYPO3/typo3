@@ -103,18 +103,6 @@ class ResourceCompressor
     {
         $this->setInitialRelativePath();
         $this->setInitialRootPath();
-        $this->setInitialBackPath();
-    }
-
-    /**
-     * Sets relative back path
-     *
-     * @return void
-     */
-    protected function setInitialBackPath()
-    {
-        $backPath = TYPO3_MODE === 'BE' ? $GLOBALS['BACK_PATH'] : '';
-        $this->setBackPath($backPath);
     }
 
     /**
@@ -135,7 +123,7 @@ class ResourceCompressor
      */
     protected function setInitialRelativePath()
     {
-        $relativePath = TYPO3_MODE === 'BE' ? $GLOBALS['BACK_PATH'] . '../' : '';
+        $relativePath = TYPO3_MODE === 'BE' ? '../' : '';
         $this->setRelativePath($relativePath);
     }
 

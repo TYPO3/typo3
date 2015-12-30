@@ -377,7 +377,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
     protected function getModuleIconAbsolute($iconFilename)
     {
         if (!GeneralUtility::isAbsPath($iconFilename)) {
-            $iconFilename = $GLOBALS['BACK_PATH'] . $iconFilename;
+            $iconFilename = PATH_typo3 . $iconFilename;
         }
         return $iconFilename;
     }

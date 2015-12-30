@@ -569,7 +569,7 @@ class QueryView
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET'))
             ]);
-            $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(

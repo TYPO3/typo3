@@ -50,8 +50,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * public function main() {
  * 	TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
  * 	$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
- * 	TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
- * 	$this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
  * 	... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
  * 	$this->content='';
  * }

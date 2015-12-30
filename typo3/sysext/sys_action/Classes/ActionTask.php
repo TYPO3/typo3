@@ -809,7 +809,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             // Initialize the dblist object:
             $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\SysAction\ActionList::class);
             $dblist->script = GeneralUtility::getIndpEnv('REQUEST_URI');
-            $dblist->backPath = $GLOBALS['BACK_PATH'];
             $dblist->calcPerms = $this->getBackendUser()->calcPerms($this->pageinfo);
             $dblist->thumbs = $this->getBackendUser()->uc['thumbnailsByDefault'];
             $dblist->returnUrl = $this->taskObject->returnUrl;
@@ -886,14 +885,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $content .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">' . $dblist->HTMLcode . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" />
 						</form>';
             // If a listing was produced, create the page footer with search form etc:
-            if ($dblist->HTMLcode) {
-                // Making field select box (when extended view for a single table is enabled):
-                if ($dblist->table) {
-                    $tmpBackpath = $GLOBALS['BACK_PATH'];
-                    $GLOBALS['BACK_PATH'] = '';
-                    $content .= $dblist->fieldSelectBox($dblist->table);
-                    $GLOBALS['BACK_PATH'] = $tmpBackpath;
-                }
+            // Making field select box (when extended view for a single table is enabled):
+            if ($dblist->HTMLcode && $dblist->table) {
+                $content .= $dblist->fieldSelectBox($dblist->table);
             }
         } else {
             // Not enough rights to access the list view or the page
