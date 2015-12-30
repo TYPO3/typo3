@@ -113,15 +113,9 @@ class Application implements ApplicationInterface
      */
     protected function defineAdditionalEntryPointRelatedConstants()
     {
-        $currentScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
-
         // Activate "AJAX" handler when called with the GET variable ajaxID
         if (!empty(GeneralUtility::_GET('ajaxID'))) {
             $GLOBALS['TYPO3_AJAX'] = true;
-        // The following check is security relevant! DO NOT REMOVE!
-        } elseif (empty(GeneralUtility::_GET('M')) && substr($currentScript, -16) === '/typo3/index.php') {
-            // Allow backend login to work, disallow module access without authenticated backend user
-            define('TYPO3_PROCEED_IF_NO_USER', 1);
         }
     }
 }

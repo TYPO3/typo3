@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Due to legacy reasons, the actual logic is in EXT:core/Http/AjaxRequestHandler which will eventually
  * be moved into this class.
- * In the future, the logic for "TYPO3_PROCEED_IF_NO_USER" will be moved in here as well.
  */
 class AjaxRequestHandler implements RequestHandlerInterface
 {

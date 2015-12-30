@@ -98,20 +98,13 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
      */
     protected function boot()
     {
-        // Evaluate the constant for skipping the BE user check for the bootstrap, will be done without the constant at a later point
-        if (defined('TYPO3_PROCEED_IF_NO_USER') && TYPO3_PROCEED_IF_NO_USER) {
-            $proceedIfNoUserIsLoggedIn = true;
-        } else {
-            $proceedIfNoUserIsLoggedIn = false;
-        }
-
         $this->bootstrap->checkLockedBackendAndRedirectOrDie()
             ->checkBackendIpOrDie()
             ->checkSslBackendAndRedirectIfNeeded()
             ->initializeBackendRouter()
-            ->loadExtensionTables(true)
+            ->loadExtensionTables()
             ->initializeBackendUser()
-            ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
+            ->initializeBackendAuthentication()
             ->initializeLanguageObject()
             ->initializeBackendTemplate()
             ->endOutputBufferingAndCleanPreviousOutput()
