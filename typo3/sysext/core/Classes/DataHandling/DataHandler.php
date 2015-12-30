@@ -5077,8 +5077,8 @@ class DataHandler
     {
         $uid = (int)$uid;
         if ($uid === 0) {
-               $this->newlog2('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
-               return;
+            $this->newlog2('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+            return;
         }
         // Getting list of pages to delete:
         if ($force) {

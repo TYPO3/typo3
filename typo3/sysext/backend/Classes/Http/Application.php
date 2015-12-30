@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Http;
  */
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -105,5 +104,4 @@ class Application implements ApplicationInterface
     {
         define('TYPO3_MODE', 'BE');
     }
-
 }

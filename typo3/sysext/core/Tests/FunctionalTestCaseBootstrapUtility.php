@@ -70,7 +70,7 @@ class FunctionalTestCaseBootstrapUtility
      * @param string $testCaseClassName Name of test case class
      * @return string
      */
-    static public function getInstanceIdentifier($testCaseClassName)
+    public static function getInstanceIdentifier($testCaseClassName)
     {
         // 7 characters of sha1 should be enough for a unique identification
         return substr(sha1($testCaseClassName), 0, 7);
@@ -82,7 +82,7 @@ class FunctionalTestCaseBootstrapUtility
      * @param string $testCaseClassName Name of test case class
      * @return string
      */
-    static public function getInstancePath($testCaseClassName)
+    public static function getInstancePath($testCaseClassName)
     {
         return ORIGINAL_ROOT . 'typo3temp/functional-' . static::getInstanceIdentifier($testCaseClassName);
     }

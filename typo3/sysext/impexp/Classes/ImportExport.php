@@ -4342,7 +4342,6 @@ class ImportExport
         return !empty($this->errorLog) ? DebugUtility::viewArray($this->errorLog) : '';
     }
 
-
     /**
      * @return BackendUserAuthentication
      */

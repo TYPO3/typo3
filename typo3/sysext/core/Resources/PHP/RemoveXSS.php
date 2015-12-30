@@ -15,7 +15,6 @@
  * License:
  * This code is public domain, you are free to do whatever you want with it,
  * including adding it to your own project which can be under any license.
- * @package	RemoveXSS
  */
 class RemoveXSS
 {

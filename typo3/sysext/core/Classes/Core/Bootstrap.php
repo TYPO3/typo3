@@ -741,7 +741,8 @@ class Bootstrap
      * @throws \RuntimeException if the method was already called during a request
      * @return Bootstrap
      */
-    public function setRequestType($requestType) {
+    public function setRequestType($requestType)
+    {
         if (defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('TYPO3_REQUESTTYPE has already been set, cannot be called multiple times', 1450561878);
         }

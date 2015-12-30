@@ -37,7 +37,6 @@ namespace TYPO3\CMS\Core\Mail;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category Mail
- * @package Mail
  * @copyright 2001-2010 Richard Heyes
  * @license http://opensource.org/licenses/bsd-license.php New BSD License
  * @link http://pear.php.net/package/Mail/
@@ -60,7 +59,6 @@ namespace TYPO3\CMS\Core\Mail;
  * print_r($structure);
  * @version $Revision: 294749 $
  * @license BSD
- * @package Mail
  */
 class Rfc822AddressesParser
 {

@@ -21,7 +21,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PageRepositoryFixture extends PageRepository
 {
-
     public static $getHashCallCount = 0;
     public static $storeHashCallCount = 0;
     public static $dbCacheContent = null;

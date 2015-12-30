@@ -53,7 +53,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CharsetConverter implements SingletonInterface
 {
-
     /**
      * ASCII Value for chars with no equivalent.
      *
@@ -1729,7 +1728,8 @@ class CharsetConverter implements SingletonInterface
      *
      * @return array
      */
-    protected function getAllLanguageCodes() {
+    protected function getAllLanguageCodes()
+    {
         // Get all languages where TYPO3 code is the same as the ISO code
         $typo3LanguageCodes = array_keys($this->charSetArray);
         $allLanguageCodes = array_combine($typo3LanguageCodes, $typo3LanguageCodes);

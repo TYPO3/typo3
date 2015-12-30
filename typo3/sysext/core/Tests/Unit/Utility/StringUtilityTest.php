@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * Data provider for endsWithReturnsTrueForMatchingFirstPart
      *

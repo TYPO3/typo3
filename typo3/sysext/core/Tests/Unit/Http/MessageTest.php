@@ -309,5 +309,4 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->message->withAddedHeader($name, $value);
     }
-
 }

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

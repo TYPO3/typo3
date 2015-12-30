@@ -151,7 +151,7 @@ class ValidationBuilder
                         if ((int)$ruleArguments['showMessage'] === 1) {
                             $mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
                         } else {
-                            $mandatoryMessage = NULL;
+                            $mandatoryMessage = null;
                         }
 
                         $this->rules[$this->configuration->getPrefix()][$fieldName][] = array(

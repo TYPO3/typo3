@@ -933,7 +933,7 @@ class RelationHandler
                 if (!empty($updateValues)) {
                     // Update tstamp if any foreign field value has changed
                     if (!empty($GLOBALS['TCA'][$table]['ctrl']['tstamp'])) {
-                        $currentRow = BackendUtility::getRecord($table, $uid, implode(',', array_keys($updateValues)) , '', true);
+                        $currentRow = BackendUtility::getRecord($table, $uid, implode(',', array_keys($updateValues)), '', true);
                         $needTstampUpdate = false;
                         if (empty($currentRow)) {
                             $needTstampUpdate = true;
