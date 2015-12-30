@@ -104,7 +104,7 @@ class CliRequestHandler implements RequestHandlerInterface
     protected function boot($commandLineName)
     {
         $this->bootstrap
-            ->loadExtensionTables(true)
+            ->loadExtensionTables()
             ->initializeBackendUser();
 
         // Checks for a user called starting with _CLI_ e.g. "_CLI_lowlevel"

@@ -939,7 +939,7 @@ class Bootstrap
             // substr is necessary, because the php frontend wraps php code around the cache value
             $GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
         } else {
-            $this->loadExtensionTables(true);
+            $this->loadExtensionTables();
             $codeCache->set($cacheIdentifier, serialize($GLOBALS['TCA']));
         }
         return $this;

@@ -111,7 +111,7 @@ class FunctionalTestCaseBootstrapUtility
         if ($this->recentTestInstanceExists()) {
             $this->setUpBasicTypo3Bootstrap();
             $this->initializeTestDatabase();
-            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(true);
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables();
         } else {
             $this->removeOldInstanceIfExists();
             $this->setUpInstanceDirectories($additionalFoldersToCreate);
@@ -122,7 +122,7 @@ class FunctionalTestCaseBootstrapUtility
             $this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
             $this->setUpBasicTypo3Bootstrap();
             $this->setUpTestDatabase();
-            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(true);
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables();
             $this->createDatabaseStructure();
         }
 

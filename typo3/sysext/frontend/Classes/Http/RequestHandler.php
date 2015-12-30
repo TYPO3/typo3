@@ -131,7 +131,7 @@ class RequestHandler implements RequestHandlerInterface
             $GLOBALS['BE_USER']->initializeAdminPanel();
             $this->bootstrap
                     ->initializeBackendRouter()
-                    ->loadExtensionTables(true);
+                    ->loadExtensionTables();
         } else {
             $this->bootstrap->loadCachedTca();
         }
