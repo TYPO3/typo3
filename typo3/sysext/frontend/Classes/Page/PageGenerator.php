@@ -906,10 +906,6 @@ class PageGenerator
                 $defBT = $tsfe->defaultBodyTag;
             }
             $bodyTag = $tsfe->pSetup['bodyTag'] ? $tsfe->pSetup['bodyTag'] : $defBT;
-            if ($bgImg = $tsfe->cObj->getImgResource($tsfe->pSetup['bgImg'], $tsfe->pSetup['bgImg.'])) {
-                GeneralUtility::deprecationLog('The option "page.bgImg" is deprecated since TYPO3 CMS 7, and will be removed with CMS 8');
-                $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $tsfe->absRefPrefix . $bgImg[3] . '">';
-            }
             if (isset($tsfe->pSetup['bodyTagMargins'])) {
                 $margins = (int)$tsfe->pSetup['bodyTagMargins'];
                 if ($tsfe->pSetup['bodyTagMargins.']['useCSS']) {
