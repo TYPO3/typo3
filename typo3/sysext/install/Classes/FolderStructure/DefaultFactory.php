@@ -130,19 +130,32 @@ class DefaultFactory
                         )
                     ),
                     array(
-                        'name' => 'cs',
+                        'name' => 'var',
                         'type' => DirectoryNode::class,
                         'targetPermission' => $directoryPermission,
-                    ),
-                    array(
-                        'name' => 'Cache',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
-                        'name' => 'locks',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
+                        'children' => array(
+                            array(
+                                'name' => '.htaccess',
+                                'type' => FileNode::class,
+                                'targetPermission' => $filePermission,
+                                'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess',
+                            ),
+                            array(
+                                'name' => 'charset',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ),
+                            array(
+                                'name' => 'Cache',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ),
+                            array(
+                                'name' => 'locks',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            )
+                        )
                     ),
                 ),
             ),

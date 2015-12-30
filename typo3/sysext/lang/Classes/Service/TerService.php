@@ -132,7 +132,7 @@ class TerService extends TerUtility implements SingletonInterface
         try {
             $l10n = $this->fetchTranslation($extensionKey, $language, $mirrorUrl);
             if (is_array($l10n)) {
-                $absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/Language/' . $extensionKey . '-l10n-' . $language . '.zip');
+                $absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/var/transient/' . $extensionKey . '-l10n-' . $language . '.zip');
                 $relativeLanguagePath = 'l10n' . '/' . $language . '/';
                 $absoluteLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
                 $absoluteExtensionLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');

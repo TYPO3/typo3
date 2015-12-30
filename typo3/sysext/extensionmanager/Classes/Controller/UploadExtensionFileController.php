@@ -323,7 +323,7 @@ class UploadExtensionFileController extends AbstractController
      */
     protected function copyExtensionFolderToTempFolder($extensionKey)
     {
-        $this->extensionBackupPath = PATH_site . 'typo3temp/' . $extensionKey . substr(sha1($extensionKey . microtime()), 0, 7) . '/';
+        $this->extensionBackupPath = PATH_site . 'typo3temp/var/transient/' . $extensionKey . substr(sha1($extensionKey . microtime()), 0, 7) . '/';
         GeneralUtility::mkdir($this->extensionBackupPath);
         GeneralUtility::copyDirectory(
             $this->fileHandlingUtility->getExtensionDir($extensionKey),

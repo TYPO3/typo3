@@ -278,7 +278,7 @@ AddDefaultCharset utf-8
 	# Access block for folders
 	RewriteRule _(?:recycler|temp)_/ - [F]
 	RewriteRule fileadmin/templates/.*\.(?:txt|ts)$ - [F]
-	RewriteRule typo3temp/logs/ - [F]
+	RewriteRule typo3temp/var/ - [F]
 	RewriteRule ^(vendor|typo3_src) - [F]
 	RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext)/[^/]+/(?:Configuration|Resources/Private|Tests?)/ - [F]
 

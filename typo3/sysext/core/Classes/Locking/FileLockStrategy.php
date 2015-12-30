@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileLockStrategy implements LockingStrategyInterface
 {
-    const FILE_LOCK_FOLDER = 'typo3temp/locks/';
+    const FILE_LOCK_FOLDER = 'typo3temp/var/locks/';
 
     /**
      * @var resource File pointer if using flock method
@@ -50,7 +50,7 @@ class FileLockStrategy implements LockingStrategyInterface
         /*
          * Tests if the directory for simple locks is available.
          * If not, the directory will be created. The lock path is usually
-         * below typo3temp, typo3temp itself should exist already
+         * below typo3temp/var, typo3temp/var itself should exist already
          */
         $path = PATH_site . self::FILE_LOCK_FOLDER;
         if (!is_dir($path)) {

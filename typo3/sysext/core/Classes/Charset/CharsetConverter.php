@@ -1040,7 +1040,7 @@ class CharsetConverter implements SingletonInterface
             if ($charset && GeneralUtility::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile)) {
                 // Cache file for charsets:
                 // Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
-                $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/charset_' . $charset . '.tbl');
+                $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/charset_' . $charset . '.tbl');
                 if ($cacheFile && @is_file($cacheFile)) {
                     $this->parsedCharsets[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
                 } else {
@@ -1099,8 +1099,8 @@ class CharsetConverter implements SingletonInterface
     public function initUnicodeData($mode = null)
     {
         // Cache files
-        $cacheFileCase = GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_utf-8.tbl');
-        $cacheFileASCII = GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_utf-8.tbl');
+        $cacheFileCase = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/cscase_utf-8.tbl');
+        $cacheFileASCII = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/csascii_utf-8.tbl');
         // Only process if the tables are not yet loaded
         switch ($mode) {
             case 'case':
@@ -1341,7 +1341,7 @@ class CharsetConverter implements SingletonInterface
             return 1;
         }
         // Use cached version if possible
-        $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_' . $charset . '.tbl');
+        $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/cscase_' . $charset . '.tbl');
         if ($cacheFile && @is_file($cacheFile)) {
             $this->caseFolding[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
             return 2;
@@ -1403,7 +1403,7 @@ class CharsetConverter implements SingletonInterface
             return 1;
         }
         // Use cached version if possible
-        $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_' . $charset . '.tbl');
+        $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/csascii_' . $charset . '.tbl');
         if ($cacheFile && @is_file($cacheFile)) {
             $this->toASCII[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
             return 2;

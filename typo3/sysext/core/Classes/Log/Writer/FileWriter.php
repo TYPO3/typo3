@@ -37,7 +37,7 @@ class FileWriter extends AbstractWriter
      *
      * @var string
      */
-    protected $defaultLogFileTemplate = 'typo3temp/logs/typo3_%s.log';
+    protected $defaultLogFileTemplate = 'typo3temp/var/logs/typo3_%s.log';
 
     /**
      * Log file handle storage

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SimpleLockStrategy implements LockingStrategyInterface
 {
-    const FILE_LOCK_FOLDER = 'typo3temp/locks/';
+    const FILE_LOCK_FOLDER = 'typo3temp/var/locks/';
 
     /**
      * @var string File path used for this lock
@@ -53,10 +53,10 @@ class SimpleLockStrategy implements LockingStrategyInterface
     {
         // Tests if the directory for simple locks is available.
         // If not, the directory will be created. The lock path is usually
-        // below typo3temp, typo3temp itself should exist already
+        // below typo3temp/var, typo3temp/var itself should exist already
         $path = PATH_site . self::FILE_LOCK_FOLDER;
         if (!is_dir($path)) {
-            // Not using mkdir_deep on purpose here, if typo3temp itself
+            // Not using mkdir_deep on purpose here, if typo3temp/var itself
             // does not exist, this issue should be solved on a different
             // level of the application.
             if (!GeneralUtility::mkdir($path)) {

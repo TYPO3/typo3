@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SessionService implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * The path to our typo3temp (where we can write our sessions). Set in the
+     * The path to our typo3temp/var/ (where we can write our sessions). Set in the
      * constructor.
      *
      * @var string
      */
-    private $typo3tempPath;
+    private $basePath;
 
     /**
      * Path where to store our session files in typo3temp. %s will be
@@ -65,7 +65,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        $this->typo3tempPath = PATH_site . 'typo3temp/';
+        $this->basePath = PATH_site . 'typo3temp/var/';
         // Start our PHP session early so that hasSession() works
         $sessionSavePath = $this->getSessionSavePath();
         // Register our "save" session handler
@@ -105,7 +105,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
             );
         }
         $sessionSavePath = sprintf(
-            $this->typo3tempPath . $this->sessionPath,
+            $this->basePath . $this->sessionPath,
             GeneralUtility::hmac('session:' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
         );
         $this->ensureSessionSavePathExists($sessionSavePath);
@@ -406,7 +406,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
         $result = GeneralUtility::writeFile($sessionFile, $sessionData);
         if (!$result) {
             throw new Exception(
-                'Session file not writable. Please check permission on typo3temp/InstallToolSessions and its subdirectories.',
+                'Session file not writable. Please check permission on typo3temp/var/InstallToolSessions and its subdirectories.',
                 1424355157
             );
         }

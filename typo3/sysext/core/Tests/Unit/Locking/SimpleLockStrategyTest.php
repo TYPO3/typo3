@@ -89,8 +89,8 @@ class SimpleLockStrategyTest extends UnitTestCase
     {
         return array(
             'not withing PATH_site' => array('/tmp/TYPO3-Lock-Test'),
-            'directory traversal' => array(PATH_site . 'typo3temp/../typo3temp/locks/foo'),
-            'directory traversal 2' => array(PATH_site . 'typo3temp/locks/../locks/foo'),
+            'directory traversal' => array(PATH_site . 'typo3temp/../typo3temp/var/locks/foo'),
+            'directory traversal 2' => array(PATH_site . 'typo3temp/var/locks/../../var/locks/foo'),
             'within uploads' => array(PATH_site . 'uploads/TYPO3-Lock-Test')
         );
     }

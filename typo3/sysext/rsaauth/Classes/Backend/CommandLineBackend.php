@@ -40,7 +40,7 @@ class CommandLineBackend extends AbstractBackend
     /**
      * Temporary directory. It is best of it is outside of the web site root and
      * not publicly readable.
-     * For now we use typo3temp/.
+     * For now we use typo3temp/var/ (stored in the variable without the trailing slash).
      *
      * @var string
      */
@@ -53,7 +53,6 @@ class CommandLineBackend extends AbstractBackend
     public function __construct()
     {
         $this->opensslPath = CommandUtility::getCommand('openssl');
-        $this->temporaryDirectory = PATH_site . 'typo3temp';
         // Get temporary directory from the configuration
         $extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
         if (
@@ -63,6 +62,8 @@ class CommandLineBackend extends AbstractBackend
             && is_writable($extconf['temporaryDirectory'])
         ) {
             $this->temporaryDirectory = $extconf['temporaryDirectory'];
+        } else {
+            $this->temporaryDirectory = PATH_site . 'typo3temp/var';
         }
     }
 
