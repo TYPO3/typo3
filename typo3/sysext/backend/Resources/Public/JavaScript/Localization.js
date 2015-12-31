@@ -63,13 +63,12 @@ define([
 	};
 
 	Localization.initialize = function() {
-		$.when(
-			Icons.getIcon('actions-localize', Icons.sizes.large),
-			Icons.getIcon('actions-edit-copy', Icons.sizes.large)
-		).done(function(localizeIconMarkup, copyIconMarkup) {
-			Localization.actions.translate.prepend(localizeIconMarkup[0]);
-			Localization.actions.copy.prepend(copyIconMarkup[0]);
-			$(Localization.identifier.triggerButton).prop('disabled', false);
+		Icons.getIcon('actions-localize', Icons.sizes.large).done(function(localizeIconMarkup) {
+			Icons.getIcon('actions-edit-copy', Icons.sizes.large).done(function(copyIconMarkup) {
+				Localization.actions.translate.prepend(localizeIconMarkup);
+				Localization.actions.copy.prepend(copyIconMarkup);
+				$(Localization.identifier.triggerButton).prop('disabled', false);
+			});
 		});
 
 		$(document).on('click', Localization.identifier.triggerButton, function() {
