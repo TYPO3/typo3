@@ -172,7 +172,7 @@ class LanguageService
      *
      * @param string $str Input string
      * @return string Output string
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function makeEntities($str)
     {
@@ -425,9 +425,11 @@ class LanguageService
      * @param string $value
      * @param bool $overrideDefault Overrides default language
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function overrideLL($index, $value, $overrideDefault = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!isset($GLOBALS['LOCAL_LANG'])) {
             $GLOBALS['LOCAL_LANG'] = array();
         }
