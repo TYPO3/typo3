@@ -86,6 +86,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues) {
 		exclusiveValues = String(exclusiveValues);
 
+		var $fieldEl;
 		var $originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName)
 				,isMultiple = false
 				,isList = false;
@@ -105,11 +106,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 		// clear field before adding value, if configured so (maxitems==1)
 		// @todo: clean this code
-		if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName] != 'undefined') {
-			clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName];
+		if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName] !== 'undefined') {
+			var clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName];
 			$fieldEl.empty();
 
-				// Clear the upload field
+			// Clear the upload field
+			// @todo: Investigate whether we either need to fix this code or we can drop it.
 			var filesContainer = document.getElementById(clearSettings.itemFormElID_file);
 			if (filesContainer) {
 				filesContainer.innerHTML = filesContainer.innerHTML;
@@ -182,7 +184,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 			// Change the selected value
 			$fieldEl.val(value);
 		}
-		if (typeof FormEngine.Validation !== 'undefinied' && typeof FormEngine.Validation.validate === 'function') {
+		if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
 			FormEngine.Validation.validate();
 		}
 	};
@@ -216,15 +218,16 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		var $formEl = FormEngine.getFormElement(fName);
 		if ($formEl.length > 0) {
 			var formObj = $formEl.get(0);
-			var localArray_V = new Array();
-			var localArray_L = new Array();
-			var localArray_S = new Array();
-			var localArray_T = new Array();
+			var localArray_V = [];
+			var localArray_L = [];
+			var localArray_S = [];
+			var localArray_T = [];
 			var fObjSel = formObj[fName + '_list'];
 			var l = fObjSel.length;
 			var c = 0;
+			var a;
 
-			if (type == 'RemoveFirstIfFull') {
+			if (type === 'RemoveFirstIfFull') {
 				if (maxLength == 1) {
 					for (a = 1; a < l; a++) {
 						if (fObjSel.options[a].selected != 1) {
@@ -240,8 +243,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 				}
 			}
 
-			if ((type=="Remove" && fObjSel.size > 1) || type=="Top" || type=="Bottom") {
-				if (type=="Top") {
+			if ((type === "Remove" && fObjSel.size > 1) || type === "Top" || type === "Bottom") {
+				if (type === "Top") {
 					for (a=0;a<l;a++) {
 						if (fObjSel.options[a].selected==1) {
 							localArray_V[c]=fObjSel.options[a].value;
@@ -261,7 +264,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 						c++;
 					}
 				}
-				if (type=="Bottom") {
+				if (type === "Bottom") {
 					for (a=0;a<l;a++) {
 						if (fObjSel.options[a].selected==1) {
 							localArray_V[c]=fObjSel.options[a].value;
@@ -273,9 +276,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					}
 				}
 			}
-			if (type=="Down") {
+			if (type === "Down") {
 				var tC = 0;
-				var tA = new Array();
+				var tA = [];
+				var aa = 0;
 
 				for (a=0;a<l;a++) {
 					if (fObjSel.options[a].selected!=1) {
@@ -296,8 +300,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 								c++;
 							}
 
-							var tC = 0;
-							var tA = new Array();
+							tC = 0;
+							tA = [];
 						}
 					} else {
 						tA[tC] = a;
@@ -315,10 +319,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					}
 				}
 			}
-			if (type=="Up") {
+			if (type === "Up") {
 				var tC = 0;
-				var tA = new Array();
-				var c = l-1;
+				var tA = [];
+				var aa = 0;
+				c = l-1;
 
 				for (a=l-1;a>=0;a--) {
 					if (fObjSel.options[a].selected!=1) {
@@ -340,8 +345,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 								c--;
 							}
 
-							var tC = 0;
-							var tA = new Array();
+							tC = 0;
+							tA = [];
 						}
 					} else {
 						tA[tC] = a;
@@ -389,9 +394,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		if ($formEl.length > 0) {
 			// return the DOM element of the form object
 			return $formEl.get(0);
-		} else {
-			return null;
 		}
+		return null;
 	};
 
 	/**
@@ -411,7 +415,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 			// Take the form object if it is either of type select-one or of type-multiple and it has a "_list" element
 			if ($fieldEl.length > 0 &&
 				(
-					($fieldEl.prop('type') == 'select-one') ||
+					($fieldEl.prop('type') === 'select-one') ||
 					($listFieldEl.length > 0 && $listFieldEl.prop('type').match(/select-(one|multiple)/))
 				)
 			) {
@@ -556,6 +560,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	 */
 	FormEngine.initializeEvents = function() {
 
+		FormEngine.initializeRemainingCharacterViews();
+		FormEngine.initializeSelectCheckboxes();
+
 		// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
 		$(document).on('click', '.t3-btn-moveoption-top, .t3-btn-moveoption-up, .t3-btn-moveoption-down, .t3-btn-moveoption-bottom, .t3-btn-removeoption', function(evt) {
 			var $el = $(this)
@@ -583,13 +590,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					FormEngine.Validation.validate();
 				}
 			}
-		});
-
-		FormEngine.initializeRemainingCharacterViews();
-		FormEngine.initializeSelectCheckboxes();
-
-		// in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
-		$(document).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
+		}).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
+			// in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
 			var $el = $(this)
 				,fieldName = $el.data('relatedfieldname')
 				,exclusiveValues = $el.data('exclusivevalues');
@@ -601,14 +603,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					FormEngine.setSelectOptionFromExternalSource(fieldName, $optionEl.prop('value'), $optionEl.text(), $optionEl.prop('title'), exclusiveValues);
 				});
 			}
-		});
-
-		$(document).on('click', '.t3js-editform-close', function(e) {
+		}).on('click', '.t3js-editform-close', function(e) {
 			e.preventDefault();
 			FormEngine.preventExitIfNotSaved();
-		});
-
-		$(document).on('click', '.t3js-editform-delete-record', function(e) {
+		}).on('click', '.t3js-editform-delete-record', function(e) {
 			e.preventDefault();
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
@@ -634,9 +632,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					Modal.dismiss();
 				}
 			});
-		});
-
-		$(document).on('click', '.t3js-editform-delete-inline-record', function(e) {
+		}).on('click', '.t3js-editform-delete-inline-record', function(e) {
 			e.preventDefault();
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
@@ -663,10 +659,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 					Modal.dismiss();
 				}
 			});
-		});
-
-		// remember the clicked submit button. we need to know that in TBE_EDITOR.submitForm();
-		$(document).on('click', '.t3js-editform-submitButton', function(event) {
+		}).on('click', '.t3js-editform-submitButton', function(event) {
+			// remember the clicked submit button. we need to know that in TBE_EDITOR.submitForm();
 			var $me = $(this),
 				name = $me.data('name') || this.name,
 				$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', '1');
@@ -834,8 +828,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 			var matchFilter = new RegExp(filterText, 'i');
 			$selectElement.html('');
 			$allOptionElements.each(function() {
-				if ($(this).text().match(matchFilter)) {
-					$selectElement.append($(this).clone());
+				var $item = $(this);
+				if ($item.text().match(matchFilter)) {
+					$selectElement.append($item.clone());
 				}
 			});
 		} else {
@@ -934,7 +929,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		if ($('.has-error').length > 0) {
 			var title = TYPO3.lang['label.alert.save_with_error.title'] || 'You have errors in your form!';
 			var content = TYPO3.lang['label.alert.save_with_error.content'] || 'Please check the form, there is at least one error in your form.';
-			$modal = Modal.confirm(title, content, top.TYPO3.Severity.error, [
+			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.error, [
 				{
 					text: TYPO3.lang['buttons.alert.save_with_error.ok'] || 'OK',
 					btnClass: 'btn-danger',
