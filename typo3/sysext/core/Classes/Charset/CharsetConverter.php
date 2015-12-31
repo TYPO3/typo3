@@ -610,12 +610,6 @@ class CharsetConverter implements SingletonInterface
                         return $convertedString;
                     }
                     break;
-                case 'recode':
-                    $convertedString = recode_string($fromCharset . '..' . $toCharset, $inputString);
-                    if (false !== $convertedString) {
-                        return $convertedString;
-                    }
-                    break;
             }
         }
         if ($fromCharset !== 'utf-8') {
