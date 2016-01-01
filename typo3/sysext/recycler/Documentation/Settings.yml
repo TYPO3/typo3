@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2008-2015
+  copyright: 2008-2016
   project: Recycler
   version: 7
   release: 7

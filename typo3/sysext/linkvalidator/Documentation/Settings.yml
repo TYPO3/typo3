@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2000-2015
+  copyright: 2000-2016
   project: Link Validator
   version: 7
   release: 7

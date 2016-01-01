@@ -153,7 +153,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 						+ '<br />'
 						+ '&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />'
 						+ '&copy; 2003-2004 <a href="http://dynarch.com" target="_blank">dynarch.com LLC.</a><br />'
-						+ '&copy; 2004-2015 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
+						+ '&copy; 2004-2016 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
 						+ this.localize('All rights reserved.')
 					+ '</p>'
 			});

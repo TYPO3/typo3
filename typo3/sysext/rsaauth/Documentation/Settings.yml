@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2009-2015
+  copyright: 2009-2016
   project: RSA authentication for TYPO3
   version: 7
   release: 7
