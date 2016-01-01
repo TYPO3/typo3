@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 1997-2015
+  copyright: 1997-2016
   project: Core ChangeLog
   version: 7
   release: 7
