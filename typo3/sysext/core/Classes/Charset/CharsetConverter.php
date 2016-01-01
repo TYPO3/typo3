@@ -53,6 +53,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CharsetConverter implements SingletonInterface
 {
+
+    /**
+     * Possible strategies for handling multi-byte data
+     * Only used for internal purpose
+     * @internal
+     */
+    const STRATEGY_MBSTRING = 'mbstring';
+    const STRATEGY_ICONV = 'iconv';
+    const STRATEGY_FALLBACK = 'fallback';
+
     /**
      * ASCII Value for chars with no equivalent.
      *
@@ -1433,7 +1443,7 @@ class CharsetConverter implements SingletonInterface
         if ($len === 0 || $string === '') {
             return '';
         }
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             // Cannot omit $len, when specifying charset
             if ($len === null) {
                 // Save internal encoding
@@ -1446,7 +1456,7 @@ class CharsetConverter implements SingletonInterface
             } else {
                 return mb_substr($string, $start, $len, $charset);
             }
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'iconv') {
+        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
             // Cannot omit $len, when specifying charset
             if ($len === null) {
                 // Save internal encoding
@@ -1483,9 +1493,9 @@ class CharsetConverter implements SingletonInterface
      */
     public function strlen($charset, $string)
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             return mb_strlen($string, $charset);
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'iconv') {
+        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
             return iconv_strlen($string, $charset);
         } elseif ($charset === 'utf-8') {
             return $this->utf8_strlen($string);
@@ -1536,7 +1546,7 @@ class CharsetConverter implements SingletonInterface
      */
     public function crop($charset, $string, $len, $crop = '')
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             return $this->cropMbstring($charset, $string, $len, $crop);
         }
         if ((int)$len === 0) {
@@ -1587,7 +1597,7 @@ class CharsetConverter implements SingletonInterface
         if ($len <= 0) {
             return '';
         }
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             return mb_strcut($string, 0, $len, $charset);
         } elseif ($charset === 'utf-8') {
             return $this->utf8_strtrunc($string, $len);
@@ -1622,7 +1632,7 @@ class CharsetConverter implements SingletonInterface
      */
     public function conv_case($charset, $string, $case)
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             if ($case === 'toLower') {
                 $string = mb_strtolower($string, $charset);
             } else {
@@ -1893,9 +1903,9 @@ class CharsetConverter implements SingletonInterface
      */
     public function utf8_strpos($haystack, $needle, $offset = 0)
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             return mb_strpos($haystack, $needle, $offset, 'utf-8');
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'iconv') {
+        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
             return iconv_strpos($haystack, $needle, $offset, 'utf-8');
         }
         $byte_offset = $this->utf8_char2byte_pos($haystack, $offset);
@@ -1921,9 +1931,9 @@ class CharsetConverter implements SingletonInterface
      */
     public function utf8_strrpos($haystack, $needle)
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
+        if ($this->getConversionStrategy() === self::STRATEGY_MBSTRING) {
             return mb_strrpos($haystack, $needle, 'utf-8');
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'iconv') {
+        } elseif ($this->getConversionStrategy() === self::STRATEGY_ICONV) {
             return iconv_strrpos($haystack, $needle, 'utf-8');
         }
         $byte_pos = strrpos($haystack, $needle);
@@ -2263,5 +2273,21 @@ class CharsetConverter implements SingletonInterface
             }
         }
         return $out;
+    }
+
+    /**
+     * Checks the selected strategy based on which method is configured in
+     * $TYPO3_CONF_VARS[SYS][t3lib_cs_utils].
+     *
+     * @return string could be "mbstring", "iconv" or "fallback"
+     */
+    protected function getConversionStrategy() {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === self::STRATEGY_MBSTRING) {
+            return self::STRATEGY_MBSTRING;
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === self::STRATEGY_ICONV) {
+            return self::STRATEGY_ICONV;
+        } else {
+            return self::STRATEGY_FALLBACK;
+        }
     }
 }
