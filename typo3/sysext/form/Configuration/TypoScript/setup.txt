@@ -39,6 +39,10 @@ plugin.tx_form {
 	}
 
 	_CSS_DEFAULT_STYLE (
+		div.csc-mailform ol {
+			list-style-type: none;
+		}
+
 		div.csc-mailform ol,
 		div.csc-mailform ol li {
 			margin: 0;
@@ -240,6 +244,13 @@ plugin.tx_form {
 			top: 0;
 			margin: 0;
 			padding: 0.5em 0 0;
+		}
+
+		/**
+		 * hide hidden elements
+		 */
+		.csc-form-element-hidden {
+			display: none;
 		}
 	)
 }
