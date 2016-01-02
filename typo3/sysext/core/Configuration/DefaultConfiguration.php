@@ -261,6 +261,28 @@ return array(
                 'vimeo' => \TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper::class,
             ),
         ),
+        'IconFactory' => array(
+            'recordStatusMapping' => array(
+                'hidden' => 'overlay-hidden',
+                'fe_group' => 'overlay-restricted',
+                'starttime' => 'overlay-scheduled',
+                'endtime' => 'overlay-scheduled',
+                'futureendtime' => 'overlay-scheduled',
+                'readonly' => 'overlay-readonly',
+                'deleted' => 'overlay-deleted',
+                'missing' => 'overlay-missing',
+                'translated' => 'overlay-translated',
+                'protectedSection' => 'overlay-includes-subpages'
+            ),
+            'overlayPriorities' => array(
+                'hidden',
+                'starttime',
+                'endtime',
+                'futureendtime',
+                'protectedSection',
+                'fe_group'
+            )
+        ),
         'FileInfo' => array(
             // Static mapping for file extensions to mime types.
             // In special cases the mime type is not detected correctly.

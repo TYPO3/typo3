@@ -37,36 +37,20 @@ class IconFactory
     protected $iconRegistry;
 
     /**
-     * Mapping of record status to overlays
+     * Mapping of record status to overlays.
+     * $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping']
      *
      * @var string[]
      */
-    protected $recordStatusMapping = array(
-        'hidden' => 'overlay-hidden',
-        'fe_group' => 'overlay-restricted',
-        'starttime' => 'overlay-scheduled',
-        'endtime' => 'overlay-scheduled',
-        'futureendtime' => 'overlay-scheduled',
-        'readonly' => 'overlay-readonly',
-        'deleted' => 'overlay-deleted',
-        'missing' => 'overlay-missing',
-        'translated' => 'overlay-translated',
-        'protectedSection' => 'overlay-includes-subpages'
-    );
+    protected $recordStatusMapping = array();
 
     /**
-     * Order of priorities for overlays
+     * Order of priorities for overlays.
+     * $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities']
      *
      * @var string[]
      */
-    protected $overlayPriorities = array(
-        'hidden',
-        'starttime',
-        'endtime',
-        'futureendtime',
-        'protectedSection',
-        'fe_group'
-    );
+    protected $overlayPriorities = array();
 
     /**
      * @param IconRegistry $iconRegistry
@@ -74,6 +58,8 @@ class IconFactory
     public function __construct(IconRegistry $iconRegistry = null)
     {
         $this->iconRegistry = $iconRegistry ? $iconRegistry : GeneralUtility::makeInstance(IconRegistry::class);
+        $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
+        $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
     }
 
     /**
@@ -87,9 +73,7 @@ class IconFactory
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $requestedIcon = json_decode(
-            isset($parsedBody['icon'])
-                ? $parsedBody['icon']
-                : $queryParams['icon'],
+            isset($parsedBody['icon']) ? $parsedBody['icon'] : $queryParams['icon'],
             true
         );
 
@@ -178,8 +162,8 @@ class IconFactory
         if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
             $column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
             if (isset($row[$column])) {
-                // even if not properly documented the value of the typeicon_column in a record could be an array (multiselect)
-                // in typeicon_classes a key could consist of a commaseparated string "foo,bar"
+                // even if not properly documented the value of the typeicon_column in a record could be
+                // an array (multiselect) in typeicon_classes a key could consist of a comma-separated string "foo,bar"
                 // but mostly it should be only one entry in that array
                 if (is_array($row[$column])) {
                     $recordType[1] = implode(',', $row[$column]);
@@ -206,7 +190,8 @@ class IconFactory
                     if ($row['is_siteroot']) {
                         $recordType[4] = 'page-contentFromPid-root';
                     } else {
-                        $recordType[4] = (int)$row['nav_hide'] === 0 ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
+                        $recordType[4] = (int)$row['nav_hide'] === 0
+                            ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
                     }
                 }
             }
@@ -220,11 +205,19 @@ class IconFactory
                 }
                 $recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])) {
-                    $recordType[5] = str_replace('###TYPE###', $row[$column], $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']);
+                    $recordType[5] = str_replace(
+                        '###TYPE###',
+                        $row[$column],
+                        $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']
+                    );
                 }
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
                     $parameters = array('row' => $row);
-                    $recordType[6] = GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], $parameters, $ref);
+                    $recordType[6] = GeneralUtility::callUserFunction(
+                        $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'],
+                        $parameters,
+                        $ref
+                    );
                 }
             } else {
                 foreach ($recordType as &$type) {
@@ -250,8 +243,8 @@ class IconFactory
     }
 
     /**
-     * This helper functions checks if the DB record ($row) has any special status based on the TCA settings like hidden,
-     * starttime etc, and then returns a specific icon overlay identifier for the overlay of this DB record
+     * This helper function checks if the DB record ($row) has any special status based on the TCA settings
+     * like hidden, starttime etc, and then returns a specific icon overlay identifier for the overlay of this DB record
      * This method solely takes care of the overlay of this record, not any type
      *
      * @param string $table The TCA table
@@ -308,7 +301,8 @@ class IconFactory
         if ($table === 'pages' && (int)$row['extendToSubpages'] > 0) {
             $status['protectedSection'] = true;
         }
-        if (isset($row['t3ver_state']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+        if (isset($row['t3ver_state'])
+            && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
             $status['deleted'] = true;
         }
 
@@ -318,6 +312,17 @@ class IconFactory
             if ($status[$priority]) {
                 $iconName = $this->recordStatusMapping[$priority];
                 break;
+            }
+        }
+
+        // Hook to define an alternative iconName
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'])) {
+            $hookObjects = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][IconFactory::class]['overrideIconOverlay'];
+            foreach ($hookObjects as $classRef) {
+                $hookObject = GeneralUtility::getUserObj($classRef);
+                if (method_exists($hookObject, 'postOverlayPriorityLookup')) {
+                    $iconName = $hookObject->postOverlayPriorityLookup($table, $row, $status, $iconName);
+                }
             }
         }
 
@@ -356,8 +361,12 @@ class IconFactory
      * @param array $options An associative array with additional options.
      * @return Icon
      */
-    public function getIconForResource(ResourceInterface $resource, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = null, array $options = array())
-    {
+    public function getIconForResource(
+        ResourceInterface $resource,
+        $size = Icon::SIZE_DEFAULT,
+        $overlayIdentifier = null,
+        array $options = array()
+    ) {
         $iconIdentifier = null;
 
         // Folder
@@ -438,7 +447,8 @@ class IconFactory
 
         unset($options['mount-root']);
         unset($options['folder-open']);
-        list($iconIdentifier, $overlayIdentifier) = $this->emitBuildIconForResourceSignal($resource, $size, $options, $iconIdentifier, $overlayIdentifier);
+        list($iconIdentifier, $overlayIdentifier) =
+            $this->emitBuildIconForResourceSignal($resource, $size, $options, $iconIdentifier, $overlayIdentifier);
         return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
     }
 
@@ -451,7 +461,7 @@ class IconFactory
      * @param array $iconConfiguration the icon configuration array
      * @return Icon
      */
-    protected function createIcon($identifier, $size, $overlayIdentifier = null, array $iconConfiguration)
+    protected function createIcon($identifier, $size, $overlayIdentifier = null, array $iconConfiguration = array())
     {
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
@@ -479,9 +489,18 @@ class IconFactory
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
-    protected function emitBuildIconForResourceSignal(ResourceInterface $resource, $size, array $options, $iconIdentifier, $overlayIdentifier)
-    {
-        $result = $this->getSignalSlotDispatcher()->dispatch(IconFactory::class, 'buildIconForResourceSignal', array($resource, $size, $options, $iconIdentifier, $overlayIdentifier));
+    protected function emitBuildIconForResourceSignal(
+        ResourceInterface $resource,
+        $size,
+        array $options,
+        $iconIdentifier,
+        $overlayIdentifier
+    ) {
+        $result = $this->getSignalSlotDispatcher()->dispatch(
+            IconFactory::class,
+            'buildIconForResourceSignal',
+            array($resource, $size, $options, $iconIdentifier, $overlayIdentifier)
+        );
         $iconIdentifier = $result[3];
         $overlayIdentifier = $result[4];
         return array($iconIdentifier, $overlayIdentifier);
