@@ -1446,8 +1446,9 @@ class BackendUtility
                 $fileObject = $fileReferenceObject->getOriginalFile();
 
                 if ($fileObject->isMissing()) {
-                    $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
-                    $thumbData .= $flashMessage->render();
+                    $thumbData .= '<span class="label label-danger">'
+                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                        . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                     continue;
                 }
 
@@ -1496,18 +1497,15 @@ class BackendUtility
                             continue;
                         }
                         if ($fileObject->isMissing()) {
-                            $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
-                            $thumbData .= $flashMessage->render();
+                            $thumbData .= '<span class="label label-danger">'
+                                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                                . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                             continue;
                         }
                     } catch (ResourceDoesNotExistException $exception) {
-                        /** @var FlashMessage $flashMessage */
-                        $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                            htmlspecialchars($exception->getMessage()),
-                            static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', true),
-                            FlashMessage::ERROR
-                        );
-                        $thumbData .= $flashMessage->render();
+                        $thumbData .= '<span class="label label-danger">'
+                            . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                            . '</span>&nbsp;' . htmlspecialchars($fileName) . '<br />';
                         continue;
                     }
 

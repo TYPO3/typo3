@@ -11343,6 +11343,12 @@ ul.tree div.treeLinkItem span.dragIcon {
 .label-block {
   display: block;
 }
+.label-space-left {
+  margin-left: 1em;
+}
+.label-space-right {
+  margin-right: 1em;
+}
 .badge-info {
   background-color: #6daae0;
 }

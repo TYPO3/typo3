@@ -75,8 +75,9 @@ class FileInfoHook
             $previewImage = $processedFile->getPublicUrl(true);
             $content = '';
             if ($file->isMissing()) {
-                $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($file);
-                $content .= $flashMessage->render();
+                $content .= '<span class="label label-danger label-space-right">'
+                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                    . '</span>';
             }
             if ($previewImage) {
                 $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .

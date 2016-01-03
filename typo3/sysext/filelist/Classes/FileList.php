@@ -711,8 +711,9 @@ class FileList extends AbstractRecordList
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
 
                         if ($fileObject->isMissing()) {
-                            $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
-                            $theData[$field] .= $flashMessage->render();
+                            $theData[$field] .= '<span class="label label-danger label-space-left">'
+                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                                . '</span>';
                             // Thumbnails?
                         } elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
                             $processedFile = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array());

@@ -315,8 +315,9 @@ class InlineRecordContainer extends AbstractContainer
                     $fileObject = null;
                 }
                 if ($fileObject && $fileObject->isMissing()) {
-                    $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
-                    $thumbnail = $flashMessage->render();
+                    $thumbnail .= '<span class="label label-danger">'
+                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                        . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                 } elseif ($fileObject) {
                     $imageSetup = $inlineConfig['appearance']['headerThumbnail'];
                     unset($imageSetup['field']);

@@ -276,8 +276,9 @@ class ElementInformationController
 
         // check if file is marked as missing
         if ($this->fileObject->isMissing()) {
-            $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($this->fileObject);
-            $previewTag .= $flashMessage->render();
+            $previewTag .= '<span class="label label-danger">'
+                . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                . '</span>&nbsp;' . htmlspecialchars($this->fileObject->getName()) . '<br />';
         } else {
 
             /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */

@@ -137,7 +137,9 @@ class GroupElement extends AbstractFormElement
                             $fileObject = $fileFactory->getFileObject($imgP[0]);
                             if ($fileObject->isMissing()) {
                                 $thumbnails[] = array(
-                                    'message' => \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject)->render()
+                                    'message' => '<span class="label label-danger">'
+                                        . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                                        . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />'
                                 );
                             } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
                                 $thumbnails[] = array(
