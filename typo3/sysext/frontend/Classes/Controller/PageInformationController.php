@@ -72,7 +72,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->generateList();
         // CSH
         $theOutput .= '<div>';
-        $theOutput .= BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', null, '|<br />')
+        $theOutput .= BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', null, '<span class="btn btn-default btn-sm">|</span><br />')
             . '<div class="form-inline form-inline-spaced">'
             . $h_func
             . '</div>'

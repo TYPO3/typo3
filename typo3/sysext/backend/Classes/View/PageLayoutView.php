@@ -412,7 +412,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
             }
             // CSH:
-            $out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey)) . '
+            $out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey), null, '<span class="btn btn-default btn-sm">|</span>') . '
                 <div class="table-fit">
 					<table class="table table-striped table-hover typo3-page-pages">' .
                         '<thead>' .
@@ -771,7 +771,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $out .= $grid . '</table></div>';
             }
             // CSH:
-            $out .= BackendUtility::cshItem($this->descrTable, 'columns_multi');
+            $out .= BackendUtility::cshItem($this->descrTable, 'columns_multi', null, '<span class="btn btn-default btn-sm">|</span>');
         }
         // If language mode, then make another presentation:
         // Notice that THIS presentation will override the value of $out!
@@ -911,7 +911,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     </table>
 				</div>';
             // CSH:
-            $out .= BackendUtility::cshItem($this->descrTable, 'language_list');
+            $out .= BackendUtility::cshItem($this->descrTable, 'language_list', null, '<span class="btn btn-default btn-sm">|</span>');
         }
 
         return $out;
