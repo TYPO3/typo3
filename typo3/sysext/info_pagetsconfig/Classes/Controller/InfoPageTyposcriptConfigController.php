@@ -152,7 +152,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                     $editIcon = '';
                 }
                 $theOutput .= '<div>';
-                $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', null) . $menu . '
+                $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', null, '<span class="btn btn-default btn-sm">|</span>') . $menu . '
 						<!-- Edit fields: -->
 						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon;
                 $theOutput .= '</div>';
@@ -218,7 +218,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                     $modTSconfig = array();
                 }
 
-                $csh = BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null);
+                $csh = BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', null, '<span class="btn btn-default btn-sm">|</span>');
                 $tree = $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']);
 
                 $theOutput .= '<div>';

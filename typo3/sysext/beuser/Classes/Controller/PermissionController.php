@@ -242,7 +242,7 @@ class PermissionController extends ActionController
         $this->view->assign('viewTree', $tree->tree);
 
         // CSH for permissions setting
-        $this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module'));
+        $this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', null, '<span class="btn btn-default btn-sm">|</span>'));
     }
 
     /**

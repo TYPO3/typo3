@@ -184,7 +184,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         // CSH
-        $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', null, '<div class="t3-help">|</div>');
+        $theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', null, '<span class="btn btn-default btn-sm">|</span>');
         $out = $this->pObj->doc->header($this->getLanguageService()->getLL('wiz_crMany'));
         $out .= '<div>' . $theCode . '</div>';
         return $out;
