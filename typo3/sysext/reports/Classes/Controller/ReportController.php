@@ -90,9 +90,7 @@ class ReportController extends ActionController
      */
     public function indexAction()
     {
-        $this->view->assign(
-            'reports', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']
-        );
+        $this->view->assign('reports', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']);
         $this->saveState();
     }
 
@@ -108,8 +106,7 @@ class ReportController extends ActionController
     {
         $content = ($error = '');
         $reportClass = null;
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension])
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension])
             && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report])
@@ -139,6 +136,8 @@ class ReportController extends ActionController
 
     /**
      * Generates the menu
+     *
+     * @return void
      */
     protected function generateMenu()
     {
@@ -158,8 +157,7 @@ class ReportController extends ActionController
             foreach ($reports as $reportName => $report) {
                 $menuItem = $menu
                     ->makeMenuItem()
-                    ->setHref($this->uriBuilder->reset()->uriFor('detail',
-                        array('extension' => $extKey, 'report' => $reportName), 'Report'))
+                    ->setHref($this->uriBuilder->reset()->uriFor('detail', array('extension' => $extKey, 'report' => $reportName), 'Report'))
                     ->setTitle($this->getLanguageService()->sL($report['title']));
                 if ($this->arguments->hasArgument('extension') && $this->arguments->hasArgument('report')) {
                     if ($this->arguments->getArgument('extension')->getValue() === $extKey && $this->arguments->getArgument('report')->getValue() === $reportName) {
@@ -175,6 +173,8 @@ class ReportController extends ActionController
 
     /**
      * Gets all buttons for the docheader
+     *
+     * @return void
      */
     protected function generateButtons()
     {
@@ -204,11 +204,11 @@ class ReportController extends ActionController
      */
     protected function saveState($extension = '', $report = '')
     {
-        $GLOBALS['BE_USER']->uc['reports']['selection'] = array(
+        $this->getBackendUser()->uc['reports']['selection'] = array(
             'extension' => $extension,
             'report' => $report,
         );
-        $GLOBALS['BE_USER']->writeUC();
+        $this->getBackendUser()->writeUC();
     }
 
     /**

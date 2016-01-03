@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Reports\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -41,9 +44,9 @@ class SystemStatusUpdateTask extends AbstractTask
      */
     public function execute()
     {
-        /** @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
-        /** @var $statusReport \TYPO3\CMS\Reports\Report\Status\Status */
+        /** @var Registry $registry */
+        $registry = GeneralUtility::makeInstance(Registry::class);
+        /** @var \TYPO3\CMS\Reports\Report\Status\Status $statusReport */
         $statusReport = GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Report\Status\Status::class);
         $systemStatus = $statusReport->getDetailedSystemStatus();
         $highestSeverity = $statusReport->getHighestSeverity($systemStatus);
@@ -97,21 +100,29 @@ class SystemStatusUpdateTask extends AbstractTask
         foreach ($notificationEmails as $notificationEmail) {
             $sendEmailsTo[] = $notificationEmail;
         }
-        $subject = sprintf($GLOBALS['LANG']->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = sprintf($GLOBALS['LANG']->getLL('status_problemNotification'), '', '');
+        $subject = sprintf($this->getLanguageService()->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $message = sprintf($this->getLanguageService()->getLL('status_problemNotification'), '', '');
         $message .= CRLF . CRLF;
-        $message .= $GLOBALS['LANG']->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+        $message .= $this->getLanguageService()->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;
-        $message .= $GLOBALS['LANG']->getLL('status_updateTask_email_issues') . ': ' . CRLF;
+        $message .= $this->getLanguageService()->getLL('status_updateTask_email_issues') . ': ' . CRLF;
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
         $from = MailUtility::getSystemFrom();
-        /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-        $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+        /** @var MailMessage $mail */
+        $mail = GeneralUtility::makeInstance(MailMessage::class);
         $mail->setFrom($from);
         $mail->setTo($sendEmailsTo);
         $mail->setSubject($subject);
         $mail->setBody($message);
         $mail->send();
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

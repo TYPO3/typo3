@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Reports;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * A class representing a certain status
@@ -62,7 +63,7 @@ class Status
         $this->title = (string)$title;
         $this->value = (string)$value;
         $this->message = (string)$message;
-        $this->severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
+        $this->severity = MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
     }
 
     /**

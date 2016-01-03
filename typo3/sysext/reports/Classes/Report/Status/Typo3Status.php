@@ -13,13 +13,16 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status as ReportStatus;
+use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Performs basic checks about the TYPO3 install
  */
-class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
+class Typo3Status implements StatusProviderInterface
 {
     /**
      * Returns the status for this report
@@ -44,7 +47,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getOldXclassUsageStatus()
     {
         $message = '';
-        $value = $GLOBALS['LANG']->getLL('status_none');
+        $value = $this->getLanguageService()->getLL('status_none');
         $severity = ReportStatus::OK;
 
         $xclasses = array_merge(
@@ -54,15 +57,15 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
 
         $numberOfXclasses = count($xclasses);
         if ($numberOfXclasses > 0) {
-            $value = sprintf($GLOBALS['LANG']->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
-            $message = $GLOBALS['LANG']->getLL('status_oldXclassUsageFound_message') . '<br />';
+            $value = sprintf($this->getLanguageService()->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
+            $message = $this->getLanguageService()->getLL('status_oldXclassUsageFound_message') . '<br />';
             $message .= '<ol><li>' . implode('</li><li>', $xclasses) . '</li></ol>';
             $severity = ReportStatus::NOTICE;
         }
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $GLOBALS['LANG']->getLL('status_oldXclassUsage'),
+            $this->getLanguageService()->getLL('status_oldXclassUsage'),
             $value,
             $message,
             $severity
@@ -77,7 +80,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getRegisteredXclassStatus()
     {
         $message = '';
-        $value = $GLOBALS['LANG']->getLL('status_none');
+        $value = $this->getLanguageService()->getLL('status_none');
         $severity = ReportStatus::OK;
 
         $xclassFoundArray = array();
@@ -89,12 +92,12 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
             }
         }
         if (!empty($xclassFoundArray)) {
-            $value = $GLOBALS['LANG']->getLL('status_xclassUsageFound');
-            $message = $GLOBALS['LANG']->getLL('status_xclassUsageFound_message') . '<br />';
+            $value = $this->getLanguageService()->getLL('status_xclassUsageFound');
+            $message = $this->getLanguageService()->getLL('status_xclassUsageFound_message') . '<br />';
             $message .= '<ol>';
             foreach ($xclassFoundArray as $originalClass => $xClassName) {
                 $messageDetail = sprintf(
-                    $GLOBALS['LANG']->getLL('status_xclassUsageFound_message_detail'),
+                    $this->getLanguageService()->getLL('status_xclassUsageFound_message_detail'),
                     $originalClass,
                     $xClassName
                 );
@@ -106,7 +109,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $GLOBALS['LANG']->getLL('status_xclassUsage'),
+            $this->getLanguageService()->getLL('status_xclassUsage'),
             $value,
             $message,
             $severity
@@ -121,21 +124,29 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getCompatibility6Status()
     {
         $message = '';
-        $value = $GLOBALS['LANG']->getLL('status_disabled');
+        $value = $this->getLanguageService()->getLL('status_disabled');
         $severity = ReportStatus::OK;
 
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('compatibility6')) {
-            $value = $GLOBALS['LANG']->getLL('status_enabled');
-            $message = $GLOBALS['LANG']->getLL('status_compatibility6Usage_message');
+        if (ExtensionManagementUtility::isLoaded('compatibility6')) {
+            $value = $this->getLanguageService()->getLL('status_enabled');
+            $message = $this->getLanguageService()->getLL('status_compatibility6Usage_message');
             $severity = ReportStatus::WARNING;
         }
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $GLOBALS['LANG']->getLL('status_compatibility6Usage'),
+            $this->getLanguageService()->getLL('status_compatibility6Usage'),
             $value,
             $message,
             $severity
         );
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

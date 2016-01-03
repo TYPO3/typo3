@@ -14,12 +14,21 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Performs some checks about the install tool protection status
  */
-class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
+class ConfigurationStatus implements StatusProviderInterface
 {
     /**
      * 10MB
@@ -71,19 +80,19 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getReferenceIndexStatus()
     {
-        $value = $GLOBALS['LANG']->getLL('status_ok');
+        $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
-        $count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
-        $registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $severity = Status::OK;
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_refindex');
+        $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
         if (!$count && $lastRefIndexUpdate) {
-            $value = $GLOBALS['LANG']->getLL('status_empty');
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
-            $url =  \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
-            $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', \TYPO3\CMS\Backend\Utility\BackendUtility::dateTime($lastRefIndexUpdate));
+            $value = $this->getLanguageService()->getLL('status_empty');
+            $severity = Status::WARNING;
+            $url =  BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
+            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::dateTime($lastRefIndexUpdate));
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
     }
 
     /**
@@ -131,9 +140,9 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getMemcachedConnectionStatus()
     {
-        $value = $GLOBALS['LANG']->getLL('status_ok');
+        $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
+        $severity = Status::OK;
         $failedConnections = array();
         $defaultMemcachedPort = ini_get('memcache.default_port');
         $memcachedServers = $this->getConfiguredMemcachedServers();
@@ -163,11 +172,11 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             }
         }
         if (!empty($failedConnections)) {
-            $value = $GLOBALS['LANG']->getLL('status_connectionFailed');
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
-            $message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
+            $value = $this->getLanguageService()->getLL('status_connectionFailed');
+            $severity = Status::WARNING;
+            $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
     }
 
     /**
@@ -178,30 +187,30 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getDeprecationLogStatus()
     {
-        $title = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLog');
-        $value = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:disabled');
+        $title = $this->getLanguageService()->getLL('status_configuration_DeprecationLog');
+        $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disabled');
         $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
+        $severity = Status::OK;
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
-            $value = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:enabled');
-            $message = '<p>' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
-            $severity = \TYPO3\CMS\Reports\Status::NOTICE;
+            $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:enabled');
+            $message = '<p>' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
+            $severity = Status::NOTICE;
             $logFile = GeneralUtility::getDeprecationLogFileName();
             $logFileSize = 0;
             if (@file_exists($logFile)) {
                 $logFileSize = filesize($logFile);
-                $message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'), $this->getDeprecationLogFileLink()) . '</p>';
+                $message .= '<p>' . sprintf($this->getLanguageService()->getLL('status_configuration_DeprecationLogFile'), $this->getDeprecationLogFileLink()) . '</p>';
                 $removeDeprecationLogFileUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=removeDeprecationLogFile';
-                $message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'), GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
+                $message .= '<p>' . sprintf($this->getLanguageService()->getLL('status_configuration_DeprecationLogSize'), GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
             }
             if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
-                $severity = \TYPO3\CMS\Reports\Status::WARNING;
+                $severity = Status::WARNING;
             }
             if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
-                $severity = \TYPO3\CMS\Reports\Status::ERROR;
+                $severity = Status::ERROR;
             }
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $title, $value, $message, $severity);
+        return GeneralUtility::makeInstance(Status::class, $title, $value, $message, $severity);
     }
 
     /**
@@ -211,15 +220,15 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getCreatedFilesWorldWritableStatus()
     {
-        $value = $GLOBALS['LANG']->getLL('status_ok');
+        $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
+        $severity = Status::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
-            $message = $GLOBALS['LANG']->getLL('status_CreatedFilePermissions.writable');
+            $severity = Status::WARNING;
+            $message = $this->getLanguageService()->getLL('status_CreatedFilePermissions.writable');
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
     }
 
     /**
@@ -229,15 +238,15 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getCreatedDirectoriesWorldWritableStatus()
     {
-        $value = $GLOBALS['LANG']->getLL('status_ok');
+        $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
+        $severity = Status::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
-            $message = $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions.writable');
+            $severity = Status::WARNING;
+            $message = $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions.writable');
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
     }
 
     /**
@@ -249,7 +258,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getDeprecationLogFileLink()
     {
         $logFile = GeneralUtility::getDeprecationLogFileName();
-        $relativePath = GeneralUtility::resolveBackPath($this->backPath . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($logFile));
+        $relativePath = GeneralUtility::resolveBackPath($this->backPath . PathUtility::stripPathSitePrefix($logFile));
         $link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
         return $link;
     }
@@ -283,16 +292,32 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         if (@unlink(GeneralUtility::getDeprecationLogFileName())) {
             $message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletedSuccessful');
-            $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+            $severity = FlashMessage::OK;
         } else {
             $message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletionFailed');
-            $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+            $severity = FlashMessage::ERROR;
         }
-        $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity, true);
-        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity, true);
+        /** @var FlashMessageService $flashMessageService  */
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

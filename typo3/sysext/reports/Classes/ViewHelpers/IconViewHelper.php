@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
@@ -57,12 +59,12 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
         $title = $arguments['title'];
 
         if (!empty($icon)) {
-            $absIconPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($icon);
+            $absIconPath = GeneralUtility::getFileAbsFilename($icon);
             if (file_exists($absIconPath)) {
                 $icon = '../' . str_replace(PATH_site, '', $absIconPath);
             }
         } else {
-            $icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('reports') . 'ext_icon.png';
+            $icon = ExtensionManagementUtility::extRelPath('reports') . 'ext_icon.png';
         }
         return '<img src="' . htmlspecialchars($icon) . '" width="16" height="16" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
     }
