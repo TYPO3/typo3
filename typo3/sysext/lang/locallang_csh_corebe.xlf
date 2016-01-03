@@ -728,7 +728,7 @@ After pressing the "Create folders" button the folders will appear in the folder
 				<source>Creating a new file</source>
 			</trans-unit>
 			<trans-unit id="file_newfile.description">
-				<source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown above (except "php" endings).</source>
+				<source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown below (except "php" endings).</source>
 			</trans-unit>
 			<trans-unit id="file_newfile.details">
 				<source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
@@ -750,6 +750,12 @@ EXT:lang/cshimages/core_55.png,</source>
 				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
 Then enter the filename in the dialog in the right frame.
 After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			</trans-unit>
+			<trans-unit id="file_newMedia.alttitle">
+				<source>Adding a new media asset</source>
+			</trans-unit>
+			<trans-unit id="file_newMedia.description">
+				<source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
 			</trans-unit>
 			<trans-unit id="file_rename.alttitle">
 				<source>Rename a file or folder</source>
