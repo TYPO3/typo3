@@ -162,7 +162,7 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '</label>
+							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '
 							<div class="form-control-wrap">
 								<div class="input-group">
 									<select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
@@ -217,7 +217,7 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newMedia">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.label', true) . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '</label>
+							<label for="newMedia">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.label', true) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
 									placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true) . '" />
@@ -256,7 +256,7 @@ class CreateFolderController extends AbstractModule
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newfile">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile', true) . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '</label>
+							<label for="newfile">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile', true) . '</label> ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
