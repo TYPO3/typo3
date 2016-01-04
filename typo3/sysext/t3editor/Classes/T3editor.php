@@ -62,7 +62,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var string
      */
-    protected $codemirrorPath = 'sysext/t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/';
+    protected $codemirrorPath = 'Resources/Public/JavaScript/Contrib/codemirror/js/';
 
     /**
      * RequireJS modules loaded for code completion
@@ -169,6 +169,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
         $GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 
         $this->relExtPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
+        $this->codemirrorPath = $this->relExtPath . $this->codemirrorPath;
+
     }
 
     /**

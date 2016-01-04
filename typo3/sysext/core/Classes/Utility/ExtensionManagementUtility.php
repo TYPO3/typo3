@@ -832,7 +832,7 @@ class ExtensionManagementUtility
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $defaultModuleConfiguration = array(
             'access' => 'admin',
-            'icon' => 'sysext/backend/Resources/Public/Images/Logo.png',
+            'icon' => self::extRelPath('backend') . 'Resources/Public/Images/Logo.png',
             'labels' => '',
             'extRelPath' => self::extRelPath($extensionKey) . 'Classes/'
         );

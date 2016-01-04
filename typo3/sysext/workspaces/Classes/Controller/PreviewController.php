@@ -54,10 +54,12 @@ class PreviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
+        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
+        $workspacesRelPath = ExtensionManagementUtility::extRelPath('workspaces');
         $this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
         $this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
-        $resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/preview.css';
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/ExtDirect.StateProvider.js');
+        $resourcePath = $workspacesRelPath . 'Resources/Public/Css/preview.css';
         $GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
         $this->pageRenderer->loadExtJS();
         // Load  JavaScript:
@@ -67,9 +69,9 @@ class PreviewController extends AbstractController
         ));
         $states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/iframepanel.js');
-        $resourcePathJavaScript = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/iframepanel.js');
+        $resourcePathJavaScript = $workspacesRelPath . 'Resources/Public/JavaScript/';
         $jsFiles = array(
             'Ext.ux.plugins.TabStripContainer.js',
             'Store/mainstore.js',

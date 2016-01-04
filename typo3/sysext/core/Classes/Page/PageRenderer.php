@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -268,19 +269,19 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * default path to the requireJS library, relative to the typo3/ directory
      * @var string
      */
-    protected $requireJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/';
+    protected $requireJsPath = 'Resources/Public/JavaScript/Contrib/';
 
     /**
      * @var string
      */
-    protected $extJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/extjs/';
+    protected $extJsPath = 'Resources/Public/JavaScript/Contrib/extjs/';
 
     /**
      * The local directory where one can find jQuery versions and plugins
      *
      * @var string
      */
-    protected $jQueryPath = 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/';
+    protected $jQueryPath = 'Resources/Public/JavaScript/Contrib/jquery/';
 
     // Internal flags for JS-libraries
     /**
@@ -413,6 +414,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct($templateFile = '', $backPath = null)
     {
         $this->reset();
+
+        $coreRelPath = ExtensionManagementUtility::extRelPath('core');
+        $this->requireJsPath = $coreRelPath . $this->requireJsPath;
+        $this->extJsPath = $coreRelPath . $this->extJsPath;
+        $this->jQueryPath = $coreRelPath . $this->jQueryPath;
+
         $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
         $this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
         if ($templateFile !== '') {
@@ -1309,7 +1316,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 9
         // add compatibility mapping for the old flashmessage API
         $this->addJsFile(GeneralUtility::resolveBackPath($this->backPath .
-            'sysext/backend/Resources/Public/JavaScript/flashmessage_compatibility.js'));
+            ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/flashmessage_compatibility.js'));
 
         // Add language labels for ExtDirect
         if (TYPO3_MODE === 'FE') {
@@ -1554,20 +1561,21 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
             }
+            $coreRelPath = ExtensionManagementUtility::extRelPath('core');
             // first, load all paths for the namespaces, and configure contrib libs.
             $this->requireJsConfig['paths'] = array(
-                'jquery-ui' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
-                'datatables' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
-                'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
-                'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment',
-                'cropper' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/cropper.min',
-                'imagesloaded' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
-                'bootstrap' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
-                'twbs/bootstrap-datetimepicker' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
-                'autosize' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/autosize',
-                'taboverride' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/taboverride.min',
-                'twbs/bootstrap-slider' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
-                'jquery/autocomplete' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete',
+                'jquery-ui' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery-ui',
+                'datatables' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.dataTables',
+                'nprogress' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/nprogress',
+                'moment' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/moment',
+                'cropper' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/cropper.min',
+                'imagesloaded' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
+                'bootstrap' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
+                'twbs/bootstrap-datetimepicker' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
+                'autosize' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/autosize',
+                'taboverride' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/taboverride.min',
+                'twbs/bootstrap-slider' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
+                'jquery/autocomplete' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.autocomplete',
             );
             // get all extensions that are loaded
             $loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
@@ -2089,10 +2097,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $code .= $block;
                 }
             }
+            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . ExtensionManagementUtility::extRelPath('t3skin') . 'icons/gfx/clear.gif'));
             $out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
-				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . 'sysext/t3skin/icons/gfx/clear.gif')) . '";
-				Ext.SSL_SECURE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . 'sysext/t3skin/icons/gfx/clear.gif')) . '";' . LF
+				Ext.BLANK_IMAGE_URL = "' . $clearGifPath . '";
+				Ext.SSL_SECURE_URL = "' . $clearGifPath . '";' . LF
                 . $inlineSettings
                 . 'Ext.onReady(function() {'
                     . $code
@@ -2101,7 +2110,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $this->extOnReadyCode = array();
             // Include TYPO3.l10n object
             if (TYPO3_MODE === 'BE') {
-                $out .= '<script src="' . $this->processJsFile(($this->backPath . 'sysext/lang/Resources/Public/JavaScript/Typo3Lang.js')) . '" type="text/javascript" charset="utf-8"></script>' . LF;
+                $out .= '<script src="' . $this->processJsFile(($this->backPath . ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/Typo3Lang.js')) . '" type="text/javascript" charset="utf-8"></script>' . LF;
             }
             if ($this->extJScss) {
                 if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {

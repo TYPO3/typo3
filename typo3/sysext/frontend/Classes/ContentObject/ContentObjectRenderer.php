@@ -4168,7 +4168,7 @@ class ContentObjectRenderer
                 if ($conf['iconCObject']) {
                     $icon = $this->cObjGetSingle($conf['iconCObject'], $conf['iconCObject.'], 'iconCObject');
                 } else {
-                    $notFoundThumb = TYPO3_mainDir . 'sysext/core/Resources/Public/Images/NotFound.gif';
+                    $notFoundThumb = ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/NotFound.gif';
                     $sizeParts = array(64, 64);
                     if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
                         // using the File Abstraction Layer to generate a preview image

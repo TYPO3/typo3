@@ -112,17 +112,18 @@ class BackendController
         $this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', false);
         $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
+        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
         $this->jsFiles = array(
             'locallang' => $this->getLocalLangFileName(),
-            'md5' => 'sysext/backend/Resources/Public/JavaScript/md5.js',
-            'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
-            'evalfield' => 'sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
-            'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
-            'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
-            'viewport' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewport.js',
-            'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
-            'backendcontentiframe' => 'sysext/backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
-            'viewportConfiguration' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewportConfiguration.js',
+            'md5' => $backendRelPath . 'Resources/Public/JavaScript/md5.js',
+            'modulemenu' => $backendRelPath . 'Resources/Public/JavaScript/modulemenu.js',
+            'evalfield' => $backendRelPath . 'Resources/Public/JavaScript/jsfunc.evalfield.js',
+            'notifications' => $backendRelPath . 'Resources/Public/JavaScript/notifications.js',
+            'backend' => $backendRelPath . 'Resources/Public/JavaScript/backend.js',
+            'viewport' => $backendRelPath . 'Resources/Public/JavaScript/extjs/viewport.js',
+            'iframepanel' => $backendRelPath . 'Resources/Public/JavaScript/iframepanel.js',
+            'backendcontentiframe' => $backendRelPath . 'Resources/Public/JavaScript/extjs/backendcontentiframe.js',
+            'viewportConfiguration' => $backendRelPath . 'Resources/Public/JavaScript/extjs/viewportConfiguration.js',
         );
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
@@ -264,7 +265,7 @@ class BackendController
         $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
         // Render the TYPO3 logo in the left corner
-        $logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: 'sysext/backend/Resources/Public/Images/typo3-topbar@2x.png';
+        $logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/typo3-topbar@2x.png';
         $logoPath = GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
         list($logoWidth, $logoHeight) = @getimagesize($logoPath);
 
@@ -348,12 +349,11 @@ class BackendController
             $component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
             $componentDirectory = 'components/' . $component . '/';
             if ($info['isCoreComponent']) {
-                $absoluteComponentPath = PATH_site . 'typo3/sysext/backend/Resources/Public/JavaScript/extjs/' . $componentDirectory;
-                $relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
-            } else {
-                $absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
-                $relativeComponentPath = ExtensionManagementUtility::extRelPath($info['extKey']) . $componentDirectory;
+                $componentDirectory = 'Resources/Public/JavaScript/extjs/' . $componentDirectory;
+                $info['extKey'] = 'backend';
             }
+            $absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
+            $relativeComponentPath = ExtensionManagementUtility::extRelPath($info['extKey']) . $componentDirectory;
             $cssFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
             if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
                 // Don't allow inclusion outside directory

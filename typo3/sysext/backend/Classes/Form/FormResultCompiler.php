@@ -197,8 +197,8 @@ class FormResultCompiler
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
-
-        $this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
+        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
+        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/md5.js');
         // load the main module for FormEngine with all important JS functions
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 			FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
@@ -220,13 +220,13 @@ class FormResultCompiler
         $pageRenderer->loadJquery();
         $pageRenderer->loadExtJS();
         // Load tree stuff here
-        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
+        $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/tree.js');
         $pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
-        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
+        $pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/notifications.js');
         if (ExtensionManagementUtility::isLoaded('rtehtmlarea')) {
             // This js addition is hackish ... it will always load this file even if not RTE
             // is added here. But this simplifies RTE initialization a lot and is thus kept for now.
-            $pageRenderer->addJsFile('sysext/rtehtmlarea/Resources/Public/JavaScript/HTMLArea/NameSpace/NameSpace.js');
+            $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('rtehtmlarea') . 'Resources/Public/JavaScript/HTMLArea/NameSpace/NameSpace.js');
         }
 
         $beUserAuth = $this->getBackendUserAuthentication();
@@ -236,7 +236,7 @@ class FormResultCompiler
         );
         $pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
 
-        $this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
+        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
         // Needed for FormEngine manipulation (date picker)
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
@@ -250,12 +250,12 @@ class FormResultCompiler
         );
         // Load codemirror for T3Editor
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $this->loadJavascriptLib('sysext/t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
+            $this->loadJavascriptLib(ExtensionManagementUtility::extRelPath('t3editor') . 'Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
         }
         // We want to load jQuery-ui inside our js. Enable this using requirejs.
-        $this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
+        $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/jsfunc.inline.js');
         $out = '
-		inline.setNoTitleString("' . addslashes(BackendUtility::getNoRecordTitle(true)) . '");
+		inline.setNoTitleString(' . GeneralUtility::quoteJSvalue(BackendUtility::getNoRecordTitle(true)) . ');
 		';
 
         $out .= '

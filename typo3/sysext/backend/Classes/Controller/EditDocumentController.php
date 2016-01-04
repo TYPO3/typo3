@@ -1457,7 +1457,7 @@ class EditDocumentController extends AbstractModule
      */
     public function shortCutLink()
     {
-        if ($this->returnUrl !== 'sysext/backend/Resources/Private/Templates/Close.html') {
+        if ($this->returnUrl !== ExtensionManagementUtility::extRelPath('backend') . 'Resources/Private/Templates/Close.html') {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton->setModuleName($this->MCONF['name'])
                 ->setGetVariables([
@@ -1477,9 +1477,10 @@ class EditDocumentController extends AbstractModule
      */
     public function openInNewWindowLink()
     {
-        if ($this->returnUrl !== 'sysext/backend/Resources/Private/Templates/Close.html') {
+        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
+        if ($this->returnUrl !== $backendRelPath . 'Resources/Private/Templates/Close.html') {
             $aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(
-                array('returnUrl' => 'sysext/backend/Resources/Private/Templates/Close.html')
+                array('returnUrl' => $backendRelPath . 'Resources/Private/Templates/Close.html')
             ))
                 . ','
                 . GeneralUtility::quoteJSvalue(md5($this->R_URI))
