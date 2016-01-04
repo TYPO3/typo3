@@ -74,6 +74,7 @@ return array(
             'label' => 'TYPE FIELD',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('type standard', '0'),
                     array('type test', 'test'),
@@ -876,6 +877,7 @@ return array(
             'label' => 'SELECT: 1 Two items, one with really long text',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No? Then let us add some even more useless text here!', 1),
                     array('bar', 'bar'),
@@ -887,6 +889,7 @@ return array(
             'label' => 'SELECT: 2 itemsProcFunc',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo', 1),
                     array('bar', 'bar'),
@@ -899,6 +902,7 @@ return array(
             'label' => 'SELECT: 33 itemsProcFunc with maxitems > 1',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'maxitems' => 42,
                 'items' => array(
                     array('foo', 1),
@@ -929,6 +933,7 @@ return array(
             'label' => 'SELECT: 3 Three items, second pre-selected, size=2',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -942,6 +947,7 @@ return array(
             'label' => 'SELECT: 4 Static values, dividers, merged with entries from staticdata table containing word "foo"',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('Static values', '--div--'),
                     array('static -2', -2),
@@ -959,6 +965,7 @@ return array(
             'label' => 'SELECT: 5 Items with icons',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
                     array('Icon from typo3/gfx', 'es', 'flags/es.gif'), // @TODO: docu says typo3/sysext/t3skin/icons/gfx/, but in fact it is typo3/gfx.
@@ -970,6 +977,7 @@ return array(
             'label' => 'SELECT: 7 Items with icons, showIconTable',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
                     array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
@@ -979,9 +987,10 @@ return array(
         ),
         'select_8' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 8 Items with icons, selicon_cols set to 3',
+            'label' => 'SELECT: 8 Items with icons, showIconTable, selicon_cols set to 3',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 'es', 'flags/es.gif'),
                     array('foo2', 'fr', 'flags/fr.gif'),
@@ -998,6 +1007,7 @@ return array(
             'label' => 'SELECT: 9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, showIconTable, two columns',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('', 0),
                 ),
@@ -1013,6 +1023,7 @@ return array(
             'label' => 'SELECT: 10 three options, size=6',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -1027,6 +1038,7 @@ return array(
             'label' => 'SELECT: 11 two options, size=2',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -1039,6 +1051,7 @@ return array(
             'label' => 'SELECT: 12 multiple, autoSizeMax=4, size=3',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -1060,6 +1073,7 @@ return array(
             'label' => 'SELECT: 13 multiple, exclusiveKeys for 1 and 2',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('exclusive', '--div--'),
                     array('foo 1', 1),
@@ -1081,6 +1095,7 @@ return array(
             'label' => 'SELECT: 14 maxitems=1, single',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1098,6 +1113,7 @@ return array(
             'label' => 'SELECT: 15 Drop down with empty div',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('First div with items', '--div--'),
                     array('item1', 1),
@@ -1113,6 +1129,7 @@ return array(
             'label' => 'SELECT: 16 maxitems=10, no size set',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1135,6 +1152,7 @@ return array(
             'label' => 'SELECT: 17 multiple size=1',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'multiple' => true,
                 'maxItems' => 1,
                 'items' => array(
@@ -1158,6 +1176,7 @@ return array(
             'label' => 'SELECT: 21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1171,37 +1190,38 @@ return array(
         ),
         'select_22' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 22 renderMode=checkbox',
+            'label' => 'SELECT: 22 renderType=selectCheckBox',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'items' => array(
                     array('item 1', 1),
                     array('item 2', 2),
                     array('item 3', 3),
                 ),
-                'renderMode' => 'checkbox',
                 'maxitems' => 2,
             ),
         ),
         'select_23' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 23 renderMode=checkbox with icons and description',
+            'label' => 'SELECT: 23 renderType=selectCheckBox with icons and description',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'items' => array(
                     array('foo 1', 1, '', 'optional description'), // @TODO: In contrast to "items" documentation, description seems not to have an effect for renderMode=checkbox
                     array('foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg', 'other description'),
                     array('foo 3', 3, '', ''),
                 ),
-                'renderMode' => 'checkbox',
                 'maxitems' => 2,
             ),
         ),
         'select_24' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 24 renderMode=singlebox',
+            'label' => 'SELECT: 24 renderType=selectSingleBox',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingleBox',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1209,19 +1229,18 @@ return array(
                     array('foo 3', 3),
                     array('foo 4', 4),
                 ),
-                'renderMode' => 'singlebox',
                 'maxitems' => 2,
             ),
         ),
         'select_25' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 25 renderMode=tree of pages',
+            'label' => 'SELECT: 25 renderType=selectTree of pages',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'expandAll' => true,
                     'parentField' => 'pid',
@@ -1233,13 +1252,13 @@ return array(
         ),
         'select_26' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 26 renderMode=tree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
+            'label' => 'SELECT: 26 renderType=selectTree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
                 'size' => 10,
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'expandAll' => true,
                     'parentField' => 'pid',
@@ -1256,7 +1275,8 @@ return array(
             'exclude' => 1,
             'label' => 'SELECT: 27 enableMultiSelectFilterTextfield',
             'config' => array(
-            'type' => 'select',
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1274,6 +1294,7 @@ return array(
             'label' => 'SELECT: 28 enableMultiSelectFilterTextfield, multiSelectFilterItems',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'items' => array(
                     array('foo 1', 1),
                     array('foo 2', 2),
@@ -1296,6 +1317,7 @@ return array(
             'label' => 'SELECT: 29 wizards',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_styleguide_forms_staticdata',
                 'rootLevel' => 1,
                 'size' => 5,
@@ -1348,6 +1370,7 @@ return array(
             'label' => 'SELECT: 30 Slider wizard, step=1, width=200, items',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -1368,13 +1391,13 @@ return array(
         ),
         'select_31' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 31 renderMode=tree of pages with maxLevels=1',
+            'label' => 'SELECT: 31 renderType=selectTree of pages with maxLevels=1',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'expandAll' => true,
                     'parentField' => 'pid',
@@ -1387,13 +1410,13 @@ return array(
         ),
         'select_32' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 32 renderMode=tree of pages with maxLevels=2',
+            'label' => 'SELECT: 32 renderType=selectTree of pages with maxLevels=2',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'expandAll' => true,
                     'parentField' => 'pid',
