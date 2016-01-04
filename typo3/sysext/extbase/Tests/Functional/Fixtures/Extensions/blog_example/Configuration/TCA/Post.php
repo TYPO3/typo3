@@ -14,15 +14,15 @@ $TCA['tx_blogexample_domain_model_post'] = array(
     'columns' => array(
         'sys_language_uid' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
-                    array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0)
+                    array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
+                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
                 ),
                 'default' => 0
             )
@@ -30,7 +30,7 @@ $TCA['tx_blogexample_domain_model_post'] = array(
         'l18n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
