@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -484,7 +485,7 @@ class ImportExportController extends BaseScriptClass
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($lang->getLL('exportdata_savedInSBytes', true), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
+                        sprintf($lang->getLL('exportdata_savedInSBytes'), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
                         $lang->getLL('exportdata_savedFile'),
                         FlashMessage::OK
                     );
@@ -492,12 +493,16 @@ class ImportExportController extends BaseScriptClass
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($lang->getLL('exportdata_badPathS', true), $saveFolder->getPublicUrl()),
+                        sprintf($lang->getLL('exportdata_badPathS'), $saveFolder->getPublicUrl()),
                         $lang->getLL('exportdata_problemsSavingFile'),
                         FlashMessage::ERROR
                     );
                 }
-                $this->content .= $flashMessage->render();
+                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
         // OUTPUT to BROWSER:
@@ -608,7 +613,7 @@ class ImportExportController extends BaseScriptClass
         );
         // Warning about hitting limit:
         if ($db->sql_num_rows($res) == $limit) {
-            $limitWarning = sprintf($this->lang->getLL('makeconfig_anSqlQueryReturned', true), $limit);
+            $limitWarning = sprintf($this->lang->getLL('makeconfig_anSqlQueryReturned'), $limit);
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
@@ -616,7 +621,11 @@ class ImportExportController extends BaseScriptClass
                 $limitWarning,
                 FlashMessage::WARNING
             );
-            $this->content .= $flashMessage->render();
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         return $res;
     }
@@ -1397,7 +1406,11 @@ class ImportExportController extends BaseScriptClass
                 $msg,
                 $err ? FlashMessage::ERROR : FlashMessage::INFO
             );
-            $this->content .= $flashMessage->render();
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
     }
 
