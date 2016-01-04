@@ -2107,6 +2107,7 @@ return array(
             'label' => 'WIZARD: 1 vertical, edit, add, list',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_styleguide_forms_staticdata',
                 'rootLevel' => 1,
                 'size' => 5,
@@ -2568,6 +2569,7 @@ return array(
             'label' => 'SYSTEM: 2 type select, special tables, identical to index_config table2index',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('dummy extra entry', '0')
                 ),
@@ -2581,6 +2583,7 @@ return array(
             'label' => 'SYSTEM: 3 type select, special tables, identical to sys_collection table_name',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'special' => 'tables',
             ),
         ),
@@ -2589,9 +2592,9 @@ return array(
             'label' => 'SYSTEM: 4 type select, special languages, renderMode checkbox, identical to be_groups allowed_languages',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'languages',
                 'maxitems' => 1000,
-                'renderMode' => 'checkbox',
             ),
         ),
         'system_5' => array(
@@ -2599,9 +2602,9 @@ return array(
             'label' => 'SYSTEM: 5 type select, special custom, renderMode checkbox, identical to be_groups custom_options',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'custom',
                 'maxitems' => 1000,
-                'renderMode' => 'checkbox',
             ),
         ),
         'system_6' => array(
@@ -2609,9 +2612,9 @@ return array(
             'label' => 'SYSTEM: 6 type select, special custom, renderMode checkbox, identical to be_groups custom',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'custom',
                 'maxitems' => 1000,
-                'renderMode' => 'checkbox',
             ),
         ),
         'system_7' => array(
@@ -2619,11 +2622,11 @@ return array(
             'label' => 'SYSTEM: 7 type select, special modListGroup, identical to be_groups groupMods',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'modListGroup',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_8' => array(
@@ -2631,11 +2634,11 @@ return array(
             'label' => 'SYSTEM: 8 type select, special modListUser, identical to be_users userMods',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'modListUser',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => '100',
-                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_9' => array(
@@ -2643,11 +2646,11 @@ return array(
             'label' => 'SYSTEM: 9 type select, special pagetypes, identical to be_groups pagetypes_select',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'pagetypes',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
-                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_10' => array(
@@ -2655,9 +2658,9 @@ return array(
             'label' => 'SYSTEM: 10 type select, special explicitValues, renderMode checkbox, identical to be_groups explicit_allowdeny',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'explicitValues',
                 'maxitems' => 1000,
-                'renderMode' => 'checkbox',
             ),
         ),
         'system_11' => array(
@@ -2665,11 +2668,11 @@ return array(
             'label' => 'SYSTEM: 11 type select, special exclude, renderMode checkbox, identical to be_groups non_exclude_fields',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'exclude',
                 'size' => '25',
                 'maxitems' => 1000,
                 'autoSizeMax' => 50,
-                'renderMode' => 'checkbox'
             ),
         ),
 
