@@ -77,7 +77,7 @@ return array(
         'fileinfo' => array(
             'config' => array(
                 'type' => 'user',
-                'userFunc' => 'typo3/sysext/core/Classes/Resource/Hook/FileInfoHook.php:TYPO3\CMS\Core\Resource\Hook\FileInfoHook->renderFileMetadataInfo'
+                'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Hook\\FileInfoHook->renderFileMetadataInfo'
             )
         ),
         'file' => array(
