@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * A class representing error messages shown on a page.
@@ -29,7 +30,7 @@ class ErrorpageMessage extends AbstractStandaloneMessage
      */
     public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR)
     {
-        $this->setHtmlTemplate(TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html');
+        $this->setHtmlTemplate(ExtensionManagementUtility::siteRelPath('t3skin') . 'templates/errorpage-message.html');
         parent::__construct($message, $title, $severity);
     }
 }

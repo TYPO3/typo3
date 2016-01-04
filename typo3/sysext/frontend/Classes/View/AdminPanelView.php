@@ -306,7 +306,7 @@ class AdminPanelView
 <a id="TSFE_ADMIN_PANEL"></a>
 <form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<div class="typo3-adminPanel">' . $header . $updateButton . $moduleContent . '</div></form>';
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
-            $out .= '<script type="text/javascript" src="' . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix) . 'typo3/sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
+            $out .= '<script type="text/javascript" src="' . htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix) . ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
             $out .= '<script type="text/javascript">/*<![CDATA[*/' . GeneralUtility::minifyJavaScript('
 				var evalFunc = new evalFunc();
 					// TSFEtypo3FormFieldSet()
@@ -336,7 +336,7 @@ class AdminPanelView
 				}') . '/*]]>*/</script><script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
         }
         $cssPath = htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix . ExtensionManagementUtility::siteRelPath('t3skin')) . 'stylesheets/standalone/admin_panel.css';
-        $out .= '<script src="' . GeneralUtility::locationHeaderUrl('typo3/sysext/frontend/Resources/Public/JavaScript/AdminPanel.js') . '" type="text/javascript"></script><script type="text/javascript">/*<![CDATA[*/' . 'typo3AdminPanel = new TYPO3AdminPanel();typo3AdminPanel.init("typo3-adminPanel-header", "TSFE_ADMIN_PANEL_FORM");' . '/*]]>*/</script>
+        $out .= '<script src="' . GeneralUtility::locationHeaderUrl(ExtensionManagementUtility::siteRelPath('frontend') . 'Resources/Public/JavaScript/AdminPanel.js') . '" type="text/javascript"></script><script type="text/javascript">/*<![CDATA[*/' . 'typo3AdminPanel = new TYPO3AdminPanel();typo3AdminPanel.init("typo3-adminPanel-header", "TSFE_ADMIN_PANEL_FORM");' . '/*]]>*/</script>
 <link type="text/css" rel="stylesheet" href="' . $cssPath . '" media="all" />
 <!--
 	TYPO3 admin panel end

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -188,7 +189,8 @@ class ReviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
+        $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         if (WorkspaceService::isOldStyleWorkspaceUsed()) {
             $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
             /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
@@ -204,10 +206,10 @@ class ReviewController extends AbstractController
         $this->pageRenderer->addExtDirectCode(array(
             'TYPO3.Workspaces'
         ));
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.grid.RowExpander.js');
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.app.SearchField.js');
-        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.ux.FitToParent.js');
-        $resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.grid.RowExpander.js');
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.app.SearchField.js');
+        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.ux.FitToParent.js');
+        $resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 
         // @todo Integrate additional stylesheet resources
         $this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');

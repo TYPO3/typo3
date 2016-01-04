@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -83,7 +84,7 @@ class Avatar
         if (!$avatarImage) {
             $avatarImage = GeneralUtility::makeInstance(
                 Image::class,
-                'typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg',
+                ExtensionManagementUtility::siteRelPath('core') . 'Resources/Public/Icons/T3Icons/avatar/avatar-default.svg',
                 $size,
                 $size
             );
