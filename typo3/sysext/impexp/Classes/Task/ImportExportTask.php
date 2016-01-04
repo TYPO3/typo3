@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Impexp\Task;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Taskcenter\Controller\TaskModuleController;
@@ -93,7 +94,7 @@ class ImportExportTask implements TaskInterface
             // Create preset links:
             $presets = $this->getPresets();
             // If any presets found
-            if (is_array($presets)) {
+            if (is_array($presets) && !empty($presets)) {
                 $lines = [];
                 foreach ($presets as $key => $presetCfg) {
                     $configuration = unserialize($presetCfg['preset_data']);
@@ -149,10 +150,14 @@ class ImportExportTask implements TaskInterface
                 $flashMessage = GeneralUtility::makeInstance(
                     FlashMessage::class,
                     $lang->getLL('no-presets'),
-                    '',
+                    $lang->getLL('.alttitle'),
                     FlashMessage::NOTICE
                 );
-                $content .= $flashMessage->render();
+                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
         return $content;
