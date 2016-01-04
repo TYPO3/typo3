@@ -120,7 +120,6 @@ CREATE TABLE tx_styleguide_forms (
 	select_3 text NOT NULL,
 	select_4 text NOT NULL,
 	select_5 text NOT NULL,
-	select_6 text NOT NULL,
 	select_7 text NOT NULL,
 	select_8 text NOT NULL,
 	select_9 text NOT NULL,

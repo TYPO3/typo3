@@ -965,29 +965,16 @@ return array(
                 ),
             ),
         ),
-        'select_6' => array(
-            'exclude' => 1,
-            'label' => 'SELECT: 6 Items with icons, iconsInOptionTags',
-            'config' => array(
-                'type' => 'select',
-                'items' => array(
-                    array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
-                    array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
-                ),
-                'iconsInOptionTags' => true,
-            ),
-        ),
         'select_7' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 7 Items with icons, iconsInOptionTags, noIconsBelowSelect',
+            'label' => 'SELECT: 7 Items with icons, showIconTable',
             'config' => array(
                 'type' => 'select',
                 'items' => array(
                     array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
                     array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
                 ),
-                'iconsInOptionTags' => true,
-                'noIconsBelowSelect' => true,
+                'showIconTable' => true,
             ),
         ),
         'select_8' => array(
@@ -1002,12 +989,13 @@ return array(
                     array('foo4', 'us', 'flags/us.gif'),
                     array('foo5', 'gr', 'flags/gr.gif'),
                 ),
+                'showIconTable' => true,
                 'selicon_cols' => 3,
             ),
         ),
         'select_9' => array(
             'exclude' => 1,
-            'label' => 'SELECT: 9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, iconsInOptionTags, two columns',
+            'label' => 'SELECT: 9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, showIconTable, two columns',
             'config' => array(
                 'type' => 'select',
                 'items' => array(
@@ -1016,7 +1004,7 @@ return array(
                 'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                 'fileFolder_extList' => 'png',
                 'fileFolder_recursions' => 1,
-                'iconsInOptionTags' => true,
+                'showIconTable' => true,
                 'selicon_cols' => 2,
             ),
         ),
@@ -2545,12 +2533,11 @@ return array(
             'label' => 'SYSTEM: 1 type select, special tables, renderMode checkbox, identical to be_groups tables_modify & tables_select',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'special' => 'tables',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-                'renderMode' => 'checkbox',
-                'iconsInOptionTags' => 1,
             ),
         ),
         'system_2' => array(
@@ -2606,41 +2593,38 @@ return array(
         ),
         'system_7' => array(
             'exclude' => 1,
-            'label' => 'SYSTEM: 7 type select, special modListGroup, renderMode checkbox, identical to be_groups groupMods',
+            'label' => 'SYSTEM: 7 type select, special modListGroup, identical to be_groups groupMods',
             'config' => array(
                 'type' => 'select',
                 'special' => 'modListGroup',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-                'renderMode' => 'checkbox',
-                'iconsInOptionTags' => 1,
+                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_8' => array(
             'exclude' => 1,
-            'label' => 'SYSTEM: 8 type select, special modListUser, renderMode checkbox, identical to be_users userMods',
+            'label' => 'SYSTEM: 8 type select, special modListUser, identical to be_users userMods',
             'config' => array(
                 'type' => 'select',
                 'special' => 'modListUser',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => '100',
-                'renderMode' => 'checkbox',
-                'iconsInOptionTags' => 1
+                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_9' => array(
             'exclude' => 1,
-            'label' => 'SYSTEM: 9 type select, special pagetypes, renderMode checkbox, identical to be_groups pagetypes_select',
+            'label' => 'SYSTEM: 9 type select, special pagetypes, identical to be_groups pagetypes_select',
             'config' => array(
                 'type' => 'select',
                 'special' => 'pagetypes',
                 'size' => '5',
                 'autoSizeMax' => 50,
                 'maxitems' => 20,
-                'renderMode' => 'checkbox',
-                'iconsInOptionTags' => 1,
+                'renderType' => 'selectCheckBox',
             ),
         ),
         'system_10' => array(
@@ -2681,7 +2665,7 @@ return array(
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
 			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
-			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
+			select_1, select_2, select_3, select_4, select_5, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			select_30, select_31, select_32, select_33, select_34,
@@ -2719,7 +2703,7 @@ return array(
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
-					select_1, select_2, select_33, select_34, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
+					select_1, select_2, select_33, select_34, select_3, select_4, select_5, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13, select_14, select_15, select_16, select_17,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 					select_30, select_31, select_32,
