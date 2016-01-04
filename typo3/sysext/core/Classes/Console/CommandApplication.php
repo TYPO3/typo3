@@ -1,0 +1,103 @@
+<?php
+namespace TYPO3\CMS\Core\Console;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+use Symfony\Component\Console\Input\ArgvInput;
+use TYPO3\CMS\Core\Core\ApplicationInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
+
+/**
+ * Entry point for the TYPO3 Command Line for Commands
+ * Does not run the RequestHandler as this already runs an Application inside an Application which
+ * is just way too much logic around simple CLI calls
+ */
+class CommandApplication implements ApplicationInterface
+{
+    /**
+     * @var Bootstrap
+     */
+    protected $bootstrap;
+
+    /**
+     * @var string
+     */
+    protected $entryPointPath = 'typo3/sysext/core/bin/';
+
+    /**
+     * All available request handlers that can deal with a CLI Request
+     * @var array
+     */
+    protected $availableRequestHandlers = array(
+        \TYPO3\CMS\Core\Console\CommandRequestHandler::class,
+        \TYPO3\CMS\Backend\Console\CliRequestHandler::class
+    );
+
+    /**
+     * Constructor setting up legacy constants and register available Request Handlers
+     *
+     * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
+     */
+    public function __construct($classLoader)
+    {
+        $this->checkEnvironmentOrDie();
+        $this->defineLegacyConstants();
+        $this->bootstrap = Bootstrap::getInstance()
+            ->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
+            ->baseSetup($this->entryPointPath);
+
+        foreach ($this->availableRequestHandlers as $requestHandler) {
+            $this->bootstrap->registerRequestHandlerImplementation($requestHandler);
+        }
+
+        $this->bootstrap->configure();
+    }
+
+    /**
+     * Run the Symfony Console application in this TYPO3 application
+     *
+     * @param callable $execute
+     * @return void
+     */
+    public function run(callable $execute = null)
+    {
+        $this->bootstrap->handleRequest(new ArgvInput());
+
+        if ($execute !== null) {
+            call_user_func($execute);
+        }
+
+        $this->bootstrap->shutdown();
+    }
+
+    /**
+     * Define constants and variables
+     */
+    protected function defineLegacyConstants()
+    {
+        define('TYPO3_MODE', 'BE');
+    }
+
+    /**
+     * Check the script is called from a cli environment.
+     *
+     * @return void
+     */
+    protected function checkEnvironmentOrDie()
+    {
+        if (php_sapi_name() !== 'cli') {
+            die('Not called from a command line interface (e.g. a shell or scheduler).' . LF);
+        }
+    }
+}

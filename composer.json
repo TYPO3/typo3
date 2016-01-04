@@ -27,6 +27,9 @@
 		"optimize-autoloader": true,
 		"bin-dir": "bin"
 	},
+	"bin": [
+		"typo3/sysext/core/bin/t3console"
+	],
 	"require": {
 		"php": ">=5.5.0",
 		"ext-fileinfo": "*",

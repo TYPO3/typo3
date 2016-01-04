@@ -11,6 +11,9 @@
 	"replace": {
 		"core": "*"
 	},
+	"bin": [
+		"bin/t3console"
+	],
 	"extra": {
 		"typo3/cms": {
 			"Package": {
