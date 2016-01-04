@@ -30,7 +30,7 @@ return array(
         'fileinfo' => array(
             'config' => array(
                 'type' => 'user',
-                'userFunc' => 'typo3/sysext/core/Classes/Resource/Hook/FileInfoHook.php:TYPO3\CMS\Core\Resource\Hook\FileInfoHook->renderFileInfo'
+                'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Hook\\FileInfoHook->renderFileInfo'
             )
         ),
         'storage' => array(
