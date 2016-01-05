@@ -100,11 +100,6 @@ class CategoryRegistry implements SingletonInterface
             $this->registry[$tableName][$fieldName] = $options;
             $this->extensions[$extensionKey][$tableName][$fieldName] = $fieldName;
 
-            if (!isset($GLOBALS['TCA'][$tableName]['columns']) && isset($GLOBALS['TCA'][$tableName]['ctrl']['dynamicConfigFile'])) {
-                // Handle deprecated old style dynamic TCA column loading.
-                ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
-            }
-
             if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
                 $this->applyTcaForTableAndField($tableName, $fieldName);
                 $didRegister = true;

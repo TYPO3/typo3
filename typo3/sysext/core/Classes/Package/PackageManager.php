@@ -543,9 +543,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageStateConfiguration) {
                 $this->composerNameToPackageKeyMap[strtolower($packageStateConfiguration['composerName'])] = $packageKey;
             }
-            // Hard coded compatibility layer for old cms extension
-            // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-            $this->composerNameToPackageKeyMap['typo3/cms-cms'] = 'cms';
         }
         $lowercasedComposerName = strtolower($composerName);
         if (!isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {

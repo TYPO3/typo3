@@ -1673,44 +1673,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /////////////////////////////////////////
-    // Tests concerning loadNewTcaColumnsConfigFiles
-    /////////////////////////////////////////
-
-    /**
-     * @test
-     * @expectedException \RuntimeException
-     */
-    public function loadNewTcaColumnsConfigFilesIncludesDefinedDynamicConfigFileIfNoColumnsExist()
-    {
-        $GLOBALS['TCA'] = array(
-            'test' => array(
-                'ctrl' => array(
-                    'dynamicConfigFile' => __DIR__ . '/Fixtures/RuntimeException.php'
-                ),
-            ),
-        );
-        ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
-    }
-
-    /**
-     * @test
-     */
-    public function loadNewTcaColumnsConfigFilesDoesNotIncludeFileIfColumnsExist()
-    {
-        $GLOBALS['TCA'] = array(
-            'test' => array(
-                'ctrl' => array(
-                    'dynamicConfigFile' => __DIR__ . '/Fixtures/RuntimeException.php'
-                ),
-                'columns' => array(
-                    'foo' => 'bar',
-                ),
-            ),
-        );
-        ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
-    }
-
-    /////////////////////////////////////////
     // Tests concerning getExtensionVersion
     /////////////////////////////////////////
     /**

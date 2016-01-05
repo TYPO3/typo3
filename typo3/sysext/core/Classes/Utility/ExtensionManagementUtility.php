@@ -1862,7 +1862,6 @@ tt_content.' . $key . $suffix . ' {
                 // and are explicitly set in cached file as well
                 $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
                 require $extensionInformation['ext_tables.php'];
-                static::loadNewTcaColumnsConfigFiles();
             }
         }
     }
@@ -1902,57 +1901,12 @@ tt_content.' . $key . $suffix . ' {
                 // Add ext_tables.php content of extension
                 $phpCodeToCache[] = trim(GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
                 $phpCodeToCache[] = '';
-                $phpCodeToCache[] = ExtensionManagementUtility::class . '::loadNewTcaColumnsConfigFiles();';
-                $phpCodeToCache[] = '';
             }
         }
         $phpCodeToCache = implode(LF, $phpCodeToCache);
         // Remove all start and ending php tags from content
         $phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
         self::getCacheManager()->getCache('cache_core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
-    }
-
-    /**
-     * Loads "columns" of a $TCA table definition if extracted
-     * to a "dynamicConfigFile". This method is called after each
-     * single ext_tables.php files was included to immediately have
-     * the full $TCA ready for the next extension.
-     *
-     * $TCA[$tableName]['ctrl']['dynamicConfigFile'] must be the
-     * absolute path to a file.
-     *
-     * Be aware that 'dynamicConfigFile' is obsolete, and all TCA
-     * table definitions should be moved to Configuration/TCA/tablename.php
-     * to be fully loaded automatically.
-     *
-     * Example:
-     * dynamicConfigFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'SysNote.php',
-     *
-     * @return void
-     * @throws \RuntimeException
-     * @internal Internal use ONLY. It is called by cache files and can not be protected. Do not call yourself!
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Table definition should be moved to <your_extension>/Configuration/TCA/<table_name>
-     */
-    public static function loadNewTcaColumnsConfigFiles()
-    {
-        global $TCA;
-
-        foreach ($TCA as $tableName => $_) {
-            if (!isset($TCA[$tableName]['columns'])) {
-                $columnsConfigFile = $TCA[$tableName]['ctrl']['dynamicConfigFile'];
-                if ($columnsConfigFile) {
-                    GeneralUtility::logDeprecatedFunction();
-                    if (GeneralUtility::isAbsPath($columnsConfigFile)) {
-                        include($columnsConfigFile);
-                    } else {
-                        throw new \RuntimeException(
-                            'Columns configuration file not found',
-                            1341151261
-                        );
-                    }
-                }
-            }
-        }
     }
 
     /**

@@ -736,11 +736,6 @@ class BackendUtility
      */
     public static function getSpecConfParts($defaultExtrasString)
     {
-        if (!empty($_)) {
-            GeneralUtility::deprecationLog('Second parameter of BackendUtility::getSpecConfParts() is deprecated. Will be removed with TYPO3 CMS 8');
-            // Prepend old parameter, can be overwritten by casual defaultExtras string, then.
-            $defaultExtrasString = $_ . ':' . $defaultExtrasString;
-        }
         $specConfParts = GeneralUtility::trimExplode(':', $defaultExtrasString, true);
         $reg = array();
         if (!empty($specConfParts)) {
@@ -1815,19 +1810,13 @@ class BackendUtility
      *
      * @param string $table Table name, present in $GLOBALS['TCA']
      * @param string $col Field name
-     * @param string $printAllWrap Wrap value - set function description - this parameter is deprecated since TYPO3 6.2 and is removed two versions later. This parameter is a conceptual failure, as the content can then never be HSCed afterwards (which is how the method is used all the time), and then the code would be HSCed twice.
      * @return string or NULL if $col is not found in the TCA table
      */
-    public static function getItemLabel($table, $col, $printAllWrap = '')
+    public static function getItemLabel($table, $col)
     {
         // Check if column exists
         if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
             return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
-        }
-        if ($printAllWrap) {
-            GeneralUtility::deprecationLog('The third parameter of getItemLabel() is deprecated with TYPO3 CMS 6.2 and will be removed two versions later.');
-            $parts = explode('|', $printAllWrap);
-            return $parts[0] . $col . $parts[1];
         }
 
         return null;
@@ -3578,15 +3567,11 @@ class BackendUtility
             $objRef = null;
             if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey])) {
                 $objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey];
-            } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey])) {
-                GeneralUtility::deprecationLog('The hook softRefParser_GL (used with parser key "'
-                    . $spKey . '") is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8');
-                $objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
-            }
-            if ($objRef) {
-                $softRefParserObj = GeneralUtility::getUserObj($objRef);
-                if (is_object($softRefParserObj)) {
-                    $GLOBALS['T3_VAR']['softRefParser'][$spKey] = $softRefParserObj;
+                if ($objRef) {
+                    $softRefParserObj = GeneralUtility::getUserObj($objRef);
+                    if (is_object($softRefParserObj)) {
+                        $GLOBALS['T3_VAR']['softRefParser'][$spKey] = $softRefParserObj;
+                    }
                 }
             }
         }
@@ -3616,12 +3601,6 @@ class BackendUtility
         $cacheId = 'backend-softRefList-' . md5($parserList);
         if ($runtimeCache->has($cacheId)) {
             return $runtimeCache->get($cacheId);
-        }
-
-        // Looking for global parsers:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) {
-            GeneralUtility::deprecationLog('The hook softRefParser_GL is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8');
-            $parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
         }
 
         // Return immediately if list is blank:

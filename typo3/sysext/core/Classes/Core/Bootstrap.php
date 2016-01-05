@@ -668,9 +668,6 @@ class Bootstrap
 
         $displayErrorsSetting = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'];
         switch ($displayErrorsSetting) {
-            case 2:
-                GeneralUtility::deprecationLog('The option "$TYPO3_CONF_VARS[SYS][displayErrors]" is set to "2" which is deprecated as of TYPO3 CMS 7, and will be removed with TYPO3 CMS 8. Please change the value to "-1"');
-                // intentionally fall through
             case -1:
                 $ipMatchesDevelopmentSystem = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
                 $exceptionHandlerClassName = $ipMatchesDevelopmentSystem ? $debugExceptionHandlerClassName : $productionExceptionHandlerClassName;

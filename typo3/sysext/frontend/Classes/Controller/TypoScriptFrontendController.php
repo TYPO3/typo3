@@ -2698,14 +2698,8 @@ class TypoScriptFrontendController
             // Set the fourth parameter to TRUE in the next two getRawRecord() calls to
             // avoid versioning overlay to be applied as it generates an SQL error
             $sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'language_isocode,static_lang_isocode', true);
-            if (is_array($sys_language_row)) {
-                if (!empty($sys_language_row['language_isocode'])) {
-                    $this->sys_language_isocode = $sys_language_row['language_isocode'];
-                } elseif ($sys_language_row['static_lang_isocode'] && ExtensionManagementUtility::isLoaded('static_info_tables')) {
-                    GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
-                    $stLrow = $this->sys_page->getRawRecord('static_languages', $sys_language_row['static_lang_isocode'], 'lg_iso_2', true);
-                    $this->sys_language_isocode = $stLrow['lg_iso_2'];
-                }
+            if (is_array($sys_language_row) && !empty($sys_language_row['language_isocode'])) {
+                $this->sys_language_isocode = $sys_language_row['language_isocode'];
             }
             // the DB value is overriden by TypoScript
             if (!empty($this->config['config']['sys_language_isocode'])) {

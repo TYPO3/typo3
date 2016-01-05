@@ -152,14 +152,10 @@ class DebugUtility
      *
      * @param mixed $rows Array of arrays with similar keys
      * @param string $header Table header
-     * @param bool $returnHTML If TRUE, will return content instead of echo'ing out. Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      * @return void Outputs to browser.
      */
-    public static function debugRows($rows, $header = '', $returnHTML = false)
+    public static function debugRows($rows, $header = '')
     {
-        if ($returnHTML !== false) {
-            GeneralUtility::deprecationLog('Setting the parameter $returnHTML is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8.');
-        }
         self::debug('<pre>' . DebuggerUtility::var_dump($rows, $header, 8, true, false, true), $header . '</pre>');
     }
 

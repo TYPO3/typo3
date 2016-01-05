@@ -304,10 +304,6 @@ function jumpToUrl(URL) {
         foreach ($this->getSkinStylesheetDirectories() as $stylesheetDirectory) {
             $this->addStylesheetDirectory($stylesheetDirectory);
         }
-        // Background image
-        if ($GLOBALS['TBE_STYLES']['background']) {
-            GeneralUtility::deprecationLog('Usage of $TBE_STYLES["background"] is deprecated. Please use stylesheets directly.');
-        }
     }
 
     /**
@@ -619,12 +615,7 @@ function jumpToUrl(URL) {
         foreach ($this->JScodeArray as $name => $code) {
             $this->pageRenderer->addJsInlineCode($name, $code, false);
         }
-        if (!empty($this->JScodeLibArray)) {
-            GeneralUtility::deprecationLog('DocumentTemplate->JScodeLibArray is deprecated since TYPO3 CMS 7. Use the functionality within pageRenderer directly');
-            foreach ($this->JScodeLibArray as $library) {
-                $this->pageRenderer->addHeaderData($library);
-            }
-        }
+
         if ($this->extJScode) {
             $this->pageRenderer->addExtOnReadyCode($this->extJScode);
         }

@@ -2623,16 +2623,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @var array
      */
-    protected $deprecatedIcons = array(
-        'actions-system-refresh' => array(
-            'replacement' => 'actions-refresh',
-            'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8'
-        ),
-        'actions-system-extension-update-disabled' => array(
-            'replacement' => 'actions-system-extension-update',
-            'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8'
-        )
-    );
+    protected $deprecatedIcons = array();
 
     /**
      * @var string

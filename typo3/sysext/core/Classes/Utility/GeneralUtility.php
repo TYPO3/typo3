@@ -4009,10 +4009,9 @@ class GeneralUtility
      * This function can return an object reference if you like.
      * Just prefix the function call with "&": "$objRef = &\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
      * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
-     * Please note that the reference functionality is deprecated as of TYPO3 CMS 7, and will be removed with TYPO3 CMS 8, let the class use the SingletonInterface of TYPO3 instead.
      *
      * @todo Deprecate the whole method in several steps:
-     *      1. Deprecated singleton pattern, (will be removed in TYPO3 CMS 8)
+     *      1. Deprecated singleton pattern (was removed in TYPO3 CMS 8)
      *      2. Deprecate file prefix/ require file,
      *      3. Deprecate usage without valid class name.
      *      4. The last step should be to deprecate the method itself.
@@ -4037,25 +4036,10 @@ class GeneralUtility
             } else {
                 $class = $classRef;
             }
-            // Check for persistent object token, "&"
-            if ($class[0] === '&') {
-                self::deprecationLog(
-                    'The persistent functionality of getUserObj(), prepending the class name with & is deprecated since'
-                    . ' TYPO3 CMS 7 and will be removed in TYPO3 CMS 8. To allow this functionality, implement '
-                    . ' the \\TYPO3\\CMS\\Core\\SingletonInterface in the class "' . $classRef . '" instead.'
-                );
-                $class = substr($class, 1);
-                $storePersistentObject = true;
-            } else {
-                $storePersistentObject = false;
-            }
+
             // Check if class exists:
             if (class_exists($class)) {
                 $classObj = self::makeInstance($class);
-                // If persistent object should be created, set reference:
-                if ($storePersistentObject) {
-                    $GLOBALS['T3_VAR']['getUserObj'][$classRef] = $classObj;
-                }
                 return $classObj;
             }
         }

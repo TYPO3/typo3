@@ -3180,17 +3180,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                 }
                 break;
             case 'userdefined':
-                // if not set class may also be loaded by autoload on demand
-                if (isset($cfgArray['config']['classFile'])) {
-                    GeneralUtility::deprecationLog('The DBAL handler option "config.classFile" is deprecated since TYPO3 CMS 7, and will be removed with CMS 8. Make use of autoloading instead.');
-                    // Find class file:
-                    $fileName = GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
-                    if (@is_file($fileName)) {
-                        require_once $fileName;
-                    } else {
-                        throw new \RuntimeException('DBAL error: "' . $fileName . '" was not a file to include.', 1310027975);
-                    }
-                }
                 // Initialize:
                 $this->handlerInstance[$handlerKey] = GeneralUtility::makeInstance($cfgArray['config']['class']);
                 $this->handlerInstance[$handlerKey]->init($cfgArray, $this);

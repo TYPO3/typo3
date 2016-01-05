@@ -1063,17 +1063,7 @@ class ClickMenu
     public function FILE_launch($path, $moduleName, $type, $iconName, $noReturnUrl = false)
     {
         $loc = 'top.content.list_frame';
-
-        if (strpos($moduleName, '.php') !== false) {
-            GeneralUtility::deprecationLog(
-                'Using a php file directly in ClickMenu is deprecated since TYPO3 CMS 7, and will be removed in CMS 8.'
-                . ' Register the class as module and use BackendUtility::getModuleUrl() to get the right link.'
-                . ' For examples how to do this see ext_tables.php of EXT:backend.'
-            );
-            $scriptUrl = $moduleName;
-        } else {
-            $scriptUrl = BackendUtility::getModuleUrl($moduleName);
-        }
+        $scriptUrl = BackendUtility::getModuleUrl($moduleName);
 
         $editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
         return $this->linkItem(

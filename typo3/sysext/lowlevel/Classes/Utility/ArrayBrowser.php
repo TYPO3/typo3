@@ -90,14 +90,10 @@ class ArrayBrowser
      *
      * @param array $array The array to display
      * @param string $positionKey Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
-     * @param string $depthData is deprecated since TYPO3 CMS 7, and will be removed with CMS 8
      * @return string HTML for the tree
      */
-    public function tree($array, $positionKey, $depthData = null)
+    public function tree($array, $positionKey)
     {
-        if ($depthData) {
-            GeneralUtility::deprecationLog('ArrayBrowser::tree parameter $depthData is deprecated since TYPO3 CMS 7 and is not used anymore. Please remove the parameter.');
-        }
         $output = '<ul class="list-tree text-monospace">';
         if ($positionKey) {
             $positionKey = $positionKey . '.';

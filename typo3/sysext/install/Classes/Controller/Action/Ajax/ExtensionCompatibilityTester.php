@@ -169,7 +169,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
             // and are explicitly set in cached file as well
             $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
             require $extension['ext_tables.php'];
-            ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
         }
     }
 

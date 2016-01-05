@@ -851,20 +851,14 @@ class PageRepository
     }
 
     /**
-     * Returns the URL type for the input page row IF the doktype is 3 and not
-     * disabled.
+     * Returns the URL type for the input page row IF the doktype is set to 3.
      *
      * @param array $pagerow The page row to return URL type for
-     * @param bool $disable A flag to simply disable any output from here. - deprecated - don't use anymore.
-     * @return string|bool The URL type from $this->urltypes array. False if not found or disabled.
+     * @return string|bool The URL from based on the data from "urltype" and "url". False if not found.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
      */
-    public function getExtURL($pagerow, $disable = false)
+    public function getExtURL($pagerow)
     {
-        if ($disable !== false) {
-            GeneralUtility::deprecationLog('The disable option of PageRepository::getExtUrl() is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
-            return false;
-        }
         if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK) {
             $redirectTo = $this->urltypes[$pagerow['urltype']] . $pagerow['url'];
             // If relative path, prefix Site URL:
