@@ -154,6 +154,7 @@ return array(
             'label' => 'SELECT 1: multiple, minitems=2, maxitems=5',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'size' => 3,
                 'maxitems' => 5,
                 'minitems' => 2,
@@ -172,6 +173,7 @@ return array(
             'label' => 'SELECT 2: singlebox, minitems=1, maxitems=1',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -187,7 +189,7 @@ return array(
             'label' => 'SELECT 3: checkbox, minitems=1, maxitems=2',
             'config' => array(
                 'type' => 'select',
-                'renderMode' => 'checkbox',
+                'renderType' => 'selectCheckBox',
                 'items' => array(
                     array('foo1', 1),
                     array('foo2', 2),
@@ -202,11 +204,11 @@ return array(
             'label' => 'SELECT: 4 tree, minitems=1, maxitems=3',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'minitems' => 1,
                 'maxitems' => 3,
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'parentField' => 'pid',
                 ),
@@ -217,11 +219,11 @@ return array(
             'label' => 'SELECT: 34 renderMode=tree of pages',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'minitems' => 1,
                 'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'renderMode' => 'tree',
                 'treeConfig' => array(
                     'expandAll' => true,
                     'parentField' => 'pid',

@@ -22,6 +22,7 @@ return array(
             'label' => 'select parent',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_forms',
                 'size' => 1,
                 'minitems' => 1,
@@ -32,6 +33,7 @@ return array(
             'label' => 'select child',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_forms_inline_3_child',
                 'size' => 1,
                 'minitems' => 1,
