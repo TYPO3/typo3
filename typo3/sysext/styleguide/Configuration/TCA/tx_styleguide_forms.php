@@ -329,10 +329,7 @@ return array(
                         'title' => 'Link',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                         'module' => array(
-                            'name' => 'wizard_element_browser',
-                            'urlParameters' => array(
-                                'mode' => 'wizard',
-                            ),
+                            'name' => 'wizard_link',
                         ),
                         'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
                     ),
@@ -2249,9 +2246,8 @@ return array(
 														<title>Link</title>
 														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
-															<name>wizard_element_browser</name>
+															<name>wizard_link</name>
 															<urlParameters type="array">
-																<mode>wizard</mode>
 																<act>file|url</act>
 															</urlParameters>
 														</module>

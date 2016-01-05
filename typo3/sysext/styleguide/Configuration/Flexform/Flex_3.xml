@@ -71,10 +71,7 @@
 										<title>Link</title>
 										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
-											<name>wizard_element_browser</name>
-											<urlParameters type="array">
-												<mode>wizard</mode>
-											</urlParameters>
+											<name>wizard_link</name>
 										</module>
 										<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
@@ -148,6 +145,7 @@
 							<label>select_1 items with icons, iconsInOptionTag</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
 										<numIndex index="0">Icon using EXT:</numIndex>
@@ -168,9 +166,10 @@
 					</select_1>
 					<select_2>
 						<TCEforms>
-							<label>select_2 renderMode=checkbox with icons, maxitems=1</label>
+							<label>select_2 renderType=selectCheckBox with icons, maxitems=1</label>
 							<config>
 								<type>select</type>
+								<renderType>selectCheckBox</renderType>
 								<items>
 									<numIndex index="0">
 										<numIndex index="0">foo 1</numIndex>
@@ -185,20 +184,19 @@
 										<numIndex index="3">other description</numIndex>
 									</numIndex>
 								</items>
-								<renderMode>checkbox</renderMode>
 								<maxitems>1</maxitems>
 							</config>
 						</TCEforms>
 					</select_2>
 					<select_3>
 						<TCEforms>
-							<label>select_3 renderMode=tree</label>
+							<label>select_3 renderType=selectTree</label>
 							<config>
 								<type>select</type>
+								<renderType>selectTree</renderType>
 								<foreign_table>pages</foreign_table>
 								<size>20</size>
 								<maxitems>4</maxitems>
-								<renderMode>tree</renderMode>
 								<treeConfig>
 									<expandAll>1</expandAll>
 									<parentField>pid</parentField>
@@ -214,6 +212,7 @@
 							<label>select_4 multi, enableMultiSelectFilterTextfield, multiSelectFilterItems, wizards</label>
 							<config>
 								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
 								<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
 								<rootLevel>1</rootLevel>
 								<size>5</size>
@@ -331,6 +330,7 @@
 											<label>type select</label>
 											<config>
 												<type>select</type>
+												<renderType>selectSingle</renderType>
 												<items>
 													<numIndex index="0">
 														<numIndex index="0">foo</numIndex>
@@ -368,9 +368,10 @@
 									</element_3>
 									<element_4>
 										<TCEforms>
-											<label>element_4, type=select, renderMode=tree</label>
+											<label>element_4, type=select, renderType=selectTree</label>
 											<config>
 												<type>select</type>
+												<renderType>selectTree</renderType>
 												<foreign_table>pages</foreign_table>
 												<size>20</size>
 												<maxitems>4</maxitems>
