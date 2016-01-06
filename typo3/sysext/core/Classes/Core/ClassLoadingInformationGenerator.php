@@ -145,15 +145,12 @@ class ClassLoadingInformationGenerator
     protected function createClassMap($classesPath, $useRelativePaths = false, $ignorePotentialTestClasses = false, $namespace = null)
     {
         $classMap = array();
-        foreach (ClassMapGenerator::createMap($classesPath, null, null, $namespace) as $class => $path) {
-            if ($ignorePotentialTestClasses) {
-                if ($this->isIgnoredPath($classesPath, $path)) {
-                    continue;
-                }
-                if ($this->isIgnoredClassName($class)) {
-                    continue;
-                }
-            }
+        $blacklistExpression = null;
+        if ($ignorePotentialTestClasses) {
+            $blacklistPathPrefix = realpath($classesPath);
+            $blacklistExpression = "{($blacklistPathPrefix/tests/|$blacklistPathPrefix/Tests/|$blacklistPathPrefix/Resources/|$blacklistPathPrefix/res/|$blacklistPathPrefix/class.ext_update.php)}";
+        }
+        foreach (ClassMapGenerator::createMap($classesPath, $blacklistExpression, null, $namespace) as $class => $path) {
             if ($useRelativePaths) {
                 $classMap[$class] = $this->makePathRelative($classesPath, $path);
             } else {
@@ -161,40 +158,6 @@ class ClassLoadingInformationGenerator
             }
         }
         return $classMap;
-    }
-
-    /**
-     * Check if the class path should be ignored.
-     * Currently only tests folders are ignored.
-     *
-     * @param string $packagePath
-     * @param string $path
-     * @return bool
-     */
-    protected function isIgnoredPath($packagePath, $path)
-    {
-        if (stripos($this->makePathRelative($packagePath, $path, false), 'tests') !== false) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if class name should be ignored.
-     * Currently all classes with suffix "Test" and "Fixture" will be ignored
-     *
-     * @param string $className
-     * @return bool
-     */
-    protected function isIgnoredClassName($className)
-    {
-        foreach (array('Test', 'Fixture') as $suffix) {
-            if (preg_match('/(^|[a-z])' . $suffix . '$/', $className)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
