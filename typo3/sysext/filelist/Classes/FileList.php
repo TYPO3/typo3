@@ -236,67 +236,6 @@ class FileList extends AbstractRecordList
     }
 
     /**
-     * Return the buttons used by the filelist to include in the top header
-     *
-     * @param Folder $folderObject
-     * @return array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, buttons are now defined in FileListController
-     */
-    public function getButtonsAndOtherMarkers(Folder $folderObject)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $otherMarkers = array(
-            'PAGE_ICON' => '',
-            'TITLE' => ''
-        );
-        $buttons = array(
-            'level_up' => $this->getLinkToParentFolder($folderObject),
-            'refresh' => '',
-            'title' => '',
-            'page_icon' => '',
-            'PASTE' => ''
-        );
-        // Makes the code for the folder icon in the top
-        if ($folderObject) {
-            $title = $folderObject->getReadablePath();
-            // Start compiling the HTML
-            // If this is some subFolder under the mount root....
-            if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
-                // The icon with link
-                $otherMarkers['PAGE_ICON'] = '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
-            } else {
-                // This is the root folder
-                $otherMarkers['PAGE_ICON'] = '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL, null, array('mount-root' => true))->render() . '</span>';
-            }
-            $otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
-
-            if ($this->clickMenus) {
-                $otherMarkers['PAGE_ICON'] = BackendUtility::wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
-            }
-            // Add paste button if clipboard is initialized
-            if ($this->clipObj instanceof Clipboard && $folderObject->checkActionPermission('write')) {
-                $elFromTable = $this->clipObj->elFromTable('_FILE');
-                if (!empty($elFromTable)) {
-                    $addPasteButton = true;
-                    $elToConfirm = array();
-                    foreach ($elFromTable as $key => $element) {
-                        $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-                        if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $folderObject)) {
-                            $addPasteButton = false;
-                        }
-                        $elToConfirm[$key] = $clipBoardElement->getName();
-                    }
-                    if ($addPasteButton) {
-                        $buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', true) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
-                    }
-                }
-            }
-        }
-        $buttons['refresh'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', true) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
-        return array($buttons, $otherMarkers);
-    }
-
-    /**
      * Wrapping input string in a link with clipboard command.
      *
      * @param string $string String to be linked - must be htmlspecialchar'ed / prepared before.

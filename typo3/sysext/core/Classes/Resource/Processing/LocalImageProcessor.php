@@ -156,27 +156,6 @@ class LocalImageProcessor implements ProcessorInterface
     }
 
     /**
-     * Creates error image based on gfx/notfound_thumb.png
-     * Requires GD lib enabled, otherwise it will exit with the three
-     * textstrings outputted as text. Outputs the image stream to browser and exits!
-     *
-     * @param string $filename Name of the file
-     * @param string $textline1 Text line 1
-     * @param string $textline2 Text line 2
-     * @param string $textline3 Text line 3
-     * @return void
-     * @throws \RuntimeException
-     *
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getTemporaryImageWithText() instead.
-     */
-    public function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $graphicalFunctions = $this->getGraphicalFunctionsObject();
-        $graphicalFunctions->getTemporaryImageWithText($filename, $textline1, $textline2, $textline3);
-    }
-
-    /**
      * @return \TYPO3\CMS\Core\Imaging\GraphicalFunctions
      */
     protected function getGraphicalFunctionsObject()

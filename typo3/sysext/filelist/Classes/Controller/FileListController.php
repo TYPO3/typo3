@@ -43,14 +43,6 @@ use TYPO3\CMS\Filelist\FileList;
 class FileListController extends ActionController
 {
     /**
-     * Module configuration
-     *
-     * @var array
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. The Module gets configured by ExtensionManagementUtility::addModule() in ext_tables.php
-     */
-    public $MCONF = array();
-
-    /**
      * @var array
      */
     public $MOD_MENU = array();

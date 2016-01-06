@@ -2629,20 +2629,6 @@ class GraphicalFunctions
     }
 
     /**
-     * Converts a png file to gif.
-     * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set TRUE.
-     *
-     * @param string $theFile The filename with path
-     * @return string New filename or the old file name if no conversion happened
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, as the png_to_gif option has been removed with TYPO3 CMS 7
-     */
-    public static function pngToGifByImagemagick($theFile)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $theFile;
-    }
-
-    /**
      * Returns filename of the png/gif version of the input file (which can be png or gif).
      * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
      *

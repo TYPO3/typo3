@@ -78,14 +78,6 @@ class ExtendedFileUtility extends BasicFileUtility
     public $unzipPath = '';
 
     /**
-     * If set, the uploaded files will overwrite existing files.
-     *
-     * @var bool
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public $dontCheckForUnique = 0;
-
-    /**
      * Defines behaviour when uploading files with names that already exist; possible values are
      * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
      *
@@ -1113,11 +1105,6 @@ class ExtendedFileUtility extends BasicFileUtility
                 'size' => $uploadedFileData['size'][$i]
             );
             try {
-                if ((int)$this->dontCheckForUnique === 1) {
-                    GeneralUtility::deprecationLog('dontCheckForUnique = 1 is deprecated. Use setExistingFilesConflictMode(DuplicationBehavior::REPLACE);. Support for dontCheckForUnique will be removed in TYPO3 CMS 8.');
-                    $this->existingFilesConflictMode = DuplicationBehavior::cast(DuplicationBehavior::REPLACE);
-                }
-
                 /** @var $fileObject File */
                 $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
                 $fileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());

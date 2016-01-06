@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Enumeration object for DuplicationBehavior
@@ -42,29 +41,4 @@ class DuplicationBehavior extends \TYPO3\CMS\Core\Type\Enumeration
      * aborted.
      */
     const CANCEL = 'cancel';
-
-    /**
-     * Mapping of some legacy values, to assure BC
-     *
-     * @var string[]
-     * @deprecated
-     */
-    protected static $legacyValueMap = array(
-        '1' => self::REPLACE,
-        'overrideExistingFile' => self::REPLACE,
-        'renameNewFile' => self::RENAME,
-        'changeName' => self::RENAME
-    );
-
-    /**
-     * @param mixed $value
-     */
-    public function __construct($value = null)
-    {
-        if (isset(static::$legacyValueMap[$value])) {
-            GeneralUtility::deprecationLog('Using ' . $value . ' for resolving conflicts in file names is deprecated. Make use of the enumeration "\TYPO3\CMS\Core\Resource\DuplicationBehavior" instead.');
-            $value = static::$legacyValueMap[$value];
-        }
-        parent::__construct($value);
-    }
 }
