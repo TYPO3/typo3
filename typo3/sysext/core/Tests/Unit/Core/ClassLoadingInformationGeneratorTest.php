@@ -25,46 +25,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class ClassLoadingInformationGeneratorTest extends UnitTestCase
 {
     /**
-     * Data provider with different class names.
-     *
-     * @return array
-     */
-    public function isIgnoredClassNameIgnoresTestClassesDataProvider()
-    {
-        return array(
-            'FoTest' => array('FoTest', true),
-            'FoLowercasetest' => array('FoLowercasetest', false),
-            'DifferentClassTes' => array('DifferentClassTes', false),
-            'Test' => array('Test', true),
-            'FoFixture' => array('FoFixture', true),
-            'FoLowercasefixture' => array('FoLowercasefixture', false),
-            'DifferentClassFixtur' => array('DifferentClassFixtur', false),
-            'Fixture' => array('Fixture', true),
-            'Latest' => array('Latest', false),
-            'LaTest' => array('LaTest', true),
-            'Tx_RedirectTest_Domain_Model_Test' => array('Tx_RedirectTest_Domain_Model_Test', false),
-        );
-    }
-
-    /**
-     * @test
-     * @dataProvider isIgnoredClassNameIgnoresTestClassesDataProvider
-     *
-     * @param string $className
-     * @param bool $expectedResult
-     */
-    public function isIgnoredClassNameIgnoresTestClasses($className, $expectedResult)
-    {
-        $generator = $this->getAccessibleMock(
-            ClassLoadingInformationGenerator::class,
-            ['dummy'],
-            [$this->getMock(ClassLoader::class), array(), __DIR__]
-        );
-
-        $this->assertEquals($expectedResult, $generator->_call('isIgnoredClassName', $className));
-    }
-
-    /**
      * @test
      * @expectedException \TYPO3\CMS\Core\Error\Exception
      * @expectedExceptionCode 1444142481
@@ -248,6 +208,17 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
                 ],
             ],
+            'No autoload section' => [
+                [],
+                [],
+                [
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Tests/TestClass.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+                    '!$typo3InstallDir . \'/Fixtures/test_extension/class.ext_update.php\'',
+                ],
+            ],
             'Classmap section pointing to two files' => [
                 [
                     'autoload' => [
@@ -287,18 +258,24 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         foreach ($expectedPsr4Files as $expectation) {
             if ($expectation[0] === '!') {
                 $expectedCount = 0;
+                $expectation = substr($expectation, 1);
+                $message = sprintf('File "%s" is NOT expected to be in psr-4, but is.', $expectation);
             } else {
                 $expectedCount = 1;
+                $message = sprintf('File "%s" is expected to be in psr-4, but is not.', $expectation);
             }
-            $this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation));
+            $this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), $message);
         }
         foreach ($expectedClassMapFiles as $expectation) {
             if ($expectation[0] === '!') {
                 $expectedCount = 0;
+                $expectation = substr($expectation, 1);
+                $message = sprintf('File "%s" is NOT expected to be in class map, but is.', $expectation);
             } else {
                 $expectedCount = 1;
+                $message = sprintf('File "%s" is expected to be in class map, but is not.', $expectation);
             }
-            $this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation));
+            $this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), $message);
         }
     }
 
