@@ -727,7 +727,7 @@ return array(
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module.I.4',
                         'fe_users',
-                        'apps-pagetree-folder-contains-fe_users'
+                        'status-user-frontend'
                     )
                 ),
                 'default' => '',

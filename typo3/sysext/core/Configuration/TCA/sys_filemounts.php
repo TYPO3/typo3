@@ -10,6 +10,7 @@ return array(
         'adminOnly' => 1,
         'rootLevel' => 1,
         'delete' => 'deleted',
+        'iconfile' => 'apps-filetree-mount',
         'enablecolumns' => array(
             'disabled' => 'hidden'
         ),
