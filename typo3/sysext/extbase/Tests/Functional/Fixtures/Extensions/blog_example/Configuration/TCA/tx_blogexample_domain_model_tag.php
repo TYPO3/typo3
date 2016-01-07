@@ -1,8 +1,17 @@
 <?php
-defined('TYPO3_MODE') or die();
 
-$TCA['tx_blogexample_domain_model_tag'] = array(
-    'ctrl' => $TCA['tx_blogexample_domain_model_tag']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag',
+        'label' => 'name',
+        'tstamp'   => 'tstamp',
+        'crdate'   => 'crdate',
+        'delete'   => 'deleted',
+        'enablecolumns'  => array(
+            'disabled' => 'hidden'
+        ),
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'hidden, name, posts'
     ),
@@ -12,6 +21,7 @@ $TCA['tx_blogexample_domain_model_tag'] = array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
@@ -27,6 +37,7 @@ $TCA['tx_blogexample_domain_model_tag'] = array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => array(
                     array('', 0),
                 ),
@@ -56,6 +67,7 @@ $TCA['tx_blogexample_domain_model_tag'] = array(
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag.posts',
             'config' => array(
                 'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
                 'minitems' => 0,
                 'maxitems' => 9999,

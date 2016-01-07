@@ -1,8 +1,22 @@
 <?php
-defined('TYPO3_MODE') or die();
-
-$TCA['tx_blogexample_domain_model_person'] = array(
-    'ctrl' => $TCA['tx_blogexample_domain_model_person']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person',
+        'label' => 'lastname',
+        'label_alt' => 'firstname',
+        'label_alt_force' => true,
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'versioningWS' => true,
+        'versioning_followPages' => true,
+        'origUid' => 't3_origuid',
+        'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+        'delete' => 'deleted',
+        'enablecolumns' => array(
+            'disabled' => 'hidden'
+        ),
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_person.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'firstname, lastname, email, avatar'
     ),

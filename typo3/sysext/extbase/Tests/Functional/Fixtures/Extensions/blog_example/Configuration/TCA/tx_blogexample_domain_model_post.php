@@ -1,8 +1,24 @@
 <?php
-defined('TYPO3_MODE') or die();
-
-$TCA['tx_blogexample_domain_model_post'] = array(
-    'ctrl' => $TCA['tx_blogexample_domain_model_post']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post',
+        'label' => 'title',
+        'label_alt' => 'author',
+        'label_alt_force' => true,
+        'tstamp'   => 'tstamp',
+        'crdate'   => 'crdate',
+        'versioningWS' => true,
+        'versioning_followPages' => true,
+        'origUid' => 't3_origuid',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l18n_parent',
+        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'delete'   => 'deleted',
+        'enablecolumns'  => array(
+            'disabled' => 'hidden'
+        ),
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'title, date, author',
         'maxDBListItems' => 100,
@@ -96,7 +112,9 @@ $TCA['tx_blogexample_domain_model_post'] = array(
                      'edit' => array(
                          'type' => 'popup',
                          'title' => 'Edit',
-                         'script' => 'wizard_edit.php',
+                         'module' => array(
+                             'name' => 'wizard_edit',
+                         ),
                          'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
                          'popup_onlyOpenIfSelected' => 1,
                          'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1',
@@ -110,7 +128,9 @@ $TCA['tx_blogexample_domain_model_post'] = array(
                              'pid' => '###CURRENT_PID###',
                              'setValue' => 'prepend'
                          ),
-                         'script' => 'wizard_add.php',
+                         'module' => array(
+                             'name' => 'wizard_add',
+                         ),
                      ),
                  )
             )

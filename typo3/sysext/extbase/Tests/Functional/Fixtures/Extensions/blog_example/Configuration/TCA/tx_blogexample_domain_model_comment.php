@@ -1,8 +1,18 @@
 <?php
-defined('TYPO3_MODE') or die();
-
-$TCA['tx_blogexample_domain_model_comment'] = array(
-    'ctrl' => $TCA['tx_blogexample_domain_model_comment']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment',
+        'label' => 'date',
+        'label_alt' => 'author',
+        'label_alt_force' => true,
+        'tstamp'   => 'tstamp',
+        'crdate'   => 'crdate',
+        'delete'   => 'deleted',
+        'enablecolumns'  => array(
+            'disabled' => 'hidden'
+        ),
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'hidden, date, author, email, content'
     ),
