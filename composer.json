@@ -35,7 +35,6 @@
 		"ext-xml": "*",
 		"psr/log": "1.0.*@dev",
 		"pear/http_request2": "~2.2.1",
-		"phpwhois/idna-convert": "~0.8.2",
 		"swiftmailer/swiftmailer": "~5.4.1",
 		"symfony/console": "~2.7.0",
 		"symfony/finder": "~2.7.0",
@@ -43,7 +42,8 @@
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-composer-installers": "^1.2.5",
 		"psr/http-message": "~1.0",
-		"cogpowered/finediff": "~0.3.1"
+		"cogpowered/finediff": "~0.3.1",
+		"mso/idna-convert": "^0.9.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.0",

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0db794152481453fa2322a467c3857cd",
-    "content-hash": "675811e5cd846973cc67d2676a72bd93",
+    "hash": "96968a49ae10d4bfdb2971d1edfc0596",
+    "content-hash": "ab559df12792276201af80afad0c2e24",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -111,6 +111,56 @@
                 "instantiate"
             ],
             "time": "2015-06-14 21:17:01"
+        },
+        {
+            "name": "mso/idna-convert",
+            "version": "v0.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phlylabs/idna-convert.git",
+                "reference": "0a0a09e460e63739d82c3f0c3f0e5555567a6be3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phlylabs/idna-convert/zipball/0a0a09e460e63739d82c3f0c3f0e5555567a6be3",
+                "reference": "0a0a09e460e63739d82c3f0c3f0e5555567a6be3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": ">=5.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "idna_convert.class.php",
+                    "uctc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1+"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Sommerfeld",
+                    "email": "mso@phlylabs.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A library for encoding and decoding internationalized domain names",
+            "homepage": "http://idnaconv.net/",
+            "keywords": [
+                "idn",
+                "idna",
+                "php"
+            ],
+            "time": "2016-01-06 21:05:46"
         },
         {
             "name": "pear/http_request2",
@@ -281,56 +331,6 @@
             "time": "2015-02-10 20:07:52"
         },
         {
-            "name": "phpwhois/idna-convert",
-            "version": "v0.8.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpWhois/idna-convert.git",
-                "reference": "ea337954b43ae47f5ebba97c19d309081bebc46e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpWhois/idna-convert/zipball/ea337954b43ae47f5ebba97c19d309081bebc46e",
-                "reference": "ea337954b43ae47f5ebba97c19d309081bebc46e",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "idna_convert.class.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Matthias Sommerfeld",
-                    "email": "phlymail@phlylabs.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Dmitry Lukashin",
-                    "email": "dmitry@lukashin.ru",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "idna-convert library based on http://idnaconv.phlymail.de/",
-            "homepage": "http://idnaconv.phlymail.de/",
-            "keywords": [
-                "idn",
-                "idna",
-                "php"
-            ],
-            "time": "2014-12-26 04:51:08"
-        },
-        {
             "name": "psr/http-message",
             "version": "1.0",
             "source": {
@@ -389,7 +389,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/9e45edca52cc9c954680072c93e621f8b71fab26",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d8e60a5619fff77f9669da8997697443ef1a1d7e",
                 "reference": "9e45edca52cc9c954680072c93e621f8b71fab26",
                 "shasum": ""
             },
