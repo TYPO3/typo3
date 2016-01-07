@@ -48,7 +48,7 @@ class LivePreset extends Configuration\AbstractPreset
     /**
      * Production preset is always available
      *
-     * @return bool TRUE if mbstring PHP module is loaded
+     * @return bool Always TRUE
      */
     public function isAvailable()
     {

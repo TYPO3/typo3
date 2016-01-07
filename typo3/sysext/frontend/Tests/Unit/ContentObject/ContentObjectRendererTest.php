@@ -106,7 +106,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
         $GLOBALS['TT'] = new NullTimeTracker();
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 
         $this->subject = $this->getAccessibleMock(
             \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,

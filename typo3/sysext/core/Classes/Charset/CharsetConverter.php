@@ -64,6 +64,13 @@ class CharsetConverter implements SingletonInterface
     const STRATEGY_FALLBACK = 'fallback';
 
     /**
+     * Set to one of the strategies above, based on the availability of the environment.
+     *
+     * @var string
+     */
+    protected $conversionStrategy = null;
+
+    /**
      * ASCII Value for chars with no equivalent.
      *
      * @var int
@@ -606,15 +613,15 @@ class CharsetConverter implements SingletonInterface
         }
         // PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
         if ($toCharset === 'utf-8' || !$useEntityForNoChar) {
-            switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod']) {
-                case 'mbstring':
+            switch ($this->getConversionStrategy()) {
+                case self::STRATEGY_MBSTRING:
                     $convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
                     if (false !== $convertedString) {
                         return $convertedString;
                     }
                     // Returns FALSE for unsupported charsets
                     break;
-                case 'iconv':
+                case self::STRATEGY_ICONV:
                     $convertedString = iconv($fromCharset, $toCharset . '//TRANSLIT', $inputString);
                     if (false !== $convertedString) {
                         return $convertedString;
@@ -2276,18 +2283,23 @@ class CharsetConverter implements SingletonInterface
     }
 
     /**
-     * Checks the selected strategy based on which method is configured in
-     * $TYPO3_CONF_VARS[SYS][t3lib_cs_utils].
+     * Checks the selected strategy based on which method is available in the system.
+     * "mbstring" takes precedence over "iconv".
+     * See http://stackoverflow.com/questions/8233517/what-is-the-difference-between-iconv-and-mb-convert-encoding-in-php
      *
      * @return string could be "mbstring", "iconv" or "fallback"
      */
-    protected function getConversionStrategy() {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === self::STRATEGY_MBSTRING) {
-            return self::STRATEGY_MBSTRING;
-        } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === self::STRATEGY_ICONV) {
-            return self::STRATEGY_ICONV;
-        } else {
-            return self::STRATEGY_FALLBACK;
+    protected function getConversionStrategy()
+    {
+        if ($this->conversionStrategy === null) {
+            if (extension_loaded('mbstring')) {
+                $this->conversionStrategy = self::STRATEGY_MBSTRING;
+            } elseif (extension_loaded('iconv')) {
+                $this->conversionStrategy = self::STRATEGY_ICONV;
+            } else {
+                $this->conversionStrategy = self::STRATEGY_FALLBACK;
+            }
         }
+        return $this->conversionStrategy;
     }
 }

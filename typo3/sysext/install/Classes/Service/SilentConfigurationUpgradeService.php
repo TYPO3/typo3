@@ -76,6 +76,9 @@ class SilentConfigurationUpgradeService
         'FE/secureFormmail',
         'FE/strictFormmail',
         'FE/formmailMaxAttachmentSize',
+        // #72337
+        'SYS/t3lib_cs_utils',
+        'SYS/t3lib_cs_convMethod',
     );
 
     /**

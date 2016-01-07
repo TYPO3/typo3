@@ -36,7 +36,6 @@ class FeatureManager
      * @var array List of feature class names
      */
     protected $featureRegistry = array(
-        \TYPO3\CMS\Install\Configuration\Charset\CharsetFeature::class,
         \TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
         \TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
         \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
