@@ -2488,12 +2488,12 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the file post-rename signal.
      *
      * @param FileInterface $file
-     * @param $targetFolder
+     * @param string $sanitizedTargetFileName
      * @return void
      */
-    protected function emitPostFileRenameSignal(FileInterface $file, $targetFolder)
+    protected function emitPostFileRenameSignal(FileInterface $file, $sanitizedTargetFileName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileRename, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileRename, array($file, $sanitizedTargetFileName));
     }
 
     /**
@@ -2632,7 +2632,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folder
      * @param Folder $targetFolder
-     * @param $newName
+     * @param string $newName
      * @param Folder $originalFolder
      * @return void
      */
@@ -2645,7 +2645,7 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the folder pre-rename signal.
      *
      * @param Folder $folder
-     * @param $newName
+     * @param string $newName
      * @return void
      */
     protected function emitPreFolderRenameSignal(Folder $folder, $newName)
@@ -2657,7 +2657,7 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the folder post-rename signal.
      *
      * @param Folder $folder
-     * @param $newName
+     * @param string $newName
      * @return void
      */
     protected function emitPostFolderRenameSignal(Folder $folder, $newName)
