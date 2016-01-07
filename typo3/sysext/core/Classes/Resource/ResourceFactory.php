@@ -152,7 +152,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
                     'name' => 'Fallback Storage',
                     'description' => 'Internal storage, mounting the main TYPO3_site directory.',
                     'driver' => 'Local',
-                    'processingfolder' => 'typo3temp/_processed_/',
+                    'processingfolder' => 'typo3temp/assets/_processed_/',
                     // legacy code
                     'configuration' => '',
                     'is_online' => true,

@@ -44,7 +44,7 @@ use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
  * {f:image(src: 'EXT:viewhelpertest/Resources/Public/typo3_logo.png', alt: 'alt text', minWidth: 30, maxWidth: 40)}
  * </code>
  * <output>
- * <img alt="alt text" src="../typo3temp/pics/f13d79a526.png" width="40" height="38" />
+ * <img alt="alt text" src="../typo3temp/assets/images/f13d79a526.png" width="40" height="38" />
  * (depending on your TYPO3s encryption key)
  * </output>
  *

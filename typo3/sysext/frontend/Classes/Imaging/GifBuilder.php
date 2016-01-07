@@ -378,7 +378,7 @@ class GifBuilder extends GraphicalFunctions
 
     /**
      * Initiates the image file generation if ->setup is TRUE and if the file did not exist already.
-     * Gets filename from fileName() and if file exists in typo3temp/ dir it will - of course - not be rendered again.
+     * Gets filename from fileName() and if file exists in typo3temp/assets/images/ dir it will - of course - not be rendered again.
      * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
      *
      * @return string The filename for the created GIF/PNG file. The filename will be prefixed "GB_
@@ -388,11 +388,11 @@ class GifBuilder extends GraphicalFunctions
     {
         if ($this->setup) {
             // Relative to PATH_site
-            $gifFileName = $this->fileName('GB/');
+            $gifFileName = $this->fileName('images/');
             // File exists
             if (!file_exists($gifFileName)) {
                 // Create temporary directory if not done:
-                $this->createTempSubDir('GB/');
+                $this->createTempSubDir('images/');
                 // Create file:
                 $this->make();
                 $this->output($gifFileName);

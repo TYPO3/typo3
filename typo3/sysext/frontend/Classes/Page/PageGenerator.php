@@ -973,10 +973,10 @@ class PageGenerator
         $script = '';
         switch ($ext) {
             case 'js':
-                $script = 'typo3temp/Assets/' . substr(md5($str), 0, 10) . '.js';
+                $script = 'typo3temp/assets/js/' . GeneralUtility::shortMD5($str) . '.js';
                 break;
             case 'css':
-                $script = 'typo3temp/Assets/' . substr(md5($str), 0, 10) . '.css';
+                $script = 'typo3temp/assets/css/' . GeneralUtility::shortMD5($str) . '.css';
                 break;
         }
         // Write file:

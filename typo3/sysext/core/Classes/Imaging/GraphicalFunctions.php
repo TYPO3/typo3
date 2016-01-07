@@ -215,7 +215,7 @@ class GraphicalFunctions
      *
      * @var string
      */
-    public $tempPath = 'typo3temp/';
+    public $tempPath = 'typo3temp/assets/';
 
     /**
      * Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
@@ -2002,8 +2002,8 @@ class GraphicalFunctions
      */
     public function randomName()
     {
-        $this->createTempSubDir('temp/');
-        return $this->tempPath . 'temp/' . md5(uniqid('', true));
+        $this->createTempSubDir('transient/');
+        return $this->tempPath . 'transient/' . md5(uniqid('', true));
     }
 
     /**
@@ -2214,8 +2214,8 @@ class GraphicalFunctions
                     $this->imageMagickConvert_forceFileNameBody = '';
                 }
                 // Making the temporary filename:
-                $this->createTempSubDir('pics/');
-                $output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+                $this->createTempSubDir('images/');
+                $output = $this->absPrefix . $this->tempPath . 'images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
                 if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
                     $this->imageMagickExec($imagefile, $output, $command, $frame);
                 }
@@ -2647,10 +2647,10 @@ class GraphicalFunctions
             return $theFile;
         }
 
-        if (!@is_dir(PATH_site . 'typo3temp/GraphicalResources/')) {
-            GeneralUtility::mkdir(PATH_site . 'typo3temp/GraphicalResources/');
+        if (!@is_dir(PATH_site . 'typo3temp/assets/images/')) {
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
         }
-        $newFile = PATH_site . 'typo3temp/GraphicalResources/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
+        $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
         $cmd = GeneralUtility::imageMagickCommand(
             'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']
         );
@@ -2698,7 +2698,8 @@ class GraphicalFunctions
         }
         // Making the temporary filename:
         if (!@is_dir(($tmpPath . $dirName))) {
-            return GeneralUtility::mkdir($tmpPath . $dirName);
+            GeneralUtility::mkdir_deep($tmpPath . $dirName);
+            return @is_dir($tmpPath . $dirName);
         }
     }
 

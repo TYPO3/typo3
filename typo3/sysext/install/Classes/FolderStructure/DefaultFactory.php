@@ -93,9 +93,41 @@ class DefaultFactory
                         'targetContent' => '',
                     ),
                     array(
-                        'name' => 'compressor',
+                        'name' => 'assets',
                         'type' => DirectoryNode::class,
                         'targetPermission' => $directoryPermission,
+                        'children' => array(
+                            array(
+                                'name' => 'compressed',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            ),
+                            array(
+                                'name' => 'css',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            ),
+                            array(
+                                'name' => 'js',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            ),
+                            array(
+                                'name' => 'images',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            ),
+                            array(
+                                'name' => 'transient',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            ),
+                            array(
+                                'name' => '_processed_',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission
+                            )
+                        )
                     ),
                     array(
                         'name' => 'cs',
@@ -108,27 +140,7 @@ class DefaultFactory
                         'targetPermission' => $directoryPermission,
                     ),
                     array(
-                        'name' => 'GB',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
                         'name' => 'locks',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
-                        'name' => 'pics',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
-                        'name' => 'temp',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                    ),
-                    array(
-                        'name' => '_processed_',
                         'type' => DirectoryNode::class,
                         'targetPermission' => $directoryPermission,
                     ),

@@ -93,7 +93,8 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
     }
 
     /**
-     * Create new OnlineMedia item container file
+     * Create new OnlineMedia item container file.
+     * This is created inside typo3temp/ and then moved from FAL to the proper storage.
      *
      * @param Folder $targetFolder
      * @param string $fileName
@@ -102,23 +103,9 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      */
     protected function createNewFile(Folder $targetFolder, $fileName, $onlineMediaId)
     {
-        $tempFilePath = GeneralUtility::tempnam('online_media');
-        file_put_contents($tempFilePath, $onlineMediaId);
-        return $targetFolder->addFile($tempFilePath, $fileName, 'changeName');
-    }
-
-    /**
-     * Get temporary folder path to save preview images
-     *
-     * @return string
-     */
-    protected function getTempFolderPath()
-    {
-        $path = PATH_site . 'typo3temp/online_media/';
-        if (!is_dir($path)) {
-            GeneralUtility::mkdir($path);
-        }
-        return $path;
+        $temporaryFile = PATH_site . 'typo3temp/assets/transient/' . GeneralUtility::tempnam('online_media');
+        GeneralUtility::writeFileToTypo3tempDir($temporaryFile, $onlineMediaId);
+        return $targetFolder->addFile($temporaryFile, $fileName, 'changeName');
     }
 
     /**

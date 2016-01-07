@@ -27,7 +27,7 @@ class ResourceCompressor
     /**
      * @var string
      */
-    protected $targetDirectory = 'typo3temp/compressor/';
+    protected $targetDirectory = 'typo3temp/assets/compressed/';
 
     /**
      * @var string
@@ -71,7 +71,7 @@ class ResourceCompressor
     {
         // we check for existence of our targetDirectory
         if (!is_dir(PATH_site . $this->targetDirectory)) {
-            GeneralUtility::mkdir(PATH_site . $this->targetDirectory);
+            GeneralUtility::mkdir_deep(PATH_site . $this->targetDirectory);
         }
         // if enabled, we check whether we should auto-create the .htaccess file
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) {
@@ -544,7 +544,7 @@ class ResourceCompressor
     protected function cssFixRelativeUrlPaths($contents, $oldDir)
     {
         $mainDir = TYPO3_MODE === 'BE' ? TYPO3_mainDir : '';
-        $newDir = '../../' . $mainDir . $oldDir;
+        $newDir = '../../../' . $mainDir . $oldDir;
         // Replace "url()" paths
         if (stripos($contents, 'url') !== false) {
             $regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';

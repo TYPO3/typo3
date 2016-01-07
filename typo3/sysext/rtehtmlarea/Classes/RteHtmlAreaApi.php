@@ -308,7 +308,7 @@ abstract class RteHtmlAreaApi
      */
     protected function writeTemporaryFile($label, $fileExtension = 'js', $contents = '')
     {
-        $relativeFilename = 'typo3temp/RteHtmlArea/' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5($contents, 20) . '.' . $fileExtension;
+        $relativeFilename = 'typo3temp/assets/js/rte_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5($contents, 20) . '.' . $fileExtension;
         $destination = PATH_site . $relativeFilename;
         if (!file_exists($destination)) {
             $minifiedJavaScript = '';

@@ -121,9 +121,9 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     public function deleteProtocolFileDeletesFile()
     {
         $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, array('dummy'), array());
-        GeneralUtility::writeFile(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt', 'foobar');
+        GeneralUtility::writeFile(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt', 'foobar');
         $extensionCompatibilityTesterMock->_call('deleteProtocolFile');
-        $this->assertFalse(file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt'));
+        $this->assertFalse(file_exists(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt'));
     }
 
     /**

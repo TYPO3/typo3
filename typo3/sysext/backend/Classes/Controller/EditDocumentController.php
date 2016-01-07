@@ -738,7 +738,7 @@ class EditDocumentController extends AbstractModule
             $generatedLabels = array();
             $generatedLabels['core'] = $coreLabels;
             $code = 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
-            $filePath = 'typo3temp/Language/Backend-' . sha1($code) . '.js';
+            $filePath = 'typo3temp/assets/js/backend-' . sha1($code) . '.js';
             if (!file_exists(PATH_site . $filePath)) {
                 // writeFileToTypo3tempDir() returns NULL on success (please double-read!)
                 $error = GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code);

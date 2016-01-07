@@ -53,7 +53,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * {f:uri.image(src: 'EXT:myext/Resources/Public/typo3_logo.png', minWidth: 30, maxWidth: 40)}
  * </code>
  * <output>
- * typo3temp/pics/[b4c0e7ed5c].png
+ * typo3temp/assets/images/[b4c0e7ed5c].png
  * (depending on your TYPO3s encryption key)
  * </output>
  *

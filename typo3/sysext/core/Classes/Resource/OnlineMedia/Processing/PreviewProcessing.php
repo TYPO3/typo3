@@ -78,7 +78,7 @@ class PreviewProcessing
         if (empty($temporaryFileName) || !file_exists($temporaryFileName)) {
             return;
         }
-        $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/online_media_' . $file->getHashedIdentifier()) . '.jpg';
+        $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/assets/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
         switch ($taskType) {
             case 'Image.Preview':
                 // Merge custom configuration with default configuration
