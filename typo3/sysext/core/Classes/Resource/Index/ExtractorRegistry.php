@@ -43,7 +43,7 @@ class ExtractorRegistry implements SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
+        return GeneralUtility::makeInstance(ExtractorRegistry::class);
     }
 
     /**
@@ -56,7 +56,7 @@ class ExtractorRegistry implements SingletonInterface
     {
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('The class "' . $className . '" you are registering is not available', 1422705270);
-        } elseif (!in_array(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class, class_implements($className))) {
+        } elseif (!in_array(ExtractorInterface::class, class_implements($className))) {
             throw new \InvalidArgumentException('The extractor needs to implement the ExtractorInterface', 1422705271);
         } else {
             $this->extractors[] = $className;

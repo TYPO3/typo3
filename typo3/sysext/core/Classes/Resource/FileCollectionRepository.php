@@ -14,12 +14,13 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for accessing the collections stored in the database
  */
-class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollectionRepository
+class FileCollectionRepository extends RecordCollectionRepository
 {
     /**
      * @var string
@@ -36,13 +37,13 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
      *
      * @param int $uid The uid to be looked up
      * @return NULL|Collection\AbstractFileCollection
-     * @throws ResourceDoesNotExistException
+     * @throws Exception\ResourceDoesNotExistException
      */
     public function findByUid($uid)
     {
         $object = parent::findByUid($uid);
         if ($object === null) {
-            throw new ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
+            throw new Exception\ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
         }
         return $object;
     }
@@ -66,6 +67,6 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
      */
     protected function getFileFactory()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 }

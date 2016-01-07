@@ -14,9 +14,12 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Repository for accessing files
@@ -31,7 +34,7 @@ class FileRepository extends AbstractRepository
      *
      * @var string
      */
-    protected $objectType = \TYPO3\CMS\Core\Resource\File::class;
+    protected $objectType = File::class;
 
     /**
      * Main File object storage table. Note that this repository also works on
@@ -65,7 +68,7 @@ class FileRepository extends AbstractRepository
     public function findByRelation($tableName, $fieldName, $uid)
     {
         $itemList = array();
-        if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+        if (!MathUtility::canBeInterpretedAsInteger($uid)) {
             throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid  . '"', 1316789798);
         }
         $referenceUids = null;
@@ -88,11 +91,11 @@ class FileRepository extends AbstractRepository
                 $referenceUids = array_keys($references);
             }
         } else {
-            /** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
-            $relationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+            /** @var $relationHandler RelationHandler */
+            $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->start(
                 '', 'sys_file_reference', '', $uid, $tableName,
-                \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
+                BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
             );
             if (!empty($relationHandler->tableArray['sys_file_reference'])) {
                 $referenceUids = $relationHandler->tableArray['sys_file_reference'];
@@ -122,7 +125,7 @@ class FileRepository extends AbstractRepository
      */
     public function findFileReferenceByUid($uid)
     {
-        if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+        if (!MathUtility::canBeInterpretedAsInteger($uid)) {
             throw new \InvalidArgumentException('The UID of record has to be an integer. UID given: "' . $uid . '"', 1316889798);
         }
         try {
@@ -143,8 +146,8 @@ class FileRepository extends AbstractRepository
      */
     public function searchByName(Folder $folder, $fileName)
     {
-        /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-        $fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        /** @var ResourceFactory $fileFactory */
+        $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         $folders = $folder->getStorage()->getFoldersInFolder($folder, 0, 0, true, true);
         $folders[$folder->getIdentifier()] = $folder;
@@ -159,7 +162,7 @@ class FileRepository extends AbstractRepository
 
             try {
                 $files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);
-            } catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $ignoredException) {
+            } catch (Exception\FileDoesNotExistException $ignoredException) {
                 continue;
             }
         }

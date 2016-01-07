@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Collection\CollectionInterface;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
  * Abstract collection.
@@ -84,7 +87,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
      */
     public function key()
     {
-        /** @var $currentRecord \TYPO3\CMS\Core\Resource\File */
+        /** @var $currentRecord File */
         $currentRecord = $this->storage->current();
         return $currentRecord->getIdentifier();
     }
@@ -98,7 +101,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     protected function getItemUidList($includeTableName = false)
     {
         $list = array();
-        /** @var $entry \TYPO3\CMS\Core\Resource\File */
+        /** @var $entry File */
         foreach ($this->storage as $entry) {
             $list[] = $this->getItemTableName() . '_' . $entry->getUid();
         }
@@ -130,7 +133,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     public function toArray()
     {
         $itemArray = array();
-        /** @var $item \TYPO3\CMS\Core\Resource\File */
+        /** @var $item File */
         foreach ($this->storage as $item) {
             $itemArray[] = $item->toArray();
         }
@@ -150,7 +153,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     public function getItems()
     {
         $itemArray = array();
-        /** @var $item \TYPO3\CMS\Core\Resource\File */
+        /** @var $item File */
         foreach ($this->storage as $item) {
             $itemArray[] = $item;
         }
@@ -195,9 +198,9 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     /**
      * Adds a file to this collection.
      *
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $data
+     * @param FileInterface $data
      */
-    public function add(\TYPO3\CMS\Core\Resource\FileInterface $data)
+    public function add(FileInterface $data)
     {
         $this->storage->push($data);
     }
@@ -205,11 +208,11 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     /**
      * Adds all files of another collection to the corrent one.
      *
-     * @param \TYPO3\CMS\Core\Collection\CollectionInterface $other
+     * @param CollectionInterface $other
      */
-    public function addAll(\TYPO3\CMS\Core\Collection\CollectionInterface $other)
+    public function addAll(CollectionInterface $other)
     {
-        /** @var $value \TYPO3\CMS\Core\Resource\File */
+        /** @var $value File */
         foreach ($other as $value) {
             $this->add($value);
         }
@@ -218,12 +221,12 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
     /**
      * Removes a file from this collection.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @param File $file
      */
-    public function remove(\TYPO3\CMS\Core\Resource\File $file)
+    public function remove(File $file)
     {
         $offset = 0;
-        /** @var $value \TYPO3\CMS\Core\Resource\File */
+        /** @var $value File */
         foreach ($this->storage as $value) {
             if ($value === $file) {
                 break;

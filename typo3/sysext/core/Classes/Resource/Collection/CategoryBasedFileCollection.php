@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * A collection containing a set files belonging to certain categories.
  * This collection is persisted to the database with the accordant category identifiers.
  */
-class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+class CategoryBasedFileCollection extends AbstractFileCollection
 {
     /**
      * @var string
@@ -56,7 +57,7 @@ class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Ab
             ' AND sys_category_record_mm.tablenames = \'sys_file_metadata\''
         );
 
-        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+        $resourceFactory = ResourceFactory::getInstance();
         if ($resource) {
             while (($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) !== false) {
                 $this->add($resourceFactory->getFileObject((int)$record['file']));

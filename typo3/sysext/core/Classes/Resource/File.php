@@ -376,23 +376,23 @@ class File extends AbstractFile
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+     * @return Index\MetaDataRepository
      */
     protected function getMetaDataRepository()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+        return GeneralUtility::makeInstance(Index\MetaDataRepository::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+     * @return Index\FileIndexRepository
      */
     protected function getFileIndexRepository()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
+        return GeneralUtility::makeInstance(Index\FileIndexRepository::class);
     }
 
     /**
-     * @return void
+     * @param bool $indexingState
      * @internal Only for usage in Indexer
      */
     public function setIndexingInProgess($indexingState)

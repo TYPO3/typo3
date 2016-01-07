@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * The registry for task types.
  */
@@ -45,20 +48,18 @@ class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $taskType
-     * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
+     * @param ProcessedFile $processedFile
      * @param array $processingConfiguration
      * @return TaskInterface
      * @throws \RuntimeException
      */
-    public function getTaskForType($taskType, \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, array $processingConfiguration)
+    public function getTaskForType($taskType, ProcessedFile $processedFile, array $processingConfiguration)
     {
         $taskClass = $this->getClassForTaskType($taskType);
         if ($taskClass === null) {
             throw new \RuntimeException('Unknown processing task "' . $taskType . '"');
         }
 
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass,
-            $processedFile, $processingConfiguration
-        );
+        return GeneralUtility::makeInstance($taskClass, $processedFile, $processingConfiguration);
     }
 }

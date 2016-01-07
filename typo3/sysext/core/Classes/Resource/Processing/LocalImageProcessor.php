@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,8 +33,8 @@ class LocalImageProcessor implements ProcessorInterface
      */
     public function __construct()
     {
-        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        /** @var $logManager LogManager */
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
         $this->logger = $logManager->getLogger(__CLASS__);
     }
 
@@ -143,10 +145,10 @@ class LocalImageProcessor implements ProcessorInterface
     {
         switch ($taskName) {
             case 'Preview':
-                $helper = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper::class, $this);
+                $helper = GeneralUtility::makeInstance(LocalPreviewHelper::class, $this);
             break;
             case 'CropScaleMask':
-                $helper = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper::class, $this);
+                $helper = GeneralUtility::makeInstance(LocalCropScaleMaskHelper::class, $this);
             break;
             default:
                 throw new \InvalidArgumentException('Cannot find helper for task name: "' . $taskName . '"', 1353401352);
@@ -156,14 +158,14 @@ class LocalImageProcessor implements ProcessorInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Imaging\GraphicalFunctions
+     * @return GraphicalFunctions
      */
     protected function getGraphicalFunctionsObject()
     {
         static $graphicalFunctionsObject = null;
 
         if ($graphicalFunctionsObject === null) {
-            $graphicalFunctionsObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
+            $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
         }
 
         return $graphicalFunctionsObject;

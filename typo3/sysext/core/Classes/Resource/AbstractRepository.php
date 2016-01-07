@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Abstract repository implementing the basic repository methods
@@ -40,11 +43,18 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
     protected $type = '';
 
     /**
+     * The main object type of this class
+     *
+     * @var string
+     */
+    protected $objectType;
+
+    /**
      * Creates this object.
      */
     public function __construct()
     {
-        $this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $this->factory = GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**
@@ -119,17 +129,18 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
      */
     public function findAll()
     {
+        $db = $this->getDatabaseConnection();
         $itemList = array();
         $whereClause = '1=1';
         if ($this->type != '') {
-            $whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table) . ' ';
+            $whereClause .= ' AND ' . $this->typeField . ' = ' . $db->fullQuoteStr($this->type, $this->table) . ' ';
         }
         $whereClause .= $this->getWhereClauseForEnabledFields();
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        $res = $db->exec_SELECTquery('*', $this->table, $whereClause);
+        while ($row = $db->sql_fetch_assoc($res)) {
             $itemList[] = $this->createDomainObject($row);
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
+        $db->sql_free_result($res);
         return $itemList;
     }
 
@@ -175,10 +186,10 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
      */
     public function findByUid($uid)
     {
-        if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+        if (!MathUtility::canBeInterpretedAsInteger($uid)) {
             throw new \InvalidArgumentException('The UID has to be an integer. UID given: "' . $uid . '"', 1316779798);
         }
-        $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . $this->getWhereClauseForEnabledFields());
+        $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . $this->getWhereClauseForEnabledFields());
         if (empty($row) || !is_array($row)) {
             throw new \RuntimeException('Could not find row with UID "' . $uid . '" in table "' . $this->table . '"', 1314354065);
         }
@@ -199,8 +210,8 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
             $whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
         } else {
             // backend context
-            $whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table);
-            $whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
+            $whereClause = BackendUtility::BEenableFields($this->table);
+            $whereClause .= BackendUtility::deleteClause($this->table);
         }
         return $whereClause;
     }

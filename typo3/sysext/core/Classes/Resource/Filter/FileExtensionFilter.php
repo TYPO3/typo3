@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Core\Resource\Filter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utility methods for filtering filenames
  */
@@ -37,10 +42,10 @@ class FileExtensionFilter
      * Entry method for use as TCEMain "inline" field filter
      *
      * @param array $parameters
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
+     * @param DataHandler $tceMain
      * @return array
      */
-    public function filterInlineChildren(array $parameters, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain)
+    public function filterInlineChildren(array $parameters, DataHandler $tceMain)
     {
         $values = $parameters['values'];
         if ($parameters['allowedFileExtensions']) {
@@ -55,9 +60,9 @@ class FileExtensionFilter
                 if (empty($value)) {
                     continue;
                 }
-                $parts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $value, 2);
+                $parts = GeneralUtility::revExplode('_', $value, 2);
                 $fileReferenceUid = $parts[count($parts) - 1];
-                $fileReference = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
+                $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
                 $file = $fileReference->getOriginalFile();
                 if ($this->isAllowed($file->getName())) {
                     $cleanValues[] = $value;
@@ -80,10 +85,10 @@ class FileExtensionFilter
      * @param string $itemIdentifier
      * @param string $parentIdentifier
      * @param array $additionalInformation Additional information about the inspected item
-     * @param \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driver
+     * @param DriverInterface $driver
      * @return bool|int -1 if the file should not be included in a listing
      */
-    public function filterFileList($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driver)
+    public function filterFileList($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driver)
     {
         $returnCode = true;
         // Early return in case no file filters are set at all
@@ -102,7 +107,7 @@ class FileExtensionFilter
     /**
      * Checks whether a file is allowed according to the criteria defined in the class variables ($this->allowedFileExtensions etc.)
      *
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+     * @param string $fileName
      * @return bool
      */
     protected function isAllowed($fileName)
@@ -154,7 +159,7 @@ class FileExtensionFilter
         if (is_array($inputArgument)) {
             $returnValue = $inputArgument;
         } elseif ((string)$inputArgument !== '') {
-            $returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputArgument);
+            $returnValue = GeneralUtility::trimExplode(',', $inputArgument);
         }
 
         if (is_array($returnValue)) {

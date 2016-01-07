@@ -33,7 +33,7 @@ class InaccessibleFolder extends Folder
      */
     protected function throwInaccessibleException()
     {
-        throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException(
+        throw new Exception\InsufficientFolderReadPermissionsException(
             'You are trying to use a method on an inaccessible folder.',
             1390290029
         );
@@ -76,7 +76,7 @@ class InaccessibleFolder extends Folder
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
      * @param bool $recursive
-     * @return \TYPO3\CMS\Core\Resource\File[]
+     * @return File[]
      */
     public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
     {
@@ -129,7 +129,7 @@ class InaccessibleFolder extends Folder
      *
      * @param string $localFilePath
      * @param string $fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return File The file object
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
@@ -141,7 +141,7 @@ class InaccessibleFolder extends Folder
      * Adds an uploaded file into the Storage.
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return File The file object
      */
     public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)
@@ -198,7 +198,7 @@ class InaccessibleFolder extends Folder
      *
      * @param Folder $targetFolder Target folder to copy to.
      * @param string $targetFolderName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return Folder New (copied) folder object.
      */
     public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
@@ -211,7 +211,7 @@ class InaccessibleFolder extends Folder
      *
      * @param Folder $targetFolder Target folder to move to.
      * @param string $targetFolderName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return Folder New (copied) folder object.
      */
     public function moveTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME)

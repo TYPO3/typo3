@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Utility class to render capabilities of the storage.
@@ -43,15 +48,18 @@ class UserStorageCapabilityService
 
             // Display a warning to the BE User in case settings is not inline with storage capability.
             if ($storageRecord['is_public'] && !$storage->isPublic()) {
-                $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                    $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.message.storage_is_no_public'),
-                    $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header.storage_is_no_public'),
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                /** @var LanguageService $lang */
+                $lang = $GLOBALS['LANG'];
+                $message = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.message.storage_is_no_public'),
+                    $lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.header.storage_is_no_public'),
+                    FlashMessage::WARNING
                 );
 
-                /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-                $flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-                /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+                /** @var $flashMessageService FlashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                /** @var $defaultFlashMessageQueue FlashMessageQueue */
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($message);
             }

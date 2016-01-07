@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -417,7 +418,7 @@ abstract class AbstractFile implements FileInterface
      */
     public function getCombinedIdentifier()
     {
-        if (is_array($this->properties) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
+        if (is_array($this->properties) && MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
             $combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
         } else {
             $combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();

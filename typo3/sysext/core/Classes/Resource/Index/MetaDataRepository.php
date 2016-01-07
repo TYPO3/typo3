@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\File as FileType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Repository Class as an abstraction layer to sys_file_metadata
@@ -89,7 +91,7 @@ class MetaDataRepository implements SingletonInterface
      *
      * @param int $uid
      * @return array
-     * @throws \RuntimeException
+     * @throws InvalidUidException
      */
     public function findByFileUid($uid)
     {
@@ -187,21 +189,21 @@ class MetaDataRepository implements SingletonInterface
     /**
      * Get the SignalSlot dispatcher
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
-        return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        return $this->getObjectManager()->get(Dispatcher::class);
     }
 
     /**
      * Get the ObjectManager
      *
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
@@ -214,7 +216,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordPostRetrievalSignal(\ArrayObject $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordPostRetrieval', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordPostRetrieval', array($data));
     }
 
     /**
@@ -225,7 +227,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordUpdated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordUpdated', array($data));
     }
 
     /**
@@ -236,7 +238,7 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordCreated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordCreated', array($data));
     }
 
     /**
@@ -247,14 +249,14 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordDeleted', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(MetaDataRepository::class, 'recordDeleted', array($fileUid));
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
+     * @return MetaDataRepository
      */
     public static function getInstance()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+        return GeneralUtility::makeInstance(MetaDataRepository::class);
     }
 }

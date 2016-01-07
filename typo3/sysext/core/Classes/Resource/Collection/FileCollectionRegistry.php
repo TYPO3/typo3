@@ -13,11 +13,13 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Registry for FileCollection classes
  */
-class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class FileCollectionRegistry implements SingletonInterface
 {
     /**
      * Registered FileCollection types
@@ -55,7 +57,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
             throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1391295613);
         }
 
-        if (!in_array(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class, class_parents($className), true)) {
+        if (!in_array(AbstractFileCollection::class, class_parents($className), true)) {
             throw new \InvalidArgumentException('FileCollection ' . $className . ' needs to extend the AbstractFileCollection.', 1391295633);
         }
 
@@ -102,7 +104,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface
             );
         }
         if ($additionalColumns !== array()) {
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['sys_file_collection']['columns'], $additionalColumns);
+            ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['sys_file_collection']['columns'], $additionalColumns);
         }
         return $GLOBALS['TCA']['sys_file_collection'];
     }

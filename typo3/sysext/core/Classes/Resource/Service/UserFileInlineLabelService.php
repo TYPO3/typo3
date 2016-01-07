@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Resource\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
+use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -55,14 +57,15 @@ class UserFileInlineLabelService
                     $fullTitle = $params['row']['title'];
                 } else {
                     try {
-                        $metaDataRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+                        $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
                         $metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
                         $fullTitle = $metaData['title'];
-                    } catch (\TYPO3\CMS\Core\Resource\Exception\InvalidUidException $e) {
+                    } catch (InvalidUidException $e) {
                         /**
                          * We just catch the exception here
                          * Reasoning: There is nothing an editor or even admin could do
                          */
+                        $fullTitle = '';
                     }
                 }
 

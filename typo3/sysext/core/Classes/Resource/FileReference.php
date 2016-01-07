@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Representation of a specific usage of a file with possibilities to override certain
@@ -152,7 +153,7 @@ class FileReference implements FileInterface
     {
         if (empty($this->mergedProperties)) {
             $this->mergedProperties = $this->propertiesOfFileReference;
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+            ArrayUtility::mergeRecursiveWithOverrule(
                 $this->mergedProperties,
                 $this->originalFile->getProperties(),
                 true,

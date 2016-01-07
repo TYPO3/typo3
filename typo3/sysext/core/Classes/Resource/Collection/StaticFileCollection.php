@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A collection containing a static set of files. This collection is persisted
  * to the database with references to all files it contains.
  */
-class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+class StaticFileCollection extends AbstractFileCollection
 {
     /**
      * @var string
@@ -49,8 +51,8 @@ class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractF
      */
     public function loadContents()
     {
-        /** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
-        $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
+        /** @var FileRepository $fileRepository */
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $fileReferences = $fileRepository->findByRelation('sys_file_collection', 'files', $this->getIdentifier());
         foreach ($fileReferences as $file) {
             $this->add($file);

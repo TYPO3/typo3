@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * A "mount point" inside the TYPO3 file handling.
@@ -115,7 +119,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected $capabilities;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var Dispatcher
      */
     protected $signalSlotDispatcher;
 
@@ -354,7 +358,7 @@ class ResourceStorage implements ResourceStorageInterface
                     $this->isOnline = true;
                 } else {
                     // check if the storage is disabled temporary for now
-                    $registryObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+                    $registryObject = GeneralUtility::makeInstance(Registry::class);
                     $offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
                     if ($offlineUntil && $offlineUntil > time()) {
                         $this->isOnline = false;
@@ -390,7 +394,7 @@ class ResourceStorage implements ResourceStorageInterface
     {
         if ($this->getUid() > 0) {
             // @todo: move this to the storage repository
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file_storage', 'uid=' . (int)$this->getUid(), array('is_online' => 0));
+            $this->getDatabaseConnection()->exec_UPDATEquery('sys_file_storage', 'uid=' . (int)$this->getUid(), array('is_online' => 0));
         }
         $this->storageRecord['is_online'] = 0;
         $this->isOnline = false;
@@ -406,7 +410,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function markAsTemporaryOffline()
     {
-        $registryObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registryObject = GeneralUtility::makeInstance(Registry::class);
         $registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
         $this->storageRecord['is_online'] = 0;
         $this->isOnline = false;
@@ -497,7 +501,9 @@ class ResourceStorage implements ResourceStorageInterface
             // least one of the file mounts
             $writableFileMountAvailable = false;
             foreach ($this->fileMounts as $fileMount) {
-                if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $identifier)) {
+                /** @var Folder $folder */
+                $folder = $fileMount['folder'];
+                if ($this->driver->isWithin($folder->getIdentifier(), $identifier)) {
                     $isWithinFileMount = true;
                     if (!$checkWriteAccess) {
                         break;
@@ -1142,7 +1148,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $localFilePath The file on the server's hard disk to add
      * @param Folder $targetFolder The target folder where the file should be added
      * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
@@ -1420,7 +1426,7 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param array $filter
+     * @param callable $filter
      */
     public function addFileAndFolderNameFilter($filter)
     {
@@ -1557,7 +1563,7 @@ class ResourceStorage implements ResourceStorageInterface
             $this->processingFolders = array();
             $this->processingFolders[] = $this->getProcessingFolder();
             /** @var $storageRepository StorageRepository */
-            $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             $allStorages = $storageRepository->findAll();
             foreach ($allStorages as $storage) {
                 // To circumvent the permission check of the folder, we use the factory to create it "manually" instead of directly using $storage->getProcessingFolder()
@@ -1673,7 +1679,9 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileWritePermissions($file);
         // Call driver method to update the file and update file index entry afterwards
         $result = $this->driver->setFileContents($file->getIdentifier(), $contents);
-        $this->getIndexer()->updateIndexEntry($file);
+        if ($file instanceof File) {
+            $this->getIndexer()->updateIndexEntry($file);
+        }
         $this->emitPostFileSetContentsSignal($file, $contents);
         return $result;
     }
@@ -1736,7 +1744,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      *
      * @throws \Exception|Exception\AbstractFileOperationException
      * @throws Exception\ExistingTargetFileNameException
@@ -1782,7 +1790,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param string $targetFileName an optional destination fileName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      *
      * @throws Exception\ExistingTargetFileNameException
      * @throws \RuntimeException
@@ -1909,7 +1917,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param Folder $targetFolder the target folder
      * @param string $targetFileName the file name to be written
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return FileInterface The file object
      */
     public function addUploadedFile(array $uploadedFileData, Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
@@ -1968,7 +1976,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folderToMove The folder to move.
      * @param Folder $targetParentFolder The target parent folder
      * @param string $newFolderName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      *
      * @throws \Exception|\TYPO3\CMS\Core\Exception
      * @throws \InvalidArgumentException
@@ -2034,7 +2042,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FolderInterface $folderToCopy The folder to copy
      * @param FolderInterface $targetParentFolder The target folder
      * @param string $newFolderName
-     * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
+     * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return Folder The new (copied) folder object
      * @throws InvalidTargetFolderException
      */
@@ -2317,7 +2325,7 @@ class ResourceStorage implements ResourceStorageInterface
                 $parentPermissions = $this->driver->getPermissions($this->driver->getParentFolderIdentifierOfIdentifier($identifier));
                 if ($parentPermissions['r']) {
                     $folder = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Resource\InaccessibleFolder::class, $this, $data['identifier'], $data['name']
+                        InaccessibleFolder::class, $this, $data['identifier'], $data['name']
                     );
                 }
             }
@@ -2407,7 +2415,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
         return $targetFileName;
     }
 
@@ -2420,7 +2428,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileAddSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileAdd, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileAdd, array($file, $targetFolder));
     }
 
     /**
@@ -2432,7 +2440,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileCopy, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileCopy, array($file, $targetFolder));
     }
 
     /**
@@ -2444,7 +2452,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileCopy, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCopy, array($file, $targetFolder));
     }
 
     /**
@@ -2456,7 +2464,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileMove, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileMove, array($file, $targetFolder));
     }
 
     /**
@@ -2464,12 +2472,12 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
-     * @param Folder $originalFolder
+     * @param FolderInterface $originalFolder
      * @return void
      */
-    protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, Folder $originalFolder)
+    protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, FolderInterface $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileMove, array($file, $targetFolder, $originalFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileMove, array($file, $targetFolder, $originalFolder));
     }
 
     /**
@@ -2481,7 +2489,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileRenameSignal(FileInterface $file, $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileRename, array($file, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileRename, array($file, $targetFolder));
     }
 
     /**
@@ -2493,7 +2501,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileRenameSignal(FileInterface $file, $sanitizedTargetFileName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileRename, array($file, $sanitizedTargetFileName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileRename, array($file, $sanitizedTargetFileName));
     }
 
     /**
@@ -2505,7 +2513,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileReplace, array($file, $localFilePath));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileReplace, array($file, $localFilePath));
     }
 
     /**
@@ -2517,7 +2525,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileReplace, array($file, $localFilePath));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileReplace, array($file, $localFilePath));
     }
 
     /**
@@ -2528,7 +2536,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileCreateSignal($newFileIdentifier, Folder $targetFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileCreate, array($newFileIdentifier, $targetFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileCreate, array($newFileIdentifier, $targetFolder));
     }
 
     /**
@@ -2539,7 +2547,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileDelete, array($file));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFileDelete, array($file));
     }
 
     /**
@@ -2550,7 +2558,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileDeleteSignal(FileInterface $file)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileDelete, array($file));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileDelete, array($file));
     }
 
     /**
@@ -2562,7 +2570,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFileSetContentsSignal(FileInterface $file, $content)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFileSetContents, array($file, $content));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFileSetContents, array($file, $content));
     }
 
     /**
@@ -2574,7 +2582,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderAddSignal(Folder $targetFolder, $name)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
     }
 
     /**
@@ -2585,7 +2593,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderAddSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFolderAdd, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderAdd, array($folder));
     }
 
     /**
@@ -2598,7 +2606,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFolderCopy, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderCopy, array($folder, $targetFolder, $newName));
     }
 
     /**
@@ -2611,7 +2619,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFolderCopy, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderCopy, array($folder, $targetFolder, $newName));
     }
 
     /**
@@ -2624,7 +2632,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFolderMove, array($folder, $targetFolder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderMove, array($folder, $targetFolder, $newName));
     }
 
     /**
@@ -2638,7 +2646,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName, Folder $originalFolder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName, $originalFolder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName, $originalFolder));
     }
 
     /**
@@ -2650,7 +2658,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFolderRename, array($folder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderRename, array($folder, $newName));
     }
 
     /**
@@ -2662,7 +2670,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderRenameSignal(Folder $folder, $newName)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFolderRename, array($folder, $newName));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderRename, array($folder, $newName));
     }
 
     /**
@@ -2673,7 +2681,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFolderDelete, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreFolderDelete, array($folder));
     }
 
     /**
@@ -2684,7 +2692,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPostFolderDeleteSignal(Folder $folder)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PostFolderDelete, array($folder));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PostFolderDelete, array($folder));
     }
 
     /**
@@ -2696,7 +2704,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function emitPreGeneratePublicUrlSignal(ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreGeneratePublicUrl, array($this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData));
+        $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_PreGeneratePublicUrl, array($this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData));
     }
 
     /**
@@ -2755,12 +2763,12 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Get the SignalSlot dispatcher.
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
         if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+            $this->signalSlotDispatcher = $this->getObjectManager()->get(Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
     }
@@ -2768,11 +2776,11 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Gets the ObjectManager.
      *
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
@@ -2780,11 +2788,11 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function getFileFactory()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+     * @return Index\FileIndexRepository
      */
     protected function getFileIndexRepository()
     {
@@ -2797,7 +2805,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function getFileProcessingService()
     {
         if (!$this->fileProcessingService) {
-            $this->fileProcessingService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\FileProcessingService::class, $this, $this->driver);
+            $this->fileProcessingService = GeneralUtility::makeInstance(Service\FileProcessingService::class, $this, $this->driver);
         }
         return $this->fileProcessingService;
     }
@@ -2888,11 +2896,11 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Gets the Indexer.
      *
-     * @return \TYPO3\CMS\Core\Resource\Index\Indexer
+     * @return Index\Indexer
      */
     protected function getIndexer()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $this);
+        return GeneralUtility::makeInstance(Index\Indexer::class, $this);
     }
 
     /**
@@ -2910,5 +2918,13 @@ class ResourceStorage implements ResourceStorageInterface
     public function isDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }

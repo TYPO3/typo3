@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Core\Resource\Service;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,13 +47,13 @@ class UserFileMountService
             $storageUid = (int)$PA['row']['storage'][0];
         }
         if ($storageUid > 0) {
-            /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-            $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+            /** @var $storageRepository StorageRepository */
+            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
             $storage = $storageRepository->findByUid($storageUid);
             if ($storage === null) {
-                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-                $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+                /** @var FlashMessageService $flashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage #' . $storageUid . ' does not exist. No folder is currently selectable.', '', FlashMessage::ERROR));
                 if (empty($PA['items'])) {
@@ -80,8 +84,8 @@ class UserFileMountService
                     }
                 }
             } else {
-                /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-                $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+                /** @var FlashMessageService $flashMessageService */
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $queue = $flashMessageService->getMessageQueueByIdentifier();
                 $queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
                 if (empty($PA['items'])) {
@@ -100,11 +104,11 @@ class UserFileMountService
      * Simple function to make a hierarchical subfolder request into
      * a "flat" option list
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
+     * @param Folder $parentFolder
      * @param int $level a limiter
-     * @return \TYPO3\CMS\Core\Resource\Folder[]
+     * @return Folder[]
      */
-    protected function getSubfoldersForOptionList(\TYPO3\CMS\Core\Resource\Folder $parentFolder, $level = 0)
+    protected function getSubfoldersForOptionList(Folder $parentFolder, $level = 0)
     {
         $level++;
         // hard break on recursion
@@ -116,7 +120,7 @@ class UserFileMountService
         foreach ($subFolders as $subFolder) {
             try {
                 $subFolderItems = $this->getSubfoldersForOptionList($subFolder, $level);
-            } catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException $e) {
+            } catch (InsufficientFolderReadPermissionsException $e) {
                 $subFolderItems  = array();
             }
             $allFolderItems = array_merge($allFolderItems, $subFolderItems);

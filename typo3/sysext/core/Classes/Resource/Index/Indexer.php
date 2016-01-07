@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Core\Resource\Index;
  */
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The New FAL Indexer
@@ -301,7 +303,7 @@ class Indexer
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
         $fileInfo['type'] = $this->getFileType($fileInfo['mime_type']);
         $fileInfo['sha1'] = $this->storage->hashFileByIdentifier($identifier, 'sha1');
-        $fileInfo['extension'] = \TYPO3\CMS\Core\Utility\PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+        $fileInfo['extension'] = PathUtility::pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
         $fileInfo['missing'] = 0;
 
         return $fileInfo;
@@ -395,11 +397,11 @@ class Indexer
     /**
      * Returns the ResourceFactory
      *
-     * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @return ResourceFactory
      */
     protected function getResourceFactory()
     {
-        return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+        return ResourceFactory::getInstance();
     }
 
     /**

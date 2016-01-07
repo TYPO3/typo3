@@ -41,11 +41,6 @@ class ProcessedFileRepository extends AbstractRepository
     protected $table = 'sys_file_processedfile';
 
     /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
      * @var \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     protected $databaseConnection;
@@ -55,7 +50,7 @@ class ProcessedFileRepository extends AbstractRepository
      */
     public function __construct()
     {
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        parent::__construct();
         $this->databaseConnection = $GLOBALS['TYPO3_DB'];
     }
 
@@ -83,8 +78,8 @@ class ProcessedFileRepository extends AbstractRepository
      */
     protected function createDomainObject(array $databaseRow)
     {
-        $originalFile = $this->resourceFactory->getFileObject((int)$databaseRow['original']);
-        $originalFile->setStorage($this->resourceFactory->getStorageObject($originalFile->getProperty('storage')));
+        $originalFile = $this->factory->getFileObject((int)$databaseRow['original']);
+        $originalFile->setStorage($this->factory->getStorageObject($originalFile->getProperty('storage')));
         $taskType = $databaseRow['task_type'];
         $configuration = unserialize($databaseRow['configuration']);
 

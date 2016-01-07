@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Class AbstractHierarchicalFilesystemDriver
  */
@@ -28,7 +32,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      */
     protected function isPathValid($theFile)
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theFile);
+        return GeneralUtility::validPathStr($theFile);
     }
 
     /**
@@ -36,16 +40,16 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      *
      * @param string $filePath The file path (including the file name!)
      * @return string
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
+     * @throws InvalidPathException
      */
     protected function canonicalizeAndCheckFilePath($filePath)
     {
-        $filePath = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($filePath);
+        $filePath = PathUtility::getCanonicalPath($filePath);
 
         // filePath must be valid
         // Special case is required by vfsStream in Unit Test context
         if (!$this->isPathValid($filePath) && substr($filePath, 0, 6) !== 'vfs://') {
-            throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
+            throw new InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
         }
         return $filePath;
     }
@@ -55,7 +59,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
      *
      * @param string $fileIdentifier The file path (including the file name!)
      * @return string
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
+     * @throws InvalidPathException
      */
     protected function canonicalizeAndCheckFileIdentifier($fileIdentifier)
     {
@@ -94,6 +98,6 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     public function getParentFolderIdentifierOfIdentifier($fileIdentifier)
     {
         $fileIdentifier = $this->canonicalizeAndCheckFileIdentifier($fileIdentifier);
-        return \TYPO3\CMS\Core\Utility\PathUtility::dirname($fileIdentifier) . '/';
+        return PathUtility::dirname($fileIdentifier) . '/';
     }
 }

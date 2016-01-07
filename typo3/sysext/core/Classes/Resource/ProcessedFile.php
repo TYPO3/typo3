@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Representation of a specific processed version of a file. These are created by the FileProcessingService,
  * which in turn uses helper classes for doing the actual file processing. See there for a detailed description.
@@ -119,7 +122,7 @@ class ProcessedFile extends AbstractFile
         if (is_array($databaseRow)) {
             $this->reconstituteFromDatabaseRecord($databaseRow);
         }
-        $this->taskTypeRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry::class);
+        $this->taskTypeRegistry = GeneralUtility::makeInstance(Processing\TaskTypeRegistry::class);
     }
 
     /**
@@ -187,7 +190,9 @@ class ProcessedFile extends AbstractFile
         // Update some related properties
         $this->identifier = $addedFile->getIdentifier();
         $this->originalFileSha1 = $this->originalFile->getSha1();
-        $this->updateProperties($addedFile->getProperties());
+        if ($addedFile instanceof AbstractFile) {
+            $this->updateProperties($addedFile->getProperties());
+        }
         $this->deleted = false;
         $this->updated = true;
     }
@@ -324,7 +329,7 @@ class ProcessedFile extends AbstractFile
             $this->properties = array();
         }
 
-        if (array_key_exists('uid', $properties) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
+        if (array_key_exists('uid', $properties) && MathUtility::canBeInterpretedAsInteger($properties['uid'])) {
             $this->properties['uid'] = $properties['uid'];
         }
 

@@ -43,7 +43,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
+        return GeneralUtility::makeInstance(RendererRegistry::class);
     }
 
     /**
@@ -56,7 +56,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('The class "' . $className . '" you are trying to register is not available', 1411840171);
-        } elseif (!in_array(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, class_implements($className), true)) {
+        } elseif (!in_array(FileRendererInterface::class, class_implements($className), true)) {
             throw new \InvalidArgumentException('The renderer needs to implement the FileRendererInterface', 1411840172);
         } else {
             $this->classNames[] = $className;

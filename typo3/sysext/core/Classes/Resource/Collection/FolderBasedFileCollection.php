@@ -15,12 +15,14 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  */
 
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A collection containing a set of files to be represented as a (virtual) folder.
  * This collection is persisted to the database with the accordant folder reference.
  */
-class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+class FolderBasedFileCollection extends AbstractFileCollection
 {
     /**
      * @var string
@@ -112,8 +114,8 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
         $this->description = $array['description'];
         $this->recursive = (bool)$array['recursive'];
         if (!empty($array['folder']) && !empty($array['storage'])) {
-            /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-            $storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+            /** @var $storageRepository StorageRepository */
+            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
             $storage = $storageRepository->findByUid($array['storage']);
             if ($storage) {

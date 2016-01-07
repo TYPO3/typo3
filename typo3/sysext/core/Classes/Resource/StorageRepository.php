@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Repository for accessing the file mounts
  */
@@ -27,7 +31,7 @@ class StorageRepository extends AbstractRepository
     /**
      * @var string
      */
-    protected $objectType = \TYPO3\CMS\Core\Resource\ResourceStorage::class;
+    protected $objectType = ResourceStorage::class;
 
     /**
      * @var string
@@ -58,8 +62,8 @@ class StorageRepository extends AbstractRepository
     {
         parent::__construct();
 
-        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-        $logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        /** @var $logManager LogManager */
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
         $this->logger = $logManager->getLogger(__CLASS__);
         $this->db = $GLOBALS['TYPO3_DB'];
     }
@@ -131,7 +135,7 @@ class StorageRepository extends AbstractRepository
         $this->initializeLocalCache();
 
         /** @var $driverRegistry Driver\DriverRegistry */
-        $driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
+        $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = array();
         foreach (static::$storageRowCache as $storageRow) {
@@ -161,7 +165,7 @@ class StorageRepository extends AbstractRepository
         $this->initializeLocalCache();
 
         /** @var $driverRegistry Driver\DriverRegistry */
-        $driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
+        $driverRegistry = GeneralUtility::makeInstance(Driver\DriverRegistry::class);
 
         $storageObjects = array();
         foreach (static::$storageRowCache as $storageRow) {
@@ -203,8 +207,8 @@ class StorageRepository extends AbstractRepository
             )
         );
 
-        /** @var $flexObj \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-        $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+        /** @var $flexObj FlexFormTools */
+        $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
         $flexFormXml = $flexObj->flexArray2Xml($flexFormData, true);
 
             // create the record

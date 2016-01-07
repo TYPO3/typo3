@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Filter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+
 /**
  * Utility methods for filtering filenames
  */
@@ -36,10 +38,10 @@ class FileNameFilter
      * @param string $itemIdentifier
      * @param string $parentIdentifier
      * @param array $additionalInformation Additional information (driver dependent) about the inspected item
-     * @param \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driverInstance
+     * @param DriverInterface $driverInstance
      * @return bool|int -1 if the file should not be included in a listing
      */
-    public static function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driverInstance)
+    public static function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driverInstance)
     {
         // Only apply the filter if you want to hide the hidden files
         if (self::$showHiddenFilesAndFolders === false && strpos($itemIdentifier, '/.') !== false) {

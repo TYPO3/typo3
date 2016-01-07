@@ -16,8 +16,14 @@ namespace TYPO3\CMS\Core\Resource\Index;
 
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Repository Class as an abstraction layer to sys_file
@@ -57,11 +63,11 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Gets the Resource Factory
      *
-     * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+     * @return ResourceFactory
      */
     protected function getResourceFactory()
     {
-        return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+        return ResourceFactory::getInstance();
     }
 
     /**
@@ -71,7 +77,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public static function getInstance()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     /**
@@ -139,12 +145,12 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Retrieves Index record for a given $fileObject
      *
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
+     * @param FileInterface $fileObject
      * @return array|bool
      *
      * @internal only for use from FileRepository
      */
-    public function findOneByFileObject(\TYPO3\CMS\Core\Resource\FileInterface $fileObject)
+    public function findOneByFileObject(FileInterface $fileObject)
     {
         $storageUid = $fileObject->getStorage()->getUid();
         $identifierHash = $fileObject->getHashedIdentifier();
@@ -174,10 +180,10 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Find all records for files in a Folder
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folder
+     * @param Folder $folder
      * @return array|NULL
      */
-    public function findByFolder(\TYPO3\CMS\Core\Resource\Folder $folder)
+    public function findByFolder(Folder $folder)
     {
         $resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
             implode(',', $this->fields),
@@ -195,7 +201,7 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Find all records for files in an array of Folders
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder[] $folders
+     * @param Folder[] $folders
      * @param bool $includeMissing
      * @return array|NULL
      */
@@ -205,7 +211,7 @@ class FileIndexRepository implements SingletonInterface
         $folderIdentifiers = [];
 
         foreach ($folders as $folder) {
-            if (!$folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+            if (!$folder instanceof Folder) {
                 continue;
             }
 
@@ -312,11 +318,11 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Finds the files needed for second indexer step
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+     * @param ResourceStorage $storage
      * @param int $limit
      * @return array
      */
-    public function findInStorageWithIndexOutstanding(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, $limit = -1)
+    public function findInStorageWithIndexOutstanding(ResourceStorage $storage, $limit = -1)
     {
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
             implode(',', $this->fields),
@@ -331,11 +337,11 @@ class FileIndexRepository implements SingletonInterface
     /**
      * Helper function for the Indexer to detect missing files
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+     * @param ResourceStorage $storage
      * @param array $uidList
      * @return array
      */
-    public function findInStorageAndNotInUidList(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, array $uidList)
+    public function findInStorageAndNotInUidList(ResourceStorage $storage, array $uidList)
     {
         $where = 'storage = ' . (int)$storage->getUid();
         if (!empty($uidList)) {
@@ -417,21 +423,21 @@ class FileIndexRepository implements SingletonInterface
     /*
      * Get the SignalSlot dispatcher
      *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @return Dispatcher
      */
     protected function getSignalSlotDispatcher()
     {
-        return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        return $this->getObjectManager()->get(Dispatcher::class);
     }
 
     /**
      * Get the ObjectManager
      *
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @return ObjectManager
      */
     protected function getObjectManager()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
@@ -442,7 +448,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordUpdated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordUpdated', array($data));
     }
 
     /**
@@ -453,7 +459,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordCreatedSignal(array $data)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordCreated', array($data));
+        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordCreated', array($data));
     }
 
     /**
@@ -464,7 +470,7 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordDeletedSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordDeleted', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordDeleted', array($fileUid));
     }
 
     /**
@@ -475,6 +481,6 @@ class FileIndexRepository implements SingletonInterface
      */
     protected function emitRecordMarkedAsMissingSignal($fileUid)
     {
-        $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordMarkedAsMissing', array($fileUid));
+        $this->getSignalSlotDispatcher()->dispatch(FileIndexRepository::class, 'recordMarkedAsMissing', array($fileUid));
     }
 }
