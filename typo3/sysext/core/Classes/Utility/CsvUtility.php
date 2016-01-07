@@ -40,7 +40,7 @@ class CsvUtility
             rewind($handle);
             while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== false) {
                 $maximumCellCount = max(count($cells), $maximumCellCount);
-                $multiArray[] = $cells;
+                $multiArray[] = preg_replace('|<br */?>|i', LF, $cells);
             }
             fclose($handle);
         }
