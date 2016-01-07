@@ -92,7 +92,12 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
     {
         $title = $arguments['title'];
         $message = $arguments['message'];
-        $state = MathUtility::forceIntegerInRange($arguments['state'], -2, 2, -2);
+        $state = $arguments['state'];
+        $isInRange = MathUtility::isIntegerInRange($state, -2, 2);
+        if (!$isInRange) {
+            $state = -2;
+        }
+
         $iconName = $arguments['iconName'];
         $disableIcon = $arguments['disableIcon'];
         if ($message === null) {
