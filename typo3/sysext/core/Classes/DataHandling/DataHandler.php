@@ -2089,11 +2089,7 @@ class DataHandler
                 $this->fileFunc = GeneralUtility::makeInstance(BasicFileUtility::class);
             }
             // Setting permitted extensions.
-            $all_files = array();
-            $all_files['webspace']['allow'] = $tcaFieldConf['allowed'];
-            $all_files['webspace']['deny'] = $tcaFieldConf['disallowed'] ?: '*';
-            $all_files['ftpspace'] = $all_files['webspace'];
-            $this->fileFunc->init('', $all_files);
+            $this->fileFunc->setFileExtensionPermissions($tcaFieldConf['allowed'], $tcaFieldConf['disallowed'] ?: '*');
         }
         // If there is an upload folder defined:
         if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {

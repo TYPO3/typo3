@@ -1069,8 +1069,7 @@ return array(
         // If no file extension, TRUE is returned if 'allow' is '*', FALSE if 'deny' is '*' and TRUE if none of these matches
         // This configuration below accepts everything in ftpspace and everything in webspace except php3,php4,php5 or php files
         'fileExtensions' => array(
-            'webspace' => array('allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT),
-            'ftpspace' => array('allow' => '*', 'deny' => '')
+            'webspace' => array('allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT)
         ),
         'customPermOptions' => array(),                        // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
         'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT,        // A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT

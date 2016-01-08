@@ -1214,7 +1214,6 @@ abstract class ImportExport
     {
         if ($this->fileProcObj === null) {
             $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-            $this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
             $this->fileProcObj->setActionPermissions();
         }
         return $this->fileProcObj;

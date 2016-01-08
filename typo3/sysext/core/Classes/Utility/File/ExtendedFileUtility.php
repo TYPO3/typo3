@@ -50,20 +50,10 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * Important internal variables:
  *
- * $filemounts (see basicFileFunctions)
- * $f_ext (see basicFileFunctions)
+ * $fileExtensionPermissions (see basicFileFunctions)
  *
- * All fileoperations must be within the filemount-paths. Further the fileextension
- * MUST validate TRUE with the f_ext array
- *
- * The unzip-function allows unzip only if the destination path has it's f_ext[]['allow'] set to '*'!!
- * You are allowed to copy/move folders within the same 'space' (web/ftp).
- * You are allowed to copy/move folders between spaces (web/ftp) IF the destination has it's f_ext[]['allow'] set to '*'!
- *
- * Advice:
- * You should always exclude php-files from the webspace. This will keep people from uploading, copy/moving and renaming files to become executable php scripts.
- * You should never mount a ftp_space 'below' the webspace so that it reaches into the webspace. This is because if somebody unzips a zip-file in the ftp-space so that it reaches out into the webspace this will be a violation of the safety
- * For example this is a bad idea: you have an ftp-space that is '/www/' and a web-space that is '/www/htdocs/'
+ * All fileoperations must be within the filemount paths of the user. Further the fileextension
+ * MUST validate TRUE with the fileExtensionPermissions array
  */
 class ExtendedFileUtility extends BasicFileUtility
 {
@@ -103,23 +93,11 @@ class ExtendedFileUtility extends BasicFileUtility
     );
 
     /**
-     * This is regarded to be the recycler folder
-     *
-     * @var string
-     */
-    public $recyclerFN = '_recycler_';
-
-    /**
      * Will contain map between upload ID and the final filename
      *
      * @var array
      */
     public $internalUploadMap = array();
-
-    /**
-     * @var string
-     */
-    public $lastError = '';
 
     /**
      * All error messages from the file operations of this script instance
@@ -217,9 +195,6 @@ class ExtendedFileUtility extends BasicFileUtility
     public function processData()
     {
         $result = array();
-        if (!$this->isInit) {
-            return false;
-        }
         if (is_array($this->fileCmdMap)) {
             // Check if there were uploads expected, but no one made
             if ($this->fileCmdMap['upload']) {
@@ -354,8 +329,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->getBackendUser()->writelog($type, $action, $error, $details_nr, $details, $data);
         }
         if ($error > 0) {
-            $this->lastError = vsprintf($details, $data);
-            $this->errorMessages[] = $this->lastError;
+            $this->errorMessages[] = vsprintf($details, $data);
         }
     }
 
@@ -399,10 +373,7 @@ class ExtendedFileUtility extends BasicFileUtility
     public function func_delete(array $cmds)
     {
         $result = false;
-        if (!$this->isInit) {
-            return $result;
-        }
-        // Example indentifier for $cmds['data'] => "4:mypath/tomyfolder/myfile.jpg"
+        // Example identifier for $cmds['data'] => "4:mypath/tomyfolder/myfile.jpg"
         // for backwards compatibility: the combined file identifier was the path+filename
         try {
             $fileObject = $this->getFileObject($cmds['data']);
@@ -446,7 +417,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         $shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
                         if ($shortcutRecord) {
-                            $shortcutContent[] = '[record:' . $row['tablename'] . ':' .  $row['recuid'] . ']';
+                            $shortcutContent[] = '[record:' . $row['tablename'] . ':' . $row['recuid'] . ']';
                         } else {
                             $brokenReferences[] = $fileReferenceRow['ref_uid'];
                         }
@@ -642,9 +613,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function func_copy($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $sourceFileObject = $this->getFileObject($cmds['data']);
         /** @var $targetFolderObject \TYPO3\CMS\Core\Resource\Folder */
         $targetFolderObject = $this->getFileObject($cmds['target']);
@@ -735,9 +703,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function func_move($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $sourceFileObject = $this->getFileObject($cmds['data']);
         $targetFolderObject = $this->getFileObject($cmds['target']);
         // Basic check
@@ -831,9 +796,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_rename($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $sourceFileObject = $this->getFileObject($cmds['data']);
         $sourceFile = $sourceFileObject->getName();
         $targetFile = $cmds['target'];
@@ -896,9 +858,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_newfolder($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $targetFolderObject = $this->getFileObject($cmds['target']);
         if (!$targetFolderObject instanceof Folder) {
             $this->writeLog(6, 2, 104, 'Destination "%s" was not a directory', array($cmds['target']));
@@ -941,9 +900,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_newfile($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $targetFolderObject = $this->getFileObject($cmds['target']);
         if (!$targetFolderObject instanceof Folder) {
             $this->writeLog(8, 2, 104, 'Destination "%s" was not a directory', array($cmds['target']));
@@ -986,9 +942,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_edit($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         // Example indentifier for $cmds['target'] => "4:mypath/tomyfolder/myfile.jpg"
         // for backwards compatibility: the combined file identifier was the path+filename
         $fileIdentifier = $cmds['target'];
@@ -1059,9 +1012,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_upload($cmds)
     {
-        if (!$this->isInit) {
-            return false;
-        }
         $uploadPosition = $cmds['data'];
         $uploadedFileData = $_FILES['upload_' . $uploadPosition];
         if (empty($uploadedFileData['name']) || is_array($uploadedFileData['name']) && empty($uploadedFileData['name'][0])) {
@@ -1143,10 +1093,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function replaceFile(array $cmdArr)
     {
-        if (!$this->isInit) {
-            return false;
-        }
-
         $uploadPosition = $cmdArr['data'];
         $fileInfo = $_FILES['replace_' . $uploadPosition];
         if (empty($fileInfo['name'])) {

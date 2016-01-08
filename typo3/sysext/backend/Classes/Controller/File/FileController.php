@@ -141,7 +141,6 @@ class FileController
     public function main()
     {
         // Initializing:
-        $this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
         // Checking referrer / executing:
