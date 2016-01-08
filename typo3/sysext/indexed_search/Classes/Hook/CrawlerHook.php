@@ -627,7 +627,6 @@ class CrawlerHook {
 			$url_denyArray = GeneralUtility::trimExplode(LF, $url_deny, TRUE);
 			foreach ($url_denyArray as $testurl) {
 				if (GeneralUtility::isFirstPartOfStr($url, $testurl)) {
-					echo $url . ' /// ' . $url_deny . LF;
 					return TRUE;
 				}
 			}
