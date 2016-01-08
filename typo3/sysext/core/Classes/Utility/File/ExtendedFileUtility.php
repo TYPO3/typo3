@@ -69,15 +69,6 @@ use TYPO3\CMS\Lang\LanguageService;
 class ExtendedFileUtility extends BasicFileUtility
 {
     /**
-     * External static variables:
-     * Notice; some of these are overridden in the start() method with values from $GLOBALS['TYPO3_CONF_VARS']['BE']
-     * Path to unzip-program (with trailing '/')
-     *
-     * @var string
-     */
-    public $unzipPath = '';
-
-    /**
      * Defines behaviour when uploading files with names that already exist; possible values are
      * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
      *

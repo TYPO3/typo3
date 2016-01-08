@@ -7,7 +7,7 @@ Description
 
 The legacy functionality to unzip files from outside the document root was removed.
 
-Additionally, the corresponding option ``$TYPO3_CONF_VARS[BE][unzip_path]`` was removed as well.
+Additionally, the corresponding option ``$TYPO3_CONF_VARS[BE][unzip_path]`` and the class member ``ExtendedFileUtility::$unzipPath`` were removed as well.
 
 Legacy methods from the Extbase domain model BackendUser named ``isFileUnzipAllowed``
 and ``setFileUnzipAllowed`` were removed.
