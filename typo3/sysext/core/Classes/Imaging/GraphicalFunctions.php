@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -279,9 +283,47 @@ class GraphicalFunctions
     /**
      * Charset conversion object:
      *
-     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+     * @var CharsetConverter
      */
     public $csConvObj;
+
+    /**
+     * @var int
+     */
+    public $jpegQuality = 75;
+
+    /**
+     * @var string
+     */
+    public $map = '';
+
+    /**
+     * This holds the operational setup.
+     * Basically this is a TypoScript array with properties.
+     *
+     * @var array
+     */
+    public $setup = [];
+
+    /**
+     * @var int
+     */
+    public $w = 0;
+
+    /**
+     * @var int
+     */
+    public $h = 0;
+
+    /**
+     * @var array
+     */
+    public $OFFSET;
+
+    /**
+     * @var resource
+     */
+    protected $im;
 
     /**
      * Init function. Must always call this when using the class.
@@ -349,7 +391,7 @@ class GraphicalFunctions
         if ($gfxConf['im_noScaleUp']) {
             $this->mayScaleUp = 0;
         }
-        $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
     }
 
     /*************************************************
@@ -426,7 +468,7 @@ class GraphicalFunctions
                 // Mask the images
                 $this->ImageWrite($im, $theDest);
                 // Let combineExec handle maskNegation
-                $this->combineExec($theDest, $theImage, $theMask, $theDest, true);
+                $this->combineExec($theDest, $theImage, $theMask, $theDest);
                 // The main image is loaded again...
                 $backIm = $this->imageCreateFromFile($theDest);
                 // ... and if nothing went wrong we load it onto the old one.
@@ -984,7 +1026,7 @@ class GraphicalFunctions
                     $offsetInfo[5] += $calc[5] - $calc[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceBefore'] - (int)$strCfg['ySpaceAfter'];
                 }
             } else {
-                debug('cannot read file: ' . $fontFile, \TYPO3\CMS\Core\Imaging\GraphicalFunctions::class . '::ImageTTFBBoxWrapper()');
+                debug('cannot read file: ' . $fontFile, GraphicalFunctions::class . '::ImageTTFBBoxWrapper()');
             }
         }
         return $offsetInfo;
@@ -1035,7 +1077,7 @@ class GraphicalFunctions
                 $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
                 $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
             } else {
-                debug('cannot read file: ' . $fontFile, \TYPO3\CMS\Core\Imaging\GraphicalFunctions::class . '::ImageTTFTextWrapper()');
+                debug('cannot read file: ' . $fontFile, GraphicalFunctions::class . '::ImageTTFTextWrapper()');
             }
         }
     }
@@ -1061,7 +1103,7 @@ class GraphicalFunctions
         // Traverse the split-rendering configuration:
         // Splitting will create more entries in $result with individual configurations.
         if (is_array($splitRendering)) {
-            $sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($splitRendering);
+            $sKeyArray = TemplateService::sortedKeyList($splitRendering);
             // Traverse configured options:
             foreach ($sKeyArray as $key) {
                 $cfg = $splitRendering[$key . '.'];
@@ -1282,11 +1324,11 @@ class GraphicalFunctions
     }
 
     /**
-     * Gets the rendered text width.
+     * Gets the rendered text width
      *
      * @param string $text
      * @param array $conf
-     * @param int
+     * @return int
      */
     protected function getRenderedTextWidth($text, $conf)
     {
@@ -1462,9 +1504,6 @@ class GraphicalFunctions
                 // Blurring of the mask
                 // How many blur-commands that is executed. Min = 1;
                 $times = ceil($blurRate / 10);
-                // Here I boost the blur-rate so that it is 100 already at 25. The rest is done by up to 99 iterations of the blur-command.
-                $newBlurRate = $blurRate * 4;
-                $newBlurRate = MathUtility::forceIntegerInRange($newBlurRate, 1, 99);
                 // Building blur-command
                 for ($a = 0; $a < $times; $a++) {
                     $command .= ' -blur ' . $blurRate;
@@ -1701,7 +1740,7 @@ class GraphicalFunctions
     {
         $setup = $conf['value'];
         if (!trim($setup)) {
-            return '';
+            return;
         }
         $effects = explode('|', $setup);
         foreach ($effects as $val) {
@@ -1826,14 +1865,13 @@ class GraphicalFunctions
     /**
      * Apply auto-levels to input image pointer
      *
-     * @param int $im GDlib Image Pointer
+     * @param resource $im GDlib Image Pointer
      * @return void
      */
     public function autolevels(&$im)
     {
         $totalCols = ImageColorsTotal($im);
-        $min = 255;
-        $max = 0;
+        $grayArr = [];
         for ($c = 0; $c < $totalCols; $c++) {
             $cols = ImageColorsForIndex($im, $c);
             $grayArr[] = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
@@ -1855,13 +1893,13 @@ class GraphicalFunctions
     /**
      * Apply output levels to input image pointer (decreasing contrast)
      *
-     * @param int $im GDlib Image Pointer
+     * @param resource $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      * @param bool $swap If swap, then low and high are swapped. (Useful for negated masks...)
      * @return void
      */
-    public function outputLevels(&$im, $low, $high, $swap = '')
+    public function outputLevels(&$im, $low, $high, $swap = false)
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -1886,7 +1924,7 @@ class GraphicalFunctions
     /**
      * Apply input levels to input image pointer (increasing contrast)
      *
-     * @param int $im GDlib Image Pointer
+     * @param resource $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      * @return void
@@ -1920,14 +1958,13 @@ class GraphicalFunctions
         $fI = GeneralUtility::split_fileref($file);
         $ext = strtolower($fI['fileext']);
         $result = $this->randomName() . '.' . $ext;
-        if (($reduce = MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0)) > 0) {
+        $reduce = MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0);
+        if ($reduce > 0) {
             $params = ' -colors ' . $reduce;
             if ($reduce <= 256) {
                 $params .= ' -type Palette';
             }
-            if ($ext == 'png' && $reduce <= 256) {
-                $prefix = 'png8:';
-            }
+            $prefix = $ext === 'png' && $reduce <= 256 ? 'png8:' : '';
             $this->imageMagickExec($file, $prefix . $result, $params);
             if ($result) {
                 return $result;
@@ -1973,6 +2010,7 @@ class GraphicalFunctions
             $cmd = ' -sharpen ' . $sharpenF;
             return $cmd;
         }
+        return '';
     }
 
     /**
@@ -1992,6 +2030,7 @@ class GraphicalFunctions
             $cmd = ' -blur ' . $blurF;
             return $cmd;
         }
+        return '';
     }
 
     /**
@@ -2075,7 +2114,7 @@ class GraphicalFunctions
      * Create an array with object position/boundaries based on input TypoScript configuration (such as the "align" property is used), the work area definition and $BB array
      *
      * @param array $conf TypoScript configuration for a GIFBUILDER object
-     * @param array makeBox Workarea definition
+     * @param array $workArea Workarea definition
      * @param array $BB BB (Bounding box) array. Not just used for TEXT objects but also for others
      * @return array [0]=x, [1]=y, [2]=w, [3]=h
      * @access private
@@ -2134,7 +2173,7 @@ class GraphicalFunctions
      * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
      * @param array $options An array with options passed to getImageScale (see this function).
      * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
-     * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
+     * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
      * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
      */
     public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = false)
@@ -2143,97 +2182,98 @@ class GraphicalFunctions
             // Returning file info right away
             return $this->getImageDimensions($imagefile);
         }
-        if ($info = $this->getImageDimensions($imagefile)) {
-            $newExt = strtolower(trim($newExt));
-            // If no extension is given the original extension is used
-            if (!$newExt) {
+        $info = $this->getImageDimensions($imagefile);
+        if (!$info) {
+            return null;
+        }
+
+        $newExt = strtolower(trim($newExt));
+        // If no extension is given the original extension is used
+        if (!$newExt) {
+            $newExt = $info[2];
+        }
+        if ($newExt === 'web') {
+            if (GeneralUtility::inList($this->webImageExt, $info[2])) {
                 $newExt = $info[2];
-            }
-            if ($newExt == 'web') {
-                if (GeneralUtility::inList($this->webImageExt, $info[2])) {
-                    $newExt = $info[2];
-                } else {
-                    $newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
-                    if (!$params) {
-                        $params = $this->cmds[$newExt];
-                    }
-                }
-            }
-            if (GeneralUtility::inList($this->imageFileExt, $newExt)) {
-                if (strstr($w . $h, 'm')) {
-                    $max = 1;
-                } else {
-                    $max = 0;
-                }
-                $data = $this->getImageScale($info, $w, $h, $options);
-                $w = $data['origW'];
-                $h = $data['origH'];
-                // If no conversion should be performed
-                // this flag is TRUE if the width / height does NOT dictate
-                // the image to be scaled!! (that is if no width / height is
-                // given or if the destination w/h matches the original image
-                // dimensions or if the option to not scale the image is set)
-                $noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || !empty($options['noScale']);
-                if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
-                    // Set the new width and height before returning,
-                    // if the noScale option is set
-                    if (!empty($options['noScale'])) {
-                        $info[0] = $data[0];
-                        $info[1] = $data[1];
-                    }
-                    $info[3] = $imagefile;
-                    return $info;
-                }
-                $info[0] = $data[0];
-                $info[1] = $data[1];
-                $frame = $this->noFramePrepended ? '' : (int)$frame;
+            } else {
+                $newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
                 if (!$params) {
                     $params = $this->cmds[$newExt];
                 }
-                // Cropscaling:
-                if ($data['crs']) {
-                    if (!$data['origW']) {
-                        $data['origW'] = $data[0];
-                    }
-                    if (!$data['origH']) {
-                        $data['origH'] = $data[1];
-                    }
-                    $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
-                    $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-                    $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
-                }
-                $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
-                $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
-                if ($this->alternativeOutputKey) {
-                    $theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
-                } else {
-                    $theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
-                }
-                if ($this->imageMagickConvert_forceFileNameBody) {
-                    $theOutputName = $this->imageMagickConvert_forceFileNameBody;
-                    $this->imageMagickConvert_forceFileNameBody = '';
-                }
-                // Making the temporary filename:
-                $this->createTempSubDir('images/');
-                $output = $this->absPrefix . $this->tempPath . 'images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
-                if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
-                    $this->imageMagickExec($imagefile, $output, $command, $frame);
-                }
-                if (file_exists($output)) {
-                    $info[3] = $output;
-                    $info[2] = $newExt;
-                    // params might change some image data!
-                    if ($params) {
-                        $info = $this->getImageDimensions($info[3]);
-                    }
-                    if ($info[2] == $this->gifExtension && !$this->dontCompress) {
-                        // Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
-                        self::gifCompress($info[3], '');
-                    }
-                    return $info;
-                }
             }
         }
+        if (!GeneralUtility::inList($this->imageFileExt, $newExt)) {
+            return null;
+        }
+
+        $data = $this->getImageScale($info, $w, $h, $options);
+        $w = $data['origW'];
+        $h = $data['origH'];
+        // If no conversion should be performed
+        // this flag is TRUE if the width / height does NOT dictate
+        // the image to be scaled!! (that is if no width / height is
+        // given or if the destination w/h matches the original image
+        // dimensions or if the option to not scale the image is set)
+        $noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || !empty($options['noScale']);
+        if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
+            // Set the new width and height before returning,
+            // if the noScale option is set
+            if (!empty($options['noScale'])) {
+                $info[0] = $data[0];
+                $info[1] = $data[1];
+            }
+            $info[3] = $imagefile;
+            return $info;
+        }
+        $info[0] = $data[0];
+        $info[1] = $data[1];
+        $frame = $this->noFramePrepended ? '' : (int)$frame;
+        if (!$params) {
+            $params = $this->cmds[$newExt];
+        }
+        // Cropscaling:
+        if ($data['crs']) {
+            if (!$data['origW']) {
+                $data['origW'] = $data[0];
+            }
+            if (!$data['origH']) {
+                $data['origH'] = $data[1];
+            }
+            $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
+            $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
+            $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
+        }
+        $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+        $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
+        if ($this->alternativeOutputKey) {
+            $theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+        } else {
+            $theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+        }
+        if ($this->imageMagickConvert_forceFileNameBody) {
+            $theOutputName = $this->imageMagickConvert_forceFileNameBody;
+            $this->imageMagickConvert_forceFileNameBody = '';
+        }
+        // Making the temporary filename:
+        $this->createTempSubDir('images/');
+        $output = $this->absPrefix . $this->tempPath . 'images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
+            $this->imageMagickExec($imagefile, $output, $command, $frame);
+        }
+        if (file_exists($output)) {
+            $info[3] = $output;
+            $info[2] = $newExt;
+            // params might change some image data!
+            if ($params) {
+                $info = $this->getImageDimensions($info[3]);
+            }
+            if ($info[2] == $this->gifExtension && !$this->dontCompress) {
+                // Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
+                self::gifCompress($info[3], '');
+            }
+            return $info;
+        }
+        return null;
     }
 
     /**
@@ -2278,7 +2318,7 @@ class GraphicalFunctions
         $identifier = $this->generateCacheKeyForImageFile($filePath);
 
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
-        $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_imagesizes');
         $imageDimensions = array(
             'hash'        => $statusHash,
             'imagewidth'  => $identifyResult[0],
@@ -2302,7 +2342,7 @@ class GraphicalFunctions
         $statusHash = $this->generateStatusHashForImageFile($filePath);
         $identifier = $this->generateCacheKeyForImageFile($filePath);
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
-        $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_imagesizes');
         $cachedImageDimensions = $cache->get($identifier);
         if (!isset($cachedImageDimensions['hash'])) {
             return false;
@@ -2481,39 +2521,42 @@ class GraphicalFunctions
      *
      ***********************************/
     /**
-     * Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-     * Using ImageMagick
+     * Call the identify command
      *
      * @param string $imagefile The relative (to PATH_site) image filepath
-     * @return array
+     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
      */
     public function imageMagickIdentify($imagefile)
     {
-        if (!$this->NO_IMAGE_MAGICK) {
-            $frame = $this->noFramePrepended ? '' : '[0]';
-            $cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
-            $returnVal = array();
-            \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $returnVal);
-            $splitstring = array_pop($returnVal);
-            $this->IM_commands[] = array('identify', $cmd, $splitstring);
-            if ($splitstring) {
-                preg_match('/([^\\.]*)$/', $imagefile, $reg);
-                $splitinfo = explode(' ', $splitstring);
-                foreach ($splitinfo as $key => $val) {
-                    $temp = '';
-                    if ($val) {
-                        $temp = explode('x', $val);
-                    }
-                    if ((int)$temp[0] && (int)$temp[1]) {
-                        $dim = $temp;
-                        break;
-                    }
+        if ($this->NO_IMAGE_MAGICK) {
+            return null;
+        }
+
+        $frame = $this->noFramePrepended ? '' : '[0]';
+        $cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
+        $returnVal = array();
+        CommandUtility::exec($cmd, $returnVal);
+        $splitstring = array_pop($returnVal);
+        $this->IM_commands[] = array('identify', $cmd, $splitstring);
+        if ($splitstring) {
+            preg_match('/([^\\.]*)$/', $imagefile, $reg);
+            $splitinfo = explode(' ', $splitstring);
+            $dim = false;
+            foreach ($splitinfo as $key => $val) {
+                $temp = '';
+                if ($val) {
+                    $temp = explode('x', $val);
                 }
-                if ($dim[0] && $dim[1]) {
-                    return array($dim[0], $dim[1], strtolower($reg[0]), $imagefile);
+                if ((int)$temp[0] && (int)$temp[1]) {
+                    $dim = $temp;
+                    break;
                 }
             }
+            if (!empty($dim[0]) && !empty($dim[1])) {
+                return array($dim[0], $dim[1], strtolower($reg[0]), $imagefile);
+            }
         }
+        return null;
     }
 
     /**
@@ -2528,21 +2571,22 @@ class GraphicalFunctions
      */
     public function imageMagickExec($input, $output, $params, $frame = 0)
     {
-        if (!$this->NO_IMAGE_MAGICK) {
-            // Unless noFramePrepended is set in the Install Tool, a frame number is added to
-            // select a specific page of the image (by default this will be the first page)
-            if (!$this->noFramePrepended) {
-                $frame = '[' . (int)$frame . ']';
-            } else {
-                $frame = '';
-            }
-            $cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
-            $this->IM_commands[] = array($output, $cmd);
-            $ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
-            // Change the permissions of the file
-            GeneralUtility::fixPermissions($output);
-            return $ret;
+        if ($this->NO_IMAGE_MAGICK) {
+            return '';
         }
+        // Unless noFramePrepended is set in the Install Tool, a frame number is added to
+        // select a specific page of the image (by default this will be the first page)
+        if (!$this->noFramePrepended) {
+            $frame = '[' . (int)$frame . ']';
+        } else {
+            $frame = '';
+        }
+        $cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
+        $this->IM_commands[] = array($output, $cmd);
+        $ret = CommandUtility::exec($cmd);
+        // Change the permissions of the file
+        GeneralUtility::fixPermissions($output);
+        return $ret;
     }
 
     /**
@@ -2553,26 +2597,31 @@ class GraphicalFunctions
      * @param string $overlay The relative (to PATH_site) image filepath, overlay file (top)
      * @param string $mask The relative (to PATH_site) image filepath, the mask file (grayscale)
      * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
-     * @param bool $handleNegation
-     * @return void
+     * @return string
      */
-    public function combineExec($input, $overlay, $mask, $output, $handleNegation = false)
+    public function combineExec($input, $overlay, $mask, $output)
     {
-        if (!$this->NO_IMAGE_MAGICK) {
-            $params = '-colorspace GRAY +matte';
-            $theMask = $this->randomName() . '.' . $this->gifExtension;
-            $this->imageMagickExec($mask, $theMask, $params);
-            $cmd = GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . CommandUtility::escapeShellArgument($input) . ' ' . CommandUtility::escapeShellArgument($overlay) . ' ' . CommandUtility::escapeShellArgument($theMask) . ' ' . CommandUtility::escapeShellArgument($output));
-            // +matte = no alpha layer in output
-            $this->IM_commands[] = array($output, $cmd);
-            $ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
-            // Change the permissions of the file
-            GeneralUtility::fixPermissions($output);
-            if (is_file($theMask)) {
-                @unlink($theMask);
-            }
-            return $ret;
+        if ($this->NO_IMAGE_MAGICK) {
+            return '';
         }
+        $theMask = $this->randomName() . '.' . $this->gifExtension;
+        // +matte = no alpha layer in output
+        $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
+
+        $parameters = '-compose over +matte '
+                      . CommandUtility::escapeShellArgument($input) . ' '
+                      . CommandUtility::escapeShellArgument($overlay) . ' '
+                      . CommandUtility::escapeShellArgument($theMask) . ' '
+                      . CommandUtility::escapeShellArgument($output);
+        $cmd = GeneralUtility::imageMagickCommand('combine', $parameters);
+        $this->IM_commands[] = array($output, $cmd);
+        $ret = CommandUtility::exec($cmd);
+        // Change the permissions of the file
+        GeneralUtility::fixPermissions($output);
+        if (is_file($theMask)) {
+            @unlink($theMask);
+        }
+        return $ret;
     }
 
     /**
@@ -2667,20 +2716,6 @@ class GraphicalFunctions
      * Various IO functions
      *
      ***********************************/
-    /**
-     * Returns TRUE if the input file existed
-     *
-     * @param string $file Input file to check
-     * @return string Returns the filename if the file existed, otherwise empty.
-     */
-    public function checkFile($file)
-    {
-        if (@is_file($file)) {
-            return $file;
-        } else {
-            return '';
-        }
-    }
 
     /**
      * Creates subdirectory in typo3temp/ if not already found.
@@ -2701,6 +2736,7 @@ class GraphicalFunctions
             GeneralUtility::mkdir_deep($tmpPath . $dirName);
             return @is_dir($tmpPath . $dirName);
         }
+        return false;
     }
 
     /**
@@ -2905,20 +2941,20 @@ class GraphicalFunctions
     /**
      * Returns the HEX color value for an RGB color array
      *
-     * @param array RGB color array
+     * @param array $color RGB color array
      * @return string HEX color value
      */
-    public function hexColor($col)
+    public function hexColor($color)
     {
-        $r = dechex($col[0]);
+        $r = dechex($color[0]);
         if (strlen($r) < 2) {
             $r = '0' . $r;
         }
-        $g = dechex($col[1]);
+        $g = dechex($color[1]);
         if (strlen($g) < 2) {
             $g = '0' . $g;
         }
-        $b = dechex($col[2]);
+        $b = dechex($color[2]);
         if (strlen($b) < 2) {
             $b = '0' . $b;
         }
@@ -2939,9 +2975,10 @@ class GraphicalFunctions
         if (is_array($colArr) && !empty($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
             $firstCol = array_shift($colArr);
             $firstColArr = $this->convertColor($firstCol);
+            $origName = $preName = $this->randomName() . '.png';
+            $postName = $this->randomName() . '.png';
+            $tmpImg = null;
             if (count($colArr) > 1) {
-                $origName = ($preName = $this->randomName() . '.png');
-                $postName = $this->randomName() . '.png';
                 $this->imageWrite($img, $preName);
                 $firstCol = $this->hexColor($firstColArr);
                 foreach ($colArr as $transparentColor) {
@@ -2997,7 +3034,7 @@ class GraphicalFunctions
             throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
         }
         // Creates the basis for the error image
-        $basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/';
+        $basePath = ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/';
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])) {
             $im = imagecreatefrompng($basePath . 'NotFound.png');
         } else {

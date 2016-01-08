@@ -73,16 +73,14 @@ class CommandUtility
      * Wrapper function for php exec function
      * Needs to be central to have better control and possible fix for issues
      *
-     * @static
      * @param string $command
-     * @param NULL|array $output
+     * @param null|array $output
      * @param int $returnValue
-     * @return NULL|array
+     * @return string
      */
     public static function exec($command, &$output = null, &$returnValue = 0)
     {
-        $lastLine = exec($command, $output, $returnValue);
-        return $lastLine;
+        return exec($command, $output, $returnValue);
     }
 
     /**

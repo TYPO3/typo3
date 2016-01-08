@@ -48,46 +48,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class GifBuilder extends GraphicalFunctions
 {
     /**
-     * the main image
-     *
-     * @var string
-     */
-    public $im = '';
-
-    /**
-     * the image-width
-     *
-     * @var int
-     */
-    public $w = 0;
-
-    /**
-     * the image-height
-     *
-     * @var int
-     */
-    public $h = 0;
-
-    /**
-     * map-data
-     *
-     * @var string
-     */
-    public $map;
-
-    /**
-     * @var array
-     */
-    public $workArea;
-
-    /**
-     * This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
-     *
-     * @var array
-     */
-    public $setup = array();
-
-    /**
      * Contains all text strings used on this image
      *
      * @var array
@@ -127,11 +87,6 @@ class GifBuilder extends GraphicalFunctions
      * @var int[]
      */
     public $XY = array();
-
-    /**
-     * @var array
-     */
-    public $OFFSET = array();
 
     /**
      * @var ContentObjectRenderer

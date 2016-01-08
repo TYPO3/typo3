@@ -406,7 +406,7 @@ class TestSetup extends Action\AbstractAction
         $maskFile = $this->imageBasePath . 'TestInput/MaskBlackWhite.gif';
         $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
-        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, true);
+        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $result = $imageProcessor->getImageDimensions($resultFile);
         if ($result) {
             $testResults['combine1']['title'] = 'Combine using a GIF mask with only black and white';
@@ -423,7 +423,7 @@ class TestSetup extends Action\AbstractAction
         $maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
         $resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
             . StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
-        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, true);
+        $imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile);
         $result = $imageProcessor->getImageDimensions($resultFile);
         if ($result) {
             $testResults['combine2']['title'] = 'Combine using a JPG mask with graylevels';
