@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
@@ -50,7 +50,7 @@ class FalStatus implements StatusProviderInterface
         $count = 0;
         $maxFilesToShow = 100;
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
 
         /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
@@ -76,7 +76,7 @@ class FalStatus implements StatusProviderInterface
 
         if ($count) {
             $value = sprintf($this->getLanguageService()->getLL('status_missingFilesCount'), $count);
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
 
             $files = $this->getDatabaseConnection()->exec_SELECTgetRows(
                 'identifier,storage',
@@ -97,7 +97,7 @@ class FalStatus implements StatusProviderInterface
             }
         }
 
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_missingFiles'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_missingFiles'), $value, $message, $severity);
     }
 
     /**

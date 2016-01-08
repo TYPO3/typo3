@@ -20,7 +20,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\TypoScript\ConfigurationForm;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\Status as ReportStatus;
+use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
@@ -28,7 +29,7 @@ use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 /**
  * Performs several checks about the system's health
  */
-class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
+class SecurityStatus implements StatusProviderInterface
 {
     /**
      * Determines the security of this TYPO3 installation
@@ -57,13 +58,13 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_trustedhosts');
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_trustedHostsPattern'), $value, $message, $severity);
     }
 
     /**
@@ -75,7 +76,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         $whereClause = 'username = ' . $this->getDatabaseConnection()->fullQuoteStr('admin', 'be_users') .
             BackendUtility::deleteClause('be_users');
         $res = $this->getDatabaseConnection()->exec_SELECTquery('uid, username, password', 'be_users', $whereClause);
@@ -95,7 +96,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             }
             if (!$secure) {
                 $value = $this->getLanguageService()->getLL('status_insecure');
-                $severity = Status::ERROR;
+                $severity = ReportStatus::ERROR;
                 $editUserAccountUrl = BackendUtility::getModuleUrl(
                     'record_edit',
                     array(
@@ -111,7 +112,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
             }
         }
         $this->getDatabaseConnection()->sql_free_result($res);
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_adminUserAccount'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_adminUserAccount'), $value, $message, $severity);
     }
 
     /**
@@ -123,10 +124,10 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
             $url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
             $message = sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_encryption'),
@@ -134,7 +135,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 '</a>'
             );
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_encryptionKey'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_encryptionKey'), $value, $message, $severity);
     }
 
     /**
@@ -146,19 +147,19 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         $defaultParts = GeneralUtility::trimExplode('|', FILE_DENY_PATTERN_DEFAULT, true);
         $givenParts = GeneralUtility::trimExplode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], true);
         $result = array_intersect($defaultParts, $givenParts);
         if ($defaultParts !== $result) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
             $message = sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
                 '<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />'
             );
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_fileDenyPattern'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_fileDenyPattern'), $value, $message, $severity);
     }
 
     /**
@@ -171,14 +172,14 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT
             && GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_htaccess');
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
     }
 
     /**
@@ -189,7 +190,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getSaltedPasswordsStatus()
     {
         $value = $this->getLanguageService()->getLL('status_ok');
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         /** @var ExtensionManagerConfigurationUtility $configCheck */
         $configCheck = GeneralUtility::makeInstance(ExtensionManagerConfigurationUtility::class);
         $message = '<p>' . $this->getLanguageService()->getLL('status_saltedPasswords_infoText') . '</p>';
@@ -200,12 +201,12 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $messageDetail .= $resultCheck['html'];
                 break;
             case FlashMessage::WARNING:
-                $severity = Status::WARNING;
+                $severity = ReportStatus::WARNING;
                 $messageDetail .= $resultCheck['html'];
                 break;
             case FlashMessage::ERROR:
                 $value = $this->getLanguageService()->getLL('status_insecure');
-                $severity = Status::ERROR;
+                $severity = ReportStatus::ERROR;
                 $messageDetail .= $resultCheck['html'];
                 break;
             default:
@@ -213,7 +214,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $unsecureUserCount = SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword();
         if ($unsecureUserCount > 0) {
             $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
             $messageDetail .= '<div class="panel panel-warning">' .
                 '<div class="panel-body">' .
                     $this->getLanguageService()->getLL('status_saltedPasswords_notAllPasswordsHashed') .
@@ -224,7 +225,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (empty($messageDetail)) {
             $message = '';
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_saltedPasswords'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_saltedPasswords'), $value, $message, $severity);
     }
 
     /**

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
@@ -82,17 +82,17 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_refindex');
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->getLL('status_empty');
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
             $url =  BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::dateTime($lastRefIndexUpdate));
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
     }
 
     /**
@@ -142,7 +142,7 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         $failedConnections = array();
         $defaultMemcachedPort = ini_get('memcache.default_port');
         $memcachedServers = $this->getConfiguredMemcachedServers();
@@ -173,10 +173,10 @@ class ConfigurationStatus implements StatusProviderInterface
         }
         if (!empty($failedConnections)) {
             $value = $this->getLanguageService()->getLL('status_connectionFailed');
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_memcachedConfiguration'), $value, $message, $severity);
     }
 
     /**
@@ -190,11 +190,11 @@ class ConfigurationStatus implements StatusProviderInterface
         $title = $this->getLanguageService()->getLL('status_configuration_DeprecationLog');
         $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:disabled');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
             $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:enabled');
             $message = '<p>' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
-            $severity = Status::NOTICE;
+            $severity = ReportStatus::NOTICE;
             $logFile = GeneralUtility::getDeprecationLogFileName();
             $logFileSize = 0;
             if (@file_exists($logFile)) {
@@ -204,13 +204,13 @@ class ConfigurationStatus implements StatusProviderInterface
                 $message .= '<p>' . sprintf($this->getLanguageService()->getLL('status_configuration_DeprecationLogSize'), GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
             }
             if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
-                $severity = Status::WARNING;
+                $severity = ReportStatus::WARNING;
             }
             if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
-                $severity = Status::ERROR;
+                $severity = ReportStatus::ERROR;
             }
         }
-        return GeneralUtility::makeInstance(Status::class, $title, $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $title, $value, $message, $severity);
     }
 
     /**
@@ -222,13 +222,13 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'];
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
             $message = $this->getLanguageService()->getLL('status_CreatedFilePermissions.writable');
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
     }
 
     /**
@@ -240,13 +240,13 @@ class ConfigurationStatus implements StatusProviderInterface
     {
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] % 10 & 2) {
             $value = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
             $message = $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions.writable');
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
     }
 
     /**

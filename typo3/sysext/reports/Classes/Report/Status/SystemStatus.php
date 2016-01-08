@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
@@ -71,7 +71,7 @@ class SystemStatus implements StatusProviderInterface
         $memoryLimit = GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
-        $severity = Status::OK;
+        $severity = ReportStatus::OK;
         $bytesUsed = $peakMemoryUsage['used'];
         $percentageUsed = $memoryLimit ? number_format($bytesUsed / $memoryLimit * 100, 1) . '%' : '?';
         $dateOfPeak = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $peakMemoryUsage['tstamp']);
@@ -80,10 +80,10 @@ class SystemStatus implements StatusProviderInterface
         if ($peakMemoryUsage['used']) {
             $message = sprintf($this->getLanguageService()->getLL('status_phpPeakMemoryTooHigh'), GeneralUtility::formatSize($peakMemoryUsage['used']), $percentageUsed, GeneralUtility::formatSize($memoryLimit), $dateOfPeak, $urlOfPeak);
             $message .= ' <a href="' . $clearFlagUrl . '">' . $this->getLanguageService()->getLL('status_phpPeakMemoryClearFlag') . '</a>.';
-            $severity = Status::WARNING;
+            $severity = ReportStatus::WARNING;
             $value = $percentageUsed;
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_phpPeakMemory'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_phpPeakMemory'), $value, $message, $severity);
     }
 
     /**
@@ -120,13 +120,13 @@ class SystemStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_phpModulesMissing');
             $message = sprintf($this->getLanguageService()->getLL('status_phpModulesList'), implode(', ', $missingPhpModules));
             $message .= ' ' . $this->getLanguageService()->getLL('status_phpModulesInfo');
-            $severity = Status::ERROR;
+            $severity = ReportStatus::ERROR;
         } else {
             $value = $this->getLanguageService()->getLL('status_phpModulesPresent');
             $message = '';
-            $severity = Status::OK;
+            $severity = ReportStatus::OK;
         }
-        return GeneralUtility::makeInstance(Status::class, $this->getLanguageService()->getLL('status_phpModules'), $value, $message, $severity);
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_phpModules'), $value, $message, $severity);
     }
 
     /**
