@@ -145,10 +145,10 @@ class CaseViewHelper extends AbstractViewHelper implements CompilableInterface
                 $output = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
                 break;
             case self::CASE_CAPITAL:
-                $output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toUpper'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
+                $output = $charsetConverter->substr('utf-8', $charsetConverter->convCaseFirst('utf-8', $value, 'toUpper'), 0, 1) . $charsetConverter->substr('utf-8', $value, 1);
                 break;
             case self::CASE_UNCAPITAL:
-                $output = $charsetConverter->utf8_substr($charsetConverter->convCaseFirst('utf-8', $value, 'toLower'), 0, 1) . $charsetConverter->utf8_substr($value, 1);
+                $output = $charsetConverter->substr('utf-8', $charsetConverter->convCaseFirst('utf-8', $value, 'toLower'), 0, 1) . $charsetConverter->substr('utf-8', $value, 1);
                 break;
             case self::CASE_CAPITAL_WORDS:
                 // @todo: Implement method once there is a proper solution with using the CharsetConverter

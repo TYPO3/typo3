@@ -805,7 +805,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // shortening the string here is only a run-away feature!)
         $searchWords = substr($this->sword, 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
-        $searchWords = $GLOBALS['TSFE']->csConvObj->utf8_encode($searchWords, $GLOBALS['TSFE']->metaCharset);
+        $searchWords = $GLOBALS['TSFE']->csConvObj->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
         $searchWords = $GLOBALS['TSFE']->csConvObj->entities_to_utf8($searchWords, true);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
@@ -828,9 +828,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     array('-', 'AND NOT'),
                     // Add operators for various languages
                     // Converts the operators to UTF-8 and lowercase
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT')
+                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND'),
+                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'OR'),
+                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND NOT')
                 );
                 $swordArray = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {

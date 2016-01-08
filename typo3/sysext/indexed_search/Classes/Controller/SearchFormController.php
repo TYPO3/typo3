@@ -326,9 +326,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         // Add operators for various languages
         // Converts the operators to UTF-8 and lowercase
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->utf8_encode($this->pi_getLL('local_operator_AND'), $this->frontendController->renderCharset), 'toLower'), 'AND');
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->utf8_encode($this->pi_getLL('local_operator_OR'), $this->frontendController->renderCharset), 'toLower'), 'OR');
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->utf8_encode($this->pi_getLL('local_operator_NOT'), $this->frontendController->renderCharset), 'toLower'), 'AND NOT');
+        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_AND'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND');
+        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_OR'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'OR');
+        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_NOT'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND NOT');
         // This is the id of the site root. This value may be a commalist of integer (prepared for this)
         $this->wholeSiteIdList = (int)$this->frontendController->config['rootLine'][0]['uid'];
         // Creating levels for section menu:
@@ -419,7 +419,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind, shortening the string here is only a run-away feature!)
         $inSW = substr($this->piVars['sword'], 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
-        $inSW = $this->frontendController->csConvObj->utf8_encode($inSW, $this->frontendController->metaCharset);
+        $inSW = $this->frontendController->csConvObj->conv($inSW, $this->frontendController->metaCharset, 'utf-8');
         $inSW = $this->frontendController->csConvObj->entities_to_utf8($inSW, true);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {

@@ -136,11 +136,11 @@ class Lexer
          */
         if ($cType == 'cjk') {
             // Find total string length:
-            $strlen = $this->csObj->utf8_strlen($theWord);
+            $strlen = $this->csObj->strlen('utf-8', $theWord);
             // Traverse string length and add words as pairs of two chars:
             for ($a = 0; $a < $strlen; $a++) {
                 if ($strlen == 1 || $a < $strlen - 1) {
-                    $words[] = $this->csObj->utf8_substr($theWord, $a, 2);
+                    $words[] = $this->csObj->substr('utf-8', $theWord, $a, 2);
                 }
             }
         } else {

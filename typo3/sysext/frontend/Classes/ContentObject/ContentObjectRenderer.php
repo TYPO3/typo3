@@ -3945,7 +3945,7 @@ class ContentObjectRenderer
         $countSplittedContent = count($splittedContent);
         for ($offset = 0; $offset < $countSplittedContent; $offset++) {
             if ($offset % 2 === 0) {
-                $tempContent = $tsfe->csConvObj->utf8_encode($splittedContent[$offset], $tsfe->renderCharset);
+                $tempContent = $tsfe->csConvObj->conv($splittedContent[$offset], $tsfe->renderCharset, 'utf-8');
                 $thisStrLen = $tsfe->csConvObj->strlen('utf-8', html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'));
                 if ($strLen + $thisStrLen > $absChars) {
                     $croppedOffset = $offset;
@@ -3968,7 +3968,7 @@ class ContentObjectRenderer
                             }
                         }
                     }
-                    $splittedContent[$offset] = $tsfe->csConvObj->utf8_decode($tempContent, $tsfe->renderCharset);
+                    $splittedContent[$offset] = $tsfe->csConvObj->conv($tempContent, 'utf-8', $tsfe->renderCharset);
                     break;
                 } else {
                     $strLen += $thisStrLen;

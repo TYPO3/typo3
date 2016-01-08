@@ -3014,7 +3014,7 @@ class TypoScriptFrontendController
             $message = $this->config['config']['message_page_is_being_generated'];
             if ((string)$message !== '') {
                 // This page is always encoded as UTF-8
-                $message = $this->csConvObj->utf8_encode($message, $this->renderCharset);
+                $message = $this->csConvObj->conv($message, $this->renderCharset, 'utf-8');
                 $message = str_replace('###TITLE###', $title, $message);
                 $message = str_replace('###REQUEST_URI###', $request_uri, $message);
             } else {
