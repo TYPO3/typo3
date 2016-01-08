@@ -1,0 +1,14 @@
+==================================================
+Breaking: #72604 - Remove option maxFileNameLength
+==================================================
+
+Description
+===========
+
+The option ``$TYPO3_CONF_VARS[SYS][maxFileNameLength]`` was removed.
+
+
+Impact
+======
+
+Using the option will have no effect anymore.

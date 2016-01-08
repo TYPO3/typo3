@@ -79,6 +79,8 @@ class SilentConfigurationUpgradeService
         // #72337
         'SYS/t3lib_cs_utils',
         'SYS/t3lib_cs_convMethod',
+        // #72604
+        'SYS/maxFileNameLength',
     );
 
     /**

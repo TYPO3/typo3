@@ -58,13 +58,6 @@ class BasicFileUtility
     public $uniquePrecision = 6;
 
     /**
-     * This is the maximum length of names treated by cleanFileName()
-     *
-     * @var int
-     */
-    public $maxInputNameLen = 60;
-
-    /**
      * Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
      *
      * @var string
@@ -146,7 +139,6 @@ class BasicFileUtility
         $this->mounts = (!empty($mounts) ? $mounts : array());
         $this->webPath = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
         $this->isInit = 1;
-        $this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ?: $this->maxInputNameLen;
     }
 
     /**
