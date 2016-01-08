@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     const FILE_OPPERATIONS = 1;
-    const FILE_UNZIP = 2;
     const DIRECTORY_OPPERATIONS = 4;
     const DIRECTORY_COPY = 8;
     const DIRECTORY_REMOVE_RECURSIVELY = 16;
@@ -442,27 +441,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setFileOperationAllowed($value)
     {
         $this->setPermission(self::FILE_OPPERATIONS, $value);
-    }
-
-    /**
-     * Check if it is allowed to unzip files.
-     *
-     * @return bool
-     */
-    public function isFileUnzipAllowed()
-    {
-        return $this->isPermissionSet(self::FILE_UNZIP);
-    }
-
-    /**
-     * Set the the bit for unzip files are allowed.
-     *
-     * @param bool $value
-     * @return void
-     */
-    public function setFileUnzipAllowed($value)
-    {
-        $this->setPermission(self::FILE_UNZIP, $value);
     }
 
     /**

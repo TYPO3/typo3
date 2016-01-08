@@ -100,7 +100,6 @@ class ExtendedFileUtility extends BasicFileUtility
         'copyFile' => false,
         'moveFile' => false,
         'renameFile' => false,
-        'unzipFile' => false,
         'deleteFile' => false,
         // Folder permissions
         'addFolder' => false,
@@ -198,12 +197,6 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function start($fileCmds)
     {
-        $unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
-        if (substr($unzipPath, -1) !== '/' && is_dir($unzipPath)) {
-            // Make sure the path ends with a slash
-            $unzipPath .= '/';
-        }
-        $this->unzipPath = $unzipPath;
         // Initialize Object Factory
         $this->fileFactory = ResourceFactory::getInstance();
         // Initializing file processing commands:
@@ -305,9 +298,6 @@ class ExtendedFileUtility extends BasicFileUtility
                                 break;
                             case 'replace':
                                 $result[$action][] = $this->replaceFile($cmdArr);
-                                break;
-                            case 'unzip':
-                                $result[$action][] = $this->func_unzip($cmdArr);
                                 break;
                         }
                         // Hook for post-processing the action
@@ -1143,66 +1133,6 @@ class ExtendedFileUtility extends BasicFileUtility
         }
 
         return $resultObjects;
-    }
-
-    /**
-     * Unzipping file (action=7)
-     * This is permitted only if the user has fullAccess or if the file resides
-     *
-     * @param array $cmds $cmds['data'] is the zip-file. $cmds['target'] is the target directory. If not set we'll default to the same directory as the file is in.
-     * @return bool Returns TRUE on success
-     */
-    public function func_unzip($cmds)
-    {
-        if (!$this->isInit || $this->dont_use_exec_commands) {
-            return false;
-        }
-        $theFile = $cmds['data'];
-        if (!@is_file($theFile)) {
-            $this->writeLog(7, 2, 105, 'The file "%s" did not exist!', array($theFile));
-            $this->addMessageToFlashMessageQueue('FileUtility.TheFileDidNotExist', array($theFile));
-            return false;
-        }
-        $fI = GeneralUtility::split_fileref($theFile);
-        if (!isset($cmds['target'])) {
-            $cmds['target'] = $fI['path'];
-        }
-        // Clean up destination directory
-        // !!! Method has been put in the local driver, can be saftely removed
-        $theDest = $this->is_directory($cmds['target']);
-        if (!$theDest) {
-            $this->writeLog(7, 2, 104, 'Destination "%s" was not a directory', array($cmds['target']));
-            $this->addMessageToFlashMessageQueue('FileUtility.DestinationWasNotADirectory', array($cmds['target']));
-            return false;
-        }
-        if (!$this->actionPerms['unzipFile']) {
-            $this->writeLog(7, 1, 103, 'You are not allowed to unzip files', '');
-            $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToUnzipFiles');
-            return false;
-        }
-        if ($fI['fileext'] != 'zip') {
-            $this->writeLog(7, 1, 102, 'File extension is not "zip"', '');
-            $this->addMessageToFlashMessageQueue('FileUtility.FileExtensionIsNotzip');
-            return false;
-        }
-        if (!$this->checkIfFullAccess($theDest)) {
-            $this->writeLog(7, 1, 101, 'You don\'t have full access to the destination directory "%s"!', array($theDest));
-            $this->addMessageToFlashMessageQueue('FileUtility.YouDontHaveFullAccessToTheDestinationDirectory', array($theDest));
-            return false;
-        }
-        // !!! Method has been put in the storage driver, can be safely removed
-        if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
-            // No way to do this under windows.
-            $cmd = $this->unzipPath . 'unzip -qq ' . escapeshellarg($theFile) . ' -d ' . escapeshellarg($theDest);
-            CommandUtility::exec($cmd);
-            $this->writeLog(7, 0, 1, 'Unzipping file "%s" in "%s"', array($theFile, $theDest));
-            $this->addMessageToFlashMessageQueue('FileUtility.UnzippingFileIn', array($theFile, $theDest), FlashMessage::OK);
-            return true;
-        } else {
-            $this->writeLog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', array($theFile, $theDest));
-            $this->addMessageToFlashMessageQueue('FileUtility.FileOrDestinationWasNotWithinYourMountpoints', array($theFile, $theDest));
-            return false;
-        }
     }
 
     /**

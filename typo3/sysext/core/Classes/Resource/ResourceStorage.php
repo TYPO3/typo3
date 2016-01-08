@@ -602,7 +602,7 @@ class ResourceStorage implements ResourceStorageInterface
             $isReadCheck = true;
         }
         $isWriteCheck = false;
-        if (in_array($action, array('add', 'write', 'move', 'rename', 'replace', 'unzip', 'delete'), true)) {
+        if (in_array($action, array('add', 'write', 'move', 'rename', 'replace', 'delete'), true)) {
             $isWriteCheck = true;
         }
         // Check 3: Does the user have the right to perform the action?

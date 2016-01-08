@@ -324,40 +324,6 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getIsFileUnzipAllowedReturnsFalse()
-    {
-        $this->subject->setFileOperationPermissions(0);
-        $this->assertFalse($this->subject->isFileUnzipAllowed());
-        $this->subject->setFileOperationPermissions(1);
-        $this->assertFalse($this->subject->isFileUnzipAllowed());
-        $this->subject->setFileOperationPermissions(5);
-        $this->assertFalse($this->subject->isFileUnzipAllowed());
-    }
-
-    /**
-     * @test
-     */
-    public function getIsFileUnzipAllowedReturnsTrue()
-    {
-        $this->subject->setFileOperationPermissions(2);
-        $this->assertTrue($this->subject->isFileUnzipAllowed());
-        $this->subject->setFileOperationPermissions(3);
-        $this->assertTrue($this->subject->isFileUnzipAllowed());
-    }
-
-    /**
-     * @test
-     */
-    public function setFileUnzipAllowedSetsFileUnzipAllowed()
-    {
-        $this->subject->setFileOperationPermissions(0);
-        $this->subject->setFileUnzipAllowed(true);
-        $this->assertTrue($this->subject->isFileUnzipAllowed());
-    }
-
-    /**
-     * @test
-     */
     public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse()
     {
         $this->subject->setFileOperationPermissions(1);

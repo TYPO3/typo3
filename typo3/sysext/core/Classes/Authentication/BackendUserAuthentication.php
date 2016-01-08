@@ -1692,7 +1692,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      * copyFile = 1
      * moveFile = 1
      * renameFile = 1
-     * unzipFile = 1
      * deleteFile = 1
      *
      * addFolder = 1
@@ -1728,7 +1727,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                 'copyFile' => false,
                 'moveFile' => false,
                 'renameFile' => false,
-                'unzipFile' => false,
                 'deleteFile' => false,
                 // Folder permissions
                 'addFolder' => false,

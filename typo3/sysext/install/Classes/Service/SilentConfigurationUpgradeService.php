@@ -81,6 +81,8 @@ class SilentConfigurationUpgradeService
         'SYS/t3lib_cs_convMethod',
         // #72604
         'SYS/maxFileNameLength',
+        // #72602
+        'BE/unzip_path',
     );
 
     /**
