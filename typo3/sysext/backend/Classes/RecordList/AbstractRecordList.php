@@ -30,8 +30,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * Base for class listing of database records and files in the
  * modules Web>List and File>Filelist
- * @see typo3/db_list.php
- * @see typo3/sysext/filelist/mod1/index.php
  */
 abstract class AbstractRecordList
 {
