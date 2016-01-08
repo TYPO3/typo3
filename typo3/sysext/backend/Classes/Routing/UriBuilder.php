@@ -81,7 +81,7 @@ class UriBuilder
             // If the route has the "public" option set, no token is generated.
             if ($route->getOption('access') !== 'public') {
                 $parameters = array(
-                    'ajaxToken' => FormProtectionFactory::get()->generateToken('ajaxCall', $name)
+                    'ajaxToken' => FormProtectionFactory::get('backend')->generateToken('ajaxCall', $name)
                 ) + $parameters;
             }
 
@@ -93,7 +93,7 @@ class UriBuilder
             // If the route has the "public" option set, no token is generated.
             if ($route->getOption('access') !== 'public') {
                 $parameters = array(
-                    'token' => FormProtectionFactory::get()->generateToken('route', $name)
+                    'token' => FormProtectionFactory::get('backend')->generateToken('route', $name)
                 ) + $parameters;
             }
 
@@ -119,7 +119,7 @@ class UriBuilder
     {
         $parameters = array(
             'M' => $moduleName,
-            'moduleToken' => FormProtectionFactory::get()->generateToken('moduleCall', $moduleName)
+            'moduleToken' => FormProtectionFactory::get('backend')->generateToken('moduleCall', $moduleName)
         ) + $parameters;
         return $this->buildUri($parameters, $referenceType);
     }
@@ -143,7 +143,7 @@ class UriBuilder
             'ajaxID' => $ajaxIdentifier
         ) + $parameters;
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxIdentifier]['csrfTokenCheck'])) {
-            $parameters['ajaxToken'] = FormProtectionFactory::get()->generateToken('ajaxCall', $ajaxIdentifier);
+            $parameters['ajaxToken'] = FormProtectionFactory::get('backend')->generateToken('ajaxCall', $ajaxIdentifier);
         }
         return $this->buildUri($parameters, $referenceType);
     }
