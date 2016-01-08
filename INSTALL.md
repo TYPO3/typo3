@@ -30,7 +30,7 @@ system requirements for running TYPO3 CMS 7 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
 * PHP 5.5 up to 7
-* MySQL 5.5 up to 5.6 or compatible (no "strict mode", see below)
+* MySQL 5.5 up to 5.7 or compatible
 * more than 200 MB of disk space
 
 Note: If you use any other webserver than Apache, make sure you add the necessary configuration normally
@@ -41,12 +41,6 @@ therefore only experienced server administrators should create such configuratio
 
 TYPO3 works with MySQL in the above mentioned versions. It will also work on
 compatible "drop-in" replacements like MariaDB or Percona.
-
-Note that MySQL "strict mode" is currently not supported by TYPO3. If your
-MySQL server is configured with either STRICT_TRANS_TABLES or
-STRICT_ALL_TABLES (especially true with MySQL 5.6, as this is a new default),
-you need to configure setDBinit in the Install Tool. See question 2 in the
-"Installation FAQ" below for more information.
 
 ### MySQL required privileges
 

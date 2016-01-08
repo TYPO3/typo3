@@ -34,8 +34,6 @@ class DatabaseCheck
      * @var array
      */
     protected $incompatibleSqlModes = array(
-        'STRICT_ALL_TABLES',
-        'STRICT_TRANS_TABLES',
         'NO_BACKSLASH_ESCAPES'
     );
 
