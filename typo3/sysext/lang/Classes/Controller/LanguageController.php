@@ -253,6 +253,7 @@ class LanguageController extends ActionController
             'flashmessage.canceled',
             'flashmessage.languageActivated',
             'flashmessage.languageDeactivated',
+            'flashmessage.noLanguageActivated',
             'flashmessage.errorOccurred',
             'table.processing',
             'table.search',

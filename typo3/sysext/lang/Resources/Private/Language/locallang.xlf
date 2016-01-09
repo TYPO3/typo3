@@ -62,6 +62,9 @@
 			<trans-unit id="flashmessage.errorOccurred">
 				<source>The request has failed.</source>
 			</trans-unit>
+			<trans-unit id="flashmessage.noLanguageActivated">
+				<source>No language activated. Please activate at least one language.</source>
+			</trans-unit>
 
 			<trans-unit id="table.ad">
 				<source>A/D</source>
