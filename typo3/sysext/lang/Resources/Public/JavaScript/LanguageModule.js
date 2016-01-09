@@ -181,27 +181,31 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 	 */
 	LanguageModule.updateActiveLanguagesAction = function(triggerElement, parameters) {
 		var $activeRows = $('tr.' + LanguageModule.classes.enabled, LanguageModule.table.table().container());
-		LanguageModule.updateButtonStatus('update');
-		LanguageModule.topMenu.addClass(LanguageModule.classes.processing);
-		$activeRows.addClass(LanguageModule.classes.processing);
-		LanguageModule.loadTranslationsByRows($activeRows, function(row, status, data, response) {
-			var $progressBar = $(LanguageModule.identifiers.progressBar, row),
-				$lastUpdate = $(LanguageModule.identifiers.lastUpdate, row);
+		if ($activeRows.length > 0) {
+			LanguageModule.updateButtonStatus('update');
+			LanguageModule.topMenu.addClass(LanguageModule.classes.processing);
+			$activeRows.addClass(LanguageModule.classes.processing);
+			LanguageModule.loadTranslationsByRows($activeRows, function(row, status, data, response) {
+				var $progressBar = $(LanguageModule.identifiers.progressBar, row),
+					$lastUpdate = $(LanguageModule.identifiers.lastUpdate, row);
 
-			if (status === 'success') {
-				LanguageModule.setProgress($progressBar, 100);
-				row.removeClass(LanguageModule.classes.processing).addClass(LanguageModule.classes.complete);
-				$lastUpdate.html(LanguageModule.formatDate(response.timestamp));
-			} else if (status === 'progress') {
-				LanguageModule.setProgress($progressBar, parseFloat(response.progress));
-			} else if (status === 'error') {
-				LanguageModule.displayError(LanguageModule.labels.errorOccurred);
-			} else if (status === 'finished') {
-				LanguageModule.updateButtonStatus('cancel');
-				LanguageModule.displaySuccess(LanguageModule.labels.updateComplete);
-				LanguageModule.topMenu.removeClass(LanguageModule.classes.processing);
-			}
-		});
+				if (status === 'success') {
+					LanguageModule.setProgress($progressBar, 100);
+					row.removeClass(LanguageModule.classes.processing).addClass(LanguageModule.classes.complete);
+					$lastUpdate.html(LanguageModule.formatDate(response.timestamp));
+				} else if (status === 'progress') {
+					LanguageModule.setProgress($progressBar, parseFloat(response.progress));
+				} else if (status === 'error') {
+					LanguageModule.displayError(LanguageModule.labels.errorOccurred);
+				} else if (status === 'finished') {
+					LanguageModule.updateButtonStatus('cancel');
+					LanguageModule.displaySuccess(LanguageModule.labels.updateComplete);
+					LanguageModule.topMenu.removeClass(LanguageModule.classes.processing);
+				}
+			});
+		} else {
+			LanguageModule.displayError(LanguageModule.labels.noLanguageActivated);
+		}
 	};
 
 	/**
@@ -276,6 +280,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 			languageActivated: TYPO3.lang['flashmessage.languageActivated'],
 			errorOccurred: TYPO3.lang['flashmessage.errorOccurred'],
 			languageDeactivated: TYPO3.lang['flashmessage.languageDeactivated'],
+			noLanguageActivated: TYPO3.lang['flashmessage.noLanguageActivated'],
 			updateComplete: TYPO3.lang['flashmessage.updateComplete'],
 			canceled: TYPO3.lang['flashmessage.canceled']
 		}
