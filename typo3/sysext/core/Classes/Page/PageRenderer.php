@@ -2097,7 +2097,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $code .= $block;
                 }
             }
-            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . ExtensionManagementUtility::extRelPath('t3skin') . 'icons/gfx/clear.gif'));
+            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/clear.gif'));
             $out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
 				Ext.BLANK_IMAGE_URL = "' . $clearGifPath . '";
