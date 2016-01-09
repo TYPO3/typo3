@@ -264,15 +264,6 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_updateTask_email_issues">
 				<source>Issues</source>
 			</trans-unit>
-			<trans-unit id="status_oldXclassUsage">
-				<source>Old XCLASS method used</source>
-			</trans-unit>
-			<trans-unit id="status_oldXclassUsageFound">
-				<source>Old XCLASS method is used in %d cases:</source>
-			</trans-unit>
-			<trans-unit id="status_oldXclassUsageFound_message">
-				<source>The old XCLASS registration does not work since TYPO3 CMS version 6.0. This is not necessarily a bad thing, the registration might be done by an extension author to keep compatibility with older TYPO3 CMS versions. Please check the affected extension for TYPO3 CMS 6.0 compatibility to verify whether this is a problem for you.</source>
-			</trans-unit>
 			<trans-unit id="status_xclassUsage">
 				<source>XCLASS used</source>
 			</trans-unit>

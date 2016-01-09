@@ -85,6 +85,9 @@ class SilentConfigurationUpgradeService
         'BE/unzip_path',
         // #72615
         'BE/notificationPrefix',
+        // #72616
+        'BE/XCLASS',
+        'FE/XCLASS',
     );
 
     /**

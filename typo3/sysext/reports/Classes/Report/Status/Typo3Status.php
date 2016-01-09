@@ -32,44 +32,10 @@ class Typo3Status implements StatusProviderInterface
     public function getStatus()
     {
         $statuses = array(
-            'oldXclassStatus' => $this->getOldXclassUsageStatus(),
             'registeredXclass' => $this->getRegisteredXclassStatus(),
             'compatibility6' => $this->getCompatibility6Status(),
         );
         return $statuses;
-    }
-
-    /**
-     * Check for usage of old way of implementing XCLASSes
-     *
-     * @return \TYPO3\CMS\Reports\Status
-     */
-    protected function getOldXclassUsageStatus()
-    {
-        $message = '';
-        $value = $this->getLanguageService()->getLL('status_none');
-        $severity = ReportStatus::OK;
-
-        $xclasses = array_merge(
-            (array)$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'],
-            (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']
-        );
-
-        $numberOfXclasses = count($xclasses);
-        if ($numberOfXclasses > 0) {
-            $value = sprintf($this->getLanguageService()->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
-            $message = $this->getLanguageService()->getLL('status_oldXclassUsageFound_message') . '<br />';
-            $message .= '<ol><li>' . implode('</li><li>', $xclasses) . '</li></ol>';
-            $severity = ReportStatus::NOTICE;
-        }
-
-        return GeneralUtility::makeInstance(
-            ReportStatus::class,
-            $this->getLanguageService()->getLL('status_oldXclassUsage'),
-            $value,
-            $message,
-            $severity
-        );
     }
 
     /**

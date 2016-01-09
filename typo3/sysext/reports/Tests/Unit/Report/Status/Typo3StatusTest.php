@@ -30,31 +30,6 @@ class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getStatusReturnsOldXclassStatusObjectWithSeverityOkIfNoOldXclassExists()
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array();
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS'] = array();
-        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-        $result = $fixture->getStatus();
-        $statusObject = $result['oldXclassStatus'];
-        $this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
-    }
-
-    /**
-     * @test
-     */
-    public function getStatusReturnsOldXclassStatusObjectWithSeverityNoticeIfOldXclassExists()
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'] = array('foo' => 'bar');
-        $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
-        $result = $fixture->getStatus();
-        $statusObject = $result['oldXclassStatus'];
-        $this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
-    }
-
-    /**
-     * @test
-     */
     public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = array();
