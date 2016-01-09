@@ -83,6 +83,8 @@ class SilentConfigurationUpgradeService
         'SYS/maxFileNameLength',
         // #72602
         'BE/unzip_path',
+        // #72615
+        'BE/notificationPrefix',
     );
 
     /**
