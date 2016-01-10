@@ -156,6 +156,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function executeTask(Task\AbstractTask $task)
     {
+        $task->setRunOnNextCronJob(false);
         // Trigger the saving of the task, as this will calculate its next execution time
         // This should be calculated all the time, even if the execution is skipped
         // (in case it is skipped, this pushes back execution to the next possible date)
@@ -254,7 +255,11 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         $taskUid = $task->getTaskUid();
         if (!empty($taskUid)) {
             try {
-                $executionTime = $task->getNextDueExecution();
+                if ($task->getRunOnNextCronJob()) {
+                    $executionTime = time();
+                } else {
+                    $executionTime = $task->getNextDueExecution();
+                }
                 $task->setExecutionTime($executionTime);
             } catch (\Exception $e) {
                 $task->setDisabled(true);

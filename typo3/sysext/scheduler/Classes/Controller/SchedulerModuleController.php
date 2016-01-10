@@ -272,6 +272,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                         $this->toggleDisableAction();
                         $content .= $this->listTasksAction();
                         break;
+                    case 'setNextExecutionTime':
+                        $this->setNextExecutionTimeAction();
+                        $content .= $this->listTasksAction();
+                        break;
                     case 'list':
 
                     default:
@@ -499,6 +503,18 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         if ($task->getType() === AbstractTask::TYPE_SINGLE) {
             $task->registerSingleExecution(time());
         }
+        $task->save();
+    }
+
+    /**
+     * Sets the next execution time of the submitted task to now
+     *
+     * @return void
+     */
+    protected function setNextExecutionTimeAction()
+    {
+        $task = $this->scheduler->fetchTask($this->submittedData['uid']);
+        $task->setRunOnNextCronJob(true);
         $task->save();
     }
 
@@ -818,17 +834,22 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $task = $this->scheduler->fetchTask($uid);
                     $class = get_class($task);
                     $name = $registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')';
-                    // Now try to execute it and report on outcome
-                    try {
-                        $result = $this->scheduler->executeTask($task);
-                        if ($result) {
-                            $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executed'), $name));
-                        } else {
-                            $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.notExecuted'), $name), FlashMessage::ERROR);
+                    if (GeneralUtility::_POST('go_cron') !== null) {
+                        $task->setRunOnNextCronJob(true);
+                        $task->save();
+                    } else {
+                        // Now try to execute it and report on outcome
+                        try {
+                            $result = $this->scheduler->executeTask($task);
+                            if ($result) {
+                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executed'), $name));
+                            } else {
+                                $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.notExecuted'), $name), FlashMessage::ERROR);
+                            }
+                        } catch (\Exception $e) {
+                            // An exception was thrown, display its message as an error
+                            $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executionFailed'), $name, $e->getMessage()), FlashMessage::ERROR);
                         }
-                    } catch (\Exception $e) {
-                        // An exception was thrown, display its message as an error
-                        $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.executionFailed'), $name, $e->getMessage()), FlashMessage::ERROR);
                     }
                 } catch (\OutOfBoundsException $e) {
                     $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.taskNotFound'), $uid), FlashMessage::ERROR);
@@ -962,6 +983,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
                 $runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
+                $runCronAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=setNextExecutionTime&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task_cron', true) . '" class="icon">' .
+                    $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task-cron', Icon::SIZE_SMALL)->render() . '</a>';
 
                 // Define some default values
                 $lastExecution = '-';
@@ -1061,7 +1084,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     if ($isRunning) {
                         $actions = '<div class="btn-group" role="group">' . $stopAction . '</div>';
                     } else {
-                        $actions .= '&nbsp;<div class="btn-group" role="group">' . $runAction . '</div>';
+                        $actions .= '&nbsp;<div class="btn-group" role="group">' . $runAction . $runCronAction . '</div>';
                     }
 
                     // Check if the last run failed
@@ -1437,7 +1460,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             ->setFieldName('');
         $buttonBar->addButton($helpButton);
         // Add and Reload
-        if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden') {
+        if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden' || $this->CMD === 'setNextExecutionTime') {
             $reloadButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.reload'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))

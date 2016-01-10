@@ -66,6 +66,9 @@
 			<trans-unit id="label.executeSelected">
 				<source>Execute selected tasks</source>
 			</trans-unit>
+			<trans-unit id="label.cronjobSelected">
+				<source>Execute selected tasks on next cron job</source>
+			</trans-unit>
 			<trans-unit id="label.extension">
 				<source>Extension</source>
 			</trans-unit>
@@ -332,6 +335,9 @@
 			</trans-unit>
 			<trans-unit id="action.run_task">
 				<source>Run task</source>
+			</trans-unit>
+			<trans-unit id="action.run_task_cron">
+				<source>Run task on next cron job</source>
 			</trans-unit>
 			<trans-unit id="testTask.name">
 				<source>Scheduler test task</source>

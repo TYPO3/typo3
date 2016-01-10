@@ -50,6 +50,13 @@ abstract class AbstractTask
     protected $disabled = false;
 
     /**
+     * Run on next cron job flag, TRUE if task should run on next cronjob, FALSE otherwise
+     *
+     * @var bool
+     */
+    protected $runOnNextCronJob = false;
+
+    /**
      * The execution object related to the task
      *
      * @var \TYPO3\CMS\Scheduler\Execution
@@ -184,6 +191,26 @@ abstract class AbstractTask
         } else {
             $this->disabled = false;
         }
+    }
+
+    /**
+     * This method set the flag for next cron job execution
+     *
+     * @param bool $flag TRUE if task should run with the next cron job, FALSE otherwise
+     */
+    public function setRunOnNextCronJob($flag)
+    {
+        $this->runOnNextCronJob = $flag;
+    }
+
+    /**
+     * This method returns the run on next cron job status of the task
+     *
+     * @return bool TRUE if task should run on next cron job, FALSE otherwise
+     */
+    public function getRunOnNextCronJob()
+    {
+        return $this->runOnNextCronJob;
     }
 
     /**

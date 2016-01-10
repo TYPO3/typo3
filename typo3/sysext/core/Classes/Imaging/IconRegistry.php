@@ -2470,6 +2470,12 @@ class IconRegistry implements SingletonInterface
                 'name' => 'play-circle',
             ]
         ],
+        'extensions-scheduler-run-task-cron' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'play-circle-o',
+            ]
+        ],
         'extensions-workspaces-generatepreviewlink' => [
             'provider' => BitmapIconProvider::class,
             'options' => [

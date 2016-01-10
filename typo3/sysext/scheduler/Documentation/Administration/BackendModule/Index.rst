@@ -96,7 +96,7 @@ following:
   coming from and any additional information specific to the task (for
   example, the e-mail to which the "test" task will send a message or
   the sleep duration of the "sleep" task). It also show a summary of the
-  task's status, as a bullet. More details below.
+  task's status with an icon.
 
 - The fifth column shows whether the task is recurring or will run only
   a single time.
@@ -120,9 +120,8 @@ following:
 Note that all dates and times are displayed in the server's time zone.
 The server time appears at the bottom of the screen.
 
-At the bottom of the screen is a link to add a new task and a legend
-explaining the various states shown in the tasks list. This is pretty
-much self-explanatory. If there are a lot of tasks that appear late,
+At the top of the screen is a link to add a new task.
+If there are a lot of tasks that appear late,
 consider changing the frequency at which the cron job is running (see
 "Choosing a frequency" above).
 
