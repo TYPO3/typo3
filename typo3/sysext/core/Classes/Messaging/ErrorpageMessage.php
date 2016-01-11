@@ -30,7 +30,21 @@ class ErrorpageMessage extends AbstractStandaloneMessage
      */
     public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR)
     {
-        $this->setHtmlTemplate(ExtensionManagementUtility::siteRelPath('t3skin') . 'templates/errorpage-message.html');
+        $this->setHtmlTemplate(ExtensionManagementUtility::siteRelPath('core') . 'Resources/Private/Templates/Page/Error.html');
         parent::__construct($message, $title, $severity);
     }
+
+    /**
+     * Returns the default markers for the template, with some additional parameters for the error page.
+     *
+     * @return array
+     */
+    protected function getDefaultMarkers()
+    {
+        $defaultMarkers = parent::getDefaultMarkers();
+        $defaultMarkers['###EXTPATH_CORE###'] = ExtensionManagementUtility::siteRelPath('core');
+        $defaultMarkers['###EXTPATH_BACKEND###'] = ExtensionManagementUtility::siteRelPath('backend');
+        return $defaultMarkers;
+    }
+
 }
