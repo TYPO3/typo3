@@ -1565,7 +1565,6 @@ class DataHandler
                 // Initialize transformation:
                 $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
                 $parseHTML->init($table . ':' . $field, $pid);
-                $parseHTML->setRelPath('');
                 // Perform transformation:
                 $value = $parseHTML->RTE_transform($value, $defaultExtras, 'db', $thisConfig);
             }

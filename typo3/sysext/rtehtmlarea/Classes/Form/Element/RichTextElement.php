@@ -1303,7 +1303,6 @@ class RichTextElement extends AbstractFormElement
                 /** @var RteHtmlParser $parseHTML */
                 $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
                 $parseHTML->init($this->data['table'] . ':' . $this->data['fieldName'], $this->pidOfVersionedMotherRecord);
-                $parseHTML->setRelPath('');
                 $value = $parseHTML->RTE_transform($value, $this->defaultExtras, 'rte', $this->processedRteConfiguration);
             }
         }

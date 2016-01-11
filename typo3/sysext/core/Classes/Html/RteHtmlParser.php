@@ -47,20 +47,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     public $elRef = '';
 
     /**
-     * Relative path
-     *
-     * @var string
-     */
-    public $relPath = '';
-
-    /**
-     * Relative back-path
-     *
-     * @var string
-     */
-    public $relBackPath = '';
-
-    /**
      * Current Page TSConfig
      *
      * @var array
@@ -120,30 +106,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     {
         $this->recPid = $recPid;
         $this->elRef = $elRef;
-    }
-
-    /**
-     * Setting the ->relPath and ->relBackPath to proper values so absolute references to links and images can be converted to relative dittos.
-     * This is used when editing files with the RTE
-     *
-     * @param string $path The relative path from PATH_site to the place where the file being edited is. Eg. "fileadmin/static".
-     * @return void There is no output, it is set in internal variables. With the above example of "fileadmin/static" as input this will yield ->relPath to be "fileadmin/static/" and ->relBackPath to be "../../
-     * @TODO: Check if relPath and relBackPath are used for anything useful after removal of "static file edit" with #63818
-     */
-    public function setRelPath($path)
-    {
-        $path = trim($path);
-        $path = preg_replace('/^\\//', '', $path);
-        $path = preg_replace('/\\/$/', '', $path);
-        if ($path) {
-            $this->relPath = $path;
-            $this->relBackPath = '';
-            $partsC = count(explode('/', $path));
-            for ($a = 0; $a < $partsC; $a++) {
-                $this->relBackPath .= '../';
-            }
-            $this->relPath .= '/';
-        }
     }
 
     /**********************************************
@@ -450,7 +412,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     }
                     // Convert absolute to relative url
                     if (GeneralUtility::isFirstPartOfStr($attribArray['src'], $siteUrl)) {
-                        $attribArray['src'] = $this->relBackPath . substr($attribArray['src'], strlen($siteUrl));
+                        $attribArray['src'] = substr($attribArray['src'], strlen($siteUrl));
                     }
                     $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, 1, 1) . ' />';
                 }
@@ -482,7 +444,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     $absoluteUrl = trim($attribArray['src']);
                     // Transform the src attribute into an absolute url, if it not already
                     if (strtolower(substr($absoluteUrl, 0, 4)) !== 'http') {
-                        $attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
                         // If site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
                         $attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
                         $attribArray['src'] = $siteUrl . $attribArray['src'];
@@ -523,7 +484,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
                         // If the url is local, remove url-prefix
                         if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
-                            $attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
+                            $attribArray['href'] = substr($attribArray['href'], strlen($siteURL));
                         }
                         $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, 1) . '>';
                         $eTag = '</a>';
@@ -614,7 +575,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         $siteURL = $this->siteUrl();
                         // If the url is local, remove url-prefix
                         if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
-                            $attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
+                            $attribArray['href'] = substr($attribArray['href'], strlen($siteURL));
                         }
                         // Check for FAL link-handler keyword
                         list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $attribArray['href'], 2);
@@ -1530,7 +1491,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 if ($attribArray['href'] !== '') {
                     $uP = parse_url(strtolower($attribArray['href']));
                     if (!$uP['scheme']) {
-                        $attribArray['href'] = $this->siteUrl() . substr($attribArray['href'], strlen($this->relBackPath));
+                        $attribArray['href'] = $this->siteUrl() . $attribArray['href'];
                     } elseif ($uP['scheme'] != 'mailto') {
                         $attribArray['data-htmlarea-external'] = 1;
                     }
