@@ -59,5 +59,8 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
             'csh' => 'xEXT_rtehtmlarea_PlainText:behaviour'
         )
     ));
-    $GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings(
+        '--div--;LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour'
+    );
 }
