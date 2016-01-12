@@ -4168,7 +4168,7 @@ class ContentObjectRenderer
                 if ($conf['iconCObject']) {
                     $icon = $this->cObjGetSingle($conf['iconCObject'], $conf['iconCObject.'], 'iconCObject');
                 } else {
-                    $notFoundThumb = ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/NotFound.gif';
+                    $notFoundThumb = ExtensionManagementUtility::siteRelPath('core') . 'Resources/Public/Images/NotFound.gif';
                     $sizeParts = array(64, 64);
                     if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
                         // using the File Abstraction Layer to generate a preview image
@@ -4201,7 +4201,7 @@ class ContentObjectRenderer
                         $urlPrefix = $tsfe->absRefPrefix;
                     }
                     $icon = '<img src="' . htmlspecialchars($urlPrefix . $icon) . '"' .
-                            'width="' . (int)$sizeParts[0] . '" height="' . (int)$sizeParts[1] . '" ' .
+                            ' width="' . (int)$sizeParts[0] . '" height="' . (int)$sizeParts[1] . '" ' .
                             $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
                 }
             } else {
