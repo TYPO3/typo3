@@ -258,11 +258,15 @@ class HtmlParser
      * Returns an array with all attributes as keys. Attributes are only lowercase a-z
      * If an attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
      *
+     * Compared to the method in GeneralUtility::get_tag_attributes this method also returns meta data about each
+     * attribute, e.g. if it is a shorthand attribute, and what the quotation is. Also, since all attribute keys
+     * are lower-cased, the meta information contains the original attribute name.
+     *
      * @param string $tag Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
      * @param bool $deHSC If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!
      * @return array array(Tag attributes,Attribute meta-data)
      */
-    public function get_tag_attributes($tag, $deHSC = 0)
+    public function get_tag_attributes($tag, $deHSC = false)
     {
         list($components, $metaC) = $this->split_tag_attributes($tag);
         // Attribute name is stored here
@@ -298,8 +302,13 @@ class HtmlParser
     }
 
     /**
-     * Returns an array with the 'components' from an attribute list. The result is normally analyzed by get_tag_attributes
-     * Removes tag-name if found
+     * Returns an array with the 'components' from an attribute list.
+     * The result is normally analyzed by get_tag_attributes
+     * Removes tag-name if found.
+     *
+     * The difference between this method and the one in GeneralUtility is that this method actually determines
+     * more information on the attribute, e.g. if the value is enclosed by a " or ' character.
+     * That's why this method returns two arrays, the "components" and the "meta-information" of the "components".
      *
      * @param string $tag The tag or attributes
      * @return array
