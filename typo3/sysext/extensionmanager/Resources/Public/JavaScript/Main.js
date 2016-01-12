@@ -36,8 +36,7 @@ define([
 	var ExtensionManager = {
 		identifier: {
 			extensionlist: '#typo3-extension-list',
-			searchField: '#Tx_Extensionmanager_extensionkey',
-			extensionManager: '.typo3-extension-manager'
+			searchField: '#Tx_Extensionmanager_extensionkey'
 		}
 	};
 
@@ -128,8 +127,6 @@ define([
 	 * @param {Object} $extension
 	 */
 	ExtensionManager.removeExtensionFromDisk = function($extension) {
-		var $extManager = $(Repository.identifier.extensionManager);
-		$extManager.mask();
 		$.ajax({
 			url: $extension.data('href'),
 			beforeSend: function() {
@@ -137,9 +134,6 @@ define([
 			},
 			success: function() {
 				location.reload();
-			},
-			error: function() {
-				$extManager.unmask();
 			},
 			complete: function() {
 				NProgress.done();
@@ -257,9 +251,7 @@ define([
 		});
 		message += '</form>';
 
-		var $extManager = $(ExtensionManager.identifier.extensionManager);
 		NProgress.done();
-		$extManager.unmask();
 
 		Modal.confirm(
 			TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
@@ -286,7 +278,6 @@ define([
 							},
 							dataType: 'json',
 							beforeSend: function() {
-								$extManager.mask();
 								NProgress.start();
 							},
 							complete: function() {
@@ -375,13 +366,10 @@ define([
 
 	/**
 	 *
-	 * @type {{downloadPath: string, identifier: {extensionManager: string}}}
+	 * @type {{downloadPath: string}}
 	 */
 	var Repository = {
-		downloadPath: '',
-		identifier: {
-			extensionManager: '.typo3-extension-manager'
-		}
+		downloadPath: ''
 	};
 
 	/**
@@ -452,7 +440,6 @@ define([
 				url: url,
 				dataType: 'json',
 				beforeSend: function() {
-					$(Repository.identifier.extensionManager).mask();
 					NProgress.start();
 				},
 				success: Repository.getDependencies
@@ -466,9 +453,7 @@ define([
 	 * @returns {Boolean}
 	 */
 	Repository.getDependencies = function(data) {
-		var $extManager = $(Repository.identifier.extensionManager);
 		NProgress.done();
-		$extManager.unmask();
 		if (data.hasDependencies) {
 			Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
 				{
@@ -502,12 +487,10 @@ define([
 	 * @param {String} url
 	 */
 	Repository.getResolveDependenciesAndInstallResult = function(url) {
-		var $extManager = $(Repository.identifier.extensionManager);
 		$.ajax({
 			url: url,
 			dataType: 'json',
 			beforeSend: function() {
-				$extManager.mask();
 				NProgress.start();
 			},
 			success: function (data) {
@@ -551,7 +534,6 @@ define([
 			},
 			complete: function() {
 				NProgress.done();
-				$extManager.unmask();
 			}
 		});
 	};
@@ -704,7 +686,6 @@ define([
 			$me.attr('href', '#');
 			$me.click(function() {
 				var $terTableWrapper = $(ExtensionManager.Update.identifier.terTableWrapper);
-				$terTableWrapper.mask();
 				NProgress.start();
 				$.ajax({
 					url: $(this).data('href'),
@@ -715,7 +696,6 @@ define([
 					},
 					complete: function() {
 						NProgress.done();
-						$terTableWrapper.unmask();
 					}
 				});
 			});
@@ -761,7 +741,6 @@ define([
 		var dataTable = ExtensionManager.manageExtensionListing();
 
 		$(document).on('click', '.onClickMaskExtensionManager', function() {
-			$(ExtensionManager.identifier.extensionManager).mask();
 			NProgress.start();
 		}).on('click', 'a[data-action=update-extension]', function(e) {
 			e.preventDefault();
@@ -769,7 +748,6 @@ define([
 				url: $(this).attr('href'),
 				dataType: 'json',
 				beforeSend: function() {
-					$(ExtensionManager.identifier.extensionManager).mask();
 					NProgress.start();
 				},
 				success: ExtensionManager.updateExtension
@@ -786,7 +764,7 @@ define([
 		});
 
 		$(document).on('click', '.t3-button-action-installdistribution', function() {
-			$(ExtensionManager.identifier.extensionManager).mask();
+			NProgress.start();
 		});
 
 		ExtensionManager.configurationFieldSupport();
