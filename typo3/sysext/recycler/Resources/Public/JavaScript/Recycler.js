@@ -42,7 +42,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 			currentPage: 1,
 			totalPages: 1,
 			totalItems: 0,
-			itemsPerPage: 20
+			itemsPerPage: TYPO3.settings.Recycler.pagingSize
 		},
 		markedRecordsForMassAction: [],
 		allToggled: false
