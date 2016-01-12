@@ -330,7 +330,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 // Image found, do processing:
                 if ($k % 2) {
                     // Get attributes
-                    $attribArray = $this->get_tag_attributes_classic($v, 1);
+                    list($attribArray) = $this->get_tag_attributes($v, true);
                     // It's always an absolute URL coming from the RTE into the Database.
                     $absoluteUrl = trim($attribArray['src']);
                     // Make path absolute if it is relative and we have a site path which is not '/'
@@ -479,7 +479,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 // Image found
                 if ($k % 2) {
                     // Get the attributes of the img tag
-                    $attribArray = $this->get_tag_attributes_classic($v, 1);
+                    list($attribArray) = $this->get_tag_attributes($v, true);
                     $absoluteUrl = trim($attribArray['src']);
                     // Transform the src attribute into an absolute url, if it not already
                     if (strtolower(substr($absoluteUrl, 0, 4)) !== 'http') {
@@ -521,7 +521,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 foreach ($blockSplit as $k => $v) {
                     // Block
                     if ($k % 2) {
-                        $attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
+                        list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
                         // If the url is local, remove url-prefix
                         if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
                             $attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
@@ -553,7 +553,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         foreach ($blockSplit as $k => $v) {
             // If an A-tag was found:
             if ($k % 2) {
-                $attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
+                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
                 $info = $this->urlInfoForLinkTags($attribArray['href']);
                 // Check options:
                 $attribArray_copy = $attribArray;
@@ -799,7 +799,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         foreach ($blockSplit as $k => $v) {
             // Block
             if ($k % 2) {
-                $attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v));
+                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v));
                 if ($attribArray['specialtag']) {
                     $theTag = rawurldecode($attribArray['specialtag']);
                     $theTagName = $this->getFirstTagName($theTag);
@@ -913,7 +913,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
 
                     case 'h6':
                         if (!$css) {
-                            $attribArray = $this->get_tag_attributes_classic($tag);
+                            list($attribArray) = $this->get_tag_attributes($tag);
                             // Processing inner content here:
                             $innerContent = $this->HTMLcleaner_db($this->removeFirstAndLastTag($blockSplit[$k]));
                             $blockSplit[$k] = '<' . $tagName . ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') . ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') . '>' . $innerContent . '</' . $tagName . '>' . $lastBR;
@@ -959,7 +959,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         foreach ($blockSplit as $k => $v) {
             // If an A-tag was found
             if ($k % 2) {
-                $attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
+                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
                 // If "style" attribute is set and rteerror is not set!
                 if ($attribArray['style'] && !$attribArray['rteerror']) {
                     $attribArray_copy['style'] = $attribArray['style'];
@@ -1416,7 +1416,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 $rowSplit = $this->splitIntoBlock('tr', $v);
                 foreach ($rowSplit as $k2 => $v2) {
                     if ($k2 % 2) {
-                        $cellSplit = $this->getAllParts($this->splitIntoBlock('td', $v2), 1, 0);
+                        $cellSplit = $this->getAllParts($this->splitIntoBlock('td', $v2));
                         foreach ($cellSplit as $k3 => $v3) {
                             $tableSplit[$k] .= $v3 . $breakChar;
                         }
@@ -1559,7 +1559,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         foreach ($blockSplit as $k => $v) {
             // Block
             if ($k % 2) {
-                $attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
+                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
                 // Checking if there is a scheme, and if not, prepend the current url.
                 // ONLY do this if href has content - the <a> tag COULD be an anchor and if so, it should be preserved...
                 if ($attribArray['href'] !== '') {
