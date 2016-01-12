@@ -790,12 +790,10 @@ define([
 		});
 
 		ExtensionManager.configurationFieldSupport();
-		var $validate = $('.validate');
-		$validate.validate();
 
 		SplitButtons.addPreSubmitCallback(function(e) {
 			if ($(e.target).hasClass('t3js-save-close')) {
-				$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'}));
+				$('#configurationform').append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'}));
 			}
 		});
 
