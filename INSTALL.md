@@ -150,8 +150,13 @@ be upgraded later through the Install Tool:
 /var/www/site/ $ tar xzf typo3_src-7.6.x.tar.gz
 ```
 
-* Important: If you use GIT to fetch the sources, don't forget to run `composer install --no-dev`
-  inside the repository, otherwise your installation won't work!
+* Important: If you use GIT to fetch the sources, don't forget to run the following commands,
+otherwise your installation won't work!
+```
+cd typo3_src
+composer install --no-dev
+cd ..
+```
 
 * Create the symlinks in your Document Root:
 ```
