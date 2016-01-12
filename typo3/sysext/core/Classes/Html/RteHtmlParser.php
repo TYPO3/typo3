@@ -242,9 +242,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
                             $value = $this->TS_transform_db($value, $cmd == 'css_transform');
                             break;
-                        case 'ts_strip':
-                            $value = $this->TS_strip_db($value);
-                            break;
                         default:
                             // Do nothing
                     }
@@ -1022,19 +1019,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         return implode(LF, $blockSplit);
     }
 
-    /**
-     * Transformation handler: 'ts_strip' / direction: "db"
-     * Removing all non-allowed tags
-     *
-     * @param string $value Content input
-     * @return string Content output
-     */
-    public function TS_strip_db($value)
-    {
-        $value = strip_tags($value, '<' . implode('><', explode(',', 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote')) . '>');
-        return $value;
-    }
-
     /***************************************************************
      *
      * Generic RTE transformation, analysis and helper functions
@@ -1378,7 +1362,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
 
     /**
      * Remove all tables from incoming code
-     * The function is trying to to this is some more or less respectfull way. The approach is to resolve each table cells content and implode it all by <br /> chars. Thus at least the content is preserved in some way.
+     * The function is trying to do this in a more or less respectful way. The approach is to resolve each table cells content and implode it all by <br /> chars. Thus at least the content is preserved in some way.
      *
      * @param string $value Input value
      * @param string $breakChar Break character to use for linebreaks.
