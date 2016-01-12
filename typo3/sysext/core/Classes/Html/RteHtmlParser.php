@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Core\Html;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -189,7 +191,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         // Make list unique
         $modes = array_unique(GeneralUtility::trimExplode(',', implode(',', $modes), true));
         // Reverse order if direction is "rte"
-        if ($direction == 'rte') {
+        if ($direction === 'rte') {
             $modes = array_reverse($modes);
         }
         // Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independent processing options you can set up:
@@ -324,7 +326,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
             /** @var $resourceFactory Resource\ResourceFactory */
             $resourceFactory = Resource\ResourceFactory::getInstance();
             /** @var $magicImageService Resource\Service\MagicImageService */
-            $magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
+            $magicImageService = GeneralUtility::makeInstance(Resource\Service\MagicImageService::class);
             $magicImageService->setMagicImageMaximumDimensions($this->tsConfig);
             foreach ($imgSplit as $k => $v) {
                 // Image found, do processing:
@@ -353,7 +355,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         // An original image file uid is available
                         try {
                             /** @var $originalImageFile Resource\File */
-                            $originalImageFile = $resourceFactory->getFileObject(intval($attribArray['data-htmlarea-file-uid']));
+                            $originalImageFile = $resourceFactory->getFileObject((int)$attribArray['data-htmlarea-file-uid']);
                         } catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
                             // Log the fact the file could not be retrieved.
                             $message = sprintf('Could not find file with uid "%s"', $attribArray['data-htmlarea-file-uid']);
@@ -621,12 +623,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $attribArray['href'], 2);
                         if ($linkHandlerKeyword === '?file') {
                             try {
-                                $fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject(rawurldecode($linkHandlerValue));
-                                if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface || $fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+                                $fileOrFolderObject = Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject(rawurldecode($linkHandlerValue));
+                                if ($fileOrFolderObject instanceof Resource\FileInterface || $fileOrFolderObject instanceof Resource\Folder) {
                                     $attribArray['href'] = $fileOrFolderObject->getPublicUrl();
                                 }
-                            } catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
-                                // The indentifier inserted in the RTE is already gone...
+                            } catch (Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
+                                // The identifier inserted in the RTE is already gone...
                             }
                         }
                     }
@@ -705,16 +707,16 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             // It is an internal file or folder
                             // Try to transform the href into a FAL reference
                             try {
-                                $fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
-                            } catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+                                $fileOrFolderObject = Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
+                            } catch (Resource\Exception $exception) {
                                 // Nothing to be done if file/folder not found or path invalid
                                 $fileOrFolderObject = null;
                             }
-                            if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+                            if ($fileOrFolderObject instanceof Resource\Folder) {
                                 // It's a folder
                                 $folderIdentifier = $fileOrFolderObject->getIdentifier();
                                 $href = $siteUrl . '?file:' . rawurlencode($folderIdentifier);
-                            } elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+                            } elseif ($fileOrFolderObject instanceof Resource\FileInterface) {
                                 // It's a file
                                 $fileIdentifier = $fileOrFolderObject->getIdentifier();
                                 $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
@@ -735,7 +737,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             }
                             // If no id or alias is given, set it to class record pid
                             // Checking if the id-parameter is an alias.
-                            if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($idPart)) {
+                            if (!MathUtility::canBeInterpretedAsInteger($idPart)) {
                                 list($idPartR) = BackendUtility::getRecordsByField('pages', 'alias', $idPart);
                                 $idPart = (int)$idPartR['uid'];
                             }
@@ -868,26 +870,17 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 // Process based on the tag:
                 switch ($tagName) {
                     case 'blockquote':
-
                     case 'dd':
-
                     case 'div':
-
                     case 'header':
-
                     case 'section':
-
                     case 'footer':
-
                     case 'nav':
-
                     case 'article':
-
                     case 'aside':
                         $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>' . $lastBR;
                         break;
                     case 'ol':
-
                     case 'ul':
                         if ($css) {
                             $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
@@ -902,15 +895,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         }
                         break;
                     case 'h1':
-
                     case 'h2':
-
                     case 'h3':
-
                     case 'h4':
-
                     case 'h5':
-
                     case 'h6':
                         if (!$css) {
                             list($attribArray) = $this->get_tag_attributes($tag);
@@ -977,12 +965,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
      * Transformation handler: 'ts_transform' + 'css_transform' / direction: "rte"
      * Set (->rte) for standard content elements (ts)
      *
-     * @param string Content input
-     * @param bool If TRUE, the transformation was "css_transform", otherwise "ts_transform
+     * @param string $value Content input
+     * @param bool $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
      * @return string Content output
      * @see TS_transform_db()
      */
-    public function TS_transform_rte($value, $css = 0)
+    public function TS_transform_rte($value, $css = false)
     {
         // Split the content from database by the occurrence of the block elements
         $blockElementList = 'TABLE,BLOCKQUOTE,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList;
@@ -994,25 +982,16 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 // Init:
                 $tag = $this->getFirstTag($v);
                 $tagName = strtolower($this->getFirstTagName($v));
-                $attribArray = $this->get_tag_attributes_classic($tag);
                 // Based on tagname, we do transformations:
                 switch ($tagName) {
                     case 'blockquote':
-
                     case 'dd':
-
                     case 'div':
-
                     case 'header':
-
                     case 'section':
-
                     case 'footer':
-
                     case 'nav':
-
                     case 'article':
-
                     case 'aside':
                         $blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>';
                         break;
@@ -1464,6 +1443,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     public function getWHFromAttribs($attribArray)
     {
         $style = trim($attribArray['style']);
+        $w = 0;
+        $h = 0;
         if ($style) {
             $regex = '[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
             // Width
@@ -1615,13 +1596,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     }
 
     /**
-    * @return \TYPO3\CMS\Core\Log\Logger
-    */
+     * Instantiates a logger
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
     protected function getLogger()
     {
-        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
-
+        /** @var $logManager LogManager */
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
         return $logManager->getLogger(get_class($this));
     }
 }
