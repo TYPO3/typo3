@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Aboutmodules\Controller;
+namespace TYPO3\CMS\About\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -111,8 +112,8 @@ class ModulesController extends ActionController
      */
     protected function getModulesData()
     {
-        /** @var $loadedModules \TYPO3\CMS\Backend\Module\ModuleLoader */
-        $loadedModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
+        /** @var $loadedModules ModuleLoader */
+        $loadedModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $loadedModules->observeWorkspaces = true;
         $loadedModules->load($GLOBALS['TBE_MODULES']);
         $mainModulesData = array();

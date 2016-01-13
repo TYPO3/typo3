@@ -14,3 +14,7 @@ $signalSlotDispatcher->connect(
     \TYPO3\CMS\Core\Category\CategoryRegistry::class,
     'addCategoryDatabaseSchemaToTablesDefinition'
 );
+
+
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class]
+    = \TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class;

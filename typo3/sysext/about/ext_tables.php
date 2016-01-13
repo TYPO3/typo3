@@ -15,4 +15,19 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
             'labels' => 'LLL:EXT:lang/locallang_mod_help_about.xlf'
         )
     );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TYPO3.CMS.About',
+        'help',
+        'aboutmodules',
+        'after:about',
+        array(
+            'Modules' => 'index'
+        ),
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:about/Resources/Public/Icons/module-aboutmodules.svg',
+            'labels' => 'LLL:EXT:about/Resources/Private/Language/Modules/aboutmodules.xlf'
+        )
+    );
 }

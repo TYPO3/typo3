@@ -1,15 +1,14 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'Help>About',
-    'description' => 'Shows info about TYPO3 and installed extensions.',
+    'description' => 'Shows info about TYPO3, installed extensions and a separate module for available modules.',
     'category' => 'module',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'author' => 'Kasper Skaarhoj',
-    'author_email' => 'kasperYYYY@typo3.com',
-    'author_company' => 'Curby Soft Multimedia',
+    'author' => 'TYPO3 Core Team',
+    'author_email' => 'typo3cms@typo3.org',
     'version' => '8.0.0',
     'constraints' => array(
         'depends' => array(

@@ -9,7 +9,8 @@
 		"typo3/cms-core": "*"
 	},
 	"replace": {
-		"about": "*"
+		"about": "*",
+		"aboutmodules": "*"
 	},
 	"extra": {
 		"typo3/cms": {

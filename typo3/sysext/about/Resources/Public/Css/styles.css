@@ -36,3 +36,18 @@ Help > About
   color: black;
   text-decoration: underline;
 }
+/* - - - - - - - - - - - - - - - - - - - - -
+Help > About modules
+- - - - - - - - - - - - - - - - - - - - - */
+.typo3-aboutmodules-inner-docbody a {
+	text-decoration: underline;
+}
+.typo3-aboutmodules-inner-docbody .end-text {
+	padding-top: 3em;
+}
+.typo3-aboutmodules-inner-docbody h2 {
+	margin-bottom: 1em;
+}
+.typo3-aboutmodules-inner-docbody .submodule {
+	padding-bottom: 3em;
+}

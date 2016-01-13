@@ -66,7 +66,6 @@
 	},
 	"replace": {
 		"typo3/cms-about": "self.version",
-		"typo3/cms-aboutmodules": "self.version",
 		"typo3/cms-adodb": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
@@ -123,7 +122,6 @@
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\About\\": "typo3/sysext/about/Classes/",
-			"TYPO3\\CMS\\Aboutmodules\\": "typo3/sysext/aboutmodules/Classes/",
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
 			"TYPO3\\CMS\\Belog\\": "typo3/sysext/belog/Classes/",
 			"TYPO3\\CMS\\Beuser\\": "typo3/sysext/beuser/Classes/",
