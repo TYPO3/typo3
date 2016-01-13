@@ -42,7 +42,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap
      */
     public function wrapRecordTitle($str, $row)
     {
-        $aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid'])))) . ');return false;';
+        $aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($this->linkToCurrentModule(['edit_record' => 'tt_content:' . $row['uid']])) . ');return false;';
         return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
     }
 
@@ -56,7 +56,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap
      */
     public function wrapColumnHeader($str, $vv)
     {
-        $aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv)))) . ');return false;';
+        $aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($this->linkToCurrentModule(['edit_record' => '_EDIT_COL:' . $vv])) . ');return false;';
         return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
     }
 
@@ -73,10 +73,11 @@ class ContentLayoutPagePositionMap extends PagePositionMap
     public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0)
     {
         if (is_array($row)) {
-            $location = $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => 'tt_content:new/-' . $row['uid'] . '/' . $row['colPos']));
+            $linkInformation = 'tt_content:new/-' . $row['uid'] . '/' . $row['colPos'];
         } else {
-            $location = $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => 'tt_content:new/' . $pid . '/' . $vv));
+            $linkInformation = 'tt_content:new/' . $pid . '/' . $vv;
         }
+        $location = $this->linkToCurrentModule(['edit_record' => $linkInformation]);
         return 'jumpToUrl(' . GeneralUtility::quoteJSvalue($location) . ');return false;';
     }
 
@@ -97,4 +98,19 @@ class ContentLayoutPagePositionMap extends PagePositionMap
             return $str;
         }
     }
+
+    /**
+     * Returns URL to the current script.
+     * In particular the "popView" and "new_unique_uid" Get vars are unset.
+     *
+     * @param array $params Parameters array, merged with global GET vars.
+     * @return string URL
+     */
+    protected function linkToCurrentModule($params)
+    {
+        unset($params['popView']);
+        unset($params['new_unique_uid']);
+        return GeneralUtility::linkThisScript($params);
+    }
+
 }
