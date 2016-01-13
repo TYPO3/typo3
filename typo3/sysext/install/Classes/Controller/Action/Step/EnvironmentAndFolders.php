@@ -117,6 +117,6 @@ class EnvironmentAndFolders extends AbstractStepAction
         }
         $this->assignSteps();
 
-        return $this->view->render(!empty($alerts));
+        return $this->view->render();
     }
 }

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Install\Controller\Action;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Install\View\StandaloneView;
 
 /**
  * General purpose controller action helper methods and bootstrap
@@ -22,31 +24,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractAction implements ActionInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager = null;
 
     /**
-     * Do NOT refactor to use @inject annotation, as failsafe handling would not work any more
+     * Inject object manager
      *
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @param ObjectManager $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function injectObjectManager(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
     }
 
     /**
-     * @var \TYPO3\CMS\Install\View\FailsafeView
+     * @var StandaloneView
      */
     protected $view = null;
 
     /**
-     * Do NOT refactor to use @inject annotation, as failsafe handling would not work any more
+     * Inject View
      *
-     * @param \TYPO3\CMS\Install\View\FailsafeView $view
+     * @param StandaloneView $view
      */
-    public function injectView(\TYPO3\CMS\Install\View\FailsafeView $view)
+    public function injectView(StandaloneView $view)
     {
         $this->view = $view;
     }
@@ -106,8 +108,8 @@ abstract class AbstractAction implements ActionInterface
         $controllerActionDirectoryName = ucfirst($this->controller);
         $mainTemplate = ucfirst($this->action);
         $this->view->setTemplatePathAndFilename($viewRootPath . 'Templates/Action/' . $controllerActionDirectoryName . '/' . $mainTemplate . '.html');
-        $this->view->setLayoutRootPath($viewRootPath . 'Layouts/');
-        $this->view->setPartialRootPath($viewRootPath . 'Partials/');
+        $this->view->setLayoutRootPaths(array($viewRootPath . 'Layouts/'));
+        $this->view->setPartialRootPaths(array($viewRootPath . 'Partials/'));
         $this->view
             // time is used in js and css as parameter to force loading of resources
             ->assign('time', time())

@@ -35,6 +35,6 @@ class InstallToolDisabledAction extends Action\AbstractAction
         $statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
         $alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
         $this->view->assign('alerts', $alerts);
-        return $this->view->render(!empty($alerts));
+        return $this->view->render();
     }
 }
