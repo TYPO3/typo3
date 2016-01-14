@@ -20,8 +20,9 @@ define([
 	'TYPO3/CMS/Backend/AjaxDataHandler',
 	'TYPO3/CMS/Backend/Modal',
 	'TYPO3/CMS/Backend/Icons',
+	'TYPO3/CMS/Backend/Severity',
 	'bootstrap'
-], function($, DataHandler, Modal, Icons) {
+], function($, DataHandler, Modal, Icons, Severity) {
 	'use strict';
 
 	/**
@@ -119,7 +120,7 @@ define([
 			var $modal = Modal.confirm(
 				TYPO3.lang['localize.wizard.header'].replace('{0}', $triggerButton.data('colposName')).replace('{1}', $triggerButton.data('languageName')),
 				modalContent,
-				top.TYPO3.Severity.info, [
+				Severity.info, [
 					{
 						text: TYPO3.lang['localize.wizard.button.cancel'] || 'Cancel',
 						active: true,

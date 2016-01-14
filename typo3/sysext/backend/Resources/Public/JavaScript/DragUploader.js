@@ -15,7 +15,14 @@
  * Module: TYPO3/CMS/Backend/DragUploader
  *
  */
-define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang'], function($, moment, NProgress, Modal) {
+define(['jquery',
+		'moment',
+		'nprogress',
+		'TYPO3/CMS/Backend/Modal',
+		'TYPO3/CMS/Backend/Notification',
+		'TYPO3/CMS/Backend/Severity',
+		'TYPO3/CMS/Lang/Lang'
+	   ], function($, moment, NProgress, Modal, Notification, Severity) {
 
 	/**
 	 * Array of files which are asked for being overridden
@@ -278,7 +285,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/L
 						cache: false,
 						success: function(data) {
 							$.each(data, function(index, flashMessage) {
-								top.TYPO3.Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
+								Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
 							});
 						}
 					});
@@ -334,7 +341,7 @@ define(['jquery', 'moment', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/L
 				$modalContent.find('table').append($record);
 			}
 
-			var $modal = Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, Severity.warning, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
 					active: true,

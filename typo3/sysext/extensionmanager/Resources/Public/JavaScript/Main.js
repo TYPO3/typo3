@@ -24,9 +24,11 @@ define([
 	'TYPO3/CMS/Backend/Modal',
 	'TYPO3/CMS/Backend/SplitButtons',
 	'TYPO3/CMS/Backend/Tooltip',
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/Severity',
 	'datatables',
 	'TYPO3/CMS/Backend/jquery.clearable'
-], function($, NProgress, Modal, SplitButtons, Tooltip) {
+], function($, NProgress, Modal, SplitButtons, Tooltip, Notification, Severity) {
 
 	/**
 	 *
@@ -99,7 +101,7 @@ define([
 				Modal.confirm(
 					TYPO3.lang['extensionList.removalConfirmation.title'],
 					TYPO3.lang['extensionList.removalConfirmation.question'],
-					top.TYPO3.Severity.error,
+					Severity.error,
 					[
 						{
 							text: TYPO3.lang['button.cancel'],
@@ -256,7 +258,7 @@ define([
 		Modal.confirm(
 			TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
 			message,
-			top.TYPO3.Severity.warning,
+			Severity.warning,
 			[
 				{
 					text: TYPO3.lang['button.cancel'],
@@ -455,7 +457,7 @@ define([
 	Repository.getDependencies = function(data) {
 		NProgress.done();
 		if (data.hasDependencies) {
-			Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
+			Modal.confirm(data.title, data.message, Severity.info, [
 				{
 					text: TYPO3.lang['button.cancel'],
 					active: true,
@@ -474,7 +476,7 @@ define([
 			]);
 		} else {
 			if(data.hasErrors) {
-				top.TYPO3.Notification.error(data.title, data.message, 15);
+				Notification.error(data.title, data.message, 15);
 			} else {
 				Repository.getResolveDependenciesAndInstallResult(data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath);
 			}
@@ -495,7 +497,7 @@ define([
 			},
 			success: function (data) {
 				if (data.errorCount > 0) {
-					Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.error, [
+					Modal.confirm(data.errorTitle, data.errorMessage, Severity.error, [
 						{
 							text: TYPO3.lang['button.cancel'],
 							active: true,
@@ -528,7 +530,7 @@ define([
 							successMessage += '\n* ' + extkey
 						});
 					});
-					top.TYPO3.Notification.info(TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
+					Notification.info(TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
 					top.TYPO3.ModuleMenu.App.refreshMenu();
 				}
 			},
@@ -630,7 +632,7 @@ define([
 			success: function(data) {
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
-					top.TYPO3.Notification.error(TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
+					Notification.error(TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
 				}
 
 				// Message with latest updates
@@ -651,7 +653,7 @@ define([
 				// Create an error message with diagnosis info.
 				var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
 
-				top.TYPO3.Notification.warning(
+				Notification.warning(
 					TYPO3.lang['extensionList.updateFromTerFlashMessage.title'],
 					errorMessage,
 					10

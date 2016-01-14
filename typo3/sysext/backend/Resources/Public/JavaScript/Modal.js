@@ -14,23 +14,32 @@
 /**
  * Module: TYPO3/CMS/Backend/Modal
  * API for modal windows powered by Twitter Bootstrap.
- * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
-define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Severity',
+		'bootstrap'
+	   ], function($, Severity) {
 	'use strict';
 
-	// fetch from parent
-	if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {
-		// we need to trigger the event capturing again, in order to make sure this works inside iframes
-		parent.window.TYPO3.Modal.initializeMarkupTrigger(document);
-		return parent.window.TYPO3.Modal;
-	}
+	try {
+		// fetch from parent
+		if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {
+			// we need to trigger the event capturing again, in order to make sure this works inside iframes
+			parent.window.TYPO3.Modal.initializeMarkupTrigger(document);
+			return parent.window.TYPO3.Modal;
+		}
 
-	// fetch object from outer frame
-	if (top && top.TYPO3.Modal) {
-		// we need to trigger the event capturing again, in order to make sure this works inside iframes
-		top.TYPO3.Modal.initializeMarkupTrigger(document);
-		return top.TYPO3.Modal;
+		// fetch object from outer frame
+		if (top && top.TYPO3.Modal) {
+			// we need to trigger the event capturing again, in order to make sure this works inside iframes
+			top.TYPO3.Modal.initializeMarkupTrigger(document);
+			return top.TYPO3.Modal;
+		}
+	} catch (e) {
+		// This only happens if the opener, parent or top is some other url (eg a local file)
+		// which loaded the current window. Then the browser's cross domain policy jumps in
+		// and raises an exception.
+		// For this case we are safe and we can create our global object below.
 	}
 
 	/**
@@ -64,26 +73,26 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	/**
 	 * Get the correct css class for given severity
 	 *
-	 * @param {int} severity use constants from top.TYPO3.Severity.*
+	 * @param {int} severity use constants from Severity.*
 	 * @returns {String}
 	 * @private
 	 */
 	Modal.getSeverityClass = function(severity) {
 		var severityClass;
 		switch (severity) {
-			case top.TYPO3.Severity.notice:
+			case Severity.notice:
 				severityClass = 'notice';
 				break;
-			case top.TYPO3.Severity.ok:
+			case Severity.ok:
 				severityClass = 'success';
 				break;
-			case top.TYPO3.Severity.warning:
+			case Severity.warning:
 				severityClass = 'warning';
 				break;
-			case top.TYPO3.Severity.error:
+			case Severity.error:
 				severityClass = 'danger';
 				break;
-			case top.TYPO3.Severity.info:
+			case Severity.info:
 			default:
 				severityClass = 'info';
 				break;
@@ -100,12 +109,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 *
 	 * @param {String} title the title for the confirm modal
 	 * @param {String} content the content for the conform modal, e.g. the main question
-	 * @param {int} [severity=top.TYPO3.Severity.warning] severity default top.TYPO3.Severity.warning
+	 * @param {int} [severity=Severity.warning] severity default Severity.warning
 	 * @param {array} [buttons] an array with buttons, default no buttons
 	 * @param {array} [additionalCssClasses=''] additional css classes to add to the modal
 	 */
 	Modal.confirm = function(title, content, severity, buttons, additionalCssClasses) {
-		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.warning);
+		severity = (typeof severity !== 'undefined' ? severity : Severity.warning);
 		buttons = buttons || [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
@@ -161,14 +170,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 	 *
 	 * @param {String} title the title for the confirm modal
 	 * @param {String} content the content for the conform modal, e.g. the main question
-	 * @param {int} severity default top.TYPO3.Severity.info
+	 * @param {int} severity default Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
 	 * @param {array} additionalCssClasses additional css classes to add to the modal
 	 */
 	Modal.show = function(title, content, severity, buttons, additionalCssClasses) {
 		var i;
 
-		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
+		severity = (typeof severity !== 'undefined' ? severity : Severity.info);
 		buttons = buttons || [];
 		additionalCssClasses = additionalCssClasses || [];
 
@@ -298,7 +307,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($) {
 			var url = $element.data('url') || null;
 			var title = $element.data('title') || 'Alert';
 			var content = $element.data('content') || 'Are you sure?';
-			var severity = (typeof top.TYPO3.Severity[$element.data('severity')] !== 'undefined') ? top.TYPO3.Severity[$element.data('severity')] : top.TYPO3.Severity.info;
+			var severity = (typeof Severity[$element.data('severity')] !== 'undefined') ? Severity[$element.data('severity')] : Severity.info;
 			var buttons = [
 				{
 					text: $element.data('button-close-text') || 'Close',
