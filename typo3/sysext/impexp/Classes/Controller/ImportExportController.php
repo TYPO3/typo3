@@ -170,7 +170,6 @@ class ImportExportController extends BaseScriptClass
         $inData = GeneralUtility::_GP('tx_impexp');
         $this->content .= '<h3>' . $this->lang->getLL('title_' . (string)$inData['action'], true) . '</h3>';
         $this->content .= '<div style="padding-top: 5px;"></div>';
-        $this->checkUpload();
         switch ((string)$inData['action']) {
             case 'export':
                 $this->shortcutName = $this->lang->getLL('title_export');
@@ -179,6 +178,9 @@ class ImportExportController extends BaseScriptClass
                 break;
             case 'import':
                 $this->shortcutName = $this->lang->getLL('title_import');
+                if (GeneralUtility::_POST('_upload')) {
+                    $this->checkUpload();
+                }
                 // Finally: If upload went well, set the new file as the import file:
                 if (!empty($this->uploadedFiles[0])) {
                     // Only allowed extensions....
