@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Functional test for the ImportExport
+ * Functional test for the Export
  */
 abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 {
@@ -28,13 +28,13 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
     protected $coreExtensionsToLoad = array('impexp');
 
     /**
-     * @var \TYPO3\CMS\Impexp\ImportExport
+     * @var \TYPO3\CMS\Impexp\Export
      */
     protected $export;
 
     /**
      * Set up for set up the backend user, initialize the language object
-     * and creating the ImportExport instance
+     * and creating the Export instance
      *
      * @return void
      */
@@ -46,13 +46,13 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 
-        $this->export = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+        $this->export = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\Export::class);
         $this->export->init(0, 'export');
     }
 
     /**
      * Builds a flat array containing the page tree with the PageTreeView
-     * based on given start pid and depth and set it in the ImportExport object.
+     * based on given start pid and depth and set it in the Export object.
      *
      * @param int $pidToStart
      * @param int $depth

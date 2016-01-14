@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Functional test for the ImportExport
+ * Functional test for the Import
  */
 abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
 {
@@ -27,7 +27,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     protected $coreExtensionsToLoad = array('impexp');
 
     /**
-     * @var \TYPO3\CMS\Impexp\ImportExport
+     * @var \TYPO3\CMS\Impexp\Import
      */
     protected $import;
 
@@ -40,7 +40,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     protected $testFilesToDelete = array();
 
     /**
-     * Set up for initialization of the ImportExport instance
+     * Set up for initialization of the Import instance
      *
      * @return void
      */
@@ -48,7 +48,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         parent::setUp();
 
-        $this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
+        $this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\Import::class);
         $this->import->init(0, 'import');
     }
 

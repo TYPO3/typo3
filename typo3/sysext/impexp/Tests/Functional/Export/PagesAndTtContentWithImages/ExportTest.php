@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export\PagesAndTtContentWithImages;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Functional test for the ImportExport
+ * Functional test for the Export
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase
 {

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportFromVersionFourDotFive\GroupFi
  */
 
 /**
- * Functional test for the ImportExport
+ * Functional test for the Import
  */
 class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
 {

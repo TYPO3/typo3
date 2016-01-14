@@ -36,7 +36,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
-use TYPO3\CMS\Impexp\ImportExport;
+use TYPO3\CMS\Impexp\Export;
+use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -58,12 +59,12 @@ class ImportExportController extends BaseScriptClass
     public $pageinfo;
 
     /**
-     * @var ImportExport
+     * @var Export
      */
     protected $export;
 
     /**
-     * @var ImportExport
+     * @var Import
      */
     protected $import;
 
@@ -312,8 +313,8 @@ class ImportExportController extends BaseScriptClass
         // Saving/Loading/Deleting presets:
         $this->presetRepository->processPresets($inData);
         // Create export object and configure it:
-        $this->export = GeneralUtility::makeInstance(ImportExport::class);
-        $this->export->init(0, 'export');
+        $this->export = GeneralUtility::makeInstance(Export::class);
+        $this->export->init(0);
         $this->export->setCharset($this->lang->charSet);
         $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
         $this->export->excludeMap = (array)$inData['exclude'];
@@ -989,9 +990,9 @@ class ImportExportController extends BaseScriptClass
             if ($inData['new_import']) {
                 unset($inData['import_mode']);
             }
-            /** @var $import ImportExport */
-            $import = GeneralUtility::makeInstance(ImportExport::class);
-            $import->init(0, 'import');
+            /** @var $import Import */
+            $import = GeneralUtility::makeInstance(Import::class);
+            $import->init();
             $import->update = $inData['do_update'];
             $import->import_mode = $inData['import_mode'];
             $import->enableLogging = $inData['enableLogging'];
