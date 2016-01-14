@@ -34,12 +34,12 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Main script class for the Import / Export facility
@@ -122,6 +122,11 @@ class ImportExportController extends BaseScriptClass
     protected $presetRepository;
 
     /**
+     * @var StandaloneView
+     */
+    protected $standaloneView = null;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -129,6 +134,15 @@ class ImportExportController extends BaseScriptClass
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->presetRepository = GeneralUtility::makeInstance(PresetRepository::class);
+
+        $templatePath = ExtensionManagementUtility::extPath('impexp') . 'Resources/Private/';
+
+        /* @var $view StandaloneView */
+        $this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->standaloneView->setTemplateRootPaths([$templatePath . 'Templates/ImportExport/']);
+        $this->standaloneView->setLayoutRootPaths([$templatePath . 'Layouts/']);
+        $this->standaloneView->setPartialRootPaths([$templatePath . 'Partials/']);
+        $this->standaloneView->getRequest()->setControllerExtensionName('impexp');
     }
 
     /**
@@ -152,6 +166,7 @@ class ImportExportController extends BaseScriptClass
     public function main()
     {
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
+
         // Start document template object:
         // We keep this here, in case somebody relies on the old doc being here
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
@@ -165,17 +180,19 @@ class ImportExportController extends BaseScriptClass
             'ImpexpInLineJS',
             'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
         );
-        $this->content = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" id="ImportExportController" enctype="multipart/form-data">'
-            . '<input type="hidden" name="id" value="' . $this->id . '" />';
+
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
-        $this->content .= '<h3>' . $this->lang->getLL('title_' . (string)$inData['action'], true) . '</h3>';
-        $this->content .= '<div style="padding-top: 5px;"></div>';
+        $this->standaloneView->assign('moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
+        $this->standaloneView->assign('id', $this->id);
+        $this->standaloneView->assign('inData', $inData);
+
         switch ((string)$inData['action']) {
             case 'export':
                 $this->shortcutName = $this->lang->getLL('title_export');
                 // Call export interface
                 $this->exportData($inData);
+                $this->standaloneView->setTemplate('Export.html');
                 break;
             case 'import':
                 $this->shortcutName = $this->lang->getLL('title_import');
@@ -192,11 +209,12 @@ class ImportExportController extends BaseScriptClass
                 }
                 // Call import interface:
                 $this->importData($inData);
+                $this->standaloneView->setTemplate('Import.html');
                 break;
         }
+
         // Setting up the buttons and markers for docheader
         $this->getButtons();
-        $this->content .= '</form>';
     }
 
     /**
@@ -239,8 +257,9 @@ class ImportExportController extends BaseScriptClass
         $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->main();
-        $this->moduleTemplate->setContent($this->content);
+        $this->moduleTemplate->setContent($this->standaloneView->render());
         $response->getBody()->write($this->moduleTemplate->renderContent());
+
         return $response;
     }
 
@@ -322,6 +341,7 @@ class ImportExportController extends BaseScriptClass
         $this->export->extensionDependencies = (array)$inData['extension_dep'];
         $this->export->showStaticRelations = $inData['showStaticRelations'];
         $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
+        $this->export->setStandaloneView($this->standaloneView);
         // Static tables:
         if (is_array($inData['external_static']['tables'])) {
             $this->export->relStaticTables = $inData['external_static']['tables'];
@@ -508,60 +528,20 @@ class ImportExportController extends BaseScriptClass
             }
         }
         // OUTPUT to BROWSER:
-        // Now, if we didn't make download file, show configuration form based on export:
-        $menuItems = array();
-        // Export configuration
-        $row = array();
-        $this->makeConfigurationForm($inData, $row);
-        $menuItems[] = array(
-            'label' => $this->lang->getLL('tableselec_configuration'),
-            'content' => '
-				<table border="0" cellpadding="1" cellspacing="1">
-					' . implode('
-					', $row) . '
-				</table>
-			'
-        );
-        // File options
+        $this->makeConfigurationForm($inData);
+
         $row = array();
         $this->makeSaveForm($inData, $row);
-        $menuItems[] = array(
-            'label' => $this->lang->getLL('exportdata_filePreset'),
-            'content' => '
-				<table border="0" cellpadding="1" cellspacing="1">
-					' . implode('
-					', $row) . '
-				</table>
-			'
-        );
-        // File options
-        $row = array();
-        $this->makeAdvancedOptionsForm($inData, $row);
-        $menuItems[] = array(
-            'label' => $this->lang->getLL('exportdata_advancedOptions'),
-            'content' => '
-				<table border="0" cellpadding="1" cellspacing="1">
-					' . implode('
-					', $row) . '
-				</table>
-			'
-        );
-        // Generate overview:
-        $overViewContent = $this->export->displayContentOverview();
+        $this->standaloneView->assign('saveForm', implode('', $row));
+
+        $this->makeAdvancedOptionsForm($inData);
+
         // Print errors that might be:
         $errors = $this->export->printErrorLog();
-        $menuItems[] = array(
-            'label' => $this->lang->getLL('exportdata_messages'),
-            'content' => $errors,
-            'stateIcon' => $errors ? 2 : 0
-        );
-        // Add hidden fields and create tabs:
+        $this->standaloneView->assign('errors', trim($errors));
 
-        $content = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'tx_impexp_export', 1, false, true, false);
-        $content .= '<input type="hidden" name="tx_impexp[action]" value="export" />';
-        $this->content .= '<div>' . $content . '</div>';
-        // Output Overview:
-        $this->content .= '<h2>' . $this->lang->getLL('execlistqu_structureToBeExported', true) . '</h2><div>' . $overViewContent . '</div>';
+        // Generate overview:
+        $this->standaloneView->assign('overviewContent', $this->export->displayContentOverview());
     }
 
     /**
@@ -635,33 +615,16 @@ class ImportExportController extends BaseScriptClass
     /**
      * Create configuration form
      *
-     * @param array $inData Form configurat data
-     * @param array $row Table row accumulation variable. This is filled with table rows.
-     * @return void Sets content in $this->content
+     * @param array $inData Form configuration data
+     * @return void
      */
-    public function makeConfigurationForm($inData, &$row)
+    public function makeConfigurationForm($inData)
     {
         $nameSuggestion = '';
         // Page tree export options:
         if (isset($inData['pagetree']['id'])) {
-            $nameSuggestion .= 'tree_PID' . $inData['pagetree']['id'] . '_L' . $inData['pagetree']['levels'];
-            $row[] = '
-				<tr class="tableheader bgColor5">
-					<td colspan="2">' . $this->lang->getLL('makeconfig_exportPagetreeConfiguration', true)
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeCfg') . '</td>
-				</tr>';
-            $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_pageId', true) . '</strong></td>
-					<td>' . htmlspecialchars($inData['pagetree']['id']) . '<input type="hidden" value="'
-                        . htmlspecialchars($inData['pagetree']['id']) . '" name="tx_impexp[pagetree][id]" /></td>
-				</tr>';
-            $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_tree', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeDisplay') . '</td>
-					<td>' . ($this->treeHTML ?: $this->lang->getLL('makeconfig_noTreeExportedOnly', true)) . '</td>
-				</tr>';
+            $this->standaloneView->assign('treeHTML', $this->treeHTML);
+
             $opt = array(
                 '-2' => $this->lang->getLL('makeconfig_tablesOnThisPage'),
                 '-1' => $this->lang->getLL('makeconfig_expandedTree'),
@@ -672,30 +635,13 @@ class ImportExportController extends BaseScriptClass
                 '4' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
                 '999' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
             );
-            $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_levels', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeMode') . '</td>
-					<td>' . $this->renderSelectBox('tx_impexp[pagetree][levels]', $inData['pagetree']['levels'], $opt) . '</td>
-				</tr>';
-            $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_includeTables', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeRecordLimit') . '</td>
-					<td>' . $this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages') . '<br/>
-						' . $this->lang->getLL('makeconfig_maxNumberOfRecords', true) . '<br/>
-						<input type="text" name="tx_impexp[pagetree][maxNumber]" value="'
-                        . htmlspecialchars($inData['pagetree']['maxNumber']) . '" ' . $this->doc->formWidth(10) . ' /><br/>
-					</td>
-				</tr>';
+            $this->standaloneView->assign('levelSelect', $this->renderSelectBox('tx_impexp[pagetree][levels]', $inData['pagetree']['levels'], $opt));
+            $this->standaloneView->assign('tableSelect', $this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages'));
+            $nameSuggestion .= 'tree_PID' . $inData['pagetree']['id'] . '_L' . $inData['pagetree']['levels'];
         }
         // Single record export:
         if (is_array($inData['record'])) {
-            $row[] = '
-				<tr class="tableheader bgColor5">
-					<td colspan="2">' . $this->lang->getLL('makeconfig_exportSingleRecord', true)
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'singleRecord') . '</td>
-				</tr>';
+            $records = array();
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
                 $tName = $rParts[0];
@@ -703,7 +649,7 @@ class ImportExportController extends BaseScriptClass
                 $nameSuggestion .= $tName . '_' . $rUid;
                 $rec = BackendUtility::getRecordWSOL($tName, $rUid);
                 if (!empty($rec)) {
-                    $row[] = '
+                    $records[] = '
 					<tr class="bgColor4">
 						<td><strong>' . $this->lang->getLL('makeconfig_record', true) . '</strong></td>
 						<td>' . $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle($tName, $rec, true)
@@ -711,13 +657,11 @@ class ImportExportController extends BaseScriptClass
 					</tr>';
                 }
             }
+            $this->standaloneView->assign('records', implode('', $records));
         }
         // Single tables/pids:
         if (is_array($inData['list'])) {
-            $row[] = '
-				<tr class="tableheader bgColor5">
-					<td colspan="2">' . $this->lang->getLL('makeconfig_exportTablesFromPages', true) . '</td>
-				</tr>';
+
             // Display information about pages from which the export takes place
             $tblList = '';
             foreach ($inData['list'] as $reference) {
@@ -737,75 +681,21 @@ class ImportExportController extends BaseScriptClass
                         . '<input type="hidden" name="tx_impexp[list][]" value="' . htmlspecialchars($reference) . '" /><br/>';
                 }
             }
-            $row[] = '
-			<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('makeconfig_tablePids', true) . '</strong>'
-                    . BackendUtility::cshItem('xMOD_tx_impexp', 'tableList') . '</td>
-				<td>' . $tblList . '</td>
-			</tr>';
-            $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_maxNumberOfRecords', true)
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'tableListMaxNumber') . '</strong></td>
-					<td>
-						<input type="text" name="tx_impexp[listCfg][maxNumber]" value="'
-                        . htmlspecialchars($inData['listCfg']['maxNumber']) . '" /><br/>
-					</td>
-				</tr>';
+            $this->standaloneView->assign('tableList', $tblList);
         }
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makeconfig_relationsAndExclusions', true) . '</td>
-			</tr>';
-        // Add relation selector:
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_includeRelationsToTables', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'inclRelations') . '</td>
-					<td>' . $this->tableSelector('tx_impexp[external_ref][tables]', $inData['external_ref']['tables']) . '</td>
-				</tr>';
-        // Add static relation selector:
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_useStaticRelationsFor', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'staticRelations') . '</td>
-					<td>' . $this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']) . '<br/>
-						<label for="checkShowStaticRelations">' . $this->lang->getLL('makeconfig_showStaticRelations', true)
-                            . '</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1" '
-                            . ($inData['showStaticRelations'] ? 'checked="checked" ' : '') . '/>
-						</td>
-				</tr>';
+
+        $this->standaloneView->assign('externalReferenceTableSelect', $this->tableSelector('tx_impexp[external_ref][tables]', $inData['external_ref']['tables']));
+        $this->standaloneView->assign('externalStaticTableSelect', $this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']));
+
         // Exclude:
         $excludeHiddenFields = '';
         if (is_array($inData['exclude'])) {
             foreach ($inData['exclude'] as $key => $value) {
                 $excludeHiddenFields .= '<input type="hidden" name="tx_impexp[exclude][' . $key . ']" value="1" />';
             }
+            $this->standaloneView->assign('excludedKeys', implode(', ', array_keys($inData['exclude'])));
         }
-        if (!empty($inData['exclude'])) {
-            $excludedElements = '<em>' . implode(', ', array_keys($inData['exclude'])) . '</em><hr/><label for="checkExclude">'
-                . $this->lang->getLL('makeconfig_clearAllExclusions', true)
-                . '</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />';
-        } else {
-            $excludedElements = $this->lang->getLL('makeconfig_noExcludedElementsYet', true);
-        }
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_excludeElements', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'excludedElements') . '</td>
-					<td>' . $excludeHiddenFields . '
-					' . $excludedElements . '
-					</td>
-				</tr>';
-        // Add buttons:
-        $row[] = '
-				<tr class="bgColor4">
-					<td>&nbsp;</td>
-					<td>
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makeadvanc_update', true) . '" />
-						<input type="hidden" name="tx_impexp[download_export_name]" value="' . substr($nameSuggestion, 0, 30) . '" />
-					</td>
-				</tr>';
+        $this->standaloneView->assign('nameSuggestion', $nameSuggestion);
     }
 
     /**
@@ -813,119 +703,43 @@ class ImportExportController extends BaseScriptClass
      * Sets content in $this->content
      *
      * @param array $inData Form configurat data
-     * @param array $row Table row accumulation variable. This is filled with table rows.
      * @return void
      */
-    public function makeAdvancedOptionsForm($inData, &$row)
+    public function makeAdvancedOptionsForm($inData)
     {
-        // Soft references
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makeadvanc_softReferences', true) . '</td>
-			</tr>';
-        $row[] = '
-				<tr class="bgColor4">
-					<td><label for="checkExcludeHTMLfileResources"><strong>'
-                        . $this->lang->getLL('makeadvanc_excludeHtmlCssFile', true)    . '</strong></label>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'htmlCssResources') . '</td>
-					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1" '
-                        . ($inData['excludeHTMLfileResources'] ? 'checked="checked" ' : '') . '/></td>
-				</tr>';
-
-        // Files options
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makeadvanc_files', true) . '</td>
-			</tr>';
-        $row[] = '
-			<tr class="bgColor4">
-				<td><label for="saveFilesOutsideExportFile"><strong>'
-                    . $this->lang->getLL('makeadvanc_saveFilesOutsideExportFile', true) . '</strong><br />'
-                    . $this->lang->getLL('makeadvanc_saveFilesOutsideExportFile_limit', true) . '</label></td>
-				<td><input type="checkbox" name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1" '
-                    . ($inData['saveFilesOutsideExportFile'] ? 'checked="checked" ' : '') . '/></td>
-			</tr>';
-        // Extensions
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makeadvanc_extensionDependencies', true) . '</td>
-			</tr>';
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeadvanc_selectExtensionsThatThe', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'extensionDependencies') . '</td>
-					<td>' . $this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']) . '</td>
-				</tr>';
-        // Add buttons:
-        $row[] = '
-				<tr class="bgColor4">
-					<td>&nbsp;</td>
-					<td>
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_update', true) . '" />
-						<input type="hidden" name="tx_impexp[download_export_name]" value="" />
-					</td>
-				</tr>';
+        $this->standaloneView->assign('extensions', $this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']));
+        $this->standaloneView->assign('inData', $inData);
     }
 
     /**
      * Create configuration form
      *
-     * @param array $inData Form configurat data
-     * @param array $row Table row accumulation variable. This is filled with table rows.
-     * @return void Sets content in $this->content
+     * @param array $inData Form configuration data
+     * @return void
      */
-    public function makeSaveForm($inData, &$row)
+    public function makeSaveForm($inData)
     {
-        // Presets:
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makesavefo_presets', true) . '</td>
-			</tr>';
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makesavefo_presets', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'presets') . '</td>
-					<td>
-						' . $this->lang->getLL('makesavefo_selectPreset', true) . '<br/>
-						' . $this->renderSelectBox('preset[select]', '', $this->presetRepository->getPresets($inData['pagetree']['id'])) . '
-						<br/>
-						<input type="hidden" name="not-set" value="1" id="t3js-submit-field" />
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_load', true) . '" name="preset[load]" />
-						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_save', true) . '" name="preset[save]" data-title="' . $this->lang->getLL('pleaseConfirm', true) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', true) . '" />
-						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_delete', true) . '" name="preset[delete]" data-title="' . $this->lang->getLL('pleaseConfirm', true) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', true) . '" />
-						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_merge', true) . '" name="preset[merge]" data-title="' . $this->lang->getLL('pleaseConfirm', true) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', true) . '" />
-						<br/>
-						' . $this->lang->getLL('makesavefo_titleOfNewPreset', true) . '
-						<input type="text" name="tx_impexp[preset][title]" value="'
-                            . htmlspecialchars($inData['preset']['title']) . '" /><br/>
-						<label for="checkPresetPublic">' . $this->lang->getLL('makesavefo_public', true) . '</label>
-						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1" '
-                            . ($inData['preset']['public'] ? 'checked="checked "' : '') . '/><br/>
-					</td>
-				</tr>';
-        // Output options:
-        $row[] = '
-			<tr class="tableheader bgColor5">
-				<td colspan="2">' . $this->lang->getLL('makesavefo_outputOptions', true) . '</td>
-			</tr>';
-        $saveFolder = $this->getDefaultImportExportFolder();
 
-        $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makesavefo_metaData', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'metadata') . '</td>
-					<td>
-							' . $this->lang->getLL('makesavefo_title', true) . ' <br/>
-							<input type="text" name="tx_impexp[meta][title]" value="' . htmlspecialchars($inData['meta']['title']) . '" /><br/>
-							' . $this->lang->getLL('makesavefo_description', true) . ' <br/>
-							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '" /><br/>
-							' . $this->lang->getLL('makesavefo_notes', true) . ' <br/>
-							<textarea name="tx_impexp[meta][notes]">' . htmlspecialchars($inData['meta']['notes']) . '</textarea><br/>
-							' . ($saveFolder ? '
-								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($saveFolder->getCombinedIdentifier()) . '" />
-								<input type="hidden" name="file[upload][1][data]" value="1" /><br />' : '') . '
-						</td>
-				</tr>';
+        // Presets:
+        $opt = array('');
+        $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
+            . ($inData['pagetree']['id'] ? ' AND (item_uid=' . (int)$inData['pagetree']['id'] . ' OR item_uid=0)' : '');
+        $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
+        if (is_array($presets)) {
+            foreach ($presets as $presetCfg) {
+                $opt[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
+                    . ($presetCfg['public'] ? ' [Public]' : '')
+                    . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
+            }
+        }
+
+        $this->standaloneView->assign('presetSelect', $this->renderSelectBox('preset[select]', '', $opt));
+
+        $saveFolder = $this->getDefaultImportExportFolder();
+        if ($saveFolder) {
+            $this->standaloneView->assign('saveFolder', $saveFolder->getCombinedIdentifier());
+        }
+
         // Add file options:
         $opt = array();
         if ($this->export->compress) {
@@ -933,37 +747,19 @@ class ImportExportController extends BaseScriptClass
         }
         $opt['t3d'] = $this->lang->getLL('makesavefo_t3dFile');
         $opt['xml'] = $this->lang->getLL('makesavefo_xml');
+
+        $this->standaloneView->assign('filetypeSelect', $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt));
+
         $fileName = '';
         if ($saveFolder) {
             $fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', true), $saveFolder->getPublicUrl())
                 . '<br/>
 						<input type="text" name="tx_impexp[filename]" value="'
                 . htmlspecialchars($inData['filename']) . '" /><br/>';
+
+            $this->standaloneView->assign('hasSaveFolder', true);
         }
-        $row[] = '
-				<tr>
-					<td>
-						<strong>' . $this->lang->getLL('makesavefo_fileFormat', true) . '</strong>'
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'fileFormat') . '
-					</td>
-					<td>
-						' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
-						' . $this->lang->getLL('makesavefo_maxSizeOfFiles', true) . '<br/>
-						<input type="text" name="tx_impexp[maxFileSize]" value="' . htmlspecialchars($inData['maxFileSize']) . '" />
-						<br/>
-						' . $fileName . '
-					</td>
-				</tr>';
-        // Add buttons:
-        $row[] = '
-				<tr>
-					<td>&nbsp;</td>
-					<td>
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_update', true) . '" /> -
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_downloadExport', true) . '" name="tx_impexp[download_export]" />
-						' . ($saveFolder ? ' - <input class="btn btn-default" type="submit" value="' . $this->lang->getLL('importdata_saveToFilename', true) . '" name="tx_impexp[save_export]" />' : '') . '
-					</td>
-				</tr>';
+        $this->standaloneView->assign('fileName', $fileName);
     }
 
     /**************************
@@ -1001,8 +797,10 @@ class ImportExportController extends BaseScriptClass
             $import->showDiff = !$inData['notShowDiff'];
             $import->allowPHPScripts = $inData['allowPHPScripts'];
             $import->softrefInputValues = $inData['softrefInputValues'];
+            $import->setStandaloneView($this->standaloneView);
+
             // OUTPUT creation:
-            $menuItems = array();
+
             // Make input selector:
             // must have trailing slash.
             $path = $this->getDefaultImportExportFolder();
@@ -1011,169 +809,35 @@ class ImportExportController extends BaseScriptClass
             $this->shortcutName .= ' (' . $this->pageinfo['title'] . ')';
 
             // Configuration
-            $row = array();
             $selectOptions = array('');
             foreach ($exportFiles as $file) {
                 $selectOptions[$file->getCombinedIdentifier()] = $file->getPublicUrl();
             }
-            $row[] = '
-				<tr>
-					<th colspan="2">' . $this->lang->getLL('importdata_selectFileToImport', true) . '</th>
-				</tr>';
-            $noCompressorAvailable = !$import->compress
-                ? '<br /><span class="text-danger">' . $this->lang->getLL('importdata_noteNoDecompressorAvailable', true) . '</span>'
-                : '';
-            $row[] = '
-				<tr>
-					<td valign="top">
-						' . $this->lang->getLL('importdata_file', true) . ''
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'importFile') . '
-					</td>
-					<td>
-						' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
-                        . sprintf($this->lang->getLL('importdata_fromPathS', true), $path ? $path->getPublicUrl() : $this->lang->getLL('importdata_no_accessible_file_mount', true)) .
-                        $noCompressorAvailable . '
-					</td>
-				</tr>';
-            $row[] = '
-				<tr>
-					<th colspan="2">
-						' . $this->lang->getLL('importdata_importOptions', true) . '
-					</th>
-				</tr>';
-            $row[] = '
-				<tr>
-					<td valign="top">
-						' . $this->lang->getLL('importdata_update', true)
-                        . BackendUtility::cshItem('xMOD_tx_impexp', 'update') . '
-					</td>
-					<td>
-						<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1" '
-                            . ($inData['do_update'] ? 'checked="checked" ' : '') . '/>
-						<label for="checkDo_update">' . $this->lang->getLL('importdata_updateRecords', true) . '</label>
-						<br/>
-						<em>(' . $this->lang->getLL('importdata_thisOptionRequiresThat', true) . ')</em>' . ($inData['do_update'] ? '	<hr/>
-						<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1" '
-                            . ($inData['global_ignore_pid'] ? 'checked="checked" ' : '') . ' />
-						<label for="checkGlobal_ignore_pid">' . $this->lang->getLL('importdata_ignorePidDifferencesGlobally', true) . '</label><br/>
-						<em>(' . $this->lang->getLL('importdata_ifYouSetThis', true) . ')</em>
-						' : '') . '
-					</td>
-				</tr>';
-            $allowPhpScripts = $beUser->isAdmin()
-                ? '
-					<input type="checkbox" name="tx_impexp[allowPHPScripts]" id="checkAllowPHPScripts" value="1"'
-                        . ($inData['allowPHPScripts'] ? ' checked="checked"' : '') . ' />
-					<label for="checkAllowPHPScripts">' . $this->lang->getLL('importdata_allowToWriteBanned', true) . '</label><br/>'
-                : '';
-            $doUpdate = !$inData['do_update'] && $beUser->isAdmin()
-                ? '
-					<br/>
-					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1" '
-                        . ($inData['force_all_UIDS'] ? 'checked="checked" ' : '') . '/>
-					<label for="checkForce_all_UIDS"><span class="text-danger">'
-                        . $this->lang->getLL('importdata_force_all_UIDS', true) . '</span></label><br/>
-					<em>(' . $this->lang->getLL('importdata_force_all_UIDS_descr', true) . ')</em>'
-                : '';
-            $row[] = '<tr>
-					<td valign="top">
-						' . $this->lang->getLL('importdata_options', true) . BackendUtility::cshItem('xMOD_tx_impexp', 'options') . '
-					</td>
-					<td>
-						<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1" '
-                            . ($inData['notShowDiff'] ? 'checked="checked" ' : '') . '/>
-						<label for="checkNotShowDiff">' . $this->lang->getLL('importdata_doNotShowDifferences', true) . '</label><br/>
-						<em>(' . $this->lang->getLL('importdata_greenValuesAreFrom', true) . ')</em>
-						<br/><br/>
 
-						' . $allowPhpScripts . $doUpdate . '
-					</td>
-				</tr>';
-            $newImport = !$inData['import_file']
-                ? '<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('importdata_preview', true) . '" />' . ($inData['file']
-                    ? ' - <input type="hidden" name="not-set" value="1" id="t3js-submit-field" /><input class="btn btn-default t3js-confirm-trigger" type="button" value="' . ($inData['do_update']
-                        ? $this->lang->getLL('importdata_update_299e', true)
-                        : $this->lang->getLL('importdata_import', true)) . '" name="tx_impexp[import_file]" data-title="' . $this->lang->getLL('pleaseConfirm', true) . '" data-message="' . $this->lang->getLL('importdata_areYouSure', true) . '" />'
-                    : '')
-                : '<input class="btn btn-default" type="submit" name="tx_impexp[new_import]" value="' . $this->lang->getLL('importdata_newImport', true) . '" />';
-            $row[] = '<tr>
-					<td valign="top">
-						' . $this->lang->getLL('importdata_action', true) . BackendUtility::cshItem('xMOD_tx_impexp', 'action') . '
-					</td>
-					<td>
-						' . $newImport . '
-						<input type="hidden" name="tx_impexp[action]" value="import" />
-					</td>
-				</tr>';
-            $row[] = '<tr>
-				<td valign="top">
-					' . $this->lang->getLL('importdata_enableLogging', true)
-                    . BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging') . '
-				</td>
-				<td>
-					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1" '
-                        . ($inData['enableLogging'] ? 'checked="checked" ' : '') . '/>
-					<label for="checkEnableLogging">' . $this->lang->getLL('importdata_writeIndividualDbActions', true) . '</label><br/>
-					<em>(' . $this->lang->getLL('importdata_thisIsDisabledBy', true) . ')</em>
-				</td>
-				</tr>';
-            $menuItems[] = array(
-                'label' => $this->lang->getLL('importdata_import', true),
-                'content' => '
-					<table border="0" cellpadding="1" cellspacing="1">
-						' . implode('
-						', $row) . '
-					</table>
-				'
-            );
+            $this->standaloneView->assign('import', $import);
+            $this->standaloneView->assign('inData', $inData);
+            $this->standaloneView->assign('fileSelectOptions', $selectOptions);
+
+            $this->standaloneView->assign('importPath', sprintf($this->lang->getLL('importdata_fromPathS', true), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', true)));
+            $this->standaloneView->assign('isAdmin', $beUser->isAdmin());
+
             // Upload file:
             $tempFolder = $this->getDefaultImportExportFolder();
+            $this->standaloneView->assign('tempFolder', $tempFolder->getCombinedIdentifier());
             if ($tempFolder) {
-                $row = array();
-                $row[] = '
-					<tr>
-						<th colspan="2">' . $this->lang->getLL('importdata_uploadFileFromLocal', true) . '</th>
-					</tr>';
-                $row[] = '
-					<tr>
-						<td valign="top">
-							' . $this->lang->getLL('importdata_browse', true) . BackendUtility::cshItem('xMOD_tx_impexp', 'upload') . '
-						</td>
-						<td>
-							<input type="file" name="upload_1" size="40" />
-							<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder->getCombinedIdentifier()) . '" />
-							<input type="hidden" name="file[upload][1][data]" value="1" />
-							<br />
-							<input class="btn btn-default" type="submit" name="_upload" value="' . $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', true) . '" />
-							<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" />
-							<label for="checkOverwriteExistingFiles">' . $this->lang->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', true) . '</label>
-						</td>
-					</tr>';
+                $this->standaloneView->assign('hasTempUploadFolder', true);
                 if (GeneralUtility::_POST('_upload')) {
-                    $noFileUploaded = $this->fileProcessor->internalUploadMap[1]
-                        ? $this->lang->getLL('importdata_success', true) . ' ' . $this->uploadedFiles[0]->getName()
-                        : '<span class="text-danger">' . $this->lang->getLL('importdata_failureNoFileUploaded', true) . '</span>';
-                    $row[] = '<tr class="bgColor4">
-							<td>' . $this->lang->getLL('importdata_uploadStatus', true) . '</td>
-							<td>' . $noFileUploaded . '</td>
-						</tr>';
+                    $this->standaloneView->assign('submitted', GeneralUtility::_POST('_upload'));
+                    $this->standaloneView->assign('noFileUploaded', $this->fileProcessor->internalUploadMap[1]);
+                    $this->standaloneView->assign('uploadedFile', $this->uploadedFiles[0]->getName());
                 }
-                $menuItems[] = array(
-                    'label' => $this->lang->getLL('importdata_upload'),
-                    'content' => '
-						<table border="0" cellpadding="1" cellspacing="1">
-							' . implode('
-							', $row) . '
-						</table>
-					'
-                );
             }
+
             // Perform import or preview depending:
-            $overviewContent = '';
             $extensionInstallationMessage = '';
             $inFile = $this->getFile($inData['file']);
             if ($inFile !== null && $inFile->exists()) {
-                $trow = array();
+                $this->standaloneView->assign('metaDataInFileExists', true);
                 if ($import->loadFile($inFile->getForLocalProcessing(false), 1)) {
                     // Check extension dependencies:
                     $extKeysToInstall = array();
@@ -1195,60 +859,18 @@ class ImportExportController extends BaseScriptClass
                         }
                     }
                     $import->display_import_pid_record = $this->pageinfo;
-                    $overviewContent = $import->displayContentOverview();
+                    $import->displayContentOverview();
                 }
-                // Meta data output:
-                $trow[] = '<tr class="bgColor5">
-						<td colspan="2"><strong>' . $this->lang->getLL('importdata_metaData', true) . '</strong></td>
-					</tr>';
-                $trow[] = '<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('importdata_title', true) . '</strong></td>
-					<td width="95%">' . nl2br(htmlspecialchars($import->dat['header']['meta']['title'])) . '</td>
-					</tr>';
-                $trow[] = '<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('importdata_description', true) . '</strong></td>
-					<td width="95%">' . nl2br(htmlspecialchars($import->dat['header']['meta']['description'])) . '</td>
-					</tr>';
-                $trow[] = '<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('importdata_notes', true) . '</strong></td>
-					<td width="95%">' . nl2br(htmlspecialchars($import->dat['header']['meta']['notes'])) . '</td>
-					</tr>';
-                $trow[] = '<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('importdata_packager', true) . '</strong></td>
-					<td width="95%">' . nl2br(htmlspecialchars(($import->dat['header']['meta']['packager_name']
-                        . ' (' . $import->dat['header']['meta']['packager_username'] . ')'))) . '<br/>
-						' . $this->lang->getLL('importdata_email', true) . ' '
-                        . $import->dat['header']['meta']['packager_email'] . '</td>
-					</tr>';
-                $menuItems[] = array(
-                    'label' => $this->lang->getLL('importdata_metaData_1387'),
-                    'content' => '
-						<table border="0" cellpadding="1" cellspacing="1">
-							' . implode('
-							', $trow) . '
-						</table>
-					'
-                );
             }
             // Print errors that might be:
             $errors = $import->printErrorLog();
-            $menuItems[] = array(
-                'label' => $this->lang->getLL('importdata_messages'),
-                'content' => $errors,
-                'stateIcon' => $errors ? 2 : 0
-            );
-            // Output tabs:
-            $content = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'tx_impexp_import', 1, false, true, false);
+            $this->standaloneView->assign('errors', trim($errors));
             if ($extensionInstallationMessage) {
-                $content = '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'
-                    . $this->moduleTemplate->icons(1) . htmlspecialchars($extensionInstallationMessage) . '</div>' . $content;
-            }
-            $this->content .= '<div>' . $content . '</div>';
-            // Print overview:
-            if ($overviewContent) {
-                $this->content .= '<h2>' . ($inData['import_file']
-                    ? $this->lang->getLL('importdata_structureHasBeenImported', true)
-                    : $this->lang->getLL('filterpage_structureToBeImported', true)) . '</h2><div>' . $overviewContent . '</div>';
+                $this->standaloneView->assign(
+                    'extensionInstallationMessage',
+                    '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'
+                    . $this->moduleTemplate->icons(1) . htmlspecialchars($extensionInstallationMessage) . '</div>'
+                );
             }
         }
     }

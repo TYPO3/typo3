@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -253,6 +254,11 @@ abstract class ImportExport
     protected $iconFactory;
 
     /**
+     * @var StandaloneView
+     */
+    protected $standaloneView = null;
+
+    /**
      * The constructor
      */
     public function __construct()
@@ -282,7 +288,7 @@ abstract class ImportExport
     /**
      * Displays an overview of the header-content.
      *
-     * @return string HTML content
+     * @return void
      */
     public function displayContentOverview()
     {
@@ -296,83 +302,50 @@ abstract class ImportExport
         }
         // Probably this is done to save memory space?
         unset($this->dat['files']);
-        $out = '';
+
+        $viewData = array();
         // Traverse header:
         if (is_array($this->dat['header'])) {
             $this->remainHeader = $this->dat['header'];
             // If there is a page tree set, show that:
-            $lang = $this->getLanguageService();
             if (is_array($this->dat['header']['pagetree'])) {
                 reset($this->dat['header']['pagetree']);
                 $lines = array();
                 $this->traversePageTree($this->dat['header']['pagetree'], $lines);
-                $rows = array();
-                $rows[] = '
-				<tr class="bgColor5 tableheader">
-					<td>' . $lang->getLL('impexpcore_displaycon_controls', true) . '</td>
-					<td>' . $lang->getLL('impexpcore_displaycon_title', true) . '</td>
-					<td>' . $lang->getLL('impexpcore_displaycon_size', true) . '</td>
-					<td>' . $lang->getLL('impexpcore_displaycon_message', true) . '</td>
-					' . ($this->update ? '<td>' . $lang->getLL('impexpcore_displaycon_updateMode', true) . '</td>' : '') . '
-					' . ($this->update ? '<td>' . $lang->getLL('impexpcore_displaycon_currentPath', true) . '</td>' : '') . '
-					' . ($this->showDiff ? '<td>' . $lang->getLL('impexpcore_displaycon_result', true) . '</td>' : '') . '
-				</tr>';
-                foreach ($lines as $r) {
-                    $rows[] = '
-					<tr class="' . $r['class'] . '">
-						<td>' . $this->renderControls($r) . '</td>
-						<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
-						<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
-						<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
-						' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
-						' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
-						' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '
-					</tr>';
+
+                $viewData['dat'] = $this->dat;
+                $viewData['update'] = $this->update;
+                $viewData['showDiff'] = $this->showDiff;
+                if (!empty($lines)) {
+                    foreach ($lines as &$r) {
+                        $r['controls'] = $this->renderControls($r);
+                        $r['fileSize'] = GeneralUtility::formatSize($r['size']);
+                        $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
+                    }
+                    $viewData['pagetreeLines'] = $lines;
+                } else {
+                    $viewData['pagetreeLines'] = array();
                 }
-                $out = '
-					<strong>' . $lang->getLL('impexpcore_displaycon_insidePagetree', true) . '</strong>
-					<br /><br />
-					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>
-					<br /><br />';
             }
             // Print remaining records that were not contained inside the page tree:
-            $lines = array();
             if (is_array($this->remainHeader['records'])) {
+                $lines = array();
                 if (is_array($this->remainHeader['records']['pages'])) {
                     $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
                 }
                 $this->traverseAllRecords($this->remainHeader['records'], $lines);
                 if (!empty($lines)) {
-                    $rows = array();
-                    $rows[] = '
-					<tr class="bgColor5 tableheader">
-						<td>' . $lang->getLL('impexpcore_displaycon_controls', true) . '</td>
-						<td>' . $lang->getLL('impexpcore_displaycon_title', true) . '</td>
-						<td>' . $lang->getLL('impexpcore_displaycon_size', true) . '</td>
-						<td>' . $lang->getLL('impexpcore_displaycon_message', true) . '</td>
-						' . ($this->update ? '<td>' . $lang->getLL('impexpcore_displaycon_updateMode', true) . '</td>' : '') . '
-						' . ($this->update ? '<td>' . $lang->getLL('impexpcore_displaycon_currentPath', true) . '</td>' : '') . '
-						' . ($this->showDiff ? '<td>' . $lang->getLL('impexpcore_displaycon_result', true) . '</td>' : '') . '
-					</tr>';
-                    foreach ($lines as $r) {
-                        $rows[] = '<tr class="' . $r['class'] . '">
-							<td>' . $this->renderControls($r) . '</td>
-							<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
-							<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
-							<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
-							' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
-							' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
-							' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '
-						</tr>';
+                    foreach ($lines as &$r) {
+                        $r['controls'] = $this->renderControls($r);
+                        $r['fileSize'] = GeneralUtility::formatSize($r['size']);
+                        $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
                     }
-                    $out .= '
-						<strong>' . $lang->getLL('impexpcore_singlereco_outsidePagetree', true) . '</strong>
-						<br /><br />
-						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>';
+                    $viewData['remainingRecords'] = $lines;
                 }
             }
         }
-        return $out;
+
+        $this->standaloneView->assign('contentOverview', $viewData);
     }
 
     /**
@@ -1262,5 +1235,14 @@ abstract class ImportExport
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @param StandaloneView $standaloneView The view object
+     * @return void
+     */
+    public function setStandaloneView(StandaloneView $standaloneView)
+    {
+        $this->standaloneView = $standaloneView;
     }
 }

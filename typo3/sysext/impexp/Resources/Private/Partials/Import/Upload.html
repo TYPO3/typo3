@@ -1,0 +1,38 @@
+<table border="0" cellpadding="1" cellspacing="1">
+	<tr>
+		<th colspan="2"><f:translate key="importdata_uploadFileFromLocal" /></th>
+	</tr>
+	<tr>
+		<td valign="top">
+			<f:translate key="importdata_browse" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="upload" />
+		</td>
+		<td>
+			<input type="file" name="upload_1" size="40" />
+			<input type="hidden" name="file[upload][1][target]" value="{tempFolder}" />
+			<input type="hidden" name="file[upload][1][data]" value="1" />
+			<br />
+			<input class="btn btn-default" type="submit" name="_upload" value="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit')}" />
+			<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" />
+			<label for="checkOverwriteExistingFiles">
+				<f:translate key="LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles" />
+			</label>
+		</td>
+	</tr>
+	<f:if condition="{submitted}">
+		<tr class="bgColor4">
+			<td><f:translate key="importdata_uploadStatus" /></td>
+			<td>
+				<f:if condition="{noFileUploaded}">
+					<f:then>
+						<f:translate key="importdata_success" />
+						{uploadedFile}
+					</f:then>
+					<f:else>
+						<span class="text-danger"><f:translate key="importdata_failureNoFileUploaded" /></span>
+					</f:else>
+				</f:if>
+			</td>
+		</tr>
+	</f:if>
+</table>
