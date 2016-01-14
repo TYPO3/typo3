@@ -243,8 +243,7 @@ Presets from the task center.</source>
 			<trans-unit id="metadata.details" xml:space="preserve">
 				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
 The "Title" and "Description" should contain the basic information about the export.
-The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
-The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!</source>
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.</source>
 			</trans-unit>
 			<trans-unit id="_metadata.image">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>

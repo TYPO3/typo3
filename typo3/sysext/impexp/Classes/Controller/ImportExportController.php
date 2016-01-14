@@ -165,10 +165,6 @@ class ImportExportController extends BaseScriptClass
         switch ((string)$inData['action']) {
             case 'export':
                 $this->shortcutName = $this->lang->getLL('title_export');
-                // Finally: If upload went well, set the new file as the thumbnail in the $inData array:
-                if (!empty($this->uploadedFiles[0])) {
-                    $inData['meta']['thumbnail'] = $this->uploadedFiles[0]->getCombinedIdentifier();
-                }
                 // Call export interface
                 $this->exportData($inData);
                 break;
@@ -339,12 +335,6 @@ class ImportExportController extends BaseScriptClass
             $beUser->user['realName'],
             $beUser->user['email']
         );
-        if ($inData['meta']['thumbnail']) {
-            $theThumb = $this->getFile($inData['meta']['thumbnail']);
-            if ($theThumb !== null && $theThumb->exists()) {
-                $this->export->addThumbnail($theThumb->getForLocalProcessing(false));
-            }
-        }
         // Configure which records to export
         if (is_array($inData['record'])) {
             foreach ($inData['record'] as $ref) {
@@ -917,18 +907,6 @@ class ImportExportController extends BaseScriptClass
 			<tr class="tableheader bgColor5">
 				<td colspan="2">' . $this->lang->getLL('makesavefo_outputOptions', true) . '</td>
 			</tr>';
-        // Meta data:
-        $thumbnailFiles = array();
-        foreach ($this->getThumbnailFiles() as $thumbnailFile) {
-            $thumbnailFiles[$thumbnailFile->getCombinedIdentifier()] = $thumbnailFile->getName();
-        }
-        if (!empty($thumbnailFiles)) {
-            array_unshift($thumbnailFiles, '');
-        }
-        $thumbnail = null;
-        if (!empty($inData['meta']['thumbnail'])) {
-            $thumbnail = $this->getFile($inData['meta']['thumbnail']);
-        }
         $saveFolder = $this->getDefaultImportExportFolder();
 
         $row[] = '
@@ -942,12 +920,7 @@ class ImportExportController extends BaseScriptClass
 							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '" /><br/>
 							' . $this->lang->getLL('makesavefo_notes', true) . ' <br/>
 							<textarea name="tx_impexp[meta][notes]">' . htmlspecialchars($inData['meta']['notes']) . '</textarea><br/>
-							' . (!empty($thumbnailFiles) ? '
-							' . $this->lang->getLL('makesavefo_thumbnail', true) . '<br/>
-							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnailFiles) : '') . '<br/>
-							' . ($thumbnail ? '<img src="' . htmlspecialchars($thumbnail->getPublicUrl(true)) . '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
-							' . $this->lang->getLL('makesavefo_uploadThumbnail', true) . '<br/>
-							' . ($saveFolder ? '<input type="file" name="upload_1"  size="30" /><br/>
+							' . ($saveFolder ? '
 								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($saveFolder->getCombinedIdentifier()) . '" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />' : '') . '
 						</td>
@@ -1246,29 +1219,6 @@ class ImportExportController extends BaseScriptClass
 						' . $this->lang->getLL('importdata_email', true) . ' '
                         . $import->dat['header']['meta']['packager_email'] . '</td>
 					</tr>';
-                // Thumbnail icon:
-                if (is_array($import->dat['header']['thumbnail'])) {
-                    $pI = pathinfo($import->dat['header']['thumbnail']['filename']);
-                    $extension = strtolower($pI['extension']);
-                    if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
-                        // Construct filename and write it:
-                        $fileName = PATH_site . 'typo3temp/importthumb.' . $pI['extension'];
-                        GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);
-                        // Check that the image really is an image and not a malicious PHP script...
-                        if (getimagesize($fileName)) {
-                            // Create icon tag:
-                            $iconTag = '<img src="../' . PathUtility::stripPathSitePrefix($fileName)
-                                . '" ' . $import->dat['header']['thumbnail']['imgInfo'][3]
-                                . ' vspace="5" style="border: solid black 1px;" alt="" />';
-                            $trow[] = '<tr class="bgColor4">
-								<td><strong>' . $this->lang->getLL('importdata_icon', true) . '</strong></td>
-								<td>' . $iconTag . '</td>
-								</tr>';
-                        } else {
-                            GeneralUtility::unlink_tempfile($fileName);
-                        }
-                    }
-                }
                 $menuItems[] = array(
                     'label' => $this->lang->getLL('importdata_metaData_1387'),
                     'content' => '
@@ -1625,30 +1575,6 @@ class ImportExportController extends BaseScriptClass
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Gets thumbnail files.
-     *
-     * @throws \InvalidArgumentException
-     * @return array|\TYPO3\CMS\Core\Resource\File[]
-     */
-    protected function getThumbnailFiles()
-    {
-        $thumbnailFiles = array();
-        $defaultTemporaryFolder = $this->getDefaultImportExportFolder();
-
-        if ($defaultTemporaryFolder === null) {
-            return $thumbnailFiles;
-        }
-
-        /** @var $filter FileExtensionFilter */
-        $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
-        $filter->setAllowedFileExtensions(array('png', 'gif', 'jpg'));
-        $defaultTemporaryFolder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
-        $thumbnailFiles = $defaultTemporaryFolder->getFiles();
-
-        return $thumbnailFiles;
     }
 
     /**

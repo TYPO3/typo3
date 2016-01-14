@@ -183,12 +183,6 @@
 			<trans-unit id="makesavefo_notes">
 				<source>Notes:</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_thumbnail">
-				<source>Thumbnail:</source>
-			</trans-unit>
-			<trans-unit id="makesavefo_uploadThumbnail">
-				<source>Upload thumbnail:</source>
-			</trans-unit>
 			<trans-unit id="makesavefo_t3dFileCompressed">
 				<source>T3D file / compressed</source>
 			</trans-unit>
