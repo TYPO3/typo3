@@ -30,7 +30,10 @@ var setFormValueOpenBrowser
 /**
  * Module: TYPO3/CMS/Backend/FormEngine
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Modal',
+		'TYPO3/CMS/Backend/Severity'
+	   ], function ($, Modal, Severity) {
 
 	/**
 	 *
@@ -615,7 +618,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
 			var $anchorElement = $(this);
-			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
@@ -641,7 +644,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
 			var $anchorElement = $(this);
-			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
@@ -900,7 +903,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		if (FormEngine.isDirty) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
-			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm(title, content, Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
 					active: true,
@@ -933,7 +936,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		if ($('.has-error').length > 0) {
 			var title = TYPO3.lang['label.alert.save_with_error.title'] || 'You have errors in your form!';
 			var content = TYPO3.lang['label.alert.save_with_error.content'] || 'Please check the form, there is at least one error in your form.';
-			var $modal = Modal.confirm(title, content, top.TYPO3.Severity.error, [
+			var $modal = Modal.confirm(title, content, Severity.error, [
 				{
 					text: TYPO3.lang['buttons.alert.save_with_error.ok'] || 'OK',
 					btnClass: 'btn-danger',

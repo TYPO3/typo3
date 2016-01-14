@@ -14,25 +14,29 @@
 /**
  * Module: TYPO3/CMS/Backend/Notification
  * Notification API for the TYPO3 backend
+ *
+ * @deprecation: Severity got its own AMD module, it is required here only for
+ * backwards compatibility reasons
  */
-define(['jquery'], function ($) {
+define(['jquery', 'TYPO3/CMS/Backend/Severity'], function ($) {
 	'use strict';
 
-	/**
-	 * Severity object
-	 *
-	 * @type {{notice: number, information: number, info: number, ok: number, warning: number, error: number}}
-	 * @exports TYPO3/CMS/Backend/Severity
-	 */
-	var Severity = {
-		notice: -2,
-		// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 9, use info instead of information
-		information: -1,
-		info: -1,
-		ok: 0,
-		warning: 1,
-		error: 2
-	};
+	try {
+		// fetch from parent
+		if (parent && parent.window.TYPO3 && parent.window.TYPO3.Notification) {
+			return parent.window.TYPO3.Notification;
+		}
+
+		// fetch object from outer frame
+		if (top && top.TYPO3.Notification) {
+			return top.TYPO3.Notification;
+		}
+	} catch (e) {
+		// This only happens if the opener, parent or top is some other url (eg a local file)
+		// which loaded the current window. Then the browser's cross domain policy jumps in
+		// and raises an exception.
+		// For this case we are safe and we can create our global object below.
+	}
 
 	/**
 	 * The main Notification object
@@ -209,18 +213,10 @@ define(['jquery'], function ($) {
 		}
 	};
 
-	if (typeof TYPO3.Severity === 'undefined') {
-		TYPO3.Severity = Severity;
-	}
-	if (typeof top.TYPO3.Severity === 'undefined') {
-		top.TYPO3.Severity = Severity;
-	}
-	if (typeof TYPO3.Notification === 'undefined') {
-		TYPO3.Notification = Notification;
-	}
-	if (typeof top.TYPO3.Notification === 'undefined') {
-		top.TYPO3.Notification = Notification;
-	}
+
+
+	// attach to global frame
+	TYPO3.Notification = Notification;
 
 	return Notification;
 });

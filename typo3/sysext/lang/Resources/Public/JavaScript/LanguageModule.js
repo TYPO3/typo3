@@ -15,7 +15,13 @@
  * Module: TYPO3/CMS/Lang/LanguageModule
  * Language module class
  */
-define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment, Icons) {
+define(['jquery',
+		'moment',
+		'TYPO3/CMS/Backend/Icons',
+		'TYPO3/CMS/Backend/Notification',
+		'datatables',
+		'TYPO3/CMS/Backend/jquery.clearable'
+	   ], function($, moment, Icons, Notification) {
 	'use strict';
 
 	/**
@@ -568,7 +574,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 		if (LanguageModule.userAbortRequest) {
 			LanguageModule.displaySuccess(LanguageModule.labels.canceled);
 		} else if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Notification.error(LanguageModule.labels.errorHeader, label);
+			Notification.error(LanguageModule.labels.errorHeader, label);
 		}
 	};
 
@@ -579,7 +585,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 	 */
 	LanguageModule.displayInformation = function(label) {
 		if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Notification.info(LanguageModule.labels.infoHeader, label);
+			Notification.info(LanguageModule.labels.infoHeader, label);
 		}
 	};
 
@@ -590,7 +596,7 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Icons', 'datatables', 'TYPO3/CMS/
 	 */
 	LanguageModule.displaySuccess = function(label) {
 		if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Notification.success(LanguageModule.labels.successHeader, label);
+			Notification.success(LanguageModule.labels.successHeader, label);
 		}
 	};
 

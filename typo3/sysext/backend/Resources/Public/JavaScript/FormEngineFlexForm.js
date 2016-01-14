@@ -20,7 +20,10 @@
  * currently TYPO3.FormEngine.FlexFormElement represents one Flexform element
  * which can contain one ore more sections
  */
-define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Modal',
+		'TYPO3/CMS/Backend/FormEngine'
+	   ], function ($, Modal) {
 
 	/**
 	 *
@@ -92,15 +95,15 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($) {
 
 					var confirmTitle = TYPO3.lang['flexform.section.delete.title'] || 'Are you sure?';
 					var confirmMessage = TYPO3.lang['flexform.section.delete.message'] || 'Are you sure you want to delete this section?';
-					var $confirm = top.TYPO3.Modal.confirm(confirmTitle, confirmMessage);
+					var $confirm = Modal.confirm(confirmTitle, confirmMessage);
 					$confirm.on('confirm.button.cancel', function() {
-						top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+						Modal.currentModal.trigger('modal-dismiss');
 					});
 					$confirm.on('confirm.button.ok', function(event) {
 						$(evt.target).closest(opts.sectionSelector).hide().addClass(opts.sectionDeletedClass);
 						me.setActionStatus();
 						TYPO3.FormEngine.Validation.validate();
-						top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+						Modal.currentModal.trigger('modal-dismiss');
 					});
 				});
 

@@ -15,7 +15,12 @@
  * Module: TYPO3/CMS/Backend/AjaxDataHandler
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], function ($, Modal, Icons) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Modal',
+		'TYPO3/CMS/Backend/Icons',
+		'TYPO3/CMS/Backend/Notification',
+		'TYPO3/CMS/Backend/Severity',
+	   ], function ($, Modal, Icons, Notification, Severity) {
 	'use strict';
 
 	/**
@@ -77,7 +82,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 		$(document).on('click', AjaxDataHandler.identifier.delete, function(evt) {
 			evt.preventDefault();
 			var $anchorElement = $(this);
-			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), Severity.warning, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
 					active: true,
@@ -217,7 +222,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	 */
 	AjaxDataHandler.handleErrors = function(result) {
 		$.each(result.messages, function(position, message) {
-			top.TYPO3.Notification.error(message.title, message.message);
+			Notification.error(message.title, message.message);
 		});
 	};
 

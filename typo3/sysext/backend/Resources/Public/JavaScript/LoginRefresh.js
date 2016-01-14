@@ -16,7 +16,7 @@
  * Task that periodically checks if a blocking event in the backend occurred and
  * displays a proper dialog to the user.
  */
-define(['jquery', 'bootstrap'], function($) {
+define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Typo3Notification) {
 	/**
 	 *
 	 * @type {{identifier: {loginrefresh: string, lockedModal: string, loginFormModal: string}, options: {modalConfig: {backdrop: string}}, webNotification: null, intervalId: null, backendIsLocked: boolean, isTimingOut: boolean, $timeoutModal: string, $backendLockedModal: string, $loginForm: string, loginFramesetUrl: string, logoutUrl: string}}
@@ -322,7 +322,7 @@ define(['jquery', 'bootstrap'], function($) {
 			passwordFieldValue = $passwordField.val();
 
 		if (passwordFieldValue === '' && $useridentField.val() === '') {
-			top.TYPO3.Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+			Typo3Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 			$passwordField.focus();
 			return;
 		}
@@ -348,7 +348,7 @@ define(['jquery', 'bootstrap'], function($) {
 					// User is logged in
 					LoginRefresh.hideLoginForm();
 				} else {
-					top.TYPO3.Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+					Typo3Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
 					$passwordField.focus();
 				}
 			}

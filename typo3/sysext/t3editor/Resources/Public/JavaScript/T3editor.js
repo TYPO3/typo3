@@ -14,7 +14,10 @@
 /**
  * Module: TYPO3/CMS/T3editor/T3editor
  */
-define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) {
+define(['jquery',
+		'TYPO3/CMS/Backend/SplitButtons',
+		'TYPO3/CMS/Backend/Notification'
+	   ], function ($, SplitButtons, Notification) {
 	'use strict';
 
 	/**
@@ -153,9 +156,9 @@ define(['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) 
 			this.textModified = false;
 		} else {
 			if (typeof returnedData.exceptionMessage !== 'undefined') {
-				top.TYPO3.Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
+				Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
 			} else {
-				top.TYPO3.Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], '');
+				Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], '');
 			}
 		}
 	};
