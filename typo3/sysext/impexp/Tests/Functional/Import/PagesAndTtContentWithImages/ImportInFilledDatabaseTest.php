@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import\PagesAndTtContentWithImages;
  */
 
 /**
- * Functional test for the ImportExport
+ * Functional test for the Import
  */
 class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Import\AbstractImportTestCase
 {
