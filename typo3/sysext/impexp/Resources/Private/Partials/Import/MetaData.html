@@ -1,0 +1,25 @@
+<table border="0" cellpadding="1" cellspacing="1">
+	<tr class="bgColor5">
+		<td colspan="2"><strong><f:translate key="importdata_metaData" /></strong></td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong><f:translate key="importdata_title" /></strong></td>
+		<td width="95%"><f:format.nl2br>{import.dat.header.meta.title}</f:format.nl2br></td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong><f:translate key="importdata_description" /></strong></td>
+		<td width="95%"><f:format.nl2br>{import.dat.header.meta.description}</f:format.nl2br></td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong><f:translate key="importdata_notes" /></strong></td>
+		<td width="95%"><f:format.nl2br>{import.dat.header.meta.notes}</f:format.nl2br></td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong><f:translate key="importdata_packager" /></strong></td>
+		<td width="95%">
+			<f:format.nl2br>{import.dat.header.meta.packager_name} ({import.dat.header.meta.packager_username})</f:format.nl2br>
+			<br/>
+			<f:translate key="importdata_email" /> {import.dat.header.meta.packager_email}
+		</td>
+	</tr>
+</table>

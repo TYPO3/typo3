@@ -1,0 +1,79 @@
+<table border="0" cellpadding="1" cellspacing="1">
+	<tr class="tableheader bgColor5">
+		<td colspan="2"><f:translate key="makesavefo_presets" /></td>
+	</tr>
+	<tr class="bgColor4">
+		<td>
+			<strong><f:translate key="makesavefo_presets" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="presets" />
+		<td>
+			<f:translate key="makesavefo_selectPreset" />
+			<br/>
+			<f:format.raw>{presetSelect}</f:format.raw>
+
+			<br/>
+			<input type="hidden" name="not-set" value="1" id="t3js-submit-field" />
+			<input class="btn btn-default" type="submit" value="{f:translate(key: 'makesavefo_load')}" name="preset[load]" />
+			<input class="btn btn-default t3js-confirm-trigger" type="button" value="{f:translate(key: 'makesavefo_save')}"
+						 name="preset[save]" data-title="{f:translate(key: 'pleaseConfirm')}" data-message="{f:translate(key: 'makesavefo_areYouSure')}" />
+			<input class="btn btn-default t3js-confirm-trigger" type="button" value="{f:translate(key: 'makesavefo_delete')}"
+						 name="preset[delete]" data-title="{f:translate(key: 'pleaseConfirm')}" data-message="{f:translate(key: 'makesavefo_areYouSure')}" />
+			<input class="btn btn-default t3js-confirm-trigger" type="button" value="{f:translate(key: 'makesavefo_merge')}"
+						 name="preset[merge]" data-title="{f:translate(key: 'pleaseConfirm')}" data-message="{f:translate(key: 'makesavefo_areYouSure')}" />
+			<br/>
+			<f:translate key="makesavefo_titleOfNewPreset" />
+			<input type="text" name="tx_impexp[preset][title]" value="{inData.preset.title}" />
+			<br/>
+			<label for="checkPresetPublic"><f:translate key="makesavefo_public" /></label>
+			<f:form.checkbox name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"
+											 checked="{inData.preset.public} == 1" />
+			<br/>
+		</td>
+	</tr>
+	<tr class="tableheader bgColor5">
+		<td colspan="2"><f:translate key="makesavefo_outputOptions" /></td>
+	</tr>
+	<tr class="bgColor4">
+		<td>
+			<strong><f:translate key="makesavefo_metaData" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="metadata" />
+		</td>
+		<td>
+			<f:translate key="makesavefo_title" />
+			<br/>
+			<input type="text" name="tx_impexp[meta][title]" value="{inData.meta.title}" /><br/>
+			<f:translate key="makesavefo_description" /><br/>
+			<input type="text" name="tx_impexp[meta][description]" value="{inData.meta.description}" /><br/>
+			<f:translate key="makesavefo_notes" /><br/>
+			<textarea name="tx_impexp[meta][notes]">{inData.meta.notes}</textarea><br/>
+			<f:if condition="{saveFolder}">
+				<input type="file" name="upload_1"  size="30" /><br/>
+				<input type="hidden" name="file[upload][1][target]" value="{saveFolder}" />
+				<input type="hidden" name="file[upload][1][data]" value="1" /><br />
+			</f:if>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<strong><f:translate key="makesavefo_fileFormat" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat" />
+		</td>
+		<td>
+			<f:format.raw>{filetypeSelect}</f:format.raw><br/>
+			<f:translate key="makesavefo_maxSizeOfFiles" /><br/>
+			<input type="text" name="tx_impexp[maxFileSize]" value="{inData.maxFileSize}" />
+			<br/>
+			<f:format.raw>{fileName}</f:format.raw>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<input class="btn btn-default" type="submit" value="{f:translate(key: 'makesavefo_update')}" /> -
+			<input class="btn btn-default" type="submit" value="{f:translate(key: 'makesavefo_downloadExport')}" name="tx_impexp[download_export]" />
+			<f:if condition="{hasSaveFolder}">
+				- <input class="btn btn-default" type="submit" value="{f:translate(key: 'importdata_saveToFilename')}" name="tx_impexp[save_export]" />
+			</f:if>
+		</td>
+	</tr>
+</table>

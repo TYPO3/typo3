@@ -1,0 +1,90 @@
+<f:if condition="{import.mode} == 'import'">
+	<f:then>
+		<h2>
+			<f:if condition="{inData.import_file}">
+				<f:then><f:translate key="importdata_structureHasBeenImported" /></f:then>
+				<f:else>
+					<f:if condition="{inData.file}">
+						<f:translate key="filterpage_structureToBeImported" />
+					</f:if>
+				</f:else>
+			</f:if>
+		</h2>
+	</f:then>
+	<f:else>
+		<f:if condition="{inData.action} == 'export'">
+			<h2><f:translate key="execlistqu_structureToBeExported" /></h2>
+		</f:if>
+	</f:else>
+</f:if>
+<div>
+	<f:if condition="{contentOverview.dat.header.pagetree -> f:count()} > 0">
+		<strong><f:translate key="impexpcore_displaycon_insidePagetree" /></strong>
+		<br /><br />
+		<table border="0" cellpadding="0" cellspacing="1">
+			<tr class="bgColor5 tableheader">
+				<td><f:translate key="impexpcore_displaycon_controls" /></td>
+				<td><f:translate key="impexpcore_displaycon_title" /></td>
+				<td><f:translate key="impexpcore_displaycon_size" /></td>
+				<td><f:translate key="impexpcore_displaycon_message" /></td>
+				<f:if condition="{contentOverview.update}">
+					<td><f:translate key="impexpcore_displaycon_updateMode" /></td>
+					<td><f:translate key="impexpcore_displaycon_currentPath" /></td>
+				</f:if>
+				<f:if condition="{contentOverview.showDiff}">
+					<td><f:translate key="impexpcore_displaycon_result" /></td>
+				</f:if>
+			</tr>
+			<f:for each="{contentOverview.pagetreeLines}" as="line">
+				<tr class="{line.class}">
+					<td><f:format.raw>{line.controls}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.preCode}{line.title}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.fileSize}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.message}</f:format.raw></td>
+					<f:if condition="{contentOverview.update}">
+						<td nowrap="nowrap"><f:format.raw>{line.updateMode}</f:format.raw></td>
+						<td nowrap="nowrap"><f:format.raw>{line.updatePath}</f:format.raw></td>
+					</f:if>
+					<f:if condition="{contentOverview.showDiff}">
+						<td><f:format.raw>{line.showDiffContent}</f:format.raw></td>
+					</f:if>
+				</tr>
+			</f:for>
+		</table>
+		<br /><br />
+	</f:if>
+	<f:if condition="{contentOverview.remainingRecords -> f:count()} > 0">
+		<strong><f:translate key="impexpcore_singlereco_outsidePagetree" /></strong>
+		<br /><br />
+		<table border="0" cellpadding="0" cellspacing="1">
+			<tr class="bgColor5 tableheader">
+				<td><f:translate key="impexpcore_displaycon_controls" /></td>
+				<td><f:translate key="impexpcore_displaycon_title" /></td>
+				<td><f:translate key="impexpcore_displaycon_size" /></td>
+				<td><f:translate key="impexpcore_displaycon_message" /></td>
+				<f:if condition="{contentOverview.update}">
+					<td><f:translate key="impexpcore_displaycon_updateMode" /></td>
+					<td><f:translate key="impexpcore_displaycon_currentPath" /></td>
+				</f:if>
+				<f:if condition="{contentOverview.showDiff}">
+					<td><f:translate key="impexpcore_displaycon_result" /></td>
+				</f:if>
+			</tr>
+			<f:for each="{contentOverview.remainingRecords}" as="line">
+				<tr class="{line.class}">
+					<td><f:format.raw>{line.controls}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.preCode}{line.title}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.fileSize}</f:format.raw></td>
+					<td nowrap="nowrap"><f:format.raw>{line.message}</f:format.raw></td>
+					<f:if condition="{contentOverview.update}">
+						<td nowrap="nowrap"><f:format.raw>{line.updateMode}</f:format.raw></td>
+						<td nowrap="nowrap"><f:format.raw>{line.updatePath}</f:format.raw></td>
+					</f:if>
+					<f:if condition="{contentOverview.showDiff}">
+						<td><f:format.raw>{line.showDiffContent}</f:format.raw></td>
+					</f:if>
+				</tr>
+			</f:for>
+		</table>
+	</f:if>
+</div>

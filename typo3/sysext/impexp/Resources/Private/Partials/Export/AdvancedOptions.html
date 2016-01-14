@@ -1,0 +1,53 @@
+<table border="0" cellpadding="1" cellspacing="1">
+	<tr class="tableheader bgColor5">
+		<td colspan="2">
+			<f:translate key="makeadvanc_softReferences" />
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td><label for="checkExcludeHTMLfileResources"><strong>
+			<f:translate key="makeadvanc_excludeHtmlCssFile" />
+		</strong></label>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources" />
+		</td>
+		<td>
+			<input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1" {f:if(condition: inData.excludeHTMLfileResources, then: ' checked="checked"')}>
+		</td>
+	</tr>
+	<tr class="tableheader bgColor5">
+		<td colspan="2">
+			<f:translate key="makeadvanc_files" />
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td><label for="saveFilesOutsideExportFile"><strong>
+			<f:translate key="makeadvanc_saveFilesOutsideExportFile" />
+			<f:translate key="makeadvanc_saveFilesOutsideExportFile_limit" />
+		</strong></label></td>
+		<td>
+			<input type="checkbox" name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1" {f:if(condition: inData.saveFilesOutsideExportFile, then: ' checked="checked"')} />
+		</td>
+	</tr>
+	<tr class="tableheader bgColor5">
+		<td colspan="2">
+			<f:translate key="makeadvanc_extensionDependencies" />
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong>
+			<f:translate key="makeadvanc_selectExtensionsThatThe" />
+		</strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies" />
+		</td>
+		<td>
+			<f:format.raw>{extensions}</f:format.raw>
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td>&nbsp;</td>
+		<td>
+			<input class="btn btn-default" type="submit" value="{f:translate(key: 'makesavefo_update')}">
+			<input type="hidden" name="tx_impexp[download_export_name]" value="">
+		</td>
+	</tr>
+</table>

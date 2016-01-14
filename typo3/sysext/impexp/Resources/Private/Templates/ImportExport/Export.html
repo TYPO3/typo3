@@ -1,0 +1,67 @@
+<f:layout name="Default" />
+
+<f:section name="content" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
+	<div>
+		<div role="tabpanel">
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a class="text-capitalize" href="#export-configuration" aria-controls="export-configuration" role="tab" data-toggle="tab">
+						<f:translate key="tableselec_configuration" />
+					</a>
+				</li>
+				<li role="presentation">
+					<a class="text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-toggle="tab">
+						<f:translate key="exportdata_filePreset" />
+					</a>
+				</li>
+				<li role="presentation">
+					<a class="text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-toggle="tab">
+						<f:translate key="exportdata_advancedOptions" />
+					</a>
+				</li>
+				<f:if condition="{errors}">
+					<li role="presentation">
+						<a class="text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-toggle="tab">
+							<f:translate key="exportdata_messages" />
+							<core:icon identifier="status-dialog-warning" />
+						</a>
+					</li>
+				</f:if>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="export-configuration">
+				<div class="panel panel-tab">
+					<div class="panel-body">
+						<f:render partial="Export/Configuration" arguments="{_all}"/>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="export-filepreset">
+				<div class="panel panel-tab">
+					<div class="panel-body">
+						<f:render partial="Export/Save" arguments="{_all}"/>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="export-advancedoptions">
+				<div class="panel panel-tab">
+					<div class="panel-body">
+						<f:render partial="Export/AdvancedOptions" arguments="{_all}"/>
+					</div>
+				</div>
+			</div>
+			<f:if condition="{errors}">
+				<div role="tabpanel" class="tab-pane" id="export-errors">
+					<div class="panel panel-tab">
+						<div class="panel-body">
+							<f:format.raw>{errors}</f:format.raw>
+						</div>
+					</div>
+				</div>
+			</f:if>
+		</div>
+		<input type="hidden" name="tx_impexp[action]" value="export" />
+	</div>
+	<f:render partial="ContentOverview" arguments="{_all}"/>
+</f:section>

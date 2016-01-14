@@ -224,29 +224,6 @@ class Export extends ImportExport
         $this->saveFilesOutsideExportFile = $saveFilesOutsideExportFile;
     }
 
-    /**
-     * Sets a thumbnail image to the exported file
-     *
-     * @param string $imgFilepath Filename reference, gif, jpg, png. Absolute path.
-     * @return void
-     */
-    public function addThumbnail($imgFilepath)
-    {
-        if (@is_file($imgFilepath)) {
-            $imgInfo = @getimagesize($imgFilepath);
-            if (is_array($imgInfo)) {
-                $fileContent = GeneralUtility::getUrl($imgFilepath);
-                $this->dat['header']['thumbnail'] = array(
-                    'imgInfo' => $imgInfo,
-                    'content' => $fileContent,
-                    'filesize' => strlen($fileContent),
-                    'filemtime' => filemtime($imgFilepath),
-                    'filename' => PathUtility::basename($imgFilepath)
-                );
-            }
-        }
-    }
-
     /**************************
      * Export / Init Page tree
      *************************/
