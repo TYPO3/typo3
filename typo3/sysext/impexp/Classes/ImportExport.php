@@ -3826,7 +3826,6 @@ class ImportExport
             $pInfo = array();
             $pInfo['ref'] = $table . ':' . $uid;
             if (in_array($pInfo['ref'], $recurCheck)) {
-                $this->error($pInfo['ref'] . ' was recursive...');
                 continue;
             }
             $iconName = 'status-status-checked';
