@@ -961,7 +961,7 @@ class ImportExportController extends BaseScriptClass
         $opt['xml'] = $this->lang->getLL('makesavefo_xml');
         $fileName = '';
         if ($saveFolder) {
-            $fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', true), $saveFolder->getCombinedIdentifier())
+            $fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', true), $saveFolder->getPublicUrl())
                 . '<br/>
 						<input type="text" name="tx_impexp[filename]" value="'
                 . htmlspecialchars($inData['filename']) . '" /><br/>';
@@ -1057,7 +1057,7 @@ class ImportExportController extends BaseScriptClass
 					</td>
 					<td>
 						' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
-                        . sprintf($this->lang->getLL('importdata_fromPathS', true), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', true)) .
+                        . sprintf($this->lang->getLL('importdata_fromPathS', true), $path ? $path->getPublicUrl() : $this->lang->getLL('importdata_no_accessible_file_mount', true)) .
                         $noCompressorAvailable . '
 					</td>
 				</tr>';

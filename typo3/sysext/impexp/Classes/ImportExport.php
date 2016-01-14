@@ -3459,7 +3459,7 @@ class ImportExport
         // Check extension dependencies:
         if (is_array($this->dat['header']['extensionDependencies'])) {
             foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-                if (!ExtensionManagementUtility::isLoaded($extKey)) {
+                if (!empty($extKey) && !ExtensionManagementUtility::isLoaded($extKey)) {
                     $this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
                 }
             }
