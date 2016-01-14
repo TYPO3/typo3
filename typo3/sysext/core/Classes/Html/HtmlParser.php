@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Html;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Functions for parsing HTML.
@@ -49,9 +51,9 @@ class HtmlParser
     public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = false)
     {
         $tags = array_unique(GeneralUtility::trimExplode(',', $tag, true));
-        foreach ($tags as &$tag) {
+        array_walk($tags, function(&$tag) {
             $tag = preg_quote($tag, '/');
-        }
+        });
         $regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
         $parts = preg_split($regexStr, $content);
         $newParts = array();
@@ -128,8 +130,7 @@ class HtmlParser
                 $tagsArray['tag_start'] = $this->getFirstTag($v);
                 $tagsArray['tag_end'] = '</' . $firstTagName . '>';
                 $tagsArray['tag_name'] = strtolower($firstTagName);
-                $tagsArray['add_level'] = 1;
-                $tagsArray['content'] = $this->splitIntoBlockRecursiveProc($tag, $this->removeFirstAndLastTag($v), $procObj, $callBackContent, $callBackTags, $level + $tagsArray['add_level']);
+                $tagsArray['content'] = $this->splitIntoBlockRecursiveProc($tag, $this->removeFirstAndLastTag($v), $procObj, $callBackContent, $callBackTags, $level + 1);
                 if ($callBackTags) {
                     $tagsArray = $procObj->{$callBackTags}($tagsArray, $level);
                 }
@@ -156,9 +157,9 @@ class HtmlParser
     public function splitTags($tag, $content)
     {
         $tags = GeneralUtility::trimExplode(',', $tag, true);
-        foreach ($tags as &$tag) {
+        array_walk($tags, function (&$tag) {
             $tag = preg_quote($tag, '/');
-        }
+        });
         $regexStr = '/\\<(' . implode('|', $tags) . ')(\\s[^>]*)?\\/?>/si';
         $parts = preg_split($regexStr, $content);
         $pointer = strlen($parts[0]);
@@ -376,7 +377,7 @@ class HtmlParser
      *
      * @param string $content Is the HTML-content being processed. This is also the result being returned.
      * @param array $tags Is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
-     * @param string $keepAll Boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
+     * @param mixed $keepAll Boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
      * @param int $hSC Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
      * @param array $addConfig Configuration array send along as $conf to the internal functions
      * @return string Processed HTML content
@@ -513,9 +514,9 @@ class HtmlParser
                                             }
                                             if ($params['range']) {
                                                 if (isset($params['range'][1])) {
-                                                    $tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0], (int)$params['range'][1]);
+                                                    $tagAttrib[0][$attr] = MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0], (int)$params['range'][1]);
                                                 } else {
-                                                    $tagAttrib[0][$attr] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0]);
+                                                    $tagAttrib[0][$attr] = MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0]);
                                                 }
                                             }
                                             if (is_array($params['list'])) {
@@ -549,8 +550,8 @@ class HtmlParser
                                             if ($params['prefixLocalAnchors']) {
                                                 if ($tagAttrib[0][$attr][0] === '#') {
                                                     if ($params['prefixLocalAnchors'] == 2) {
-                                                        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
-                                                        $contentObjectRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+                                                        /** @var ContentObjectRenderer $contentObjectRenderer */
+                                                        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                                                         $prefix = $contentObjectRenderer->getUrlToCurrentLocation();
                                                     } else {
                                                         $prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
@@ -838,29 +839,29 @@ class HtmlParser
      * Internal function for case shifting of a string or whole array
      *
      * @param mixed $str Input string/array
-     * @param bool $flag If $str is a string AND this boolean(caseSensitive) is FALSE, the string is returned in uppercase
+     * @param bool $caseSensitiveComparison If this value is FALSE, the string is returned in uppercase
      * @param string $cacheKey Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
      * @return string Output string, processed
      * @access private
      */
-    public function caseShift($str, $flag, $cacheKey = '')
+    public function caseShift($str, $caseSensitiveComparison, $cacheKey = '')
     {
-        $cacheKey .= $flag ? 1 : 0;
+        if ($caseSensitiveComparison) {
+            return $str;
+        }
         if (is_array($str)) {
-            if (!$cacheKey || !isset($this->caseShift_cache[$cacheKey])) {
-                foreach ($str as &$v) {
-                    if (!$flag) {
-                        $v = strtoupper($v);
-                    }
-                }
-                unset($v);
+            // Fetch from runlevel cache
+            if ($cacheKey && isset($this->caseShift_cache[$cacheKey])) {
+                $str = $this->caseShift_cache[$cacheKey];
+            } else {
+                array_walk($str, function (&$value) {
+                    $value = strtoupper($value);
+                });
                 if ($cacheKey) {
                     $this->caseShift_cache[$cacheKey] = $str;
                 }
-            } else {
-                $str = $this->caseShift_cache[$cacheKey];
             }
-        } elseif (!$flag) {
+        } else {
             $str = strtoupper($str);
         }
         return $str;
@@ -880,7 +881,7 @@ class HtmlParser
         foreach ($tagAttrib as $k => $v) {
             $attr = $meta[$k]['origTag'] ?: $k;
             if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-                $dash = $meta[$k]['dashType'] ?: (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
+                $dash = $meta[$k]['dashType'] ?: (MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
                 $attr .= '=' . $dash . $v . $dash;
             }
             $accu[] = $attr;
