@@ -28,13 +28,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class TypoScriptParser
 {
     /**
-     * If set, then key names cannot contain characters other than [:alnum:]_\.-
-     *
-     * @var bool
-     */
-    public $strict = true;
-
-    /**
      * TypoScript hierarchy being build during parsing.
      *
      * @var array
@@ -383,7 +376,7 @@ class TypoScriptParser
                         }
                         if ($objStrName !== '') {
                             $r = array();
-                            if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
+                            if (preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
                                 $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."');
                             } else {
                                 $line = ltrim(substr($line, $varL));
@@ -685,7 +678,7 @@ class TypoScriptParser
                 }
             } else {
                 $lnRegisDone = 0;
-                if ($wipeOut && $this->strict) {
+                if ($wipeOut) {
                     unset($setup[$key]);
                     unset($setup[$subKey]);
                     if ($this->regLinenumbers) {
