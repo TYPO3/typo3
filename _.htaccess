@@ -281,7 +281,9 @@ AddDefaultCharset utf-8
 	RewriteRule typo3temp/logs/ - [F]
 	RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext|typo3/vendor)/[^/]+/(?:Configuration|Resources/Private|Tests?)/ - [F]
 
-	# Access block for files or folders starting with a dot
+	# Block access to all hidden files and directories with the exception of
+	# the visible content from within the `/.well-known/` hidden directory (RFC 5785).
+	RewriteCond %{REQUEST_URI} "!(^|/)\.well-known/([^./]+./?)+$" [NC]
 	RewriteCond %{SCRIPT_FILENAME} -d [OR]
 	RewriteCond %{SCRIPT_FILENAME} -f
 	RewriteRule (?:^|/)\. - [F]
