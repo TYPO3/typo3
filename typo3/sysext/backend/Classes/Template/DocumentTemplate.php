@@ -1087,18 +1087,6 @@ function jumpToUrl(URL) {
         return trim($string);
     }
 
-    // These vars defines the layout for the table produced by the table() function.
-    // You can override these values from outside if you like.
-    public $tableLayout = array(
-        'defRow' => array(
-            'defCol' => array('<td valign="top">', '</td>')
-        )
-    );
-
-    public $table_TR = '<tr>';
-
-    public $table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
-
     /**
      * Returns a one-row/two-celled table with $content and $menu side by side.
      * The table is a 100% width table and each cell is aligned left / right
