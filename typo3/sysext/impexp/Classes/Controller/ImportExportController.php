@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\ImportExport;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
@@ -113,12 +114,20 @@ class ImportExportController extends BaseScriptClass
     protected $shortcutName;
 
     /**
+     * preset repository
+     *
+     * @var PresetRepository
+     */
+    protected $presetRepository;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->presetRepository = GeneralUtility::makeInstance(PresetRepository::class);
     }
 
     /**
@@ -299,7 +308,7 @@ class ImportExportController extends BaseScriptClass
             $inData['exclude'] = array();
         }
         // Saving/Loading/Deleting presets:
-        $this->processPresets($inData);
+        $this->presetRepository->processPresets($inData);
         // Create export object and configure it:
         $this->export = GeneralUtility::makeInstance(ImportExport::class);
         $this->export->init(0, 'export');
@@ -869,24 +878,13 @@ class ImportExportController extends BaseScriptClass
 			<tr class="tableheader bgColor5">
 				<td colspan="2">' . $this->lang->getLL('makesavefo_presets', true) . '</td>
 			</tr>';
-        $opt = array('');
-        $where = '(public>0 OR user_uid=' . (int)$this->getBackendUser()->user['uid'] . ')'
-            . ($inData['pagetree']['id'] ? ' AND (item_uid=' . (int)$inData['pagetree']['id'] . ' OR item_uid=0)' : '');
-        $presets = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'tx_impexp_presets', $where);
-        if (is_array($presets)) {
-            foreach ($presets as $presetCfg) {
-                $opt[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
-                    . ($presetCfg['public'] ? ' [Public]' : '')
-                    . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
-            }
-        }
         $row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makesavefo_presets', true) . '</strong>'
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'presets') . '</td>
 					<td>
 						' . $this->lang->getLL('makesavefo_selectPreset', true) . '<br/>
-						' . $this->renderSelectBox('preset[select]', '', $opt) . '
+						' . $this->renderSelectBox('preset[select]', '', $this->presetRepository->getPresets($inData['pagetree']['id'])) . '
 						<br/>
 						<input type="hidden" name="not-set" value="1" id="t3js-submit-field" />
 						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_load', true) . '" name="preset[load]" />
@@ -1250,129 +1248,6 @@ class ImportExportController extends BaseScriptClass
                     : $this->lang->getLL('filterpage_structureToBeImported', true)) . '</h2><div>' . $overviewContent . '</div>';
             }
         }
-    }
-
-    /****************************
-     * Preset functions
-     ****************************/
-
-    /**
-     * Manipulate presets
-     *
-     * @param array $inData In data array, passed by reference!
-     * @return void
-     */
-    public function processPresets(&$inData)
-    {
-        $presetData = GeneralUtility::_GP('preset');
-        $err = false;
-        $msg = '';
-        // Save preset
-        $beUser = $this->getBackendUser();
-        // cast public checkbox to int, since this is an int field and NULL is not allowed
-        $inData['preset']['public'] = (int)$inData['preset']['public'];
-        if (isset($presetData['save'])) {
-            $preset = $this->getPreset($presetData['select']);
-            // Update existing
-            if (is_array($preset)) {
-                if ($beUser->isAdmin() || $preset['user_uid'] === $beUser->user['uid']) {
-                    $fields_values = array(
-                        'public' => $inData['preset']['public'],
-                        'title' => $inData['preset']['title'],
-                        'item_uid' => $inData['pagetree']['id'],
-                        'preset_data' => serialize($inData)
-                    );
-                    $this->getDatabaseConnection()->exec_UPDATEquery('tx_impexp_presets', 'uid=' . (int)$preset['uid'], $fields_values);
-                    $msg = 'Preset #' . $preset['uid'] . ' saved!';
-                } else {
-                    $msg = 'ERROR: The preset was not saved because you were not the owner of it!';
-                    $err = true;
-                }
-            } else {
-                // Insert new:
-                $fields_values = array(
-                    'user_uid' => $beUser->user['uid'],
-                    'public' => $inData['preset']['public'],
-                    'title' => $inData['preset']['title'],
-                    'item_uid' => $inData['pagetree']['id'],
-                    'preset_data' => serialize($inData)
-                );
-                $this->getDatabaseConnection()->exec_INSERTquery('tx_impexp_presets', $fields_values);
-                $msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
-            }
-        }
-        // Delete preset:
-        if (isset($presetData['delete'])) {
-            $preset = $this->getPreset($presetData['select']);
-            if (is_array($preset)) {
-                // Update existing
-                if ($beUser->isAdmin() || $preset['user_uid'] === $beUser->user['uid']) {
-                    $this->getDatabaseConnection()->exec_DELETEquery('tx_impexp_presets', 'uid=' . (int)$preset['uid']);
-                    $msg = 'Preset #' . $preset['uid'] . ' deleted!';
-                } else {
-                    $msg = 'ERROR: You were not the owner of the preset so you could not delete it.';
-                    $err = true;
-                }
-            } else {
-                $msg = 'ERROR: No preset selected for deletion.';
-                $err = true;
-            }
-        }
-        // Load preset
-        if (isset($presetData['load']) || isset($presetData['merge'])) {
-            $preset = $this->getPreset($presetData['select']);
-            if (is_array($preset)) {
-                // Update existing
-                $inData_temp = unserialize($preset['preset_data']);
-                if (is_array($inData_temp)) {
-                    if (isset($presetData['merge'])) {
-                        // Merge records in:
-                        if (is_array($inData_temp['record'])) {
-                            $inData['record'] = array_merge((array)$inData['record'], $inData_temp['record']);
-                        }
-                        // Merge lists in:
-                        if (is_array($inData_temp['list'])) {
-                            $inData['list'] = array_merge((array)$inData['list'], $inData_temp['list']);
-                        }
-                    } else {
-                        $msg = 'Preset #' . $preset['uid'] . ' loaded!';
-                        $inData = $inData_temp;
-                    }
-                } else {
-                    $msg = 'ERROR: No configuratio data found in preset record!';
-                    $err = true;
-                }
-            } else {
-                $msg = 'ERROR: No preset selected for loading.';
-                $err = true;
-            }
-        }
-        // Show message:
-        if ($msg !== '') {
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                'Presets',
-                $msg,
-                $err ? FlashMessage::ERROR : FlashMessage::INFO
-            );
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
-    }
-
-    /**
-     * Get single preset record
-     *
-     * @param int $uid Preset record
-     * @return array Preset record, if any (otherwise FALSE)
-     */
-    public function getPreset($uid)
-    {
-        return $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . (int)$uid);
     }
 
     /****************************
