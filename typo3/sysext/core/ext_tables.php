@@ -116,9 +116,7 @@ $GLOBALS['TBE_MODULES'] = array(
  * For information about making skins to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-$GLOBALS['TBE_STYLES'] = array(
-    'skinImg' => array()
-);
+$GLOBALS['TBE_STYLES'] = [];
 
 /**
  * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
