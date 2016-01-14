@@ -272,7 +272,7 @@ class RteHtmlParser extends HtmlParser
         // Split content by <img> tags and traverse the resulting array for processing:
         $imgSplit = $this->splitTags('img', $value);
         if (count($imgSplit) > 1) {
-            $siteUrl = $this->siteUrl();
+            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $sitePath = str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
             /** @var $resourceFactory Resource\ResourceFactory */
             $resourceFactory = Resource\ResourceFactory::getInstance();
@@ -344,7 +344,7 @@ class RteHtmlParser extends HtmlParser
                     } elseif (!GeneralUtility::isFirstPartOfStr($absoluteUrl, $siteUrl) && !$this->procOptions['dontFetchExtPictures'] && TYPO3_MODE === 'BE') {
                         // External image from another URL: in that case, fetch image, unless the feature is disabled or we are not in backend mode
                         // Fetch the external image
-                        $externalFile = $this->getUrl($absoluteUrl);
+                        $externalFile = GeneralUtility::getUrl($absoluteUrl);
                         if ($externalFile) {
                             $pU = parse_url($absoluteUrl);
                             $pI = pathinfo($pU['path']);
@@ -426,7 +426,7 @@ class RteHtmlParser extends HtmlParser
         // Split content by <img> tags and traverse the resulting array for processing:
         $imgSplit = $this->splitTags('img', $value);
         if (count($imgSplit) > 1) {
-            $siteUrl = $this->siteUrl();
+            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $sitePath = str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
             foreach ($imgSplit as $k => $v) {
                 // Image found
@@ -468,7 +468,7 @@ class RteHtmlParser extends HtmlParser
                 $retVal = $this->TS_AtagToAbs($value, 1);
                 break;
             case 'db':
-                $siteURL = $this->siteUrl();
+                $siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
                 $blockSplit = $this->splitIntoBlock('A', $value);
                 foreach ($blockSplit as $k => $v) {
                     // Block
@@ -564,7 +564,7 @@ class RteHtmlParser extends HtmlParser
                     // Unsetting 'rtekeep' attribute if that had been set.
                     unset($attribArray['rtekeep']);
                     if (!$attribArray['data-htmlarea-external']) {
-                        $siteURL = $this->siteUrl();
+                        $siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
                         // If the url is local, remove url-prefix
                         if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
                             $attribArray['href'] = substr($attribArray['href'], strlen($siteURL));
@@ -606,7 +606,7 @@ class RteHtmlParser extends HtmlParser
         $value = $this->TS_AtagToAbs($value);
         // Split content by the TYPO3 pseudo tag "<link>":
         $blockSplit = $this->splitIntoBlock('link', $value, 1);
-        $siteUrl = $this->siteUrl();
+        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         foreach ($blockSplit as $k => $v) {
             $error = '';
             $external = false;
@@ -955,17 +955,6 @@ class RteHtmlParser extends HtmlParser
      * Generic RTE transformation, analysis and helper functions
      *
      **************************************************************/
-    /**
-     * Reads the file or url $url and returns the content
-     *
-     * @param string $url Filepath/URL to read
-     * @return string The content from the resource given as input.
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
-     */
-    public function getUrl($url)
-    {
-        return GeneralUtility::getUrl($url);
-    }
 
     /**
      * Function for cleaning content going into the database.
@@ -973,22 +962,17 @@ class RteHtmlParser extends HtmlParser
      * It is basically calling HTMLcleaner from the parent class with some preset configuration specifically set up for cleaning content going from the RTE into the db
      *
      * @param string $content Content to clean up
-     * @param string $tagList Comma list of tags to specifically allow. Default comes from getKeepTags and is
      * @return string Clean content
      * @see getKeepTags()
      */
-    public function HTMLcleaner_db($content, $tagList = '')
+    public function HTMLcleaner_db($content)
     {
-        if (!$tagList) {
-            $keepTags = $this->getKeepTags('db');
-        } else {
-            $keepTags = $this->getKeepTags('db', $tagList);
-        }
+        $keepTags = $this->getKeepTags('db');
         // Default: remove unknown tags.
-        $kUknown = $this->procOptions['dontRemoveUnknownTags_db'] ? 1 : 0;
+        $keepUnknownTags = (bool)$this->procOptions['dontRemoveUnknownTags_db'];
         // Default: re-convert literals to characters (that is &lt; to <)
         $hSC = $this->procOptions['dontUndoHSC_db'] ? 0 : -1;
-        return $this->HTMLcleaner($content, $keepTags, $kUknown, $hSC);
+        return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags, $hSC);
     }
 
     /**
@@ -996,26 +980,20 @@ class RteHtmlParser extends HtmlParser
      * Unless "tagList" is given, the function will cache the configuration for next time processing goes on. (In this class that is the case only if we are processing a bulletlist)
      *
      * @param string $direction The direction of the content being processed by the output configuration; "db" (content going into the database FROM the rte) or "rte" (content going into the form)
-     * @param string $tagList Comma list of tags to keep (overriding default which is to keep all + take notice of internal configuration)
      * @return array Configuration array
      * @see HTMLcleaner_db()
      */
-    public function getKeepTags($direction = 'rte', $tagList = '')
+    public function getKeepTags($direction = 'rte')
     {
-        if (!is_array($this->getKeepTags_cache[$direction]) || $tagList) {
+        if (!is_array($this->getKeepTags_cache[$direction])) {
             // Setting up allowed tags:
-            // If the $tagList input var is set, this will take precedence
-            if ((string)$tagList !== '') {
-                $keepTags = array_flip(GeneralUtility::trimExplode(',', $tagList, true));
-            } else {
-                // Default is to get allowed/denied tags from internal array of processing options:
-                // Construct default list of tags to keep:
-                $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($this->procOptions['allowTags']), true));
-                // For tags to deny, remove them from $keepTags array:
-                $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], true);
-                foreach ($denyTags as $dKe) {
-                    unset($keepTags[$dKe]);
-                }
+            // Default is to get allowed/denied tags from internal array of processing options:
+            // Construct default list of tags to keep:
+            $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($this->procOptions['allowTags']), true));
+            // For tags to deny, remove them from $keepTags array:
+            $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], true);
+            foreach ($denyTags as $dKe) {
+                unset($keepTags[$dKe]);
             }
             // Based on the direction of content, set further options:
             switch ($direction) {
@@ -1070,11 +1048,7 @@ class RteHtmlParser extends HtmlParser
                     break;
             }
             // Caching (internally, in object memory) the result unless tagList is set:
-            if (!$tagList) {
-                $this->getKeepTags_cache[$direction] = $keepTags;
-            } else {
-                return $keepTags;
-            }
+            $this->getKeepTags_cache[$direction] = $keepTags;
         }
         // Return result:
         return $this->getKeepTags_cache[$direction];
@@ -1118,7 +1092,7 @@ class RteHtmlParser extends HtmlParser
                 $v = $this->removeFirstAndLastTag($v);
                 // Fetching 'sub-lines' - which will explode any further p nesting...
                 $subLines = $this->divideIntoLines($v, $count - 1, true);
-                // So, if there happend to be sub-nesting of p, this is written directly as the new content of THIS section. (This would be considered 'an error')
+                // So, if there happened to be sub-nesting of p, this is written directly as the new content of THIS section. (This would be considered 'an error')
                 if (!is_array($subLines)) {
                     //... but if NO subsection was found, we process it as a TRUE line without erronous content:
                     $subLines = array($subLines);
@@ -1245,17 +1219,6 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * Returns SiteURL based on thisScript.
-     *
-     * @return string Value of GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()
-     */
-    public function siteUrl()
-    {
-        return GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-    }
-
-    /**
      * Default tag mapping for TS
      *
      * @param string $code Input code to process
@@ -1329,7 +1292,7 @@ class RteHtmlParser extends HtmlParser
             $info['type'] = 'file';
             $info['url'] = rawurldecode(substr($url, strpos($url, '?file:') + 1));
         } else {
-            $curURL = $this->siteUrl();
+            $curURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $urlLength = strlen($url);
             for ($a = 0; $a < $urlLength; $a++) {
                 if ($url[$a] != $curURL[$a]) {
@@ -1394,7 +1357,7 @@ class RteHtmlParser extends HtmlParser
                 if ($attribArray['href'] !== '') {
                     $uP = parse_url(strtolower($attribArray['href']));
                     if (!$uP['scheme']) {
-                        $attribArray['href'] = $this->siteUrl() . $attribArray['href'];
+                        $attribArray['href'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $attribArray['href'];
                     } elseif ($uP['scheme'] != 'mailto') {
                         $attribArray['data-htmlarea-external'] = 1;
                     }
