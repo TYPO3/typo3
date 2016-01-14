@@ -3598,45 +3598,45 @@ class ImportExport {
 			$table = $dat['table'];
 			$uid = $dat['id'];
 			$pInfo = array();
+			$pInfo['ref'] = $table . ':' . $uid;
+			if (in_array($pInfo['ref'], $recurCheck)) {
+				continue;
+			}
 			$Iprepend = '';
 			$staticFixed = FALSE;
-			$pInfo['ref'] = $table . ':' . $uid;
-			if (!in_array($pInfo['ref'], $recurCheck)) {
-				if ($uid > 0) {
-					$record = $this->dat['header']['records'][$table][$uid];
-					if (!is_array($record)) {
-						if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
-							$pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
-							$Iprepend = '_static';
-							$staticFixed = TRUE;
-						} else {
-							$doesRE = $this->doesRecordExist($table, $uid);
-							$lostPath = $this->getRecordPath($table === 'pages' ? $doesRE['uid'] : $doesRE['pid']);
-							$pInfo['title'] = htmlspecialchars($pInfo['ref']);
-							$pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
-							$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
-							$Iprepend = '_lost';
-						}
+			$record = NULL;
+			if ($uid > 0) {
+				$record = $this->dat['header']['records'][$table][$uid];
+				if (!is_array($record)) {
+					if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
+						$pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
+						$Iprepend = '_static';
+						$staticFixed = TRUE;
 					} else {
-						$pInfo['title'] = htmlspecialchars($record['title']);
-						$pInfo['title'] = '<span title="' . htmlspecialchars($this->getRecordPath(($table === 'pages' ? $record['uid'] : $record['pid']))) . '">' . $pInfo['title'] . '</span>';
+						$doesRE = $this->doesRecordExist($table, $uid);
+						$lostPath = $this->getRecordPath($table === 'pages' ? $doesRE['uid'] : $doesRE['pid']);
+						$pInfo['title'] = htmlspecialchars($pInfo['ref']);
+						$pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
+						$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
+						$Iprepend = '_lost';
 					}
 				} else {
-					// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
-					$pInfo['title'] = htmlspecialchars('FIXED: ' . $pInfo['ref']);
-					$staticFixed = TRUE;
-				}
-				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/rel_db' . $Iprepend . '.gif'), 'width="13" height="12"') . ' align="top" title="' . htmlspecialchars($pInfo['ref']) . '" alt="" />';
-				$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
-				$pInfo['type'] = 'rel';
-				if (!$staticFixed || $this->showStaticRelations) {
-					$lines[] = $pInfo;
-					if (is_array($record) && is_array($record['rels'])) {
-						$this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])), $htmlColorClass);
-					}
+					$pInfo['title'] = htmlspecialchars($record['title']);
+					$pInfo['title'] = '<span title="' . htmlspecialchars($this->getRecordPath(($table === 'pages' ? $record['uid'] : $record['pid']))) . '">' . $pInfo['title'] . '</span>';
 				}
 			} else {
-				$this->error($pInfo['ref'] . ' was recursive...');
+				// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
+				$pInfo['title'] = htmlspecialchars('FIXED: ' . $pInfo['ref']);
+				$staticFixed = TRUE;
+			}
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/rel_db' . $Iprepend . '.gif'), 'width="13" height="12"') . ' align="top" title="' . htmlspecialchars($pInfo['ref']) . '" alt="" />';
+			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
+			$pInfo['type'] = 'rel';
+			if (!$staticFixed || $this->showStaticRelations) {
+				$lines[] = $pInfo;
+				if (is_array($record) && is_array($record['rels'])) {
+					$this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])), $htmlColorClass);
+				}
 			}
 		}
 	}
