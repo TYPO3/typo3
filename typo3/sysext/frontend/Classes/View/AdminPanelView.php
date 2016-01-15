@@ -146,7 +146,7 @@ class AdminPanelView
 
     /**
      * Saves any change in settings made in the Admin Panel.
-     * Called from index_ts.php right after access check for the Admin Panel
+     * Called from \TYPO3\CMS\Frontend\Http\RequestHandler right after access check for the Admin Panel
      *
      * @return void
      */
