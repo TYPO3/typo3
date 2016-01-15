@@ -39,6 +39,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-rte-image-n-file-link.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image3.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithRteImagesAndFileLink');
 
         $this->assertFileNotExists(PATH_site . 'fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg');
