@@ -12,9 +12,7 @@
 Typical default configuration
 -----------------------------
 
-This default configuration establishes default settings in Page
-TSconfig and User TSconfig with most commonly used features
-representing a good start for typical sites.
+This default configuration establishes default settings in Page TSconfig and User TSconfig with most commonly used features representing a good start for typical sites.
 
 
 .. _typical-page-tsconfig:
@@ -22,110 +20,109 @@ representing a good start for typical sites.
 The following is inserted in Page TSconfig:
 """""""""""""""""""""""""""""""""""""""""""
 
-## Define labels and styles to be applied to class selectors in the
-interface of the RTE
+Define labels and styles to be applied to class selectors in the interface of the RTE
 
-## The examples included here make partial re-use of color scheme and
-frame scheme from CSS Styled Content extension
+The examples included here make partial re-use of color scheme and frame scheme from CSS Styled Content extension
 
 ::
 
    RTE.classes {
-           align-left {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifyleft
-                   value = text-align: left;
-           }
-           align-center {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifycenter
-                   value = text-align: center;
-           }
-           align-right {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifyright
-                   value = text-align: right;
-           }
-           csc-frame-frame1 {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:frame-frame1
-                   value = background-color: #EDEBF1; border: 1px solid #333333;
-           }
-           csc-frame-frame2 {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:frame-frame2
-                   value = background-color: #F5FFAA; border: 1px solid #333333;
-           }
-           important {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:important
-                   value = color: #8A0020;
-           }
-           name-of-person {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:name-of-person
-                   value = color: #10007B;
-           }
-           detail {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:detail
-                   value = color: #186900;
-           }
-           component-items {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:component-items
-                   value = color: #186900;
-           }
-           action-items {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:action-items
-                   value = color: #8A0020;
-           }
-           component-items-ordered {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:component-items
-                   value = color: #186900;
-           }
-           action-items-ordered {
-                   name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:action-items
-                   value = color: #8A0020;
-           }
+      align-left {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifyleft
+         value = text-align: left;
+      }
+      align-center {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifycenter
+         value = text-align: center;
+      }
+      align-right {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_tooltips.xlf:justifyright
+         value = text-align: right;
+      }
+      csc-frame-frame1 {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:frame-frame1
+         value = background-color: #EDEBF1; border: 1px solid #333333;
+      }
+      csc-frame-frame2 {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:frame-frame2
+         value = background-color: #F5FFAA; border: 1px solid #333333;
+      }
+      important {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:important
+         value = color: #8A0020;
+      }
+      name-of-person {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:name-of-person
+         value = color: #10007B;
+      }
+      detail {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:detail
+         value = color: #186900;
+      }
+      component-items {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:component-items
+         value = color: #186900;
+      }
+      action-items {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:action-items
+         value = color: #8A0020;
+      }
+      component-items-ordered {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:component-items
+         value = color: #186900;
+      }
+      action-items-ordered {
+         name = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_contentcss.xlf:action-items
+         value = color: #8A0020;
+      }
    }
 
-## Anchor classes configuration for use by the anchor accesibility
-feature
+Anchor classes configuration for use by the anchor accesibility feature
 
 ::
 
    RTE.classesAnchor {
-           externalLink {
-                   class = external-link
-                   type = url
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:external_link_titleText
-           }
-           externalLinkInNewWindow {
-                   class = external-link-new-window
-                   type = url
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:external_link_new_window_titleText
-           }
-           internalLink {
-                   class = internal-link
-                   type = page
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:internal_link_titleText
-           }
-           internalLinkInNewWindow {
-                   class = internal-link-new-window
-                   type = page
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:internal_link_new_window_titleText
-           }
-           download {
-                   class = download
-                   type = file
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:download_titleText
-           }
-           mail {
-                   class = mail
-                   type = mail
-                   titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:mail_titleText
-           }
+      externalLink {
+         class = external-link
+         type = url
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:external_link_titleText
+      }
+      externalLinkInNewWindow {
+         class = external-link-new-window
+         type = url
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:external_link_new_window_titleText
+      }
+      internalLink {
+         class = internal-link
+         type = page
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:internal_link_titleText
+      }
+      internalLinkInNewWindow {
+         class = internal-link-new-window
+         type = page
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:internal_link_new_window_titleText
+      }
+      download {
+         class = download
+         type = file
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:download_titleText
+      }
+      mail {
+         class = mail
+         type = mail
+         titleText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:mail_titleText
+      }
    }
 
-## Default RTE configuration
+Default RTE configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
    RTE.default {
 
-## Markup options
+Markup options
+^^^^^^^^^^^^^^
 
 ::
 
@@ -135,9 +132,10 @@ feature
       removeTags = center, font, o:p, sdfield, strike, u
       removeTagsAndContents = link, meta, script, style, title
 
-## Toolbar options
+Toolbar options
+^^^^^^^^^^^^^^^
 
-## The TCA configuration may add buttons to the toolbar
+The TCA configuration may add buttons to the toolbar
 
 ::
 
@@ -150,26 +148,25 @@ feature
       showButtons := addToList(columninsertbefore, columninsertafter, columndelete, columnsplit)
       showButtons := addToList(cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge)
 
-## More toolbar options
+More toolbar options
 
 ::
 
       keepButtonGroupTogether = 1
 
-## Enable status bar
+Enable status bar
 
 ::
 
       showStatusBar =  1
 
-## Hide infrequently used block types in the block formatting selector
+Hide infrequently used block types in the block formatting selector
 
 ::
 
       buttons.formatblock.removeItems = pre,address
 
-## List all class selectors that are allowed on the way to the
-database
+List all class selectors that are allowed on the way to the database
 
 ::
 
@@ -181,8 +178,7 @@ database
       proc.allowedClasses := addToList(important, name-of-person, detail)
       proc.allowedClasses := addToList(indent)
 
-## Restrict the list of class selectors presented by the RTE to the
-following for the specified tags:
+Restrict the list of class selectors presented by the RTE to the following for the specified tags:
 
 ::
 
@@ -192,9 +188,9 @@ following for the specified tags:
       buttons.blockstyle.tags.td.allowedClasses = align-left, align-center, align-right
       buttons.textstyle.tags.span.allowedClasses = important, name-of-person, detail
 
-## Configuration of classes for links
+Configuration of classes for links
 
-## These classes should also be in the list proc.allowedClasses
+These classes should also be in the list proc.allowedClasses
 
 ::
 
@@ -204,9 +200,9 @@ following for the specified tags:
       buttons.link.file.properties.class.default = download
       buttons.link.mail.properties.class.default = mail
 
-## Configuration specific to the TableOperations feature
+Configuration specific to the TableOperations feature
 
-## Remove the following fieldsets from the properties popups
+Remove the following fieldsets from the properties popups
 
 ::
 
@@ -215,33 +211,33 @@ following for the specified tags:
       disableColorFieldsetInTableOperations = 1
       disableLayoutFieldsetInTableOperations = 1
 
-## Show borders on table creation
+Show borders on table creation
 
 ::
 
       buttons.toggleborders.setOnTableCreation = 1
 
-## Configuration specific to the bold and italic buttons
+Configuration specific to the bold and italic buttons
 
-## Add hotkeys associated with bold and italic buttons
+Add hotkeys associated with bold and italic buttons
 
 ::
 
       buttons.bold.hotKey = b
       buttons.italic.hotKey = i
 
-## Configuration of microdata schema
+Configuration of microdata schema
 
 ::
 
       schema {
-                   sources {
-                           schemaOrg = EXT:rtehtmlarea/extensions/MicrodataSchema/res/schemaOrgAll.rdf
-                   }
-           }
+         sources {
+            schemaOrg = EXT:rtehtmlarea/extensions/MicrodataSchema/res/schemaOrgAll.rdf
+         }
+      }
    }
 
-## front end RTE configuration for the general public
+Frontend RTE configuration for the general public
 
 ::
 
@@ -250,9 +246,9 @@ following for the specified tags:
    RTE.default.FE.hideButtons = chMode, blockstyle, textstyle, underline, strikethrough, subscript, superscript, lefttoright, righttoleft, left, center, right, justifyfull, table, inserttag, findreplace, removeformat, copy, cut, paste
    RTE.default.FE.userElements >
 
-## tt\_content TCEFORM configuration
+tt\_content TCEFORM configuration
 
-## Let use all the space available for more comfort.
+Let use all the space available for more comfort.
 
 ::
 
@@ -264,11 +260,8 @@ following for the specified tags:
 The following is inserted in User TSconfig:
 """""""""""""""""""""""""""""""""""""""""""
 
-## Enable the RTE by default for all users
+Enable the RTE by default for all users
 
 ::
 
    setup.default.edit_RTE = 1
-
-
-
