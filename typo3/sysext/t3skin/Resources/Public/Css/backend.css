@@ -9166,7 +9166,7 @@ iframe,
   outline-color: #ffffff;
 }
 .cropper-bg {
-  background-image: url("../../Images/cropper-background.png");
+  background-image: url("../Images/cropper-background.png");
 }
 .cropper-preview-container {
   overflow: hidden;
