@@ -142,13 +142,13 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
         $backtraceCode = '';
         if (!empty($trace)) {
             foreach ($trace as $index => $step) {
-                $class = isset($step['class']) ? $step['class'] . '<span style="color:white;">::</span>' : '';
+                $class = isset($step['class']) ? htmlspecialchars($step['class']) . '<span style="color:white;">::</span>' : '';
                 $arguments = '';
                 if (isset($step['args']) && is_array($step['args'])) {
                     foreach ($step['args'] as $argument) {
                         $arguments .= (string)$arguments === '' ? '' : '<span style="color:white;">,</span> ';
                         if (is_object($argument)) {
-                            $arguments .= '<span style="color:#FF8700;"><em>' . get_class($argument) . '</em></span>';
+                            $arguments .= '<span style="color:#FF8700;"><em>' . htmlspecialchars(get_class($argument)) . '</em></span>';
                         } elseif (is_string($argument)) {
                             $preparedArgument = strlen($argument) < 100
                                 ? $argument
@@ -201,13 +201,13 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
                 $phpFileCount = count($phpFile);
                 $endLine = $lineNumber < $phpFileCount - 2 ? $lineNumber + 3 : $phpFileCount + 1;
                 if ($endLine > $startLine) {
-                    $codeSnippet = '<br /><span style="font-size:10px;">' . $filePathAndName . ':</span><br /><pre>';
+                    $codeSnippet = '<br /><span style="font-size:10px;">' . htmlspecialchars($filePathAndName) . ':</span><br /><pre>';
                     for ($line = $startLine; $line < $endLine; $line++) {
                         $codeLine = str_replace(TAB, ' ', $phpFile[$line - 1]);
                         if ($line === $lineNumber) {
                             $codeSnippet .= '</pre><pre style="background-color: #F1F1F1; color: black;">';
                         }
-                        $codeSnippet .= sprintf('%05d', $line) . ': ' . $codeLine;
+                        $codeSnippet .= sprintf('%05d', $line) . ': ' . htmlspecialchars($codeLine);
                         if ($line === $lineNumber) {
                             $codeSnippet .= '</pre><pre>';
                         }
