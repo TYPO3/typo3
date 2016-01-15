@@ -1281,6 +1281,22 @@ class TcaSelectItemsTest extends UnitTestCase
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldValue\'',
                 [],
             ],
+            'replace REC_FIELD within FlexForm' => [
+                'AND fTable.title=###REC_FIELD_rowFieldFlexForm###',
+                'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldFlexFormValue\'',
+                [
+                    'databaseRow' => [
+                        'rowFieldThree' => [
+                            0 => 'rowFieldThreeValue'
+                        ]
+                    ],
+                    'flexParentDatabaseRow' => [
+                        'rowFieldFlexForm' => [
+                            0 => 'rowFieldFlexFormValue'
+                        ]
+                    ],
+                ],
+            ],
             'replace REC_FIELD fullQuote' => [
                 'AND fTable.title=###REC_FIELD_rowField###',
                 'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldValue\'',
