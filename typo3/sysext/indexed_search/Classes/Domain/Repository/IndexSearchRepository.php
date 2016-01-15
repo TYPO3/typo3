@@ -505,7 +505,7 @@ class IndexSearchRepository
      *
      * @return string AND clause for selection of section in database.
      */
-    protected function sectionTableWhere()
+    public function sectionTableWhere()
     {
         $whereClause = '';
         $match = false;
