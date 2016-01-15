@@ -1,21 +1,16 @@
-{namespace i=TYPO3\CMS\Install\ViewHelpers}
-
-<f:layout name="BackendModule" />
-
-<f:section name="Content">
-	<f:form action="enableInstallTool" method="post" id="t3-install-form-unlock">
-		<f:form.hidden name="installToolEnableToken" value="{installToolEnableToken}" />
-		<div id="container">
-			<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolTitle')}">
+<form action="" method="post" id="t3-install-form-unlock">
+	<input type="hidden" name="action" value="enableInstallTool" />
+	<input type="hidden" name="installToolEnableToken" value="{installToolEnableToken}" />
+	<div id="container">
+		<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolTitle')}">
+			<f:translate
+				key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolMessage"
+				/>
+			<button class="btn btn-info" value="enableInstallTool">
 				<f:translate
-					key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolMessage"
+					key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolButton"
 					/>
-				<button class="btn btn-info" value="enableInstallTool">
-					<f:translate
-						key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolButton"
-						/>
-				</button>
-			</f:be.infobox>
-		</div>
-	</f:form>
-</f:section>
+			</button>
+		</f:be.infobox>
+	</div>
+</form>
