@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -254,11 +253,6 @@ abstract class ImportExport
     protected $iconFactory;
 
     /**
-     * @var StandaloneView
-     */
-    protected $standaloneView = null;
-
-    /**
      * The constructor
      */
     public function __construct()
@@ -288,7 +282,7 @@ abstract class ImportExport
     /**
      * Displays an overview of the header-content.
      *
-     * @return void
+     * @return array The view data
      */
     public function displayContentOverview()
     {
@@ -345,7 +339,7 @@ abstract class ImportExport
             }
         }
 
-        $this->standaloneView->assign('contentOverview', $viewData);
+        return $viewData;
     }
 
     /**
@@ -1237,12 +1231,4 @@ abstract class ImportExport
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @param StandaloneView $standaloneView The view object
-     * @return void
-     */
-    public function setStandaloneView(StandaloneView $standaloneView)
-    {
-        $this->standaloneView = $standaloneView;
-    }
 }

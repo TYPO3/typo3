@@ -29,10 +29,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
- *
- */
-
-/**
  * T3D file Import library (TYPO3 Record Document)
  */
 class Import extends ImportExport
@@ -1267,7 +1263,7 @@ class Import extends ImportExport
     public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
         // Extract parameters:
-        list($table, $uid, $field, $config) = $pParams;
+        list(, , , $config) = $pParams;
         // In case the $path is used as index without a trailing slash we will remove that
         if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][rtrim($path, '/')])) {
             $path = rtrim($path, '/');
