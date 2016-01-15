@@ -353,7 +353,7 @@ class ImportExportController extends BaseScriptClass
         $this->export->extensionDependencies = (array)$inData['extension_dep'];
         $this->export->showStaticRelations = $inData['showStaticRelations'];
         $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
-        $this->export->setStandaloneView($this->standaloneView);
+
         // Static tables:
         if (is_array($inData['external_static']['tables'])) {
             $this->export->relStaticTables = $inData['external_static']['tables'];
@@ -543,7 +543,7 @@ class ImportExportController extends BaseScriptClass
         $this->makeConfigurationForm($inData);
 
         $row = array();
-        $this->makeSaveForm($inData, $row);
+        $this->makeSaveForm($inData);
         $this->standaloneView->assign('saveForm', implode('', $row));
 
         $this->makeAdvancedOptionsForm($inData);
@@ -553,7 +553,7 @@ class ImportExportController extends BaseScriptClass
         $this->standaloneView->assign('errors', trim($errors));
 
         // Generate overview:
-        $this->standaloneView->assign('overviewContent', $this->export->displayContentOverview());
+        $this->standaloneView->assign('contentOverview', $this->export->displayContentOverview());
     }
 
     /**
@@ -809,7 +809,6 @@ class ImportExportController extends BaseScriptClass
             $import->showDiff = !$inData['notShowDiff'];
             $import->allowPHPScripts = $inData['allowPHPScripts'];
             $import->softrefInputValues = $inData['softrefInputValues'];
-            $import->setStandaloneView($this->standaloneView);
 
             // OUTPUT creation:
 
@@ -871,7 +870,7 @@ class ImportExportController extends BaseScriptClass
                         }
                     }
                     $import->display_import_pid_record = $this->pageinfo;
-                    $import->displayContentOverview();
+                    $this->standaloneView->assign('contentOverview',  $import->displayContentOverview());
                 }
             }
             // Print errors that might be:
