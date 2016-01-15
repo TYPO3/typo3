@@ -21,7 +21,9 @@ use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -74,7 +76,7 @@ class Import extends ImportExport
     /**
      * Array of current registered storage objects
      *
-     * @var array
+     * @var ResourceStorage[]
      */
     protected $storageObjects = array();
 
@@ -256,29 +258,16 @@ class Import extends ImportExport
             $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
             // continue with Local, writable and online storage only
             if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
-                $useThisStorageUidInsteadOfTheOneInImport = 0;
-                /** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
                 foreach ($this->storageObjects as $localStorage) {
-                    // check the available storage for Local, writable and online ones
-                    if ($localStorage->getDriverType() === 'Local' && $localStorage->isWritable() && $localStorage->isOnline()) {
-                        // check if there is already an identical storage present (same pathType and basePath)
-                        $storageRecordConfiguration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
-                        $localStorageRecordConfiguration = $localStorage->getConfiguration();
-                        if (
-                            $storageRecordConfiguration['pathType'] === $localStorageRecordConfiguration['pathType']
-                            && $storageRecordConfiguration['basePath'] === $localStorageRecordConfiguration['basePath']
-                        ) {
-                            // same storage is already present
-                            $useThisStorageUidInsteadOfTheOneInImport = $localStorage->getUid();
-                            break;
-                        }
+                    if ($this->isEquivalentObjectStorage($localStorage, $storageRecord)) {
+                        $this->import_mapId['sys_file_storage'][$sysFileStorageUid] = $localStorage->getUid();
+                        break;
                     }
                 }
-                if ($useThisStorageUidInsteadOfTheOneInImport > 0) {
-                    // same storage is already present; map the to be imported one to the present one
-                    $this->import_mapId['sys_file_storage'][$sysFileStorageUid] = $useThisStorageUidInsteadOfTheOneInImport;
-                } else {
+
+                if (!isset($this->import_mapId['sys_file_storage'][$sysFileStorageUid])) {
                     // Local, writable and online storage. Is allowed to be used to later write files in.
+                    // Does currently not exist so add the record.
                     $this->addSingle('sys_file_storage', $sysFileStorageUid, 0);
                 }
             } else {
@@ -312,6 +301,95 @@ class Import extends ImportExport
 
         // unset the sys_file_storage records to prevent an import in writeRecords_records
         unset($this->dat['header']['records']['sys_file_storage']);
+    }
+
+    /**
+     * Determines whether the passed storage object and record (sys_file_storage) can be
+     * seen as equivalent during import.
+     *
+     * @param ResourceStorage $storageObject The storage object which should get compared
+     * @param array $storageRecord The storage record which should get compared
+     * @return bool Returns TRUE when both object storages can be seen as equivalent
+     */
+    protected function isEquivalentObjectStorage(ResourceStorage $storageObject, array $storageRecord) {
+        // compare the properties: driver, writable and online
+        if (
+            $storageObject->getDriverType() === $storageRecord['driver']
+            && (bool)$storageObject->isWritable() === (bool)$storageRecord['is_writable']
+            && (bool)$storageObject->isOnline() === (bool)$storageRecord['is_online']
+        ) {
+            $storageRecordConfiguration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+            $storageObjectConfiguration = $storageObject->getConfiguration();
+            // compare the properties: pathType and basePath
+            if (
+                $storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
+                && $storageRecordConfiguration['basePath'] === $storageObjectConfiguration['basePath']
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks any prerequisites necessary to get fullfilled before import
+     *
+     * @return array Messages explaining issues which need to get resolved before import
+     */
+    public function checkImportPrerequisites() {
+        $messages = array();
+
+        // Check #1: Extension dependencies
+        $extKeysToInstall = array();
+        if (is_array($this->dat['header']['extensionDependencies'])) {
+            foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
+                if (!ExtensionManagementUtility::isLoaded($extKey)) {
+                    $extKeysToInstall[] = $extKey;
+                }
+            }
+        }
+        if (!empty($extKeysToInstall)) {
+            $messages['missingExtensions'] = 'Before you can install this T3D file you need to install the extensions "' . implode('", "', $extKeysToInstall) . '".';
+        }
+
+        // Check #2: If the path for every local storage object exists.
+        // Else files can't get moved into a newly imported storage.
+        foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
+            $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
+            // continue with Local, writable and online storage only
+            if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
+                $storageExists = false;
+                /** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                foreach ($this->storageObjects as $localStorage) {
+                    if ($this->isEquivalentObjectStorage($localStorage, $storageRecord)) {
+                        // There is already an existing storage
+                        $storageExists = true;
+                        break;
+                    }
+                }
+
+                if (!$storageExists) {
+                    // The storage from the import does not have an equivalent storage
+                    // in the current instance (same driver, same path, etc.). Before
+                    // the storage record can get inserted later on take care the path
+                    // it points to really exists and is accessible.
+                    $storageRecordUid = $storageRecord['uid'];
+                    // Unset the storage record UID when trying to create the storage object
+                    // as the record does not already exist in DB. The constructor of the
+                    // storage object will check whether the target folder exists and set the
+                    // isOnline flag depending on the outcome.
+                    $storageRecord['uid'] = 0;
+                    $resourceStorage = ResourceFactory::getInstance()->createStorageObject($storageRecord);
+                    if (!$resourceStorage->isOnline()) {
+                        $configuration = $resourceStorage->getConfiguration();
+                        $messages['resourceStorageFolderMissing_' . $storageRecordUid] = 'The resource storage "' . $resourceStorage->getName() . '" will get imported. The storage target directory "' . $configuration['basePath'] . '" does not exist. Please create the directory prior to starting the import!';
+                    }
+
+                }
+            }
+        }
+
+        return $messages;
     }
 
     /**
@@ -408,7 +486,7 @@ class Import extends ImportExport
                             $sanitizedFolderMappings[$folderName] = $importFolder->getIdentifier();
                         }
                     } catch (Exception $e) {
-                        $this->error('Error: Folder could not be created for file "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
+                        $this->error('Error: Folder "' . $folderName . '" could not be created for file "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
                         continue;
                     }
                 } else {
