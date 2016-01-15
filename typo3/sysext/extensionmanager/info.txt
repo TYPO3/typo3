@@ -1,5 +1,0 @@
-- types: file and comment are not supported in ext_conf_templates
-- uploadFolder is currently not supported
-- conflicts dependency is not resolved
-- circular dependencies are not resolved
-- custom mirror / repository selection
