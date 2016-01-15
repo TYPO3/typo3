@@ -833,26 +833,14 @@ class ImportExportController extends BaseScriptClass
             }
 
             // Perform import or preview depending:
-            $extensionInstallationMessage = '';
             $inFile = $this->getFile($inData['file']);
             if ($inFile !== null && $inFile->exists()) {
                 $this->standaloneView->assign('metaDataInFileExists', true);
+                $importInhibitedMessages = array();
                 if ($import->loadFile($inFile->getForLocalProcessing(false), 1)) {
-                    // Check extension dependencies:
-                    $extKeysToInstall = array();
-                    if (is_array($import->dat['header']['extensionDependencies'])) {
-                        foreach ($import->dat['header']['extensionDependencies'] as $extKey) {
-                            if (!ExtensionManagementUtility::isLoaded($extKey)) {
-                                $extKeysToInstall[] = $extKey;
-                            }
-                        }
-                    }
-                    if (!empty($extKeysToInstall)) {
-                        $extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'
-                            . implode('", "', $extKeysToInstall) . '".';
-                    }
+                    $importInhibitedMessages = $import->checkImportPrerequisites();
                     if ($inData['import_file']) {
-                        if (empty($extKeysToInstall)) {
+                        if (empty($importInhibitedMessages)) {
                             $import->importData($this->id);
                             BackendUtility::setUpdateSignal('updatePageTree');
                         }
@@ -860,17 +848,22 @@ class ImportExportController extends BaseScriptClass
                     $import->display_import_pid_record = $this->pageinfo;
                     $this->standaloneView->assign('contentOverview',  $import->displayContentOverview());
                 }
+                // Compile messages which are inhibiting a proper import and add them to output.
+                if (!empty($importInhibitedMessages)) {
+                    $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier('impexp.errors');
+                    foreach ($importInhibitedMessages as $message) {
+                        $flashMessageQueue->addMessage(GeneralUtility::makeInstance(
+                            FlashMessage::class,
+                            $message,
+                            '',
+                            FlashMessage::ERROR
+                        ));
+                    }
+                }
             }
             // Print errors that might be:
             $errors = $import->printErrorLog();
             $this->standaloneView->assign('errors', trim($errors));
-            if ($extensionInstallationMessage) {
-                $this->standaloneView->assign(
-                    'extensionInstallationMessage',
-                    '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'
-                    . $this->moduleTemplate->icons(1) . htmlspecialchars($extensionInstallationMessage) . '</div>'
-                );
-            }
         }
     }
 
