@@ -34,12 +34,12 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Main script class for the Import / Export facility
@@ -127,6 +127,11 @@ class ImportExportController extends BaseScriptClass
     protected $standaloneView = null;
 
     /**
+     * @var bool
+     */
+    protected $excludeDisabledRecords = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -185,6 +190,10 @@ class ImportExportController extends BaseScriptClass
 
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
+        if (!array_key_exists('excludeDisabled', $inData)) {
+            // flag doesn't exist initially; state is on by default
+            $inData['excludeDisabled'] = 1;
+        }
         $this->standaloneView->assign('moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
@@ -343,6 +352,8 @@ class ImportExportController extends BaseScriptClass
         $this->export->extensionDependencies = (array)$inData['extension_dep'];
         $this->export->showStaticRelations = $inData['showStaticRelations'];
         $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
+        $this->excludeDisabledRecords = (bool)$inData['excludeDisabled'];
+        $this->export->setExcludeDisabledRecords($this->excludeDisabledRecords);
 
         // Static tables:
         if (is_array($inData['external_static']['tables'])) {
@@ -396,6 +407,9 @@ class ImportExportController extends BaseScriptClass
             $idH = null;
             if ($inData['pagetree']['levels'] == -1) {
                 $pagetree = GeneralUtility::makeInstance(ExportPageTreeView::class);
+                if ($this->excludeDisabledRecords) {
+                    $pagetree->init(BackendUtility::BEenableFields('pages'));
+                }
                 $tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
                 $this->treeHTML = $pagetree->printTree($tree);
                 $idH = $pagetree->buffer_idH;
@@ -416,7 +430,11 @@ class ImportExportController extends BaseScriptClass
                 if (is_array($sPage)) {
                     $pid = $inData['pagetree']['id'];
                     $tree = GeneralUtility::makeInstance(PageTreeView::class);
-                    $tree->init('AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap));
+                    $initClause = 'AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap);
+                    if ($this->excludeDisabledRecords) {
+                        $initClause .= BackendUtility::BEenableFields('pages');
+                    }
+                    $tree->init($initClause);
                     $HTML = $this->iconFactory->getIconForRecord('pages', $sPage, Icon::SIZE_SMALL)->render();
                     $tree->tree[] = array('row' => $sPage, 'HTML' => $HTML);
                     $tree->buffer_idH = array();
@@ -539,7 +557,10 @@ class ImportExportController extends BaseScriptClass
         $this->standaloneView->assign('errors', $this->export->errorLog);
 
         // Generate overview:
-        $this->standaloneView->assign('contentOverview', $this->export->displayContentOverview());
+        $this->standaloneView->assign(
+            'contentOverview',
+            $this->export->displayContentOverview()
+        );
     }
 
     /**
@@ -583,10 +604,15 @@ class ImportExportController extends BaseScriptClass
         $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby']
             ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
             : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+
+        $whereClause = 'pid=' . (int)$pid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table);
+        if ($this->excludeDisabledRecords) {
+            $whereClause .= BackendUtility::BEenableFields($table);
+        }
         $res = $db->exec_SELECTquery(
             '*',
             $table,
-            'pid=' . (int)$pid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table),
+            $whereClause,
             '',
             $db->stripOrderBy($orderBy),
             $limit

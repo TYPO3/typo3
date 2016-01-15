@@ -45,6 +45,9 @@
 			<trans-unit id="execlistqu_structureToBeExported">
 				<source>Structure to be exported:</source>
 			</trans-unit>
+			<trans-unit id="impexpcore_toggle_all_disabled_records">
+				<source>Toggle disabled records</source>
+			</trans-unit>
 			<trans-unit id="execlistqu_maxNumberLimit">
 				<source>Max number limit!</source>
 			</trans-unit>
@@ -108,11 +111,14 @@
 			<trans-unit id="makeconfig_excludeElements">
 				<source>Exclude elements:</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_clearAllExclusions">
-				<source>Clear all exclusions:</source>
+			<trans-unit id="makeconfig_clearAllManualExclusions">
+				<source>Clear all manual exclusions:</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_noExcludedElementsYet">
-				<source>No excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+			<trans-unit id="makeconfig_noManuallyExcludedElementsYet">
+				<source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+			</trans-unit>
+			<trans-unit id="makeconfig_excludeDisabledElements">
+				<source>Exclude disabled elements</source>
 			</trans-unit>
 			<trans-unit id="makeadvanc_update">
 				<source>Update</source>

@@ -143,9 +143,15 @@
 				</label>
 			</f:then>
 			<f:else>
-					<f:translate key="makeconfig_noExcludedElementsYet" />
+					<f:translate key="makeconfig_noManuallyExcludedElementsYet" />
 			</f:else>
 		</f:if>
+	</p>
+	<p class="form-control-static">
+		<label for="checkExcludeDisabled">
+			<f:form.checkbox name="tx_impexp[excludeDisabled]" id="checkExcludeDisabled" value="1" checked="{inData.excludeDisabled}" />
+			<f:translate key="makeconfig_excludeDisabledElements" />
+		</label>
 	</p>
 </div>
 

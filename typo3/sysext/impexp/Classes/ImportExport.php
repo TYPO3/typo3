@@ -253,6 +253,14 @@ abstract class ImportExport
     protected $iconFactory;
 
     /**
+     * Flag to control whether all disabled records and their children are excluded (true) or included (false). Defaults
+     * to the old behaviour of including everything.
+     *
+     * @var bool
+     */
+    protected $excludeDisabledRecords = false;
+
+    /**
      * The constructor
      */
     public function __construct()
@@ -305,7 +313,7 @@ abstract class ImportExport
             if (is_array($this->dat['header']['pagetree'])) {
                 reset($this->dat['header']['pagetree']);
                 $lines = array();
-                $this->traversePageTree($this->dat['header']['pagetree'], $lines);
+                $this->traversePageTree($this->dat['header']['pagetree'], $lines, '');
 
                 $viewData['dat'] = $this->dat;
                 $viewData['update'] = $this->update;
@@ -353,6 +361,11 @@ abstract class ImportExport
     public function traversePageTree($pT, &$lines, $preCode = '')
     {
         foreach ($pT as $k => $v) {
+            if ($this->excludeDisabledRecords === true && !$this->isActive('pages', $k)) {
+                $this->excludePageAndRecords($k, $v);
+                continue;
+            }
+
             // Add this page:
             $this->singleRecordLines('pages', $k, $lines, $preCode);
             // Subrecords:
@@ -369,6 +382,53 @@ abstract class ImportExport
             // Subpages, called recursively:
             if (is_array($v['subrow'])) {
                 $this->traversePageTree($v['subrow'], $lines, $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;');
+            }
+        }
+    }
+
+    /**
+     * Test whether a record is active (i.e. not hidden)
+     *
+     * @param string $table Name of the records' database table
+     * @param int $uid Database uid of the record
+     * @return bool true if the record is active, false otherwise
+     */
+    protected function isActive($table, $uid)
+    {
+        return
+            !isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])
+            || !(bool)$this->dat['records'][$table . ':' . $uid]['data'][
+                $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled']
+            ];
+    }
+
+    /**
+     * Exclude a page, its sub pages (recursively) and records placed in them from this import/export
+     *
+     * @param int $pageUid Uid of the page to exclude
+     * @param array $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree]
+     * @return void
+     */
+    protected function excludePageAndRecords($pageUid, $pageTree)
+    {
+        // Prevent having this page appear in "remaining records" table
+        unset($this->remainHeader['records']['pages'][$pageUid]);
+
+        // Subrecords
+        if (is_array($this->dat['header']['pid_lookup'][$pageUid])) {
+            foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $recordData) {
+                if ($table != 'pages') {
+                    foreach (array_keys($recordData) as $uid) {
+                        unset($this->remainHeader['records'][$table][$uid]);
+                    }
+                }
+            }
+            unset($this->remainHeader['pid_lookup'][$pageUid]);
+        }
+        // Subpages excluded recursively
+        if (is_array($pageTree['subrow'])) {
+            foreach ($pageTree['subrow'] as $subPageUid => $subPageTree) {
+                $this->excludePageAndRecords($subPageUid, $subPageTree);
             }
         }
     }
@@ -466,6 +526,9 @@ abstract class ImportExport
             $pInfo['msg'] = 'UNKNOWN TABLE \'' . $pInfo['ref'] . '\'';
             $pInfo['title'] = '<em>' . htmlspecialchars($record['title']) . '</em>';
         } else {
+            // prepare data attribute telling whether the record is active or hidden, allowing frontend bulk selection
+            $pInfo['active'] = $this->isActive($table, $uid) ? 'active' : 'hidden';
+
             // Otherwise, set table icon and title.
             // Import Validation (triggered by $this->display_import_pid_record) will show messages if import is not possible of various items.
             if (is_array($this->display_import_pid_record) && !empty($this->display_import_pid_record)) {
@@ -805,7 +868,7 @@ abstract class ImportExport
     {
         if ($this->mode === 'export') {
             if ($r['type'] === 'record') {
-                return '<input type="checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $this->getLanguageService()->getLL('impexpcore_singlereco_exclude', true) . '</label>';
+                return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $this->getLanguageService()->getLL('impexpcore_singlereco_exclude', true) . '</label>';
             } else {
                 return  $r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
             }
@@ -1182,6 +1245,19 @@ abstract class ImportExport
         }
     }
 
+    /**
+     * Set flag to control whether disabled records and their children are excluded (true) or included (false). Defaults
+     * to the old behaviour of including everything.
+     *
+     * @param bool $excludeDisabledRecords Set to true if if all disabled records should be excluded, false otherwise
+     * @return \TYPO3\CMS\Impexp\ImportExport $this for fluent calls
+     */
+    public function setExcludeDisabledRecords($excludeDisabledRecords = false)
+    {
+        $this->excludeDisabledRecords = $excludeDisabledRecords;
+        return $this;
+    }
+
     /*****************************
      * Error handling
      *****************************/
@@ -1230,5 +1306,4 @@ abstract class ImportExport
     {
         return $GLOBALS['LANG'];
     }
-
 }

@@ -307,6 +307,9 @@ class Export extends ImportExport
     public function export_addRecord($table, $row, $relationLevel = 0)
     {
         BackendUtility::workspaceOL($table, $row);
+        if ($this->excludeDisabledRecords && !$this->isActive($table, $row['uid'])) {
+            return;
+        }
         if ((string)$table !== '' && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[$table . ':' . $row['uid']]) {
             if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
                 if (!isset($this->dat['records'][$table . ':' . $row['uid']])) {
