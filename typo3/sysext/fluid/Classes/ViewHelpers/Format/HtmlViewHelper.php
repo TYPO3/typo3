@@ -95,6 +95,8 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
         if (TYPO3_MODE === 'BE') {
+            GeneralUtility::deprecationLog('The usage of the viewhelper "f:format.html" in the backend context is discouraged, and will stop working with CMS 9. '
+                    . 'Use the viewhelper "f:format.raw" instead.');
             self::simulateFrontendEnvironment();
         }
         $value = $renderChildrenClosure();
