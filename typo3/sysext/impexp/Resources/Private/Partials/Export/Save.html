@@ -9,7 +9,7 @@
 		<td>
 			<f:translate key="makesavefo_selectPreset" />
 			<br/>
-			<f:format.raw>{presetSelect}</f:format.raw>
+			<f:form.select name="preset[select]" options="{presetSelectOptions}" />
 
 			<br/>
 			<input type="hidden" name="not-set" value="1" id="t3js-submit-field" />
@@ -59,7 +59,8 @@
 			<f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat" />
 		</td>
 		<td>
-			<f:format.raw>{filetypeSelect}</f:format.raw><br/>
+			<f:form.select name="tx_impexp[filetype]" options="{filetypeSelectOptions}" value="{inData.filetype}" />
+			<br/>
 			<f:translate key="makesavefo_maxSizeOfFiles" /><br/>
 			<input type="text" name="tx_impexp[maxFileSize]" value="{inData.maxFileSize}" />
 			<br/>

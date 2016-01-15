@@ -27,7 +27,9 @@
 				<strong><f:translate key="makeconfig_levels" /></strong>
 				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
 			</td>
-			<td><f:format.raw>{levelSelect}</f:format.raw></td>
+			<td>
+				<f:form.select name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
+			</td>
 		</tr>
 		<tr class="bgColor4">
 			<td>
@@ -35,7 +37,9 @@
 				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
 			</td>
 			<td>
-				<f:format.raw>{tableSelect}</f:format.raw>
+				<f:form.select name="tx_impexp[pagetree][tables]" options="{tableSelectOptions}"
+											 multiple="multiple" value="{inData.pagetree.tables}"
+											 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
 				<br/>
 				<f:translate key="makeconfig_maxNumberOfRecords" />
 				<br/>
@@ -82,14 +86,22 @@
 			<strong><f:translate key="makeconfig_includeRelationsToTables" /></strong>
 			<f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations" />
 		</td>
-		<td><f:format.raw>{externalReferenceTableSelect}</f:format.raw></td>
+		<td>
+			<f:form.select name="tx_impexp[external_ref][tables]" options="{externalReferenceTableSelectOptions}"
+										 multiple="multiple" value="{inData.external_ref.tables}"
+										 size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+		</td>
 	</tr>
 	<tr class="bgColor4">
 		<td>
 			<strong><f:translate key="makeconfig_useStaticRelationsFor" /></strong>
 			<f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations" />
 		</td>
-		<td><f:format.raw>{externalStaticTableSelect}</f:format.raw><br/>
+		<td>
+			<f:form.select name="tx_impexp[external_static][tables]" options="{externalStaticTableSelectOptions}"
+										 multiple="multiple" value="{inData.external_static.tables}"
+										 size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+			<br/>
 			<label for="checkShowStaticRelations">
 				<f:translate key="makeconfig_showStaticRelations" />
 			</label>

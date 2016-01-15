@@ -40,7 +40,9 @@
 			<f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies" />
 		</td>
 		<td>
-			<f:format.raw>{extensions}</f:format.raw>
+			<f:form.select name="tx_impexp[extension_dep]" multiple="multiple"
+										 size="{f:if(condition: '{extensions -> f:count()} > 9', then: '10', else: '5')}"
+										 options="{extensions}" value="{inData.extension_dep}"/>
 		</td>
 	</tr>
 	<tr class="bgColor4">
