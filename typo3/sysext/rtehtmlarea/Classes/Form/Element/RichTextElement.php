@@ -221,7 +221,7 @@ class RichTextElement extends AbstractFormElement
 
         $this->resultArray = $this->initializeResultArray();
         $this->defaultExtras = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-        $this->pidOfPageRecord = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($row['uid']) ? (int)$row['uid'] : (int)$row['pid'];
+        $this->pidOfPageRecord = $this->data['effectivePid'];
         BackendUtility::fixVersioningPid($table, $row);
         $this->pidOfVersionedMotherRecord = (int)$row['pid'];
         $this->vanillaRteTsConfig = $backendUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($this->pidOfPageRecord));
