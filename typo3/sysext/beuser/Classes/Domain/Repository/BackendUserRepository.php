@@ -46,10 +46,13 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
         $query->setOrderings(array('userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
         // Username
         if ($demand->getUserName() !== '') {
-            $constraints[] = $query->like(
-                'userName',
-                '%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($demand->getUserName(), 'be_users') . '%'
-            );
+            $searchConstraints = array();
+            foreach (array('userName', 'uid', 'realName') as $field) {
+                 $searchConstraints[] = $query->like(
+                    $field, '%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($demand->getUserName(), 'be_users') . '%'
+                );
+            }
+            $constraints[] = $query->logicalOr($searchConstraints);
         }
         // Only display admin users
         if ($demand->getUserType() == \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY) {
