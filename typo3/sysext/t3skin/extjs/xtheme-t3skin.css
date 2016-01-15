@@ -2199,7 +2199,12 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	padding-left: 3px;
 	padding-right: 3px;
 }
-
+.icon-tree-search-open {
+	background-image: url("images/tree/system-tree-search-open.png") !important;
+}
+.icon-select-recursive {
+	background-image: url("images/tree/tcatree-select-recursive.png") !important;
+}
 .icon-collapse-all {
 	background-image: url("images/tree/collapse-all.gif") !important;
 }

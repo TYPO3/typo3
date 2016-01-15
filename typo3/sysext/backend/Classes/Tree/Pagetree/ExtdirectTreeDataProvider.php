@@ -172,7 +172,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
     }
 
     /**
-     * Returns the language labels, sprites and configuration options for the pagetree
+     * Returns the language labels and configuration options for the pagetree
      *
      * @return array
      */

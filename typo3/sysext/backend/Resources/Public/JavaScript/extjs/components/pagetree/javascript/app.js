@@ -68,7 +68,6 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		TYPO3.Components.PageTree.DataProvider.loadResources(function(response) {
 			TYPO3.Components.PageTree.LLL = response['LLL'];
 			TYPO3.Components.PageTree.Configuration = response['Configuration'];
-			TYPO3.Components.PageTree.Sprites = response['Sprites'];
 			TYPO3.Components.PageTree.Icons = response['Icons'];
 
 			this.mainTree = this.activeTree = new TYPO3.Components.PageTree.Tree({

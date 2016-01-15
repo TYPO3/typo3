@@ -100,7 +100,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 	items.push([
 		' ',
 		{
-			iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-tree-search-open',
+			iconCls: 'icon-tree-search-open',
 			menu: {
 				items: [
 					{
@@ -148,7 +148,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 		}),
 		'->',
 		{
-			iconCls: 't3-icon t3-icon-apps t3-icon-apps-tcatree t3-icon-tcatree-select-recursive',
+			iconCls: 'icon-select-recursive',
 			tooltip: TYPO3.lang['tcatree.enableRecursiveSelection'],
 			enableToggle: true,
 			disable: scope.tcaSelectRecursive,

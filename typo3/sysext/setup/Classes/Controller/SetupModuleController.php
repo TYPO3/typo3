@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -641,11 +642,19 @@ class SetupModuleController extends AbstractModule
                             ' value="' . $avatarFileUid . '" />';
 
                     $html .= '<div class="btn-group">';
+                    $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     if ($avatarFileUid) {
-                        $html .= '<a id="clear_button_' . htmlspecialchars($fieldName) . '" onclick="clearExistingImage(); return false;" class="btn btn-default"><span class="t3-icon fa t3-icon fa fa-remove"> </span></a>';
+                        $html .=
+                            '<a id="clear_button_' . htmlspecialchars($fieldName) . '" '
+                                . 'onclick="clearExistingImage(); return false;" class="btn btn-default">'
+                                . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
+                            .'</a>';
                     }
-                    $html .= '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar" onclick="openFileBrowser();return false;"><span class="t3-icon t3-icon-actions t3-icon-actions-insert t3-icon-insert-record"> </span></a>' .
-                            '</div>';
+                    $html .=
+                        '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
+                            . ' onclick="openFileBrowser();return false;">'
+                            . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
+                            . '</a></div>';
 
                     $this->addAvatarButtonJs($fieldName);
                     break;
