@@ -1051,9 +1051,11 @@ function jumpToUrl(URL) {
      *
      * @param string $string Input string
      * @return string Output string
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function wrapInCData($string)
     {
+        GeneralUtility::logDeprecatedFunction();
         $string = '/*<![CDATA[*/' . $string . '/*]]>*/';
         return $string;
     }
@@ -1094,9 +1096,11 @@ function jumpToUrl(URL) {
      * @param string $content Content cell content (left)
      * @param string $menu Menu cell content (right)
      * @return string HTML output
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function funcMenu($content, $menu)
     {
+        GeneralUtility::logDeprecatedFunction();
         return '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%" id="typo3-funcmenu">
 				<tr>
@@ -1136,9 +1140,11 @@ function jumpToUrl(URL) {
      * @param string $table indicator of which table the drag and drop function should work on (pages or folders)
      * @param string $additionalJavaScriptCode adds more code to the additional javascript code
      * @return void
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function getDragDropCode($table, $additionalJavaScriptCode = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
 			DragDrop.table = "' . $table . '";
 			' . $additionalJavaScriptCode . '
@@ -1158,9 +1164,11 @@ function jumpToUrl(URL) {
      * @param string $script is the script to send the &id to, if empty it's automatically found
      * @param string $addparams is additional parameters to pass to the script.
      * @return string HTML code for tab menu
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $content = '';
         if (is_array($menuItems)) {
             if (!is_array($mainParams)) {
@@ -1218,9 +1226,11 @@ function jumpToUrl(URL) {
      * @param int $id Page id to create selector for.
      * @param bool $noAction If set, there will be no button for swapping page.
      * @return string
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function getVersionSelector($id, $noAction = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (
                 ExtensionManagementUtility::isLoaded('version') &&
                 !ExtensionManagementUtility::isLoaded('workspaces')
