@@ -128,7 +128,7 @@ class FormEngineUtility
 
         if (StringUtility::beginsWith($icon, 'EXT:')) {
             $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
-            if (!empty($absoluteFilePath)) {
+            if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
                 $iconFile = '../' . PathUtility::stripPathSitePrefix($absoluteFilePath);
                 $iconInfo = (StringUtility::endsWith($absoluteFilePath, '.svg'))
                     ? true
