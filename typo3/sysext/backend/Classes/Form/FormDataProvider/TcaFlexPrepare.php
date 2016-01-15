@@ -161,7 +161,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
                 $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
                 foreach ($value as $subKey => $subValue) {
                     // On-the-fly migration for flex form "TCA"
-                    // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+                    // @deprecated since TYPO3 CMS 7. Not removed in TYPO3 CMS 8 though. This call will stay for now to allow further TCA migrations in 8.
                     $dummyTca = array(
                         'dummyTable' => array(
                             'columns' => array(
@@ -172,8 +172,8 @@ class TcaFlexPrepare implements FormDataProviderInterface
                     $migratedTca = $tcaMigration->migrate($dummyTca);
                     $messages = $tcaMigration->getMessages();
                     if (!empty($messages)) {
-                        $context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed'
-                            . ' with TYPO3 CMS 8. Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
+                        $context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
+                            . ' Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
                         array_unshift($messages, $context);
                         GeneralUtility::deprecationLog(implode(LF, $messages));
                     }

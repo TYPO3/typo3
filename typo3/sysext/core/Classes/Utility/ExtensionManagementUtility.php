@@ -1758,13 +1758,13 @@ tt_content.' . $key . $suffix . ' {
         }
 
         // TCA migration
-        // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+        // @deprecated since TYPO3 CMS 7. Not removed in TYPO3 CMS 8 though. This call will stay for now to allow further TCA migrations in 8.
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
         $GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
         $messages = $tcaMigration->getMessages();
         if (!empty($messages)) {
             $context = 'Automatic TCA migration done during bootstrap. Please adapt TCA accordingly, these migrations'
-                . ' will be removed with TYPO3 CMS 8. The backend module "Configuration -> TCA" shows the modified values.'
+                . ' will be removed. The backend module "Configuration -> TCA" shows the modified values.'
                 . ' Please adapt these areas:';
             array_unshift($messages, $context);
             GeneralUtility::deprecationLog(implode(LF, $messages));

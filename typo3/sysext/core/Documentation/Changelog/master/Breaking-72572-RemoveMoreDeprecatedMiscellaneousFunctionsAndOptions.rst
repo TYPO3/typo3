@@ -22,6 +22,10 @@ Impact
 
 Using one of the mentioned options or methods will result in a fatal error or won't have any effect anymore.
 
+Registration of ``TCA`` within ``ext_tables.php`` now finally stops working and
+code to resolve ``dynamicConfigFile`` option from ``TCA`` is removed. Extensions still
+relying on this will fail.
+
 
 Affected Installations
 ======================
