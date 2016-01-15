@@ -1225,7 +1225,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node-expanded .x-tree-node-icon{
-	background-image:url(../images/icons/apps/filetree-folder-opened.png);
+	background-image:url(../Resources/Public/Images/filetree-folder-opened.png);
 }
 
 .x-tree-node-leaf .x-tree-node-icon{
@@ -1233,7 +1233,7 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node-collapsed .x-tree-node-icon{
-	background-image:url(../images/icons/apps/filetree-folder-default.png);
+	background-image:url(../Resources/Public/Images/filetree-folder-default.png);
 }
 
 .x-tree-node-loading .x-tree-node-icon{

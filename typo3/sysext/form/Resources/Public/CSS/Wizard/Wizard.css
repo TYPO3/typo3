@@ -77,12 +77,12 @@ form ol {
 #formwizard-left .x-accordion-hd .x-tool-toggle {
 	margin: 0;
 	float: left;
-	background-image: url("../../../../../../../typo3/sysext/t3skin/images/arrows/module-menu-down.png");
+	background-image: url("../../Images/module-menu-down.png");
 	background-position: 0 4px;
 }
 
 #formwizard-left .x-panel-collapsed .x-accordion-hd .x-tool-toggle {
-	background-image: url("../../../../../../../typo3/sysext/t3skin/images/arrows/module-menu-right.png");
+	background-image: url("../../Images/module-menu-right.png");
 	background-position: 1px 3px;
 }
 
