@@ -183,11 +183,11 @@ class MysqlFulltextIndexHook
             'index_fulltext.*, ISEC.*, IP.*',
             'index_fulltext, index_section ISEC, index_phash IP' . $pageJoin,
             'MATCH (' . $searchData['fulltextIndex'] . ')
-				AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') ' .
+                AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') ' .
                 $this->pObj->mediaTypeWhere() . ' ' . $this->pObj->languageWhere() . $freeIndexUidClause . '
-				AND index_fulltext.phash = IP.phash
-				AND ISEC.phash = IP.phash
-				AND ' . $pageWhere,
+                AND index_fulltext.phash = IP.phash
+                AND ISEC.phash = IP.phash
+                AND ' . $pageWhere . $this->pObj->sectionTableWhere(),
             'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId'
         );
         return $resource;
