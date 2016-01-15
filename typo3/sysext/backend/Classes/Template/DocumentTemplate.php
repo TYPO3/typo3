@@ -826,8 +826,8 @@ function jumpToUrl(URL) {
      */
     public function sectionEnd()
     {
-        GeneralUtility::logDeprecatedFunction();
         if ($this->sectionFlag) {
+            GeneralUtility::logDeprecatedFunction();
             $this->sectionFlag = 0;
             return '
 	</div>
