@@ -151,7 +151,7 @@ class FrontendEditingController
      * Returns TRUE if an edit-action is sent from the Admin Panel
      *
      * @return bool
-     * @see index_ts.php
+     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
     public function isEditAction()
     {
@@ -171,10 +171,10 @@ class FrontendEditingController
 
     /**
      * Returns TRUE if an edit form is shown on the page.
-     * Used from index_ts.php where a TRUE return-value will result in classes etc. being included.
+     * Used from RequestHandler where a TRUE return-value will result in classes etc. being included.
      *
      * @return bool
-     * @see index_ts.php
+     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
     public function isEditFormShown()
     {
@@ -192,7 +192,7 @@ class FrontendEditingController
      *
      * @return void
      * @throws UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
-     * @see index_ts.php
+     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
     public function editAction()
     {

@@ -204,7 +204,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts.
      * Only if both conditions are TRUE will the function return TRUE.
      * Read access means that previewing is allowed etc.
-     * Used in index_ts.php
+     * Used in \TYPO3\CMS\Frontend\Http\RequestHandler
      *
      * @param array $pageRec The page record to evaluate for
      * @return bool TRUE if read access

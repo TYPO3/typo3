@@ -22,8 +22,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
- * Tools for scripts using the eID feature of index.php
- * Included from index_ts.php
+ * Tools for scripts using the eID feature of the TYPO3 Frontend.
+ * Included from \TYPO3\CMS\Frontend\Http\RequestHandler.
  * Since scripts using the eID feature does not
  * have a full FE environment initialized by default
  * this class seeks to provide functions that can
