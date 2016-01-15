@@ -45,6 +45,9 @@ class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impo
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-existing-different-image.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2_01.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithDifferentImageToExistingData');
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
@@ -66,6 +69,8 @@ class ImportInFilledDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impo
 
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-existing-same-image.xml', 1);
         $this->import->importData(0);
+
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
 
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithSameImageToExistingData');
 

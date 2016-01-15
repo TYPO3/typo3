@@ -33,6 +33,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesOnCaseSensitiveFilesystems');
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
@@ -49,6 +51,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 
         $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', 1);
         $this->import->importData(0);
+
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
 
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesOnCaseInsensitiveFilesystems');
 
@@ -67,6 +71,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-without-storage.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseSensitiveFilesystems');
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
@@ -84,6 +90,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-without-storage.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseInsensitiveFilesystems');
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
@@ -96,6 +104,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
     {
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-with-spaces-in-path.xml', 1);
         $this->import->importData(0);
+
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/folder_with_spaces/typo3_image2.jpg';
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/folder_with_spaces/typo3_image3.jpg';
 
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesWithSpacesInPath');
 
@@ -111,6 +122,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', 1);
         $this->import->importData(0);
 
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
+
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesButNotIncluded');
 
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
@@ -124,6 +137,8 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-with-forced-uids.xml', 1);
         $this->import->force_all_UIDS = true;
         $this->import->importData(0);
+
+        $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
 
         $this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImageWithForcedUids');
 
