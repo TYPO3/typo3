@@ -427,7 +427,7 @@ class QueryView
                     $rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
                 }
                 if (!empty($rowArr)) {
-                    $out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->getModuleTemplate()->formWidth($this->formW) . ' class="text-monospace">' . htmlspecialchars(implode(LF, $rowArr)) . '</textarea>';
+                    $out .= '<textarea name="whatever" rows="20" wrap="off" class="text-monospace" style="width:100%">' . htmlspecialchars(implode(LF, $rowArr)) . '</textarea>';
                     if (!$this->noDownloadB) {
                         $out .= '<br><input class="btn btn-default" type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
                     }
