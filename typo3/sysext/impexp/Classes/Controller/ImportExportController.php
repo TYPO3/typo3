@@ -527,12 +527,10 @@ class ImportExportController extends BaseScriptClass
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
-        // OUTPUT to BROWSER:
+
         $this->makeConfigurationForm($inData);
 
-        $row = array();
         $this->makeSaveForm($inData);
-        $this->standaloneView->assign('saveForm', implode('', $row));
 
         $this->makeAdvancedOptionsForm($inData);
 
@@ -635,8 +633,8 @@ class ImportExportController extends BaseScriptClass
                 '4' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
                 '999' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
             );
-            $this->standaloneView->assign('levelSelect', $this->renderSelectBox('tx_impexp[pagetree][levels]', $inData['pagetree']['levels'], $opt));
-            $this->standaloneView->assign('tableSelect', $this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages'));
+            $this->standaloneView->assign('levelSelectOptions', $opt);
+            $this->standaloneView->assign('tableSelectOptions', $this->getTableSelectOptions('pages'));
             $nameSuggestion .= 'tree_PID' . $inData['pagetree']['id'] . '_L' . $inData['pagetree']['levels'];
         }
         // Single record export:
@@ -684,8 +682,8 @@ class ImportExportController extends BaseScriptClass
             $this->standaloneView->assign('tableList', $tblList);
         }
 
-        $this->standaloneView->assign('externalReferenceTableSelect', $this->tableSelector('tx_impexp[external_ref][tables]', $inData['external_ref']['tables']));
-        $this->standaloneView->assign('externalStaticTableSelect', $this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']));
+        $this->standaloneView->assign('externalReferenceTableSelectOptions', $this->getTableSelectOptions());
+        $this->standaloneView->assign('externalStaticTableSelectOptions', $this->getTableSelectOptions());
 
         // Exclude:
         $excludeHiddenFields = '';
@@ -707,7 +705,9 @@ class ImportExportController extends BaseScriptClass
      */
     public function makeAdvancedOptionsForm($inData)
     {
-        $this->standaloneView->assign('extensions', $this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']));
+        $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
+        $loadedExtensions = array_combine($loadedExtensions, $loadedExtensions);
+        $this->standaloneView->assign('extensions', $loadedExtensions);
         $this->standaloneView->assign('inData', $inData);
     }
 
@@ -733,7 +733,7 @@ class ImportExportController extends BaseScriptClass
             }
         }
 
-        $this->standaloneView->assign('presetSelect', $this->renderSelectBox('preset[select]', '', $opt));
+        $this->standaloneView->assign('presetSelectOptions', $opt);
 
         $saveFolder = $this->getDefaultImportExportFolder();
         if ($saveFolder) {
@@ -748,7 +748,7 @@ class ImportExportController extends BaseScriptClass
         $opt['t3d'] = $this->lang->getLL('makesavefo_t3dFile');
         $opt['xml'] = $this->lang->getLL('makesavefo_xml');
 
-        $this->standaloneView->assign('filetypeSelect', $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt));
+        $this->standaloneView->assign('filetypeSelectOptions', $opt);
 
         $fileName = '';
         if ($saveFolder) {
@@ -942,40 +942,12 @@ class ImportExportController extends BaseScriptClass
     }
 
     /**
-     * Makes a selector-box from optValues
+     * Returns option array to be used in Fluid
      *
-     * @param string $prefix Form element name
-     * @param string $value Current value
-     * @param array $optValues Options to display (key/value pairs)
-     * @return string HTML select element
-     */
-    public function renderSelectBox($prefix, $value, $optValues)
-    {
-        $opt = array();
-        $isSelFlag = 0;
-        foreach ($optValues as $k => $v) {
-            $sel = (string)$k === (string)$value ? ' selected="selected"' : '';
-            if ($sel) {
-                $isSelFlag++;
-            }
-            $opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
-        }
-        if (!$isSelFlag && (string)$value !== '') {
-            $opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">'
-                . htmlspecialchars(('[\'' . $value . '\']')) . '</option>';
-        }
-        return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';
-    }
-
-    /**
-     * Returns a selector-box with TCA tables
-     *
-     * @param string $prefix Form element name prefix
-     * @param array $value The current values selected
      * @param string $excludeList Table names (and the string "_ALL") to exclude. Comma list
-     * @return string HTML select element
+     * @return array
      */
-    public function tableSelector($prefix, $value, $excludeList = '')
+    public function getTableSelectOptions($excludeList = '')
     {
         $optValues = array();
         if (!GeneralUtility::inList($excludeList, '_ALL')) {
@@ -986,44 +958,7 @@ class ImportExportController extends BaseScriptClass
                 $optValues[$table] = $table;
             }
         }
-        // make box:
-        $opt = array();
-        $opt[] = '<option value=""></option>';
-        $sel = '';
-        foreach ($optValues as $k => $v) {
-            if (is_array($value)) {
-                $sel = in_array($k, $value) ? ' selected="selected"' : '';
-            }
-            $opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
-        }
-        return '<select name="' . $prefix . '[]" multiple="multiple" size="'
-            . MathUtility::forceIntegerInRange(count($opt), 5, 10) . '">' . implode('', $opt) . '</select>';
-    }
-
-    /**
-     * Returns a selector-box with loaded extension keys
-     *
-     * @param string $prefix Form element name prefix
-     * @param array $value The current values selected
-     * @return string HTML select element
-     */
-    public function extensionSelector($prefix, $value)
-    {
-        $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
-
-        // make box:
-        $opt = array();
-        $opt[] = '<option value=""></option>';
-        foreach ($loadedExtensions as $extensionKey) {
-            $sel = '';
-            if (is_array($value)) {
-                $sel = in_array($extensionKey, $value) ? ' selected="selected"' : '';
-            }
-            $opt[] = '<option value="' . htmlspecialchars($extensionKey) . '"' . $sel . '>'
-                . htmlspecialchars($extensionKey) . '</option>';
-        }
-        return '<select name="' . $prefix . '[]" multiple="multiple" size="'
-            . MathUtility::forceIntegerInRange(count($opt), 5, 10) . '">' . implode('', $opt) . '</select>';
+        return $optValues;
     }
 
     /**
