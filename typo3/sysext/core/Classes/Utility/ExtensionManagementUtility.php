@@ -478,7 +478,7 @@ class ExtensionManagementUtility
      * - $item = array(
      * 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
      * 'login',
-     * 'i/tt_content_login.gif',
+     * 'i/imagename.gif',
      * ),
      * - $relativeToField = mailform
      * - $relativePosition = after
