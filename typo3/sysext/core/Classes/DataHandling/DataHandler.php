@@ -1122,6 +1122,7 @@ class DataHandler {
 											$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 											/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 											$tce->stripslashes_values = 0;
+											$tce->enableLogging = $this->enableLogging;
 											// Setting up command for creating a new version of the record:
 											$cmd = array();
 											$cmd[$table][$id]['version'] = array(
@@ -4316,6 +4317,7 @@ class DataHandler {
 						if (is_array($removeArray) && count($removeArray)) {
 							$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 							$tce->stripslashes_values = FALSE;
+							$tce->enableLogging = $this->enableLogging;
 							$tce->start(array(), $removeArray);
 							$tce->process_cmdmap();
 							unset($tce);
@@ -4676,6 +4678,7 @@ class DataHandler {
 				);
 				$dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$dataHandler->stripslashes_values = FALSE;
+				$dataHandler->enableLogging = $this->enableLogging;
 				$dataHandler->neverHideAtCopy = TRUE;
 				$dataHandler->start(array(), $command);
 				$dataHandler->process_cmdmap();
@@ -5113,6 +5116,7 @@ class DataHandler {
 	protected function getLocalTCE($stripslashesValues = FALSE, $dontProcessTransformations = TRUE) {
 		$copyTCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$copyTCE->stripslashes_values = $stripslashesValues;
+		$copyTCE->enableLogging = $this->enableLogging;
 		$copyTCE->copyTree = $this->copyTree;
 		// Copy forth the cached TSconfig
 		$copyTCE->cachedTSconfig = $this->cachedTSconfig;
