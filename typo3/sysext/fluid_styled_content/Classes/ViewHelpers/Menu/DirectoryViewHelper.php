@@ -97,7 +97,7 @@ class DirectoryViewHelper extends AbstractViewHelper
                 $as => $pages
             );
             if (!empty($levelAs)) {
-                $variables[$levelAs] = $typoScriptFrontendController->register['ceMenuLevel'];
+                $variables[$levelAs] = $typoScriptFrontendController->register['ceMenuLevel_directory'];
             }
             $output = $this->renderChildrenWithVariables($variables);
 
