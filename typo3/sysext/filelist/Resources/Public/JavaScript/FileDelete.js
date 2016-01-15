@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Filelist/FileDelete
  * JavaScript for file delete
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, Modal, Severity) {
 
 	$(document).on('click', '.t3js-filelist-delete', function(e) {
 		e.preventDefault();
@@ -30,7 +30,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 		var veriCode = $anchorElement.data('veriCode');
 		var deleteUrl = $anchorElement.data('deleteUrl') + '&file[delete][0][data]=' + encodeURIComponent(identifier) + '&vC=' + encodeURIComponent(veriCode);
 		if ($anchorElement.data('check')) {
-			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('content'), top.TYPO3.Severity.warning, [
+			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('content'), Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
 					active: true,

@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/ImageManipulation
  * Contains all logic for the image crop GUI
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
+define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, Modal, Severity) {
 
 	/**
 	 *
@@ -60,7 +60,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 	ImageManipulation.show = function() {
 		ImageManipulation.currentModal = Modal.loadUrl(
 			ImageManipulation.$trigger.data('image-name'),
-			TYPO3.Severity.notice,
+			Severity.notice,
 			[],
 			ImageManipulation.$trigger.data('url'),
 			ImageManipulation.initializeCropperModal,
