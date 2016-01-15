@@ -19,7 +19,7 @@ define(['jquery',
 		'TYPO3/CMS/Backend/Modal',
 		'TYPO3/CMS/Backend/Icons',
 		'TYPO3/CMS/Backend/Notification',
-		'TYPO3/CMS/Backend/Severity',
+		'TYPO3/CMS/Backend/Severity'
 	   ], function ($, Modal, Icons, Notification, Severity) {
 	'use strict';
 

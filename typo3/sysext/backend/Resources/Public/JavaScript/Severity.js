@@ -12,8 +12,8 @@
  */
 
 /**
- * Module: TYPO3/CMS/Backend/Notification
- * Notification API for the TYPO3 backend
+ * Module: TYPO3/CMS/Backend/Severity
+ * Severity for the TYPO3 backend
  */
 define(function () {
 	'use strict';

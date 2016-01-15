@@ -16,7 +16,7 @@
  * Folder selection
  * @exports TYPO3/CMS/Recordlist/BrowseFolders
  */
-define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal'], function ($, ElementBrowser, Modal) {
+define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], function ($, ElementBrowser, Modal, Severity) {
 	'use strict';
 
 	$(function() {
@@ -29,7 +29,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Moda
 
 		$('.t3js-folderIdError').on('click', function (event) {
 			event.preventDefault();
-			Modal.confirm('', $(this).data('message'), opener.TYPO3.Severity.error, [], []);
+			Modal.confirm('', $(this).data('message'), Severity.error, [], []);
 		});
 	});
 
