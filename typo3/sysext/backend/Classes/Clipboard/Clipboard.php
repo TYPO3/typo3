@@ -249,12 +249,13 @@ class Clipboard
      */
     public function printClipboard()
     {
+        $languageService = $this->getLanguageService();
         $out = array();
         $elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
         // Copymode Selector menu
         $copymodeUrl = GeneralUtility::linkThisScript();
-        $moveLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
-        $copyLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
+        $moveLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
+        $copyLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
 
         $copymodeSelector = '
 			<div class="btn-group">
@@ -279,7 +280,7 @@ class Clipboard
             // Import / Export link:
             if (ExtensionManagementUtility::isLoaded('impexp')) {
                 $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $this->exportClipElementParameters());
-                $optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($url) . ';')) . '">' . $this->clLabel('export', 'rm') . '</a></li>';
+                $optionArray[] = '<li><a href="' . htmlspecialchars($url) . '">' . $this->clLabel('export', 'rm') . '</a></li>';
             }
             // Edit:
             if (!$this->fileMode) {
@@ -287,20 +288,34 @@ class Clipboard
             }
 
             // Delete referenced elements:
+            $confirmationCheck = false;
             if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
-                $js = '
-			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elementCount)) . ')){
-				window.location.href=' . GeneralUtility::quoteJSvalue($this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=') . '+top.rawurlencode(window.location.href);
-			}
-					';
-            } else {
-                $js = ' window.location.href=' . GeneralUtility::quoteJSvalue($this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=') . '+top.rawurlencode(window.location.href); ';
+                $confirmationCheck = true;
             }
-            $optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars($js) . '">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.delete_elements', true) . '</a></li>';
+            $confirmationMessage = sprintf(
+                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'),
+                $elementCount
+            );
+            $title = $languageService
+                ->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.delete_elements');
+            $returnUrl = $this->deleteUrl(1, ($this->fileMode ? 1 : 0));
+            $btnOkText = $languageService
+                ->sL('LLL:EXT:lang/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
+            $btnCancelText = $languageService
+                ->sL('LLL:EXT:lang/locallang_alt_doc.xlf:buttons.confirm.delete_elements.no');
+            $optionArray[] = '<li><a'
+                . (($confirmationCheck) ? ' class="t3js-modal-trigger"' : '')
+                . ' href="' . htmlspecialchars($returnUrl) . '"'
+                . ' data-severity="warning"'
+                . ' data-button-close-text="' . htmlspecialchars($btnCancelText) . '"'
+                . ' data-button-ok-text="' . htmlspecialchars($btnOkText) . '"'
+                . ' data-content="' . htmlspecialchars($confirmationMessage) . '"'
+                . ' data-title="' . htmlspecialchars($title) . '">'
+                . htmlspecialchars($title) . '</a></li>';
 
             // Clear clipboard
-            $optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars('window.location.href=' . GeneralUtility::quoteJSvalue($removeAllUrl . '#clip_head')) . '">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.clear_clipboard', true) . '</a></li>';
-            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', true) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
+            $optionArray[] = '<li><a href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipboard.clear_clipboard', true) . '</a></li>';
+            $deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', true) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
 
             // menuSelector
             $menuSelector = '
