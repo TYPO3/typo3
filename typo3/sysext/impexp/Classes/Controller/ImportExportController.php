@@ -172,7 +172,9 @@ class ImportExportController extends BaseScriptClass
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'imp-exp-mod';
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        if(is_array($this->pageinfo)) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
@@ -817,18 +819,24 @@ class ImportExportController extends BaseScriptClass
             $this->standaloneView->assign('inData', $inData);
             $this->standaloneView->assign('fileSelectOptions', $selectOptions);
 
-            $this->standaloneView->assign('importPath', sprintf($this->lang->getLL('importdata_fromPathS', true), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', true)));
+            if ($path) {
+                $this->standaloneView->assign('importPath', sprintf($this->lang->getLL('importdata_fromPathS', true), $path->getCombinedIdentifier()));
+            } else {
+                $this->standaloneView->assign('importPath', $this->lang->getLL('importdata_no_default_upload_folder', true));
+            }
             $this->standaloneView->assign('isAdmin', $beUser->isAdmin());
 
             // Upload file:
             $tempFolder = $this->getDefaultImportExportFolder();
-            $this->standaloneView->assign('tempFolder', $tempFolder->getCombinedIdentifier());
             if ($tempFolder) {
+                $this->standaloneView->assign('tempFolder', $tempFolder->getCombinedIdentifier());
                 $this->standaloneView->assign('hasTempUploadFolder', true);
                 if (GeneralUtility::_POST('_upload')) {
                     $this->standaloneView->assign('submitted', GeneralUtility::_POST('_upload'));
                     $this->standaloneView->assign('noFileUploaded', $this->fileProcessor->internalUploadMap[1]);
-                    $this->standaloneView->assign('uploadedFile', $this->uploadedFiles[0]->getName());
+                    if($this->uploadedFiles[0]) {
+                        $this->standaloneView->assign('uploadedFile', $this->uploadedFiles[0]->getName());
+                    }
                 }
             }
 

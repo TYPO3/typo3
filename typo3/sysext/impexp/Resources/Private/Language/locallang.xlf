@@ -331,7 +331,10 @@
 				<source>Structure has been imported, here is the result:</source>
 			</trans-unit>
 			<trans-unit id="importdata_no_accessible_file_mount">
-				<source>No accessible file_mount</source>
+				<source>No accessible filemount</source>
+			</trans-unit>
+			<trans-unit id="importdata_no_default_upload_folder">
+				<source>No default upload folder</source>
 			</trans-unit>
 			<trans-unit id="filterpage_structureToBeImported">
 				<source>Structure to be imported:</source>
