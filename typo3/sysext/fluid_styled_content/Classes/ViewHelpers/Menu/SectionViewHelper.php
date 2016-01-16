@@ -14,6 +14,7 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -56,7 +57,7 @@ class SectionViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('as', 'string', 'Name of the template variable that will contain selected pages', true);
-        $this->registerArgument('column', 'integer', 'Column number (colPos) from which to select content', false, 0);
+        $this->registerArgument('column', 'string', 'Column numbers (colPos) from which to select content', false, '0');
         $this->registerArgument('pageUid', 'integer', 'UID of page containing section-objects; defaults to current page', false, null);
         $this->registerArgument('type', 'string', 'Search method when selecting indices from page', false, '');
     }
@@ -81,7 +82,7 @@ class SectionViewHelper extends AbstractViewHelper
         }
 
         return $this->renderChildrenWithVariables(array(
-            $as => $this->findBySection($pageUid, $type, (int)$this->arguments['column'])
+            $as => $this->findBySection($pageUid, $type, $this->arguments['column'])
         ));
     }
 
@@ -99,14 +100,16 @@ class SectionViewHelper extends AbstractViewHelper
      *
      * @param int $pageUid The page uid
      * @param string $type Search method
-     * @param int $column Restrict content by the column number
+     * @param string $column Restrict content by the column number
      * @return array
      */
-    protected function findBySection($pageUid, $type = '', $column = 0)
+    protected function findBySection($pageUid, $type = '', $column = '')
     {
-        $constraints = array(
-            'colPos = ' . (int)$column
-        );
+        $constraints = [];
+        if (trim($column) !== '') {
+            $colPosList = implode(',', GeneralUtility::intExplode(',', $column, true));
+            $constraints[] = 'colPos IN(' . ($colPosList !== '' ?: '0') . ')';
+        }
 
         switch ($type) {
             case 'all':
