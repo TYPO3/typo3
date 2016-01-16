@@ -387,4 +387,62 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $expected = 'SELECT * FROM sys_category,sys_category_record_mm,tt_content WHERE sys_category.uid=sys_category_record_mm.uid_local AND tt_content.uid=sys_category_record_mm.uid_foreign AND sys_category.uid = 1 ORDER BY sys_category.title DESC';
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * Data provider for searchQueryCreatesQuery
+     *
+     * @return array
+     */
+    public function noQuoteForFullQuoteArrayDataProvider()
+    {
+        return array(
+            'noQuote boolean false' => array(
+                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
+                array('aField' => '\'aValue\'', 'anotherField' => '\'anotherValue\''),
+                false
+            ),
+            'noQuote boolean true' => array(
+                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
+                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
+                true
+            ),
+            'noQuote list of fields' => array(
+                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
+                array('aField' => '\'aValue\'', 'anotherField' => 'anotherValue'),
+                'anotherField'
+            ),
+            'noQuote array of fields' => array(
+                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
+                array('aField' => 'aValue', 'anotherField' => '\'anotherValue\''),
+                array('aField')
+            ),
+        );
+    }
+
+    /**
+     * @test
+     * @param array $input
+     * @param array $expected
+     * @param bool|array|string $noQuote
+     * @dataProvider noQuoteForFullQuoteArrayDataProvider
+     */
+    public function noQuoteForFullQuoteArray(array $input, array $expected, $noQuote)
+    {
+        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(
+            \TYPO3\CMS\Core\Database\DatabaseConnection::class,
+            array('fullQuoteStr'),
+            array(),
+            '',
+            false
+        );
+        $subject->_set('isConnected', true);
+        $subject
+            ->expects($this->any())
+            ->method('fullQuoteStr')
+            ->will($this->returnCallback(function ($data) {
+                return '\'' . (string)$data . '\'';
+            }));
+        $this->assertSame($expected, $subject->fullQuoteArray($input, 'aTable', $noQuote));
+    }
 }

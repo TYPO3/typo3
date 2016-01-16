@@ -871,7 +871,7 @@ class DatabaseConnection
      *
      * @param array $arr Array with values (either associative or non-associative array)
      * @param string $table Table name for which to quote
-     * @param bool|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+     * @param bool|array|string $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
      * @param bool $allowNull Whether to allow NULL values
      * @return array The input array with the values quoted
      * @see cleanIntArray()
@@ -881,10 +881,12 @@ class DatabaseConnection
         if (is_string($noQuote)) {
             $noQuote = explode(',', $noQuote);
         } elseif (!is_array($noQuote)) {
-            $noQuote = false;
+            $noQuote = (bool)$noQuote;
         }
         foreach ($arr as $k => $v) {
-            if ($noQuote === false || !in_array($k, $noQuote)) {
+            if ($noQuote === true) {
+                continue;
+            } elseif ($noQuote === false || !in_array($k, $noQuote)) {
                 $arr[$k] = $this->fullQuoteStr($v, $table, $allowNull);
             }
         }
