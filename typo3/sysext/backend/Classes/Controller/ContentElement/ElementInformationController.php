@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -64,14 +65,9 @@ class ElementInformationController
     public $type = '';
 
     /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @var ModuleTemplate
      */
-    public $doc;
-
-    /**
-     * @var string
-     */
-    protected $content = '';
+    protected $moduleTemplate;
 
     /**
      * For type "db": Set to page record of the parent page of the item set
@@ -97,13 +93,6 @@ class ElementInformationController
      * @var Folder
      */
     protected $folderObject;
-
-    /**
-     * The HTML title tag
-     *
-     * @var string
-     */
-    protected $titleTag;
 
     /**
      * @var IconFactory
@@ -133,12 +122,12 @@ class ElementInformationController
         $this->uid = GeneralUtility::_GET('uid');
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(1);
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->divClass = 'container';
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
 
         if (isset($GLOBALS['TCA'][$this->table])) {
             $this->initDatabaseRecord();
-        } elseif ($this->table == '_FILE' || $this->table == '_FOLDER' || $this->table == 'sys_file') {
+        } elseif ($this->table === '_FILE' || $this->table === '_FOLDER' || $this->table === 'sys_file') {
             $this->initFileOrFolderRecord();
         }
     }
@@ -204,11 +193,7 @@ class ElementInformationController
     {
         $this->main();
 
-        $content = $this->doc->startPage($this->titleTag);
-        $content .= $this->doc->insertStylesAndJS($this->content);
-        $content .= $this->doc->endPage();
-
-        $response->getBody()->write($content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -221,15 +206,16 @@ class ElementInformationController
             return;
         }
 
+        $content = '';
+
         // render type by user func
         $typeRendered = false;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
                 $typeRenderObj = GeneralUtility::getUserObj($classRef);
-                // @todo should have an interface
                 if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
                     if ($typeRenderObj->isValid($this->type, $this)) {
-                        $this->content .= $typeRenderObj->render($this->type, $this);
+                        $content .= $typeRenderObj->render($this->type, $this);
                         $typeRendered = true;
                         break;
                     }
@@ -238,12 +224,13 @@ class ElementInformationController
         }
 
         if (!$typeRendered) {
-            $this->content .= $this->renderPageTitle();
-            $this->content .= $this->renderPreview();
-            $this->content .= $this->renderPropertiesAsTable();
-            $this->content .= $this->renderReferences();
-            $this->content .= $this->renderBackButton();
+            $content .= $this->renderPageTitle();
+            $content .= $this->renderPreview();
+            $content .= $this->renderPropertiesAsTable();
+            $content .= $this->renderReferences();
+            $content.= $this->renderBackButton();
         }
+        $this->moduleTemplate->setContent($content);
     }
 
     /**
@@ -253,21 +240,22 @@ class ElementInformationController
      */
     protected function renderPageTitle()
     {
+        $title = strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
         if ($this->type === 'folder') {
             $table = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:folder');
-            $title = $this->doc->getResourceHeader($this->folderObject, array(' ', ''), false);
+            $icon = $this->iconFactory->getIconForResource($this->folderObject, Icon::SIZE_SMALL)->render();
         } elseif ($this->type === 'file') {
             $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $title = $this->doc->getResourceHeader($this->fileObject, array(' ', ''), false);
+            $icon = $this->iconFactory->getIconForResource($this->fileObject, Icon::SIZE_SMALL)->render();
         } else {
             $table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-            $title = $this->doc->getHeader($this->table, $this->row, $this->pageInfo['_thePath'], 1, array(' ', ''), false);
+            $icon = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
         }
         // Set HTML title tag
-        $this->titleTag = $table . ': ' . strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
+        $this->moduleTemplate->setTitle($table . ': ' . $title);
         return '<h1>' .
                 ($table ? '<small>' . $table . '</small><br />' : '') .
-                $title .
+                $icon . $title .
                 '</h1>';
     }
 
