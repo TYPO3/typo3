@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Workspaces\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -29,9 +29,9 @@ class ReviewController extends AbstractController
     /**
      * Set up the doc header properly here
      *
-     * @param BackendTemplateView $view
+     * @param ViewInterface $view
      */
-    protected function initializeView(BackendTemplateView $view)
+    protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
         $this->registerButtons();
