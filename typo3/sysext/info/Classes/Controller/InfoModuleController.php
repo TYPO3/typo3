@@ -120,7 +120,7 @@ class InfoModuleController extends BaseScriptClass
             $this->content .= '</form>';
         } else {
             // If no access or if ID == zero
-            $this->content = $this->doc->header($this->languageService->getLL('title'));
+            $this->content = $this->moduleTemplate->header($this->languageService->getLL('title'));
         }
     }
 

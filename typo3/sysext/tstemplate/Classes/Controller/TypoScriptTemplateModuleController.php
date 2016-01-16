@@ -170,8 +170,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $this->access = is_array($this->pageinfo);
 
-        /** @var DocumentTemplate doc */
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/Css/styles.css');
 
         $lang = $this->getLanguageService();
@@ -208,7 +206,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
             // Build the module content
             $this->content = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">';
-            $this->content .= $this->doc->header($lang->getLL('moduleTitle'));
+            $this->content .= $this->moduleTemplate->header($lang->getLL('moduleTitle'));
             $this->extObjContent();
             // Setting up the buttons and markers for docheader
             $this->getButtons();
@@ -244,7 +242,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     '<tbody>' . implode('', $this->renderList($pArray)) . '</tbody>' .
                     '</table></div>';
 
-            $this->content = $this->doc->header($lang->getLL('moduleTitle'));
+            $this->content = $this->moduleTemplate->header($lang->getLL('moduleTitle'));
             $this->content .= '<div><p class="lead">' . $lang->getLL('overview') . '</p>' . $table . '</div>';
 
             // RENDER LIST of pages with templates, END

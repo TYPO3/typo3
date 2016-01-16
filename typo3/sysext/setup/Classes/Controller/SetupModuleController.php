@@ -69,11 +69,6 @@ class SetupModuleController extends AbstractModule
     public $MOD_SETTINGS = array();
 
     /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * @var string
      */
     public $content;
@@ -185,10 +180,8 @@ class SetupModuleController extends AbstractModule
 
     /**
      * If settings are submitted to _POST[DATA], store them
-     * NOTICE: This method is called before the \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * NOTICE: This method is called before the \TYPO3\CMS\Backend\Template\ModuleTemplate
      * is included. See bottom of document.
-     *
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public function storeIncomingData()
     {
@@ -336,8 +329,6 @@ class SetupModuleController extends AbstractModule
             $this->tsFieldConf['password2.']['disabled'] = 1;
             $this->tsFieldConf['passwordCurrent.']['disabled'] = 1;
         }
-        // Create instance of object for output of data
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
     }
 
     /**
@@ -383,7 +374,7 @@ class SetupModuleController extends AbstractModule
         $this->loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->loadModules->observeWorkspaces = true;
         $this->loadModules->load($GLOBALS['TBE_MODULES']);
-        $this->content .= $this->doc->header($this->getLanguageService()->getLL('UserSettings'));
+        $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'));
         // Show if setup was saved
         if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('setupWasUpdated'), $this->getLanguageService()->getLL('UserSettings'));
