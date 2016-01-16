@@ -536,9 +536,7 @@ class ImportExportController extends BaseScriptClass
 
         $this->makeAdvancedOptionsForm($inData);
 
-        // Print errors that might be:
-        $errors = $this->export->printErrorLog();
-        $this->standaloneView->assign('errors', trim($errors));
+        $this->standaloneView->assign('errors', $this->export->errorLog);
 
         // Generate overview:
         $this->standaloneView->assign('contentOverview', $this->export->displayContentOverview());
@@ -859,9 +857,8 @@ class ImportExportController extends BaseScriptClass
                     }
                 }
             }
-            // Print errors that might be:
-            $errors = $import->printErrorLog();
-            $this->standaloneView->assign('errors', trim($errors));
+
+            $this->standaloneView->assign('errors', $import->errorLog);
         }
     }
 

@@ -43,7 +43,7 @@
 				</a>
 			</li>
 		</f:if>
-		<f:if condition="{errors}">
+		<f:if condition="{errors -> f:count()} > 0">
 			<li role="presentation">
 				<a class="text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab" data-toggle="tab">
 					<f:translate key="importdata_messages" />
@@ -78,11 +78,15 @@
 				</div>
 			</div>
 		</f:if>
-		<f:if condition="{errors}">
+		<f:if condition="{errors -> f:count()} > 0">
 			<div role="tabpanel" class="tab-pane" id="import-errors">
 				<div class="panel panel-tab">
 					<div class="panel-body">
-						<f:format.raw>{errors}</f:format.raw>
+						<div class="callout callout-danger">
+							<f:for each="{errors}" as="error">
+								<p>{error}</p>
+							</f:for>
+						</div>
 					</div>
 				</div>
 			</div>
