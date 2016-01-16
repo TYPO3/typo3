@@ -2728,10 +2728,8 @@ class ContentObjectRenderer
         // Check for zero length string to mimic default case of strtime/gmstrftime
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = $conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $tsfe->localeCharset;
-        if ($tmp_charset) {
-            $content = $tsfe->csConv($content, $tmp_charset);
+        if (!empty($conf['strftime.']['charset'])) {
+            $content = $this->getTypoScriptFrontendController()->csConv($content, $conf['strftime.']['charset']);
         }
         return $content;
     }

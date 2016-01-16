@@ -748,12 +748,6 @@ class TypoScriptFrontendController
     public $metaCharset = 'utf-8';
 
     /**
-     * Assumed charset of locale strings.
-     * @var string
-     */
-    public $localeCharset = '';
-
-    /**
      * Set to the system language key (used on the site)
      * @var string
      */
@@ -2763,7 +2757,6 @@ class TypoScriptFrontendController
                 setlocale(LC_CTYPE, $this->config['config']['locale_all']);
                 setlocale(LC_MONETARY, $this->config['config']['locale_all']);
                 setlocale(LC_TIME, $this->config['config']['locale_all']);
-                $this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
             } else {
                 $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
             }
