@@ -54,7 +54,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function main()
     {
-        $theOutput = $this->pObj->doc->header($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:page_title'));
+        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
         $dblist->thumbs = 0;

@@ -38,7 +38,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
         $lang->includeLLFile('EXT:wizard_sortpages/Resources/Private/Language/locallang.xlf');
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $out = $this->pObj->doc->header($lang->getLL('wiz_sort'));
+        $out = '<h1>' . htmlspecialchars($lang->getLL('wiz_sort')) . '</h1>';
         if ($this->getBackendUser()->workspace === 0) {
             $theCode = '';
             // Check if user has modify permissions to

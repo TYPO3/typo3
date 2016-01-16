@@ -75,7 +75,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      */
     public function main()
     {
-        $theOutput = $this->pObj->doc->header($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_title'));
+        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
         if ($this->pObj->id) {
             // Depth selector:
             $theOutput .= '<div class="form-inline form-inline-spaced">';
