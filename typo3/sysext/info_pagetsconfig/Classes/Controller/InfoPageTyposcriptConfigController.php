@@ -100,6 +100,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->getLL('tsconf_title')) . '</h1>';
 
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
+
                 $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
                 $lines = array();
                 $pUids = array();
@@ -111,7 +112,9 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                         } else {
                             $pUids[] = substr($k, 4);
                             $row = BackendUtility::getRecordWSOL('pages', substr($k, 4));
-                            $pTitle = $this->pObj->doc->getHeader('pages', $row, '', false);
+
+                            $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
+                            $pTitle = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']) . ' ' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $row));
                             $editIdList = substr($k, 4);
                             $urlParameters = [
                                 'edit' => [
