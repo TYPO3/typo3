@@ -1,0 +1,5 @@
+[gerrit]
+host=review.typo3.org
+port=29418
+project=Packages/TYPO3.CMS
+defaultbranch=master
