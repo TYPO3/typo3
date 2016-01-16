@@ -999,6 +999,7 @@ class Import extends ImportExport
     public function getNewTCE()
     {
         $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->stripslashes_values = false;
         $tce->dontProcessTransformations = 1;
         $tce->enableLogging = $this->enableLogging;
         $tce->alternativeFileName = $this->alternativeFileName;
