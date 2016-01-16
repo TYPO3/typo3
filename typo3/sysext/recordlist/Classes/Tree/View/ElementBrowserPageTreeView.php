@@ -48,13 +48,13 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
         if ($ext_pArrPages && $v['uid']) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $ficon = $iconFactory->getIconForRecord('pages', $v, Icon::SIZE_SMALL)->render();
-            $out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($row['title']) . '" data-icon="' . htmlspecialchars($ficon) . '">';
+            $out = '<span data-uid="' . htmlspecialchars($v['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($v['title']) . '" data-icon="' . htmlspecialchars($ficon) . '">';
             $out .= '<a href="#" data-close="1">' . $title . '</a>';
             $out .= '</span>';
             return $out;
         }
 
-        $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['pid' => $row['uid']]));
+        $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['pid' => $v['uid']]));
         return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
     }
 }
