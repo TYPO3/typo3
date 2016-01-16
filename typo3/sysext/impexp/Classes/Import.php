@@ -2122,7 +2122,11 @@ class Import extends ImportExport
      */
     protected function cleanupImportData()
     {
-        $this->dat['header']['extensionDependencies'] = array_filter($this->dat['header']['extensionDependencies']);
+        if (is_array($this->dat['header']['extensionDependencies'])) {
+            $this->dat['header']['extensionDependencies'] = array_filter($this->dat['header']['extensionDependencies']);
+        } else {
+            $this->dat['header']['extensionDependencies'] = array();
+        }
     }
 
     /**
