@@ -354,37 +354,39 @@ class Import extends ImportExport
 
         // Check #2: If the path for every local storage object exists.
         // Else files can't get moved into a newly imported storage.
-        foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
-            $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
-            // continue with Local, writable and online storage only
-            if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
-                $storageExists = false;
-                /** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
-                foreach ($this->storageObjects as $localStorage) {
-                    if ($this->isEquivalentObjectStorage($localStorage, $storageRecord)) {
-                        // There is already an existing storage
-                        $storageExists = true;
-                        break;
-                    }
-                }
-
-                if (!$storageExists) {
-                    // The storage from the import does not have an equivalent storage
-                    // in the current instance (same driver, same path, etc.). Before
-                    // the storage record can get inserted later on take care the path
-                    // it points to really exists and is accessible.
-                    $storageRecordUid = $storageRecord['uid'];
-                    // Unset the storage record UID when trying to create the storage object
-                    // as the record does not already exist in DB. The constructor of the
-                    // storage object will check whether the target folder exists and set the
-                    // isOnline flag depending on the outcome.
-                    $storageRecord['uid'] = 0;
-                    $resourceStorage = ResourceFactory::getInstance()->createStorageObject($storageRecord);
-                    if (!$resourceStorage->isOnline()) {
-                        $configuration = $resourceStorage->getConfiguration();
-                        $messages['resourceStorageFolderMissing_' . $storageRecordUid] = 'The resource storage "' . $resourceStorage->getName() . '" will get imported. The storage target directory "' . $configuration['basePath'] . '" does not exist. Please create the directory prior to starting the import!';
+        if(is_array($this->dat['header']['records']['sys_file_storage'])) {
+            foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
+                $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
+                // continue with Local, writable and online storage only
+                if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
+                    $storageExists = false;
+                    /** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                    foreach ($this->storageObjects as $localStorage) {
+                        if ($this->isEquivalentObjectStorage($localStorage, $storageRecord)) {
+                            // There is already an existing storage
+                            $storageExists = true;
+                            break;
+                        }
                     }
 
+                    if (!$storageExists) {
+                        // The storage from the import does not have an equivalent storage
+                        // in the current instance (same driver, same path, etc.). Before
+                        // the storage record can get inserted later on take care the path
+                        // it points to really exists and is accessible.
+                        $storageRecordUid = $storageRecord['uid'];
+                        // Unset the storage record UID when trying to create the storage object
+                        // as the record does not already exist in DB. The constructor of the
+                        // storage object will check whether the target folder exists and set the
+                        // isOnline flag depending on the outcome.
+                        $storageRecord['uid'] = 0;
+                        $resourceStorage = ResourceFactory::getInstance()->createStorageObject($storageRecord);
+                        if (!$resourceStorage->isOnline()) {
+                            $configuration = $resourceStorage->getConfiguration();
+                            $messages['resourceStorageFolderMissing_' . $storageRecordUid] = 'The resource storage "' . $resourceStorage->getName() . '" will get imported. The storage target directory "' . $configuration['basePath'] . '" does not exist. Please create the directory prior to starting the import!';
+                        }
+
+                    }
                 }
             }
         }
