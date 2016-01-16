@@ -95,7 +95,7 @@ class PresetRepository
                     'user_uid' => $beUser->user['uid'],
                     'public' => $inData['preset']['public'],
                     'title' => $inData['preset']['title'],
-                    'item_uid' => $inData['pagetree']['id'],
+                    'item_uid' => (int)$inData['pagetree']['id'],
                     'preset_data' => serialize($inData)
                 );
                 $this->getDatabaseConnection()->exec_INSERTquery('tx_impexp_presets', $fields_values);
