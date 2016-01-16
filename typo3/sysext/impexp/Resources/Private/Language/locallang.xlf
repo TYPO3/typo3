@@ -90,6 +90,9 @@
 			<trans-unit id="makeconfig_tablePids">
 				<source>Table/Pids:</source>
 			</trans-unit>
+			<trans-unit id="makeconfig_tableListEntry">
+            	<source>Table "%s" from %s</source>
+            </trans-unit>
 			<trans-unit id="makeconfig_relationsAndExclusions">
 				<source>Relations and Exclusions:</source>
 			</trans-unit>

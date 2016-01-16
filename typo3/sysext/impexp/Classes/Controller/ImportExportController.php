@@ -172,7 +172,7 @@ class ImportExportController extends BaseScriptClass
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'imp-exp-mod';
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        if(is_array($this->pageinfo)) {
+        if (is_array($this->pageinfo)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
@@ -649,21 +649,21 @@ class ImportExportController extends BaseScriptClass
                 $nameSuggestion .= $tName . '_' . $rUid;
                 $rec = BackendUtility::getRecordWSOL($tName, $rUid);
                 if (!empty($rec)) {
-                    $records[] = '
-					<tr class="bgColor4">
-						<td><strong>' . $this->lang->getLL('makeconfig_record', true) . '</strong></td>
-						<td>' . $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle($tName, $rec, true)
-                            . '<input type="hidden" name="tx_impexp[record][]" value="' . htmlspecialchars(($tName . ':' . $rUid)) . '" /></td>
-					</tr>';
+                    $records[] = array(
+                        'icon' => $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render(),
+                        'title' => BackendUtility::getRecordTitle($tName, $rec, true),
+                        'tableName' => $tName,
+                        'recordUid' => $rUid
+                    );
                 }
             }
-            $this->standaloneView->assign('records', implode('', $records));
+            $this->standaloneView->assign('records', $records);
         }
         // Single tables/pids:
         if (is_array($inData['list'])) {
 
             // Display information about pages from which the export takes place
-            $tblList = '';
+            $tableList = array();
             foreach ($inData['list'] as $reference) {
                 $referenceParts = explode(':', $reference);
                 $tableName = $referenceParts[0];
@@ -677,24 +677,18 @@ class ImportExportController extends BaseScriptClass
                         $iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render()
                             . BackendUtility::getRecordTitle('pages', $record, true);
                     }
-                    $tblList .= 'Table "' . $tableName . '" from ' . $iconAndTitle
-                        . '<input type="hidden" name="tx_impexp[list][]" value="' . htmlspecialchars($reference) . '" /><br/>';
+                    $tableList[] = array(
+                        'tableName' => $tableName,
+                        'iconAndTitle' => $iconAndTitle,
+                        'reference' => $reference
+                    );
                 }
             }
-            $this->standaloneView->assign('tableList', $tblList);
+            $this->standaloneView->assign('tableList', $tableList);
         }
 
         $this->standaloneView->assign('externalReferenceTableSelectOptions', $this->getTableSelectOptions());
         $this->standaloneView->assign('externalStaticTableSelectOptions', $this->getTableSelectOptions());
-
-        // Exclude:
-        $excludeHiddenFields = '';
-        if (is_array($inData['exclude'])) {
-            foreach ($inData['exclude'] as $key => $value) {
-                $excludeHiddenFields .= '<input type="hidden" name="tx_impexp[exclude][' . $key . ']" value="1" />';
-            }
-            $this->standaloneView->assign('excludedKeys', implode(', ', array_keys($inData['exclude'])));
-        }
         $this->standaloneView->assign('nameSuggestion', $nameSuggestion);
     }
 
@@ -754,11 +748,7 @@ class ImportExportController extends BaseScriptClass
 
         $fileName = '';
         if ($saveFolder) {
-            $fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', true), $saveFolder->getPublicUrl())
-                . '<br/>
-						<input type="text" name="tx_impexp[filename]" value="'
-                . htmlspecialchars($inData['filename']) . '" /><br/>';
-
+            $this->standaloneView->assign('saveFolder', $saveFolder->getPublicUrl());
             $this->standaloneView->assign('hasSaveFolder', true);
         }
         $this->standaloneView->assign('fileName', $fileName);
@@ -834,7 +824,7 @@ class ImportExportController extends BaseScriptClass
                 if (GeneralUtility::_POST('_upload')) {
                     $this->standaloneView->assign('submitted', GeneralUtility::_POST('_upload'));
                     $this->standaloneView->assign('noFileUploaded', $this->fileProcessor->internalUploadMap[1]);
-                    if($this->uploadedFiles[0]) {
+                    if ($this->uploadedFiles[0]) {
                         $this->standaloneView->assign('uploadedFile', $this->uploadedFiles[0]->getName());
                     }
                 }

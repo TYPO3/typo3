@@ -1,142 +1,158 @@
-<table border="0" cellpadding="1" cellspacing="1" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-	<f:if condition="{inData.pagetree.id}">
-		<tr class="tableheader bgColor5">
-			<td colspan="2">
-				<f:translate key="makeconfig_exportPagetreeConfiguration" />
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td><strong><f:translate key="makeconfig_pageId" /></strong></td>
-			<td>{inData.pagetree.id}<input type="hidden" value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" /></td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_tree" /></strong>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{inData.pagetree.id}">
+	<h3>
+		<f:translate key="makeconfig_exportPagetreeConfiguration" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
+	</h3>
+	<div class="row">
+		<div class="col-sm-2">
+			<label class="control-label"><f:translate key="makeconfig_pageId" /></label>
+		</div>
+		<div class="col-sm-10">
+			{inData.pagetree.id}
+			<f:form.hidden value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2">
+			<label class="control-label">
+				<f:translate key="makeconfig_tree" />
 				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay" />
-			</td>
-			<td>
-				<f:if condition="{treeHTML}">
-					<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
-					<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
-				</f:if>
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_levels" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
-			</td>
-			<td>
-				<f:form.select name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_includeTables" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
-			</td>
-			<td>
-				<f:form.select name="tx_impexp[pagetree][tables]" options="{tableSelectOptions}"
-											 multiple="multiple" value="{inData.pagetree.tables}"
-											 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
-				<br/>
-				<f:translate key="makeconfig_maxNumberOfRecords" />
-				<br/>
-				<f:form.textfield name="tx_impexp[pagetree][maxNumber]" value="{inData.pagetree.maxNumber}" />
-				<br/>
-			</td>
-		</tr>
-	</f:if>
-	<f:if condition="{records}">
-		<tr class="tableheader bgColor5">
-			<td colspan="2">
-				<f:translate key="makeconfig_exportSingleRecord" />
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="singleRecord" />
-			</td>
-		</tr>
-		<f:format.raw>{records}</f:format.raw>
-	</f:if>
-	<f:if condition="{tableList}">
-		<tr class="tableheader bgColor5">
-			<td colspan="2"><f:translate key="makeconfig_exportTablesFromPages" /></td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_exportSingleRecord" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="tableList" />
-			</td>
-			<td>{tableList}</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_maxNumberOfRecords" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="tableListMaxNumber" />
-			</td>
-			<td>
-				<f:form.textfield name="tx_impexp[listCfg][maxNumber]" value="{inData.listCfg.maxNumber}" /><br/>
-			</td>
-		</tr>
-	</f:if>
-	<tr class="tableheader bgColor5">
-		<td colspan="2"><f:translate key="makeconfig_relationsAndExclusions" /></td>
-	</tr>
-	<tr class="bgColor4">
-		<td>
-			<strong><f:translate key="makeconfig_includeRelationsToTables" /></strong>
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations" />
-		</td>
-		<td>
-			<f:form.select name="tx_impexp[external_ref][tables]" options="{externalReferenceTableSelectOptions}"
-										 multiple="multiple" value="{inData.external_ref.tables}"
-										 size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
-		</td>
-	</tr>
-	<tr class="bgColor4">
-		<td>
-			<strong><f:translate key="makeconfig_useStaticRelationsFor" /></strong>
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations" />
-		</td>
-		<td>
-			<f:form.select name="tx_impexp[external_static][tables]" options="{externalStaticTableSelectOptions}"
-										 multiple="multiple" value="{inData.external_static.tables}"
-										 size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
-			<br/>
-			<label for="checkShowStaticRelations">
-				<f:translate key="makeconfig_showStaticRelations" />
 			</label>
-			<f:form.checkbox name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"
-											 checked="{inData.showStaticRelations} == 1" />
-		</td>
-	</tr>
-	<tr class="bgColor4">
-		<td>
-			<strong><f:translate key="makeconfig_excludeElements" /></strong>
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="excludedElements" />
-		</td>
-		<td>
-			<f:for each="{inData.exclude}" key="key" as="value">
-				<input type="hidden" name="tx_impexp[exclude][{key}]" value="1" />
-			</f:for>
-			<f:if condition="{excludedKeys}">
-				<f:then>
-					<em>{excludedKeys}</em><hr/>
-					<label for="checkExclude"><f:translate key="makeconfig_clearAllExclusions" /></label>
-					<input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />
-				</f:then>
-				<f:else>
-					<f:translate key="makeconfig_noExcludedElementsYet" />
-				</f:else>
+		</div>
+		<div class="col-sm-10">
+			<f:if condition="{treeHTML}">
+				<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
+				<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
 			</f:if>
-		</td>
-	</tr>
-	<tr class="bgColor4">
-		<td>&nbsp;</td>
-		<td>
-			<input class="btn btn-default" type="submit" value="{f:translate(key: 'makeadvanc_update')}" />
-			<input type="hidden"
-						 name="tx_impexp[download_export_name]"
-						 value="{nameSuggestion -> f:format.crop(maxCharacters: 30, append: '')}" />
-		</td>
-	</tr>
-</table>
+		</div>
+		<f:form.hidden value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" />
+	</div>
+	<div class="form-group">
+		<label for="impexp-pagetree-levels">
+			<f:translate key="makeconfig_levels" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
+		</label>
+		<f:form.select class="form-control" name="tx_impexp[pagetree][levels]" id="impexp-pagetree-levels" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
+	</div>
+	<div class="form-group">
+		<label for="impexp-pagetree-includetables">
+			<f:translate key="makeconfig_includeTables" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
+		</label>
+		<f:form.select class="form-control" name="tx_impexp[pagetree][tables]" id="impexp-pagetree-includetables"
+									 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
+									 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+	</div>
+	<div class="form-group">
+		<label for="impexp-pagetree-maxnumber">
+			<f:translate key="makeconfig_maxNumberOfRecords" />
+		</label>
+		<f:form.textfield class="form-control" name="tx_impexp[pagetree][maxNumber]" id="impexp-pagetree-maxnumber" value="{inData.pagetree.maxNumber}" />
+	</div>
+</f:if>
+<f:if condition="{records -> f:count()} > 0">
+	<h4>
+		<f:translate key="makeconfig_exportSingleRecord" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="singleRecord" />
+	</h4>
+	<div class="row">
+		<div class="col-sm-2">
+			<label><f:translate key="makeconfig_record" /></label>
+		</div>
+		<div class="col-sm-10">
+			<f:for each="{records}" as="record">
+				<f:format.raw>{record.icon}</f:format.raw>
+				{record.title}
+				<f:form.hidden name="tx_impexp[record][]" value="{record.tableName}:{record.recordUid}" />
+				<br />
+			</f:for>
+		</div>
+	</div>
+</f:if>
+<f:if condition="{tableList -> f:count()} > 0">
+	<h4><f:translate key="makeconfig_exportTablesFromPages" /></h4>
+	<div class="row">
+		<div class="col-sm-2">
+			<label>
+				<f:translate key="makeconfig_tablePids" />
+				<f:be.buttons.csh table="xMOD_tx_impexp" field="tableList" />
+			</label>
+		</div>
+		<div class="col-sm-10">
+			<f:for each="{tableList}" as="table">
+				<f:translate key="makeconfig_tableListEntry" arguments="{0: table.tableName, 1: table.iconAndTitle}" />
+				<f:form.hidden name="tx_impexp[list][]" value="{table.reference}" />
+				<br />
+			</f:for>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="impexp-listcfg-maxnumber">
+			<f:translate key="makeconfig_maxNumberOfRecords" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="tableListMaxNumber" />
+		</label>
+		<f:form.textfield class="form-control" name="tx_impexp[listCfg][maxNumber]" id="impexp-listcfg-maxnumber"value="{inData.listCfg.maxNumber}" />
+	</div>
+</f:if>
+<h4><f:translate key="makeconfig_relationsAndExclusions" /></h4>
+<div class="form-group">
+	<label for="impexp-externalref-tables">
+		<f:translate key="makeconfig_includeRelationsToTables" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations" />
+	</label>
+	<f:form.select class="form-control" name="tx_impexp[external_ref][tables]" id="impexp-externalref-tables"
+								 options="{externalReferenceTableSelectOptions}" multiple="multiple" value="{inData.external_ref.tables}"
+								 size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+</div>
+<div class="form-group">
+	<label for="impexp-externalstatic-tables">
+		<f:translate key="makeconfig_useStaticRelationsFor" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations" />
+	</label>
+	<f:form.select class="form-control" name="tx_impexp[external_static][tables]" id="impexp-externalstatic-tables"
+								 options="{externalStaticTableSelectOptions}" multiple="multiple" value="{inData.external_static.tables}"
+								 size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+</div>
+<div class="form-group">
+	<label for="checkShowStaticRelations">
+		<f:form.checkbox name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"
+										 checked="{inData.showStaticRelations} == 1" />
+		<f:translate key="makeconfig_showStaticRelations" />
+	</label>
+</div>
+
+<div class="form-group">
+	<label class="control-label">
+		<f:translate key="makeconfig_excludeElements" />
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="excludedElements" />
+	</label>
+	<p class="form-control-static">
+		<f:if condition="{inData.exclude -> f:count()} > 0">
+			<f:then>
+				<f:for each="{inData.exclude}" key="key" as="value" iteration="index">
+					<f:form.hidden name="tx_impexp[exclude][{key}]" value="1" />
+					<f:if condition="{index.isLast}">
+						<f:then>{key}</f:then>
+						<f:else>{key}, </f:else>
+					</f:if>
+				</f:for>
+				<label for="checkExclude">
+					<f:form.checkbox name="tx_impexp[exclude]" id="checkExclude" value="1" />
+					<f:translate key="makeconfig_clearAllExclusions" />
+				</label>
+			</f:then>
+			<f:else>
+					<f:translate key="makeconfig_noExcludedElementsYet" />
+			</f:else>
+		</f:if>
+	</p>
+</div>
+
+<div class="form-group">
+	<f:form.submit class="btn btn-default" value="{f:translate(key: 'makeadvanc_update')}" />
+	<f:form.hidden
+				 name="tx_impexp[download_export_name]"
+				 value="{nameSuggestion -> f:format.crop(maxCharacters: 30, append: '')}" />
+</div>
+</html>
