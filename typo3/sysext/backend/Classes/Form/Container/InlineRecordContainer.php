@@ -324,7 +324,7 @@ class InlineRecordContainer extends AbstractContainer
                         $imageSetup['crop'] = $rec['crop'];
                     }
                     $imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
-                    $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
+                    $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
                     // Only use a thumbnail if the processing process was successful by checking if image width is set
                     if ($processedImage->getProperty('width')) {
                         $imageUrl = $processedImage->getPublicUrl(true);
