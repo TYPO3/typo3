@@ -2101,10 +2101,10 @@ class Import extends ImportExport
      */
     public function loadInit()
     {
+        $this->cleanupImportData();
         $this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
         $this->excludeMap = (array)$this->dat['header']['excludeMap'];
         $this->softrefCfg = (array)$this->dat['header']['softrefCfg'];
-        $this->extensionDependencies = (array)$this->dat['header']['extensionDependencies'];
         $this->fixCharsets();
         if (
             isset($this->dat['header']['meta']['TYPO3_version'])
@@ -2113,6 +2113,16 @@ class Import extends ImportExport
             $this->legacyImport = true;
             $this->initializeLegacyImportFolder();
         }
+    }
+
+    /**
+     * Cleanses any inconsistent states which can occur in imported T3D/XML
+     *
+     * @return void
+     */
+    protected function cleanupImportData()
+    {
+        $this->dat['header']['extensionDependencies'] = array_filter($this->dat['header']['extensionDependencies']);
     }
 
     /**
