@@ -429,14 +429,13 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function noQuoteForFullQuoteArray(array $input, array $expected, $noQuote)
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(
+        $subject = $this->getMock(
             \TYPO3\CMS\Core\Database\DatabaseConnection::class,
             array('fullQuoteStr'),
             array(),
             '',
             false
         );
-        $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
             ->method('fullQuoteStr')

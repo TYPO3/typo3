@@ -883,10 +883,11 @@ class DatabaseConnection
         } elseif (!is_array($noQuote)) {
             $noQuote = (bool)$noQuote;
         }
+        if ($noQuote === true) {
+            return $arr;
+        }
         foreach ($arr as $k => $v) {
-            if ($noQuote === true) {
-                continue;
-            } elseif ($noQuote === false || !in_array($k, $noQuote)) {
+            if ($noQuote === false || !in_array($k, $noQuote)) {
                 $arr[$k] = $this->fullQuoteStr($v, $table, $allowNull);
             }
         }
