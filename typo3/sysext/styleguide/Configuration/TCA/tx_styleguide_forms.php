@@ -2313,6 +2313,24 @@ return array(
                 ),
             ),
         ),
+        'wizard_8' => array(
+            'label' => 'WIZARD: 8 textarea with select',
+            'config' => array(
+                'type' => 'text',
+                'cols' => '40',
+                'rows' => '5',
+                'wizards' => array(
+                    'select' => array(
+                        'type' => 'select',
+                        'items' => array(
+                            array('Option 1', 'Dummy Text for Option 1'),
+                            array('Option 2', 'Dummy Text for Option 2'),
+                            array('Option 3', 'Dummy Text for Option 3'),
+                        ),
+                    ),
+                ),
+            ),
+        ),
 
 
         'rte_1' => array(
@@ -2698,7 +2716,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3, inline_4, inline_5,
-			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7,
+			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7, wizard_8,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
@@ -2750,7 +2768,7 @@ return array(
 					--palette--;Palettes 5;palettes_5,
 					palette_6_1;Field with palette below, --palette--;;palettes_6,
 				--div--;Wizards,
-					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6,
+					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6, wizard_8,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
