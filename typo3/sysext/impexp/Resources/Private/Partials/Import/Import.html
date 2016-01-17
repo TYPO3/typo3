@@ -82,7 +82,9 @@
 			- <f:form.hidden name="not-set" value="1" id="t3js-submit-field" />
 			<f:if condition="{inData.do_update}">
 				<f:then>
-					<f:form.button type="button" class="btn btn-default t3js-confirm-trigger">
+					<f:form.button class="btn btn-default t3js-confirm-trigger"
+												 type="button" name="tx_impexp[import_file]"
+												 data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
 						<f:translate key="importdata_update_299e" />
 					</f:form.button>
 				</f:then>
