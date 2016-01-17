@@ -143,7 +143,8 @@ class TextElement extends AbstractFormElement
 
             // calculate attributes
             $attributes['id'] = StringUtility::getUniqueId('formengine-textarea-');
-            $attributes['name'] = $parameterArray['itemFormElName'];
+            $attributes['name'] = htmlspecialchars($parameterArray['itemFormElName']);
+            $attributes['data-formengine-input-name'] = htmlspecialchars($parameterArray['itemFormElName']);
             if (!empty($styles)) {
                 $attributes['style'] = implode(' ', $styles);
             }
