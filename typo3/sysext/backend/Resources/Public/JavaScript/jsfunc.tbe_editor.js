@@ -146,7 +146,9 @@ var TBE_EDITOR = {
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
 		var $formField = TYPO3.jQuery('[name="' + el + '"]');
 		var $humanReadableField = TYPO3.jQuery('[data-formengine-input-name="' + el + '"]');
-		$humanReadableField.triggerHandler('change');
+		if (!$formField.is($humanReadableField)) {
+			$humanReadableField.triggerHandler('change');
+		}
 		var $paletteField = $formField.closest('.t3js-formengine-palette-field');
 		$paletteField.addClass('has-change');
 
