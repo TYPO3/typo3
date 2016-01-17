@@ -209,7 +209,7 @@
 			</trans-unit>
 			<trans-unit id="dependencyCheck.unresolvedDependencies.message">
 				<source><![CDATA[
-					If you continue installing the extension, all dependency checks will be turned off.
+					If you continue installing the extension, all system dependency checks will be turned off.
 					<ul>
 						<li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
 						<li>Version dependency checks are skipped</li>
