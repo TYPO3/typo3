@@ -2236,11 +2236,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
 			}
 		}
-		if (TYPO3_MODE === 'BE') {
-			$this->addAjaxUrlsToInlineSettings();
+		$inlineSettings = '';
+		if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
+			if (TYPO3_MODE === 'BE') {
+				$this->addAjaxUrlsToInlineSettings();
+			}
+			$inlineSettings .= $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
+			$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
 		}
-		$inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
-		$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
 		if ($this->addExtCore || $this->addExtJS) {
 			// Set clear.gif, move it on top, add handler code
 			$code = '';
