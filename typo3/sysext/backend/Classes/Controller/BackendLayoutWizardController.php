@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,15 +29,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendLayoutWizardController extends AbstractModule
 {
-    // GET vars:
-    // Wizard parameters, coming from TCEforms linking to the wizard.
     /**
+     * GET vars:
+     * Wizard parameters, coming from TCEforms linking to the wizard.
      * @var array
      */
     public $P;
 
-    // Accumulated content.
     /**
+     * Accumulated content.
      * @var string
      */
     public $content;
@@ -52,6 +51,21 @@ class BackendLayoutWizardController extends AbstractModule
      * @var string
      */
     public $fieldName;
+
+    /**
+     * @var array
+     */
+    protected $rows;
+
+    /**
+     * @var int
+     */
+    protected $colCount;
+
+    /**
+     * @var int
+     */
+    protected $rowCount;
 
     /**
      * Constructor
@@ -85,10 +99,7 @@ class BackendLayoutWizardController extends AbstractModule
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadExtJS();
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend')
-            . 'Resources/Public/JavaScript/grideditor.js');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GridEditor');
         $pageRenderer->addInlineSetting(
             'ContextHelp',
             'moduleUrl',
@@ -103,24 +114,28 @@ class BackendLayoutWizardController extends AbstractModule
             )
         );
         $pageRenderer->addJsInlineCode('storeData', '
-			function storeData(data) {
-				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {
-					parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . '].value = data;
-					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config","data[backend_layout][' . $uid . '][config]");
-				}
-			}
-			', false);
+            function storeData(data) {
+                if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName
+                . ' && parent.opener.document.' . $this->formName . '['
+                    . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {
+                    parent.opener.document.' . $this->formName . '['
+                    . GeneralUtility::quoteJSvalue($this->fieldName) . '].value = data;
+                    parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config",'
+                    . '"data[backend_layout][' . $uid . '][config]");
+                }
+            }
+            ', false);
         $languageLabels = array(
-            'save' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_labelSave', true),
-            'title' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_windowTitle', true),
-            'editCell' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_editCell', true),
-            'mergeCell' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_mergeCell', true),
-            'splitCell' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_splitCell', true),
-            'name' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_name', true),
-            'column' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_column', true),
-            'notSet' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_notSet', true),
-            'nameHelp' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_nameHelp', true),
-            'columnHelp' => $lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_columnHelp', true)
+            'save' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_labelSave')),
+            'title' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_windowTitle')),
+            'editCell' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_editCell')),
+            'mergeCell' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_mergeCell')),
+            'splitCell' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_splitCell')),
+            'name' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_name')),
+            'column' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_column')),
+            'notSet' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_notSet')),
+            'nameHelp' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_nameHelp')),
+            'columnHelp' => htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_wizards.xlf:grid_columnHelp'))
         );
         $pageRenderer->addInlineLanguageLabelArray($languageLabels);
         // Select record
@@ -199,18 +214,9 @@ class BackendLayoutWizardController extends AbstractModule
                 }
             }
         }
-        $pageRenderer->addExtOnReadyCode('
-			t3Grid = new TYPO3.Backend.t3Grid({
-				data: ' . json_encode($rows, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS) . ',
-				colCount: ' . (int)$colCount . ',
-				rowCount: ' . (int)$rowCount . ',
-				targetElement: \'editor\'
-			});
-			t3Grid.drawTable();
-			');
-
-        $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('backend')
-            . 'Resources/Public/Css/grideditor.css');
+        $this->rows = $rows;
+        $this->colCount = (int)$colCount;
+        $this->rowCount = (int)$rowCount;
     }
 
     /**
@@ -265,21 +271,18 @@ class BackendLayoutWizardController extends AbstractModule
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
 
-        $resourcePath = ExtensionManagementUtility::extRelPath('backend')
-            . 'Resources/Public/Images/BackendLayoutWizard/';
-
         $saveButton = $buttonBar->makeInputButton()
             ->setName('_savedok')
             ->setValue('1')
             ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc'))
-            ->setOnClick('storeData(t3Grid.export2LayoutRecord());return true;')
+            ->setClasses('t3js-grideditor-savedok')
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         $saveAndCloseButton = $buttonBar->makeInputButton()
             ->setName('_savedokandclose')
             ->setValue('1')
             ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
-            ->setOnClick('storeData(t3Grid.export2LayoutRecord());window.close();return true;')
+            ->setClasses('t3js-grideditor-savedokclose')
             ->setIcon(
                 $this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
             );
@@ -296,34 +299,51 @@ class BackendLayoutWizardController extends AbstractModule
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
 
-        $this->content .= '
-		<table border="0" width="90%" height="90%" id="outer_container">
-			<tr>
-				<td class="editor_cell">
-					<div id="editor">
-					</div>
-				</td>
-				<td width="20" valign="center">
-					<a class="addCol" href="#" title="' . $lang->getLL('grid_addColumn') . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 't3grid-tableright.png" border="0" />
-					</a><br />
-					<a class="removeCol" href="#" title="' . $lang->getLL('grid_removeColumn') . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 't3grid-tableleft.png" border="0" />
-					</a>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" height="20" align="center">
-					<a class="addCol" href="#" title="' . $lang->getLL('grid_addRow') . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 't3grid-tabledown.png" border="0" />
-					</a>
-					<a class="removeCol" href="#" title="' . $lang->getLL('grid_removeRow') . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 't3grid-tableup.png" border="0" />
-					</a>
-				</td>
-			</tr>
-		</table>
-		';
+        $markup = array();
+        $markup[] = '';
+        $markup[] = '<table class="grideditor table table-bordered"">';
+        $markup[] = '    <tr>';
+        $markup[] = '        <td class="editor_cell">';
+        $markup[] = '           <div id="editor" class="t3js-grideditor" data-data="' . htmlspecialchars(
+            json_encode(
+                $this->rows,
+                JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS
+            )
+        ) . '" '
+        . 'data-rowcount="' . (int)$this->rowCount . '" '
+        . 'data-colcount="' . (int)$this->colCount . '">';
+        $markup[] = '            </div>';
+        $markup[] = '        </td>';
+        $markup[] = '        <td>';
+        $markup[] = '            <div class="btn-group-vertical">';
+        $markup[] = '               <a class="btn btn-default btn-sm t3js-grideditor-addcolumn" href="#" title="'
+            . htmlspecialchars($lang->getLL('grid_addColumn')) . '">';
+        $markup[] = '                <i class="fa fa-fw fa-arrow-right"></i>';
+        $markup[] = '               </a>';
+        $markup[] = '               <a class="btn btn-default btn-sm t3js-grideditor-removecolumn" href="#" title="'
+            . htmlspecialchars($lang->getLL('grid_removeColumn')) . '">';
+        $markup[] = '                <i class="fa fa-fw fa-arrow-left"></i>';
+        $markup[] = '               </a>';
+        $markup[] = '            </div>';
+        $markup[] = '        </td>';
+        $markup[] = '    </tr>';
+        $markup[] = '    <tr>';
+        $markup[] = '        <td colspan="2" align="center">';
+        $markup[] = '            <div class="btn-group">';
+        $markup[] = '               <a class="btn btn-default btn-sm t3js-grideditor-addrow" href="#" title="'
+            . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
+        $markup[] = '                <i class="fa fa-fw fa-arrow-down"></i>';
+        $markup[] = '               </a>';
+        $markup[] = '               <a class="btn btn-default btn-sm t3js-grideditor-removerow" href="#" title="'
+            . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
+        $markup[] = '                <i class="fa fa-fw fa-arrow-up"></i>';
+        $markup[] = '               </a>';
+        $markup[] = '            </div>';
+        $markup[] = '        </td>';
+        $markup[] = '    </tr>';
+        $markup[] = '</table>';
+
+        $this->content .= implode(LF, $markup);
     }
 
     /**

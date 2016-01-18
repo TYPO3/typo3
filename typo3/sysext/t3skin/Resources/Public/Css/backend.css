@@ -12029,6 +12029,107 @@ span.warningboxheader {
   padding-bottom: 30px;
   margin: 0 15px 30px 15px;
 }
+.grideditor td {
+  vertical-align: middle;
+}
+.grideditor td.editor_cell {
+  height: 100%;
+}
+.grideditor table.editor {
+  border-right: 1px gray dashed;
+  border-bottom: 1px gray dashed;
+}
+.grideditor table.editor td {
+  vertical-align: middle;
+  border-top: 1px gray dashed;
+  border-left: 1px gray dashed;
+  text-align: center;
+  background-color: white;
+  min-height: 100px;
+}
+.grideditor div#editor {
+  height: 100%;
+}
+.grideditor div.cell_container {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  left: 50%;
+  margin-left: -30px;
+  opacity: 0.3;
+}
+.grideditor div.cell_container:hover {
+  opacity: 0.5;
+}
+.grideditor .link {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 40px;
+  overflow: hidden;
+  opacity: 0.5;
+}
+.grideditor .link:hover {
+  text-decoration: none;
+  opacity: 1;
+}
+.grideditor .link_expand_down,
+.grideditor .link_shrink_up {
+  width: 40px;
+  height: 20px;
+}
+.grideditor .link_expand_right {
+  left: 52px;
+  top: 0;
+}
+.grideditor .link_expand_right:before {
+  font-family: FontAwesome;
+  content: "\f0da";
+  font-size: 42px;
+  line-height: 42px;
+}
+.grideditor .link_shrink_left {
+  left: -8px;
+  top: 0;
+}
+.grideditor .link_shrink_left:before {
+  font-family: FontAwesome;
+  content: "\f0d9";
+  font-size: 42px;
+  line-height: 42px;
+}
+.grideditor .link_expand_down {
+  left: 12px;
+  top: 40px;
+}
+.grideditor .link_expand_down:before {
+  font-family: FontAwesome;
+  content: "\f0d7";
+  font-size: 42px;
+  line-height: 19px;
+}
+.grideditor .link_shrink_up {
+  left: 12px;
+  top: -20px;
+}
+.grideditor .link_shrink_up:before {
+  font-family: FontAwesome;
+  content: "\f0d8";
+  font-size: 42px;
+  line-height: 20px;
+}
+.grideditor .link_editor {
+  width: 40px;
+  height: 40px;
+  left: 12px;
+  top: 0;
+}
+.grideditor .link_editor:before {
+  font-family: FontAwesome;
+  content: "\f14b";
+  font-size: 42px;
+  line-height: 42px;
+}
 *::-ms-clear {
   display: none;
 }
