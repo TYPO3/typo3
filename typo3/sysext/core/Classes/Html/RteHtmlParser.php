@@ -840,15 +840,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         break;
                     case 'ol':
                     case 'ul':
-                        if ($css) {
-                            $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-                        }
-                        break;
                     case 'table':
-                        // Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
-                        if (!$this->procOptions['preserveTables'] && !$css) {
-                            $blockSplit[$k] = $this->TS_transform_db($this->removeTables($blockSplit[$k]));
-                        } else {
+                        if ($css) {
                             $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
                         }
                         break;
@@ -1319,37 +1312,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     public function siteUrl()
     {
         return GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-    }
-
-    /**
-     * Remove all tables from incoming code
-     * The function is trying to do this in a more or less respectful way. The approach is to resolve each table cells content and implode it all by <br /> chars. Thus at least the content is preserved in some way.
-     *
-     * @param string $value Input value
-     * @param string $breakChar Break character to use for linebreaks.
-     * @return string Output value
-     */
-    public function removeTables($value, $breakChar = '<br />')
-    {
-        // Splitting value into table blocks:
-        $tableSplit = $this->splitIntoBlock('table', $value);
-        // Traverse blocks of tables:
-        foreach ($tableSplit as $k => $v) {
-            if ($k % 2) {
-                $tableSplit[$k] = '';
-                $rowSplit = $this->splitIntoBlock('tr', $v);
-                foreach ($rowSplit as $k2 => $v2) {
-                    if ($k2 % 2) {
-                        $cellSplit = $this->getAllParts($this->splitIntoBlock('td', $v2));
-                        foreach ($cellSplit as $k3 => $v3) {
-                            $tableSplit[$k] .= $v3 . $breakChar;
-                        }
-                    }
-                }
-            }
-        }
-        // Implode it all again:
-        return implode($breakChar, $tableSplit);
     }
 
     /**
