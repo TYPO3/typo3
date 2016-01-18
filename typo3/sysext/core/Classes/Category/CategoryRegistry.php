@@ -357,6 +357,9 @@ class CategoryRegistry implements SingletonInterface
             if (isset($options['l10n_display'])) {
                 $columns[$fieldName]['l10n_display'] = $options['l10n_display'];
             }
+            if (isset($options['displayCond'])) {
+                $columns[$fieldName]['displayCond'] = $options['displayCond'];
+            }
 
             // Register opposite references for the foreign side of a relation
             if (empty($GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
