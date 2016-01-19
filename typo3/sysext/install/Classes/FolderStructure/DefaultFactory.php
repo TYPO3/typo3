@@ -118,11 +118,6 @@ class DefaultFactory
                                 'targetPermission' => $directoryPermission
                             ),
                             array(
-                                'name' => 'transient',
-                                'type' => DirectoryNode::class,
-                                'targetPermission' => $directoryPermission
-                            ),
-                            array(
                                 'name' => '_processed_',
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission

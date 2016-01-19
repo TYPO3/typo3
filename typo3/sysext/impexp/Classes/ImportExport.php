@@ -980,7 +980,7 @@ abstract class ImportExport
      */
     protected function getTemporaryFolderName()
     {
-        $temporaryPath = PATH_site . 'typo3temp/';
+        $temporaryPath = PATH_site . 'typo3temp/var/transient/';
         do {
             $temporaryFolderName = $temporaryPath . 'export_temp_files_' . mt_rand(1, PHP_INT_MAX);
         } while (is_dir($temporaryFolderName));

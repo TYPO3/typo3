@@ -65,7 +65,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = array('getPackagePath', 'getPackageKey'))
     {
-        $packagePath = PATH_site . 'typo3temp/' . $packageKey . '/';
+        $packagePath = PATH_site . 'typo3temp/var/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
         $this->testFilesToDelete[] = $packagePath;
         $package = $this->getMockBuilder(Package::class)
@@ -1571,7 +1571,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables()
     {
         $extensionName = $this->getUniqueId('foo');
-        $extTablesLocation = PATH_site . 'typo3temp/' . $this->getUniqueId('test_ext_tables') . '.php';
+        $extTablesLocation = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_ext_tables') . '.php';
         $this->testFilesToDelete[] = $extTablesLocation;
         $uniqueStringInTables = $this->getUniqueId('foo');
         file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");

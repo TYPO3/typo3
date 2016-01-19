@@ -63,7 +63,7 @@ class CommandLineBackend extends AbstractBackend
         ) {
             $this->temporaryDirectory = $extconf['temporaryDirectory'];
         } else {
-            $this->temporaryDirectory = PATH_site . 'typo3temp/var';
+            $this->temporaryDirectory = PATH_site . 'typo3temp/var/transient';
         }
     }
 

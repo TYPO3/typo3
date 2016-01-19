@@ -48,8 +48,8 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
     protected function tearDown()
     {
         ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
-        if (file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt')) {
-            unlink(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt');
+        if (file_exists(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt')) {
+            unlink(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt');
         }
         parent::tearDown();
     }

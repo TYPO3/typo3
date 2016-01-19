@@ -188,7 +188,7 @@ class FileNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
+        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
@@ -783,7 +783,7 @@ class FileNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\FileNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\FileNode::class, array('getAbsolutePath'), array(), '', false);
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
+        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $link = $this->getUniqueId('link_');

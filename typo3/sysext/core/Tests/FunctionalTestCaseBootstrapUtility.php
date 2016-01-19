@@ -58,6 +58,9 @@ class FunctionalTestCaseBootstrapUtility
         '',
         '/fileadmin',
         '/typo3temp',
+        '/typo3temp/var',
+        '/typo3temp/var/transient',
+        '/typo3temp/assets',
         '/typo3conf',
         '/typo3conf/ext',
         '/uploads'
@@ -84,7 +87,7 @@ class FunctionalTestCaseBootstrapUtility
      */
     public static function getInstancePath($testCaseClassName)
     {
-        return ORIGINAL_ROOT . 'typo3temp/functional-' . static::getInstanceIdentifier($testCaseClassName);
+        return ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . static::getInstanceIdentifier($testCaseClassName);
     }
 
     /**

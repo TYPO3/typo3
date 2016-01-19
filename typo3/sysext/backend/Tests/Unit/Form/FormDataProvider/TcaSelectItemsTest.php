@@ -1103,7 +1103,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function addDataAddsFileItemsWithConfiguredFileFolder()
     {
-        $directory = $this->getUniqueId('typo3temp/test-') . '/';
+        $directory = $this->getUniqueId('typo3temp/var/tests/test-') . '/';
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],

@@ -64,7 +64,6 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $checkWritable = array(
             'typo3temp/' => 2,
             'typo3temp/assets/' => 2,
-            'typo3temp/assets/transient/' => 2,
             'typo3temp/assets/compressed/' => 2,
             // only needed when GraphicalFunctions is used
             'typo3temp/assets/images/' => 0,

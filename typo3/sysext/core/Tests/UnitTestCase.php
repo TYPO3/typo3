@@ -50,7 +50,7 @@ abstract class UnitTestCase extends BaseTestCase
      * garbage collection. This reduces memory footprint with lots
      * of tests.
      *
-     * If owerwriting tearDown() in test classes, please call
+     * If overwriting tearDown() in test classes, please call
      * parent::tearDown() at the end. Unsetting of own properties
      * is not needed this way.
      *
@@ -81,9 +81,9 @@ abstract class UnitTestCase extends BaseTestCase
             if (!GeneralUtility::validPathStr($absoluteFileName)) {
                 throw new \RuntimeException('tearDown() cleanup: Filename contains illegal characters', 1410633087);
             }
-            if (!StringUtility::beginsWith($absoluteFileName, PATH_site . 'typo3temp/')) {
+            if (!StringUtility::beginsWith($absoluteFileName, PATH_site . 'typo3temp/var/')) {
                 throw new \RuntimeException(
-                    'tearDown() cleanup:  Files to delete must be within typo3temp/',
+                    'tearDown() cleanup:  Files to delete must be within typo3temp/var/',
                     1410633412
                 );
             }

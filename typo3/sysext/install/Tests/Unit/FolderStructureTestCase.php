@@ -30,7 +30,7 @@ abstract class FolderStructureTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCas
     protected function getVirtualTestDir($prefix = 'root_')
     {
         $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/' . $this->getUniqueId($prefix);
+        $path = $root->url() . '/typo3temp/var/tests/' . $this->getUniqueId($prefix);
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         return $path;
     }

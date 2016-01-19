@@ -1,7 +1,7 @@
 actor: Tester
 paths:
     tests: Configuration/Acceptance
-    log: ../../../../typo3temp/codeception
+    log: ../../../../typo3temp/var/logs/codeception
     data: ''
     support: Configuration/Acceptance/Support
 settings:

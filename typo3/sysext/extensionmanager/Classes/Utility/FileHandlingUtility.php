@@ -426,10 +426,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
             $version =  '0.0.0';
         }
 
-        if (!@is_dir(PATH_site . 'typo3temp/ExtensionManager/')) {
-            GeneralUtility::mkdir(PATH_site . 'typo3temp/ExtensionManager/');
+        if (!@is_dir(PATH_site . 'typo3temp/var/ExtensionManager/')) {
+            GeneralUtility::mkdir(PATH_site . 'typo3temp/var/ExtensionManager/');
         }
-        $fileName = $this->getAbsolutePath('typo3temp/ExtensionManager/' . $extension . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip');
+        $fileName = $this->getAbsolutePath('typo3temp/var/ExtensionManager/' . $extension . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip');
 
         $zip = new \ZipArchive();
         $zip->open($fileName, \ZipArchive::CREATE);

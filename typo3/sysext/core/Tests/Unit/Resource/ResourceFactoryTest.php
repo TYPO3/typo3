@@ -135,7 +135,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven()
     {
         $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array('getFileObjectFromCombinedIdentifier'), array(), '', false);
-        $filename = 'typo3temp/4711.txt';
+        $filename = 'typo3temp/var/tests/4711.txt';
         $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);

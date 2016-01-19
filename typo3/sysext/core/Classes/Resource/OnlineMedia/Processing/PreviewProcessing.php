@@ -78,7 +78,7 @@ class PreviewProcessing
         if (empty($temporaryFileName) || !file_exists($temporaryFileName)) {
             return;
         }
-        $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/assets/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
+        $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/var/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
         switch ($taskType) {
             case 'Image.Preview':
                 // Merge custom configuration with default configuration
@@ -92,6 +92,7 @@ class PreviewProcessing
                 $this->cropScaleImage($temporaryFileName, $temporaryFileNameForResizedThumb, $configuration);
                 break;
         }
+        GeneralUtility::unlink_tempfile($temporaryFileName);
         if (is_file($temporaryFileNameForResizedThumb)) {
             $processedFile->setName($this->getTargetFileName($processedFile));
             list($width, $height) = getimagesize($temporaryFileNameForResizedThumb);
@@ -104,6 +105,7 @@ class PreviewProcessing
                 )
             );
             $processedFile->updateWithLocalFile($temporaryFileNameForResizedThumb);
+            GeneralUtility::unlink_tempfile($temporaryFileNameForResizedThumb);
 
             /** @var ProcessedFileRepository $processedFileRepository */
             $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);

@@ -95,7 +95,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function tearDown()
     {
         foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $fakeExtkey;
+            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $fakeExtkey;
         }
         parent::tearDown();
     }
@@ -109,8 +109,8 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function createFakeExtension()
     {
         $extKey = strtolower($this->getUniqueId('testing'));
-        $absExtPath = PATH_site . 'typo3temp/' . $extKey;
-        $relPath = 'typo3temp/' . $extKey . '/';
+        $absExtPath = PATH_site . 'typo3temp/var/tests/' . $extKey;
+        $relPath = 'typo3temp/var/tests/' . $extKey . '/';
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);
         $this->fakedExtensions[$extKey] = array(
             'siteRelPath' => $relPath
@@ -220,7 +220,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSql()
     {
         $extKey = $this->createFakeExtension();
-        $extPath = PATH_site . 'typo3temp/' . $extKey . '/';
+        $extPath = PATH_site . 'typo3temp/var/tests/' . $extKey . '/';
         $extTablesFile = $extPath . 'ext_tables.sql';
         $fileContent = 'DUMMY TEXT TO COMPARE';
         file_put_contents($extTablesFile, $fileContent);
@@ -244,7 +244,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function processDatabaseUpdatesCallsImportStaticSqlFile()
     {
         $extKey = $this->createFakeExtension();
-        $extRelPath = 'typo3temp/' . $extKey . '/';
+        $extRelPath = 'typo3temp/var/tests/' . $extKey . '/';
         $installMock = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
             array('importStaticSqlFile', 'updateDbWithExtTablesSql', 'importT3DFile'),

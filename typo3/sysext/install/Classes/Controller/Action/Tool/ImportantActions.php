@@ -84,8 +84,8 @@ class ImportantActions extends Action\AbstractAction
             ->assign('databasePort', $GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
             ->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
             ->assign('databaseNumberOfTables', count($this->getDatabaseConnection()->admin_get_tables()))
-            ->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt')
-            ->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json')
+            ->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTester.txt')
+            ->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTesterErrors.json')
             ->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages())
             ->assign('listOfOpcodeCaches', $opcodeCacheService->getAllActive());
 

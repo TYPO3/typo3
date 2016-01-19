@@ -195,7 +195,7 @@ class TestSetup extends Action\AbstractAction
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
             'Testing true type'
         );
-        $outputFile = PATH_site . 'typo3temp/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
+        $outputFile = PATH_site . 'typo3temp/assets/images/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
         imagegif($image, $outputFile);
 
         /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */

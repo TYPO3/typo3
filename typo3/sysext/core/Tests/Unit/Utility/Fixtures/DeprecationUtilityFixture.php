@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\DeprecationUtility;
  */
 class DeprecationUtilityFixture extends DeprecationUtility
 {
-    const DEPRECATION_LOG_PATH = 'typo3temp/test_deprecation/test.log';
+    const DEPRECATION_LOG_PATH = 'typo3temp/var/tests/test_deprecation/test.log';
 
 
     /**

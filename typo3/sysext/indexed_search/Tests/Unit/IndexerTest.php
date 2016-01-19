@@ -50,7 +50,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extractHyperLinksReturnsCorrectFileUsingT3Vars()
     {
-        $temporaryFileName = tempnam(PATH_site . 'typo3temp/', 't3unit-');
+        $temporaryFileName = tempnam(PATH_site . 'typo3temp/var/tests/', 't3unit-');
         $this->testFilesToDelete[] = $temporaryFileName;
         $html = 'test <a href="testfile">test</a> test';
         $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = array(

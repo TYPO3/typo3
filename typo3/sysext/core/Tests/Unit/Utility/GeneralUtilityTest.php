@@ -79,7 +79,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function getVirtualTestDir($prefix = 'root_')
     {
         $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/' . $this->getUniqueId($prefix);
+        $path = $root->url() . '/typo3temp/var/tests/' . $this->getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
         return $path;
     }
@@ -2219,7 +2219,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function unlink_tempfileRemovesValidFileInTypo3temp()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2232,7 +2232,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function unlink_tempfileRemovesHiddenFile()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_') . '.gif';
+        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('.test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2245,7 +2245,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function unlink_tempfileReturnsTrueIfFileWasRemoved()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         $returnValue = GeneralUtility::unlink_tempfile($testFilename);
         $this->assertTrue($returnValue);
@@ -2256,7 +2256,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function unlink_tempfileReturnsNullIfFileDoesNotExist()
     {
-        $returnValue = GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/' . $this->getUniqueId('i_do_not_exist'));
+        $returnValue = GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('i_do_not_exist'));
         $this->assertNull($returnValue);
     }
 
@@ -2896,7 +2896,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
         // Create and prepare test file
-        $filename = PATH_site . 'typo3temp/../typo3temp/' . $this->getUniqueId('test_');
+        $filename = PATH_site . 'typo3temp/var/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
@@ -2911,7 +2911,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('fixPermissions() tests not available on Windows');
         }
-        $filename = 'typo3temp/' . $this->getUniqueId('test_');
+        $filename = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
         $this->testFilesToDelete[] = PATH_site . $filename;
         chmod(PATH_site . $filename, 482);
@@ -3087,7 +3087,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mkdirDeepCreatesSubdirectoriesRecursive()
     {
-        $directory = $this->getVirtualTestDir() . '/typo3temp/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $subDirectory = $directory . '/foo';
         GeneralUtility::mkdir_deep($subDirectory);
         $this->assertTrue(is_dir($subDirectory));
@@ -3131,11 +3131,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
-        $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $directory);
+        $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3));
+        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/var/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -3150,11 +3150,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $subDirectory = $directory . '/bar';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
-        $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+        $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3));
+        $this->assertEquals('777', substr(decoct(fileperms(PATH_site . 'typo3temp/var/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -3165,7 +3165,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
         }
-        $baseDirectory = PATH_site . 'typo3temp/';
+        $baseDirectory = PATH_site . 'typo3temp/var/tests/';
         $existingDirectory = $this->getUniqueId('test_existing_') . '/';
         $newSubDirectory = $this->getUniqueId('test_new_');
         @mkdir(($baseDirectory . $existingDirectory));
@@ -3184,10 +3184,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $directory);
+            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3202,10 +3202,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3220,10 +3220,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
-            $this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+            $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
-            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/' . $directory);
+            $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
             $this->assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
@@ -3279,7 +3279,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesFile()
     {
-        $file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
+        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);
         $this->assertFalse(file_exists($file));
@@ -3290,7 +3290,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirReturnTrueIfFileWasRemoved()
     {
-        $file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
+        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
         touch($file);
         $this->assertTrue(GeneralUtility::rmdir($file));
     }
@@ -3300,7 +3300,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirReturnFalseIfNoFileWasRemoved()
     {
-        $file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
+        $file = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
         $this->assertFalse(GeneralUtility::rmdir($file));
     }
 
@@ -3309,7 +3309,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesDirectory()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_');
+        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         $this->assertFalse(file_exists($directory));
@@ -3320,7 +3320,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesDirectoryWithTrailingSlash()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
+        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         $this->assertFalse(file_exists($directory));
@@ -3331,7 +3331,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirDoesNotRemoveDirectoryWithFilesAndReturnsFalseIfRecursiveDeletionIsOff()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
+        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         $file = $this->getUniqueId('file_');
         touch($directory . $file);
@@ -3347,7 +3347,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesDirectoriesRecursiveAndReturnsTrue()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
+        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         mkdir($directory . 'sub/');
         touch($directory . 'sub/file');
@@ -3364,10 +3364,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('Test not available on Windows OS.');
         }
-        $existingDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_') . '/';
+        $existingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
         mkdir($existingDirectory);
         $this->testFilesToDelete[] = $existingDirectory;
-        $symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
         symlink($existingDirectory, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
@@ -3381,8 +3381,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('Test not available on Windows OS.');
         }
-        $notExistingDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_') . '/';
-        $symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+        $notExistingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
+        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
         symlink($notExistingDirectory, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
@@ -3396,8 +3396,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('Test not available on Windows OS.');
         }
-        $notExistingFile = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_');
-        $symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+        $notExistingFile = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
+        $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
         symlink($notExistingFile, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
@@ -3624,7 +3624,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ),
             // Now test against some real world examples
             array(
-                '/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                '/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
                 array(
                     '/opt/local/bin/gm.exe',
                     'convert',
@@ -3633,8 +3633,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
                 ),
                 array(
                     '/opt/local/bin/gm.exe',
@@ -3644,12 +3644,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
-                    'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+                    'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+                    'C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
                 )
             ),
             array(
-                'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
                 array(
                     'C:/opt/local/bin/gm.exe',
                     'convert',
@@ -3658,8 +3658,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '"C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
                 ),
                 array(
                     'C:/opt/local/bin/gm.exe',
@@ -3669,12 +3669,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    'C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
-                    'C:/Program Files/Apache2/htdocs/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+                    'C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+                    'C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
                 )
             ),
             array(
-                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
                 array(
                     '/usr/bin/gm',
                     'convert',
@@ -3683,8 +3683,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '"/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
                 ),
                 array(
                     '/usr/bin/gm',
@@ -3694,12 +3694,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
-                    '/Shared Items/Data/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+                    '/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+                    '/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
                 )
             ),
             array(
-                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
                 array(
                     '/usr/bin/gm',
                     'convert',
@@ -3708,8 +3708,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '"/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
+                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
+                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
                 ),
                 array(
                     '/usr/bin/gm',
@@ -3719,12 +3719,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
-                    '/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+                    '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+                    '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
                 )
             ),
             array(
-                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
+                '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
                 array(
                     '/usr/bin/gm',
                     'convert',
@@ -3733,8 +3733,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '\'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
-                    '\'/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
+                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
+                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
                 ),
                 array(
                     '/usr/bin/gm',
@@ -3744,8 +3744,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '-geometry',
                     '170x136!',
                     '-negate',
-                    '/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
-                    '/Network/Servers/server01.internal/Projects/typo3temp/temp/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
+                    '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]',
+                    '/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif'
                 )
             )
         );
@@ -3774,7 +3774,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function splitFileRefReturnsFileTypeNotForFolders()
     {
         $directoryName = $this->getUniqueId('test_') . '.com';
-        $directoryPath = PATH_site . 'typo3temp/';
+        $directoryPath = PATH_site . 'typo3temp/var/tests/';
         $directory = $directoryPath . $directoryName;
         mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         $fileInfo = GeneralUtility::split_fileref($directory);
@@ -4254,12 +4254,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths()
     {
-        $sourceDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
+        $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteSourceDirectory = PATH_site . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
-        $targetDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
+        $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteTargetDirectory = PATH_site . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
         GeneralUtility::mkdir($absoluteTargetDirectory);
@@ -4279,12 +4279,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths()
     {
-        $sourceDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
+        $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteSourceDirectory = PATH_site . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
-        $targetDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
+        $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
         $absoluteTargetDirectory = PATH_site . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
         GeneralUtility::mkdir($absoluteTargetDirectory);
@@ -4314,7 +4314,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = true;
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
-        $testLogFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.txt';
+        $testLogFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.txt';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         // Call method, get actual permissions and clean up
@@ -4557,7 +4557,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()
     {
-        $directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_');
+        $directory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
         $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath(array(), $directory, '', true);
         $check = true;

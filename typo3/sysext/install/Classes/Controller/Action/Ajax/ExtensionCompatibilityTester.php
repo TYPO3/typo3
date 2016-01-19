@@ -259,9 +259,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
             case E_NOTICE:
                 $lastError['type'] = 'E_NOTICE';
                 break;
-            case E_NOTICE:
-                $lastError['type'] = 'E_NOTICE';
-                break;
         }
         $errors[] = $lastError;
 

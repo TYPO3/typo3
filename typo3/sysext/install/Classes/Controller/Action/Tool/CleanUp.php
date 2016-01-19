@@ -180,7 +180,7 @@ class CleanUp extends Action\AbstractAction
     protected function getTypo3TempStatistics()
     {
         $data = array();
-        $pathTypo3Temp= PATH_site . 'typo3temp/';
+        $pathTypo3Temp = PATH_site . 'typo3temp/';
         $postValues = $this->postValues['values'];
 
         $condition = '0';
@@ -300,7 +300,7 @@ class CleanUp extends Action\AbstractAction
         if ($failedDeletions) {
             /** @var ErrorStatus $message */
             $message = $this->objectManager->get(ErrorStatus::class);
-            $message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/logs/typo3_*.log)');
+            $message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/logs/typo3_*.log)');
         } else {
             /** @var OkStatus $message */
             $message = $this->objectManager->get(OkStatus::class);

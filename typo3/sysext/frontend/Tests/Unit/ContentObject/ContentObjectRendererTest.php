@@ -4746,13 +4746,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function filelinkCreatesCorrectUrlForFileWithUrlEncodedSpecialChars()
     {
-        $fileNameAndPath = PATH_site . 'typo3temp/phpunitJumpUrlTestFile with spaces & amps.txt';
+        $fileNameAndPath = PATH_site . 'typo3temp/var/tests/phpunitJumpUrlTestFile with spaces & amps.txt';
         file_put_contents($fileNameAndPath, 'Some test data');
         $relativeFileNameAndPath = substr($fileNameAndPath, strlen(PATH_site));
-        $fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/'));
+        $fileName = substr($fileNameAndPath, strlen(PATH_site . 'typo3temp/var/tests/'));
 
         $expectedLink = str_replace('%2F', '/', rawurlencode($relativeFileNameAndPath));
-        $result = $this->subject->filelink($fileName, array('path' => 'typo3temp/'));
+        $result = $this->subject->filelink($fileName, array('path' => 'typo3temp/var/tests/'));
         $this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileNameAndPath);

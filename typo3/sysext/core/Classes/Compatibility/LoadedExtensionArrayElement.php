@@ -91,9 +91,9 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
                     $packageType = 'S';
                     $relativePackagePathToPathTypo3 = 'sysext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
-                case 'typo3temp/test_ext':
+                case 'typo3temp/var/tests/test_ext':
                     $packageType = 'T';
-                    $relativePackagePathToPathTypo3 = '../typo3temp/test_ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
+                    $relativePackagePathToPathTypo3 = '../typo3temp/var/tests/test_ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
                     break;
             }
             if ($packageType !== null && $relativePackagePathToPathSite !== null && $relativePackagePathToPathTypo3 !== null) {

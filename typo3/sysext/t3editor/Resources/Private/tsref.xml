@@ -491,7 +491,7 @@ config.htmlTag_setParams =  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-U
 ]]></default>
 		</property>
 		<property name="inlineStyle2TempFile" type="boolean">
-			<description><![CDATA[If set, the inline styles TYPO3 controls in the core are written to a file,  typo3temp/stylesheet_[hashstring].css, and the header will only contain the link to the stylesheet.
+			<description><![CDATA[If set, the inline styles TYPO3 controls in the core are written to a file,  typo3temp/assets/css/stylesheet_[hashstring].css, and the header will only contain the link to the stylesheet.
 The file hash is based solely on the content of the styles.
 
 Depends on the compatibility mode (see Tools>Install>Update wizard):

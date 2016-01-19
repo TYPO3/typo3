@@ -183,7 +183,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
+        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -210,7 +210,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
+        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('dir_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Helpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -103,9 +104,25 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      */
     protected function createNewFile(Folder $targetFolder, $fileName, $onlineMediaId)
     {
-        $temporaryFile = PATH_site . 'typo3temp/assets/transient/' . GeneralUtility::tempnam('online_media');
+        $temporaryFile = GeneralUtility::tempnam('online_media');
         GeneralUtility::writeFileToTypo3tempDir($temporaryFile, $onlineMediaId);
-        return $targetFolder->addFile($temporaryFile, $fileName, 'changeName');
+        $file = $targetFolder->addFile($temporaryFile, $fileName, DuplicationBehavior::RENAME);
+        GeneralUtility::unlink_tempfile($temporaryFile);
+        return $file;
+    }
+
+    /**
+     * Get temporary folder path to save preview images
+     *
+     * @return string
+     */
+    protected function getTempFolderPath()
+    {
+        $path = PATH_site . 'typo3temp/var/transient/';
+        if (!is_dir($path)) {
+            GeneralUtility::mkdir_deep($path);
+        }
+        return $path;
     }
 
     /**

@@ -2036,8 +2036,8 @@ class GraphicalFunctions
      */
     public function randomName()
     {
-        $this->createTempSubDir('transient/');
-        return $this->tempPath . 'transient/' . md5(uniqid('', true));
+        $this->createTempSubDir('var/transient/');
+        return $this->tempPath . 'var/transient/' . md5(uniqid('', true));
     }
 
     /**
@@ -2250,8 +2250,8 @@ class GraphicalFunctions
             $this->imageMagickConvert_forceFileNameBody = '';
         }
         // Making the temporary filename:
-        $this->createTempSubDir('images/');
-        $output = $this->absPrefix . $this->tempPath . 'images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        $this->createTempSubDir('assets/images/');
+        $output = $this->absPrefix . $this->tempPath . 'assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
@@ -2723,7 +2723,7 @@ class GraphicalFunctions
             $tmpPath = PATH_site . $this->tempPath;
         }
         // Making the temporary filename:
-        if (!@is_dir(($tmpPath . $dirName))) {
+        if (!@is_dir($tmpPath . $dirName)) {
             GeneralUtility::mkdir_deep($tmpPath . $dirName);
             return @is_dir($tmpPath . $dirName);
         }

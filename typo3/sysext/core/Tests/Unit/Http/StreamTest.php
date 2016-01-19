@@ -56,7 +56,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isReadableReturnsFalseIfStreamIsNotReadable()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $stream = new Stream($fileName, 'w');
@@ -106,7 +106,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function toStringSerializationReturnsEmptyStringWhenStreamIsNotReadable()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
@@ -120,7 +120,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function closeClosesResource()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
@@ -134,7 +134,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function closeUnsetsResource()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
@@ -149,7 +149,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function closeDoesNothingAfterDetach()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'wb+');
@@ -175,7 +175,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function tellReportsCurrentPositionInResource()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -191,7 +191,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function tellRaisesExceptionIfResourceIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -208,7 +208,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function eofReportsFalseWhenNotAtEndOfStream()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -223,7 +223,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function eofReportsTrueWhenAtEndOfStream()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -240,7 +240,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function eofReportsTrueWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -256,7 +256,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isSeekableReturnsTrueForReadableStreams()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -269,7 +269,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isSeekableReturnsFalseForDetachedStreams()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -283,7 +283,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function seekAdvancesToGivenOffsetOfStream()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -297,7 +297,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rewindResetsToStartOfStream()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -312,7 +312,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function seekRaisesExceptionWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -327,7 +327,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isWritableReturnsFalseWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -341,7 +341,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function writeRaisesExceptionWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -356,7 +356,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isReadableReturnsFalseWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
@@ -370,7 +370,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function readRaisesExceptionWhenStreamIsDetached()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
@@ -385,7 +385,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function readReturnsEmptyStringWhenAtEndOfFile()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'r');
@@ -401,7 +401,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getContentsReturnsEmptyStringIfStreamIsNotReadable()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $this->testFilesToDelete[] = $fileName;
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'w');
@@ -444,7 +444,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function attachWithResourceAttachesResource()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
@@ -461,7 +461,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function attachWithStringRepresentingResourceCreatesAndAttachesResource()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $this->stream->attach($fileName);
@@ -479,7 +479,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getContentsShouldGetFullStreamContents()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
@@ -498,7 +498,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getContentsShouldReturnStreamContentsFromCurrentPointer()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
@@ -517,7 +517,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getMetadataReturnsAllMetadataWhenNoKeyPresent()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
@@ -534,7 +534,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getMetadataReturnsDataForSpecifiedKey()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');
@@ -553,7 +553,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getMetadataReturnsNullIfNoDataExistsForKey()
     {
-        $fileName = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
+        $fileName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $resource = fopen($fileName, 'r+');

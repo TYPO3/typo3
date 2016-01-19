@@ -39,7 +39,7 @@ class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					</languageKey>
 				</data>
 			</T3locallang>';
-        $file = PATH_site . 'typo3temp/' . $unique . '.xml';
+        $file = PATH_site . 'typo3temp/var/tests/' . $unique . '.xml';
         GeneralUtility::writeFileToTypo3tempDir($file, $xml);
         // Make sure there is no cached version of the label
         GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();

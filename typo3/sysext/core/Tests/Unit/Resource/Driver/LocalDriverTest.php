@@ -76,7 +76,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     protected function createRealTestdir()
     {
-        $basedir = PATH_site . 'typo3temp/' . $this->getUniqueId('fal-test-');
+        $basedir = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('fal-test-');
         mkdir($basedir);
         $this->testDirs[] = $basedir;
         return $basedir;
@@ -138,7 +138,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         // This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
         $relativeDriverConfiguration = array(
             'pathType' => 'relative',
-            'basePath' => '/typo3temp/',
+            'basePath' => '/typo3temp/var/tests/',
         );
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
@@ -154,7 +154,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 
         // This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
         $relativeDriverConfiguration = array(
-            'basePath' => PATH_site . 'typo3temp/../typo3temp/',
+            'basePath' => PATH_site . 'typo3temp/var/tests/../../../typo3temp/var/tests/',
         );
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
@@ -944,7 +944,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         $subject = $this->createDriver();
         $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile'));
         $this->testFilesToDelete[] = $filePath;
-        $this->assertContains('/typo3temp/', $filePath);
+        $this->assertContains('/typo3temp/var/transient/', $filePath);
         $this->assertEquals($fileContents, file_get_contents($filePath));
     }
 

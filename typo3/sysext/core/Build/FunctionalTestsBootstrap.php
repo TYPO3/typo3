@@ -96,7 +96,8 @@ class FunctionalTestsBootstrap
      */
     protected function createNecessaryDirectoriesInDocumentRoot()
     {
-        $this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
+        $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/tests');
+        $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/transient');
 
         return $this;
     }

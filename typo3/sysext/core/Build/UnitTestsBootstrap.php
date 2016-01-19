@@ -148,7 +148,8 @@ class UnitTestsBootstrap
     protected function createNecessaryDirectoriesInDocumentRoot()
     {
         $this->createDirectory(PATH_site . 'uploads');
-        $this->createDirectory(PATH_site . 'typo3temp');
+        $this->createDirectory(PATH_site . 'typo3temp/var/tests');
+        $this->createDirectory(PATH_site . 'typo3temp/var/transient');
         $this->createDirectory(PATH_site . 'typo3conf/ext');
 
         return $this;

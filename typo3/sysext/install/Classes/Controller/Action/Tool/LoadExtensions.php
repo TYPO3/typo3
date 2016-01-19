@@ -28,7 +28,7 @@ class LoadExtensions extends Action\AbstractAction
      */
     protected function executeAction()
     {
-        $extensionCompatibilityTesterFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt';
+        $extensionCompatibilityTesterFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTester.txt';
         $this->view
             ->assign('extensionCompatibilityTesterProtocolFile', $extensionCompatibilityTesterFile)
             ->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages());

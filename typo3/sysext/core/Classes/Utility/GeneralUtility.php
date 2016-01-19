@@ -2448,13 +2448,13 @@ class GeneralUtility
         // Checking if the "subdir" is found:
         $subdir = substr($fI['dirname'], strlen($dirName));
         if ($subdir) {
-            if (preg_match('/^[[:alnum:]_]+\\/$/', $subdir) || preg_match('/^[[:alnum:]_]+\\/[[:alnum:]_]+\\/$/', $subdir)) {
+            if (preg_match('#^(?:[[:alnum:]_]+/)+$#', $subdir)) {
                 $dirName .= $subdir;
                 if (!@is_dir($dirName)) {
                     static::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
                 }
             } else {
-                return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
+                return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/+"';
             }
         }
         // Checking dir-name again (sub-dir might have been created):
@@ -3725,7 +3725,7 @@ class GeneralUtility
      */
     public static function tempnam($filePrefix, $fileSuffix = '')
     {
-        $temporaryPath = PATH_site . 'typo3temp/';
+        $temporaryPath = PATH_site . 'typo3temp/var/transient/';
         if ($fileSuffix === '') {
             $tempFileName = static::fixWindowsFilePath(tempnam($temporaryPath, $filePrefix));
         } else {

@@ -132,8 +132,8 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
         }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
-        $path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
-        $target = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_');
+        $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
