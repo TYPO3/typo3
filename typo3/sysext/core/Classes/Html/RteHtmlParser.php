@@ -646,7 +646,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         list($rootFileDat) = explode('?', $link_param);
                         $rFD_fI = pathinfo($rootFileDat);
                         $fileExtension = strtolower($rFD_fI['extension']);
-                        if ($fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm' || trim($rootFileDat) && !strstr($link_param, '/') && (@is_file((PATH_site . $rootFileDat)))) {
+                        if (strpos($link_param, '/') === false && trim($rootFileDat) && (@is_file(PATH_site . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
                             $href = $siteUrl . $link_param;
                         } elseif (
                             (

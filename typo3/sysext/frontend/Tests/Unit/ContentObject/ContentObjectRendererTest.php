@@ -19,9 +19,11 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
 
 /**
@@ -45,12 +47,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected $subject = null;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
      */
     protected $typoScriptFrontendControllerMock = null;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\TypoScript\TemplateService
+     * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
      */
     protected $templateServiceMock = null;
 
@@ -93,10 +95,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
         $this->createMockedLoggerAndLogManager();
 
-        $this->templateServiceMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('getFileName', 'linkData'));
+        $this->templateServiceMock = $this->getMock(TemplateService::class, array('getFileName', 'linkData'));
         $pageRepositoryMock = $this->getMock(PageRepositoryFixture::class, array('getRawRecord'));
 
-        $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array('dummy'), array(), '', false);
+        $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
         $this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;
         $this->typoScriptFrontendControllerMock->config = array();
         $this->typoScriptFrontendControllerMock->page = array();
@@ -4160,6 +4162,63 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
+    public function detectLinkTypeFromLinkParameterDataProvider()
+    {
+        return [
+            'Domain only' => [
+                'example.com',
+                'url'
+            ],
+            'URL without a file' => [
+                'http://example.com',
+                'url'
+            ],
+            'URL with schema and a file' => [
+                'http://example.com/index.php',
+                'url'
+            ],
+            'URL with a file but without a schema' => [
+                'example.com/index.php',
+                'url'
+            ],
+            'file' => [
+                '/index.php',
+                'file'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @param string $linkParameter
+     * @param string $expectedResult
+     * @dataProvider detectLinkTypeFromLinkParameterDataProvider
+     */
+    public function detectLinkTypeFromLinkParameter($linkParameter, $expectedResult)
+    {
+        /** @var TemplateService|\PHPUnit_Framework_MockObject_MockObject $templateServiceObjectMock */
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
+        $templateServiceObjectMock->setup = array(
+            'lib.' => array(
+                'parseFunc.' => $this->getLibParseFunc(),
+            ),
+        );
+        /** @var TypoScriptFrontendController|\PHPUnit_Framework_MockObject_MockObject $typoScriptFrontendControllerMockObject */
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
+        $typoScriptFrontendControllerMockObject->config = array(
+            'config' => array(),
+            'mainScript' => 'index.php',
+        );
+        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+        $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+        $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+
+        $this->assertEquals($expectedResult, $this->subject->_call('detectLinkTypeFromLinkParameter', $linkParameter));
+    }
+
+    /**
+     * @return array
+     */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider()
     {
         return array(
@@ -4167,6 +4226,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'TYPO3',
                 array(
                     'parameter' => 'http://typo3.org',
+                ),
+                '<a href="http://typo3.org">TYPO3</a>',
+            ),
+            'Link to url without schema' => array(
+                'TYPO3',
+                array(
+                    'parameter' => 'typo3.org',
                 ),
                 '<a href="http://typo3.org">TYPO3</a>',
             ),
@@ -4243,13 +4309,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult)
     {
-        $templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
         $templateServiceObjectMock->setup = array(
             'lib.' => array(
                 'parseFunc.' => $this->getLibParseFunc(),
             ),
         );
-        $typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
         $typoScriptFrontendControllerMockObject->config = array(
             'config' => array(),
             'mainScript' => 'index.php',
@@ -4467,13 +4533,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $pageRepositoryMockObject = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getPage'));
         $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn($pageArray);
-        $templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
         $templateServiceObjectMock->setup = array(
             'lib.' => array(
                 'parseFunc.' => $this->getLibParseFunc(),
             ),
         );
-        $typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
         $typoScriptFrontendControllerMockObject->config = array(
             'config' => array(),
             'mainScript' => 'index.php',
@@ -4542,13 +4608,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult)
     {
-        $templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
         $templateServiceObjectMock->setup = array(
             'lib.' => array(
                 'parseFunc.' => $this->getLibParseFunc(),
             ),
         );
-        $typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', false);
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
         $typoScriptFrontendControllerMockObject->config = array(
             'config' => array(),
             'mainScript' => 'index.php',
@@ -4911,7 +4977,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     protected function getFrontendController()
     {
