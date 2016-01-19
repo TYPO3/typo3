@@ -122,7 +122,7 @@ class FolderUtilityRenderer
         // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
         $fileExtList = array();
         foreach ($allowedExtensions as $fileExt) {
-            if (GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)) {
+            if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
                 $fileExtList[] = '<span class="label label-success">'
                     . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
@@ -182,7 +182,7 @@ class FolderUtilityRenderer
         $fileExtList = array();
         $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
         foreach ($onlineMediaFileExt as $fileExt) {
-            if (GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)
+            if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)
                 && (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, true))
             ) {
                 $fileExtList[] = '<span class="label label-success">'
