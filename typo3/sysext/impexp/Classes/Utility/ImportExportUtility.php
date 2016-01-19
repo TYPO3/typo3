@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Impexp\Utility;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
-use TYPO3\CMS\Impexp\ImportExport;
+use TYPO3\CMS\Impexp\Import;
 
 /**
  * Utility for import / export
@@ -43,8 +43,8 @@ class ImportExportUtility
         if (!is_int($pid)) {
             throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
         }
-        /** @var $import ImportExport */
-        $import = GeneralUtility::makeInstance(ImportExport::class);
+        /** @var $import Import */
+        $import = GeneralUtility::makeInstance(Import::class);
         $import->init(0, 'import');
 
         $this->emitAfterImportExportInitialisationSignal($import);
@@ -87,11 +87,11 @@ class ImportExportUtility
     /**
      * Emits a signal after initialization
      *
-     * @param ImportExport $import
+     * @param Import $import
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
-    protected function emitAfterImportExportInitialisationSignal(ImportExport $import)
+    protected function emitAfterImportExportInitialisationSignal(Import $import)
     {
         $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
     }
