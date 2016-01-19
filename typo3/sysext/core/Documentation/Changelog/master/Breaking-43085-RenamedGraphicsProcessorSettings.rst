@@ -57,7 +57,7 @@ im\_noScaleUp                  processor\_allowUpscaling
 im\_noFramePrepended           processor\_allowFrameSelection
 im\_mask\_temp\_ext\_gif       processor\_allowTemporaryMasksAsPng
 im\_path                       processor\_path
-imß_path\_lzw                  processor\_path\_lzw
+im\_path\_lzw                  processor\_path\_lzw
 im\_stripProfileCommand        processor\_stripColorProfileCommand
 im\_useStripProfileByDefault   processor\_stripColorProfileByDefault
 colorspace                     processor\_colorspace
