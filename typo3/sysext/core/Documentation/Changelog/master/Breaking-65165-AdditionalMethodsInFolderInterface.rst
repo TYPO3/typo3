@@ -5,7 +5,7 @@ Breaking: #65165 - AdditionalMethodsInFolderInterface
 Description
 ===========
 
-The interface ``AdditionalMethodsInFolderInterface`` has received two additional methods. Classes that implement
+The interface ``FolderInterface`` has received two additional methods. Classes that implement
 ``FolderInterface`` have to implement those methods as well. The new methods are:
 
 * ``getModificationTime()`` - Returns the modification time of the folder as Unix timestamp.
