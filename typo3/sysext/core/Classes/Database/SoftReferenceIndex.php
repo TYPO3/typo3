@@ -595,7 +595,7 @@ class SoftReferenceIndex
         $containsSlash = strstr($rootFileDat, '/');
         $rFD_fI = pathinfo($rootFileDat);
         $fileExtension = strtolower($rFD_fI['extension']);
-        if ($fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm' || trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat))) {
+        if (!$containsSlash && trim($rootFileDat) && (@is_file(PATH_site . $rootFileDat) || $fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm')) {
             $isLocalFile = 1;
         } elseif ($containsSlash) {
             // Adding this so realurl directories are linked right (non-existing).
