@@ -294,56 +294,56 @@ abstract class ImportExport
      */
     public function displayContentOverview()
     {
+        if (!isset($this->dat['header'])) {
+            return [];
+        }
         // Check extension dependencies:
-        if (is_array($this->dat['header']['extensionDependencies'])) {
-            foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-                if (!ExtensionManagementUtility::isLoaded($extKey)) {
-                    $this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
-                }
+        foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
+            if (!ExtensionManagementUtility::isLoaded($extKey)) {
+                $this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
             }
         }
+
         // Probably this is done to save memory space?
         unset($this->dat['files']);
 
         $viewData = array();
         // Traverse header:
-        if (is_array($this->dat['header'])) {
-            $this->remainHeader = $this->dat['header'];
-            // If there is a page tree set, show that:
-            if (is_array($this->dat['header']['pagetree'])) {
-                reset($this->dat['header']['pagetree']);
-                $lines = array();
-                $this->traversePageTree($this->dat['header']['pagetree'], $lines, '');
+        $this->remainHeader = $this->dat['header'];
+        // If there is a page tree set, show that:
+        if (is_array($this->dat['header']['pagetree'])) {
+            reset($this->dat['header']['pagetree']);
+            $lines = array();
+            $this->traversePageTree($this->dat['header']['pagetree'], $lines);
 
-                $viewData['dat'] = $this->dat;
-                $viewData['update'] = $this->update;
-                $viewData['showDiff'] = $this->showDiff;
-                if (!empty($lines)) {
-                    foreach ($lines as &$r) {
-                        $r['controls'] = $this->renderControls($r);
-                        $r['fileSize'] = GeneralUtility::formatSize($r['size']);
-                        $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
-                    }
-                    $viewData['pagetreeLines'] = $lines;
-                } else {
-                    $viewData['pagetreeLines'] = array();
+            $viewData['dat'] = $this->dat;
+            $viewData['update'] = $this->update;
+            $viewData['showDiff'] = $this->showDiff;
+            if (!empty($lines)) {
+                foreach ($lines as &$r) {
+                    $r['controls'] = $this->renderControls($r);
+                    $r['fileSize'] = GeneralUtility::formatSize($r['size']);
+                    $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
                 }
+                $viewData['pagetreeLines'] = $lines;
+            } else {
+                $viewData['pagetreeLines'] = array();
             }
-            // Print remaining records that were not contained inside the page tree:
-            if (is_array($this->remainHeader['records'])) {
-                $lines = array();
-                if (is_array($this->remainHeader['records']['pages'])) {
-                    $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
+        }
+        // Print remaining records that were not contained inside the page tree:
+        if (is_array($this->remainHeader['records'])) {
+            $lines = array();
+            if (is_array($this->remainHeader['records']['pages'])) {
+                $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
+            }
+            $this->traverseAllRecords($this->remainHeader['records'], $lines);
+            if (!empty($lines)) {
+                foreach ($lines as &$r) {
+                    $r['controls'] = $this->renderControls($r);
+                    $r['fileSize'] = GeneralUtility::formatSize($r['size']);
+                    $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
                 }
-                $this->traverseAllRecords($this->remainHeader['records'], $lines);
-                if (!empty($lines)) {
-                    foreach ($lines as &$r) {
-                        $r['controls'] = $this->renderControls($r);
-                        $r['fileSize'] = GeneralUtility::formatSize($r['size']);
-                        $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
-                    }
-                    $viewData['remainingRecords'] = $lines;
-                }
+                $viewData['remainingRecords'] = $lines;
             }
         }
 

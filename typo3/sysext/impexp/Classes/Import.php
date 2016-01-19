@@ -314,16 +314,14 @@ class Import extends ImportExport
     protected function isEquivalentObjectStorage(ResourceStorage $storageObject, array $storageRecord)
     {
         // compare the properties: driver, writable and online
-        if (
-            $storageObject->getDriverType() === $storageRecord['driver']
+        if ($storageObject->getDriverType() === $storageRecord['driver']
             && (bool)$storageObject->isWritable() === (bool)$storageRecord['is_writable']
             && (bool)$storageObject->isOnline() === (bool)$storageRecord['is_online']
         ) {
             $storageRecordConfiguration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
             $storageObjectConfiguration = $storageObject->getConfiguration();
             // compare the properties: pathType and basePath
-            if (
-                $storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
+            if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
                 && $storageRecordConfiguration['basePath'] === $storageObjectConfiguration['basePath']
             ) {
                 return true;
@@ -343,35 +341,32 @@ class Import extends ImportExport
 
         // Check #1: Extension dependencies
         $extKeysToInstall = array();
-        if (is_array($this->dat['header']['extensionDependencies'])) {
-            foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-                if (!ExtensionManagementUtility::isLoaded($extKey)) {
-                    $extKeysToInstall[] = $extKey;
-                }
+        foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
+            if (!ExtensionManagementUtility::isLoaded($extKey)) {
+                $extKeysToInstall[] = $extKey;
             }
         }
         if (!empty($extKeysToInstall)) {
-            $messages['missingExtensions'] = 'Before you can install this T3D file you need to install the extensions "' . implode('", "', $extKeysToInstall) . '".';
+            $messages['missingExtensions'] = 'Before you can install this T3D file you need to install the extensions "'
+                . implode('", "', $extKeysToInstall) . '".';
         }
 
         // Check #2: If the path for every local storage object exists.
         // Else files can't get moved into a newly imported storage.
-        if (is_array($this->dat['header']['records']['sys_file_storage'])) {
+        if (!empty($this->dat['header']['records']['sys_file_storage'])) {
             foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
                 $storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
                 // continue with Local, writable and online storage only
-                if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
-                    $storageExists = false;
-                    /** @var $localStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                if ($storageRecord['driver'] === 'Local'
+                    && $storageRecord['is_writable']
+                    && $storageRecord['is_online']
+                ) {
                     foreach ($this->storageObjects as $localStorage) {
                         if ($this->isEquivalentObjectStorage($localStorage, $storageRecord)) {
                             // There is already an existing storage
-                            $storageExists = true;
                             break;
                         }
-                    }
 
-                    if (!$storageExists) {
                         // The storage from the import does not have an equivalent storage
                         // in the current instance (same driver, same path, etc.). Before
                         // the storage record can get inserted later on take care the path
@@ -385,7 +380,11 @@ class Import extends ImportExport
                         $resourceStorage = ResourceFactory::getInstance()->createStorageObject($storageRecord);
                         if (!$resourceStorage->isOnline()) {
                             $configuration = $resourceStorage->getConfiguration();
-                            $messages['resourceStorageFolderMissing_' . $storageRecordUid] = 'The resource storage "' . $resourceStorage->getName() . '" will get imported. The storage target directory "' . $configuration['basePath'] . '" does not exist. Please create the directory prior to starting the import!';
+                            $messages['resourceStorageFolderMissing_' . $storageRecordUid] =
+                                'The resource storage "'
+                                . $resourceStorage->getName()
+                                . $configuration['basePath']
+                                . '" does not exist. Please create the directory prior to starting the import!';
                         }
                     }
                 }
