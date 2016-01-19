@@ -223,7 +223,7 @@ class CreateFolderController extends AbstractModule
             $fileExtList = array();
             $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
             foreach ($onlineMediaFileExt as $fileExt) {
-                if (GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)) {
+                if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
                     $fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
                 }
             }
@@ -262,7 +262,7 @@ class CreateFolderController extends AbstractModule
             $fileExtList = array();
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
             foreach ($textFileExt as $fileExt) {
-                if (GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)) {
+                if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
                     $fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
                 }
             }
