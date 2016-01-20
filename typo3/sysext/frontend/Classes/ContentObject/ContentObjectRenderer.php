@@ -6521,7 +6521,8 @@ class ContentObjectRenderer
                     if ($linktxt === '') {
                         $linktxt = $this->parseFunc(rawurldecode($linkParameter), array('makelinks' => 0), '< lib.parseFunc');
                     }
-                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $GLOBALS['TSFE']->absRefPrefix . $linkParameter, $conf);
+                    $fileUri = (!StringUtility::beginsWith($linkParameter, '/') ? $GLOBALS['TSFE']->absRefPrefix : '') . $linkParameter;
+                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $fileUri, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
                     $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
                     if ($conf['fileTarget.']) {
