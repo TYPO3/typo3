@@ -2316,6 +2316,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function tempnamReturnsPathStartingWithGivenPrefix()
     {
         $filePath = GeneralUtility::tempnam('foo');
+        $this->testFilesToDelete[] = $filePath;
         $fileName = basename($filePath);
         $this->assertStringStartsWith('foo', $fileName);
     }
@@ -2326,6 +2327,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function tempnamReturnsPathWithoutBackslashes()
     {
         $filePath = GeneralUtility::tempnam('foo');
+        $this->testFilesToDelete[] = $filePath;
         $this->assertNotContains('\\', $filePath);
     }
 
@@ -2335,6 +2337,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function tempnamReturnsAbsolutePathInsideDocumentRoot()
     {
         $filePath = GeneralUtility::tempnam('foo');
+        $this->testFilesToDelete[] = $filePath;
         $this->assertStringStartsWith(PATH_site, $filePath);
     }
 
