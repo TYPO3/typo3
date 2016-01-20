@@ -25,12 +25,13 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
  */
-class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
+class RteHtmlParser extends HtmlParser
 {
     /**
+     * List of elements that are not wrapped into a "p" tag while doing the transformation.
      * @var string
      */
-    public $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
+    public $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
 
     /**
      * Set this to the pid of the record manipulated by the class.
@@ -799,7 +800,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
             return $value;
         }
         // Split the content from RTE by the occurrence of these blocks:
-        $blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList, $value);
+        $blockSplit = $this->splitIntoBlock($this->blockElementList, $value);
         $cc = 0;
         $aC = count($blockSplit);
         // Avoid superfluous linebreaks by transform_db after ending headListTag
@@ -902,8 +903,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     public function TS_transform_rte($value)
     {
         // Split the content from database by the occurrence of the block elements
-        $blockElementList = 'TABLE,BLOCKQUOTE,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList;
-        $blockSplit = $this->splitIntoBlock($blockElementList, $value);
+        $blockSplit = $this->splitIntoBlock($this->blockElementList, $value);
         // Traverse the blocks
         foreach ($blockSplit as $k => $v) {
             if ($k % 2) {
@@ -931,7 +931,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                 $nextFTN = $this->getFirstTagName($blockSplit[$k + 1]);
                 $onlyLineBreaks = (preg_match('/^[ ]*' . LF . '+[ ]*$/', $blockSplit[$k]) == 1);
                 // If the line is followed by a block or is the last line:
-                if (GeneralUtility::inList($blockElementList, $nextFTN) || !isset($blockSplit[$k + 1])) {
+                if (GeneralUtility::inList($this->blockElementList, $nextFTN) || !isset($blockSplit[$k + 1])) {
                     // If the line contains more than just linebreaks, reduce the number of trailing linebreaks by 1
                     if (!$onlyLineBreaks) {
                         $blockSplit[$k] = preg_replace('/(' . LF . '*)' . LF . '[ ]*$/', '$1', $blockSplit[$k]);
@@ -1046,42 +1046,17 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     }
                     // Setting up span tags if they are allowed:
                     if (isset($keepTags['span'])) {
-                        $classes = array_merge(array(''), $this->allowedClasses);
                         $keepTags['span'] = array(
                             'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir,itemscope,itemtype,itemprop',
                             'fixAttrib' => array(
                                 'class' => array(
-                                    'list' => $classes,
                                     'removeIfFalse' => 1
                                 )
                             ),
                             'rmTagIfNoAttrib' => 1
                         );
-                        if (!$this->procOptions['allowedClasses']) {
-                            unset($keepTags['span']['fixAttrib']['class']['list']);
-                        }
-                    }
-                    // Setting up font tags if they are allowed:
-                    if (isset($keepTags['font'])) {
-                        $colors = array_merge(array(''), GeneralUtility::trimExplode(',', $this->procOptions['allowedFontColors'], true));
-                        $keepTags['font'] = array(
-                            'allowedAttribs' => 'face,color,size',
-                            'fixAttrib' => array(
-                                'face' => array(
-                                    'removeIfFalse' => 1
-                                ),
-                                'color' => array(
-                                    'removeIfFalse' => 1,
-                                    'list' => $colors
-                                ),
-                                'size' => array(
-                                    'removeIfFalse' => 1
-                                )
-                            ),
-                            'rmTagIfNoAttrib' => 1
-                        );
-                        if (!$this->procOptions['allowedFontColors']) {
-                            unset($keepTags['font']['fixAttrib']['color']['list']);
+                        if (!empty($this->allowedClasses)) {
+                            $keepTags['span']['fixAttrib']['class']['list'] = $this->allowedClasses;
                         }
                     }
                     // Setting further options, getting them from the processiong options:
