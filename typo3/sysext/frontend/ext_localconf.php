@@ -11,3 +11,9 @@ if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 		'languageAndWorkspaceOverlay'
 	);
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
+	options.saveDocNew.sys_file = 0
+	options.saveDocNew.sys_file_metadata = 0
+	options.disableDelete.sys_file = 1
+');
