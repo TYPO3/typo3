@@ -75,13 +75,6 @@ class RteHtmlParser extends HtmlParser
     public $TS_transform_db_safecounter = 100;
 
     /**
-     * Parameters from TCA types configuration related to the RTE
-     *
-     * @var string
-     */
-    public $rte_p = '';
-
-    /**
      * Data caching for processing function
      *
      * @var array
@@ -141,12 +134,12 @@ class RteHtmlParser extends HtmlParser
             $this->blockElementList = $this->procOptions['blockElementList'];
         }
         // Get parameters for rte_transformation:
-        $p = ($this->rte_p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']));
+        $specialFieldConfiguration = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
         // Setting modes:
         if ((string)$this->procOptions['overruleMode'] !== '') {
             $modes = array_unique(GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']));
         } else {
-            $modes = array_unique(GeneralUtility::trimExplode('-', $p['mode']));
+            $modes = array_unique(GeneralUtility::trimExplode('-', $specialFieldConfiguration['mode']));
         }
         $revmodes = array_flip($modes);
         // Find special modes and extract them:
