@@ -512,42 +512,42 @@ return array(
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.0',
                         0,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/above_center.gif'
+                        'content-beside-text-img-above-center'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.1',
                         1,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/above_right.gif'
+                        'content-beside-text-img-above-right'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.2',
                         2,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/above_left.gif'
+                        'content-beside-text-img-above-left'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.3',
                         8,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/below_center.gif'
+                        'content-beside-text-img-below-center'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.4',
                         9,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/below_right.gif'
+                        'content-beside-text-img-below-right'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.5',
                         10,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/below_left.gif'
+                        'content-beside-text-img-below-left'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.6',
                         17,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/intext_right.gif'
+                        'content-inside-text-img-right'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.7',
                         18,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/intext_left.gif'
+                        'content-inside-text-img-left'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.8',
@@ -556,12 +556,12 @@ return array(
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.9',
                         25,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/intext_right_nowrap.gif'
+                        'content-beside-text-img-right'
                     ),
                     array(
                         'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.10',
                         26,
-                        'EXT:frontend/Resources/Public/Icons/ImageOrientation/intext_left_nowrap.gif'
+                        'content-beside-text-img-left'
                     )
                 ),
                 'selicon_cols' => 6,

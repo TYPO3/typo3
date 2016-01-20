@@ -130,17 +130,17 @@ $tca = array(
                     array(
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.1',
                         1,
-                        'EXT:filemetadata/Resources/Public/Icons/status_1.png'
+                        'filemetadata-status-1'
                     ),
                     array(
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.2',
                         2,
-                        'EXT:filemetadata/Resources/Public/Icons/status_2.png'
+                        'filemetadata-status-2'
                     ),
                     array(
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.3',
                         3,
-                        'EXT:filemetadata/Resources/Public/Icons/status_3.png'
+                        'filemetadata-status-3'
                     ),
                 ),
                 'showIconTable' => true,

@@ -53,7 +53,7 @@ return array(
                     0 => array(
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.wizard',
                         'type' => 'popup',
-                        'icon' => 'EXT:frontend/Resources/Public/Images/wizard_backend_layout.png',
+                        'icon' => 'wizard-backendlayout',
                         'module' => array(
                             'name' => 'wizard_backend_layout'
                         ),

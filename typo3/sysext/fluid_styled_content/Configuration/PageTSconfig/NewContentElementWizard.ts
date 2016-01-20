@@ -13,7 +13,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		textmedia {
-			iconIdentifier = content-textpic
+			iconIdentifier = content-textmedia
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_description
 			tt_content_defValues {

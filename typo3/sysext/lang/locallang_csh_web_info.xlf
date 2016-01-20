@@ -18,7 +18,7 @@ More about Web&gt;Info module framework | https://docs.typo3.org/typo3cms/Inside
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image">
-				<source>EXT:lang/cshimages/pagetree_overview_10.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pagetree_overview_10.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">

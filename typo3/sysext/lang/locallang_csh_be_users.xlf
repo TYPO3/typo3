@@ -27,9 +27,9 @@ Setting up a new user and group | https://docs.typo3.org/typo3cms/InsideTypo3Ref
 Users and Groups [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/beuser_2.png,
-EXT:lang/cshimages/beuser_1.png,
-EXT:lang/cshimages/beuser_3.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/beuser_2.png,
+EXT:lang/Resources/Public/Images/cshimages/beuser_1.png,
+EXT:lang/Resources/Public/Images/cshimages/beuser_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -112,8 +112,8 @@ xMOD_csh_corebe:pagetree</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_db_mountpoints.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_3.png,
-EXT:lang/cshimages/be_groups_4.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.image_descr" xml:space="preserve">
@@ -178,7 +178,7 @@ be_users:endtime</source>
 You should probably not assign any other users than yourself as an 'Admin' user.</source>
 			</trans-unit>
 			<trans-unit id="_admin.image">
-				<source>EXT:lang/cshimages/beuser_4.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/beuser_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="options.description">
@@ -289,7 +289,7 @@ User TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/<
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_allowed_languages.image">
-				<source>EXT:lang/cshimages/be_groups_18.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_18.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>

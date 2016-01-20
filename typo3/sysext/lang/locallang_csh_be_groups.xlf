@@ -17,8 +17,8 @@ How to set up a backend user | https://docs.typo3.org/typo3cms/InsideTypo3Refere
 Setting up groups (from "Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_2.png,
-EXT:lang/cshimages/be_groups_1.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -32,7 +32,7 @@ This usergroup has Access Lists enabled. In the Access Lists you specify which m
 				<source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
 			</trans-unit>
 			<trans-unit id="_title.image">
-				<source>EXT:lang/cshimages/be_groups_2.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.image_descr">
@@ -54,8 +54,8 @@ xMOD_csh_corebe:list_module</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_db_mountpoints.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_3.png,
-EXT:lang/cshimages/be_groups_4.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.image_descr" xml:space="preserve">
@@ -82,10 +82,10 @@ More about File Mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/Co
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_mountpoints.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_5.png,
-EXT:lang/cshimages/be_groups_6.png,
-EXT:lang/cshimages/be_groups_7.png,
-EXT:lang/cshimages/be_groups_8.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_5.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_7.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_8.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.image_descr" xml:space="preserve">
@@ -136,7 +136,7 @@ be_groups:inc_access_lists</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_pagetypes_select.image">
-				<source>EXT:lang/cshimages/be_groups_9.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetypes_select.image_descr">
@@ -158,9 +158,9 @@ xMOD_csh_corebe:new_ce</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tables_modify.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_10.png,
-EXT:lang/cshimages/be_groups_15.png,
-EXT:lang/cshimages/be_groups_11.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_10.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_15.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_11.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tables_modify.image_descr" xml:space="preserve">
@@ -194,7 +194,7 @@ Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStarted
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_non_exclude_fields.image">
-				<source>EXT:lang/cshimages/be_groups_14.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_14.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description">
@@ -230,8 +230,8 @@ Backend Interface | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArc
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_groupMods.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_12.png,
-EXT:lang/cshimages/be_groups_13.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_12.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_13.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="groupMods.image_descr" xml:space="preserve">
@@ -279,8 +279,8 @@ TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_16.png,
-EXT:lang/cshimages/be_groups_17.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_16.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_17.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TSconfig.image_descr" xml:space="preserve">
@@ -311,7 +311,7 @@ If a value has the prefix "Deny" (red icon) it means that by default users can s
 The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
 			</trans-unit>
 			<trans-unit id="_explicit_allowdeny.image">
-				<source>EXT:lang/cshimages/be_groups_19.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_19.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="allowed_languages.description">
@@ -326,7 +326,7 @@ If a user has no languages listed all together it simply means that he can edit 
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_allowed_languages.image">
-				<source>EXT:lang/cshimages/be_groups_18.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_18.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="allowed_languages.image_descr">
@@ -339,7 +339,7 @@ If a user has no languages listed all together it simply means that he can edit 
 				<source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
 			</trans-unit>
 			<trans-unit id="_custom_options.image">
-				<source>EXT:lang/cshimages/be_groups_20.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_20.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="custom_options.image_descr">

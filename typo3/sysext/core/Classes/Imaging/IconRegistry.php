@@ -1498,6 +1498,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-beside-text-img-right.svg'
             )
         ),
+        'content-inside-text-img-left' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-inside-text-img-left.svg'
+            )
+        ),
+        'content-inside-text-img-right' => array(
+            'provider' => SvgIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-inside-text-img-right.svg'
+            )
+        ),
         'content-bullets' => array(
             'provider' => SvgIconProvider::class,
             'options' => array(
@@ -1594,10 +1606,10 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-textpic.svg'
             )
         ),
-        'content-special-media' => array(
-            'provider' => BitmapIconProvider::class,
+        'content-textmedia' => array(
+            'provider' => SvgIconProvider::class,
             'options' => array(
-                'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/multimedia.gif'
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-textmedia.svg'
             )
         ),
 

@@ -13,7 +13,7 @@ call_user_func(function () {
         [
             $languageFilePrefix . 'tt_content.CType.textmedia',
             'textmedia',
-            'content-textpic'
+            'content-textmedia'
         ],
         'header',
         'after'

@@ -16,7 +16,7 @@
 				<source>Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
 			</trans-unit>
 			<trans-unit id="_.image">
-				<source>EXT:lang/cshimages/login.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/login.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
@@ -42,8 +42,8 @@ More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/Gene
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_menu_modules.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_2.png,
-EXT:lang/cshimages/core_3.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_2.png,
+EXT:lang/Resources/Public/Images/cshimages/core_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="menu_modules.image_descr" xml:space="preserve">
@@ -72,7 +72,7 @@ TYPO3 also caches small configuration scripts from extensions, "ext_localconf.ph
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_menu_adminFunction.image">
-				<source>EXT:lang/cshimages/core_1.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetree.alttitle">
@@ -101,10 +101,10 @@ Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_pagetree.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_4.png,
-EXT:lang/cshimages/core_5.png,
-EXT:lang/cshimages/core_6.png,
-EXT:lang/cshimages/core_7.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_4.png,
+EXT:lang/Resources/Public/Images/cshimages/core_5.png,
+EXT:lang/Resources/Public/Images/cshimages/core_6.png,
+EXT:lang/Resources/Public/Images/cshimages/core_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetree.image_descr" xml:space="preserve">
@@ -143,9 +143,9 @@ xMOD_csh_corebe:filelist_module</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filetree.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_8.png,
-EXT:lang/cshimages/core_9.png,
-EXT:lang/cshimages/core_10.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_8.png,
+EXT:lang/Resources/Public/Images/cshimages/core_9.png,
+EXT:lang/Resources/Public/Images/cshimages/core_10.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="filetree.image_descr" xml:space="preserve">
@@ -198,9 +198,9 @@ The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Re
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_module.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_11.png,
-EXT:lang/cshimages/core_12.png,
-EXT:lang/cshimages/core_34.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_11.png,
+EXT:lang/Resources/Public/Images/cshimages/core_12.png,
+EXT:lang/Resources/Public/Images/cshimages/core_34.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_module.image_descr" xml:space="preserve">
@@ -234,8 +234,8 @@ The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Re
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_module_root.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_13.png,
-EXT:lang/cshimages/core_14.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_13.png,
+EXT:lang/Resources/Public/Images/cshimages/core_14.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_module_root.image_descr" xml:space="preserve">
@@ -258,8 +258,8 @@ Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/Cor
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_clipboard.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_16.png,
-EXT:lang/cshimages/core_17.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_16.png,
+EXT:lang/Resources/Public/Images/cshimages/core_17.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_clipboard.image_descr" xml:space="preserve">
@@ -277,7 +277,7 @@ If you select one of the numeric clipboard pads you will be able to store more t
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_searchbox.image">
-				<source>EXT:lang/cshimages/core_15.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_15.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_options.alttitle">
@@ -293,8 +293,8 @@ xMOD_csh_corebe:filelist_options</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_options.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_18.png,
-EXT:lang/cshimages/core_19.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_18.png,
+EXT:lang/Resources/Public/Images/cshimages/core_19.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_options.image_descr" xml:space="preserve">
@@ -313,7 +313,7 @@ xMOD_csh_corebe:new_pages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_new_regular.image">
-				<source>EXT:lang/cshimages/core_70.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_70.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="new_regular.image_descr">
@@ -332,8 +332,8 @@ How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutoria
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_new_pages.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_20.png,
-EXT:lang/cshimages/core_21.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_20.png,
+EXT:lang/Resources/Public/Images/cshimages/core_21.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="new_pages.image_descr" xml:space="preserve">
@@ -358,9 +358,9 @@ Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiRefe
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_new_ce.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_22.png,
-EXT:lang/cshimages/core_23.png,
-EXT:lang/cshimages/core_24.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_22.png,
+EXT:lang/Resources/Public/Images/cshimages/core_23.png,
+EXT:lang/Resources/Public/Images/cshimages/core_24.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="new_ce.image_descr" xml:space="preserve">
@@ -384,8 +384,8 @@ Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCre
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_move_el_pages.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_27.png,
-EXT:lang/cshimages/core_28.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_27.png,
+EXT:lang/Resources/Public/Images/cshimages/core_28.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="move_el_pages.image_descr" xml:space="preserve">
@@ -407,8 +407,8 @@ xMOD_csh_corebe:new_regular</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_move_el_cs.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_25.png,
-EXT:lang/cshimages/core_26.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_25.png,
+EXT:lang/Resources/Public/Images/cshimages/core_26.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="move_el_cs.image_descr" xml:space="preserve">
@@ -438,8 +438,8 @@ Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistor
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_history_log.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_37.png,
-EXT:lang/cshimages/core_38.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_37.png,
+EXT:lang/Resources/Public/Images/cshimages/core_38.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="history_log.image_descr" xml:space="preserve">
@@ -464,7 +464,7 @@ Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistor
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_history_sum.image">
-				<source>EXT:lang/cshimages/core_39.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_39.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="history_sum.image_descr">
@@ -480,7 +480,7 @@ Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistor
 				<source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
 			</trans-unit>
 			<trans-unit id="_history_entry.image">
-				<source>EXT:lang/cshimages/core_40.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_40.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TCEforms.alttitle">
@@ -511,11 +511,11 @@ Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReferenc
 Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_30.png,
-EXT:lang/cshimages/core_29.png,
-EXT:lang/cshimages/core_32.png,
-EXT:lang/cshimages/core_33.png,
-EXT:lang/cshimages/core_31.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_30.png,
+EXT:lang/Resources/Public/Images/cshimages/core_29.png,
+EXT:lang/Resources/Public/Images/cshimages/core_32.png,
+EXT:lang/Resources/Public/Images/cshimages/core_33.png,
+EXT:lang/Resources/Public/Images/cshimages/core_31.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TCEforms.image_descr" xml:space="preserve">
@@ -529,7 +529,7 @@ The "additional fields" from the example above is located in a so called "palett
 				<source>Here you can switch between "open documents" in TYPO3.</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms_docSelector.image">
-				<source>EXT:lang/cshimages/core_35.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_35.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TCEforms_cacheSelector.alttitle">
@@ -546,7 +546,7 @@ If cache options are not available for you, you should ask your administrator to
 				<source>User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms_cacheSelector.image">
-				<source>EXT:lang/cshimages/core_36.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_36.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="perm_module.alttitle">
@@ -573,8 +573,8 @@ _MOD_user_setup:option_helpText</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_perm_module.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_43.png,
-EXT:lang/cshimages/core_41.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_43.png,
+EXT:lang/Resources/Public/Images/cshimages/core_41.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="perm_module_setting.alttitle">
@@ -607,7 +607,7 @@ User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/U
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_perm_module_setting.image">
-				<source>EXT:lang/cshimages/core_42.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_42.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="perm_module_setting.image_descr">
@@ -637,8 +637,8 @@ sys_filemounts</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filelist_module.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_47.png,
-EXT:lang/cshimages/core_49.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_47.png,
+EXT:lang/Resources/Public/Images/cshimages/core_49.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="filelist_module.image_descr" xml:space="preserve">
@@ -657,8 +657,8 @@ About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Ref
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filelist_clipboard.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_44.png,
-EXT:lang/cshimages/core_46.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_44.png,
+EXT:lang/Resources/Public/Images/cshimages/core_46.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="filelist_clipboard.image_descr" xml:space="preserve">
@@ -678,7 +678,7 @@ xMOD_csh_corebe:filelist_clipboard</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filelist_options.image">
-				<source>EXT:lang/cshimages/core_48.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_48.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="filelist_options.image_descr">
@@ -695,7 +695,7 @@ xMOD_csh_corebe:filelist_clipboard</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_edit.image">
-				<source>EXT:lang/cshimages/core_50.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_50.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_edit.image_descr">
@@ -714,9 +714,9 @@ xMOD_csh_corebe:file_rename</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_newfolder.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_51.png,
-EXT:lang/cshimages/core_52.png,
-EXT:lang/cshimages/core_53.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_51.png,
+EXT:lang/Resources/Public/Images/cshimages/core_52.png,
+EXT:lang/Resources/Public/Images/cshimages/core_53.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_newfolder.image_descr" xml:space="preserve">
@@ -741,9 +741,9 @@ xMOD_csh_corebe:file_rename</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_newfile.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_51.png,
-EXT:lang/cshimages/core_54.png,
-EXT:lang/cshimages/core_55.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_51.png,
+EXT:lang/Resources/Public/Images/cshimages/core_54.png,
+EXT:lang/Resources/Public/Images/cshimages/core_55.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_newfile.image_descr" xml:space="preserve">
@@ -768,8 +768,8 @@ After pressing "Create file" you will see a new, empty file in the folder you se
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_rename.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_56.png,
-EXT:lang/cshimages/core_57.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_56.png,
+EXT:lang/Resources/Public/Images/cshimages/core_57.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_rename.image_descr" xml:space="preserve">
@@ -795,8 +795,8 @@ How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/The
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_upload.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_58.png,
-EXT:lang/cshimages/core_59.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_58.png,
+EXT:lang/Resources/Public/Images/cshimages/core_59.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_upload.image_descr" xml:space="preserve">
@@ -823,8 +823,8 @@ Form Wizard details [Technical]| https://docs.typo3.org/typo3cms/CoreApiReferenc
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_60.png,
-EXT:lang/cshimages/core_69.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_60.png,
+EXT:lang/Resources/Public/Images/cshimages/core_69.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="wizard_forms_wiz.image_descr" xml:space="preserve">
@@ -838,7 +838,7 @@ Usually you enter the Form Wizard by clicking the form wizard icon next for a te
 				<source>Use the refresh button to update the form (without saving it), for instance if you changed a field type or so. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz_buttons.image">
-				<source>EXT:lang/cshimages/core_62.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_62.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="wizard_forms_wiz_formmail_info.alttitle">
@@ -854,7 +854,7 @@ Usually you enter the Form Wizard by clicking the form wizard icon next for a te
 				<source>How-to create Mail Forms | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EmailForm/</source>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz_formmail_info.image">
-				<source>EXT:lang/cshimages/core_61.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_61.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="wizard_table_wiz.alttitle">
@@ -873,7 +873,7 @@ Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/A
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_wizard_table_wiz.image">
-				<source>EXT:lang/cshimages/core_63.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_63.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="wizard_table_wiz_buttons.alttitle">
@@ -883,7 +883,7 @@ Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/A
 				<source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
 			</trans-unit>
 			<trans-unit id="_wizard_table_wiz_buttons.image">
-				<source>EXT:lang/cshimages/core_62.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_62.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcuts.alttitle">
@@ -905,10 +905,10 @@ Editing pages from an id is easy with the shortcut frame. Simply enter an intege
 				<source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_shortcuts.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_64.png,
-EXT:lang/cshimages/core_65.png,
-EXT:lang/cshimages/core_67.png,
-EXT:lang/cshimages/core_68.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_64.png,
+EXT:lang/Resources/Public/Images/cshimages/core_65.png,
+EXT:lang/Resources/Public/Images/cshimages/core_67.png,
+EXT:lang/Resources/Public/Images/cshimages/core_68.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcuts.image_descr" xml:space="preserve">
@@ -930,10 +930,10 @@ You can name shortcuts, you can even group them and share them. If you want to e
 				<source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_bookmarks.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/core_64.png,
-EXT:lang/cshimages/core_65.png,
-EXT:lang/cshimages/core_67.png,
-EXT:lang/cshimages/core_68.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/core_64.png,
+EXT:lang/Resources/Public/Images/cshimages/core_65.png,
+EXT:lang/Resources/Public/Images/cshimages/core_67.png,
+EXT:lang/Resources/Public/Images/cshimages/core_68.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="bookmarks.image_descr" xml:space="preserve">

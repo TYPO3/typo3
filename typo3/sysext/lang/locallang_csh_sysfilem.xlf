@@ -18,14 +18,14 @@ More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/Co
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image">
-				<source>EXT:lang/cshimages/filemount_1.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/filemount_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.description">
 				<source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
 			</trans-unit>
 			<trans-unit id="_title.image">
-				<source>EXT:lang/cshimages/be_groups_5.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="path.description">
@@ -47,8 +47,8 @@ sys_filemounts</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_path.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/be_groups_6.png,
-EXT:lang/cshimages/be_groups_7.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:lang/Resources/Public/Images/cshimages/be_groups_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="path.image_descr" xml:space="preserve">

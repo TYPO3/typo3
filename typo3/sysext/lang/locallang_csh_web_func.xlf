@@ -20,7 +20,7 @@ _MOD_web_func:tx_wizardsortpages</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image">
-				<source>EXT:lang/cshimages/pagetree_overview_11.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pagetree_overview_11.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">

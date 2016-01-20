@@ -25,8 +25,8 @@ About pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrin
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/pages_1.png,
-EXT:lang/cshimages/pages_2.png,</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pages_1.png,
+EXT:lang/Resources/Public/Images/cshimages/pages_2.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -42,7 +42,7 @@ You can always change the 'Page Title' without affecting links to a page. This i
 You can use any characters in the 'Page Title'.</source>
 			</trans-unit>
 			<trans-unit id="_title.image">
-				<source>EXT:lang/cshimages/pages_3.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pages_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.image_descr">
@@ -67,7 +67,7 @@ About $PAGES_TYPES | https://docs.typo3.org/typo3cms/CoreApiReference/PageTypes/
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_doktype.image">
-				<source>EXT:lang/cshimages/pages_4.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pages_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="doktype.image_descr">
@@ -92,7 +92,7 @@ More about Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/Pag
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image">
-				<source>EXT:lang/cshimages/pages_5.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pages_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TSconfig.image_descr">
@@ -111,9 +111,9 @@ This option was designed to prevent the display of a branch with an unmanageable
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_php_tree_stop.image" xml:space="preserve">
-				<source>EXT:lang/cshimages/pages_8.png,
-EXT:lang/cshimages/pages_6.png,
-EXT:lang/cshimages/pages_7.png</source>
+				<source>EXT:lang/Resources/Public/Images/cshimages/pages_8.png,
+EXT:lang/Resources/Public/Images/cshimages/pages_6.png,
+EXT:lang/Resources/Public/Images/cshimages/pages_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="php_tree_stop.image_descr" xml:space="preserve">
