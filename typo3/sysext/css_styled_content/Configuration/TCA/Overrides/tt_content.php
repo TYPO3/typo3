@@ -359,7 +359,7 @@ $extraContentColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $extraContentColumns);
 
 // Add flexform
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:css_styled_content/flexform_ds.xml', 'table');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:css_styled_content/Configuration/FlexForms/table.xml', 'table');
 
 // Add content elements
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = array_merge(
