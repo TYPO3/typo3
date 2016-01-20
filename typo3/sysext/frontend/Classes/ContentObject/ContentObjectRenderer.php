@@ -5905,7 +5905,8 @@ class ContentObjectRenderer
                 if (file_exists(rawurldecode($splitLinkParam[0])) || strpos($linkParameter, '/') !== false) {
                     // Setting title if blank value to link
                     $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkParameter));
-                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $GLOBALS['TSFE']->absRefPrefix . $linkParameter, $conf);
+                    $fileUri = (!StringUtility::beginsWith($linkParameter, '/') ? $GLOBALS['TSFE']->absRefPrefix : '') . $linkParameter;
+                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $fileUri, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
                     if (empty($target)) {
                         $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;

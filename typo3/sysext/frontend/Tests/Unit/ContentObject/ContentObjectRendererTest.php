@@ -4573,6 +4573,155 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider()
+    {
+        return array(
+            'Link to file' => array(
+                'My file',
+                array(
+                    'parameter' => 'fileadmin/foo.bar',
+                ),
+                '/',
+                '<a href="/fileadmin/foo.bar">My file</a>',
+            ),
+            'Link to file with longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => 'fileadmin/foo.bar',
+                ),
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar">My file</a>',
+            ),
+            'Link to absolute file' => array(
+                'My file',
+                array(
+                    'parameter' => '/images/foo.bar',
+                ),
+                '/',
+                '<a href="/images/foo.bar">My file</a>',
+            ),
+            'Link to absolute file with longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/images/foo.bar',
+                ),
+                '/sub/',
+                '<a href="/images/foo.bar">My file</a>',
+            ),
+            'Link to absolute file with identical longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/sub/fileadmin/foo.bar',
+                ),
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar">My file</a>',
+            ),
+            'Link to file with empty absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => 'fileadmin/foo.bar',
+                ),
+                '',
+                '<a href="fileadmin/foo.bar">My file</a>',
+            ),
+            'Link to absolute file with empty absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/fileadmin/foo.bar',
+                ),
+                '',
+                '<a href="/fileadmin/foo.bar">My file</a>',
+            ),
+            'Link to file with attributes with absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ),
+                '/',
+                '<a href="/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ),
+            'Link to file with attributes with longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ),
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ),
+            'Link to absolute file with attributes with absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/images/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ),
+                '/',
+                '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ),
+            'Link to absolute file with attributes with longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/images/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ),
+                '/sub/',
+                '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ),
+            'Link to absolute file with attributes with identical longer absRefPrefix' => array(
+                'My file',
+                array(
+                    'parameter' => '/sub/fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ),
+                '/sub/',
+                '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ),
+        );
+    }
+
+    /**
+     * @test
+     * @param string $linkText
+     * @param array $configuration
+     * @param string $absRefPrefix
+     * @param string $expectedResult
+     * @dataProvider typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider
+     */
+    public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix($linkText, $configuration, $absRefPrefix, $expectedResult)
+    {
+        $templateServiceObjectMock = $this->getMock(TemplateService::class, array('dummy'));
+        $templateServiceObjectMock->setup = array(
+            'lib.' => array(
+                'parseFunc.' => $this->getLibParseFunc(),
+            ),
+        );
+        $typoScriptFrontendControllerMockObject = $this->getMock(TypoScriptFrontendController::class, array(), array(), '', false);
+        $typoScriptFrontendControllerMockObject->config = array(
+            'config' => array(),
+            'mainScript' => 'index.php',
+        );
+        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+        $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+        $GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
+        $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+
+        $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+    }
+
+    /**
      * @test
      */
     public function stdWrap_splitObjReturnsCount()
