@@ -143,10 +143,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
         }
         $revmodes = array_flip($modes);
         // Find special modes and extract them:
-        if (isset($revmodes['ts'])) {
-            $modes[$revmodes['ts']] = 'ts_transform,ts_preserve,ts_images,ts_links';
-        }
-        // Find special modes and extract them:
         if (isset($revmodes['ts_css'])) {
             $modes[$revmodes['ts_css']] = 'css_transform,ts_images,ts_links';
         }
@@ -192,8 +188,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         case 'ts_preserve':
                             $value = $this->TS_preserve_db($value);
                             break;
-                        case 'ts_transform':
-
                         case 'css_transform':
                             $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
                             // CR has a very disturbing effect, so just remove all CR and rely on LF
@@ -202,7 +196,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                             $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
                             // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
                             $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
-                            $value = $this->TS_transform_db($value, $cmd == 'css_transform');
+                            $value = $this->TS_transform_db($value);
                             break;
                         default:
                             // Do nothing
@@ -231,12 +225,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         case 'ts_preserve':
                             $value = $this->TS_preserve_rte($value);
                             break;
-                        case 'ts_transform':
-
                         case 'css_transform':
                             // Has a very disturbing effect, so just remove all '13' - depend on '10'
                             $value = str_replace(CR, '', $value);
-                            $value = $this->TS_transform_rte($value, $cmd == 'css_transform');
+                            $value = $this->TS_transform_rte($value);
                             break;
                         default:
                             // Do nothing
@@ -792,15 +784,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     }
 
     /**
-     * Transformation handler: 'ts_transform' + 'css_transform' / direction: "db"
+     * Transformation handler: 'css_transform' / direction: "db"
      * Cleaning (->db) for standard content elements (ts)
      *
      * @param string $value Content input
-     * @param bool $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
      * @return string Content output
      * @see TS_transform_rte()
      */
-    public function TS_transform_db($value, $css = false)
+    public function TS_transform_db($value)
     {
         // Safety... so forever loops are avoided (they should not occur, but an error would potentially do this...)
         $this->TS_transform_db_safecounter--;
@@ -836,14 +827,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     case 'nav':
                     case 'article':
                     case 'aside':
-                        $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>' . $lastBR;
+                        $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>' . $lastBR;
                         break;
                     case 'ol':
                     case 'ul':
                     case 'table':
-                        if ($css) {
-                            $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-                        }
+                        $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
                         break;
                     case 'h1':
                     case 'h2':
@@ -851,18 +840,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     case 'h4':
                     case 'h5':
                     case 'h6':
-                        if (!$css) {
-                            list($attribArray) = $this->get_tag_attributes($tag);
-                            // Processing inner content here:
-                            $innerContent = $this->HTMLcleaner_db($this->removeFirstAndLastTag($blockSplit[$k]));
-                            $blockSplit[$k] = '<' . $tagName . ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') . ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') . '>' . $innerContent . '</' . $tagName . '>' . $lastBR;
-                        } else {
-                            // Eliminate true linebreaks inside Hx tags
-                            $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-                        }
-                        break;
                     default:
-                        // Eliminate true linebreaks inside other headlist tags
+                        // Eliminate true linebreaks inside Hx and other headlist tags
                         $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
                 }
             } else {
@@ -913,15 +892,14 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
     }
 
     /**
-     * Transformation handler: 'ts_transform' + 'css_transform' / direction: "rte"
+     * Transformation handler: css_transform / direction: "rte"
      * Set (->rte) for standard content elements (ts)
      *
      * @param string $value Content input
-     * @param bool $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
      * @return string Content output
      * @see TS_transform_db()
      */
-    public function TS_transform_rte($value, $css = false)
+    public function TS_transform_rte($value)
     {
         // Split the content from database by the occurrence of the block elements
         $blockElementList = 'TABLE,BLOCKQUOTE,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList;
@@ -944,7 +922,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                     case 'nav':
                     case 'article':
                     case 'aside':
-                        $blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>';
+                        $blockSplit[$k] = $tag . $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>';
                         break;
                 }
                 $blockSplit[$k + 1] = preg_replace('/^[ ]*' . LF . '/', '', $blockSplit[$k + 1]);
