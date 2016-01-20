@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -33,10 +32,6 @@ class InputTextElement extends AbstractFormElement
      */
     public function render()
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
         $row = $this->data['databaseRow'];
@@ -50,19 +45,6 @@ class InputTextElement extends AbstractFormElement
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
         $classes = array();
         $attributes = array();
-
-        // set all date times available
-        $dateFormats = array(
-            'date' => '%d-%m-%Y',
-            'year' => '%Y',
-            'time' => '%H:%M',
-            'timesec' => '%H:%M:%S'
-        );
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']) {
-            $dateFormats['date'] = '%m-%d-%Y';
-        }
-        $dateFormats['datetime'] = $dateFormats['time'] . ' ' . $dateFormats['date'];
-        $dateFormats['datetimesec'] = $dateFormats['timesec'] . ' ' . $dateFormats['date'];
 
         // readonly
         if ($config['readOnly']) {
@@ -94,10 +76,8 @@ class InputTextElement extends AbstractFormElement
             $isDateField = true;
             if (in_array('datetime', $evalList)) {
                 $attributes['data-date-type'] = 'datetime';
-                $dateFormat = $dateFormats['datetime'];
             } elseif (in_array('date', $evalList)) {
                 $attributes['data-date-type'] = 'date';
-                $dateFormat = $dateFormats['date'];
             }
             if ($parameterArray['itemFormElValue'] > 0) {
                 $parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
@@ -109,12 +89,10 @@ class InputTextElement extends AbstractFormElement
                 $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
             }
         } elseif (in_array('time', $evalList)) {
-            $dateFormat = $dateFormats['time'];
             $isDateField = true;
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'time';
         } elseif (in_array('timesec', $evalList)) {
-            $dateFormat = $dateFormats['timesec'];
             $isDateField = true;
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'timesec';
@@ -209,7 +187,7 @@ class InputTextElement extends AbstractFormElement
 					' . $html . '
 					<span class="input-group-btn">
 						<label class="btn btn-default" for="' . $attributes['id'] . '">
-							' . $iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '
+							' . $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '
 						</label>
 					</span>
 				</div>';
