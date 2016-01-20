@@ -6723,9 +6723,11 @@ class ContentObjectRenderer
      *
      * @param string $params Text which the parameters
      * @return array array with the parameters as key/value pairs
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public function processParams($params)
     {
+        GeneralUtility::logDeprecatedFunction();
         $paramArr = array();
         $lines = GeneralUtility::trimExplode(LF, $params, true);
         foreach ($lines as $val) {

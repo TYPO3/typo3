@@ -231,9 +231,11 @@ class BackendUtility
      * @param string $tablename Table name from which ids is returned
      * @param string $default_tablename $default_tablename denotes what table the number '45' is from (if nothing is prepended on the value)
      * @return string List of ids
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function getSQLselectableList($in_list, $tablename, $default_tablename)
     {
+        GeneralUtility::logDeprecatedFunction();
         $list = array();
         if ((string)trim($in_list) != '') {
             $tempItemArray = explode(',', trim($in_list));
@@ -1347,9 +1349,11 @@ class BackendUtility
      *
      * @param string $content Value for 'alt' and 'title' attributes (will be htmlspecialchars()'ed before output)
      * @return string
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function titleAltAttrib($content)
     {
+        GeneralUtility::logDeprecatedFunction();
         $out = '';
         $out .= ' alt="' . htmlspecialchars($content) . '"';
         $out .= ' title="' . htmlspecialchars($content) . '"';
@@ -2362,9 +2366,11 @@ class BackendUtility
      * @param array $defaults Defaults
      * @param string $dataPrefix Prefix for formfields
      * @return string HTML for a form.
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function makeConfigForm($configArray, $defaults, $dataPrefix)
     {
+        GeneralUtility::logDeprecatedFunction();
         $params = $defaults;
         $lines = array();
         if (is_array($configArray)) {
@@ -4167,9 +4173,11 @@ class BackendUtility
      *
      * @param string $params String of parameters on multiple lines to parse into key-value pairs (see function description)
      * @return array
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function processParams($params)
     {
+        GeneralUtility::logDeprecatedFunction();
         $paramArr = array();
         $lines = explode(LF, $params);
         foreach ($lines as $val) {
