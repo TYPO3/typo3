@@ -34,6 +34,12 @@ class RteHtmlParser extends HtmlParser
     public $blockElementList = 'DIV,TABLE,BLOCKQUOTE,PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
 
     /**
+     * List of all tags that are allowed by default
+     * @var string
+     */
+    protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span';
+
+    /**
      * Set this to the pid of the record manipulated by the class.
      *
      * @var int
@@ -1011,8 +1017,7 @@ class RteHtmlParser extends HtmlParser
             } else {
                 // Default is to get allowed/denied tags from internal array of processing options:
                 // Construct default list of tags to keep:
-                $typoScript_list = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span';
-                $keepTags = array_flip(GeneralUtility::trimExplode(',', $typoScript_list . ',' . strtolower($this->procOptions['allowTags']), true));
+                $keepTags = array_flip(GeneralUtility::trimExplode(',', $this->defaultAllowedTagsList . ',' . strtolower($this->procOptions['allowTags']), true));
                 // For tags to deny, remove them from $keepTags array:
                 $denyTags = GeneralUtility::trimExplode(',', $this->procOptions['denyTags'], true);
                 foreach ($denyTags as $dKe) {
