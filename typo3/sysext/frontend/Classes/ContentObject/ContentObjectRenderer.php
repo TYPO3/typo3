@@ -1397,7 +1397,7 @@ class ContentObjectRenderer
 
         // Create imageFileLink if not created with typolink
         if ($content === $string) {
-            $parameterNames = array('width', 'height', 'effects', 'bodyTag', 'title', 'wrap');
+            $parameterNames = array('width', 'height', 'effects', 'bodyTag', 'title', 'wrap', 'crop');
             $parameters = array();
             $sample = isset($conf['sample.']) ? $this->stdWrap($conf['sample'], $conf['sample.']) : $conf['sample'];
             if ($sample) {
