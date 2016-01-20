@@ -233,7 +233,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @return Driver\DriverInterface
      */
-    public function getDriver()
+    protected function getDriver()
     {
         return $this->driver;
     }
