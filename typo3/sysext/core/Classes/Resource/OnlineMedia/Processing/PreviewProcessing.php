@@ -129,7 +129,7 @@ class PreviewProcessing
     protected function resizeImage($originalFileName, $temporaryFileName, $configuration)
     {
         // Create the temporary file
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])) {
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
             return;
         }
 
