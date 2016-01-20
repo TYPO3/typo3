@@ -12,10 +12,8 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'system_dbint',
             'workspaces' => 'online',
+            'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-dbint.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:lowlevel/Resources/Public/Icons/module-dbint.svg',
-                ),
                 'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf',
             ),
         )
@@ -30,10 +28,8 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'system_config',
             'workspaces' => 'online',
+            'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-config.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:lowlevel/Resources/Public/Icons/module-config.svg',
-                ),
                 'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf',
             ),
         )

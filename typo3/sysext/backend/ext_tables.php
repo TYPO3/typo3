@@ -11,10 +11,8 @@ if (TYPO3_MODE === 'BE') {
             'routeTarget' => \TYPO3\CMS\Backend\Controller\PageLayoutController::class . '::mainAction',
             'access' => 'user,group',
             'name' => 'web_layout',
+            'icon' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
-                ),
                 'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
             ),
         )

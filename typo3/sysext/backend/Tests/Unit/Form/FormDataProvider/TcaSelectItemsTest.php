@@ -1059,9 +1059,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
         $languageService->moduleLabels = [
-            'tabs_images' => [
-                'aModule_tab' => PATH_site . 'aModuleTabIcon.gif',
-            ],
             'labels' => [
                 'aModule_tablabel' => 'aModuleTabLabel',
                 'aModule_tabdescr' => 'aModuleTabDescription',
@@ -1077,6 +1074,11 @@ class TcaSelectItemsTest extends UnitTestCase
         $moduleLoaderProphecy->load([])->shouldBeCalled();
         $moduleLoaderProphecy->modListGroup = [
             'aModule',
+        ];
+        $moduleLoaderProphecy->modules = [
+            'aModule' => [
+                'icon' => PATH_site . 'aModuleTabIcon.gif'
+            ]
         ];
 
         $expectedItems = [

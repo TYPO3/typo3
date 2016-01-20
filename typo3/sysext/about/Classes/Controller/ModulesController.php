@@ -144,7 +144,7 @@ class ModulesController extends ActionController
             $subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
             $subModuleData = array();
             $subModuleData['name'] = $subModuleName;
-            $subModuleData['icon'] = PathUtility::stripPathSitePrefix($this->languageService->moduleLabels['tabs_images'][$subModuleKey]);
+            $subModuleData['icon'] = PathUtility::getAbsoluteWebPath($subModuleInfo['icon']);
             $subModuleData['label'] = $this->languageService->moduleLabels['tabs'][$subModuleKey];
             $subModuleData['shortDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'label'];
             $subModuleData['longDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'descr'];

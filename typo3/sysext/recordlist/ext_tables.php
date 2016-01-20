@@ -11,10 +11,8 @@ if (TYPO3_MODE === 'BE') {
             'routeTarget' => \TYPO3\CMS\Recordlist\RecordList::class . '::mainAction',
             'access' => 'user,group',
             'name' => 'web_list',
+            'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',
-                ),
                 'll_ref' => 'LLL:EXT:lang/locallang_mod_web_list.xlf',
             ),
         )

@@ -11,10 +11,8 @@ if (TYPO3_MODE === 'BE') {
             'routeTarget' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'web_ts',
+            'icon' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
-                ),
                 'll_ref' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
             ),
         )

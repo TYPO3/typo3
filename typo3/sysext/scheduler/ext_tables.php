@@ -12,10 +12,8 @@ if (TYPO3_MODE === 'BE') {
             'routeTarget' => \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'system_txschedulerM1',
+            'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
-                ),
                 'll_ref' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
             ),
         )

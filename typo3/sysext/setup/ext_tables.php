@@ -11,10 +11,8 @@ if (TYPO3_MODE === 'BE') {
             'routeTarget' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '::mainAction',
             'access' => 'group,user',
             'name' => 'user_setup',
+            'icon' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
             'labels' => array(
-                'tabs_images' => array(
-                    'tab' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
-                ),
                 'll_ref' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
             ),
         )

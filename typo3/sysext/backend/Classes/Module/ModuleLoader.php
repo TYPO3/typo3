@@ -168,17 +168,7 @@ class ModuleLoader
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $lang = $this->getLanguageService();
         if (is_object($lang)) {
-            // $setupInformation['labels']['default']['tabs_images']['tab'] is for modules the reference
-            // to the module icon.
             $defaultLabels = $setupInformation['labels']['default'];
-
-            // Here the path is transformed to an absolute reference.
-            if ($defaultLabels['tabs_images']['tab']) {
-                if (\TYPO3\CMS\Core\Utility\StringUtility::beginsWith($defaultLabels['tabs_images']['tab'], 'EXT:')) {
-                    list($extensionKey, $relativePath) = explode('/', substr($defaultLabels['tabs_images']['tab'], 4), 2);
-                    $defaultLabels['tabs_images']['tab'] = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
-                }
-            }
 
             // If LOCAL_LANG references are used for labels of the module:
             if ($defaultLabels['ll_ref']) {

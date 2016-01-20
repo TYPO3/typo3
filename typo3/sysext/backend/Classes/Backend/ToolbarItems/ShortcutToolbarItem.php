@@ -75,17 +75,20 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     protected $iconFactory;
 
     /**
+     * @var ModuleLoader
+     */
+    protected $moduleLoader;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-            $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
-            // Needed to get the correct icons when reloading the menu after saving it
-            $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-            $loadModules->load($GLOBALS['TBE_MODULES']);
-        }
+        $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+        // Needed to get the correct icons when reloading the menu after saving it
+        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 
         // By default, 5 groups are set
         $this->shortcutGroups = array(
@@ -275,7 +278,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             }
             // Check for module access
             $moduleName = $row['M_module_name'] ?: $row['module_name'];
-            if (!isset($this->getLanguageService()->moduleLabels['tabs_images'][$moduleName . '_tab'])) {
+
+            if (!isset($this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tablabel'])) {
                 // Nice hack to check if the user has access to this module
                 // - otherwise the translation label would not have been loaded :-)
                 continue;
@@ -840,14 +844,15 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('mimetypes-word', Icon::SIZE_SMALL)->render() . '</span>';
                 break;
             default:
-                if ($languageService->moduleLabels['tabs_images'][$row['module_name'] . '_tab']) {
-                    $icon = $languageService->moduleLabels['tabs_images'][$row['module_name'] . '_tab'];
-                    // Change icon of fileadmin references - otherwise it doesn't differ with Web->List
-                    $icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
-                    if (GeneralUtility::isAbsPath($icon)) {
-                        $icon = '../' . PathUtility::stripPathSitePrefix($icon);
-                    }
-                    // @todo: hardcoded width as we don't have a way to address module icons with an API yet.
+                $moduleName = $row['module_name'];
+                if (strpos($moduleName, '_') !== false) {
+                    list($mainModule, $subModule) = explode('_', $moduleName, 2);
+                    $icon = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['icon'];
+                } elseif (!empty($moduleName)) {
+                    $icon = $this->moduleLoader->modules[$moduleName]['icon'];
+                }
+                if (!empty($icon) && file_exists($icon)) {
+                    $icon = '../' . PathUtility::stripPathSitePrefix($icon);
                     $icon = '<img src="' . htmlspecialchars($icon) . '" alt="' . $titleAttribute . '" width="16">';
                 } else {
                     $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';

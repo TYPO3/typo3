@@ -865,15 +865,17 @@ class ExtensionManagementUtility
     public static function configureModule($moduleSignature)
     {
         $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
-        $iconPathAndFilename = $moduleConfiguration['icon'];
-        if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
-            list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
-            $iconPathAndFilename = self::extPath($extensionKey) . $relativePath;
+        if (!empty($moduleConfiguration['labels']['tabs_images']['tab'])) {
+            GeneralUtility::deprecationLog('Module registration for backend module "' . $moduleSignature . '" uses old referencing for the icon. Use the configuration option "icon" directly instead of [labels][tabs_images][tab]. The old option is removed with TYPO3 v9.');
+            $moduleConfiguration['icon'] = $moduleConfiguration['labels']['tabs_images']['tab'];
+            unset($moduleConfiguration['labels']['tabs_images']['tab']);
         }
+
+        if (!empty($moduleConfiguration['icon'])) {
+            $moduleConfiguration['icon'] = GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'], false, true);
+        }
+
         $moduleLabels = array(
-            'tabs_images' => array(
-                'tab' => $iconPathAndFilename
-            ),
             'labels' => array(
                 'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
                 'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr')
@@ -934,6 +936,17 @@ class ExtensionManagementUtility
         // add additional configuration
         if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
             $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
+
+            if (!empty($moduleConfiguration['labels']['tabs_images']['tab'])) {
+                GeneralUtility::deprecationLog('Module registration for module "' . $fullModuleSignature . '" uses old referencing for the icon. Use the configuration option "icon" directly instead of [labels][tabs_images][tab]. The old option is removed with TYPO3 v9.');
+                $moduleConfiguration['icon'] = $moduleConfiguration['labels']['tabs_images']['tab'];
+                unset($moduleConfiguration['labels']['tabs_images']['tab']);
+            }
+
+            if (!empty($moduleConfiguration['icon'])) {
+                $moduleConfiguration['icon'] = GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'], false, true);
+            }
+
             $GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
         }
     }

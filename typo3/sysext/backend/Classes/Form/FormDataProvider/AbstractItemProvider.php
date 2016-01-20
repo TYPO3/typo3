@@ -310,7 +310,12 @@ abstract class AbstractItemProvider
                 if (is_array($modList)) {
                     foreach ($modList as $theMod) {
                         // Icon:
-                        $icon = $languageService->moduleLabels['tabs_images'][$theMod . '_tab'];
+                        if (strpos($theMod, '_') !== false) {
+                            list($mainModule, $subModule) = explode('_', $theMod, 2);
+                            $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['icon'];
+                        } else {
+                            $icon = $loadModules->modules[$theMod]['icon'];
+                        }
                         if ($icon) {
                             $icon = '../' . PathUtility::stripPathSitePrefix($icon);
                         }

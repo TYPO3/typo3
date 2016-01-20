@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Repository for backend module menu
@@ -353,47 +354,11 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($moduleData['iconIdentifier'])) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $icon = $iconFactory->getIcon($moduleData['iconIdentifier'])->render();
-        } elseif (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
-            $imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];
-            $iconFileRelative = $this->getModuleIconRelative($imageReference);
-            if (!empty($iconFileRelative)) {
-                $iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
-                $iconSizes = @getimagesize($this->getModuleIconAbsolute($imageReference));
-                $icon = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
-            }
+        } elseif (isset($moduleData['icon']) && is_file($moduleData['icon'])) {
+            $iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
+            $iconSizes = @getimagesize($moduleData['icon']);
+            $icon = '<img src="' . PathUtility::getAbsoluteWebPath($moduleData['icon']) . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
         }
         return $icon;
-    }
-
-    /**
-     * Returns the filename readable for the script from PATH_typo3.
-     * That means absolute names are just returned while relative names are
-     * prepended with the path pointing back to typo3/ dir
-     *
-     * @param string $iconFilename Icon filename
-     * @return string Icon filename with absolute path
-     * @see getModuleIconRelative()
-     */
-    protected function getModuleIconAbsolute($iconFilename)
-    {
-        if (!GeneralUtility::isAbsPath($iconFilename)) {
-            $iconFilename = PATH_typo3 . $iconFilename;
-        }
-        return $iconFilename;
-    }
-
-    /**
-     * Returns relative path to the icon filename for use in img-tags
-     *
-     * @param string $iconFilename Icon filename
-     * @return string Icon filename with relative path
-     * @see getModuleIconAbsolute()
-     */
-    protected function getModuleIconRelative($iconFilename)
-    {
-        if (GeneralUtility::isAbsPath($iconFilename)) {
-            $iconFilename = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($iconFilename);
-        }
-        return $iconFilename;
     }
 }
