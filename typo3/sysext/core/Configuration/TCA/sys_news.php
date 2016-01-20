@@ -79,7 +79,7 @@ return array(
                     )
                 )
             ),
-            'defaultExtras' => 'richtext:rte_transform[mode=ts_css]',
+            'defaultExtras' => 'richtext:rte_transform',
         )
     ),
     'types' => array(

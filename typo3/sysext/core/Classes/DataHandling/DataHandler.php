@@ -1552,7 +1552,7 @@ class DataHandler
      * @param string $value Value to transform.
      * @param string $table The table name
      * @param string $field The field name
-     * @param array $defaultExtras Default extras configuration of this field - typically "richtext:rte_transform[mode=ts_css]"
+     * @param array $defaultExtras Default extras configuration of this field - typically "richtext:rte_transform"
      * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and others. Configuration for additional transformation information
      * @param int $pid PID value of record (true parent page id)
      * @return string Transformed content
@@ -1560,15 +1560,11 @@ class DataHandler
     protected function transformRichtextContentToDatabase($value, $table, $field, $defaultExtras, $thisConfig, $pid)
     {
         if ($defaultExtras['rte_transform']) {
-            $parameters = BackendUtility::getSpecConfParametersFromArray($defaultExtras['rte_transform']['parameters']);
-            // There must be a mode set for transformation, this is typically 'ts_css'
-            if ($parameters['mode']) {
-                // Initialize transformation:
-                $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
-                $parseHTML->init($table . ':' . $field, $pid);
-                // Perform transformation:
-                $value = $parseHTML->RTE_transform($value, $defaultExtras, 'db', $thisConfig);
-            }
+            // Initialize transformation:
+            $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
+            $parseHTML->init($table . ':' . $field, $pid);
+            // Perform transformation:
+            $value = $parseHTML->RTE_transform($value, $defaultExtras, 'db', $thisConfig);
         }
         return $value;
     }

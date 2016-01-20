@@ -1296,14 +1296,10 @@ class RichTextElement extends AbstractFormElement
         $value = preg_replace('/<(\\/?)em([^b>]*>)/i', '<$1i$2', $value);
 
         if ($this->defaultExtras['rte_transform']) {
-            $parameters = BackendUtility::getSpecConfParametersFromArray($this->defaultExtras['rte_transform']['parameters']);
-            // There must be a mode set for transformation
-            if ($parameters['mode']) {
-                /** @var RteHtmlParser $parseHTML */
-                $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
-                $parseHTML->init($this->data['table'] . ':' . $this->data['fieldName'], $this->pidOfVersionedMotherRecord);
-                $value = $parseHTML->RTE_transform($value, $this->defaultExtras, 'rte', $this->processedRteConfiguration);
-            }
+            /** @var RteHtmlParser $parseHTML */
+            $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
+            $parseHTML->init($this->data['table'] . ':' . $this->data['fieldName'], $this->pidOfVersionedMotherRecord);
+            $value = $parseHTML->RTE_transform($value, $this->defaultExtras, 'rte', $this->processedRteConfiguration);
         }
         return $value;
     }

@@ -1025,4 +1025,362 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @return array
+     */
+    public function migrateRemovesRteTransformOptionsDataProvider()
+    {
+        return [
+            'remove empty options in columns' => [
+                [
+                    // Given config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform[]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    // Expected config section
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove nothing in columns' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove mode in columns' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform[mode=ts_css]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columns' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columns with array notation' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[]:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columns with array notation and index' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[*]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[*]:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columns with array notation and index and option list' => [
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[cut|copy|paste]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'columns' => [
+                            'aField' => [
+                                'defaultExtras' => 'richtext[cut|copy|paste]:rte_transform'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove empty options in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform[]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove nothing in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove mode in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform[mode=ts_css]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columnsOverrides' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columnsOverrides with array notation' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[]:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columnsOverrides with array notation and index' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[*]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[*]:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'remove flag and mode in columnsOverrides with array notation and index and option list' => [
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[copy|cut|paste]:rte_transform[flag=rte_enabled|mode=ts_css]'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'aTable' => [
+                        'types' => [
+                            'aType' => [
+                                'columnsOverrides' => [
+                                    'aField' => [
+                                        'defaultExtras' => 'richtext[copy|cut|paste]:rte_transform'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateRemovesRteTransformOptionsDataProvider
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     */
+    public function migrateRemovesRteTransformOptions(array $givenConfig, array $expectedConfig) {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
 }

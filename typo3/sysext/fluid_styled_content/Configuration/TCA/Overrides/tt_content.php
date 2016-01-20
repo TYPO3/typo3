@@ -52,7 +52,7 @@ call_user_func(function () {
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.access;access,
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.extended
 		',
-        'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform[mode=ts_css]']]
+        'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform']]
     ];
 
     // Add category tab when categories column exits

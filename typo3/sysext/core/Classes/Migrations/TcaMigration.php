@@ -52,6 +52,7 @@ class TcaMigration
         $tca = $this->migrateSelectFieldRenderType($tca);
         $tca = $this->migrateSelectFieldIconTable($tca);
         $tca = $this->migrateElementBrowserWizardToLinkHandler($tca);
+        $tca = $this->migrateDefaultExtrasRteTransFormOptions($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -641,6 +642,72 @@ class TcaMigration
                 }
             }
         }
+        return $tca;
+    }
+
+    /**
+     * Migrate defaultExtras "richtext:rte_transform[mode=ts_css]" and similar stuff like
+     * "richtext:rte_transform[mode=ts_css]" to "richtext:rte_transform"
+     *
+     * @param array $tca
+     * @return array Migrated TCA
+     */
+    protected function migrateDefaultExtrasRteTransFormOptions(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (isset($fieldConfig['defaultExtras'])) {
+                    $oldValue = $fieldConfig['defaultExtras'];
+                    $fieldConfig['defaultExtras'] = preg_replace(
+                        '/richtext(\[([^\]]*)\])*:rte_transform(\[([^\]]*)\])/',
+                        'richtext${1}:rte_transform',
+                        $fieldConfig['defaultExtras'],
+                        -1,
+                        $replacementCount
+                    );
+                    if ($replacementCount) {
+                        $this->messages[] = 'rte_transform options are deprecated. String "' . $oldValue . '" in TCA'
+                            . ' ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'defaultExtras\'] was changed to "'
+                            . $fieldConfig['defaultExtras'] . '"';
+                    }
+                }
+            }
+        }
+
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['types']) || !is_array($tableDefinition['types'])) {
+                continue;
+            }
+            foreach ($tableDefinition['types'] as $typeName => &$typeArray) {
+                if (!isset($typeArray['columnsOverrides']) || !is_array($typeArray['columnsOverrides'])) {
+                    continue;
+                }
+                foreach ($typeArray['columnsOverrides'] as $fieldName => &$fieldConfig) {
+                    if (isset($fieldConfig['defaultExtras'])) {
+                        $oldValue = $fieldConfig['defaultExtras'];
+                        $fieldConfig['defaultExtras'] = preg_replace(
+                            '/richtext(\[([^\]]*)\])*:rte_transform(\[([^\]]*)\])/',
+                            'richtext${1}:rte_transform',
+                            $fieldConfig['defaultExtras'],
+                            -1,
+                            $replacementCount
+                        );
+                        if ($replacementCount) {
+                            $this->messages[] = 'rte_transform options are deprecated. String "'
+                                . $oldValue . '" in TCA'
+                                . ' ' . $table . '[\'types\'][\'' . $typeName
+                                . '\'][\'columnsOverrides\'][\'' . $fieldName
+                                . '\'][\'defaultExtras\']' .
+                                ' was changed to "' . $fieldConfig['defaultExtras'] . '"';
+                        }
+                    }
+                }
+            }
+        }
+
         return $tca;
     }
 }
