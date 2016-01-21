@@ -160,13 +160,13 @@ return array(
                             'name' => 'wizard_edit',
                         ),
                         'popup_onlyOpenIfSelected' => 1,
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+                        'icon' => 'actions-open',
                         'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                     ),
                     'add' => array(
                         'type' => 'script',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn_add',
-                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+                        'icon' => 'actions-add',
                         'params' => array(
                             'table' => 'sys_template',
                             'pid' => '###CURRENT_PID###',
