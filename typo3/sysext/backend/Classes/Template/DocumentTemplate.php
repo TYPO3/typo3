@@ -268,8 +268,6 @@ function jumpToUrl(URL) {
         // Initializes the page rendering object:
         $this->initPageRenderer();
 
-        // load Legacy CSS Support
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyCssClasses');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // initialize Marker Support
