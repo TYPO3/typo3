@@ -46,8 +46,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.config',
             'config' => array(
                 'type' => 'text',
-                'rows' => '5',
-                'cols' => '25',
+                'rows' => '10',
+                'cols' => '48',
                 'wrap' => 'OFF',
                 'wizards' => array(
                     0 => array(
