@@ -558,8 +558,6 @@ Same as above, but "&L=[L-value]" will only be added if the current value is 1, 
 			<description><![CDATA[PHP: setlocale("LC_ALL", [value]);
 value-examples: deutsch, de_DE, danish, portuguese, spanish, french, norwegian, italian. See www.php.net for other value. Also on linux, look at /usr/share/locale/
 
-TSFE->localeCharset is intelligently set to the assumed charset of the locale strings. This is used in stdWrap.strftime to convert locale strings to the renderCharset of the frontend.
-
 Example:
 This will render dates in danish made with stdWrap/strftime:
 locale_all = danish
