@@ -22,7 +22,7 @@
 <f:if condition="{manual.images}">
 	<f:for each="{manual.images}" as="image">
 		<div>
-			<img src="../{image.image}" />
+			<img src="../{image.image}" class="img-responsive" />
 			<f:if condition="{image.description}">
 				<p>{image.description}</p>
 			</f:if>
