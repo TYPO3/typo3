@@ -77,9 +77,6 @@ class TextblockJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJso
     {
         if (isset($parameters['text'])) {
             $this->configuration['various']['text'] = $parameters['text'];
-        } elseif (isset($parameters['content'])) {
-            // preserve backward compatibility by rewriting content to text
-            $this->configuration['various']['text'] = $parameters['content'];
         }
     }
 }

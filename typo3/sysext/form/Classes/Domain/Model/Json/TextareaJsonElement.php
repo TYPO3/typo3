@@ -92,10 +92,6 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
      */
     protected function setAttributes(array $parameters)
     {
-        // preserve backward compatibility by rewriting data to text
-        if (isset($parameters['data'])) {
-            $this->configuration['attributes']['text'] = $parameters['data'];
-        }
         parent::setAttributes($parameters);
     }
 }

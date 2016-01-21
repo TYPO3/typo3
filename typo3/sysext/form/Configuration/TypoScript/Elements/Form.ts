@@ -28,28 +28,12 @@ plugin.tx_form {
 				#
 				# @ToDo: add more details
 			FORM {
-					# compatibilityMode
-					# Used by: frontend
-					# Overwritable by user: TRUE
-					# Only evaluated for FORM element
-					#
-					# If set to 1 tx_form acts almost like in TYPO3 6.2.
-					# This setting can be overwritten in the FORM object.
-					# @ToDo: add more details
-					#
-					# only for FORM
-				compatibilityMode = 1
-
 					# themeName
 					# Used by: frontend, wizard (not implemented right now)
 					# Overwritable by user: TRUE
 					#
 					# Sets the theme name used for templating.
-					# Right now there are 2 themes:
-					# 	* Default: This theme provides a solid and clean foundation and should be used.
-					# 	* Compatibility: This theme imitates the form layout/ behavior of TYPO3 6.2.
-					# If compatibilityMode = 1 and layout is used in the user definded TypoScript
-					# the theme name switches automatically to "Compatibility".
+					# Right now there is one default theme. One can define an own theme and use this one instead.
 					#
 					# This setting can be overwritten in the FORM object.
 					# @ToDo: add more details

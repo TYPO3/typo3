@@ -56,26 +56,20 @@ class ConfigurationTest extends UnitTestCase
 
     /**
      * @param array $typoScript
-     * @param bool $globalCompatibilityMode
      * @param string $globalThemeName
      * @param array $expected
      *
      * @test
      * @dataProvider propertiesAreUpdatedFromTypoScriptDataProvider
      */
-    public function propertiesAreUpdatedFromTypoScript(array $typoScript, $globalCompatibilityMode, $globalThemeName, array $expected)
+    public function propertiesAreUpdatedFromTypoScript(array $typoScript, $globalThemeName, array $expected)
     {
-        $this->typoScriptRepositoryProphecy
-            ->getModelConfigurationByScope('FORM', 'compatibilityMode')
-            ->willReturn($globalCompatibilityMode);
-
         $this->typoScriptRepositoryProphecy
             ->getModelConfigurationByScope('FORM', 'themeName')
             ->willReturn($globalThemeName);
 
         $this->subject->setTypoScript($typoScript);
         $this->assertEquals($expected['prefix'], $this->subject->getPrefix());
-        $this->assertEquals($expected['compatibility'], $this->subject->getCompatibility());
         $this->assertEquals($expected['contentElementRendering'], $this->subject->getContentElementRendering());
     }
 
@@ -89,47 +83,38 @@ class ConfigurationTest extends UnitTestCase
                 array(
                     'prefix' => '',
                     'themeName' => '',
-                    'compatibilityMode' => false,
                     'disableContentElement' => false,
                 ),
-                false,
                 '',
                 array(
                     'prefix' => 'form',
                     'themeName' => 'Default',
-                    'compatibility' => false,
                     'contentElementRendering' => true,
                 ),
             ),
             '#2' => array(
                 array(
-                    'prefix' => '',
-                    'themeName' => '',
-                    'compatibilityMode' => false,
-                    'disableContentElement' => false,
+                    'prefix' => 'somePrefix',
+                    'themeName' => 'someTheme',
+                    'disableContentElement' => true,
                 ),
-                true,
                 '',
                 array(
-                    'prefix' => 'form',
-                    'themeName' => 'Default',
-                    'compatibility' => false,
-                    'contentElementRendering' => true,
+                    'prefix' => 'somePrefix',
+                    'themeName' => 'someTheme',
+                    'contentElementRendering' => false,
                 ),
             ),
             '#3' => array(
                 array(
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
-                    'compatibilityMode' => true,
                     'disableContentElement' => true,
                 ),
-                true,
                 '',
                 array(
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
-                    'compatibility' => true,
                     'contentElementRendering' => false,
                 ),
             ),
@@ -137,64 +122,13 @@ class ConfigurationTest extends UnitTestCase
                 array(
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
-                    'compatibilityMode' => true,
                     'disableContentElement' => true,
                 ),
-                false,
                 '',
                 array(
                     'prefix' => 'somePrefix',
                     'themeName' => 'someTheme',
-                    'compatibility' => true,
                     'contentElementRendering' => false,
-                ),
-            ),
-            '#5' => array(
-                array(
-                    'prefix' => 'somePrefix',
-                    'themeName' => 'someTheme',
-                    'compatibilityMode' => null,
-                    'disableContentElement' => true,
-                ),
-                true,
-                '',
-                array(
-                    'prefix' => 'somePrefix',
-                    'themeName' => 'someTheme',
-                    'compatibility' => true,
-                    'contentElementRendering' => false,
-                ),
-            ),
-            '#6' => array(
-                array(
-                    'prefix' => 'somePrefix',
-                    'themeName' => 'someTheme',
-                    'compatibilityMode' => null,
-                    'disableContentElement' => true,
-                ),
-                false,
-                '',
-                array(
-                    'prefix' => 'somePrefix',
-                    'themeName' => 'someTheme',
-                    'compatibility' => false,
-                    'contentElementRendering' => false,
-                ),
-            ),
-            '#7' => array(
-                array(
-                    'prefix' => '',
-                    'themeName' => '',
-                    'compatibilityMode' => false,
-                    'disableContentElement' => false,
-                ),
-                false,
-                'globalTheme',
-                array(
-                    'prefix' => 'form',
-                    'themeName' => 'globalTheme',
-                    'compatibility' => false,
-                    'contentElementRendering' => true,
                 ),
             ),
         );

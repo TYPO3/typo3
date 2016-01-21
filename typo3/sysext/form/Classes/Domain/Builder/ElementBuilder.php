@@ -184,42 +184,15 @@ class ElementBuilder
         foreach ($this->htmlAttributes as $attributeName => $attributeValue) {
             $attributeNameWithoutDot = rtrim($attributeName, '.');
             $attributeNameToSet = $attributeNameWithoutDot;
-            $rendered = false;
-            /* If the attribute exists in the user configured typoscript */
-            if ($this->arrayKeyExists($attributeName, $this->userConfiguredElementTyposcript)) {
-                if ($this->formBuilder->getConfiguration()->getCompatibility()) {
-                    $newAttributeName = $this->formBuilder->getCompatibilityService()->getNewAttributeName(
-                        $this->element->getElementType(),
-                        $attributeNameWithoutDot
-                    );
-                    /* Should the attribute be renamed? */
-                    if ($newAttributeName !== $attributeNameWithoutDot) {
-                        $attributeNameToSet = $newAttributeName;
-                        /* If the renamed attribute already exists in the user configured typoscript */
-                        if ($this->arrayKeyExists($newAttributeName, $this->userConfiguredElementTyposcript)) {
-                            $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
-                                $this->userConfiguredElementTyposcript[$newAttributeName . '.'],
-                                $this->userConfiguredElementTyposcript[$newAttributeName]
-                            );
-                            /* set renamed attribute name with the value of the renamed attribute */
-                            $this->htmlAttributes[$newAttributeName] = $attributeValue;
-                            /* unset the renamed attribute */
-                            unset($this->userConfiguredElementTyposcript[$newAttributeName . '.']);
-                            unset($this->userConfiguredElementTyposcript[$newAttributeName]);
-                            $rendered = true;
-                        }
-                    }
-                }
+
+            if ($this->arrayKeyExists($attributeNameWithoutDot, $this->userConfiguredElementTyposcript)) {
+                $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+                );
+                $this->htmlAttributes[$attributeNameToSet] = $attributeValue;
             }
-            if ($rendered === false) {
-                if ($this->arrayKeyExists($attributeNameWithoutDot, $this->userConfiguredElementTyposcript)) {
-                    $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
-                        $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
-                        $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
-                    );
-                    $this->htmlAttributes[$attributeNameToSet] = $attributeValue;
-                }
-            }
+
             unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
             unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
         }
@@ -329,41 +302,15 @@ class ElementBuilder
             }
             $attributeNameWithoutDot = rtrim($attributeName, '.');
             $attributeNameToSet = $attributeNameWithoutDot;
-            $rendered = false;
-            if ($this->formBuilder->getConfiguration()->getCompatibility()) {
-                $newAttributeName = $this->formBuilder->getCompatibilityService()->getNewAttributeName(
-                    $this->element->getElementType(),
-                    $attributeNameWithoutDot
-                );
-                /* Should the attribute be renamed? */
-                if ($newAttributeName !== $attributeNameWithoutDot) {
-                    $attributeNameToSet = $newAttributeName;
-                    /* If the renamed attribute already exists in the user configured typoscript */
-                    if ($this->arrayKeyExists($newAttributeName, $this->userConfiguredElementTyposcript)) {
-                        $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
-                            $this->userConfiguredElementTyposcript[$newAttributeName . '.'],
-                            $this->userConfiguredElementTyposcript[$newAttributeName]
-                        );
-                        /* set renamed attribute name with the value of the renamed attribute */
-                        $this->additionalArguments[$newAttributeName] = $attributeValue;
-                        /* unset the renamed attribute */
-                        $ignoreKeys[$newAttributeName . '.'] = true;
-                        $ignoreKeys[$newAttributeName] = true;
-                        unset($this->userConfiguredElementTyposcript[$newAttributeName . '.']);
-                        unset($this->userConfiguredElementTyposcript[$newAttributeName]);
-                        $rendered = true;
-                    }
-                }
-            }
-            if ($rendered === false) {
-                $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
-                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
-                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
-                );
-                $this->additionalArguments[$attributeNameToSet] = $attributeValue;
-                $ignoreKeys[$attributeNameToSet . '.'] = true;
-                $ignoreKeys[$attributeNameToSet] = true;
-            }
+
+            $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+                $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+                $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+            );
+            $this->additionalArguments[$attributeNameToSet] = $attributeValue;
+            $ignoreKeys[$attributeNameToSet . '.'] = true;
+            $ignoreKeys[$attributeNameToSet] = true;
+
             unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
             unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
         }

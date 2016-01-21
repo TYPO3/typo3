@@ -54,11 +54,6 @@ class Configuration
     protected $prefix = 'form';
 
     /**
-     * @var bool
-     */
-    protected $compatibility = false;
-
-    /**
      * @var string
      */
     protected $themeName = '';
@@ -130,24 +125,6 @@ class Configuration
     }
 
     /**
-     * @return bool
-     */
-    public function getCompatibility()
-    {
-        return $this->compatibility;
-    }
-
-    /**
-     * @param bool $compatibility
-     * @return Configuration
-     */
-    public function setCompatibility($compatibility)
-    {
-        $this->compatibility = (bool)$compatibility;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getThemeName()
@@ -184,15 +161,6 @@ class Configuration
         // different form components on the same page in the frontend
         if (!empty($this->typoScript['prefix'])) {
             $this->setPrefix($this->typoScript['prefix']);
-        }
-        // Determine compatibility behavior
-        $this->setCompatibility((bool)$this->typoScriptRepository->getModelConfigurationByScope('FORM', 'compatibilityMode'));
-        if (isset($this->typoScript['compatibilityMode'])) {
-            if ((int)($this->typoScript['compatibilityMode']) === 0) {
-                $this->setCompatibility(false);
-            } else {
-                $this->setCompatibility(true);
-            }
         }
         // Set the theme name
         if (!empty($this->typoScript['themeName'])) {

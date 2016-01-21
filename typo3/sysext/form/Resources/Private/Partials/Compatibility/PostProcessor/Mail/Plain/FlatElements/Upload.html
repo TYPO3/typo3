@@ -1,2 +1,0 @@
-{namespace form=TYPO3\CMS\Form\ViewHelpers}<f:if condition="{model.showElement}"><form:plainMail labelContent="{model}" newLineAfterLabel="1" indent="4" /><f:for each="{model.additionalArguments.uploadedFiles}" as="uploadedFile"><form:plainMail content="{uploadedFile.name}" />
-</f:for><form:plainMail indent="-4"/></f:if>
