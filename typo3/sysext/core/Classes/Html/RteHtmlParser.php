@@ -89,13 +89,6 @@ class RteHtmlParser extends HtmlParser
     public $allowedClasses = array();
 
     /**
-     * Set to tags to preserve from Page TSconfig configuration
-     *
-     * @var string
-     */
-    public $preserveTags = '';
-
-    /**
      * Initialize, setting element reference and record PID
      *
      * @param string $elRef Element reference, eg "tt_content:bodytext
@@ -128,7 +121,6 @@ class RteHtmlParser extends HtmlParser
         // Init:
         $this->tsConfig = $thisConfig;
         $this->procOptions = (array)$thisConfig['proc.'];
-        $this->preserveTags = strtoupper(implode(',', GeneralUtility::trimExplode(',', $this->procOptions['preserveTags'])));
         // dynamic configuration of blockElementList
         if ($this->procOptions['blockElementList']) {
             $this->blockElementList = $this->procOptions['blockElementList'];
@@ -185,9 +177,6 @@ class RteHtmlParser extends HtmlParser
                         case 'ts_links':
                             $value = $this->TS_links_db($value);
                             break;
-                        case 'ts_preserve':
-                            $value = $this->TS_preserve_db($value);
-                            break;
                         case 'css_transform':
                             $this->allowedClasses = GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], true);
                             // CR has a very disturbing effect, so just remove all CR and rely on LF
@@ -221,9 +210,6 @@ class RteHtmlParser extends HtmlParser
                             break;
                         case 'ts_links':
                             $value = $this->TS_links_rte($value);
-                            break;
-                        case 'ts_preserve':
-                            $value = $this->TS_preserve_rte($value);
                             break;
                         case 'css_transform':
                             // Has a very disturbing effect, so just remove all '13' - depend on '10'
@@ -732,54 +718,6 @@ class RteHtmlParser extends HtmlParser
             }
         }
         // Return content:
-        return implode('', $blockSplit);
-    }
-
-    /**
-     * Preserve special tags
-     *
-     * @param string $value Content input
-     * @return string Content output
-     */
-    public function TS_preserve_db($value)
-    {
-        if (!$this->preserveTags) {
-            return $value;
-        }
-        // Splitting into blocks for processing (span-tags are used for special tags)
-        $blockSplit = $this->splitIntoBlock('span', $value);
-        foreach ($blockSplit as $k => $v) {
-            // Block
-            if ($k % 2) {
-                list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v));
-                if ($attribArray['specialtag']) {
-                    $theTag = rawurldecode($attribArray['specialtag']);
-                    $theTagName = $this->getFirstTagName($theTag);
-                    $blockSplit[$k] = $theTag . $this->removeFirstAndLastTag($blockSplit[$k]) . '</' . $theTagName . '>';
-                }
-            }
-        }
-        return implode('', $blockSplit);
-    }
-
-    /**
-     * Preserve special tags
-     *
-     * @param string $value Content input
-     * @return string Content output
-     */
-    public function TS_preserve_rte($value)
-    {
-        if (!$this->preserveTags) {
-            return $value;
-        }
-        $blockSplit = $this->splitIntoBlock($this->preserveTags, $value);
-        foreach ($blockSplit as $k => $v) {
-            // Block
-            if ($k % 2) {
-                $blockSplit[$k] = '<span specialtag="' . rawurlencode($this->getFirstTag($v)) . '">' . $this->removeFirstAndLastTag($blockSplit[$k]) . '</span>';
-            }
-        }
         return implode('', $blockSplit);
     }
 
