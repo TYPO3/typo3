@@ -311,7 +311,8 @@ class Import extends ImportExport
      * @param array $storageRecord The storage record which should get compared
      * @return bool Returns TRUE when both object storages can be seen as equivalent
      */
-    protected function isEquivalentObjectStorage(ResourceStorage $storageObject, array $storageRecord) {
+    protected function isEquivalentObjectStorage(ResourceStorage $storageObject, array $storageRecord)
+    {
         // compare the properties: driver, writable and online
         if (
             $storageObject->getDriverType() === $storageRecord['driver']
@@ -336,7 +337,8 @@ class Import extends ImportExport
      *
      * @return array Messages explaining issues which need to get resolved before import
      */
-    public function checkImportPrerequisites() {
+    public function checkImportPrerequisites()
+    {
         $messages = array();
 
         // Check #1: Extension dependencies
@@ -384,7 +386,6 @@ class Import extends ImportExport
                         $configuration = $resourceStorage->getConfiguration();
                         $messages['resourceStorageFolderMissing_' . $storageRecordUid] = 'The resource storage "' . $resourceStorage->getName() . '" will get imported. The storage target directory "' . $configuration['basePath'] . '" does not exist. Please create the directory prior to starting the import!';
                     }
-
                 }
             }
         }

@@ -39,5 +39,4 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
         $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
-
 }

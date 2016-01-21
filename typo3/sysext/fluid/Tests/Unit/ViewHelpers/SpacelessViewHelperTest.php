@@ -20,7 +20,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\SpacelessViewHelper;
  */
 class SpacelessViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase
 {
-
     /**
      * @test
      */

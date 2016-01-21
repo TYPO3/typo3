@@ -1206,7 +1206,6 @@ abstract class ImportExport
         return !empty($this->errorLog) ? DebugUtility::viewArray($this->errorLog) : '';
     }
 
-
     /**
      * @return BackendUserAuthentication
      */
@@ -1230,5 +1229,4 @@ abstract class ImportExport
     {
         return $GLOBALS['LANG'];
     }
-
 }

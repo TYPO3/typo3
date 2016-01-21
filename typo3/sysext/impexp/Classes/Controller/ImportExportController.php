@@ -34,12 +34,12 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Main script class for the Import / Export facility
@@ -172,7 +172,7 @@ class ImportExportController extends BaseScriptClass
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'imp-exp-mod';
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        if(is_array($this->pageinfo)) {
+        if (is_array($this->pageinfo)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
@@ -846,7 +846,7 @@ class ImportExportController extends BaseScriptClass
                 if (GeneralUtility::_POST('_upload')) {
                     $this->standaloneView->assign('submitted', GeneralUtility::_POST('_upload'));
                     $this->standaloneView->assign('noFileUploaded', $this->fileProcessor->internalUploadMap[1]);
-                    if($this->uploadedFiles[0]) {
+                    if ($this->uploadedFiles[0]) {
                         $this->standaloneView->assign('uploadedFile', $this->uploadedFiles[0]->getName());
                     }
                 }

@@ -4764,7 +4764,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider() {
+    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider()
+    {
         return array(
             'no markers defined' => array(
                 'dummy content with ###UNREPLACED### marker',
@@ -4875,7 +4876,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param bool $shouldQueryCache
      * @param bool $shouldStoreCache
      */
-    public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent, $shouldQueryCache = true, $shouldStoreCache = true) {
+    public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent, $shouldQueryCache = true, $shouldStoreCache = true)
+    {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
         $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
@@ -4890,7 +4892,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function substituteMarkerArrayCachedRetrievesCachedValueFromRuntimeCache() {
+    public function substituteMarkerArrayCachedRetrievesCachedValueFromRuntimeCache()
+    {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
         $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
@@ -4918,7 +4921,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function substituteMarkerArrayCachedRetrievesCachedValueFromDbCache() {
+    public function substituteMarkerArrayCachedRetrievesCachedValueFromDbCache()
+    {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
         $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
@@ -4946,7 +4950,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function substituteMarkerArrayCachedStoresResultInCaches() {
+    public function substituteMarkerArrayCachedStoresResultInCaches()
+    {
         /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
         $pageRepo = $this->typoScriptFrontendControllerMock->sys_page;
         $pageRepo->resetCallCount();
@@ -4977,7 +4982,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return TypoScriptFrontendController
      */
-    protected function getFrontendController() {
+    protected function getFrontendController()
+    {
         return $GLOBALS['TSFE'];
     }
 }

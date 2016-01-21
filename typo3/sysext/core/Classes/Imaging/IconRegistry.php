@@ -2428,7 +2428,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
-
         // Sysnote
         'sysnote-type-0' => array(
             'provider' => FontawesomeIconProvider::class,
