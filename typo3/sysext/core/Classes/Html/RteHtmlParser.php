@@ -943,7 +943,7 @@ class RteHtmlParser extends HtmlParser
                 if ((string)$blockSplit[$k] === '' && !$onlyLineBreaks) {
                     unset($blockSplit[$k]);
                 } else {
-                    $blockSplit[$k] = $this->setDivTags($blockSplit[$k], $this->procOptions['useDIVasParagraphTagForRTE'] ? 'div' : 'p');
+                    $blockSplit[$k] = $this->setDivTags($blockSplit[$k]);
                 }
             }
         }
@@ -1081,7 +1081,7 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * This resolves the $value into parts based on <div></div>-sections and <p>-sections and <br />-tags. These are returned as lines separated by LF.
+     * This resolves the $value into parts based on <p>-sections and <br />-tags. These are returned as lines separated by LF.
      * This point is to resolve the HTML-code returned from RTE into ordinary lines so it's 'human-readable'
      * The function ->setDivTags does the opposite.
      * This function processes content to go into the database.
@@ -1096,8 +1096,7 @@ class RteHtmlParser extends HtmlParser
     {
         // Setting configuration for processing:
         $allowTagsOutside = GeneralUtility::trimExplode(',', strtolower($this->procOptions['allowTagsOutside'] ? 'hr,' . $this->procOptions['allowTagsOutside'] : 'hr,img'), true);
-        $remapParagraphTag = strtoupper($this->procOptions['remapParagraphTag']);
-        $divSplit = $this->splitIntoBlock('div,p', $value, 1);
+        $divSplit = $this->splitIntoBlock('p', $value, true);
         // Setting the third param to 1 will eliminate false end-tags. Maybe this is a good thing to do...?
         if ($this->procOptions['keepPDIVattribs']) {
             $keepAttribListArr = GeneralUtility::trimExplode(',', strtolower($this->procOptions['keepPDIVattribs']), true);
@@ -1117,11 +1116,10 @@ class RteHtmlParser extends HtmlParser
             if ($k % 2) {
                 // Inside
                 $v = $this->removeFirstAndLastTag($v);
-                // Fetching 'sub-lines' - which will explode any further p/div nesting...
-                $subLines = $this->divideIntoLines($v, $count - 1, 1);
-                // So, if there happend to be sub-nesting of p/div, this is written directly as the new content of THIS section. (This would be considered 'an error')
-                if (is_array($subLines)) {
-                } else {
+                // Fetching 'sub-lines' - which will explode any further p nesting...
+                $subLines = $this->divideIntoLines($v, $count - 1, true);
+                // So, if there happend to be sub-nesting of p, this is written directly as the new content of THIS section. (This would be considered 'an error')
+                if (!is_array($subLines)) {
                     //... but if NO subsection was found, we process it as a TRUE line without erronous content:
                     $subLines = array($subLines);
                     // process break-tags, if configured for. Simply, the breaktags will here be treated like if each was a line of content...
@@ -1134,7 +1132,6 @@ class RteHtmlParser extends HtmlParser
                         $subLines[$sk] = $this->HTMLcleaner_db($subLines[$sk]);
                         // Get first tag, attributes etc:
                         $fTag = $this->getFirstTag($divSplit[$k]);
-                        $tagName = strtolower($this->getFirstTagName($divSplit[$k]));
                         $attribs = $this->get_tag_attributes($fTag);
                         // Keep attributes (lowercase)
                         $newAttribs = array();
@@ -1170,15 +1167,9 @@ class RteHtmlParser extends HtmlParser
                         }
                         // Remove any line break char (10 or 13)
                         $subLines[$sk] = preg_replace('/' . LF . '|' . CR . '/', '', $subLines[$sk]);
-                        // If there are any attributes or if we are supposed to remap the tag, then do so:
-                        if (!empty($newAttribs) && $remapParagraphTag !== '1') {
-                            if ($remapParagraphTag === 'P') {
-                                $tagName = 'p';
-                            }
-                            if ($remapParagraphTag === 'DIV') {
-                                $tagName = 'div';
-                            }
-                            $subLines[$sk] = '<' . trim($tagName . ' ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</' . $tagName . '>';
+                        // If there are any attributes, then do so:
+                        if (!empty($newAttribs)) {
+                            $subLines[$sk] = '<' . trim('p ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</p>';
                         }
                     }
                 }
@@ -1192,7 +1183,7 @@ class RteHtmlParser extends HtmlParser
                 }
             } else {
                 // outside div:
-                // Remove positions which are outside div/p tags and without content
+                // Remove positions which are outside p tags and without content
                 $divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
                 // Wrap hr tags with LF's
                 $divSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
@@ -1208,15 +1199,14 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * Converts all lines into <div></div>/<p></p>-sections (unless the line is a div-section already)
+     * Converts all lines into <p></p>-sections (unless the line has a p - tag already)
      * For processing of content going FROM database TO RTE.
      *
      * @param string $value Value to convert
-     * @param string $dT Tag to wrap with. Either "p" or "div" should it be. Lowercase preferably.
      * @return string Processed value.
      * @see divideIntoLines()
      */
-    public function setDivTags($value, $dT = 'p')
+    public function setDivTags($value)
     {
         // First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
         $keepTags = $this->getKeepTags('rte');
@@ -1245,7 +1235,7 @@ class RteHtmlParser extends HtmlParser
                 if (substr($testStr, 0, 4) != '<div' || substr($testStr, -6) != '</div>') {
                     if (substr($testStr, 0, 2) != '<p' || substr($testStr, -4) != '</p>') {
                         // Only set p-tags if there is not already div or p tags:
-                        $parts[$k] = '<' . $dT . '>' . $parts[$k] . '</' . $dT . '>';
+                        $parts[$k] = '<p>' . $parts[$k] . '</p>';
                     }
                 }
             }
