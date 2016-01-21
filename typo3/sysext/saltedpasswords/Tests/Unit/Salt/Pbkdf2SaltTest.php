@@ -338,7 +338,7 @@ class Pbkdf2SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->objectInstance->setMinHashCount(1000);
         $passlibSaltedHash= '$pbkdf2-sha256$6400$.6UI/S.nXIk8jcbdHx3Fhg$98jZicV16ODfEsEZeYPGHU3kbrUrvUEXOPimVSQDD44';
-        $saltedHashPassword = $this->objectInstance->getHashedPassword("password", $passlibSaltedHash);
+        $saltedHashPassword = $this->objectInstance->getHashedPassword('password', $passlibSaltedHash);
 
         $this->assertSame($passlibSaltedHash, $saltedHashPassword);
     }

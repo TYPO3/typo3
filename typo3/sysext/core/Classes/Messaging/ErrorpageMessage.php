@@ -46,5 +46,4 @@ class ErrorpageMessage extends AbstractStandaloneMessage
         $defaultMarkers['###EXTPATH_BACKEND###'] = ExtensionManagementUtility::siteRelPath('backend');
         return $defaultMarkers;
     }
-
 }

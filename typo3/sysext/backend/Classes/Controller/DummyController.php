@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class, creating the content for the dummy script - which is just blank output.

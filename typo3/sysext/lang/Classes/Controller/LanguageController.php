@@ -20,14 +20,14 @@ use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Lang\Domain\Model\Extension;
 use TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Lang\Domain\Repository\LanguageRepository;
 use TYPO3\CMS\Lang\Service\RegistryService;
 use TYPO3\CMS\Lang\Service\TranslationService;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Language controller

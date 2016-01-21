@@ -100,7 +100,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->getLL('tsconf_title')) . '</h1>';
 
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
-
                 $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
                 $lines = array();
                 $pUids = array();

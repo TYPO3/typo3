@@ -639,7 +639,7 @@ class SetupModuleController extends AbstractModule
                             '<a id="clear_button_' . htmlspecialchars($fieldName) . '" '
                                 . 'onclick="clearExistingImage(); return false;" class="btn btn-default">'
                                 . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
-                            .'</a>';
+                            . '</a>';
                     }
                     $html .=
                         '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'

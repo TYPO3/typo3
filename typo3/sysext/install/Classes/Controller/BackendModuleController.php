@@ -36,7 +36,6 @@ use TYPO3\CMS\Install\Service\EnableFileService;
  */
 class BackendModuleController
 {
-
     /**
      * Index action shows install tool / step installer or redirect to action to enable install tool
      *
@@ -83,5 +82,4 @@ class BackendModuleController
         }
         return $response;
     }
-
 }

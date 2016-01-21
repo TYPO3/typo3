@@ -5,5 +5,4 @@
  */
 class ext_update
 {
-
 }

@@ -53,7 +53,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CharsetConverter implements SingletonInterface
 {
-
     /**
      * Possible strategies for handling multi-byte data
      * Only used for internal purpose

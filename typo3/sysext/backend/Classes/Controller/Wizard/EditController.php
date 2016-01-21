@@ -150,5 +150,4 @@ class EditController extends AbstractWizardController
             return $this->closeWindow;
         }
     }
-
 }

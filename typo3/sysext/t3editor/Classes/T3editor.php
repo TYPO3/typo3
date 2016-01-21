@@ -170,7 +170,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
 
         $this->relExtPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
         $this->codemirrorPath = $this->relExtPath . $this->codemirrorPath;
-
     }
 
     /**

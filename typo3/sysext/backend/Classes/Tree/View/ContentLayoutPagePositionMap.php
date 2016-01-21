@@ -112,5 +112,4 @@ class ContentLayoutPagePositionMap extends PagePositionMap
         unset($params['new_unique_uid']);
         return GeneralUtility::linkThisScript($params);
     }
-
 }

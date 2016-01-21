@@ -51,7 +51,7 @@ class HtmlParser
     public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = false)
     {
         $tags = array_unique(GeneralUtility::trimExplode(',', $tag, true));
-        array_walk($tags, function(&$tag) {
+        array_walk($tags, function (&$tag) {
             $tag = preg_quote($tag, '/');
         });
         $regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
