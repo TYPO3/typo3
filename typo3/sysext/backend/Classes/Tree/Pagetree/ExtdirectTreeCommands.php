@@ -342,7 +342,9 @@ class ExtdirectTreeCommands {
 		if (count($mountPoints) == 0) {
 			$mountPoints = array(0);
 		}
-		$mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
+		if (!empty($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'])){
+			$mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
+		}
 		$mountPoints = array_unique($mountPoints);
 		/** @var $userSettings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
 		$userSettings = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
