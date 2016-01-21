@@ -151,14 +151,14 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
                          'type' => 'popup',
                          'title' => 'Edit',
                          'script' => 'wizard_edit.php',
-                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+                         'icon' => 'actions-open',
                          'popup_onlyOpenIfSelected' => 1,
                          'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1',
                      ),
                      'add' => array(
                          'type' => 'script',
                          'title' => 'Create new',
-                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+                         'icon' => 'actions-add',
                          'params' => array(
                              'table'=>'fe_users',
                              'pid' => '###CURRENT_PID###',
