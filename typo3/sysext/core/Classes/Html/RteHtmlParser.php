@@ -125,12 +125,12 @@ class RteHtmlParser extends HtmlParser
         if ($this->procOptions['blockElementList']) {
             $this->blockElementList = $this->procOptions['blockElementList'];
         }
-        // Get parameters for rte_transformation:
-        $specialFieldConfiguration = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
         // Setting modes:
         if ((string)$this->procOptions['overruleMode'] !== '') {
             $modes = array_unique(GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']));
         } else {
+            // Get parameters for rte_transformation:
+            $specialFieldConfiguration = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
             $modes = array_unique(GeneralUtility::trimExplode('-', $specialFieldConfiguration['mode']));
         }
         $revmodes = array_flip($modes);
@@ -767,25 +767,15 @@ class RteHtmlParser extends HtmlParser
                     case 'aside':
                         $blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</' . $tagName . '>' . $lastBR;
                         break;
-                    case 'ol':
-                    case 'ul':
-                    case 'table':
-                        $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
-                        break;
-                    case 'h1':
-                    case 'h2':
-                    case 'h3':
-                    case 'h4':
-                    case 'h5':
-                    case 'h6':
                     default:
-                        // Eliminate true linebreaks inside Hx and other headlist tags
+                        // usually <hx> tags and <table> tags where no other block elements are within the tags
+                        // Eliminate true linebreaks inside block element tags
                         $blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
                 }
             } else {
                 // NON-block:
                 if (trim($blockSplit[$k]) !== '') {
-                    $blockSplit[$k] = preg_replace('/<hr\\/>/', '<hr />', $blockSplit[$k]);
+                    $blockSplit[$k] = str_replace('<hr/>', '<hr />', $blockSplit[$k]);
                     // Remove linebreaks preceding hr tags
                     $blockSplit[$k] = preg_replace('/[' . LF . CR . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
                     // Remove linebreaks following hr tags
@@ -1042,28 +1032,28 @@ class RteHtmlParser extends HtmlParser
                         $subLines[$sk] = $this->HTMLcleaner_db($subLines[$sk]);
                         // Get first tag, attributes etc:
                         $fTag = $this->getFirstTag($divSplit[$k]);
-                        $attribs = $this->get_tag_attributes($fTag);
+                        list($tagAttributes) = $this->get_tag_attributes($fTag);
                         // Keep attributes (lowercase)
                         $newAttribs = array();
                         if (!empty($keepAttribListArr)) {
                             foreach ($keepAttribListArr as $keepA) {
-                                if (isset($attribs[0][$keepA])) {
-                                    $newAttribs[$keepA] = $attribs[0][$keepA];
+                                if (isset($tagAttributes[$keepA])) {
+                                    $newAttribs[$keepA] = $tagAttributes[$keepA];
                                 }
                             }
                         }
                         // ALIGN attribute:
-                        if (!$this->procOptions['skipAlign'] && trim($attribs[0]['align']) !== '' && strtolower($attribs[0]['align']) != 'left') {
+                        if (!$this->procOptions['skipAlign'] && trim($tagAttributes['align']) !== '' && strtolower($tagAttributes['align']) != 'left') {
                             // Set to value, but not 'left'
-                            $newAttribs['align'] = strtolower($attribs[0]['align']);
+                            $newAttribs['align'] = strtolower($tagAttributes['align']);
                         }
                         // CLASS attribute:
                         // Set to whatever value
-                        if (!$this->procOptions['skipClass'] && trim($attribs[0]['class']) !== '') {
-                            if (empty($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses)) {
-                                $newAttribs['class'] = $attribs[0]['class'];
+                        if (!$this->procOptions['skipClass'] && trim($tagAttributes['class']) !== '') {
+                            if (empty($this->allowedClasses) || in_array($tagAttributes['class'], $this->allowedClasses)) {
+                                $newAttribs['class'] = $tagAttributes['class'];
                             } else {
-                                $classes = GeneralUtility::trimExplode(' ', $attribs[0]['class'], true);
+                                $classes = GeneralUtility::trimExplode(' ', $tagAttributes['class'], true);
                                 $newClasses = array();
                                 foreach ($classes as $class) {
                                     if (in_array($class, $this->allowedClasses)) {

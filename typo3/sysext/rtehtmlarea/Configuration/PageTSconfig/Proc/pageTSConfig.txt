@@ -19,8 +19,8 @@ RTE.default.proc {
 		## br tags in the content are assumed to be intentional.
 	dontConvBRtoParagraph = 1
 
-		## TAGS ALLOWED OUTSIDE P & DIV
-	allowTagsOutside = address, article, aside, blockquote, footer, header, hr, nav, section
+		## TAGS ALLOWED OUTSIDE P
+	allowTagsOutside = address, article, aside, blockquote, footer, header, hr, nav, section, div
 
 		## TAGS ALLOWED
 		## Added to the default internal list: b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span
@@ -36,7 +36,7 @@ RTE.default.proc {
 		## Make sure we can set rules on any tag listed in allowTags.
 	denyTags >
 
-		## ALLOWED P & DIV ATTRIBUTES
+		## ALLOWED P ATTRIBUTES
 		## Attributes class and align are always preserved
 		## Align attribute will be unset on entry (see below)
 		## This is a list of additional attributes to keep
