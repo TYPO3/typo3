@@ -7,9 +7,7 @@
 					{htmAttributeKey}="{htmAttributeValue}"
 				</f:for>
 				>
-					<f:if condition="{model.additionalArguments.legend}">
-						<legend>{model.additionalArguments.legend}</legend>
-					</f:if>
+					{f:render(partial: '{themeName}/Confirmation/AdditionalElements/Legend', arguments: {model: model, themeName: themeName})}
 					<ol>
 						<f:for each="{model.childElements}" as="element">
 							<f:render partial="{themeName}/Confirmation/{element.partialPath}" arguments="{model: element, themeName: themeName}" />

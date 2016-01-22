@@ -1,6 +1,6 @@
 <f:if condition="{model.showElement}">
 	<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
-		<label>{model.additionalArguments.label}</label>
+		{f:render(partial: '{themeName}/Confirmation/AdditionalElements/Label', arguments: {model: model, themeName: themeName})}
 		{model.additionalArguments.text}
 	</li>
 </f:if>

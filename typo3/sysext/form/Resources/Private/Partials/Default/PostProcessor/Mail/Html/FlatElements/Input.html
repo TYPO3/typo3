@@ -1,7 +1,7 @@
 <f:if condition="{model.showElement}">
 <tr class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
   <td style="width: 200px;">
-    <em>{model.additionalArguments.label}</em>
+    {f:render(partial: 'AdditionalElements/Label', arguments: {model: model})}
   </td>
   <td>{model.additionalArguments.value}</td>
 </tr>
