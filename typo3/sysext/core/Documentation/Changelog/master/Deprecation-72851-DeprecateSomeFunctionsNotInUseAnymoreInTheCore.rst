@@ -5,7 +5,7 @@ Deprecation: #72851 - Deprecate some functions not in use anymore in the core
 Description
 ===========
 
-The following unused methods has been marked as deprecated:
+The following unused methods have been marked as deprecated:
 
 ``BackendUtility::processParams()``
 ``BackendUtility::makeConfigForm()``
