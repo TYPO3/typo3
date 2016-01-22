@@ -45,10 +45,6 @@ RTE.default.proc {
 		## REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
 	transformBoldAndItalicTags = 1
 
-		## ALLOW TO WRITE ABOUT HTML
-	dontUndoHSC_db = 1
-	dontHSC_rte = 1
-
 		## CONTENT TO DATABASE
 	entryHTMLparser_db = 1
 	entryHTMLparser_db {

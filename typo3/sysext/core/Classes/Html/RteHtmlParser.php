@@ -908,9 +908,7 @@ class RteHtmlParser extends HtmlParser
         $keepTags = $this->getKeepTags('db');
         // Default: remove unknown tags.
         $keepUnknownTags = (bool)$this->procOptions['dontRemoveUnknownTags_db'];
-        // Default: re-convert literals to characters (that is &lt; to <)
-        $hSC = $this->procOptions['dontUndoHSC_db'] ? 0 : -1;
-        return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags, $hSC);
+        return $this->HTMLcleaner($content, $keepTags, $keepUnknownTags);
     }
 
     /**
@@ -1124,8 +1122,6 @@ class RteHtmlParser extends HtmlParser
         $keepTags = $this->getKeepTags('rte');
         // Default: remove unknown tags.
         $kUknown = $this->procOptions['dontProtectUnknownTags_rte'] ? 0 : 'protect';
-        // Default: re-convert literals to characters (that is &lt; to <)
-        $hSC = $this->procOptions['dontHSC_rte'] ? 0 : 1;
         $convNBSP = !$this->procOptions['dontConvAmpInNBSP_rte'] ? 1 : 0;
         // Divide the content into lines, based on LF:
         $parts = explode(LF, $value);
@@ -1136,7 +1132,7 @@ class RteHtmlParser extends HtmlParser
                 $parts[$k] = '&nbsp;';
             } else {
                 // Clean the line content:
-                $parts[$k] = $this->HTMLcleaner($parts[$k], $keepTags, $kUknown, $hSC);
+                $parts[$k] = $this->HTMLcleaner($parts[$k], $keepTags, $kUknown);
                 if ($convNBSP) {
                     $parts[$k] = str_replace('&amp;nbsp;', '&nbsp;', $parts[$k]);
                 }
