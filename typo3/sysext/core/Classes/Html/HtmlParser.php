@@ -797,23 +797,6 @@ class HtmlParser
     }
 
     /**
-     * This is used to map certain tag-names into other names.
-     *
-     * @param string $value HTML content
-     * @param array $tags Array with tag key=>value pairs where key is from-tag and value is to-tag
-     * @param string $ltChar Alternative less-than char to search for (search regex string)
-     * @param string $ltChar2 Alternative less-than char to replace with (replace regex string)
-     * @return string Processed HTML content
-     */
-    public function mapTags($value, $tags = array(), $ltChar = '<', $ltChar2 = '<')
-    {
-        foreach ($tags as $from => $to) {
-            $value = preg_replace('/' . preg_quote($ltChar, '/') . '(\\/)?' . $from . '\\s([^\\>])*(\\/)?\\>/', $ltChar2 . '$1' . $to . ' $2$3>', $value);
-        }
-        return $value;
-    }
-
-    /**
      * Internal function for case shifting of a string or whole array
      *
      * @param mixed $str Input string/array

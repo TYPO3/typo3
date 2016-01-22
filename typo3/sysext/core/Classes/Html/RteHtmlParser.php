@@ -1157,32 +1157,6 @@ class RteHtmlParser extends HtmlParser
     }
 
     /**
-     * Default tag mapping for TS
-     *
-     * @param string $code Input code to process
-     * @param string $direction Direction To databsae (db) or from database to RTE (rte)
-     * @return string Processed value
-     */
-    public function defaultTStagMapping($code, $direction = 'rte')
-    {
-        if ($direction == 'db') {
-            $code = $this->mapTags($code, array(
-                // Map tags
-                'strong' => 'b',
-                'em' => 'i'
-            ));
-        }
-        if ($direction == 'rte') {
-            $code = $this->mapTags($code, array(
-                // Map tags
-                'b' => 'strong',
-                'i' => 'em'
-            ));
-        }
-        return $code;
-    }
-
-    /**
      * Finds width and height from attrib-array
      * If the width and height is found in the style-attribute, use that!
      *
