@@ -63,12 +63,12 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
     public function render($table = null, $field = '', $iconOnly = false, $styleAttributes = '')
     {
         if ($iconOnly) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+            \TYPO3\CMS\Core\Utility\DeprecationUtility::logMessage(
                 'The option iconOnly has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
             );
         }
         if ($styleAttributes) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+            \TYPO3\CMS\Core\Utility\DeprecationUtility::logMessage(
                 'The option styleAttributes has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
             );
         }

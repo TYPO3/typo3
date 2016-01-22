@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -195,7 +196,7 @@ class ConfigurationStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:enabled');
             $message = '<p>' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
             $severity = ReportStatus::NOTICE;
-            $logFile = GeneralUtility::getDeprecationLogFileName();
+            $logFile = DeprecationUtility::getDeprecationLogFileName();
             $logFileSize = 0;
             if (@file_exists($logFile)) {
                 $logFileSize = filesize($logFile);
@@ -257,7 +258,7 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getDeprecationLogFileLink()
     {
-        $logFile = GeneralUtility::getDeprecationLogFileName();
+        $logFile = DeprecationUtility::getDeprecationLogFileName();
         $relativePath = GeneralUtility::resolveBackPath($this->backPath . PathUtility::stripPathSitePrefix($logFile));
         $link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
         return $link;
@@ -290,7 +291,7 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected static function removeDeprecationLogFile()
     {
-        if (@unlink(GeneralUtility::getDeprecationLogFileName())) {
+        if (@unlink(DeprecationUtility::getDeprecationLogFileName())) {
             $message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletedSuccessful');
             $severity = FlashMessage::OK;
         } else {

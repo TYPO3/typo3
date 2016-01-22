@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -178,7 +179,7 @@ class LanguageService
      */
     public function makeEntities($str)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         // Convert string back again, but using the full entity conversion:
         return $this->csConvObj->utf8_to_entities($str);
     }
@@ -431,7 +432,7 @@ class LanguageService
      */
     public function overrideLL($index, $value, $overrideDefault = true)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         if (!isset($GLOBALS['LOCAL_LANG'])) {
             $GLOBALS['LOCAL_LANG'] = array();
         }

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Type\Icon\IconState;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -100,7 +101,7 @@ class IconFactory
     {
         if ($this->iconRegistry->isDeprecated($identifier)) {
             $deprecationSettings = $this->iconRegistry->getDeprecationSettings($identifier);
-            GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
+            DeprecationUtility::logMessage(sprintf($deprecationSettings['message'], $identifier));
             if (!empty($deprecationSettings['replacement'])) {
                 $identifier = $deprecationSettings['replacement'];
             }

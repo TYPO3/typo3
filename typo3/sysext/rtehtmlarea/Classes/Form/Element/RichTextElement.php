@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ClientUtility;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -1232,7 +1233,7 @@ class RichTextElement extends AbstractFormElement
                 $version,
                 $this->data['databaseRow']['pid']
             );
-            GeneralUtility::deprecationLog($message);
+            DeprecationUtility::logMessage($message);
             if ($this->processedRteConfiguration['logDeprecatedProperties.']['logAlsoToBELog']) {
                 $message = sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:deprecatedPropertyMessage'),

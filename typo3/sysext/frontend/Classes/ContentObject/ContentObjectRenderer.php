@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -6727,7 +6728,7 @@ class ContentObjectRenderer
      */
     public function processParams($params)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $paramArr = array();
         $lines = GeneralUtility::trimExplode(LF, $params, true);
         foreach ($lines as $val) {

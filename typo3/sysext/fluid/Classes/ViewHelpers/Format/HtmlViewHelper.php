@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -95,7 +96,7 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
         if (TYPO3_MODE === 'BE') {
-            GeneralUtility::deprecationLog('The usage of the viewhelper "f:format.html" in the backend context is discouraged, and will stop working with CMS 9. '
+            DeprecationUtility::logMessage('The usage of the viewhelper "f:format.html" in the backend context is discouraged, and will stop working with CMS 9. '
                     . 'Use the viewhelper "f:format.raw" instead.');
             self::simulateFrontendEnvironment();
         }

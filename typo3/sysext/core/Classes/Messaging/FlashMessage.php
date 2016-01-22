@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -115,7 +116,7 @@ class FlashMessage extends AbstractMessage
      */
     public function render()
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $title = '';
         if (!empty($this->title)) {
             $title = '<h4 class="alert-title">' . $this->title . '</h4>';

@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -95,7 +96,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
             if (!empty($dbRow['language_isocode'])) {
                 $languageRows[$uid]['iso'] = $dbRow['language_isocode'];
             } elseif ($isStaticInfoTablesLoaded && !empty($dbRow['static_lang_isocode'])) {
-                GeneralUtility::deprecationLog(
+                DeprecationUtility::logMessage(
                     'Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in'
                     . ' language field "language_isocode" in your sys_language records.'
                 );

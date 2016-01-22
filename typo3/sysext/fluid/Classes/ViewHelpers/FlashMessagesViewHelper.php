@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -124,7 +125,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
             return '';
         }
         if ($renderMode !== null) {
-            GeneralUtility::deprecationLog('renderMode has been deprecated in TYPO3 CMS 7.3 and will be removed in TYPO3 CMS 8');
+            DeprecationUtility::logMessage('renderMode has been deprecated in TYPO3 CMS 7.3 and will be removed in TYPO3 CMS 8');
             if ($renderMode === self::RENDER_MODE_DIV) {
                 $content = $this->renderDiv($flashMessages);
             } else {

@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -2745,7 +2746,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
         }
         if ($this->isDeprecated($identifier)) {
             $deprecationSettings = $this->getDeprecationSettings($identifier);
-            GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
+            DeprecationUtility::logMessage(sprintf($deprecationSettings['message'], $identifier));
             if (!empty($deprecationSettings['replacement'])) {
                 $identifier = $deprecationSettings['replacement'];
             }

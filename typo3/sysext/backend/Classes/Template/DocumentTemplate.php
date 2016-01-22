@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -726,7 +727,7 @@ function jumpToUrl(URL) {
      */
     public function section($label, $text, $nostrtoupper = false, $sH = false, $type = 0, $allowHTMLinHeader = false)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $str = '';
         // Setting header
         if ($label) {
@@ -753,7 +754,7 @@ function jumpToUrl(URL) {
      */
     public function divider($dist)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $dist = (int)$dist;
         $str = '
 
@@ -775,7 +776,7 @@ function jumpToUrl(URL) {
      */
     public function sectionHeader($label, $sH = false, $addAttrib = '')
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $tag = $sH ? 'h2' : 'h3';
         if ($addAttrib && $addAttrib[0] !== ' ') {
             $addAttrib = ' ' . $addAttrib;
@@ -798,7 +799,7 @@ function jumpToUrl(URL) {
      */
     public function sectionBegin()
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         if (!$this->sectionFlag) {
             $this->sectionFlag = 1;
             $str = '
@@ -825,7 +826,7 @@ function jumpToUrl(URL) {
     public function sectionEnd()
     {
         if ($this->sectionFlag) {
-            GeneralUtility::logDeprecatedFunction();
+            DeprecationUtility::logFunction();
             $this->sectionFlag = 0;
             return '
 	</div>
@@ -1053,7 +1054,7 @@ function jumpToUrl(URL) {
      */
     public function wrapInCData($string)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $string = '/*<![CDATA[*/' . $string . '/*]]>*/';
         return $string;
     }
@@ -1098,7 +1099,7 @@ function jumpToUrl(URL) {
      */
     public function funcMenu($content, $menu)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         return '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%" id="typo3-funcmenu">
 				<tr>
@@ -1142,7 +1143,7 @@ function jumpToUrl(URL) {
      */
     public function getDragDropCode($table, $additionalJavaScriptCode = '')
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
 			DragDrop.table = "' . $table . '";
 			' . $additionalJavaScriptCode . '
@@ -1166,7 +1167,7 @@ function jumpToUrl(URL) {
      */
     public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '')
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         $content = '';
         if (is_array($menuItems)) {
             if (!is_array($mainParams)) {
@@ -1228,7 +1229,7 @@ function jumpToUrl(URL) {
      */
     public function getVersionSelector($id, $noAction = false)
     {
-        GeneralUtility::logDeprecatedFunction();
+        DeprecationUtility::logFunction();
         if (
                 ExtensionManagementUtility::isLoaded('version') &&
                 !ExtensionManagementUtility::isLoaded('workspaces')
