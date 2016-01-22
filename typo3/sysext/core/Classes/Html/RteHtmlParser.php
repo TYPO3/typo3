@@ -171,9 +171,6 @@ class RteHtmlParser extends HtmlParser
                         case 'ts_images':
                             $value = $this->TS_images_db($value);
                             break;
-                        case 'ts_reglinks':
-                            $value = $this->TS_reglinks($value, 'db');
-                            break;
                         case 'ts_links':
                             $value = $this->TS_links_db($value);
                             break;
@@ -204,9 +201,6 @@ class RteHtmlParser extends HtmlParser
                     switch ($cmd) {
                         case 'ts_images':
                             $value = $this->TS_images_rte($value);
-                            break;
-                        case 'ts_reglinks':
-                            $value = $this->TS_reglinks($value, 'rte');
                             break;
                         case 'ts_links':
                             $value = $this->TS_links_rte($value);
@@ -438,42 +432,6 @@ class RteHtmlParser extends HtmlParser
         return implode('', $imgSplit);
     }
 
-    /**
-     * Transformation handler: 'ts_reglinks' / direction: "db"+"rte" depending on $direction variable.
-     * Converting <A>-tags to/from abs/rel
-     *
-     * @param string $value Content input
-     * @param string $direction Direction of conversion; "rte" (from database to RTE) or "db" (from RTE to database)
-     * @return string Content output
-     */
-    public function TS_reglinks($value, $direction)
-    {
-        $retVal = '';
-        switch ($direction) {
-            case 'rte':
-                $retVal = $this->TS_AtagToAbs($value, 1);
-                break;
-            case 'db':
-                $siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-                $blockSplit = $this->splitIntoBlock('A', $value);
-                foreach ($blockSplit as $k => $v) {
-                    // Block
-                    if ($k % 2) {
-                        list($attribArray) = $this->get_tag_attributes($this->getFirstTag($v), true);
-                        // If the url is local, remove url-prefix
-                        if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
-                            $attribArray['href'] = substr($attribArray['href'], strlen($siteURL));
-                        }
-                        $bTag = '<a ' . GeneralUtility::implodeAttributes($attribArray, 1) . '>';
-                        $eTag = '</a>';
-                        $blockSplit[$k] = $bTag . $this->TS_reglinks($this->removeFirstAndLastTag($blockSplit[$k]), $direction) . $eTag;
-                    }
-                }
-                $retVal = implode('', $blockSplit);
-                break;
-        }
-        return $retVal;
-    }
 
     /**
      * Transformation handler: 'ts_links' / direction: "db"
