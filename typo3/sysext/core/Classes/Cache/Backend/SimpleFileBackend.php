@@ -175,7 +175,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         } else {
             if ($cacheDirectory[0] == '/') {
                 // Absolute path to cache directory.
-                $documentRoot = '/';
+                $documentRoot = '';
             }
             if (TYPO3_OS === 'WIN') {
                 if (substr($cacheDirectory, 0, strlen($documentRoot)) === $documentRoot) {
