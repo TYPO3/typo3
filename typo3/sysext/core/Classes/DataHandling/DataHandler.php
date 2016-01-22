@@ -1521,7 +1521,7 @@ class DataHandler
             $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
         }
         // Checking for RTE-transformations of fields:
-        $types_fieldConfig = BackendUtility::getTCAtypes($table, $currentRecord);
+        $types_fieldConfig = BackendUtility::getTCAtypes($table, $this->checkValue_currentRecord);
         $theTypeString = null;
         if (is_array($types_fieldConfig)) {
             foreach ($types_fieldConfig as $vconf) {
@@ -1533,12 +1533,12 @@ class DataHandler
                 // Look for transformation flag:
                 if ((string)$incomingFieldArray['_TRANSFORM_' . $vconf['field']] === 'RTE') {
                     if ($theTypeString === null) {
-                        $theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
+                        $theTypeString = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
                     }
                     $RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
                     $thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
                     $fieldArray[$vconf['field']] = $this->transformRichtextContentToDatabase(
-                        $fieldArray[$vconf['field']], $table, $vconf['field'], $vconf['spec'], $thisConfig, $currentRecord['pid']
+                        $fieldArray[$vconf['field']], $table, $vconf['field'], $vconf['spec'], $thisConfig, $this->checkValue_currentRecord['pid']
                     );
                 }
             }
