@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -25,7 +26,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * Class IconRegistry, which makes it possible to register custom icons
  * from within an extension.
  */
-class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class IconRegistry implements SingletonInterface
 {
     /**
      * @var bool
@@ -41,6 +42,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      * @var bool
      */
     protected $flagsInitialized = false;
+
+    /**
+     * @var bool
+     */
+    protected $moduleIconsInitialized = false;
 
     /**
      * Registered icons
@@ -2628,7 +2634,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Array of deprecated icons, add deprecated icons to this array and remove it from registry
      * - Index of this array contains the deprecated icon
-     * - Value of each entry must contain the deprecation message and can contain an identifier which replaces the old identifier
+     * - Value of each entry must contain the deprecation message and can contain an identifier
+     *   which replaces the old identifier
      *
      * Example:
      * array(
@@ -2665,10 +2672,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
         if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
             $this->registerTCAIcons();
         }
+        if (!$this->moduleIconsInitialized && !empty($GLOBALS['TBE_MODULES'])) {
+            $this->registerModuleIcons();
+        }
         if (!$this->flagsInitialized) {
             $this->registerFlags();
         }
-        if ($this->tcaInitialized && $this->flagsInitialized) {
+        if ($this->tcaInitialized && $this->moduleIconsInitialized && $this->flagsInitialized) {
             $this->fullInitialized = true;
         }
     }
@@ -2714,7 +2724,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     public function registerIcon($identifier, $iconProviderClassName, array $options = array())
     {
         if (!in_array(IconProviderInterface::class, class_implements($iconProviderClassName), true)) {
-            throw new \InvalidArgumentException('An IconProvider must implement ' . IconProviderInterface::class, 1437425803);
+            throw new \InvalidArgumentException('An IconProvider must implement '
+                . IconProviderInterface::class, 1437425803);
         }
         $this->icons[$identifier] = array(
             'provider' => $iconProviderClassName,
@@ -2824,6 +2835,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons
+     *
+     * @return void
      */
     protected function registerTCAIcons()
     {
@@ -2854,11 +2867,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         foreach ($resultArray as $iconIdentifier => $iconFilePath) {
-            if (StringUtility::endsWith(strtolower($iconFilePath), 'svg')) {
-                $iconProviderClass = SvgIconProvider::class;
-            } else {
-                $iconProviderClass = BitmapIconProvider::class;
-            }
+            $iconProviderClass = $this->detectIconProvider($iconFilePath);
             $this->icons[$iconIdentifier] = array(
                 'provider' => $iconProviderClass,
                 'options' => array(
@@ -2870,7 +2879,41 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * register flags
+     * Register module icons
+     *
+     * @return void
+     */
+    protected function registerModuleIcons()
+    {
+        $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'];
+        foreach ($moduleConfiguration as $moduleKey => $singleModuleConfiguration) {
+            $iconIdentifier = !empty($singleModuleConfiguration['iconIdentifier'])
+                ? $singleModuleConfiguration['iconIdentifier']
+                : null;
+
+            if ($iconIdentifier !== null) {
+                // iconIdentifier found, icon is registered, continue
+                continue;
+            }
+
+            $iconPath = !empty($singleModuleConfiguration['icon'])
+                ? $singleModuleConfiguration['icon']
+                : null;
+            $iconProviderClass = $this->detectIconProvider($iconPath);
+            $iconIdentifier = 'module-icon-' . $moduleKey;
+
+            $this->icons[$iconIdentifier] = array(
+                'provider' => $iconProviderClass,
+                'options' => array(
+                    'source' => $iconPath
+                )
+            );
+        }
+        $this->moduleIconsInitialized = true;
+    }
+
+    /**
+     * Register flags
      */
     protected function registerFlags()
     {
@@ -2913,5 +2956,20 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             );
         }
         $this->flagsInitialized = true;
+    }
+
+    /**
+     * Detect the IconProvider of an icon
+     *
+     * @param string $iconReference
+     * @return string
+     */
+    protected function detectIconProvider($iconReference)
+    {
+        if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
+            return SvgIconProvider::class;
+        } else {
+            return BitmapIconProvider::class;
+        }
     }
 }
