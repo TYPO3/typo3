@@ -1,9 +1,4 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: Includes.txt
+﻿.. include:: Includes.txt
 
 
 .. _start:
@@ -13,32 +8,32 @@ Form
 ====
 
 :Extension key:
-      form
+    form
 
 :Version:
-      6.2
+    6.2
 
 :Language:
-      en
+    en
 
 :Description:
-      Form Library, Plugin and Wizard
+    Form Library, Plugin and Wizard
 
 :Keywords:
-      form
+    form
 
 :Copyright:
-      2000-2013
+    2000-2016
 
 :Author:
-      TYPO3 CMS Core Development Team
+    TYPO3 CMS Core Development Team
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+    Open Content License available from `www.opencontent.org/opl.shtml
+    <http://www.opencontent.org/opl.shtml>`_
 
 :Rendered:
-      |today|
+    |today|
 
 The content of this document is related to TYPO3,
 
@@ -51,12 +46,11 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
 **Table of Contents**
 
 .. toctree::
-   :maxdepth: 5
-   :titlesonly:
-   :glob:
+    :maxdepth: 5
+    :titlesonly:
+    :glob:
 
-   Introduction/Index
-   Administration/Index
-   Configuration/Index
-   Targets
-
+    Introduction/Index
+    Administration/Index
+    Configuration/Index
+    Targets
