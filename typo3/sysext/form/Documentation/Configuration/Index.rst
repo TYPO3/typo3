@@ -1,23 +1,28 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
-
+﻿.. include:: ../Includes.txt
 
 
 .. _configuration:
 
+=============
 Configuration
--------------
+=============
 
+.. only:: html
+
+    .. tip::
+
+      Whenever you see a reference to anything named an "object" in this
+      section it is a reference to a "FORM object" and not the "cObjects"
+      unless it is clearly stated.
 
 .. toctree::
-   :maxdepth: 5
-   :titlesonly:
-   :glob:
+    :maxdepth: 5
+    :titlesonly:
+    :glob:
 
-   Reference/Index
-   CheatSheet/Index
+    Objects/Index
+    Layout/Index
+    Rules/Index
+    Filters/Index
+    Postprocessors/Index
 
