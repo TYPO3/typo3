@@ -17,6 +17,7 @@ namespace TYPO3\CMS\About\Controller;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -144,7 +145,8 @@ class ModulesController extends ActionController
             $subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
             $subModuleData = array();
             $subModuleData['name'] = $subModuleName;
-            $subModuleData['icon'] = PathUtility::getAbsoluteWebPath($subModuleInfo['icon']);
+            $subModuleData['icon'] = $subModuleInfo['icon'];
+            $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'];
             $subModuleData['label'] = $this->languageService->moduleLabels['tabs'][$subModuleKey];
             $subModuleData['shortDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'label'];
             $subModuleData['longDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'descr'];

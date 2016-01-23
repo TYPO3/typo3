@@ -1,3 +1,5 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
 <f:layout name="Default" />
 
 <f:section name="Content">
@@ -28,10 +30,10 @@
 										title="{subModule.shortDescription}"
 										class="pull-left"
 									>
-										<span class="typo3-app-icon">
+										<span class="typo3-app-icon media-object" title="{subModule.label}">
 											<span>
 												<span>
-													<img src="../{subModule.icon}" alt="{subModule.label}" class="media-object" />
+													<core:icon identifier="{subModule.iconIdentifier}" size="default" />
 												</span>
 											</span>
 										</span>

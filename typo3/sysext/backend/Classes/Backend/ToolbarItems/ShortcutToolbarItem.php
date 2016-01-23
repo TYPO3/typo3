@@ -844,19 +844,18 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('mimetypes-word', Icon::SIZE_SMALL)->render() . '</span>';
                 break;
             default:
+                $iconIdentifier = '';
                 $moduleName = $row['module_name'];
                 if (strpos($moduleName, '_') !== false) {
                     list($mainModule, $subModule) = explode('_', $moduleName, 2);
-                    $icon = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['icon'];
+                    $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
                 } elseif (!empty($moduleName)) {
-                    $icon = $this->moduleLoader->modules[$moduleName]['icon'];
+                    $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'];
                 }
-                if (!empty($icon) && file_exists($icon)) {
-                    $icon = '../' . PathUtility::stripPathSitePrefix($icon);
-                    $icon = '<img src="' . htmlspecialchars($icon) . '" alt="' . $titleAttribute . '" width="16">';
-                } else {
-                    $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+                if (!$iconIdentifier) {
+                    $iconIdentifier = 'empty-empty';
                 }
+                $icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '</span>';
         }
         return $icon;
     }

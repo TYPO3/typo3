@@ -312,12 +312,13 @@ abstract class AbstractItemProvider
                         // Icon:
                         if (strpos($theMod, '_') !== false) {
                             list($mainModule, $subModule) = explode('_', $theMod, 2);
-                            $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['icon'];
+                            $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
                         } else {
-                            $icon = $loadModules->modules[$theMod]['icon'];
+                            $icon = $loadModules->modules[$theMod]['iconIdentifier'];
                         }
                         if ($icon) {
-                            $icon = '../' . PathUtility::stripPathSitePrefix($icon);
+                            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+                            $icon = $iconFactory->getIcon($icon)->render();
                         }
                         // Add help text
                         $helpText = [

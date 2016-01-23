@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -255,7 +256,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                 'name' => $moduleName,
                 'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
                 'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
-                'icon' => $this->getModuleIcon($moduleName . '_tab', $moduleData),
+                'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                 'link' => $moduleLink,
                 'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
             );
@@ -265,7 +266,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                     'name' => $moduleName,
                     'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
                     'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
-                    'icon' => $this->getModuleIcon($moduleName . '_tab', $moduleData),
+                    'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                     'link' => $moduleLink,
                     'originalLink' => $moduleLink,
                     'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label'],
@@ -288,7 +289,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
                         'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
-                        'icon' => $this->getModuleIcon($submoduleKey, $submoduleData),
+                        'icon' => $this->getModuleIcon($moduleKey, $submoduleData),
                         'link' => $submoduleLink,
                         'originalLink' => $originalLink,
                         'description' => $submoduleDescription,
@@ -340,7 +341,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * gets the module icon and its size
+     * gets the module icon
      *
      * @param string $moduleKey Module key
      * @param array $moduleData the compiled data associated with it
@@ -348,17 +349,15 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getModuleIcon($moduleKey, $moduleData)
     {
-        $icon = '';
-
-        // add as a sprite icon
-        if (!empty($moduleData['iconIdentifier'])) {
+        $iconIdentifier = !(empty($moduleData['iconIdentifier']))
+            ? $moduleData['iconIdentifier']
+            : 'module-icon-' . $moduleKey;
+        $iconRegisty = GeneralUtility::makeInstance(IconRegistry::class);
+        if ($iconRegisty->isRegistered($iconIdentifier)) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $icon = $iconFactory->getIcon($moduleData['iconIdentifier'])->render();
-        } elseif (isset($moduleData['icon']) && is_file($moduleData['icon'])) {
-            $iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
-            $iconSizes = @getimagesize($moduleData['icon']);
-            $icon = '<img src="' . PathUtility::getAbsoluteWebPath($moduleData['icon']) . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
+            return $iconFactory->getIcon($iconIdentifier)->render();
+        } else {
+            return '';
         }
-        return $icon;
     }
 }
