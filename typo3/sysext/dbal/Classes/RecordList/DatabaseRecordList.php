@@ -25,10 +25,11 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
      * DBAL specific: no LIKE for numeric fields, in this case "uid" (breaks on Oracle)
      * no LIKE for BLOB fields, skip
      *
-     * @param string Table, in which the fields are being searched.
+     * @param string $table, in which the fields are being searched.
+     * @param int $currentPid argument not used in this method, only available for compatibility to parent class
      * @return string Returns part of WHERE-clause for searching, if applicable.
      */
-    public function makeSearchString($table)
+    public function makeSearchString($table, $currentPid = -1)
     {
         // Make query, only if table is valid and a search string is actually defined:
         if ($GLOBALS['TCA'][$table] && $this->searchString) {
