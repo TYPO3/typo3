@@ -2254,17 +2254,12 @@ class GeneralUtility
                 }
                 return false;
             }
-            $ctx = stream_context_create(array(
+            $ctx = stream_context_get_default(array(
                 'http' => array(
                     'header' => implode(CRLF, $requestHeaders)
                 )
             ));
-            $defaultCtx = stream_context_get_default();
-            if ($defaultCtx) {
-                $content = @file_get_contents($url);
-            } else {
-                $content = @file_get_contents($url, false, $ctx);
-            }
+            $content = @file_get_contents($url, false, $ctx);
             if ($content === false && isset($report)) {
                 $report['error'] = -1;
                 $report['message'] = 'Couldn\'t get URL: ' . (isset($http_response_header) ? implode(LF, $http_response_header) : $url);
