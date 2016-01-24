@@ -29,9 +29,9 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 class ElementBrowserFolderTreeView extends FolderTreeView
 {
     /**
-     * @var int
+     * @var string
      */
-    public $ext_IconMode = 1;
+    public $ext_IconMode = 'titlelink';
 
     /**
      * @var LinkParameterProviderInterface
@@ -47,6 +47,30 @@ class ElementBrowserFolderTreeView extends FolderTreeView
     {
         $this->linkParameterProvider = $linkParameterProvider;
         $this->thisScript = $linkParameterProvider->getScriptUrl();
+    }
+
+    /**
+     * Wrapping the folder icon
+     *
+     * @param string $icon The image tag for the icon
+     * @param Folder $folderObject The row for the current element
+     *
+     * @return string The processed icon input value.
+     * @internal
+     */
+    public function wrapIcon($icon, $folderObject)
+    {
+        // Add title attribute to input icon tag
+        $theFolderIcon = '';
+
+        // Wrap icon in link (in ElementBrowser only the "titlelink" is used).
+        if ($this->ext_IconMode === 'titlelink' && $this->ext_isLinkable($folderObject)) {
+            $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
+            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&')) . ');';
+            $theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+        }
+
+        return $theFolderIcon;
     }
 
     /**
