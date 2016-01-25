@@ -30,9 +30,9 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     protected $uidLocal;
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\FileReference $originalResource
+     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
      */
-    public function setOriginalResource(\TYPO3\CMS\Core\Resource\FileReference $originalResource)
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource)
     {
         $this->originalResource = $originalResource;
         $this->uidLocal = (int)$originalResource->getOriginalFile()->getUid();
