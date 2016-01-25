@@ -30,6 +30,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var bool
      */
+    protected $fullInitialized = false;
+
+    /**
+     * @var bool
+     */
     protected $tcaInitialized = false;
 
     /**
@@ -2643,29 +2648,45 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     protected $defaultIconIdentifier = 'default-not-found';
 
     /**
-    * The constructor
-    */
+     * The constructor
+     */
     public function __construct()
+    {
+        $this->initialize();
+    }
+
+    /**
+     * Initialize the registry
+     * This method can be called multiple times, depending on initialization status.
+     * In some cases e.g. TCA is not available, the method must be called multiple times.
+     */
+    protected function initialize()
     {
         if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
             $this->registerTCAIcons();
         }
-        $this->registerFlags();
+        if (!$this->flagsInitialized) {
+            $this->registerFlags();
+        }
+        if ($this->tcaInitialized && $this->flagsInitialized) {
+            $this->fullInitialized = true;
+        }
     }
 
     /**
      * @param string $identifier
-     *
      * @return bool
      */
     public function isRegistered($identifier)
     {
+        if (!$this->fullInitialized) {
+            $this->initialize();
+        }
         return isset($this->icons[$identifier]);
     }
 
     /**
      * @param string $identifier
-     *
      * @return bool
      */
     public function isDeprecated($identifier)
@@ -2732,13 +2753,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getIconConfigurationByIdentifier($identifier)
     {
-        // In some cases TCA is not available, auto register TCA icons
-        // only the first time the TCA is available
-        if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
-            $this->registerTCAIcons();
-        }
-        if ($this->flagsInitialized) {
-            $this->registerFlags();
+        if (!$this->fullInitialized) {
+            $this->initialize();
         }
         if (!$this->isRegistered($identifier)) {
             throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
@@ -2773,6 +2789,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getAllRegisteredIconIdentifiers()
     {
+        if (!$this->fullInitialized) {
+            $this->initialize();
+        }
         return array_keys($this->icons);
     }
 
@@ -2808,11 +2827,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function registerTCAIcons()
     {
-        // if TCA is not available, e.g. for some unit test, return directly
-        if (!is_array($GLOBALS['TCA'])) {
-            return;
-        }
-
         $resultArray = array();
 
         $tcaTables = array_keys($GLOBALS['TCA']);
@@ -2823,7 +2837,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 $tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
                 $icon = null;
                 $iconIdentifier = 'tcarecords-' . $tableName . '-default';
-                if ($this->isRegistered($iconIdentifier)) {
+                if (isset($this->icons[$iconIdentifier])) {
                     continue;
                 }
                 if (isset($tcaCtrl['iconfile'])) {
