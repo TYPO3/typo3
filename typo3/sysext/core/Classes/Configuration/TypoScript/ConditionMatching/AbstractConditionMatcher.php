@@ -341,7 +341,7 @@ abstract class AbstractConditionMatcher
                 $matches = array();
                 preg_match_all('/^\s*([^\(\s]+)\s*(?:\((.*)\))?\s*$/', $value, $matches);
                 $funcName = $matches[1][0];
-                $funcValues = $matches[2][0] ? $this->parseUserFuncArguments($matches[2][0]) : array();
+                $funcValues = trim($matches[2][0]) !== '' ? $this->parseUserFuncArguments($matches[2][0]) : array();
                 if (is_callable($funcName) && call_user_func_array($funcName, $funcValues)) {
                     return true;
                 }
@@ -408,11 +408,13 @@ abstract class AbstractConditionMatcher
                     $segment = preg_replace('/^(.*?[^\\\])' . $quote . '.*$/', '\1', substr($arguments, 1));
                     $segment = str_replace('\\' . $quote, $quote, $segment);
                     $result[] = $segment;
-                    $offset = strpos($arguments, ',', strlen($segment) + 2);
+                    // shorten $arguments
+                    $arguments = substr($arguments, strlen($segment) + 2);
+                    $offset = strpos($arguments, ',');
                     if ($offset === false) {
                         $offset = strlen($arguments);
                     }
-                    $arguments = substr($arguments, $offset);
+                    $arguments = substr($arguments, $offset + 1);
                 } else {
                     $result[] = trim(substr($arguments, 0, $pos));
                     $arguments = substr($arguments, $pos + 1);
