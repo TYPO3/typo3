@@ -73,7 +73,7 @@ class ExtDirectRouter
                     'action' => $singleRequest->action,
                     'method' => $singleRequest->method
                 );
-                $token = array_pop($singleRequest->data);
+                $token = is_array($singleRequest->data) ? array_pop($singleRequest->data) : null;
                 if ($firstCall) {
                     $firstCall = false;
                     $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
