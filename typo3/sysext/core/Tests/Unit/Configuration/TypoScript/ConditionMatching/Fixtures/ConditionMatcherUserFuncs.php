@@ -13,6 +13,11 @@
  */
 
 namespace {
+    function user_testFunctionWithNoArgument()
+    {
+        return count(func_get_args()) === 0;
+    }
+
     function user_testFunctionWithSingleArgument()
     {
         return count(func_get_args()) === 1;

@@ -225,12 +225,220 @@ class AbstractConditionMatcherTest extends UnitTestCase
     /**
      * @test
      */
+    public function testUserFuncWithIntegerZeroArgument()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithSingleArgument(0)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithWhitespaceArgument()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithNoArgument( )')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function testUserFuncWithMultipleArguments()
     {
         $this->assertTrue(
             $this->evaluateConditionCommonMethod->invokeArgs(
                 $this->conditionMatcher,
                 array('userFunc', 'user_testFunctionWithThreeArguments(1,2,3)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsNullBoolString()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments(0,true,"foo")')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsNullStringBool()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments(0,"foo",true)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNull()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments("foo",true,0)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsStringNullBool()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments("foo",0,true)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsBoolNullString()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments(true,0,"foo")')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNull()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments(true,"foo",0)')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsNullBoolStringSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments(0,true,'foo')")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsNullStringBoolSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments(0,'foo',true)")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsStringBoolNullSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments('foo',true,0)")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsStringNullBoolSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments('foo',0,true)")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsBoolNullStringSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments(true,0,'foo')")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleDifferentArgumentsBoolStringNullSingleQuotes()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments(true,'foo',0)")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleSingleQuotedArguments()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', "user_testFunctionWithThreeArguments('foo','bar', 'baz')")
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testUserFuncWithMultipleSoubleQuotedArguments()
+    {
+        $this->assertTrue(
+            $this->evaluateConditionCommonMethod->invokeArgs(
+                $this->conditionMatcher,
+                array('userFunc', 'user_testFunctionWithThreeArguments("foo","bar","baz")')
             )
         );
     }
