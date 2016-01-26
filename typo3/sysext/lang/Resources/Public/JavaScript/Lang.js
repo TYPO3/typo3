@@ -32,7 +32,11 @@ define(['jquery'], function($) {
 		var originalLangObject = $.extend(true, {}, TYPO3.lang);
 		TYPO3.lang = [];
 		$.each(originalLangObject, function(index, value) {
-			TYPO3.lang[index] = value[0].target || value[0].source || value;
+			if (typeof value !== "undefined" && typeof value[0] !== "undefined") {
+				TYPO3.lang[index] = value[0].target || value[0].source;
+			} else {
+				TYPO3.lang[index] = value;
+			}
 		});
 
 		delete originalLangObject;
