@@ -63,7 +63,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $this->objects = $this->widgetConfiguration['objects'];
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], false);
         $this->numberOfObjects = count($this->objects);
-        $this->numberOfPages = ceil($this->numberOfObjects / (int)$this->configuration['itemsPerPage']);
+        $itemsPerPage = (int)$this->configuration['itemsPerPage'];
+        $this->numberOfPages = $itemsPerPage > 0 ? ceil($this->numberOfObjects / $itemsPerPage) : 0;
     }
 
     /**
