@@ -291,12 +291,8 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
                 $GLOBALS['LOCAL_LANG'] = array();
             }
         }
-        // Label string in the default backend output charset.
-        $labelStr = htmlspecialchars($this->getLanguageService()->getLL($key));
-
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-        return $charsetConverter->utf8_to_entities($labelStr);
+        // Return the label string in the default backend output charset.
+        return htmlspecialchars($this->getLanguageService()->getLL($key));
     }
 
     /**

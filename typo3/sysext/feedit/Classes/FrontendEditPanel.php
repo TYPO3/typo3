@@ -111,14 +111,14 @@ class FrontendEditPanel
             $panel .= $this->backendUser->adminPanel->ext_makeToolBar();
         }
         if (isset($allow['edit'])) {
-            $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_editRecord')) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
         }
         // Hiding in workspaces because implementation is incomplete
         if (isset($allow['move']) && $sortField && $this->backendUser->workspace === 0) {
-            $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_moveUp')) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveUp') . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'up');
-            $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_moveDown')) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveDown') . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'down');
         }
         // Hiding in workspaces because implementation is incomplete
@@ -134,12 +134,12 @@ class FrontendEditPanel
         }
         if (isset($allow['new'])) {
             if ($table === 'pages') {
-                $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_newSubpage')) . '">'
+                $icon = '<span title="' . $this->backendUser->extGetLL('p_newSubpage') . '">'
                     . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '');
             } else {
-                $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_newRecordAfter')) . '">'
+                $icon = '<span title="' . $this->backendUser->extGetLL('p_newRecordAfter') . '">'
                     . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '', $newUID);
@@ -148,7 +148,7 @@ class FrontendEditPanel
         // Hiding in workspaces because implementation is incomplete
         // Hiding for localizations because it is unknown what should be the function in that case
         if (isset($allow['delete']) && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
-            $icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_delete')) . '">'
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_delete') . '">'
                 . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render()
                 . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'delete', '', $this->backendUser->extGetLL('p_deleteConfirm'));
