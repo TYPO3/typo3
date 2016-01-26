@@ -822,7 +822,7 @@ class PageLayoutController
                     $lockInfo = BackendUtility::isRecordLocked($tableName, $formData['databaseRow']['uid']);
                     if ($lockInfo) {
                         /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-                        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
+                        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $lockInfo['msg'], '', FlashMessage::WARNING);
                         /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
                         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */

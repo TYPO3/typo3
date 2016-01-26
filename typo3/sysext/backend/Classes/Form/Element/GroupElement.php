@@ -174,7 +174,7 @@ class GroupElement extends AbstractFormElement
                                 $message = $exception->getMessage();
                                 $flashMessage = GeneralUtility::makeInstance(
                                     FlashMessage::class,
-                                    htmlspecialchars($message), '', FlashMessage::ERROR, true
+                                    $message, '', FlashMessage::ERROR, true
                                 );
                                 /** @var $flashMessageService FlashMessageService */
                                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
