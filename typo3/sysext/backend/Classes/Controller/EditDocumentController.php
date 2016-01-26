@@ -1119,7 +1119,7 @@ class EditDocumentController extends AbstractModule
                                         /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
                                         $flashMessage = GeneralUtility::makeInstance(
                                             FlashMessage::class,
-                                            htmlspecialchars($lockInfo['msg']),
+                                            $lockInfo['msg'],
                                             '',
                                             FlashMessage::WARNING
                                         );
