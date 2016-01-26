@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -236,7 +235,7 @@ class BackendUtility
      */
     public static function getSQLselectableList($in_list, $tablename, $default_tablename)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $list = array();
         if ((string)trim($in_list) != '') {
             $tempItemArray = explode(',', trim($in_list));
@@ -1354,7 +1353,7 @@ class BackendUtility
      */
     public static function titleAltAttrib($content)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $out = '';
         $out .= ' alt="' . htmlspecialchars($content) . '"';
         $out .= ' title="' . htmlspecialchars($content) . '"';
@@ -2371,7 +2370,7 @@ class BackendUtility
      */
     public static function makeConfigForm($configArray, $defaults, $dataPrefix)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $params = $defaults;
         $lines = array();
         if (is_array($configArray)) {
@@ -4178,7 +4177,7 @@ class BackendUtility
      */
     public static function processParams($params)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $paramArr = array();
         $lines = explode(LF, $params);
         foreach ($lines as $val) {

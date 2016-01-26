@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -93,7 +92,7 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $uri = $arguments['uri'];
         $icon = $arguments['icon'];
         $title = $arguments['title'];

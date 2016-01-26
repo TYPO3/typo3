@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
@@ -153,7 +152,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function getValue($convertObjects = true)
     {
         $value = null;
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
 
         if ($this->hasArgument('value')) {
             $value = $this->arguments['value'];

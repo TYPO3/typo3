@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\Domain\Builder;
  */
 
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
 use TYPO3\CMS\Form\Domain\Model\Element;
@@ -255,7 +254,7 @@ class FormBuilder
         // @todo Check $userConfiguredElementTypoScript
 
         if ($elementType === 'IMAGEBUTTON') {
-            DeprecationUtility::logMessage('EXT:form: The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+            GeneralUtility::deprecationLog('EXT:form: The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
         }
 
         $element->setElementType($elementType);

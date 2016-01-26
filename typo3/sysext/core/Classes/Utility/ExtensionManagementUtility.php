@@ -1780,7 +1780,7 @@ tt_content.' . $key . $suffix . ' {
                 . ' will be removed. The backend module "Configuration -> TCA" shows the modified values.'
                 . ' Please adapt these areas:';
             array_unshift($messages, $context);
-            DeprecationUtility::logMessage(implode(LF, $messages));
+            GeneralUtility::deprecationLog(implode(LF, $messages));
         }
 
         static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);

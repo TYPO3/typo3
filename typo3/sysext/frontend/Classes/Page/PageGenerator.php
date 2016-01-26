@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -548,7 +547,7 @@ class PageGenerator
             if (!is_array($tsfe->pSetup['includeJSlibs.'])) {
                 $tsfe->pSetup['includeJSlibs.'] = array();
             } else {
-                DeprecationUtility::logMessage('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with an uppercase L) instead.');
+                GeneralUtility::deprecationLog('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with an uppercase L) instead.');
             }
             if (!is_array($tsfe->pSetup['includeJSLibs.'])) {
                 $tsfe->pSetup['includeJSLibs.'] = array();

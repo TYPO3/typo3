@@ -74,7 +74,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
     public function render($tableName, array $fieldList = array(), $storagePid = null, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = false, $readOnly = false, $enableClickMenu = true, $clickTitleMode = null, $alternateBackgroundColors = false)
     {
         if ($alternateBackgroundColors) {
-            \TYPO3\CMS\Core\Utility\DeprecationUtility::logMessage(
+            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
                 'The option alternateBackgroundColors has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
             );
         }

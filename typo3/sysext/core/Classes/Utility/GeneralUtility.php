@@ -4627,24 +4627,48 @@ class GeneralUtility
      *
      * @param string $msg Message (in English).
      * @return void
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public static function deprecationLog($msg)
     {
-        DeprecationUtility::logFunction();
-        DeprecationUtility::logMessage($msg);
+        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+            return;
+        }
+        // Legacy values (no strict comparison, $log can be boolean, string or int)
+        $log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
+        if ($log === true || $log == '1') {
+            $log = array('file');
+        } else {
+            $log = self::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'], true);
+        }
+        $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
+        if (in_array('file', $log) !== false) {
+            // Write a longer message to the deprecation log
+            $destination = static::getDeprecationLogFileName();
+            $file = @fopen($destination, 'a');
+            if ($file) {
+                @fwrite($file, ($date . $msg . LF));
+                @fclose($file);
+                self::fixPermissions($destination);
+            }
+        }
+        if (in_array('devlog', $log) !== false) {
+            // Copy message also to the developer log
+            self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
+        }
+        // Do not use console in login screen
+        if (in_array('console', $log) !== false && isset($GLOBALS['BE_USER']->user['uid'])) {
+            DebugUtility::debug($msg, $date, 'Deprecation Log');
+        }
     }
 
     /**
      * Gets the absolute path to the deprecation log file.
      *
      * @return string Absolute path to the deprecation log file
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public static function getDeprecationLogFileName()
     {
-        DeprecationUtility::logFunction();
-        DeprecationUtility::getDeprecationLogFileName();
+        return PATH_typo3conf . 'deprecation_' . self::shortMD5((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '.log';
     }
 
     /**
@@ -4652,11 +4676,27 @@ class GeneralUtility
      * The log message will be taken from the annotation.
      *
      * @return void
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public static function logDeprecatedFunction()
     {
-        DeprecationUtility::logFunction();
+        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+            return;
+        }
+        $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if ($trail[1]['type']) {
+            $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
+        } else {
+            $function = new \ReflectionFunction($trail[1]['function']);
+        }
+        $msg = '';
+        if (preg_match('/@deprecated\\s+(.*)/', $function->getDocComment(), $match)) {
+            $msg = $match[1];
+        }
+            // Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
+        $logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
+        $logMsg .= '() - ' . $msg . ' - ' . DebugUtility::debugTrail();
+        $logMsg .= ' (' . PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
+        self::deprecationLog($logMsg);
     }
 
     /**

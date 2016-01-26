@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Fluid\View;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
@@ -235,7 +234,7 @@ class StandaloneView extends AbstractTemplateView
      */
     public function setLayoutRootPath($layoutRootPath)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $this->setLayoutRootPaths(array($layoutRootPath));
     }
 
@@ -261,7 +260,7 @@ class StandaloneView extends AbstractTemplateView
      */
     public function getLayoutRootPath()
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $layoutRootPaths = $this->getLayoutRootPaths();
         return array_shift($layoutRootPaths);
     }
@@ -296,7 +295,7 @@ class StandaloneView extends AbstractTemplateView
      */
     public function setPartialRootPath($partialRootPath)
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $this->setPartialRootPaths(array($partialRootPath));
     }
 
@@ -310,7 +309,7 @@ class StandaloneView extends AbstractTemplateView
      */
     public function getPartialRootPath()
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         $partialRootPaths = $this->getPartialRootPaths();
         return array_shift($partialRootPaths);
     }

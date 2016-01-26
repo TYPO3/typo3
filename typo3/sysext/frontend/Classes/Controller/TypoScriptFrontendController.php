@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -3924,7 +3923,7 @@ class TypoScriptFrontendController
     {
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
         $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, 2);
-        DeprecationUtility::logMessage('TypoScript ' . $typoScriptProperty . ' is deprecated' . $explanationText);
+        GeneralUtility::deprecationLog('TypoScript ' . $typoScriptProperty . ' is deprecated' . $explanationText);
     }
 
     /**

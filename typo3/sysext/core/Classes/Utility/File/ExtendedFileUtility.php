@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
-use TYPO3\CMS\Core\Utility\DeprecationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -316,7 +315,7 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function pushErrorMessagesToFlashMessageQueue()
     {
-        DeprecationUtility::logFunction();
+        GeneralUtility::logDeprecatedFunction();
         foreach ($this->getErrorMessages() as $msg) {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
