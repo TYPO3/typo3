@@ -92,7 +92,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $mirror = $this->getMirror();
         $mirrorUrl = $mirror['host'] . $mirror['path'];
-        return 'http://' . $mirrorUrl;
+        return 'https://' . $mirrorUrl;
     }
 
     /**

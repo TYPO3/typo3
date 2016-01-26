@@ -182,7 +182,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     public function getRemoteExtListFile()
     {
         $mirror = $this->getMirrors(true)->getMirror();
-        $filePath = 'http://' . $mirror['host'] . $mirror['path'] . 'extensions.xml.gz';
+        $filePath = 'https://' . $mirror['host'] . $mirror['path'] . 'extensions.xml.gz';
         return $filePath;
     }
 
@@ -196,7 +196,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     public function getRemoteExtHashFile()
     {
         $mirror = $this->getMirrors(true)->getMirror();
-        $filePath = 'http://' . $mirror['host'] . $mirror['path'] . 'extensions.md5';
+        $filePath = 'https://' . $mirror['host'] . $mirror['path'] . 'extensions.md5';
         return $filePath;
     }
 
