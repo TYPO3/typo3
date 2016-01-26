@@ -555,12 +555,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$rUid = $rParts[1];
 				$nameSuggestion .= $tName . '_' . $rUid;
 				$rec = BackendUtility::getRecordWSOL($tName, $rUid);
-				$row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_record', TRUE) . '</strong></td>
-					<td>' . IconUtility::getSpriteIconForRecord($tName, $rec) . BackendUtility::getRecordTitle($tName, $rec, TRUE)
+				if (!empty($rec)) {
+					$row[] = '
+					<tr class="bgColor4">
+						<td><strong>' . $this->lang->getLL('makeconfig_record', TRUE) . '</strong></td>
+						<td>' . IconUtility::getSpriteIconForRecord($tName, $rec) . BackendUtility::getRecordTitle($tName, $rec, TRUE)
 						. '<input type="hidden" name="tx_impexp[record][]" value="' . htmlspecialchars(($tName . ':' . $rUid)) . '" /></td>
-				</tr>';
+					</tr>';
+				}
 			}
 		}
 		// Single tables/pids:
