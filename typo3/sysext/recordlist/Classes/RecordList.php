@@ -465,10 +465,12 @@ class RecordList extends AbstractModule
         // access
         // Begin to compile the whole page, starting out with page header:
         if (!$this->id) {
-            $this->body = $this->moduleTemplate->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+            $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } else {
-            $this->body = $this->moduleTemplate->header($this->pageinfo['title']);
+            $title = $this->pageinfo['title'];
         }
+        $this->body = $this->moduleTemplate->header($title);
+        $this->moduleTemplate->setTitle($title);
 
         if (!empty($dblist->HTMLcode)) {
             $output = $dblist->HTMLcode;
