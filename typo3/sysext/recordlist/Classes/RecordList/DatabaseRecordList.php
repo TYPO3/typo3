@@ -404,7 +404,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // Paste
-            if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
+            if ($this->showClipboard && ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
                 $elFromTable = $this->clipObj->elFromTable('');
                 if (!empty($elFromTable)) {
                     $onClick = 'return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable);
