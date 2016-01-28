@@ -47,6 +47,8 @@ class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
         $this->tag->addAttribute('data-listframe', 1);
         $this->tag->addAttribute('href', '#');
 
+        $this->tag->setContent($this->renderChildren());
+
         return $this->tag->render();
     }
 }
