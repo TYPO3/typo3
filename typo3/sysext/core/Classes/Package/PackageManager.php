@@ -813,10 +813,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $fileDescription .= "# This file will be regenerated automatically if it doesn't exist. Deleting this file\n";
         $fileDescription .= "# should, however, never become necessary if you use the package commands.\n";
 
-        // We do not need the dependencies on disk...
+        // We do not need the dependencies and suggestions on disk...
         foreach ($this->packageStatesConfiguration['packages'] as &$packageConfiguration) {
             if (isset($packageConfiguration['dependencies'])) {
                 unset($packageConfiguration['dependencies']);
+            }
+            if (isset($packageConfiguration['suggestions'])) {
+                unset($packageConfiguration['suggestions']);
             }
         }
         if (!@is_writable($this->packageStatesPathAndFilename)) {

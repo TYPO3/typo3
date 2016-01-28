@@ -223,7 +223,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'state' => 'inactive',
                 'packagePath' => 'Application/' . $packageKey . '/',
                 'composerName' => $packageKey,
-                'suggestions' => array(),
             );
         }
 
