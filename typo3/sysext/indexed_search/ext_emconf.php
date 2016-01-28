@@ -16,9 +16,6 @@ $EM_CONF[$_EXTKEY] = array(
             'typo3' => '7.6.0-7.6.99',
         ),
         'conflicts' => array(),
-        'suggests' => array(
-            'extbase' => '',
-            'fluid' => '',
-        ),
+        'suggests' => array(),
     ),
 );
