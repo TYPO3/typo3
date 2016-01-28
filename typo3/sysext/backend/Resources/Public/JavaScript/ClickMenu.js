@@ -98,19 +98,16 @@ define(['jquery'], function($) {
 			url += ((url.indexOf('?') == -1) ? '?' : '&') + parameters;
 		}
 		$.ajax(url).done(function(response) {
-			if (!response.getElementsByTagName('data')[0]) {
+			// No response content, usually because a copy/paste action was triggered and just the frame needs
+			// to be reloaded.
+			if (typeof response.items === "undefined") {
 				var res = parameters.match(/&reloadListFrame=(0|1|2)(&|$)/);
-				var reloadListFrame = parseInt(res[1], 0);
-				if (reloadListFrame) {
-					var doc = reloadListFrame != 2 ? top.content.list_frame : top.content;
-					doc.location.reload(true);
+				if (parseInt(res[1], 0)) {
+					top.content.list_frame.location.reload(true);
 				}
-				return;
+			} else {
+				ClickMenu.populateData(response.items, response.level);
 			}
-			var menu = response.getElementsByTagName('data')[0].getElementsByTagName('clickmenu')[0];
-			var data = menu.getElementsByTagName('htmltable')[0].firstChild.data;
-			var level = menu.getElementsByTagName('cmlevel')[0].firstChild.data;
-			ClickMenu.populateData(data, level);
 		});
 	};
 
@@ -118,17 +115,17 @@ define(['jquery'], function($) {
 	 * fills the clickmenu with content and displays it correctly
 	 * depending on the mouse position
 	 *
-	 * @param {String} data The data that will be put in the menu
+	 * @param {array} items The data that will be put in the menu
 	 * @param {Number} level The depth of the clickmenu
 	 */
-	ClickMenu.populateData = function(data, level) {
+	ClickMenu.populateData = function(items, level) {
 		this.initializeClickMenuContainer();
 
 		level = parseInt(level, 10) || 0;
 		var $obj = $('#contentMenu' + level);
 
 		if ($obj.length && (level === 0 || $('#contentMenu' + (level-1)).is(':visible'))) {
-			$obj.html(data);
+			$obj.html('<div class="list-group">' + items.join('') + '</div>');
 			var x = this.mousePos.X;
 			var y = this.mousePos.Y;
 			var dimsWindow = {
@@ -244,7 +241,7 @@ define(['jquery'], function($) {
 	 */
 	ClickMenu.initializeClickMenuContainer = function() {
 		if ($('#contentMenu0').length === 0) {
-			var code = '<div id="contentMenu0" style="display: block;"></div><div id="contentMenu1" style="display: block;"></div>';
+			var code = '<div id="contentMenu0" class="context-menu"></div><div id="contentMenu1" class="context-menu" style="display: block;"></div>';
 			$('body').append(code);
 		}
 	};

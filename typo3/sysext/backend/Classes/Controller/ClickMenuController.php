@@ -28,42 +28,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ClickMenuController
 {
     /**
-     * Defines the name of the document object for which to reload the URL.
-     *
-     * @var int
-     */
-    public $reloadListFrame;
-
-    /**
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    public $doc;
-
-    /**
-     * Internal array of classes for extending the clickmenu
-     *
-     * @var array
-     */
-    public $extClassArray = array();
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
         $GLOBALS['SOBE'] = $this;
-
-        // Setting GPvars:
-        $this->reloadListFrame = GeneralUtility::_GP('reloadListFrame');
         // Setting pseudo module name
         $this->MCONF['name'] = 'xMOD_alt_clickmenu.php';
-
-        // Setting internal array of classes for extending the clickmenu:
-        $this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
-
-        // Initialize template object
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
     }
 
     /**
@@ -75,17 +47,13 @@ class ClickMenuController
      */
     public function getContextMenuAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-
-        // XML has to be parsed, no parse errors allowed
-        @ini_set('display_errors', 0);
-
+        /** @var Clipboard $clipObj */
         $clipObj = GeneralUtility::makeInstance(Clipboard::class);
         $clipObj->initializeClipboard();
         // This locks the clipboard to the Normal for this request.
         $clipObj->lockToNormal();
         // Update clipboard if some actions are sent.
-        $CB = GeneralUtility::_GET('CB');
-        $clipObj->setCmd($CB);
+        $clipObj->setCmd($request->getQueryParams()['CB']);
         $clipObj->cleanCurrent();
         // Saves
         $clipObj->endClipboard();
@@ -93,15 +61,13 @@ class ClickMenuController
         $clickMenu = GeneralUtility::makeInstance(ClickMenu::class);
         // Set internal vars in clickmenu object:
         $clickMenu->clipObj = $clipObj;
-        $clickMenu->extClassArray = $this->extClassArray;
+        // Setting internal array of classes for extending the clickmenu:
+        $clickMenu->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
-        // Set content of the clickmenu with the incoming var, "item"
-        $ajaxContent = $clickMenu->init();
-
-        // send the data
-        $ajaxContent = '<?xml version="1.0"?><t3ajax>' . $ajaxContent . '</t3ajax>';
-        $response->getBody()->write($ajaxContent);
-        $response = $response->withHeader('Content-Type', 'text/xml; charset=utf-8');
+        $content = $clickMenu->init();
+        if (is_array($content)) {
+            $response->getBody()->write(json_encode($content));
+        }
         return $response;
     }
 

@@ -63,13 +63,6 @@ class ClickMenu
     public $isDBmenu = false;
 
     /**
-     * If TRUE, the "content" frame is always used for reference (when condensed mode is enabled)
-     *
-     * @var bool
-     */
-    public $alwaysContentFrame = false;
-
-    /**
      * Stores the parts of the input $item string, splitted by "|":
      * [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame,
      * If "2" then "content frame" is forced  [3] = ("+" prefix = disable
@@ -167,7 +160,7 @@ class ClickMenu
     /**
      * Initialize click menu
      *
-     * @return string The clickmenu HTML content
+     * @return array the array to be returned as JSON including all click menu items
      */
     public function init()
     {
@@ -188,9 +181,6 @@ class ClickMenu
         // Setting flags:
         if ($this->iParts[2]) {
             $this->listFrame = true;
-        }
-        if ($this->iParts[2] == 2) {
-            $this->alwaysContentFrame = true;
         }
         if (isset($this->iParts[1]) && $this->iParts[1] !== '') {
             $this->isDBmenu = true;
@@ -226,7 +216,7 @@ class ClickMenu
      *
      * @param string $table Table name
      * @param int $uid UID for the current record.
-     * @return string HTML content
+     * @return array the array to be returned as JSON
      */
     public function printDBClickMenu($table, $uid)
     {
@@ -324,8 +314,8 @@ class ClickMenu
                 if ($this->editOK) {
                     $localItems['spacer3'] = 'spacer';
                     $localItems['moreoptions'] = $this->linkItem(
-                        $this->label('more'),
-                        '',
+                        $this->label('more') . '&nbsp;&nbsp;<span class="fa fa-caret-right"></span>',
+                        '<span class="fa fa-fw"></span>',
                         'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions') . ');return false;',
                         false,
                         true
@@ -405,7 +395,7 @@ class ClickMenu
      *
      * @param string $table Table name
      * @param int $uid UID for the current record.
-     * @return string HTML content
+     * @return array the array to be returned as JSON
      */
     public function printNewDBLevel($table, $uid)
     {
@@ -526,7 +516,7 @@ class ClickMenu
         }
         $addParam = array();
         if ($this->listFrame) {
-            $addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
+            $addParam['reloadListFrame'] = 1;
         }
         $icon = $this->iconFactory->getIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : ''), Icon::SIZE_SMALL)->render();
         return $this->linkItem(
@@ -1092,7 +1082,7 @@ class ClickMenu
         }
         $addParam = array();
         if ($this->listFrame) {
-            $addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
+            $addParam['reloadListFrame'] = 1;
         }
         return $this->linkItem(
             $this->label($type),
@@ -1176,7 +1166,7 @@ class ClickMenu
      * @param string $table The absolute path
      * @param int $srcId UID for the current record.
      * @param int $dstId Destination ID
-     * @return string HTML content
+     * @return array the array to be returned as JSON
      */
     public function printDragDropClickMenu($table, $srcId, $dstId)
     {
@@ -1282,7 +1272,7 @@ class ClickMenu
      * Prints the items from input $menuItems array - as JS section for writing to the div-layers.
      *
      * @param array $menuItems Array
-     * @return string HTML code
+     * @return array the array to be returned via JSON
      */
     public function printItems($menuItems)
     {
@@ -1298,7 +1288,7 @@ class ClickMenu
      * Create the JavaScript section
      *
      * @param array $menuItems The $menuItems array to print
-     * @return string The JavaScript section which will print the content of the CM to the div-layer in the target frame.
+     * @return array|null the items to print, and The JavaScript section which will print the content of the CM to the div-layer in the target frame.
      */
     public function printLayerJScode($menuItems)
     {
@@ -1306,12 +1296,10 @@ class ClickMenu
         if ($this->isCMlayers()) {
             // Create the table displayed in the clickmenu layer:
             // Wrap the inner table in another table to create outer border:
-            $CMtable = '
-				<div class="typo3-CSM-wrapperCM">
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-CSM">
-					' . implode('', $this->menuItemsForClickMenu($menuItems)) . '
-				</table></div>';
-            return '<data><clickmenu><htmltable><![CDATA[' . $CMtable . ']]></htmltable><cmlevel>' . $this->cmLevel . '</cmlevel></clickmenu></data>';
+            return [
+                'items' => $this->menuItemsForClickMenu($menuItems),
+                'level' => $this->cmLevel
+            ];
         }
     }
 
@@ -1327,10 +1315,7 @@ class ClickMenu
         foreach ($menuItems as $cc => $i) {
             // MAKE horizontal spacer
             if (is_string($i) && $i === 'spacer') {
-                $out[] = '
-					<tr style="height: 1px;" class="bgColor2">
-						<td colspan="2"></td>
-					</tr>';
+                $out[] = '<span class="list-group-item list-group-item-divider"></span>';
             } else {
                 // Just make normal element:
                 $onClick = $i[3];
@@ -1340,11 +1325,10 @@ class ClickMenu
                 if (!$i[5]) {
                     $onClick .= 'TYPO3.ClickMenu.hideAll();';
                 }
-                $CSM = ' oncontextmenu="this.click();return false;"';
                 $out[] = '
-					<tr class="typo3-CSM-itemRow" onclick="' . htmlspecialchars($onClick) . '"' . $CSM . '>
-						' . (!$this->leftIcons ? '<td class="typo3-CSM-item">' . $i[1] . '</td><td align="center">' . $i[2] . '</td>' : '<td align="center">' . $i[2] . '</td><td class="typo3-CSM-item">' . $i[1] . '</td>') . '
-					</tr>';
+					<a href="#" class="list-group-item" onclick="' . htmlspecialchars($onClick) . '">
+						<span class="list-group-item-icon">' . $i[2] . '</span> ' . $i[1] . '
+					</a>';
             }
         }
         return $out;
