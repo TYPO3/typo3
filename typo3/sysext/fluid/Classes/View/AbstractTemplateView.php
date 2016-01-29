@@ -79,6 +79,7 @@ abstract class AbstractTemplateView extends TemplateView implements \TYPO3\CMS\E
         $request = $controllerContext->getRequest();
         $this->controllerContext = $controllerContext;
         $this->baseRenderingContext->getTemplatePaths()->fillDefaultsByPackageName($request->getControllerExtensionKey());
+        $this->baseRenderingContext->getTemplatePaths()->setFormat($request->getFormat());
         $this->baseRenderingContext->setControllerContext($controllerContext);
     }
 }
