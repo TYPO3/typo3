@@ -191,17 +191,19 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->getUniqueId('TYPO3.YetAnotherTestPackage')
         );
 
+        $packagePaths = [];
         foreach ($packageKeys as $packageKey) {
             $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
             file_put_contents($packagePath . 'ext_emconf.php', '');
+            $packagePaths[] = $packagePath;
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
-        $packageManager->_set('packagesBasePaths', array('local' => 'vfs://Test/Packages/Application'));
+        $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
