@@ -25,7 +25,6 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
      * the whole syntax tree should be cacheable
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
      */
     protected $objectManager;
 
@@ -40,9 +39,24 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
      * ViewHelper Variable Container
      *
      * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-     * @inject
      */
     protected $viewHelperVariableContainer;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer
+     */
+    public function injectViewHelperVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer)
+    {
+        $this->viewHelperVariableContainer = $viewHelperVariableContainer;
+    }
 
     /**
      * Returns the object manager. Only the ViewHelperNode should do this.

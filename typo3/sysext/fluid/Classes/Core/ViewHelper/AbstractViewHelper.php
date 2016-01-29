@@ -104,7 +104,6 @@ abstract class AbstractViewHelper
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
      */
     protected $objectManager;
 
@@ -136,6 +135,14 @@ abstract class AbstractViewHelper
             $this->controllerContext = $renderingContext->getControllerContext();
         }
         $this->viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
     }
 
     /**

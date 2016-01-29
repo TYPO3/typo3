@@ -27,8 +27,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 {
     /**
      * The Controller associated to this widget.
-     * This needs to be filled by the individual subclass by an @inject
-     * annotation.
+     * This needs to be filled by the individual subclass by an inject method.
      *
      * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
      * @api
@@ -55,7 +54,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     * @inject
      */
     protected $extensionService;
 
@@ -81,6 +79,14 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
     {
         $this->objectManager = $objectManager;
         $this->widgetContext = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     */
+    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    {
+        $this->extensionService = $extensionService;
     }
 
     /**
