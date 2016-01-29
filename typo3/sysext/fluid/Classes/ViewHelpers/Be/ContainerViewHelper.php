@@ -43,6 +43,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class ContainerViewHelper extends AbstractBackendViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
      *
      * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
