@@ -1,0 +1,41 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<tr>
+	<td nowrap="nowrap" class="col-icon">
+		<f:format.raw>{content.icon}</f:format.raw>
+	</td>
+	<td nowrap="nowrap" width="95%">
+		<f:format.raw>{content.title}</f:format.raw>
+		<f:if condition="{tab.id} == 'normal'">
+			<strong>(
+				<f:if condition="{currentMode} == 'copy'">
+					<f:then>
+						{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy')}
+					</f:then>
+					<f:else>
+						{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')}
+					</f:else>
+				</f:if>
+				)</strong>
+		</f:if>
+		<f:if condition="{content.thumb}">
+			<br>
+			<f:image image="{content.thumb.image}" title="{content.thumb.title}"/>
+		</f:if>
+	</td>
+	<td nowrap="nowrap" class="col-control">
+		<div class="btn-group">
+			<f:if condition="{content.infoLink}">
+				<a class="btn btn-default" href="#" onclick="{content.infoLink}"
+					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info')}">
+					<f:format.raw><core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/></f:format.raw>
+				</a>
+			</f:if>
+			<f:if condition="{content.removeLink}">
+				<a class="btn btn-default" href="{content.removeLink}#clip_head"
+					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
+					<f:format.raw><core:icon identifier="actions-selection-delete" alternativeMarkupIdentifier="inline"/></f:format.raw>
+				</a>
+			</f:if>
+		</div>
+	</td>
+</tr>

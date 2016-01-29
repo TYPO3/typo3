@@ -1,0 +1,34 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<form action="" id="clipboard_form">
+	<a name="clip_head"></a>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<f:format.raw>{clipboardHeader}</f:format.raw>
+				</div>
+				<table class="table">
+					<tr>
+						<td colspan="2" nowrap="nowrap" width="95%">
+							<f:render partial="Clipboard/CopymodeSelector" arguments="{_all}"/>
+							<f:if condition="{elementCount}">
+								<f:render partial="Clipboard/MenuSelector" arguments="{_all}"/>
+							</f:if>
+						</td>
+						<td nowrap="nowrap" class="col-control">
+							<f:if condition="{elementCount}">
+								<a href="{removeAllUrl}#clip_head"
+									 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.clear')}" class="btn btn-danger">
+									<f:format.raw><core:icon identifier="actions-document-close" alternativeMarkupIdentifier="inline"></core:icon></f:format.raw>
+								</a>
+							</f:if>
+						</td>
+					</tr>
+					<f:for each="{tabArray}" as="tab" key="key">
+						<f:render partial="Clipboard/Tab" arguments="{tab: tab, current: current, currentMode: currentMode}"/>
+					</f:for>
+				</table>
+			</div>
+		</div>
+	</div>
+</form>

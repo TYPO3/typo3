@@ -1,0 +1,14 @@
+<div class="btn-group">
+	<button class="btn btn-default dropdown-toggle" type="button" id="menuSelector" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="true">
+		{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.menu')}
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" aria-labelledby="menuSelector">
+		<f:for each="{optionArray}" as="option" key="key">
+			<li>
+				<f:link.external uri="{option.uri}" data="{option.data}" additionalAttributes="{option.additionalAttributes}" defaultScheme="">{option.label}</f:link.external>
+			</li>
+		</f:for>
+	</ul>
+</div>

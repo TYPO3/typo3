@@ -1,0 +1,17 @@
+<div class="btn-group">
+	<button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		<f:if condition="{currentMode} == 'copy'">
+			<f:then>
+				{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:copyElements')}
+			</f:then>
+			<f:else>
+				{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:moveElements')}
+			</f:else>
+		</f:if>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" aria-labelledby="copymodeSelector">
+		<li><a href="#" onclick="document.getElementById('clipboard_form').method='POST'; document.getElementById('clipboard_form').action={actionCopyModeUrl}; document.getElementById('clipboard_form').submit(); return true;">{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:moveElements')}</a></li>
+		<li><a href="#" onclick="document.getElementById('clipboard_form').method='POST'; document.getElementById('clipboard_form').action={actionCopyModeUrl1}; document.getElementById('clipboard_form').submit(); return true;">{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:copyElements')}</a></li>
+	</ul>
+</div>
