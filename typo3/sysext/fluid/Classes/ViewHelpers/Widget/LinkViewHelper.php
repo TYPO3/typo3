@@ -117,9 +117,13 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
             $arguments['format'] = $this->arguments['format'];
         }
-        if ($this->hasArgument('addQueryStringMethod') && $this->arguments['addQueryStringMethod'] !== '') {
-            $arguments['addQueryStringMethod'] = $this->arguments['addQueryStringMethod'];
-        }
-        return $uriBuilder->reset()->setArguments(array($argumentPrefix => $arguments))->setSection($this->arguments['section'])->setAddQueryString(true)->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))->setFormat($this->arguments['format'])->build();
+        return $uriBuilder->reset()
+            ->setArguments(array($argumentPrefix => $arguments))
+            ->setSection($this->arguments['section'])
+            ->setAddQueryString(true)
+            ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
+            ->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix, 'cHash'))
+            ->setFormat($this->arguments['format'])
+            ->build();
     }
 }
