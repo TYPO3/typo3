@@ -49,7 +49,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * the whole syntax tree should be cacheable
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
      */
     protected $objectManager;
 
@@ -64,7 +63,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * ViewHelper Variable Container
      *
      * @var \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-     * @inject
      */
     protected $viewHelperVariableContainer;
 
@@ -98,6 +96,22 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     protected $legacyExpressionNodeTypes = [
         LegacyNamespaceExpressionNode::class
     ];
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @param \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer
+     */
+    public function injectViewHelperVariableContainer(\TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer $viewHelperVariableContainer)
+    {
+        $this->viewHelperVariableContainer = $viewHelperVariableContainer;
+    }
 
     /**
      * @param ViewInterface $view

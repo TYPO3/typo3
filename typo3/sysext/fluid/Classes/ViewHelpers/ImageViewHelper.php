@@ -64,9 +64,16 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\ImageService
-     * @inject
      */
     protected $imageService;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Service\ImageService $imageService
+     */
+    public function injectImageService(\TYPO3\CMS\Extbase\Service\ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
 
     /**
      * Initialize arguments.

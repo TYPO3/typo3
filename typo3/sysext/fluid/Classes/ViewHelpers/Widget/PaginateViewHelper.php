@@ -51,9 +51,16 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
 {
     /**
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController
-     * @inject
      */
     protected $controller;
+
+    /**
+     * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController $controller
+     */
+    public function injectPaginateController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController $controller)
+    {
+        $this->controller = $controller;
+    }
 
     /**
      * @param QueryResultInterface|ObjectStorage|array $objects

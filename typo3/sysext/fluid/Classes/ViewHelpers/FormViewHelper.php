@@ -50,19 +50,16 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 
     /**
      * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     * @inject
      */
     protected $hashService;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
-     * @inject
      */
     protected $mvcPropertyMappingConfigurationService;
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     * @inject
      */
     protected $extensionService;
 
@@ -73,6 +70,30 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      * @var array
      */
     protected $formActionUriArguments;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
+     */
+    public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
+    {
+        $this->hashService = $hashService;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService
+     */
+    public function injectMvcPropertyMappingConfigurationService(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService)
+    {
+        $this->mvcPropertyMappingConfigurationService = $mvcPropertyMappingConfigurationService;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     */
+    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    {
+        $this->extensionService = $extensionService;
+    }
 
     /**
      * Initialize arguments.

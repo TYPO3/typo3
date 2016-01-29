@@ -28,7 +28,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 {
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
      */
     protected $configurationManager;
 
@@ -36,6 +35,14 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      * @var bool
      */
     protected $respectSubmittedDataValue = false;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
     /**
      * Initialize arguments.
