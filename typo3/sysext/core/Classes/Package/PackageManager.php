@@ -315,12 +315,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
                 unset($this->packagesBasePaths[$key]);
             }
         }
-
-        $packagePaths = $this->scanLegacyExtensions();
-        foreach ($this->packagesBasePaths as $packagesBasePath) {
-            $packagePaths = $this->scanPackagesInPath($packagesBasePath, $packagePaths);
-        }
-
+        $packagePaths = $this->scanPackagePathsForExtensions();
         foreach ($packagePaths as $packagePath) {
             $packagesBasePath = $this->packagesBasePath;
             foreach ($this->packagesBasePaths as $basePath) {
@@ -360,16 +355,12 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Fetches all directories from sysext/global/local locations and checks if the extension contains an ext_emconf.php
      *
-     * @param array $collectedExtensionPaths
      * @return array
      */
-    protected function scanLegacyExtensions(&$collectedExtensionPaths = array())
+    protected function scanPackagePathsForExtensions()
     {
-        $legacyCmsPackageBasePathTypes = array('sysext', 'global', 'local');
+        $collectedExtensionPaths = [];
         foreach ($this->packagesBasePaths as $type => $packageBasePath) {
-            if (!in_array($type, $legacyCmsPackageBasePathTypes, true)) {
-                continue;
-            }
             /** @var $fileInfo \SplFileInfo */
             foreach (new \DirectoryIterator($packageBasePath) as $fileInfo) {
                 if (!$fileInfo->isDir()) {
@@ -390,25 +381,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         return $collectedExtensionPaths;
-    }
-
-    /**
-     * Looks for composer.json in the given path and returns TRUE or FALSE if an ext_emconf.php exists
-     * or no composer.json is found.
-     *
-     * @param string $packagePath
-     * @return bool TRUE if a composer.json exists or FALSE if none exists
-     */
-    protected function hasComposerManifestFile($packagePath)
-    {
-        // If an ext_emconf.php file is found, we don't need to look further
-        if (file_exists($packagePath . 'ext_emconf.php')) {
-            return false;
-        }
-        if (file_exists($packagePath . 'composer.json')) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -884,33 +856,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $newPackage = new Package($this, $packageKey, $packagePath);
         $this->packages[$packageKey] = $newPackage;
         unset($package);
-    }
-
-    /**
-     * Scans all sub directories of the specified directory and collects the package keys of packages it finds.
-     *
-     * The return of the array is to make this method usable in array_merge.
-     *
-     * @param string $startPath
-     * @param array $collectedPackagePaths
-     * @return array
-     */
-    protected function scanPackagesInPath($startPath, array $collectedPackagePaths)
-    {
-        foreach (new \DirectoryIterator($startPath) as $fileInfo) {
-            if (!$fileInfo->isDir()) {
-                continue;
-            }
-            $filename = $fileInfo->getFilename();
-            if ($filename[0] !== '.') {
-                $currentPath = $fileInfo->getPathName();
-                $currentPath = PathUtility::sanitizeTrailingSeparator($currentPath);
-                if ($this->hasComposerManifestFile($currentPath)) {
-                    $collectedPackagePaths[$currentPath] = $currentPath;
-                }
-            }
-        }
-        return $collectedPackagePaths;
     }
 
     /**
