@@ -267,7 +267,7 @@ class FormInlineAjaxController
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
         if ($parentConfig['type'] === 'flex') {
-            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId, false);
+            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId);
             $parentData['processedTca']['columns'][$parentFieldName]['config'] = $parentConfig;
         }
 
@@ -867,10 +867,9 @@ class FormInlineAjaxController
      *
      * @param array $parentConfig
      * @param string $domObjectId
-     * @param bool $newRecord
      * @return array
      */
-    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId, $newRecord = true)
+    protected function getParentConfigFromFlexForm(array $parentConfig, $domObjectId)
     {
         // Substitute FlexForm addition and make parsing a bit easier
         $domObjectId = str_replace('---', ':', $domObjectId);
@@ -885,7 +884,7 @@ class FormInlineAjaxController
             // For new records the flexform path should be the second to last array element,
             // followed by the foreign table name. For existing records it should be the third
             // array element from the end as the UID of the inline record is provided as well.
-            $parts = array_slice(explode('-', $match['anything']), ($newRecord ? -2 : -3), 2);
+            $parts = array_slice(explode('-', $match['anything'], 4), -2, 2);
 
             if (count($parts) !== 2 || !isset($parts[0]) || strpos($parts[0], ':') === false) {
                 throw new \UnexpectedValueException(
@@ -906,7 +905,8 @@ class FormInlineAjaxController
             }
 
             $flexFormPath = array_slice($fieldParts, 2);
-            $foreignTableName = $parts[1];
+            $foreignTableNameParts = explode('-', $parts[1]);
+            $foreignTableName = $foreignTableNameParts[0];
         }
 
         $childConfig = $parentConfig['ds']['sheets'];
