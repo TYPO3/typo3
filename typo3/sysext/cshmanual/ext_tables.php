@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
             'Help' => 'index,all,detail',
         ),
         array(
-            'access' => 'user',
+            'access' => 'user,group',
             'icon' => 'EXT:cshmanual/Resources/Public/Icons/module-cshmanual.svg',
             'labels' => 'LLL:EXT:lang/locallang_mod_help_cshmanual.xlf',
         )
