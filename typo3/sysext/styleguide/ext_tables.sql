@@ -9,7 +9,7 @@ CREATE TABLE tx_styleguide_forms_staticdata (
 );
 
 
-CREATE TABLE tx_styleguide_forms (
+CREATE TABLE tx_styleguide_elements_basic (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
@@ -37,8 +37,6 @@ CREATE TABLE tx_styleguide_forms (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	type_field text NOT NULL,
-
 	input_1 text NOT NULL,
 	input_2 text NOT NULL,
 	input_3 text NOT NULL,
@@ -52,9 +50,10 @@ CREATE TABLE tx_styleguide_forms (
 	input_11 text NOT NULL,
 	input_12 text NOT NULL,
 	input_13 text NOT NULL,
-	input_14 text,
-	input_15 text NOT NULL,
+	input_14 text NOT NULL,
+	input_15 text,
 	input_16 text NOT NULL,
+	input_17 text NOT NULL,
 	input_18 text NOT NULL,
 	input_19 text NOT NULL,
 	input_20 text NOT NULL,
@@ -66,13 +65,13 @@ CREATE TABLE tx_styleguide_forms (
 	input_26 text NOT NULL,
 	input_27 text NOT NULL,
 	input_28 text NOT NULL,
-	input_29 text,
-	input_30 text NOT NULL,
+	input_29 text NOT NULL,
+	input_30 text,
 	input_31 text NOT NULL,
 	input_32 text NOT NULL,
 	input_33 text NOT NULL,
 	input_34 text NOT NULL,
-	input_36 text NOT NULL,
+	input_35 text NOT NULL,
 
 	text_1 text,
 	text_2 text,
@@ -114,6 +113,53 @@ CREATE TABLE tx_styleguide_forms (
 	radio_4 text NOT NULL,
 	radio_5 int(11) DEFAULT '0' NOT NULL,
 	radio_6 int(11) DEFAULT '0' NOT NULL,
+
+	none_1 text NOT NULL,
+	none_2 text NOT NULL,
+	none_3 text NOT NULL,
+	none_4 text NOT NULL,
+	none_5 text NOT NULL,
+	none_6 text NOT NULL,
+
+	passthrough_1 text NOT NULL,
+
+	user_1 text,
+	user_2 text,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_forms (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	starttime int(11) DEFAULT '0' NOT NULL,
+	endtime int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(255) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	type_field text NOT NULL,
 
 	select_1 text NOT NULL,
 	select_2 text NOT NULL,
@@ -159,18 +205,6 @@ CREATE TABLE tx_styleguide_forms (
 	group_11 text NOT NULL,
 	group_12 text NOT NULL,
 	group_13 text NOT NULL,
-
-	none_1 text NOT NULL,
-	none_2 text NOT NULL,
-	none_3 text NOT NULL,
-	none_4 text NOT NULL,
-	none_5 text NOT NULL,
-	none_6 text NOT NULL,
-
-	passthrough_1 text NOT NULL,
-
-	user_1 text,
-	user_2 text,
 
 	flex_1 text,
 	flex_2 text,
