@@ -426,7 +426,7 @@ class Bootstrap
         $dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class);
         $dependencyResolver->injectDependencyOrderingService(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class));
         $packageManager->injectDependencyResolver($dependencyResolver);
-        $packageManager->initialize($this);
+        $packageManager->initialize();
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
         return $this;
     }

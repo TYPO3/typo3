@@ -35,11 +35,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected $dependencyResolver;
 
     /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
      */
     protected $coreCache;
@@ -133,25 +128,16 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Initializes the package manager
      *
-     * @param Bootstrap $bootstrap The current bootstrap
-     *
      * @return void
      */
-    public function initialize(Bootstrap $bootstrap)
+    public function initialize()
     {
-        $this->bootstrap = $bootstrap;
-
-        $loadedFromCache = false;
         try {
             $this->loadPackageManagerStatesFromCache();
-            $loadedFromCache = true;
         } catch (Exception\PackageManagerCacheUnavailableException $exception) {
             $this->loadPackageStates();
             $this->initializePackageObjects();
             $this->initializeCompatibilityLoadedExtArray();
-        }
-
-        if (!$loadedFromCache) {
             $this->saveToPackageCache();
         }
     }

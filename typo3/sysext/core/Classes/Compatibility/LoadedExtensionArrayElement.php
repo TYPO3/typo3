@@ -75,10 +75,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
             $packageType = null;
             // Determine if extension is installed locally, globally or system (in this order)
             switch (implode('/', array_slice($relativePackagePathToPathSiteSegments, 0, 2))) {
-                case 'typo3conf/Packages':
-                    $packageType = 'C';
-                    $relativePackagePathToPathTypo3 = '../typo3conf/Packages/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));
-                    break;
                 case 'typo3conf/ext':
                     $packageType = 'L';
                     $relativePackagePathToPathTypo3 = '../typo3conf/ext/' . implode('/', array_slice($relativePackagePathToPathSiteSegments, 2));

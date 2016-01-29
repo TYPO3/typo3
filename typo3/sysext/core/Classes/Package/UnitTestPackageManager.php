@@ -25,13 +25,10 @@ class UnitTestPackageManager extends PackageManager
     /**
      * Initializes the package manager
      *
-     * @param \TYPO3\CMS\Core\Core\Bootstrap $bootstrap The current bootstrap
      * @return void
      */
-    public function initialize(\TYPO3\CMS\Core\Core\Bootstrap $bootstrap)
+    public function initialize()
     {
-        $this->bootstrap = $bootstrap;
-
         $this->scanAvailablePackages();
         $this->activePackages = $this->packages;
     }
