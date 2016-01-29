@@ -86,9 +86,10 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 
 		// Clearing of system cache (core cache, class cache etc)
 		// is only shown explicitly if activated for a BE-user (not activated for admins by default)
-		// or if the system runs in development mode
+		// or if the system runs in development mode (only for admin)
 		// or if $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] is set (only for admins)
-		if ($backendUser->getTSConfigVal('options.clearCache.system') || GeneralUtility::getApplicationContext()->isDevelopment()
+		if ($backendUser->getTSConfigVal('options.clearCache.system')
+			|| (GeneralUtility::getApplicationContext()->isDevelopment() && $backendUser->isAdmin())
 			|| ((bool) $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $backendUser->isAdmin())) {
 			$this->cacheActions[] = array(
 				'id' => 'system',
