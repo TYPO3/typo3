@@ -62,11 +62,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $requiredPackageKeys = array();
-
-    /**
-     * @var array
-     */
     protected $runtimeActivatedPackages = array();
 
     /**
@@ -80,12 +75,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * @var PackageInterface[]
      */
     protected $packages = array();
-
-    /**
-     * A translation table between lower cased and upper camel cased package keys
-     * @var array
-     */
-    protected $packageKeys = array();
 
     /**
      * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run
@@ -203,11 +192,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             $packageObjectsCacheEntryIdentifier = StringUtility::getUniqueId('PackageObjects_');
             // Build cache file
             $packageCache = array(
-                'packageStatesConfiguration'  => $this->packageStatesConfiguration,
+                'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
-                'packageKeys' => $this->packageKeys,
                 'activePackageKeys' => array_keys($this->activePackages),
-                'requiredPackageKeys' => $this->requiredPackageKeys,
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
             );
@@ -232,8 +219,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
         $this->packageAliasMap = $packageCache['packageAliasMap'];
-        $this->packageKeys = $packageCache['packageKeys'];
-        $this->requiredPackageKeys = $packageCache['requiredPackageKeys'];
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
         $GLOBALS['TYPO3_currentPackageManager'] = $this;
         // Strip off PHP Tags from Php Cache Frontend
@@ -266,7 +251,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Initializes activePackages and requiredPackageKeys properties
+     * Initializes activePackages property
      *
      * Saves PackageStates.php if list of required extensions has changed.
      *
@@ -285,10 +270,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
         $previousActivePackages = $this->activePackages;
         $this->activePackages = array_merge($requiredPackages, $this->activePackages);
-        $this->requiredPackageKeys = array_keys($requiredPackages);
 
         if ($this->activePackages != $previousActivePackages) {
-            foreach ($this->requiredPackageKeys as $requiredPackageKey) {
+            foreach ($requiredPackages as $requiredPackageKey => $package) {
                 $this->packageStatesConfiguration['packages'][$requiredPackageKey]['state'] = 'active';
             }
             $this->sortAndSavePackageStates();
@@ -466,7 +450,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
             $this->registerPackage($package, false);
 
-            $this->packageKeys[strtolower($packageKey)] = $packageKey;
             if ($stateConfiguration['state'] === 'active') {
                 $this->activePackages[$packageKey] = $this->packages[$packageKey];
             }
@@ -525,7 +508,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         } catch (Exception\UnknownPackageException $e) {
         }
         unset($this->packages[$packageKey]);
-        unset($this->packageKeys[strtolower($packageKey)]);
         unset($this->packageStatesConfiguration['packages'][$packageKey]);
     }
 
