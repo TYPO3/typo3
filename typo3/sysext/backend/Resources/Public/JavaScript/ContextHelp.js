@@ -37,7 +37,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($) {
 	 */
 	ContextHelp.initialize = function() {
 		ContextHelp.helpModuleUrl = (typeof top.TYPO3.settings.ContextHelp !== 'undefined') ? top.TYPO3.settings.ContextHelp.moduleUrl : null;
-		if (ContextHelp.helpModuleUrl === null) {
+		if (TYPO3.ShortcutMenu === undefined && top.TYPO3.ShortcutMenu === undefined) {
 			// @FIXME: if we are in the popup... remove the bookmark / shortcut button
 			// @TODO: make it possible to use the bookmark button also in popup mode
 			$('.icon-actions-system-shortcut-new').closest('.btn').hide();
