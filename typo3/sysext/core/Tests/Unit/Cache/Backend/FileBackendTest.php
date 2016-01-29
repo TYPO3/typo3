@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for the File cache backend
@@ -84,7 +85,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo');
         // get PATH_site without trailing slash
-        $path = realpath(PATH_site);
+        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
         $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -97,7 +98,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo/');
         // get PATH_site without trailing slash
-        $path = realpath(PATH_site);
+        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
         $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -110,7 +111,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo');
         // get PATH_site without trailing slash
-        $path = realpath(PATH_site);
+        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
         $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
@@ -123,7 +124,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo/');
         // get PATH_site without trailing slash
-        $path = realpath(PATH_site);
+        $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
         $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
     }
 
