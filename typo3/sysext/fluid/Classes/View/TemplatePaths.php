@@ -96,7 +96,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         foreach ($paths as $name => $values) {
             $paths[$name] = $values + (array) $configuration[$name];
         }
-        return array_map(array($this, 'sanitizePath'), $paths);
+        return $paths;
     }
 
     /**
