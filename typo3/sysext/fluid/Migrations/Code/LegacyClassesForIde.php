@@ -74,6 +74,12 @@ namespace TYPO3\CMS\Fluid\View\Exception {
 
 }
 
+namespace TYPO3\CMS\Fluid\Core\Compiler {
+    class TemplateCompiler extends \TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler
+    {
+    }
+}
+
 namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree {
     class RootNode extends \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode
     {
