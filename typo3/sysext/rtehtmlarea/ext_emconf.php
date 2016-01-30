@@ -15,12 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
         'depends' => array(
             'typo3' => '8.0.0-8.0.99',
         ),
-        'conflicts' => array(
-            'rte_conf' => '',
-            'tkr_rteanchors' => '',
-            'ad_rtepasteplain' => '',
-            'rtehtmlarea_definitionlist' => '',
-        ),
+        'conflicts' => array(),
         'suggests' => array(
             'rtehtmlarea_api_manual' => '',
             'setup' => '',
