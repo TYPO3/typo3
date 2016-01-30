@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\View;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -121,14 +122,35 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             $paths = array_map(array($this, 'sanitizePath'), $path);
             return array_unique($paths);
         }
-        if (substr($path, 0, 1) !== '/') {
-            $path = GeneralUtility::getFileAbsFileName($path);
-        }
         $path = $this->ensureAbsolutePath($path);
         if (is_dir($path)) {
             $path = $this->ensureSuffixedPath($path);
         }
         return $path;
+    }
+
+    /**
+     * Guarantees that $reference is turned into a
+     * correct, absolute path. The input can be a
+     * relative path or a FILE: or EXT: reference
+     * but cannot be a FAL resource identifier.
+     *
+     * @param mixed $reference
+     * @return string
+     */
+    protected function ensureAbsolutePath($reference)
+    {
+        if (false === is_array($reference)) {
+            $filename = PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);
+        } else {
+            foreach ($reference as &$subValue) {
+                $subValue = $this->ensureAbsolutePath($subValue);
+            }
+
+            return $reference;
+        }
+
+        return $filename;
     }
 
     /**
