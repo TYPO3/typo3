@@ -177,6 +177,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
                 'packageAliasMap' => $this->packageAliasMap,
                 'activePackageKeys' => array_keys($this->activePackages),
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
+                'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
                 'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
             );
             $this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
@@ -200,6 +201,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
         $this->packageAliasMap = $packageCache['packageAliasMap'];
+        $this->composerNameToPackageKeyMap = $packageCache['composerNameToPackageKeyMap'];
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
         $GLOBALS['TYPO3_currentPackageManager'] = $this;
         // Strip off PHP Tags from Php Cache Frontend
@@ -297,7 +299,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
                 $composerManifest = $this->getComposerManifest($packagePath);
                 $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
                 $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
-                $this->packageStatesConfiguration['packages'][$packageKey]['composerName'] = $composerManifest->name;
             } catch (Exception\MissingPackageManifestException $exception) {
                 if (!$this->isPackageKeyValid($packageKey)) {
                     continue;
@@ -465,16 +466,12 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($this->packageAliasMap[$composerName])) {
             return $this->packageAliasMap[$composerName];
         }
-        if (empty($this->composerNameToPackageKeyMap)) {
-            foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageStateConfiguration) {
-                $this->composerNameToPackageKeyMap[strtolower($packageStateConfiguration['composerName'])] = $packageKey;
-            }
-        }
         $lowercasedComposerName = strtolower($composerName);
-        if (!isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
+        if (isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
+            return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
+        } else {
             return $composerName;
         }
-        return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
     }
 
     /**

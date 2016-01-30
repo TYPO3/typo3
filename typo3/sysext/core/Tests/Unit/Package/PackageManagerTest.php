@@ -223,8 +223,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         foreach ($packageKeys as $packageKey) {
             $expectedPackageStatesConfiguration[$packageKey] = array(
                 'state' => 'inactive',
-                'packagePath' => 'Application/' . $packageKey . '/',
-                'composerName' => $packageKey,
+                'packagePath' => 'Application/' . $packageKey . '/'
             );
         }
 
@@ -342,19 +341,20 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPackageKeyFromComposerNameIgnoresCaseDifferences($composerName, $packageKey)
     {
-        $packageStatesConfiguration = array('packages' =>
-            array(
-                'TYPO3.CMS' => array(
-                    'composerName' => 'typo3/cms'
-                ),
-                'imagine.Imagine' => array(
-                    'composerName' => 'imagine/Imagine'
-                )
-            )
-        );
+        $packageStatesConfiguration = [
+            'packages' => [
+                'TYPO3.CMS',
+                'imagine.Imagine'
+            ]
+        ];
+        $composerNameToPackageKeyMap = [
+            'typo3/cms' => 'TYPO3.CMS',
+            'imagine/imagine' => 'imagine.Imagine'
+        ];
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, array('resolvePackageDependencies'));
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
+        $packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
 
         $this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
     }
