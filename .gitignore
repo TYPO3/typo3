@@ -43,7 +43,7 @@ phantomjsdriver.log
 bin/*
 vendor/*
 #
-# Ignore common TYPO3 CMS directories
+# Ignore common TYPO3 CMS files/directories
 typo3temp/*
 typo3conf/*
 fileadmin/*
