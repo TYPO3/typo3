@@ -62,7 +62,7 @@ ExpressionNodes that are active for your rendering process, via the View instanc
 	));
 
 When added to this collection these Expression Node types allow new syntaxes such as ``{myVariable + 1}`` or
-``{myArrayLikeObject as array}``. When the legacy mode toggle when set to ``false`` this will enable the following
+``{myArrayLikeObject as array}``. When the legacy mode toggle is set to ``false`` this will enable the following
 expression types:
 
 1. CastingExpressionNode - this type allows casting a variable to certain types, for example to guarantee an integer or a
@@ -343,7 +343,7 @@ such a method, an execution is chosen which is identical in performance to calli
 this could not be compiled. The ViewHelpers that do define a custom compiling method can further increase performance.
 
 When you explicitly require a ViewHelper of yours to prevent template caching it is possible to implement a custom ``compile()``
-method which calls ``$templateParser->disable();` and nothing else. Doing this disables the compiling inside the scope (template,
+method which calls ``$templateParser->disable();`` and nothing else. Doing this disables the compiling inside the scope (template,
 partial or section) currently being rendered.
 
 New and more efficient escaping
