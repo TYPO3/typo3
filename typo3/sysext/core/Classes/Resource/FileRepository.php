@@ -152,14 +152,10 @@ class FileRepository extends AbstractRepository
         $folders = $folder->getStorage()->getFoldersInFolder($folder, 0, 0, true, true);
         $folders[$folder->getIdentifier()] = $folder;
 
-        $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false);
+        $fileRecords = $this->getFileIndexRepository()->findByFolders($folders, false, $fileName);
 
         $files = array();
         foreach ($fileRecords as $fileRecord) {
-            if (stristr($fileRecord['name'], $fileName) === false) {
-                continue;
-            }
-
             try {
                 $files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);
             } catch (Exception\FileDoesNotExistException $ignoredException) {
