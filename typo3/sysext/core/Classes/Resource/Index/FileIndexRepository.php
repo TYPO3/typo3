@@ -197,9 +197,10 @@ class FileIndexRepository implements SingletonInterface
      *
      * @param \TYPO3\CMS\Core\Resource\Folder[] $folders
      * @param bool $includeMissing
+     * @param string $fileName
      * @return array|NULL
      */
-    public function findByFolders(array $folders, $includeMissing = true)
+    public function findByFolders(array $folders, $includeMissing = true, $fileName = null)
     {
         $storageUids = [];
         $folderIdentifiers = [];
@@ -220,6 +221,7 @@ class FileIndexRepository implements SingletonInterface
             $this->table,
             'folder_hash IN ( ' . implode(',', $this->getDatabaseConnection()->fullQuoteArray($folderIdentifiers, $this->table)) . ')' .
             ' AND storage IN (' . implode(',', $storageUids) . ')' .
+            (isset($fileName) ? ' AND name LIKE "%' . $this->getDatabaseConnection()->escapeStrForLike($this->getDatabaseConnection()->quoteStr($fileName, $this->table), $this->table) . '%"' : '') .
             ($includeMissing ? '' : ' AND missing = 0'),
             '',
             '',
