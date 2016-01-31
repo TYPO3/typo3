@@ -71,11 +71,12 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
     /**
      * Render a given media file
      *
-     * @param FileInterface|AbstractFileFolder $file
+     * @param object $file
      * @param array $additionalConfig This array can hold additional configuration that is passed though to the Renderer object
      * @param string $width This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
      * @param string $height This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
      * @return string Rendered tag
+     * @throws \UnexpectedValueException
      */
     public function render($file, $additionalConfig = array(), $width = null, $height = null)
     {
@@ -84,6 +85,10 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         if (is_callable(array($file, 'getOriginalResource'))) {
             // We have a domain model, so we need to fetch the FAL resource object from there
             $file = $file->getOriginalResource();
+        }
+
+        if (!($file instanceof FileInterface || $file instanceof AbstractFileFolder)) {
+            throw new \UnexpectedValueException('Supplied file object type ' . get_class($file) . ' must be FileInterface or AbstractFileFolder.', 1454252193);
         }
 
         $fileRenderer = RendererRegistry::getInstance()->getRenderer($file);

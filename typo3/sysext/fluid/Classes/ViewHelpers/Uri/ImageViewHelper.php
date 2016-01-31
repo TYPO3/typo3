@@ -70,7 +70,7 @@ class ImageViewHelper extends AbstractViewHelper
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/ImgResource/
      * @param string $src
-     * @param FileInterface|AbstractFileFolder $image
+     * @param object $image
      * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
      * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
      * @param int $minWidth minimum width of the image
