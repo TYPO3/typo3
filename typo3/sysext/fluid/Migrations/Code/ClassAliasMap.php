@@ -3,6 +3,7 @@ return array(
     'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler' => \TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\InterceptorInterface' => \TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface::class,
+    'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\AbstractNode' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,
     'TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface' => \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperInterface' => \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Facets\\ChildNodeAccessInterface' => \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface::class,
