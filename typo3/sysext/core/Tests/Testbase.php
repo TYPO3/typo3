@@ -429,46 +429,28 @@ class Testbase
     ) {
         $packageStates = array(
             'packages' => array(),
-            'version' => 4,
+            'version' => 5,
         );
 
         // Register default list of extensions and set active
         foreach ($defaultCoreExtensionsToLoad as $extensionName) {
             $packageStates['packages'][$extensionName] = array(
-                'state' => 'active',
-                'packagePath' => 'typo3/sysext/' . $extensionName . '/',
-                'classesPath' => 'Classes/',
+                'packagePath' => 'typo3/sysext/' . $extensionName . '/'
             );
         }
 
         // Register additional core extensions and set active
         foreach ($additionalCoreExtensionsToLoad as $extensionName) {
-            if (isset($packageSates['packages'][$extensionName])) {
-                throw new Exception(
-                    $extensionName . ' is already registered as default core extension to load, no need to load it explicitly',
-                    1390913893
-                );
-            }
             $packageStates['packages'][$extensionName] = array(
-                'state' => 'active',
-                'packagePath' => 'typo3/sysext/' . $extensionName . '/',
-                'classesPath' => 'Classes/',
+                'packagePath' => 'typo3/sysext/' . $extensionName . '/'
             );
         }
 
         // Activate test extensions that have been symlinked before
         foreach ($testExtensionPaths as $extensionPath) {
             $extensionName = basename($extensionPath);
-            if (isset($packageSates['packages'][$extensionName])) {
-                throw new Exception(
-                    $extensionName . ' is already registered as extension to load, no need to load it explicitly',
-                    1390913894
-                );
-            }
             $packageStates['packages'][$extensionName] = array(
-                'state' => 'active',
-                'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
-                'classesPath' => 'Classes/',
+                'packagePath' => 'typo3conf/ext/' . $extensionName . '/'
             );
         }
 

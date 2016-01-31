@@ -22,23 +22,9 @@ namespace TYPO3\CMS\Core\Package;
 class FailsafePackageManager extends PackageManager
 {
     /**
-     * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-     */
-    protected $configurationManager;
-
-    /**
      * @var bool TRUE if package manager is in failsafe mode
      */
     protected $inFailsafeMode = false;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
-        parent::__construct();
-    }
 
     /**
      * Loads the states of available packages from the PackageStates.php file.
@@ -55,17 +41,6 @@ class FailsafePackageManager extends PackageManager
             $this->packageStatesConfiguration = array();
             $this->scanAvailablePackages();
         }
-    }
-
-    /**
-     * Requires and registers all packages which were defined in packageStatesConfiguration
-     *
-     * @return void
-     */
-    protected function registerPackagesFromConfiguration($registerOnlyNewPackages = false)
-    {
-        $this->packageStatesConfiguration['packages']['install']['state'] = 'active';
-        parent::registerPackagesFromConfiguration($registerOnlyNewPackages);
     }
 
     /**

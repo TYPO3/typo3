@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var PackageManager
+     * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager
      */
     protected $packageManager;
 
@@ -44,11 +44,11 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
         $mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-        $this->packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'));
+        $this->packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'));
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');
-        file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 4); ");
+        file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 5); ");
 
         $composerNameToPackageKeyMap = array(
             'typo3/flow' => 'TYPO3.Flow'
@@ -140,8 +140,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $this->getUniqueId('Lolli.Pop.NothingElse')
         );
 
+        $packagePaths = [];
         foreach ($expectedPackageKeys as $packageKey) {
             $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
+            $packagePaths[] = $packagePath;
 
             mkdir($packagePath, 0770, true);
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
@@ -150,7 +152,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
-        $packageManager->_set('packagesBasePaths', array('local' => 'vfs://Test/Packages/Application'));
+        $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
 
@@ -159,7 +161,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyResolver
             ->expects($this->any())
             ->method('sortPackageStatesConfigurationByDependency')
-            ->willReturnArgument(0);
+            ->willReturnCallback('array_keys');
 
         $packageManager->injectDependencyResolver($dependencyResolver);
 
@@ -167,17 +169,16 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $packageManager->_set('packageStatesConfiguration', array(
             'packages' => array(
                 $packageKey => array(
-                    'state' => 'inactive',
                     'packagePath' => 'Application/' . $packageKey . '/'
                 )
             ),
-            'version' => 4
+            'version' => 5
         ));
         $packageManager->_call('scanAvailablePackages');
         $packageManager->_call('sortAndSavePackageStates');
 
         $packageStates = require('vfs://Test/Configuration/PackageStates.php');
-        $this->assertEquals('inactive', $packageStates['packages'][$packageKey]['state']);
+        $this->assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
     }
 
     /**
@@ -202,7 +203,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
 
         /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $packageManager */
-        $packageManager = $this->getAccessibleMock(PackageManager::class, array('dummy'));
+        $packageManager = $this->getAccessibleMock(PackageManager::class, array('sortAndSavePackageStates'));
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
@@ -212,7 +213,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dependencyResolver
             ->expects($this->any())
             ->method('sortPackageStatesConfigurationByDependency')
-            ->willReturnArgument(0);
+            ->willReturnCallback('array_keys');
 
         $packageManager->injectDependencyResolver($dependencyResolver);
 
@@ -222,9 +223,9 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $expectedPackageStatesConfiguration = array();
         foreach ($packageKeys as $packageKey) {
             $expectedPackageStatesConfiguration[$packageKey] = array(
-                'state' => 'inactive',
                 'packagePath' => 'Application/' . $packageKey . '/'
             );
+            $packageManager->activatePackage($packageKey);
         }
 
         $actualPackageStatesConfiguration = $packageManager->_get('packageStatesConfiguration');
@@ -268,6 +269,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $this->createPackage($packageKey);
 
+        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
+
         $this->packageManager->deactivatePackage($packageKey);
         $this->assertFalse($this->packageManager->isPackageActive($packageKey));
 
@@ -283,6 +286,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
+        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
         $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
     }
 
@@ -292,6 +296,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function deletePackageThrowsErrorIfPackageIsNotAvailable()
     {
+        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
@@ -312,6 +317,8 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function deletePackageRemovesPackageFromAvailableAndActivePackagesAndDeletesThePackageDirectory()
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
+
+        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue(array()));
 
         $this->assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
         $this->assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));

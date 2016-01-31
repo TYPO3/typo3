@@ -83,7 +83,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * List of active packages as package key => package object
      * @var array
      */
-    protected $activePackages = array();
+    protected $activePackages = [];
 
     /**
      * @var string
@@ -175,7 +175,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             $packageCache = array(
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
                 'packageAliasMap' => $this->packageAliasMap,
-                'activePackageKeys' => array_keys($this->activePackages),
                 'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
                 'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
                 'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
@@ -200,6 +199,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
         }
         $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
+        if ($this->packageStatesConfiguration['version'] < 5) {
+            throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883341);
+        }
         $this->packageAliasMap = $packageCache['packageAliasMap'];
         $this->composerNameToPackageKeyMap = $packageCache['composerNameToPackageKeyMap'];
         $GLOBALS['TYPO3_LOADED_EXT'] = $packageCache['loadedExtArray'];
@@ -207,9 +209,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         // Strip off PHP Tags from Php Cache Frontend
         $packageObjects = substr(substr($this->coreCache->get($packageCache['packageObjectsCacheEntryIdentifier']), 6), 0, -2);
         $this->packages = unserialize($packageObjects);
-        foreach ($packageCache['activePackageKeys'] as $activePackageKey) {
-            $this->activePackages[$activePackageKey] = $this->packages[$activePackageKey];
-        }
         unset($GLOBALS['TYPO3_currentPackageManager']);
     }
 
@@ -222,12 +221,26 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function loadPackageStates()
     {
+        $forcePackageStatesRewrite = false;
         $this->packageStatesConfiguration = @include($this->packageStatesPathAndFilename) ?: array();
         if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 4) {
             $this->packageStatesConfiguration = array();
+        } elseif ($this->packageStatesConfiguration['version'] === 4) {
+            // Convert to v5 format which only includes a list of active packages.
+            // Deprecated since version 8, will be removed in version 9.
+            $activePackages = [];
+            foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageConfiguration) {
+                if ($packageConfiguration['state'] !== 'active') {
+                    continue;
+                }
+                $activePackages[$packageKey] = ['packagePath' => $packageConfiguration['packagePath']];
+            }
+            $this->packageStatesConfiguration['packages'] = $activePackages;
+            $this->packageStatesConfiguration['version'] = 5;
+            $forcePackageStatesRewrite = true;
         }
         if ($this->packageStatesConfiguration !== array()) {
-            $this->registerPackagesFromConfiguration();
+            $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false, $forcePackageStatesRewrite);
         } else {
             throw new Exception\PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
         }
@@ -242,24 +255,34 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function initializePackageObjects()
     {
-        $requiredPackages = array();
+        $requiredPackages = [];
+        $activePackages = [];
         foreach ($this->packages as $packageKey => $package) {
             if ($package->isProtected()) {
                 $requiredPackages[$packageKey] = $package;
             }
-            if (isset($this->packageStatesConfiguration['packages'][$packageKey]['state']) && $this->packageStatesConfiguration['packages'][$packageKey]['state'] === 'active') {
-                $this->activePackages[$packageKey] = $package;
+            if (isset($this->packageStatesConfiguration['packages'][$packageKey])) {
+                $activePackages[$packageKey] = $package;
             }
         }
-        $previousActivePackages = $this->activePackages;
-        $this->activePackages = array_merge($requiredPackages, $this->activePackages);
+        $previousActivePackages = $activePackages;
+        $activePackages = array_merge($requiredPackages, $activePackages);
 
-        if ($this->activePackages != $previousActivePackages) {
+        if ($activePackages != $previousActivePackages) {
             foreach ($requiredPackages as $requiredPackageKey => $package) {
-                $this->packageStatesConfiguration['packages'][$requiredPackageKey]['state'] = 'active';
+                $this->registerActivePackage($package);
             }
             $this->sortAndSavePackageStates();
         }
+    }
+
+    /**
+     * @param PackageInterface $package
+     */
+    protected function registerActivePackage(PackageInterface $package) {
+        // reset the active packages so they are rebuilt.
+        $this->activePackages = [];
+        $this->packageStatesConfiguration['packages'][$package->getPackageKey()] = ['packagePath' => str_replace($this->packagesBasePath, '',  $package->getPackagePath())];
     }
 
     /**
@@ -281,24 +304,14 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function scanAvailablePackages()
     {
-        $previousPackageStatesConfiguration = $this->packageStatesConfiguration;
-
-        if (isset($this->packageStatesConfiguration['packages'])) {
-            foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $configuration) {
-                if (!@file_exists($this->packagesBasePath . $configuration['packagePath'])) {
-                    unset($this->packageStatesConfiguration['packages'][$packageKey]);
-                }
-            }
-        } else {
-            $this->packageStatesConfiguration['packages'] = array();
-        }
-
         $packagePaths = $this->scanPackagePathsForExtensions();
+        $packages = [];
         foreach ($packagePaths as $packageKey => $packagePath) {
             try {
                 $composerManifest = $this->getComposerManifest($packagePath);
                 $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
                 $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
+                $packages[$packageKey] = ['packagePath' => str_replace($this->packagesBasePath, '', $packagePath)];
             } catch (Exception\MissingPackageManifestException $exception) {
                 if (!$this->isPackageKeyValid($packageKey)) {
                     continue;
@@ -306,18 +319,29 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             } catch (Exception\InvalidPackageKeyException $exception) {
                 continue;
             }
-            if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['state'])) {
-                $this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'inactive';
-            }
-
-            $this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $packagePath);
         }
 
         $registerOnlyNewPackages = !empty($this->packages);
-        $this->registerPackagesFromConfiguration($registerOnlyNewPackages);
-        if ($this->packageStatesConfiguration != $previousPackageStatesConfiguration) {
-            $this->sortAndSavePackageStates();
-        }
+        $this->registerPackagesFromConfiguration($packages, $registerOnlyNewPackages);
+    }
+
+    /**
+     * Scans all directories for a certain package.
+     *
+     * @param string $packageKey
+     * @return PackageInterface
+     */
+    protected function registerPackageDuringRuntime($packageKey)
+    {
+        $packagePaths = $this->scanPackagePathsForExtensions();
+        $packagePath = $packagePaths[$packageKey];
+        $composerManifest = $this->getComposerManifest($packagePath);
+        $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
+        $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
+        $packagePath = PathUtility::sanitizeTrailingSeparator($packagePath);
+        $package = new Package($this, $packageKey, $packagePath);
+        $this->registerPackage($package);
+        return $package;
     }
 
     /**
@@ -358,13 +382,15 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Requires and registers all packages which were defined in packageStatesConfiguration
      *
+     * @param array $packages
      * @param bool $registerOnlyNewPackages
-     * @return void
+     * @param bool $packageStatesHasChanged
+     * @throws Exception\InvalidPackageStateException
+     * @throws Exception\PackageStatesFileNotWritableException
      */
-    protected function registerPackagesFromConfiguration($registerOnlyNewPackages = false)
+    protected function registerPackagesFromConfiguration(array $packages, $registerOnlyNewPackages = false, $packageStatesHasChanged = false)
     {
-        $packageStatesHasChanged = false;
-        foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $stateConfiguration) {
+        foreach ($packages as $packageKey => $stateConfiguration) {
             if ($registerOnlyNewPackages && $this->isPackageAvailable($packageKey)) {
                 continue;
             }
@@ -392,11 +418,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
                 continue;
             }
 
-            $this->registerPackage($package, false);
-
-            if ($stateConfiguration['state'] === 'active') {
-                $this->activePackages[$packageKey] = $this->packages[$packageKey];
-            }
+            $this->registerPackage($package);
         }
         if ($packageStatesHasChanged) {
             $this->sortAndSavePackageStates();
@@ -407,12 +429,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Register a native TYPO3 package
      *
      * @param PackageInterface $package The Package to be registered
-     * @param bool $sortAndSave allows for not saving packagestates when used in loops etc.
      * @return PackageInterface
      * @throws Exception\InvalidPackageStateException
      * @throws Exception\PackageStatesFileNotWritableException
      */
-    public function registerPackage(PackageInterface $package, $sortAndSave = true)
+    public function registerPackage(PackageInterface $package)
     {
         $packageKey = $package->getPackageKey();
         if ($this->isPackageAvailable($packageKey)) {
@@ -420,11 +441,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         $this->packages[$packageKey] = $package;
-        $this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
-
-        if ($sortAndSave === true) {
-            $this->sortAndSavePackageStates();
-        }
 
         if ($package instanceof PackageInterface) {
             foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
@@ -519,7 +535,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isPackageActive($packageKey)
     {
-        return isset($this->runtimeActivatedPackages[$packageKey]) || isset($this->activePackages[$packageKey]);
+        return isset($this->runtimeActivatedPackages[$packageKey]) || isset($this->packageStatesConfiguration['packages'][$packageKey]);
     }
 
     /**
@@ -532,10 +548,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function deactivatePackage($packageKey)
     {
-        $this->sortAvailablePackagesByDependencies();
+        $packagesWithDependencies = $this->sortActivePackagesByDependencies();
 
-        foreach ($this->packageStatesConfiguration['packages'] as $packageStateKey => $packageStateConfiguration) {
-            if ($packageKey === $packageStateKey || empty($packageStateConfiguration['dependencies']) || $packageStateConfiguration['state'] !== 'active') {
+        foreach ($packagesWithDependencies as $packageStateKey => $packageStateConfiguration) {
+            if ($packageKey === $packageStateKey || empty($packageStateConfiguration['dependencies'])) {
                 continue;
             }
             if (in_array($packageKey, $packageStateConfiguration['dependencies'], true)) {
@@ -552,8 +568,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             throw new Exception\ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be deactivated.', 1308662891);
         }
 
-        unset($this->activePackages[$packageKey]);
-        $this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'inactive';
+        $this->activePackages = [];
+        unset($this->packageStatesConfiguration['packages'][$packageKey]);
         $this->sortAndSavePackageStates();
     }
 
@@ -569,11 +585,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             return;
         }
 
-        $this->activePackages[$packageKey] = $package;
-        $this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'active';
-        if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['packagePath'])) {
-            $this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
-        }
+        $this->registerActivePackage($package);
         $this->sortAndSavePackageStates();
     }
 
@@ -585,7 +597,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function activatePackageDuringRuntime($packageKey)
     {
-        $package = $this->getPackage($packageKey);
+        $package = $this->registerPackageDuringRuntime($packageKey);
         $this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
         if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
             $loadedExtArrayElement = new LoadedExtensionArrayElement($package);
@@ -650,30 +662,40 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getActivePackages()
     {
+        if (empty($this->activePackages)) {
+            if (!empty($this->packageStatesConfiguration['packages'])) {
+                foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageConfig) {
+                    $this->activePackages[$packageKey] = $this->getPackage($packageKey);
+                }
+            }
+        }
         return array_merge($this->activePackages, $this->runtimeActivatedPackages);
     }
 
     /**
-     * Orders all packages by comparing their dependencies. By this, the packages
+     * Orders all active packages by comparing their dependencies. By this, the packages
      * and package configurations arrays holds all packages in the correct
      * initialization order.
      *
-     * @return void
+     * @return array
      */
-    protected function sortAvailablePackagesByDependencies()
+    protected function sortActivePackagesByDependencies()
     {
-        $this->resolvePackageDependencies();
+        $packagesWithDependencies = $this->resolvePackageDependencies($this->packageStatesConfiguration['packages']);
 
         // sort the packages by key at first, so we get a stable sorting of "equivalent" packages afterwards
-        ksort($this->packageStatesConfiguration['packages']);
-        $this->packageStatesConfiguration['packages'] = $this->dependencyResolver->sortPackageStatesConfigurationByDependency($this->packageStatesConfiguration['packages']);
+        ksort($packagesWithDependencies);
+        $sortedPackageKeys = $this->dependencyResolver->sortPackageStatesConfigurationByDependency($packagesWithDependencies);
 
         // Reorder the packages according to the loading order
         $newPackages = array();
-        foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $_) {
+        $this->packageStatesConfiguration['packages'] = [];
+        foreach ($sortedPackageKeys as $packageKey) {
             $newPackages[$packageKey] = $this->packages[$packageKey];
+            $this->registerActivePackage($this->packages[$packageKey]);
         }
         $this->packages = $newPackages;
+        return $packagesWithDependencies;
     }
 
     /**
@@ -681,16 +703,17 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * resolved direct or indirect dependencies of each package will put into the package
      * states configuration array.
      *
-     * @return void
+     * @param $packageConfig
+     * @return array
      */
-    protected function resolvePackageDependencies()
+    protected function resolvePackageDependencies($packageConfig)
     {
-        foreach ($this->packages as $packageKey => $package) {
-            $this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = $this->getDependencyArrayForPackage($packageKey);
+        $packagesWithDependencies = [];
+        foreach ($packageConfig as $packageKey => $_) {
+            $packagesWithDependencies[$packageKey]['dependencies'] = $this->getDependencyArrayForPackage($packageKey);
+            $packagesWithDependencies[$packageKey]['suggestions'] = $this->getSuggestionArrayForPackage($packageKey);
         }
-        foreach ($this->packages as $packageKey => $package) {
-            $this->packageStatesConfiguration['packages'][$packageKey]['suggestions'] = $this->getSuggestionArrayForPackage($packageKey);
-        }
+        return $packagesWithDependencies;
     }
 
     /**
@@ -725,9 +748,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function sortAndSavePackageStates()
     {
-        $this->sortAvailablePackagesByDependencies();
+        $this->sortActivePackagesByDependencies();
 
-        $this->packageStatesConfiguration['version'] = 4;
+        $this->packageStatesConfiguration['version'] = 5;
 
         $fileDescription = "# PackageStates.php\n\n";
         $fileDescription .= "# This file is maintained by TYPO3's package management. Although you can edit it\n";
@@ -735,15 +758,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $fileDescription .= "# This file will be regenerated automatically if it doesn't exist. Deleting this file\n";
         $fileDescription .= "# should, however, never become necessary if you use the package commands.\n";
 
-        // We do not need the dependencies and suggestions on disk...
-        foreach ($this->packageStatesConfiguration['packages'] as &$packageConfiguration) {
-            if (isset($packageConfiguration['dependencies'])) {
-                unset($packageConfiguration['dependencies']);
-            }
-            if (isset($packageConfiguration['suggestions'])) {
-                unset($packageConfiguration['suggestions']);
-            }
-        }
         if (!@is_writable($this->packageStatesPathAndFilename)) {
             // If file does not exists try to create it
             $fileHandle = @fopen($this->packageStatesPathAndFilename, 'x');

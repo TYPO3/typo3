@@ -48,15 +48,15 @@ class DependencyResolverTest extends UnitTestCase
      * @param array $frameworkPackageKeys
      * @param array $expectedSortedPackageStatesConfiguration
      */
-    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageStatesConfiguration)
+    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys)
     {
         /** @var DependencyResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $dependencyResolver */
         $dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
         $dependencyResolver->injectDependencyOrderingService(new DependencyOrderingService());
         $dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
-        $sortedPackageStatesConfiguration = $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
+        $sortedPackageKeys = $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
-        $this->assertEquals($expectedSortedPackageStatesConfiguration, $sortedPackageStatesConfiguration, 'The package states configurations have not been ordered according to their dependencies!');
+        $this->assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
     }
 
     /**
@@ -67,11 +67,9 @@ class DependencyResolverTest extends UnitTestCase
     {
         $unsortedPackageStatesConfiguration = array(
             'A' => array(
-                'state' => 'active',
                 'dependencies' => array('B'),
             ),
             'B' => array(
-                'state' => 'active',
                 'dependencies' => array('A')
             ),
         );
@@ -92,23 +90,18 @@ class DependencyResolverTest extends UnitTestCase
             'TYPO3 Flow Packages' => array(
                 array(
                     'TYPO3.Flow' => array(
-                        'state' => 'active',
                         'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
                     ),
                     'Doctrine.ORM' => array(
-                        'state' => 'active',
                         'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
                     ),
                     'Doctrine.Common' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                     'Doctrine.DBAL' => array(
-                        'state' => 'active',
                         'dependencies' => array('Doctrine.Common')
                     ),
                     'Symfony.Component.Yaml' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                 ),
@@ -156,31 +149,24 @@ class DependencyResolverTest extends UnitTestCase
             'TYPO3 CMS Extensions' => array(
                 array(
                     'core' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                     'setup' => array(
-                        'state' => 'active',
                         'dependencies' => array('core'),
                     ),
                     'openid' => array(
-                        'state' => 'active',
                         'dependencies' => array('core', 'setup')
                     ),
                     'news' => array(
-                        'state' => 'active',
                         'dependencies' => array('extbase'),
                     ),
                     'extbase' => array(
-                        'state' => 'active',
                         'dependencies' => array('core'),
                     ),
                     'pt_extbase' => array(
-                        'state' => 'active',
                         'dependencies' => array('extbase'),
                     ),
                     'foo' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                 ),
@@ -256,27 +242,21 @@ class DependencyResolverTest extends UnitTestCase
             'Dummy Packages' => array(
                 array(
                     'A' => array(
-                        'state' => 'active',
                         'dependencies' => array('B', 'D', 'C'),
                     ),
                     'B' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                     'C' => array(
-                        'state' => 'active',
                         'dependencies' => array('E')
                     ),
                     'D' => array(
-                        'state' => 'active',
                         'dependencies' => array('E'),
                     ),
                     'E' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                     'F' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                 ),
@@ -346,23 +326,18 @@ class DependencyResolverTest extends UnitTestCase
             'TYPO3 Flow Packages' => array(
                 array(
                     'TYPO3.Flow' => array(
-                        'state' => 'active',
                         'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
                     ),
                     'Doctrine.ORM' => array(
-                        'state' => 'active',
                         'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
                     ),
                     'Doctrine.Common' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                     'Doctrine.DBAL' => array(
-                        'state' => 'active',
                         'dependencies' => array('Doctrine.Common')
                     ),
                     'Symfony.Component.Yaml' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                 ),
@@ -370,56 +345,34 @@ class DependencyResolverTest extends UnitTestCase
                     'Doctrine.Common'
                 ),
                 array(
-                    'Doctrine.Common' => array(
-                        'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'Doctrine.DBAL' => array(
-                        'state' => 'active',
-                        'dependencies' => array('Doctrine.Common')
-                    ),
-                    'Doctrine.ORM' => array(
-                        'state' => 'active',
-                        'dependencies' => array('Doctrine.Common', 'Doctrine.DBAL')
-                    ),
-                    'Symfony.Component.Yaml' => array(
-                        'state' => 'active',
-                        'dependencies' => array()
-                    ),
-                    'TYPO3.Flow' => array(
-                        'state' => 'active',
-                        'dependencies' => array('Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM')
-                    ),
+                    'Doctrine.Common',
+                    'Doctrine.DBAL',
+                    'Doctrine.ORM',
+                    'Symfony.Component.Yaml',
+                    'TYPO3.Flow',
                 ),
             ),
             'TYPO3 CMS Extensions' => array(
                 array(
                     'core' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                     'setup' => array(
-                        'state' => 'active',
                         'dependencies' => array('core'),
                     ),
                     'openid' => array(
-                        'state' => 'active',
                         'dependencies' => array('core', 'setup')
                     ),
                     'news' => array(
-                        'state' => 'active',
                         'dependencies' => array('extbase'),
                     ),
                     'extbase' => array(
-                        'state' => 'active',
                         'dependencies' => array('core'),
                     ),
                     'pt_extbase' => array(
-                        'state' => 'active',
                         'dependencies' => array('extbase'),
                     ),
                     'foo' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                 ),
@@ -427,60 +380,33 @@ class DependencyResolverTest extends UnitTestCase
                     'core', 'setup', 'openid', 'extbase'
                 ),
                 array(
-                    'core' => array(
-                        'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'setup' => array(
-                        'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'openid' => array(
-                        'state' => 'active',
-                        'dependencies' => array('core', 'setup')
-                    ),
-                    'extbase' => array(
-                        'state' => 'active',
-                        'dependencies' => array('core'),
-                    ),
-                    'foo' => array(
-                        'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'pt_extbase' => array(
-                        'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
-                    'news' => array(
-                        'state' => 'active',
-                        'dependencies' => array('extbase'),
-                    ),
+                    'core',
+                    'setup',
+                    'openid',
+                    'extbase',
+                    'foo',
+                    'news',
+                    'pt_extbase',
                 ),
             ),
             'Dummy Packages' => array(
                 array(
                     'A' => array(
-                        'state' => 'active',
                         'dependencies' => array('B', 'D', 'C'),
                     ),
                     'B' => array(
-                        'state' => 'active',
                         'dependencies' => array()
                     ),
                     'C' => array(
-                        'state' => 'active',
                         'dependencies' => array('E')
                     ),
                     'D' => array(
-                        'state' => 'active',
                         'dependencies' => array('E'),
                     ),
                     'E' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                     'F' => array(
-                        'state' => 'active',
                         'dependencies' => array(),
                     ),
                 ),
@@ -488,30 +414,12 @@ class DependencyResolverTest extends UnitTestCase
                     'B', 'C', 'E'
                 ),
                 array(
-                    'B' => array(
-                        'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'E' => array(
-                        'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'C' => array(
-                        'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'F' => array(
-                        'state' => 'active',
-                        'dependencies' => array(),
-                    ),
-                    'D' => array(
-                        'state' => 'active',
-                        'dependencies' => array('E'),
-                    ),
-                    'A' => array(
-                        'state' => 'active',
-                        'dependencies' => array('B', 'D', 'C'),
-                    ),
+                    'E',
+                    'C',
+                    'B',
+                    'D',
+                    'A',
+                    'F',
                 ),
             ),
         );

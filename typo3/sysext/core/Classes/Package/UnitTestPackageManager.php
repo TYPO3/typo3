@@ -30,7 +30,9 @@ class UnitTestPackageManager extends PackageManager
     public function initialize()
     {
         $this->scanAvailablePackages();
-        $this->activePackages = $this->packages;
+        foreach ($this->packages as $package) {
+            $this->registerActivePackage($package);
+        }
     }
 
     /**
