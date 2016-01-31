@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class that implements PHPass salted hashing based on Drupal's
  * modified Openwall implementation.
@@ -198,7 +201,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      */
     protected function getGeneratedSalt()
     {
-        $randomBytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($this->getSaltLength());
+        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
         return $this->base64Encode($randomBytes, $this->getSaltLength());
     }
 

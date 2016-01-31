@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Authentication of users in TYPO3
@@ -800,7 +801,7 @@ abstract class AbstractUserAuthentication
      */
     public function createSessionId()
     {
-        return GeneralUtility::getRandomHexString($this->hash_length);
+        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString($this->hash_length);
     }
 
     /**

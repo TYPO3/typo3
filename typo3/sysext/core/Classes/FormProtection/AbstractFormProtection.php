@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * This class provides protection against cross-site request forgery (XSRF/CSRF)
@@ -122,7 +123,7 @@ abstract class AbstractFormProtection
      */
     protected function generateSessionToken()
     {
-        return bin2hex(GeneralUtility::generateRandomBytes(32));
+        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(64);
     }
 
     /**

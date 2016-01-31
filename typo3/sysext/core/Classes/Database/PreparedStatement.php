@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 prepared statement for DatabaseConnection
  *
@@ -677,6 +680,6 @@ class PreparedStatement
      */
     protected function generateParameterWrapToken()
     {
-        return '__' . \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(16) . '__';
+        return '__' . GeneralUtility::makeInstance(Random::class)->generateRandomHexString(16) . '__';
     }
 }

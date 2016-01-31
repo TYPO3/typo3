@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Testcase for BlowfishSalt
  */
@@ -107,7 +110,7 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->skipTestIfBlowfishIsNotAvailable();
         $password = 'password';
         // custom salt without setting
-        $randomBytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($this->objectInstance->getSaltLength());
+        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->objectInstance->getSaltLength());
         $salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
         $this->assertTrue($this->objectInstance->isValidSalt($salt));
         $saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);

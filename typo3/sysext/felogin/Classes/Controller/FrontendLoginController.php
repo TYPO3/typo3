@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -397,7 +398,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $hours = (int)$this->conf['forgotLinkHashValidTime'] > 0 ? (int)$this->conf['forgotLinkHashValidTime'] : 24;
         $validEnd = time() + 3600 * $hours;
         $validEndString = date($this->conf['dateFormat'], $validEnd);
-        $hash = md5(GeneralUtility::generateRandomBytes(64));
+        $hash = md5(GeneralUtility::makeInstance(Random::class)->generateRandomBytes(64));
         $randHash = $validEnd . '|' . $hash;
         $randHashDB = $validEnd . '|' . md5($hash);
         // Write hash to DB

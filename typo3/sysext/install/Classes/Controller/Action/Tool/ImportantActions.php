@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action;
@@ -184,7 +185,7 @@ class ImportantActions extends Action\AbstractAction
      */
     protected function setNewEncryptionKeyAndLogOut()
     {
-        $newKey = \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(96);
+        $newKey = $this->objectManager->get(Random::class)->generateRandomHexString(96);
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $newKey);

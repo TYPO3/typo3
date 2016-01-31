@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class that implements MD5 salted hashing based on PHP's
  * crypt() function.
@@ -97,7 +100,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      */
     protected function getGeneratedSalt()
     {
-        $randomBytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($this->getSaltLength());
+        $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
         return $this->base64Encode($randomBytes, $this->getSaltLength());
     }
 

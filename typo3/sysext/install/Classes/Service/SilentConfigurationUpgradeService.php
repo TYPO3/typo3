@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
+use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -212,7 +213,7 @@ class SilentConfigurationUpgradeService
         }
 
         if (empty($currentValue)) {
-            $randomKey = GeneralUtility::getRandomHexString(96);
+            $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
             $this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
             $this->throwRedirectException();
         }

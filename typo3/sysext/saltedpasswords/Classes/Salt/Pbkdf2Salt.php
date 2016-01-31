@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -143,7 +145,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      */
     protected function getGeneratedSalt()
     {
-        return GeneralUtility::generateRandomBytes($this->getSaltLength());
+        return GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
     }
 
     /**
