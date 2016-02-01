@@ -7,7 +7,7 @@ Description
 
 The following ViewHelpers have changed behaviours in Fluid:
 
-* The ``f:case`` ViewHelper does not support ``default`` argument any longer. To indicate which case is the default, use ``f:defaultCase``.
+* The ``f:case`` ViewHelper argument ``default`` has been marked as deprecated. To indicate which case is the default, use ``f:defaultCase``.
 * Tag content of ``f:render`` is no longer ignored and will be output if called with ``optional="1"``.
 * Arguments ``iconOnly`` and ``styleAttributes`` have been removed from ``f:be.buttons.csh``.
 * Argument ``alternateBackgroundColors`` has been removed from ``f:be.tableList``.
@@ -17,7 +17,7 @@ The following ViewHelper classes are now only found in namespace ``TYPO3Fluid\Fl
 
 * ``TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper``
 * ``TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper``
-* ``TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper``
+* ``TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper`` (present as deprecated alias until final removal)
 * ``TYPO3\CMS\Fluid\ViewHelpers\CommentViewHelper``
 * ``TYPO3\CMS\Fluid\ViewHelpers\CycleViewHelper``
 * ``TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper``
