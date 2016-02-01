@@ -34,7 +34,7 @@ class ClassInfoFactory
         try {
             $reflectedClass = new \ReflectionClass($className);
         } catch (\Exception $e) {
-            throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Could not analyse class: "' . $className . '" maybe not loaded or no autoloader?', 1289386765);
+            throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Could not analyse class: "' . $className . '" maybe not loaded or no autoloader? ' . $e->getMessage(), 1289386765, $e);
         }
         $constructorArguments = $this->getConstructorArguments($reflectedClass);
         $injectMethods = $this->getInjectMethods($reflectedClass);
