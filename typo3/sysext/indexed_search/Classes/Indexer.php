@@ -1928,7 +1928,7 @@ class Indexer
      */
     public function includeCrawlerClass()
     {
-        GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php');
+        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php';
     }
 
     /********************************

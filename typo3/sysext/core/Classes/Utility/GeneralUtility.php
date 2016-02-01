@@ -3933,7 +3933,7 @@ class GeneralUtility
             list($file, $funcRef) = self::revExplode(':', $funcName, 2);
             $requireFile = self::getFileAbsFileName($file);
             if ($requireFile) {
-                self::requireOnce($requireFile);
+                require_once $requireFile;
             }
         } else {
             $funcRef = $funcName;
@@ -4031,7 +4031,7 @@ class GeneralUtility
                 list($file, $class) = self::revExplode(':', $classRef, 2);
                 $requireFile = self::getFileAbsFileName($file);
                 if ($requireFile) {
-                    self::requireOnce($requireFile);
+                    require_once $requireFile;
                 }
             } else {
                 $class = $classRef;
@@ -4424,9 +4424,11 @@ class GeneralUtility
      *
      * @param string $requireFile: Path of the file to be included
      * @return void
+     * @deprecated since TYPO3 CMS 8, this file will be removed in TYPO3 CMS 9
      */
     public static function requireOnce($requireFile)
     {
+        self::logDeprecatedFunction();
         // Needed for require_once
         global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
         require_once $requireFile;
@@ -4439,9 +4441,11 @@ class GeneralUtility
      *
      * @param string $requireFile: Path of the file to be included
      * @return void
+     * @deprecated since TYPO3 CMS 8, this file will be removed in TYPO3 CMS 9
      */
     public static function requireFile($requireFile)
     {
+        self::logDeprecatedFunction();
         // Needed for require
         global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
         require $requireFile;
