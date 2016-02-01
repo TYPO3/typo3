@@ -976,7 +976,7 @@ class DataHandler {
 								if (isset($config['config']['dbType']) && GeneralUtility::inList('date,datetime', $config['config']['dbType'])) {
 									$emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
 									$format = $dateTimeFormats[$config['config']['dbType']]['format'];
-									$incomingFieldArray[$column] = $incomingFieldArray[$column] ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
+									$incomingFieldArray[$column] = $incomingFieldArray[$column] && $incomingFieldArray[$column] !== $emptyValue ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
 								}
 							}
 						}
@@ -1718,15 +1718,19 @@ class DataHandler {
 		// Handle native date/time fields
 		$isDateOrDateTimeField = FALSE;
 		if (isset($tcaFieldConf['dbType']) && GeneralUtility::inList('date,datetime', $tcaFieldConf['dbType'])) {
-			$isDateOrDateTimeField = TRUE;
-			$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
-			// Convert the date/time into a timestamp for the sake of the checks
-			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-			$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
-			// At this point in the processing, the timestamps are still based on UTC
-			$timeZone = new \DateTimeZone('UTC');
-			$dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
-			$value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
+			if (empty($value)) {
+				$value = 0;
+			} else {
+				$isDateOrDateTimeField = TRUE;
+				$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+				// Convert the date/time into a timestamp for the sake of the checks
+				$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
+				$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
+				// At this point in the processing, the timestamps are still based on UTC
+				$timeZone = new \DateTimeZone('UTC');
+				$dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
+				$value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
+			}
 		}
 		// Secures the string-length to be less than max.
 		if ((int)$tcaFieldConf['max'] > 0) {

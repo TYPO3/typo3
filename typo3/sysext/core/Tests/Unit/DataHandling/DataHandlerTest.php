@@ -208,13 +208,37 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider
 	 * @param string $dbType
 	 */
-	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFields($dbType) {
+	public function inputValueCheckCallsNotGetDateTimeFormatsForDatetimeFieldsWithEmptyValue($dbType) {
 		$tcaFieldConf = array(
 			'input' => array(),
 			'dbType' => $dbType
 		);
-		$this->mockDatabaseConnection->expects($this->once())->method('getDateTimeFormats');
+		$this->mockDatabaseConnection->expects($this->never())->method('getDateTimeFormats');
 		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider
+	 * @param string $dbType
+	 */
+	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsWithNonEmptyValue($dbType) {
+		$dateTimeFormats = array(
+			'date' => array(
+				'empty' => '0000-00-00',
+				'format' => 'Y-m-d'
+			),
+			'datetime' => array(
+				'empty' => '0000-00-00 00:00:00',
+				'format' => 'Y-m-d H:i:s'
+			)
+		);
+		$tcaFieldConf = array(
+			'input' => array(),
+			'dbType' => $dbType
+		);
+		$this->mockDatabaseConnection->expects($this->once())->method('getDateTimeFormats')->willReturn($dateTimeFormats);
+		$this->subject->checkValue_input(array(), $dateTimeFormats[$dbType]['empty'], $tcaFieldConf, '', 0, '');
 	}
 
 	/**
