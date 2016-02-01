@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Form engine fields - input, text, checkbox, radio, none, passthrough, user',
+        'title' => 'Form engine elements - input, text, checkbox, radio, none, passthrough, user',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
