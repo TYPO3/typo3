@@ -76,6 +76,13 @@ class FormResultCompiler
     protected $additionalJS_submit = array();
 
     /**
+     * Additional language label files to include.
+     *
+     * @var array
+     */
+    protected $additionalInlineLanguageLabelFiles = array();
+
+    /**
      * Array with requireJS modules, use module name as key, the value could be callback code.
      * Use NULL as value if no callback is used.
      *
@@ -150,6 +157,12 @@ class FormResultCompiler
             $resultInlineData = $resultArray['inlineData'];
             ArrayUtility::mergeRecursiveWithOverrule($resultArrayInlineData, $resultInlineData);
             $this->inlineData = $resultArrayInlineData;
+        }
+
+        if (!empty($resultArray['additionalInlineLanguageLabelFiles'])) {
+            foreach ($resultArray['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
+                $this->additionalInlineLanguageLabelFiles[] = $additionalInlineLanguageLabelFile;
+            }
         }
     }
 
@@ -248,6 +261,11 @@ class FormResultCompiler
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
             'file_upload'
         );
+        if (!empty($this->additionalInlineLanguageLabelFiles)) {
+            foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
+                $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
+            }
+        }
         // Load codemirror for T3Editor
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             $this->loadJavascriptLib(ExtensionManagementUtility::extRelPath('t3editor') . 'Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');

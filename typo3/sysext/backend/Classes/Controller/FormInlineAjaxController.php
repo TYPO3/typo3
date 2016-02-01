@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -625,6 +627,27 @@ class FormInlineAjaxController
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
         $jsonResult['scriptCall'][] = $childResult['extJSCODE'];
+        if (!empty($childResult['additionalInlineLanguageLabelFiles'])) {
+            $labels = [];
+            foreach ($childResult['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
+                ArrayUtility::mergeRecursiveWithOverrule(
+                    $labels,
+                    $this->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile)
+                );
+            }
+            $javaScriptCode = [];
+            $javaScriptCode[] = 'if (typeof TYPO3 === \'undefined\' || typeof TYPO3.lang === \'undefined\') {';
+            $javaScriptCode[] = '   TYPO3.lang = {}';
+            $javaScriptCode[] = '}';
+            $javaScriptCode[] = 'var additionalInlineLanguageLabels = ' . json_encode($labels) . ';';
+            $javaScriptCode[] = 'for (var attributeName in additionalInlineLanguageLabels) {';
+            $javaScriptCode[] = '   if (typeof TYPO3.lang[attributeName] === \'undefined\') {';
+            $javaScriptCode[] = '       TYPO3.lang[attributeName] = additionalInlineLanguageLabels[attributeName]';
+            $javaScriptCode[] = '   }';
+            $javaScriptCode[] = '}';
+
+            $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
+        }
         if (!empty($childResult['requireJsModules'])) {
             foreach ($childResult['requireJsModules'] as $module) {
                 $moduleName = null;
@@ -654,6 +677,43 @@ class FormInlineAjaxController
             }
         }
         return $jsonResult;
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return array
+     */
+    protected function addInlineLanguageLabelFile($file)
+    {
+        /** @var $languageFactory LocalizationFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        $language = $GLOBALS['LANG']->lang;
+        $localizationArray = $languageFactory->getParsedData(
+            $file,
+            $language,
+            'utf-8',
+            1
+        );
+        if (is_array($localizationArray) && !empty($localizationArray)) {
+            if (!empty($localizationArray[$language])) {
+                $xlfLabelArray = $localizationArray['default'];
+                ArrayUtility::mergeRecursiveWithOverrule($xlfLabelArray, $localizationArray[$language], true, false);
+            } else {
+                $xlfLabelArray = $localizationArray['default'];
+            }
+        } else {
+            $xlfLabelArray = [];
+        }
+        $labelArray = [];
+        foreach ($xlfLabelArray as $key => $value) {
+            if (isset($value[0]['target'])) {
+                $labelArray[$key] = $value[0]['target'];
+            } else {
+                $labelArray[$key] = '';
+            }
+        }
+        return $labelArray;
     }
 
     /**
