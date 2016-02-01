@@ -28,7 +28,7 @@
 		"bin-dir": "bin"
 	},
 	"bin": [
-		"typo3/sysext/core/bin/t3console"
+		"typo3/sysext/core/bin/typo3"
 	],
 	"require": {
 		"php": ">=5.5.0",

@@ -12,7 +12,7 @@
 		"core": "*"
 	},
 	"bin": [
-		"bin/t3console"
+		"bin/typo3"
 	],
 	"extra": {
 		"typo3/cms": {
