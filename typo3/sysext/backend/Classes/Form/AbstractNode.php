@@ -66,6 +66,7 @@ abstract class AbstractNode implements NodeInterface
             'additionalJavaScriptPost' => array(),
             'additionalJavaScriptSubmit' => array(),
             'additionalHiddenFields' => array(),
+            'additionalInlineLanguageLabelFiles' => array(),
             'stylesheetFiles' => array(),
             // can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
             'requireJsModules' => array(),
@@ -105,6 +106,11 @@ abstract class AbstractNode implements NodeInterface
         if (!empty($childReturn['requireJsModules'])) {
             foreach ($childReturn['requireJsModules'] as $module) {
                 $existing['requireJsModules'][] = $module;
+            }
+        }
+        if (!empty($childReturn['additionalInlineLanguageLabelFiles'])) {
+            foreach ($childReturn['additionalInlineLanguageLabelFiles'] as $inlineLanguageLabelFile) {
+                $existing['additionalInlineLanguageLabelFiles'][] = $inlineLanguageLabelFile;
             }
         }
         if (!empty($childReturn['inlineData'])) {
