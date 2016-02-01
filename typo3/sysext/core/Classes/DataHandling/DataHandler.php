@@ -994,7 +994,7 @@ class DataHandler
                         if (isset($config['config']['dbType']) && ($config['config']['dbType'] === 'date' || $config['config']['dbType'] === 'datetime')) {
                             $emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
                             $format = $dateTimeFormats[$config['config']['dbType']]['format'];
-                            $incomingFieldArray[$column] = $incomingFieldArray[$column] ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
+                            $incomingFieldArray[$column] = $incomingFieldArray[$column] && $incomingFieldArray[$column] !== $emptyValue ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
                         }
                     }
                 }
@@ -1752,15 +1752,19 @@ class DataHandler
         $format = '';
         $emptyValue = '';
         if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
-            $isDateOrDateTimeField = true;
-            $dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
-            // Convert the date/time into a timestamp for the sake of the checks
-            $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-            $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
-            // At this point in the processing, the timestamps are still based on UTC
-            $timeZone = new \DateTimeZone('UTC');
-            $dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
-            $value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
+            if (empty($value)) {
+                $value = 0;
+            } else {
+                $isDateOrDateTimeField = true;
+                $dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
+                // Convert the date/time into a timestamp for the sake of the checks
+                $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
+                $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
+                // At this point in the processing, the timestamps are still based on UTC
+                $timeZone = new \DateTimeZone('UTC');
+                $dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
+                $value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
+            }
         }
         // Secures the string-length to be less than max.
         if ((int)$tcaFieldConf['max'] > 0) {
