@@ -47,14 +47,16 @@ class CshViewHelper extends AbstractBackendViewHelper
      *
      * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used
      * @param string $field Field name (CSH locallang main key)
+     * @param string $wrap Markup to wrap around the CSH, split by "|"
      * @return string the rendered CSH icon
      */
-    public function render($table = null, $field = '')
+    public function render($table = null, $field = '', $wrap = '')
     {
         return static::renderStatic(
             array(
                 'table' => $table,
                 'field' => $field,
+                'wrap' => $wrap
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -71,12 +73,13 @@ class CshViewHelper extends AbstractBackendViewHelper
     {
         $table = $arguments['table'];
         $field = $arguments['field'];
+        $wrap = $arguments['wrap'];
 
         if ($table === null) {
             $currentRequest = $renderingContext->getControllerContext()->getRequest();
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
-        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
+        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field, '', $wrap) . '</div>';
     }
 }
