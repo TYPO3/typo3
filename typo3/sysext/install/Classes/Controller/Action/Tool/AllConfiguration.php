@@ -47,7 +47,7 @@ class AllConfiguration extends Action\AbstractAction
             $this->view->assign('configurationValuesSaved', true);
             $this->view->assign('savedConfigurationValueMessages', $this->updateLocalConfigurationValues());
         } else {
-            $this->view->assign('sections', $this->getSpeakingSectionNames());
+            $this->view->assign('sectionNames', $this->getSpeakingSectionNames());
             $this->view->assign('data', $this->setUpConfigurationData());
         }
 
