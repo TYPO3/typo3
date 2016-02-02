@@ -183,6 +183,24 @@ return array(
                 'maxitems' => 1,
             ),
         ),
+/**
+        'select_singlebox_1' => [
+            'exclude' => 1,
+            'label' => 'select_singlebox_1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingleBox',
+                'items' => [
+                    ['foo 1', 1],
+                    ['foo 2', 2],
+                    ['divider', '--div--'],
+                    ['foo 3', 3],
+                    ['foo 4', 4],
+                ],
+                'maxitems' => 2,
+            ],
+        ],
+*/
         'select_3' => array(
             'exclude' => 1,
             'label' => 'SELECT 3: checkbox, minitems=1, maxitems=2',
@@ -195,6 +213,7 @@ return array(
                     array('foo3', 3),
                 ),
                 'minitems' => 1,
+                // @todo: maxitems does not work?
                 'maxitems' => 2,
             ),
         ),

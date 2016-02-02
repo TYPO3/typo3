@@ -93,224 +93,205 @@ return [
         ],
         'input_4' => [
             'exclude' => 1,
-            'label' => 'input_4 default=Default value"',
-            'config' => [
-                'type' => 'input',
-                'default' => 'Default value',
-            ],
-        ],
-        'input_5' => [
-            'exclude' => 1,
-            'label' => 'input_5 eval=alpha',
+            'label' => 'input_4 eval=alpha',
             'config' => [
                 'type' => 'input',
                 'eval' => 'alpha',
             ],
         ],
-        'input_6' => [
+        'input_5' => [
             'exclude' => 1,
-            'label' => 'input_6 eval=alphanum',
+            'label' => 'input_5 eval=alphanum',
             'config' => [
                 'type' => 'input',
                 'eval' => 'alphanum',
             ],
         ],
-        'input_7' => [
+        'input_6' => [
             'exclude' => 1,
-            'label' => 'input_7 eval=date',
+            'label' => 'input_6 eval=date',
             'config' => [
                 'type' => 'input',
                 'eval' => 'date',
             ],
         ],
-        'input_8' => [
+        'input_7' => [
             'exclude' => 1,
-            'label' => 'input_8 eval=datetime',
+            'label' => 'input_7 eval=datetime',
             'config' => [
                 'type' => 'input',
                 'eval' => 'datetime',
             ],
         ],
-        'input_9' => [
+        'input_8' => [
             'exclude' => 1,
-            'label' => 'input_9 eval=double2',
+            'label' => 'input_8 eval=double2',
             'config' => [
                 'type' => 'input',
                 'eval' => 'double2',
             ],
         ],
-        'input_10' => [
+        'input_9' => [
             'exclude' => 1,
-            'label' => 'input_10 eval=int',
+            'label' => 'input_9 eval=int',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
             ],
         ],
-        'input_11' => [
+        'input_10' => [
             'exclude' => 1,
-            'label' => 'input_11 eval=is_in, is_in=abc123',
+            'label' => 'input_10 eval=is_in, is_in=abc123',
             'config' => [
                 'type' => 'input',
                 'eval' => 'is_in',
                 'is_in' => 'abc123',
             ],
         ],
-        'input_12' => [
+        'input_11' => [
             'exclude' => 1,
-            'label' => 'input_12 eval=lower',
+            'label' => 'input_11 eval=lower',
             'config' => [
                 'type' => 'input',
                 'eval' => 'lower',
             ],
         ],
-        'input_13' => [
+        'input_12' => [
             'exclude' => 1,
-            'label' => 'input_13 eval=md5',
+            'label' => 'input_12 eval=md5',
             'config' => [
                 'type' => 'input',
                 'eval' => 'md5',
             ],
         ],
-        'input_14' => [
+        'input_13' => [
             'exclude' => 1,
-            'label' => 'input_14 eval=nospace',
+            'label' => 'input_13 eval=nospace',
             'config' => [
                 'type' => 'input',
                 'eval' => 'nospace',
             ],
         ],
-        'input_15' => [
+        'input_14' => [
             'exclude' => 1,
-            'label' => 'input_15 eval=null',
+            'label' => 'input_14 eval=null',
             'config' => [
                 'type' => 'input',
                 'eval' => 'null',
             ],
         ],
-        'input_16' => [
+        'input_15' => [
             'exclude' => 1,
-            'label' => 'input_16 eval=num',
+            'label' => 'input_15 eval=num',
             'config' => [
                 'type' => 'input',
                 'eval' => 'num',
             ],
         ],
-        'input_17' => [
+        'input_16' => [
             'exclude' => 1,
-            'label' => 'input_17 eval=password',
+            'label' => 'input_16 eval=password',
             'config' => [
                 'type' => 'input',
                 'eval' => 'password',
             ],
         ],
-        'input_18' => [
+        'input_17' => [
             'exclude' => 1,
-            'label' => 'input_18 eval=time',
+            'label' => 'input_17 eval=time',
             'config' => [
                 'type' => 'input',
                 'eval' => 'time',
             ],
         ],
-        'input_19' => [
+        'input_18' => [
             'exclude' => 1,
-            'label' => 'input_19 eval=timesec',
+            'label' => 'input_18 eval=timesec',
             'config' => [
                 'type' => 'input',
                 'eval' => 'timesec',
             ],
         ],
-        'input_20' => [
+        'input_19' => [
             'exclude' => 1,
-            'label' => 'input_20 eval=trim',
+            'label' => 'input_19 eval=trim',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
             ],
         ],
-        'input_21' => [
+        'input_20' => [
             'exclude' => 1,
-            'label' => 'input_21 eval with user function',
+            'label' => 'input_20 eval with user function',
             'config' => [
                 'type' => 'input',
                 'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeInput21Eval',
             ],
         ],
-        'input_22' => [
+        'input_21' => [
             'exclude' => 1,
-            'label' => 'input_22 eval=unique',
+            'label' => 'input_21 eval=unique',
             'config' => [
                 'type' => 'input',
                 'eval' => 'unique',
             ],
         ],
-        'input_23' => [
+        'input_22' => [
             'exclude' => 1,
-            'label' => 'input_23 eval=uniqueInPid',
+            'label' => 'input_22 eval=uniqueInPid',
             'config' => [
                 'type' => 'input',
                 'eval' => 'uniqueInPid',
             ],
         ],
-        'input_24' => [
+        'input_23' => [
             'exclude' => 1,
-            'label' => 'input_24 eval=upper',
+            'label' => 'input_23 eval=upper',
             'config' => [
                 'type' => 'input',
                 'eval' => 'upper',
             ],
         ],
-        'input_25' => [
+        'input_24' => [
             'exclude' => 1,
-            'label' => 'input_25 eval=year',
+            'label' => 'input_24 eval=year',
             'config' => [
                 'type' => 'input',
                 'eval' => 'year',
             ],
         ],
-        'input_26' => [
+        'input_25' => [
             'exclude' => 1,
-            'label' => 'input_26 eval=datetime, readonly=1, size=12',
-            'config' => [
-                'type' => 'input',
-                'readOnly' => 1,
-                'size' => 12,
-                'eval' => 'datetime',
-                'default' => 0,
-            ],
-        ],
-        'input_27' => [
-            'exclude' => 1,
-            'label' => 'input_27 eval=int, default=3, range lower=2, range upper=7',
+            'label' => 'input_25 eval=int, default=0, range lower=-2, range upper=2',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',
                 'range' => [
-                    'lower' => 2,
-                    'upper' => 7,
+                    'lower' => -2,
+                    'upper' => 2,
                 ],
-                'default' => 3,
+                'default' => 0,
             ],
         ],
-        'input_28' => [
+        'input_26' => [
             'exclude' => 1,
-            'label' => 'input_28 default="input_28"',
+            'label' => 'input_26 default="input_28", value for input_29 and input_30',
             'config' => [
                 'type' => 'input',
                 'default' => 'input_28',
             ],
         ],
-        'input_29' => [
+        'input_27' => [
             'exclude' => 1,
-            'label' => 'input_29 placeholder=__row|input_28',
+            'label' => 'input_27 placeholder=__row|input_28',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_28',
             ],
         ],
-        'input_30' => [
+        'input_28' => [
             'exclude' => 1,
-            'label' => 'input_30 placeholder=__row|input_28, mode=useOrOverridePlaceholder, eval=null',
+            'label' => 'input_28 placeholder=__row|input_28, mode=useOrOverridePlaceholder, eval=null',
             'config' => [
                 'type' => 'input',
                 'placeholder' => '__row|input_28',
@@ -318,9 +299,9 @@ return [
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
-        'input_31' => [
+        'input_29' => [
             'exclude' => 1,
-            'label' => 'input_31 wizard link',
+            'label' => 'input_29 wizard link',
             'config' => [
                 'type' => 'input',
                 'wizards' => [
@@ -336,9 +317,9 @@ return [
                 ],
             ],
         ],
-        'input_32' => [
+        'input_30' => [
             'exclude' => 1,
-            'label' => 'input_32 wizard slider, step=10, width=200, eval=trim,int',
+            'label' => 'input_30 wizard slider, step=10, width=200, eval=trim,int',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -357,9 +338,9 @@ return [
                 ],
             ],
         ],
-        'input_33' => [
+        'input_31' => [
             'exclude' => 1,
-            'label' => 'input_33 wizard slider, default=14.5, step=0.5, width=150, eval=trim,double2',
+            'label' => 'input_31 wizard slider, default=14.5, step=0.5, width=150, eval=trim,double2',
             'config' => [
                 'type' => 'input',
                 'size' => 5,
@@ -378,9 +359,9 @@ return [
                 ],
             ],
         ],
-        'input_34' => [
+        'input_32' => [
             'exclude' => 1,
-            'label' => 'input_34 wizard userFunc',
+            'label' => 'input_32 wizard userFunc',
             'config' => [
                 'type' => 'input',
                 'size' => 10,
@@ -396,9 +377,9 @@ return [
                 ],
             ],
         ],
-        'input_35' => [
+        'input_33' => [
             'exclude' => 1,
-            'label' => 'input_35 wizard select',
+            'label' => 'input_33 wizard select',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -525,23 +506,15 @@ return [
         ],
         'text_12' => [
             'exclude' => 1,
-            'label' => 'text_12 default="text_12"',
-            'config' => [
-                'type' => 'text',
-                'default' => 'text_12',
-            ],
-        ],
-        'text_13' => [
-            'exclude' => 1,
-            'label' => 'text_13 placeholder=__row|text_12',
+            'label' => 'text_12 placeholder=__row|text_12',
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
             ],
         ],
-        'text_14' => [
+        'text_13' => [
             'exclude' => 1,
-            'label' => 'text_14 placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
+            'label' => 'text_13 placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
@@ -549,9 +522,9 @@ return [
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
-        'text_15' => [
+        'text_14' => [
             'exclude' => 1,
-            'label' => 'text_15 defaultExtras="fixed-font : enable-tab"',
+            'label' => 'text_14 defaultExtras="fixed-font : enable-tab"',
             'config' => [
                 'type' => 'text',
             ],
@@ -568,36 +541,17 @@ return [
         ],
         'checkbox_2' => [
             'exclude' => 1,
-            'label' => 'checkbox_2 default=1',
+            'label' => 'checkbox_2 one checkbox with label',
             'config' => [
                 'type' => 'check',
-                'default' => 1,
+                'items' => [
+                    ['foo', ''],
+                ],
             ]
         ],
         'checkbox_3' => [
             'exclude' => 1,
-            'label' => 'checkbox_3 One checkbox with label',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    ['foo', ''],
-                ],
-            ]
-        ],
-        'checkbox_4' => [
-            'exclude' => 1,
-            'label' => 'checkbox_4 One checkbox with label, pre-selected',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    ['foo', ''],
-                ],
-                'default' => 1
-            ]
-        ],
-        'checkbox_5' => [
-            'exclude' => 1,
-            'label' => 'checkbox_5 Three checkboxes, two with labels, one without',
+            'label' => 'checkbox_3 three checkboxes, two with labels, one without',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -607,9 +561,9 @@ return [
                 ],
             ],
         ],
-        'checkbox_6' => [
+        'checkbox_4' => [
             'exclude' => 1,
-            'label' => 'checkbox_6 Four checkboxes with labels, 1 and 3 pre-selected, long text',
+            'label' => 'checkbox_4 four checkboxes with labels, long text',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -623,12 +577,11 @@ return [
                     ['foobar', ''],
                     ['foobar', ''],
                 ],
-                'default' => 5,
             ],
         ],
-        'checkbox_7' => [
+        'checkbox_5' => [
             'exclude' => 1,
-            'label' => 'checkbox_7 showIfRTE=1 (only shown if RTE is enabled for user)',
+            'label' => 'checkbox_5 showIfRTE=1 (only shown if RTE is enabled for user)',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -637,10 +590,10 @@ return [
                 'showIfRTE' => 1,
             ],
         ],
-        'checkbox_8' => [
+        'checkbox_6' => [
             // @todo: Checking a checkbox that is added by itemsProcFunc is not persisted correctly.
             // @todo: HTML looks good, so this is probably an issue in DataHandler?
-            'label' => 'checkbox_8 itemsProcFunc',
+            'label' => 'checkbox_6 itemsProcFunc',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -650,9 +603,9 @@ return [
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
             ],
         ],
-        'checkbox_9' => [
+        'checkbox_7' => [
             'exclude' => 1,
-            'label' => 'checkbox_9 eval=maximumRecordsChecked, table wide',
+            'label' => 'checkbox_7 eval=maximumRecordsChecked, table wide',
             'config' => [
                 'type' => 'check',
                 'eval' => 'maximumRecordsChecked',
@@ -661,9 +614,9 @@ return [
                 ],
             ],
         ],
-        'checkbox_10' => [
+        'checkbox_8' => [
             'exclude' => 1,
-            'label' => 'checkbox_10 eval=maximumRecordsCheckedInPid, for this PID',
+            'label' => 'checkbox_8 eval=maximumRecordsCheckedInPid, for this PID',
             'config' => [
                 'type' => 'check',
                 'eval' => 'maximumRecordsCheckedInPid',
@@ -672,9 +625,9 @@ return [
                 ],
             ],
         ],
-        'checkbox_11' => [
+        'checkbox_9' => [
             'exclude' => 1,
-            'label' => 'checkbox_11 readonly=1',
+            'label' => 'checkbox_9 readonly=1',
             'config' => [
                 'type' => 'check',
                 'readOnly' => 1,
@@ -684,9 +637,9 @@ return [
                 ],
             ],
         ],
-        'checkbox_12' => [
+        'checkbox_10' => [
             'exclude' => 1,
-            'label' => 'checkbox_12 cols=1',
+            'label' => 'checkbox_10 cols=1',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -697,9 +650,9 @@ return [
                 'cols' => '1',
             ],
         ],
-        'checkbox_13' => [
+        'checkbox_11' => [
             'exclude' => 1,
-            'label' => 'checkbox_13 cols=2',
+            'label' => 'checkbox_11 cols=2',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -710,9 +663,9 @@ return [
                 'cols' => '2',
             ],
         ],
-        'checkbox_14' => [
+        'checkbox_12' => [
             'exclude' => 1,
-            'label' => 'checkbox_14 cols=3',
+            'label' => 'checkbox_12 cols=3',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -724,9 +677,9 @@ return [
                 'cols' => '3',
             ],
         ],
-        'checkbox_15' => [
+        'checkbox_13' => [
             'exclude' => 1,
-            'label' => 'checkbox_15 cols=4',
+            'label' => 'checkbox_13 cols=4',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -746,9 +699,9 @@ return [
                 'cols' => '4',
             ],
         ],
-        'checkbox_16' => [
+        'checkbox_14' => [
             'exclude' => 1,
-            'label' => 'checkbox_16 cols=5',
+            'label' => 'checkbox_14 cols=5',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -763,9 +716,9 @@ return [
                 'cols' => '5',
             ],
         ],
-        'checkbox_17' => [
+        'checkbox_15' => [
             'exclude' => 1,
-            'label' => 'checkbox_17 cols=6',
+            'label' => 'checkbox_15 cols=6',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -780,9 +733,9 @@ return [
                 'cols' => '6',
             ],
         ],
-        'checkbox_18' => [
+        'checkbox_16' => [
             'exclude' => 1,
-            'label' => 'checkbox_18 cols=inline',
+            'label' => 'checkbox_16 cols=inline',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -801,7 +754,7 @@ return [
 
         'radio_1' => [
             'exclude' => 1,
-            'label' => 'radio_1 Three options, one without label',
+            'label' => 'radio_1 three options, one without label',
             'config' => [
                 'type' => 'radio',
                 'items' => [
@@ -813,7 +766,7 @@ return [
         ],
         'radio_2' => [
             'exclude' => 1,
-            'label' => 'radio_2 Three options, second pre-selected, long text',
+            'label' => 'radio_2 three options, long text',
             'config' => [
                 'type' => 'radio',
                 'items' => [
@@ -826,12 +779,11 @@ return [
                     ['bar', 2],
                     ['foobar', 3],
                 ],
-                'default' => 2,
             ],
         ],
         'radio_3' => [
             'exclude' => 1,
-            'label' => 'radio_3 Many options',
+            'label' => 'radio_3 many options',
             'config' => [
                 'type' => 'radio',
                 'items' => [
@@ -856,7 +808,7 @@ return [
         ],
         'radio_4' => [
             'exclude' => 1,
-            'label' => 'radio_4 String values',
+            'label' => 'radio_4 string values',
             'config' => [
                 'type' => 'radio',
                 'items' => [
@@ -893,7 +845,6 @@ return [
         ],
 
 
-         // @todo Add default rows to show all the format options of type=none
         'none_1' => [
             'exclude' => 1,
             'label' => 'none_1 pass_content=1',
@@ -989,13 +940,13 @@ return [
                     input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-                    input_31, input_32, input_33, input_34, input_35,
+                    input_31, input_32, input_33,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
-                    text_11, text_12, text_13, text_14, text_15,
+                    text_11, text_12, text_13, text_14,
                 --div--;check,
                     checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-                    checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
+                    checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,

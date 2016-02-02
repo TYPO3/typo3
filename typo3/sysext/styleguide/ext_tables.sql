@@ -50,8 +50,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_11 text NOT NULL,
 	input_12 text NOT NULL,
 	input_13 text NOT NULL,
-	input_14 text NOT NULL,
-	input_15 text,
+	input_14 text,
+	input_15 text NOT NULL,
 	input_16 text NOT NULL,
 	input_17 text NOT NULL,
 	input_18 text NOT NULL,
@@ -64,14 +64,12 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_25 text NOT NULL,
 	input_26 text NOT NULL,
 	input_27 text NOT NULL,
-	input_28 text NOT NULL,
+	input_28 text,
 	input_29 text NOT NULL,
-	input_30 text,
+	input_30 text NOT NULL,
 	input_31 text NOT NULL,
 	input_32 text NOT NULL,
 	input_33 text NOT NULL,
-	input_34 text NOT NULL,
-	input_35 text NOT NULL,
 
 	text_1 text,
 	text_2 text,
@@ -86,7 +84,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 	text_12 text,
 	text_13 text,
 	text_14 text,
-	text_15 text,
 
 	checkbox_1 int(11) DEFAULT '0' NOT NULL,
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
@@ -104,8 +101,6 @@ CREATE TABLE tx_styleguide_elements_basic (
 	checkbox_14 int(11) DEFAULT '0' NOT NULL,
 	checkbox_15 int(11) DEFAULT '0' NOT NULL,
 	checkbox_16 int(11) DEFAULT '0' NOT NULL,
-	checkbox_17 int(11) DEFAULT '0' NOT NULL,
-	checkbox_18 int(11) DEFAULT '0' NOT NULL,
 
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 	radio_2 int(11) DEFAULT '0' NOT NULL,
@@ -159,21 +154,132 @@ CREATE TABLE tx_styleguide_elements_group (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	group_1 text NOT NULL,
-	group_2 text NOT NULL,
-	group_3 text NOT NULL,
-	group_4 text NOT NULL,
-	group_5 text NOT NULL,
-	group_6 text NOT NULL,
-	group_7 text NOT NULL,
-	group_8 text NOT NULL,
-	group_9 text NOT NULL,
-	group_10 text NOT NULL,
-	group_11 text NOT NULL,
+	group_db_1 text NOT NULL,
+	group_db_2 text NOT NULL,
+	group_db_3 text NOT NULL,
+	group_db_4 text NOT NULL,
+	group_db_5 text NOT NULL,
+	group_db_6 text NOT NULL,
+	group_file_1 text NOT NULL,
+	group_file_2 text NOT NULL,
+	group_file_3 text NOT NULL,
+	group_file_4 text NOT NULL,
+	group_folder_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+
+CREATE TABLE tx_styleguide_elements_select (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	starttime int(11) DEFAULT '0' NOT NULL,
+	endtime int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(255) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	select_single_1 text NOT NULL,
+	select_single_2 text NOT NULL,
+	select_single_3 text NOT NULL,
+	select_single_4 text NOT NULL,
+	select_single_5 text NOT NULL,
+	select_single_6 text NOT NULL,
+	select_single_7 text NOT NULL,
+	select_single_8 text NOT NULL,
+	select_single_9 text NOT NULL,
+	select_single_10 text NOT NULL,
+	select_single_11 text NOT NULL,
+
+	select_singlebox_1 text NOT NULL,
+
+	select_checkbox_1 text NOT NULL,
+	select_checkbox_2 text NOT NULL,
+
+	select_multiplesidebyside_1 text NOT NULL,
+	select_multiplesidebyside_2 text NOT NULL,
+	select_multiplesidebyside_3 text NOT NULL,
+	select_multiplesidebyside_4 text NOT NULL,
+	select_multiplesidebyside_5 text NOT NULL,
+	select_multiplesidebyside_6 text NOT NULL,
+
+	select_tree_1 text NOT NULL,
+	select_tree_2 text NOT NULL,
+	select_tree_3 text NOT NULL,
+	select_tree_4 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_values_default (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	starttime int(11) DEFAULT '0' NOT NULL,
+	endtime int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(255) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	input_1 text NOT NULL,
+	input_2 text NOT NULL,
+	input_3 text NOT NULL,
+
+	text_1 text,
+
+	checkbox_1 int(11) DEFAULT '0' NOT NULL,
+	checkbox_2 int(11) DEFAULT '0' NOT NULL,
+	checkbox_3 int(11) DEFAULT '0' NOT NULL,
+
+	radio_1 int(11) DEFAULT '0' NOT NULL,
+
+	select_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
 
 
 
@@ -209,37 +315,6 @@ CREATE TABLE tx_styleguide_forms (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
 	type_field text NOT NULL,
-
-	select_1 text NOT NULL,
-	select_2 text NOT NULL,
-	select_3 text NOT NULL,
-	select_4 text NOT NULL,
-	select_5 text NOT NULL,
-	select_7 text NOT NULL,
-	select_8 text NOT NULL,
-	select_9 text NOT NULL,
-	select_10 text NOT NULL,
-	select_11 text NOT NULL,
-	select_12 text NOT NULL,
-	select_13 text NOT NULL,
-	select_14 text NOT NULL,
-	select_15 text NOT NULL,
-	select_16 text NOT NULL,
-	select_17 text NOT NULL,
-	select_21 text NOT NULL,
-	select_22 text NOT NULL,
-	select_23 text NOT NULL,
-	select_24 text NOT NULL,
-	select_25 text NOT NULL,
-	select_26 text NOT NULL,
-	select_27 text NOT NULL,
-	select_28 text NOT NULL,
-	select_29 text NOT NULL,
-	select_30 text NOT NULL,
-	select_31 text NOT NULL,
-	select_32 text NOT NULL,
-	select_33 text NOT NULL,
-	select_34 text NOT NULL,
 
 	flex_1 text,
 	flex_2 text,

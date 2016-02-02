@@ -24,6 +24,8 @@ return [
 
 
     'columns' => [
+
+
         'hidden' => [
             'exclude' => 1,
             'config' => [
@@ -66,9 +68,9 @@ return [
         ],
 
 
-        'group_1' => [
+        'group_db_1' => [
             'exclude' => 1,
-            'label' => 'group_1 db, allowed=be_users,be_groups',
+            'label' => 'group_db_1 allowed=be_users,be_groups',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -76,9 +78,9 @@ return [
                 'maxitems' => 999,
             ],
         ],
-        'group_2' => [
+        'group_db_2' => [
             'exclude' => 1,
-            'label' => 'group_2 db, allowed=be_users,be_groups, show_thumbs=true',
+            'label' => 'group_db_2 allowed=be_users,be_groups, show_thumbs=true',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -87,9 +89,9 @@ return [
                 'maxitems' => 999,
             ],
         ],
-        'group_3' => [
+        'group_db_3' => [
             'exclude' => 1,
-            'label' => 'group_3 db, allowed=tx_styleguide_forms_staticdata, wizard suggest, disable_controls=browser',
+            'label' => 'group_db_3 allowed=tx_styleguide_forms_staticdata, wizard suggest, disable_controls=browser',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -103,9 +105,9 @@ return [
                 'maxitems' => 999,
             ],
         ],
-        'group_4' => [
+        'group_db_4' => [
             'exclude' => 1,
-            'label' => 'group_4 db, allowed=tx_styleguide_forms_staticdata, show_thumbs=true, size=1, wizard suggest',
+            'label' => 'group_db_4 allowed=tx_styleguide_forms_staticdata, show_thumbs=true, size=1, wizard suggest',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -120,9 +122,9 @@ return [
                 ],
             ],
         ],
-        'group_5' => [
+        'group_db_5' => [
             'exclude' => 1,
-            'label' => 'group_5 db, readOnly=1',
+            'label' => 'group_db_5 readOnly=1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -130,10 +132,10 @@ return [
                 'readOnly' => 1,
             ]
         ],
-        'group_6' => [
+        'group_db_6' => [
             // @todo: when and why is this useful?
             'exclude' => 1,
-            'label' => 'group_6 db, FAL relation',
+            'label' => 'group_db_6 FAL relation',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -155,9 +157,10 @@ return [
             ],
         ],
 
-        'group_7' => [
+
+        'group_file_1' => [
             'exclude' => 1,
-            'label' => 'group_7 file, show_thumbs=true',
+            'label' => 'group_file_1 show_thumbs=true',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -173,9 +176,9 @@ return [
                 'maxitems' => 999,
             ],
         ],
-        'group_8' => [
+        'group_file_2' => [
             'exclude' => 1,
-            'label' => 'group_8 file, disable_controls=delete',
+            'label' => 'group_file_2 disable_controls=delete',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -185,9 +188,9 @@ return [
                 'disable_controls' => 'delete',
             ],
         ],
-        'group_9' => [
+        'group_file_3' => [
             'exclude' => 1,
-            'label' => 'group_9 file, size=1',
+            'label' => 'group_file_3 size=1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -196,9 +199,9 @@ return [
                 'uploadfolder' => 'uploads/pics/',
             ],
         ],
-        'group_10' => [
+        'group_file_4' => [
             'exclude' => 1,
-            'label' => 'group_10 file, selectedListStyles used',
+            'label' => 'group_file_4 selectedListStyles',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'file',
@@ -208,15 +211,17 @@ return [
             ],
         ],
 
-        'group_11' => [
+
+        'group_folder_1' => [
             'exclude' => 1,
-            'label' => 'group_11 folder',
+            'label' => 'group_folder_1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'folder',
                 'maxitems' => 999,
             ],
         ],
+
 
     ],
 
@@ -225,11 +230,11 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_1, group_2, group_3, group_4, group_5, group_6,
+                    group_db_1, group_db_2, group_db_3, group_db_4, group_db_5, group_db_6,
                 --div--;internal_type=file,
-                    group_7, group_8, group_9, group_10,
+                    group_file_1, group_file_2, group_file_3, group_file_4,
                 --div--;internal_type=folder,
-                    group_11,
+                    group_folder_1,
             ',
         ],
     ],
