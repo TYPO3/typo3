@@ -58,9 +58,10 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
      * @param string $field Field name (CSH locallang main key)
      * @param bool $iconOnly Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
      * @param string $styleAttributes Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+     * @param string $wrap Markup to wrap around the CSH, split by "|"
      * @return string the rendered CSH icon
      */
-    public function render($table = null, $field = '', $iconOnly = false, $styleAttributes = '')
+    public function render($table = null, $field = '', $iconOnly = false, $styleAttributes = '', $wrap = '')
     {
         if ($iconOnly) {
             \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
@@ -76,6 +77,7 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
             array(
                 'table' => $table,
                 'field' => $field,
+                'wrap' => $wrap
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -92,12 +94,13 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
     {
         $table = $arguments['table'];
         $field = $arguments['field'];
+        $wrap = $arguments['wrap'];
 
         if ($table === null) {
             $currentRequest = $renderingContext->getControllerContext()->getRequest();
             $moduleName = $currentRequest->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
-        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
+        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field, '', $wrap) . '</div>';
     }
 }
