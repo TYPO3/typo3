@@ -656,7 +656,7 @@ abstract class AbstractMenuContentObject
             }
             // Checking if the "disabled" state should be set.
             if (GeneralUtility::hideIfNotTranslated($tsfe->page['l18n_cfg']) && $sUid &&
-                empty($lRecs) || $tsfe->page['l18n_cfg'] & 1 &&
+                empty($lRecs) || GeneralUtility::hideIfDefaultLanguage($tsfe->page['l18n_cfg']) &&
                 (!$sUid || empty($lRecs)) ||
                 !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && empty($lRecs)
             ) {
@@ -1221,7 +1221,7 @@ abstract class AbstractMenuContentObject
             // Checks if the default language version can be shown:
             // Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
             $tsfe = $this->getTypoScriptFrontendController();
-            $blockPage = $data['l18n_cfg'] & 1 && (!$tsfe->sys_language_uid || $tsfe->sys_language_uid && !$data['_PAGES_OVERLAY']);
+            $blockPage = GeneralUtility::hideIfDefaultLanguage($data['l18n_cfg']) && (!$tsfe->sys_language_uid || $tsfe->sys_language_uid && !$data['_PAGES_OVERLAY']);
             if (!$blockPage) {
                 // Checking if a page should be shown in the menu depending on whether a translation exists:
                 $tok = true;
