@@ -86,6 +86,11 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected $iconFactory;
 
     /**
+     * @var int
+     */
+    protected $maximumCountInBadge = 99;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -294,7 +299,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         }
 
         // increase counter
-        if (isset($message['count'])) {
+        if (isset($message['count']) && $this->totalCount < $this->maximumCountInBadge) {
             $this->totalCount += (int)$message['count'];
         }
 
@@ -346,7 +351,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->standaloneView->assignMultiple(array(
             'installToolUrl' => BackendUtility::getModuleUrl('system_InstallInstall'),
             'messages' => $this->systemMessages,
-            'count' => $this->totalCount,
+            'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,
             'systemInformation' => $this->systemInformation
         ));

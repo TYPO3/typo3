@@ -81,7 +81,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Storage'], funct
 			count = $ul.data('count'),
 			badgeClass = $ul.data('severityclass');
 
-		SystemInformationMenu.elements.$counter.text(count).toggle(count > 0);
+		SystemInformationMenu.elements.$counter.text(count).toggle(parseInt(count) > 0);
 		SystemInformationMenu.elements.$counter.removeClass();
 
 		if (badgeClass !== '') {
