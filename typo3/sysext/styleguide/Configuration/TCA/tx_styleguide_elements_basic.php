@@ -177,6 +177,7 @@ return [
             'label' => 'input_14 eval=null',
             'config' => [
                 'type' => 'input',
+                // @todo: document eval=null is currently only useful with useOrOverridePlaceholder
                 'eval' => 'null',
             ],
         ],
