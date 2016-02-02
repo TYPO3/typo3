@@ -147,7 +147,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                     $data['row']['uid'], '', '', '', '', '&L=###LANG_UID###')
                 ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
-            $status = $data['row']['l18n_cfg'] & 1 ? 'danger' : 'success';
+            $status = GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : 'success';
             // Create links:
             $editUrl = BackendUtility::getModuleUrl('record_edit', [
                 'edit' => [
@@ -163,7 +163,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 ) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= str_replace('###LANG_UID###', '0', $viewPageLink);
             $info .= '&nbsp;';
-            $info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1', true) . '">D</span>' : '&nbsp;';
+            $info .= GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1', true) . '">D</span>' : '&nbsp;';
             $info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2', true) . '">N</span>' : '&nbsp;';
             // Put into cell:
             $tCells[] = '<td class="' . $status . ' col-border-left btn-group">' . $info . '</td>';
@@ -179,7 +179,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                     $info = '';
                     if (is_array($row)) {
                         $langRecUids[$langRow['uid']][] = $row['uid'];
-                        $status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'danger' : '') : 'success';
+                        $status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '') : 'success';
                         $icon = $this->iconFactory->getIconForRecord('pages_language_overlay', $row, Icon::SIZE_SMALL)->render();
                         $info = $icon . htmlspecialchars(
                                 GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
@@ -219,7 +219,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                             $status = 'danger';
                             $info = '';
                         } else {
-                            $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'danger' : '';
+                            $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '';
                             $info = '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
                             $newOL_js[$langRow['uid']] .= '
 								+(document.webinfoForm['
