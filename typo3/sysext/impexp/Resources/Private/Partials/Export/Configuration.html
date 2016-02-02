@@ -31,15 +31,15 @@
 	<div class="form-group">
 		<label for="impexp-pagetree-levels">
 			<f:translate key="makeconfig_levels" />
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
 		</label>
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
 		<f:form.select class="form-control" name="tx_impexp[pagetree][levels]" id="impexp-pagetree-levels" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
 	</div>
 	<div class="form-group">
 		<label for="impexp-pagetree-includetables">
 			<f:translate key="makeconfig_includeTables" />
-			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
 		</label>
+		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit"/>
 		<f:form.select class="form-control" name="tx_impexp[pagetree][tables]" id="impexp-pagetree-includetables"
 									 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
 									 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
@@ -99,8 +99,8 @@
 <div class="form-group">
 	<label for="impexp-externalref-tables">
 		<f:translate key="makeconfig_includeRelationsToTables" />
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations" />
 	</label>
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations" />
 	<f:form.select class="form-control" name="tx_impexp[external_ref][tables]" id="impexp-externalref-tables"
 								 options="{externalReferenceTableSelectOptions}" multiple="multiple" value="{inData.external_ref.tables}"
 								 size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
@@ -108,8 +108,8 @@
 <div class="form-group">
 	<label for="impexp-externalstatic-tables">
 		<f:translate key="makeconfig_useStaticRelationsFor" />
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations" />
 	</label>
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations" />
 	<f:form.select class="form-control" name="tx_impexp[external_static][tables]" id="impexp-externalstatic-tables"
 								 options="{externalStaticTableSelectOptions}" multiple="multiple" value="{inData.external_static.tables}"
 								 size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />

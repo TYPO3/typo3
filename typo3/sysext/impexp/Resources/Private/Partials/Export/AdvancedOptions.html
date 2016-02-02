@@ -4,8 +4,8 @@
 	<label for="checkExcludeHTMLfileResources">
 		<f:form.checkbox name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1" checked="{inData.excludeHTMLfileResources} == 1" />
 		<f:translate key="makeadvanc_excludeHtmlCssFile" />
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources" />
 	</label>
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources" />
 </div>
 <h4><f:translate key="makeadvanc_files" /></h4>
 <div class="form-group">
@@ -17,13 +17,13 @@
 </div>
 <h4><f:translate key="makeadvanc_extensionDependencies" /></h4>
 <div class="form-group">
-	<label for="saveFilesOutsideExportFile">
+	<label for="extensionDependencies">
 		<f:translate key="makeadvanc_selectExtensionsThatThe" />
+	</label>
 		<f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies" />
 		<f:form.select class="form-control" name="tx_impexp[extension_dep]" multiple="multiple"
 									 size="{f:if(condition: '{extensions -> f:count()} > 9', then: '10', else: '5')}"
-									 options="{extensions}" value="{inData.extension_dep}"/>
-	</label>
+									 options="{extensions}" value="{inData.extension_dep}" id="extensionDependencies"/>
 </div>
 <div class="form-group">
 	<f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_update')}" />
