@@ -301,7 +301,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $markerArray['###BACKLINK_LOGIN###'] = '';
         $uid = $this->piVars['user'];
         $piHash = $this->piVars['forgothash'];
-        $hash = explode('|', $piHash);
+        $hash = explode('|', rawurldecode($piHash));
         if ((int)$uid === 0) {
             $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
                 'change_password_notvalid_message',
