@@ -56,15 +56,17 @@ class StripTagsViewHelper extends AbstractViewHelper
      * Escapes special characters with their escaped counterparts as needed using PHPs strip_tags() function.
      *
      * @param string $value string to format
+     * @param string $allowedTags Optional string of allowed tags as required by PHPs strip_tags() function
      * @return mixed
      * @see http://www.php.net/manual/function.strip-tags.php
      * @api
      */
-    public function render($value = null)
+    public function render($value = null, $allowedTags = null)
     {
         return static::renderStatic(
             array(
-                'value' => $value
+                'value' => $value,
+                'allowedTags' => $allowedTags
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -88,6 +90,6 @@ class StripTagsViewHelper extends AbstractViewHelper
         if (!is_string($value)) {
             return $value;
         }
-        return strip_tags($value);
+        return strip_tags($value, (string)$arguments['allowedTags']);
     }
 }
