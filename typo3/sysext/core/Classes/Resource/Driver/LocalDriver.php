@@ -368,10 +368,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             );
         }
 
-        if ($start > 0) {
-            $start--;
-        }
-
         $items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs, $sort, $sortRev);
         $iterator = new \ArrayIterator($items);
         if ($iterator->count() === 0) {
