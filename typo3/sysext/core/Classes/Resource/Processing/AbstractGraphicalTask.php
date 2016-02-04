@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\AbstractFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract base implementation of a task.
  *
@@ -67,31 +70,14 @@ abstract class AbstractGraphicalTask extends AbstractTask
     {
         if (!empty($this->configuration['fileExtension'])) {
             $targetFileExtension = $this->configuration['fileExtension'];
+        } elseif ($this->getSourceFile()->getType() === AbstractFile::FILETYPE_IMAGE) {
+            $targetFileExtension = $this->getSourceFile()->getExtension();
+        // If true, thumbnails from non-image files will be converted to 'png', otherwise 'gif'
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png']) {
+            $targetFileExtension = 'png';
         } else {
-            // explanation for "thumbnails_png"
-            // Bit0: If set, thumbnails from non-jpegs will be 'png', otherwise 'gif' (0=gif/1=png).
-            // Bit1: Even JPG's will be converted to png or gif (2=gif/3=png)
-
-            $targetFileExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'];
-            if ($this->getSourceFile()->getExtension() === 'jpg' || $this->getSourceFile()->getExtension() === 'jpeg') {
-                if ($targetFileExtensionConfiguration == 2) {
-                    $targetFileExtension = 'gif';
-                } elseif ($targetFileExtensionConfiguration == 3) {
-                    $targetFileExtension = 'png';
-                } else {
-                    $targetFileExtension = 'jpg';
-                }
-            } else {
-                // check if a png or a gif should be created
-                if ($targetFileExtensionConfiguration == 1 || $this->getSourceFile()->getExtension() === 'png') {
-                    $targetFileExtension = 'png';
-                } else {
-                    // thumbnails_png is "0"
-                    $targetFileExtension = 'gif';
-                }
-            }
+            $targetFileExtension = 'gif';
         }
-
         return $targetFileExtension;
     }
 }

@@ -110,6 +110,7 @@ class SilentConfigurationUpgradeService
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
         $this->removeObsoleteLocalConfigurationSettings();
+        $this->migrateThumbnailsPngSetting();
     }
 
     /**
@@ -487,5 +488,27 @@ class SilentConfigurationUpgradeService
             'Configuration updated, reload needed',
             1379024938
         );
+    }
+
+    /**
+     * Migrate the configuration value thumbnails_png to a boolean value.
+     *
+     * @return void
+     */
+    protected function migrateThumbnailsPngSetting() {
+        $changedValues = array();
+        try {
+            $currentThumbnailsPngValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails_png');
+        } catch (\RuntimeException $e) {
+            $currentThumbnailsPngValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails_png');
+        }
+
+        if (is_int($currentThumbnailsPngValue) && $currentThumbnailsPngValue > 0) {
+            $changedValues['GFX/thumbnails_png'] = true;
+        }
+        if (!empty($changedValues)) {
+            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
+            $this->throwRedirectException();
+        }
     }
 }
