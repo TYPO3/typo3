@@ -578,7 +578,7 @@ class Import extends ImportExport
                 $this->error('Error: the import folder in the default upload folder could not be created! No files will be imported!');
             }
         } else {
-            $this->legacyImportFolder = $folder->getSubFolder($this->legacyImportTargetPath);
+            $this->legacyImportFolder = $folder->getSubfolder($this->legacyImportTargetPath);
         }
     }
 
