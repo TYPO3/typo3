@@ -2058,11 +2058,12 @@ class Import extends ImportExport
             if ($initStrDat[1]) {
                 if ($this->compress) {
                     $datString = gzuncompress($datString);
-                    return $unserialize ? unserialize($datString) : $datString;
                 } else {
                     $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.');
+                    return null;
                 }
             }
+            return $unserialize ? unserialize($datString) : $datString;
         } else {
             $this->error('MD5 check failed (' . $name . ')');
         }
