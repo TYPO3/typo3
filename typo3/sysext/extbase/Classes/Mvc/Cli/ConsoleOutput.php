@@ -15,12 +15,16 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  */
 
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\HelperSet;
-use Symfony\Component\Console\Helper\ProgressHelper;
-use Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput as SymfonyConsoleOutput;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * A wrapper for Symfony ConsoleOutput and related helpers
@@ -28,32 +32,39 @@ use Symfony\Component\Console\Output\ConsoleOutput as SymfonyConsoleOutput;
 class ConsoleOutput
 {
     /**
+     * @var ArgvInput
+     */
+    protected $input;
+
+    /**
      * @var SymfonyConsoleOutput
      */
     protected $output;
 
     /**
-     * @var DialogHelper
+     * @var QuestionHelper
      */
-    protected $dialogHelper;
+    protected $questionHelper;
 
     /**
-     * @var ProgressHelper
+     * @var ProgressBar
      */
-    protected $progressHelper;
+    protected $progressBar;
 
     /**
-     * @var TableHelper
+     * @var Table
      */
-    protected $tableHelper;
+    protected $table;
 
     /**
-     * Creates and initializes the SymfonyConsoleOutput instance
+     * Creates and initializes the Symfony I/O instances
      *
      * @return void
      */
     public function __construct()
     {
+        $this->input = new ArgvInput();
+
         $this->output = new SymfonyConsoleOutput();
         $this->output->getFormatter()->setStyle('b', new OutputFormatterStyle(null, null, array('bold')));
         $this->output->getFormatter()->setStyle('i', new OutputFormatterStyle('black', 'white'));
@@ -130,12 +141,12 @@ class ConsoleOutput
      */
     public function outputTable($rows, $headers = null)
     {
-        $tableHelper = $this->getTableHelper();
+        $table = $this->getTable();
         if ($headers !== null) {
-            $tableHelper->setHeaders($headers);
+            $table->setHeaders($headers);
         }
-        $tableHelper->setRows($rows);
-        $tableHelper->render($this->output);
+        $table->setRows($rows);
+        $table->render();
     }
 
     /**
@@ -151,7 +162,12 @@ class ConsoleOutput
      */
     public function select($question, $choices, $default = null, $multiSelect = false, $attempts = false)
     {
-        return $this->getDialogHelper()->select($this->output, $question, $choices, $default, $attempts, 'Value "%s" is invalid', $multiSelect);
+        $question = (new ChoiceQuestion($question, $choices, $default))
+            ->setMultiselect($multiSelect)
+            ->setMaxAttempts($attempts)
+            ->setErrorMessage('Value "%s" is invalid');
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -165,7 +181,10 @@ class ConsoleOutput
      */
     public function ask($question, $default = null, array $autocomplete = null)
     {
-        return $this->getDialogHelper()->ask($this->output, $question, $default, $autocomplete);
+        $question = (new Question($question, $default))
+            ->setAutocompleterValues($autocomplete);
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -179,7 +198,9 @@ class ConsoleOutput
      */
     public function askConfirmation($question, $default = true)
     {
-        return $this->getDialogHelper()->askConfirmation($this->output, $question, $default);
+        $question = new ConfirmationQuestion($question, $default);
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -192,7 +213,11 @@ class ConsoleOutput
      */
     public function askHiddenResponse($question, $fallback = true)
     {
-        return $this->getDialogHelper()->askHiddenResponse($this->output, $question, $fallback);
+        $question = (new Question($question))
+            ->setHidden(true)
+            ->setHiddenFallback($fallback);
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -212,7 +237,12 @@ class ConsoleOutput
      */
     public function askAndValidate($question, $validator, $attempts = false, $default = null, array $autocomplete = null)
     {
-        return $this->getDialogHelper()->askAndValidate($this->output, $question, $validator, $attempts, $default, $autocomplete);
+        $question = (new Question($question, $default))
+            ->setValidator($validator)
+            ->setMaxAttempts($attempts)
+            ->setAutocompleterValues($autocomplete);
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -232,7 +262,13 @@ class ConsoleOutput
      */
     public function askHiddenResponseAndValidate($question, $validator, $attempts = false, $fallback = true)
     {
-        return $this->getDialogHelper()->askHiddenResponseAndValidate($this->output, $question, $validator, $attempts, $fallback);
+        $question = (new Question($question))
+            ->setValidator($validator)
+            ->setMaxAttempts($attempts)
+            ->setHidden(true)
+            ->setHiddenFallback($fallback);
+
+        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
     }
 
     /**
@@ -243,33 +279,31 @@ class ConsoleOutput
      */
     public function progressStart($max = null)
     {
-        $this->getProgressHelper()->start($this->output, $max);
+        $this->getProgressBar()->start($max);
     }
 
     /**
      * Advances the progress output X steps
      *
      * @param int $step Number of steps to advance
-     * @param bool $redraw Whether to redraw or not
      * @return void
      * @throws \LogicException
      */
-    public function progressAdvance($step = 1, $redraw = false)
+    public function progressAdvance($step = 1)
     {
-        $this->getProgressHelper()->advance($step, $redraw);
+        $this->getProgressBar()->advance($step);
     }
 
     /**
      * Sets the current progress
      *
      * @param int $current The current progress
-     * @param bool $redraw Whether to redraw or not
      * @return void
      * @throws \LogicException
      */
-    public function progressSet($current, $redraw = false)
+    public function progressSet($current)
     {
-        $this->getProgressHelper()->setCurrent($current, $redraw);
+        $this->getProgressBar()->setProgress($current);
     }
 
     /**
@@ -279,47 +313,47 @@ class ConsoleOutput
      */
     public function progressFinish()
     {
-        $this->getProgressHelper()->finish();
+        $this->getProgressBar()->finish();
     }
 
     /**
-     * Returns or initializes the symfony/console DialogHelper
+     * Returns or initializes the symfony/console QuestionHelper
      *
-     * @return DialogHelper
+     * @return QuestionHelper
      */
-    protected function getDialogHelper()
+    protected function getQuestionHelper()
     {
-        if ($this->dialogHelper === null) {
-            $this->dialogHelper = new DialogHelper(false);
+        if ($this->questionHelper === null) {
+            $this->questionHelper = new QuestionHelper();
             $helperSet = new HelperSet(array(new FormatterHelper()));
-            $this->dialogHelper->setHelperSet($helperSet);
+            $this->questionHelper->setHelperSet($helperSet);
         }
-        return $this->dialogHelper;
+        return $this->questionHelper;
     }
 
     /**
-     * Returns or initializes the symfony/console ProgressHelper
+     * Returns or initializes the symfony/console ProgressBar
      *
-     * @return ProgressHelper
+     * @return ProgressBar
      */
-    protected function getProgressHelper()
+    protected function getProgressBar()
     {
-        if ($this->progressHelper === null) {
-            $this->progressHelper = new ProgressHelper(false);
+        if ($this->progressBar === null) {
+            $this->progressBar = new ProgressBar($this->output);
         }
-        return $this->progressHelper;
+        return $this->progressBar;
     }
 
     /**
-     * Returns or initializes the symfony/console TableHelper
+     * Returns or initializes the symfony/console Table
      *
-     * @return TableHelper
+     * @return Table
      */
-    protected function getTableHelper()
+    protected function getTable()
     {
-        if ($this->tableHelper === null) {
-            $this->tableHelper = new TableHelper(false);
+        if ($this->table === null) {
+            $this->table = new Table($this->output);
         }
-        return $this->tableHelper;
+        return $this->table;
     }
 }
