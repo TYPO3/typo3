@@ -61,6 +61,6 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper implements Compil
                 $result[] = 'Result: ' . $commandGroup[2];
             }
         }
-        return '<textarea rows="' . count($result) . '">' . implode(LF, $result) . '</textarea>';
+        return '<textarea class="form-control" rows="' . count($result) . '" cols="50">' . implode(LF, $result) . '</textarea>';
     }
 }
