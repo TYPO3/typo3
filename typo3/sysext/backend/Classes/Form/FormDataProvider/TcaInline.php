@@ -41,7 +41,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $result = $this->addInlineFirstPid($result);
 
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            if (empty($fieldConfig['config']['type']) || $fieldConfig['config']['type'] !== 'inline') {
+            if (!$this->isInlineField($fieldConfig) || !$this->isUserAllowedToModify($fieldConfig)) {
                 continue;
             }
             $result['processedTca']['columns'][$fieldName]['children'] = [];
@@ -52,6 +52,28 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         }
 
         return $result;
+    }
+
+    /**
+     * Is column of type "inline"
+     *
+     * @param array $fieldConfig
+     * @return bool
+     */
+    protected function isInlineField($fieldConfig)
+    {
+        return !empty($fieldConfig['config']['type']) && $fieldConfig['config']['type'] === 'inline';
+    }
+
+    /**
+     * Is user allowed to modify child elements
+     *
+     * @param array $fieldConfig
+     * @return bool
+     */
+    protected function isUserAllowedToModify($fieldConfig)
+    {
+        return $this->getBackendUser()->check('tables_modify', $fieldConfig['config']['foreign_table']);
     }
 
     /**
