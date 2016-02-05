@@ -365,10 +365,14 @@ class ExtendedFileUtility extends BasicFileUtility
      * @param string $localizationKey
      * @param array $replaceMarkers
      * @param int $severity
+     * @return void
      * @throws \InvalidArgumentException
      */
     protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = FlashMessage::ERROR)
     {
+        if (TYPO3_MODE !== 'BE') {
+            return;
+        }
         $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
         $message = vsprintf($label, $replaceMarkers);
         $flashMessage = GeneralUtility::makeInstance(
