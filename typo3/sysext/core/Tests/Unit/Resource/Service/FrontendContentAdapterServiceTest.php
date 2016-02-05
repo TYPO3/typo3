@@ -144,6 +144,87 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	/**
 	 * @test
 	 */
+	public function migrationOfLegacyFieldsSanitizesLFOnMultiLineInputs() {
+		// Legacy FE rendering uses LF to separate elements, thus allowing LF
+		// to pass as line-breaks causes FE to mix/shift file information.
+		// Replacing all line-breaks by CR and using LF only for item separation
+		// seems like a valid workaround. Note that trailing line-breaks are a
+		// possible outcome of migrations from DAM to FAL, thus they need to be
+		// tested as they can appear in database although they may not be
+		// directly editable on BE.
+		// See: https://forge.typo3.org/issues/73156
+
+		// NOTE: printr or PHPUnit's diff are of no help as they will interpret
+		//       line-breaks characters
+
+		$dummyPublicUrl = 'path/to/file';
+		$dummyPublicUrlAsImage = '../../' . $dummyPublicUrl;
+
+		$fileProperties = array(
+			array(
+				'title' => "File 1 has a trailing line break for no reason.\n",
+				'description' => "Description of file 1\r\nuses line-breaks.",
+				'link' => "http://www.this-one-is-ugly-but-sane.com/\r",
+				'alternative' => "\r\nCRLF in front is also bad...",
+			),
+			array(
+				'title' => "File 2 somehow got a sane multi-\rline title.",
+				'description' => "I'm feeling artistic today and add a\r\n\r\nfew\n\nparagraphs\nin\r\r\nhere.",
+				'link' => "321 _blank\n",
+				'alternative' => "Finally, something we can use verbatim!",
+			)
+		);
+
+		$expectedDbRow = array(
+			'CType' => 'image',
+			'image' => $dummyPublicUrlAsImage.','.$dummyPublicUrlAsImage,
+			'titleText' => "File 1 has a trailing line break for no reason.\r\nFile 2 somehow got a sane multi-\rline title.",
+			'imagecaption' => "Description of file 1\ruses line-breaks.\nI'm feeling artistic today and add a\r\rfew\r\rparagraphs\rin\r\rhere.",
+			'image_link' => "http://www.this-one-is-ugly-but-sane.com/\r\n321 _blank\r",
+			'altText' => "\rCRLF in front is also bad...\nFinally, something we can use verbatim!",
+			'image_fileUids' => ',',
+			'image_fileReferenceUids' => ',',
+			'_MIGRATED' => true,
+		);
+
+
+		// what follows is just test setup and execution...
+		$fileReferenceMocks = array();
+		foreach ($fileProperties as $properties) {
+			$fileReferenceMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
+
+			$fileReferenceMock->expects($this->any())
+				->method('getProperties')
+				->will($this->returnValue($properties));
+
+			$fileReferenceMock->expects($this->any())
+				->method('getOriginalFile')
+				->will($this->returnValue($this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE)));
+
+			$fileReferenceMock->expects($this->any())
+				->method('getPublicUrl')
+				->will($this->returnValue($dummyPublicUrl));
+
+			$fileReferenceMocks[] = $fileReferenceMock;
+		}
+
+		$this->pageRepositoryMock->expects($this->once())
+			->method('getFileReferences')
+			->will($this->returnValue($fileReferenceMocks));
+
+		$dbRow = array(
+			'CType' => 'image',
+			'image' => count($fileReferenceMock)
+		);
+
+		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
+
+		$this->assertEquals($expectedDbRow, $dbRow);
+	}
+
+	/**
+	 * @test
+	 */
 	public function registerAdditionalTypeForMigrationAddsTypeToArray() {
 
 		$migrateFields = array(

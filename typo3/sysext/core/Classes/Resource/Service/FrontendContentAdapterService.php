@@ -119,8 +119,19 @@ class FrontendContentAdapterService {
 							// For paths and uids, make comma separated list
 							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
 						} else {
-							// For all other fields, separate by newline
-							$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
+							// For all other fields, separate by LF
+
+							$value = $fileFieldContents[$oldFieldType];
+
+							// Field content first has to be stripped of any LFs, else the concatenation
+							// will result in wrong indices upon splitting for FE rendering due to
+							// splitting on LF.
+							// LF can usually be replaced by CR to maintain formatting on browsers where
+							// possible.
+							$value = str_replace(CRLF, CR, $value);
+							$value = str_replace(LF, CR, $value);
+
+							$fieldContents = implode(LF, $value);
 						}
 						$row[$oldFieldName] = $fieldContents;
 					}
