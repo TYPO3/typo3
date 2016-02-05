@@ -23,6 +23,6 @@
 </f:switch>
 	<h4>{message.title}</h4>
 	<f:if condition="{message.message}">
-		<p class="messageText"><f:format.nl2br>{message.message}</f:format.nl2br></p>
+		<p class="messageText">{message.message -> f:format.nl2br() -> f:format.raw()}</p>
 	</f:if>
 </div>
