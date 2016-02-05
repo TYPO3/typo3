@@ -350,10 +350,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			);
 		}
 
-		if ($start > 0) {
-			$start--;
-		}
-
 		// Fetch the files and folders and sort them by name; we have to do
 		// this here because the directory iterator does return them in
 		// an arbitrary order
