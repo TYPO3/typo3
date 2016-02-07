@@ -419,6 +419,11 @@ class ElementInformationController
                 continue;
             }
 
+            // format file size as bytes/kilobytes/megabytes
+            if ($this->type === 'file' && $name === 'size') {
+                $this->row[$name] = GeneralUtility::formatSize($this->row[$name], $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:byteSizeUnits', true));
+            }
+
             $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
             if ($isExcluded) {
                 continue;
