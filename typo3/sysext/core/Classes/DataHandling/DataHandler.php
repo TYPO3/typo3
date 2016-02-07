@@ -2728,7 +2728,9 @@ class DataHandler
                     }
                     break;
                 case 'email':
-                    $this->checkValue_input_ValidateEmail($value, $set);
+                    if ((string)$value !== '') {
+                        $this->checkValue_input_ValidateEmail($value, $set);
+                    }
                     break;
                 default:
                     if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
