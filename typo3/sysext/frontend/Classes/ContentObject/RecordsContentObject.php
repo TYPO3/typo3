@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
@@ -225,12 +226,10 @@ class RecordsContentObject extends AbstractContentObject
     }
 
     /**
-     * Wrapper around the $GLOBALS['TT'] variable
-     *
-     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     * @return TimeTracker
      */
     protected function getTimeTracker()
     {
-        return $GLOBALS['TT'];
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

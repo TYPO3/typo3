@@ -55,8 +55,10 @@ class EidRequestHandler implements RequestHandlerInterface
     {
         // Starting time tracking
         $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-        $GLOBALS['TT'] = new TimeTracker($request->getCookieParams()[$configuredCookieName] ? true : false);
-        $GLOBALS['TT']->start();
+
+        /** @var TimeTracker $timeTracker */
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($request->getCookieParams()[$configuredCookieName] ? true : false));
+        $timeTracker->start();
 
         // Hook to preprocess the current request
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {

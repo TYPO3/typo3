@@ -106,7 +106,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
         $this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
-        $GLOBALS['TT'] = new TimeTracker(false);
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 
         $this->subject = $this->getAccessibleMock(

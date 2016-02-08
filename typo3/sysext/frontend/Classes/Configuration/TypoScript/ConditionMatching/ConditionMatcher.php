@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  */
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -195,10 +196,10 @@ class ConditionMatcher extends AbstractConditionMatcher
     }
 
     /**
-     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     * @return TimeTracker
      */
     protected function getTimeTracker()
     {
-        return $GLOBALS['TT'];
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

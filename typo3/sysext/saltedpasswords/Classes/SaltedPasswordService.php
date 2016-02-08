@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Saltedpasswords;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class implements salted-password hashes authentication service.
@@ -192,7 +194,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
                     $this->authInfo['REMOTE_HOST'],
                     $this->login['uname']
                 ));
-                \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO);
+                GeneralUtility::sysLog(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_INFO);
             } elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
                 // Lock domain didn't match, so error:
                 $errorMessage = 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
@@ -204,7 +206,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
                     $user['lockToDomain'],
                     $this->authInfo['HTTP_HOST']
                 ));
-                \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO);
+                GeneralUtility::sysLog(sprintf($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', GeneralUtility::SYSLOG_SEVERITY_INFO);
                 $OK = 0;
             } elseif ($validPasswd) {
                 $this->writeLogMessage(TYPO3_MODE . ' Authentication successful for username \'%s\'', $this->login['uname']);
@@ -224,7 +226,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
     protected function updatePassword($uid, $updateFields)
     {
         $GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->pObj->user_table, sprintf('uid = %u', $uid), $updateFields);
-        \TYPO3\CMS\Core\Utility\GeneralUtility::devLog(sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid), $this->extKey, 1);
+        GeneralUtility::devLog(sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid), $this->extKey, 1);
     }
 
     /**
@@ -248,12 +250,14 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
             $message = vsprintf($message, $params);
         }
         if (TYPO3_MODE === 'BE') {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, $this->extKey, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);
+            GeneralUtility::sysLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
         } else {
-            $GLOBALS['TT']->setTSlogMessage($message);
+            /** @var TimeTracker $timeTracker */
+            $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+            $timeTracker->setTSlogMessage($message);
         }
         if (TYPO3_DLOG) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, $this->extKey, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);
+            GeneralUtility::devLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
         }
     }
 }

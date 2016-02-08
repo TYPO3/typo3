@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -210,11 +211,11 @@ class ErrorHandler implements ErrorHandlerInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     * @return TimeTracker
      */
     protected function getTimeTracker()
     {
-        return $GLOBALS['TT'];
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 
     /**

@@ -171,7 +171,7 @@ class PageGenerator
         $tsfe = $GLOBALS['TSFE'];
 
         /** @var TimeTracker $timeTracker */
-        $timeTracker = $GLOBALS['TT'];
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
 
         // PAGE CONTENT
         $timeTracker->incStackPointer();
@@ -206,7 +206,7 @@ class PageGenerator
         $tsfe = $GLOBALS['TSFE'];
 
         /** @var TimeTracker $timeTracker */
-        $timeTracker = $GLOBALS['TT'];
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
 
         $pageRenderer = static::getPageRenderer();
         if ($tsfe->config['config']['moveJsFromHeaderToFooter']) {

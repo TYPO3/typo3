@@ -13,6 +13,8 @@ namespace TYPO3\CMS\IndexedSearchMysql\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class that hooks into Indexed Search and replaces standard SQL queries with MySQL fulltext index queries.
@@ -43,10 +45,12 @@ class MysqlFulltextIndexHook
         // Perform SQL Search / collection of result rows array:
         $resource = false;
         if ($searchData) {
+            /** @var TimeTracker $timeTracker */
+            $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             // Do the search:
-            $GLOBALS['TT']->push('execFinalQuery');
+            $timeTracker->push('execFinalQuery');
             $resource = $this->execFinalQuery_fulltext($searchData, $freeIndexUid);
-            $GLOBALS['TT']->pull();
+            $timeTracker->pull();
         }
         return $resource;
     }

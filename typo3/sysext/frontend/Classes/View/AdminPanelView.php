@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\View;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -777,10 +778,10 @@ class AdminPanelView
     }
 
     /**
-     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     * @return TimeTracker
      */
     protected function getTimeTracker()
     {
-        return $GLOBALS['TT'];
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

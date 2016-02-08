@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\Utility;
@@ -172,6 +173,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $lexerObj;
 
     /**
+     * @var TimeTracker
+     */
+    protected $timeTracker;
+
+    /**
      * @var CharsetConverter
      */
     protected $charsetConverter;
@@ -213,6 +219,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->storeMetaphoneInfoAsWords = !\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_words');
+        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         // Initialize external document parsers for icon display and other soft operations
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
@@ -538,13 +545,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function getResultRows($searchWordArray, $freeIndexUid = -1)
     {
         // Getting SQL result pointer. This fetches ALL results (1,000,000 if found)
-        $GLOBALS['TT']->push('Searching result');
+        $this->timeTracker->push('Searching result');
         if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
             $res = $hookObj->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
         } else {
             $res = $this->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
         }
-        $GLOBALS['TT']->pull();
+        $this->timeTracker->pull();
         // Organize and process result:
         $result = false;
         if ($res) {
@@ -642,9 +649,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Perform SQL Search / collection of result rows array:
         if ($list) {
             // Do the search:
-            $GLOBALS['TT']->push('execFinalQuery');
+            $this->timeTracker->push('execFinalQuery');
             $res = $this->execFinalQuery($list, $freeIndexUid);
-            $GLOBALS['TT']->pull();
+            $this->timeTracker->pull();
             return $res;
         } else {
             return false;
@@ -664,7 +671,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $content = '';
         // Perform display of result rows array:
         if ($resData) {
-            $GLOBALS['TT']->push('Display Final result');
+            $this->timeTracker->push('Display Final result');
             // Set first selected row (for calculation of ranking later)
             $this->firstRow = $resData['firstRow'];
             // Result display here:
@@ -684,7 +691,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             } else {
                 $content = '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', true) . '</p>';
             }
-            $GLOBALS['TT']->pull();
+            $this->timeTracker->pull();
         } else {
             $content .= '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', true) . '</p>';
         }
@@ -814,7 +821,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // If there are spaces in the search-word, make a full text search instead.
                 $theType = 20;
             }
-            $GLOBALS['TT']->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
+            $this->timeTracker->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
             // Perform search for word:
             switch ($theType) {
                 case '1':
@@ -877,7 +884,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $totalHashList = $phashList;
                 }
             }
-            $GLOBALS['TT']->pull();
+            $this->timeTracker->pull();
             $c++;
         }
         return implode(',', $totalHashList);

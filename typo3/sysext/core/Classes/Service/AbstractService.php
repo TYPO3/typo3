@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Parent class for "Services" classes
@@ -151,7 +153,7 @@ abstract class AbstractService
     public function devLog($msg, $severity = 0, $dataVar = false)
     {
         if ($this->writeDevLog) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
+            GeneralUtility::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
         }
     }
 
@@ -165,9 +167,9 @@ abstract class AbstractService
     public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred')
     {
         array_push($this->error, array('nr' => $errNum, 'msg' => $errMsg));
-        if (is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT']->setTSlogMessage($errMsg, 2);
-        }
+        /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+        $timeTracker->setTSlogMessage($errMsg, 2);
     }
 
     /**
@@ -261,7 +263,7 @@ abstract class AbstractService
     public function checkExec($progList)
     {
         $ret = true;
-        $progList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $progList, true);
+        $progList = GeneralUtility::trimExplode(',', $progList, true);
         foreach ($progList as $prog) {
             if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($prog)) {
                 // Program not found
@@ -296,7 +298,7 @@ abstract class AbstractService
     public function checkInputFile($absFile)
     {
         $checkResult = false;
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absFile) && @is_file($absFile)) {
+        if (GeneralUtility::isAllowedAbsPath($absFile) && @is_file($absFile)) {
             if (@is_readable($absFile)) {
                 $checkResult = $absFile;
             } else {
@@ -339,7 +341,7 @@ abstract class AbstractService
         if (!$absFile) {
             $absFile = $this->tempFile($this->prefixId);
         }
-        if ($absFile && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absFile)) {
+        if ($absFile && GeneralUtility::isAllowedAbsPath($absFile)) {
             if ($fd = @fopen($absFile, 'wb')) {
                 @fwrite($fd, $content);
                 @fclose($fd);
@@ -359,7 +361,7 @@ abstract class AbstractService
      */
     public function tempFile($filePrefix)
     {
-        $absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam($filePrefix);
+        $absFile = GeneralUtility::tempnam($filePrefix);
         if ($absFile) {
             $ret = $absFile;
             $this->registerTempFile($absFile);
@@ -393,7 +395,7 @@ abstract class AbstractService
     public function unlinkTempFiles()
     {
         foreach ($this->tempFiles as $absFile) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absFile);
+            GeneralUtility::unlink_tempfile($absFile);
         }
         $this->tempFiles = array();
     }

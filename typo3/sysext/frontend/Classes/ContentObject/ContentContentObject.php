@@ -162,6 +162,6 @@ class ContentContentObject extends AbstractContentObject
      */
     protected function getTimeTracker()
     {
-        return $GLOBALS['TT'];
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

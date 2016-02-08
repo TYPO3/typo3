@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -226,6 +227,19 @@ class Indexer
      * @var bool
      */
     public $flagBitMask;
+
+    /**
+     * @var TimeTracker
+     */
+    protected $timeTracker;
+
+    /**
+     * Indexer constructor.
+     */
+    public function __construct()
+    {
+        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+    }
 
     /**
      * Parent Object (TSFE) Initialization
@@ -2088,9 +2102,7 @@ class Indexer
      */
     public function log_push($msg, $key)
     {
-        if (is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT']->push($msg, $key);
-        }
+        $this->timeTracker->push($msg, $key);
     }
 
     /**
@@ -2100,9 +2112,7 @@ class Indexer
      */
     public function log_pull()
     {
-        if (is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT']->pull();
-        }
+        $this->timeTracker->pull();
     }
 
     /**
@@ -2114,9 +2124,7 @@ class Indexer
      */
     public function log_setTSlogMessage($msg, $errorNum = 0)
     {
-        if (is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT']->setTSlogMessage($msg, $errorNum);
-        }
+        $this->timeTracker->setTSlogMessage($msg, $errorNum);
         $this->internal_log[] = $msg;
     }
 

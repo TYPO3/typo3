@@ -333,13 +333,9 @@ class RequestHandler implements RequestHandlerInterface
     protected function initializeTimeTracker()
     {
         $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-        $this->timeTracker = new TimeTracker($this->request->getCookieParams()[$configuredCookieName] ? true : false);
 
-        // We have to define this as reference here, because there is code around
-        // which exchanges the TT object in the global variable. The reference ensures
-        // that the $timeTracker member always works on the same object as the global variable.
-        // This is a dirty workaround and bypasses the protected access modifier of the $timeTracker member.
-        $GLOBALS['TT'] = &$this->timeTracker;
+        /** @var TimeTracker timeTracker */
+        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class, ($this->request->getCookieParams()[$configuredCookieName] ? true : false));
         $this->timeTracker->start();
     }
 

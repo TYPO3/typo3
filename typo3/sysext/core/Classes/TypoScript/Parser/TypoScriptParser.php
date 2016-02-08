@@ -764,7 +764,7 @@ class TypoScriptParser
      * If "TT" is a global object (as it is in the frontend when backend users are logged in) the message will be registered here as well.
      *
      * @param string $err The error message string
-     * @param int $num The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
+     * @param int $num The error severity (in the scale of TimeTracker::setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
      * @return void
      */
     public function error($err, $num = 2)
@@ -1305,7 +1305,7 @@ class TypoScriptParser
      */
     protected function getTimeTracker()
     {
-        return isset($GLOBALS['TT']) ? $GLOBALS['TT'] : null;
+        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 
     /**

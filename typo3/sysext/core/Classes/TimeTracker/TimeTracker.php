@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  */
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Is used to register how much time is used with operations in TypoScript
  */
-class TimeTracker
+class TimeTracker implements SingletonInterface
 {
 
     /**

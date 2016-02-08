@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -1866,7 +1867,7 @@ class DatabaseConnection
         ) {
             // Raw HTML output
             $explainMode = 1;
-        } elseif ((int)$this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
+        } elseif ((int)$this->explainOutput == 3) {
             // Embed the output into the TS admin panel
             $explainMode = 2;
         } else {
@@ -1924,7 +1925,9 @@ class DatabaseConnection
                 if ($explainMode == 1) {
                     \TYPO3\CMS\Core\Utility\DebugUtility::debug($data, 'Tables: ' . $from_table, 'DB SQL EXPLAIN');
                 } elseif ($explainMode == 2) {
-                    $GLOBALS['TT']->setTSselectQuery($data);
+                    /** @var TimeTracker $timeTracker */
+                    $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+                    $timeTracker->setTSselectQuery($data);
                 }
             }
             return true;
