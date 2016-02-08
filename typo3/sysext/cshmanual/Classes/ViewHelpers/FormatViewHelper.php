@@ -25,11 +25,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class FormatViewHelper extends AbstractViewHelper
 {
     /**
-     * Disable the escaping interceptor
+     * Disable the output escaping interceptor
      *
      * @var bool
      */
-    protected $escapingInterceptorEnabled = false;
+    protected $escapeOutput = false;
+
+    /**
+     * Disable the children escaping interceptor
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
 
     /**
      * Format the content

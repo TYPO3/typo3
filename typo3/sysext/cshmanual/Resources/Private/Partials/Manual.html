@@ -3,7 +3,7 @@
 
 <h2>{manual.headerLine}</h2>
 
-<p>{manual.content}</p>
+<p>{manual.content -> f:format.raw()}</p>
 
 <f:if condition="{manual.configuration.details}">
 	<h3>
@@ -16,7 +16,7 @@
 	<h3>
 		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:syntax" />
 	</h3>
-	{manual.configuration.syntax}
+	{manual.configuration.syntax -> f:format.raw()}
 </f:if>
 
 <f:if condition="{manual.images}">
@@ -28,7 +28,7 @@
 			</f:if>
 		</div>
 	</f:for>
-	{manual.configuration.syntax}
+	{manual.configuration.syntax -> f:format.raw()}
 </f:if>
 
 <f:if condition="{manual.seeAlso}">
