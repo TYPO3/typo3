@@ -731,124 +731,6 @@ return array(
         ),
 
 
-        'rte_1' => array(
-            'exclude' => 1,
-            'label' => 'RTE 1',
-            'config' => array(
-                'type' => 'text',
-            ),
-            'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
-        ),
-        'rte_2' => array(
-            'exclude' => 1,
-            'label' => 'RTE 2',
-            'config' => array(
-                'type' => 'text',
-                'cols' => 30,
-                'rows' => 6,
-            ),
-            'defaultExtras' => 'richtext[]:rte_transform[mode=ts_css]',
-        ),
-        'rte_3' => array(
-            'exclude' => 1,
-            'label' => 'RTE 3: In inline child',
-            'config' => array(
-                'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_forms_rte_3_child1',
-                'foreign_field' => 'parentid',
-                'foreign_table_field' => 'parenttable',
-            ),
-        ),
-        'rte_4' => array(
-            'exclude' => 1,
-            'label' => 'RTE 4: type flex, rte in a tab, rte in section container, rte in inline',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => '
-						<T3DataStructure>
-							<sheets>
-								<sGeneral>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>RTE in tab</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<rte_1>
-												<TCEforms>
-													<label>RTE 1</label>
-													<config>
-														<type>text</type>
-													</config>
-													<defaultExtras>richtext[]:rte_transform[mode=ts_css]</defaultExtras>
-												</TCEforms>
-											</rte_1>
-										</el>
-									</ROOT>
-								</sGeneral>
-								<sSections>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>RTE in section</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<section_1>
-												<title>section_1</title>
-												<type>array</type>
-												<section>1</section>
-												<el>
-													<container_1>
-														<type>array</type>
-														<title>1 RTE field</title>
-														<el>
-															<rte_2>
-																<TCEforms>
-																	<label>RTE 2</label>
-																	<config>
-																		<type>text</type>
-																	</config>
-																	<defaultExtras>richtext[]:rte_transform[mode=ts_css]</defaultExtras>
-																</TCEforms>
-															</rte_2>
-														</el>
-													</container_1>
-												</el>
-											</section_1>
-										</el>
-									</ROOT>
-								</sSections>
-								<sInline>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>RTE in inline</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<inline_1>
-												<TCEforms>
-													<label>inline_1 to one field</label>
-													<config>
-														<type>inline</type>
-														<foreign_table>tx_styleguide_forms_rte_4_flex_inline_1_child1</foreign_table>
-														<foreign_field>parentid</foreign_field>
-														<foreign_table_field>parenttable</foreign_table_field>
-													</config>
-												</TCEforms>
-											</inline_1>
-										</el>
-									</ROOT>
-								</sInline>
-							</sheets>
-						</T3DataStructure>
-					',
-                ),
-            ),
-        ),
-
-
-
     ),
 
 
@@ -858,7 +740,6 @@ return array(
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3, inline_4, inline_5,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7, wizard_8,
-			rte_1, rte_2, rte_3, rte_4,
 			',
     ),
 
@@ -880,8 +761,6 @@ return array(
 					palette_6_1;Field with palette below, --palette--;;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6, wizard_8,
-				--div--;RTE,
-					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 			',
             'columnsOverrides' => array(
                 't3editor_2' => array(
@@ -922,9 +801,6 @@ return array(
         ),
         'palettes_6' => array(
             'showitem' => 'palette_6_2, palette_6_3',
-        ),
-        'rte_2_palette' => array(
-            'showitem' => 'rte_2',
         ),
         'visibility' => array(
             'showitem' => 'hidden;Shown in frontend',
