@@ -847,121 +847,6 @@ return array(
             ),
         ),
 
-        't3editor_1' => array(
-            'exclude' => 1,
-            'label' => 'T3EDITOR: 1',
-            'config' => array(
-                'type' => 'text',
-                'renderType' => 't3editor',
-                'format' => 'html',
-                'rows' => 7,
-            ),
-        ),
-        't3editor_2' => array(
-            'exclude' => 1,
-            'label' => 'T3EDITOR: 2 Enabled on type 0 via columnsOverride',
-            'config' => array(
-                'type' => 'text',
-                'rows' => 7,
-            ),
-        ),
-        't3editor_5' => array(
-            'exclude' => 1,
-            'label' => 'T3EDITOR: 5 In inline child',
-            'config' => array(
-                'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_forms_t3editor_5_child1',
-                'foreign_field' => 'parentid',
-                'foreign_table_field' => 'parenttable',
-            ),
-        ),
-        't3editor_6' => array(
-            'exclude' => 1,
-            'label' => 'T3EDITOR 6: type flex, t3editor in a tab, t3editor in section container, t3editor in inline',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => '
-						<T3DataStructure>
-							<sheets>
-								<sGeneral>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>t3editor in tab</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<t3editor_1>
-												<TCEforms>
-													<label>T3EDITOR 1: New syntax</label>
-													<config>
-														<type>text</type>
-														<renderType>t3editor</renderType>
-													</config>
-												</TCEforms>
-											</t3editor_1>
-										</el>
-									</ROOT>
-								</sGeneral>
-								<sSections>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>T3EDITOR in section</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<section_1>
-												<title>section_1</title>
-												<type>array</type>
-												<section>1</section>
-												<el>
-													<container_1>
-														<type>array</type>
-														<title>1 t3editor field</title>
-														<el>
-															<t3editor_3>
-																<TCEforms>
-																	<label>T3EDITOR 3</label>
-																	<config>
-																		<type>text</type>
-																		<renderType>t3editor</renderType>
-																	</config>
-																</TCEforms>
-															</t3editor_3>
-														</el>
-													</container_1>
-												</el>
-											</section_1>
-										</el>
-									</ROOT>
-								</sSections>
-								<sInline>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>T3EDITOR in inline</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<inline_1>
-												<TCEforms>
-													<label>inline_1 to one field</label>
-													<config>
-														<type>inline</type>
-														<foreign_table>tx_styleguide_forms_t3editor_6_flex_inline_1_child1</foreign_table>
-														<foreign_field>parentid</foreign_field>
-														<foreign_table_field>parenttable</foreign_table_field>
-													</config>
-												</TCEforms>
-											</inline_1>
-										</el>
-									</ROOT>
-								</sInline>
-							</sheets>
-						</T3DataStructure>
-					',
-                ),
-            ),
-        ),
 
 
     ),
@@ -974,7 +859,6 @@ return array(
 			inline_1, inline_2, inline_3, inline_4, inline_5,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7, wizard_8,
 			rte_1, rte_2, rte_3, rte_4,
-			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 			',
     ),
 
@@ -998,8 +882,6 @@ return array(
 					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6, wizard_8,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
-				--div--;t3editor,
-					t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 			',
             'columnsOverrides' => array(
                 't3editor_2' => array(
