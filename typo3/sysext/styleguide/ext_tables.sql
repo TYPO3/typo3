@@ -1,14 +1,3 @@
-CREATE TABLE tx_styleguide_forms_staticdata (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
-	value_1 tinytext NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
-
-
 CREATE TABLE tx_styleguide_elements_basic (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -211,6 +200,7 @@ CREATE TABLE tx_styleguide_elements_rsainput (
 CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -246,6 +236,7 @@ CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
 CREATE TABLE tx_styleguide_elements_rsainput_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -318,6 +309,7 @@ CREATE TABLE tx_styleguide_elements_rte (
 CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -353,6 +345,7 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
 CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -531,6 +524,7 @@ CREATE TABLE tx_styleguide_elements_t3editor (
 CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -566,6 +560,7 @@ CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
 CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -592,6 +587,17 @@ CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 	parentidentifier text NOT NULL,
 
 	t3editor_1 text,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_staticdata (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	value_1 tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

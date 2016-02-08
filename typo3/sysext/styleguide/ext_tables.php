@@ -11,14 +11,14 @@ if (TYPO3_MODE === 'BE') {
         'help',
         'styleguide',
         '',
-        array(
+        [
             'Styleguide' => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, debug, helpers, icons, tab'
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon'   => 'EXT:styleguide/Resources/Public/Icons/module.svg',
             'labels' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang_styleguide.xlf',
-        )
+        ]
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_elements_basic');
