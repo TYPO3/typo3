@@ -11,7 +11,7 @@ return [
 
 
         'value_1' => [
-            'label' => 'Value',
+            'label' => 'value_1',
             'config' => [
                 'type' => 'input',
                 'size' => 10,

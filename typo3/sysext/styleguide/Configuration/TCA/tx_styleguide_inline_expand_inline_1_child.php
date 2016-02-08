@@ -1,8 +1,8 @@
 <?php
-return array(
-    'ctrl' => array(
-        'title' => 'Form engine tests - inline expand inline_1 child 1',
-        'label' => 'rte_1',
+return [
+    'ctrl' => [
+        'title' => 'Form engine - inline expand child inline_1',
+        'label' => 'uid',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -10,136 +10,115 @@ return array(
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
-    ),
-    'columns' => array(
-        'sys_language_uid' => array(
+    ],
+
+
+    'columns' => [
+
+
+        'sys_language_uid' => [
             'exclude' => 1,
             'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-                )
-            )
-        ),
-        'l18n_parent' => array(
+                'items' => [
+                    ['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]
+                ]
+            ]
+        ],
+        'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                ),
+                'items' => [
+                    ['', 0],
+                ],
                 'foreign_table' => 'tx_styleguide_forms_inline_2_child2',
                 'foreign_table_where' => 'AND tx_styleguide_forms_inline_2_child2.pid=###CURRENT_PID### AND tx_styleguide_forms_inline_2_child2.sys_language_uid IN (-1,0)',
-            )
-        ),
-        'l18n_diffsource' => array(
-            'config' => array(
+            ]
+        ],
+        'l18n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough'
-            )
-        ),
-        'hidden' => array(
+            ]
+        ],
+        'hidden' => [
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => '0'
-            ),
-        ),
+            ],
+        ],
 
-        'parentid' => array(
-            'config' => array(
-                'type' => 'passthrough',
-            )
-        ),
-        'parenttable' => array(
-            'config' => array(
-                'type' => 'passthrough',
-            )
-        ),
 
-        'dummy_1' => array(
+        'parentid' => [
+            'config' => [
+                'type' => 'passthrough',
+            ]
+        ],
+        'parenttable' => [
+            'config' => [
+                'type' => 'passthrough',
+            ]
+        ],
+
+
+        'dummy_1' => [
             'exclude' => 1,
             'label' => 'dummy 1',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
-            ),
-        ),
+            ],
+        ],
 
-        'rte_1' => array(
-            'exclude' => 1,
-            'label' => 'RTE 1',
-            'config' => array(
-                'type' => 'text',
-            ),
-            'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
-        ),
 
-        'tree_1' => array(
-            'exclude' => 1,
-            'label' => 'SELECT TREE 1',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectTree',
-                'foreign_table' => 'pages',
-                'size' => 8,
-                'maxitems' => 99, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'treeConfig' => array(
-                    'expandAll' => true,
-                    'parentField' => 'pid',
-                    'appearance' => array(
-                        'showHeader' => true,
-                    ),
-                ),
-            ),
-        ),
-
-        'fal_1' => array(
-            'label' => 'FAL 1',
-            'config' => array(
+        'inline_fal_1' => [
+            'label' => 'inline_fal_1',
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'sys_file_reference',
                 'foreign_field' => "uid_foreign",
                 'foreign_sortby' => "sorting_foreign",
                 'foreign_table_field' => "tablenames",
-                'foreign_match_fields' => array(
+                'foreign_match_fields' => [
                     'fieldname' => "image",
-                ),
+                ],
                 'foreign_label' => "uid_local",
                 'foreign_selector' => "uid_local",
-                'foreign_selector_fieldTcaOverride' => array(
-                    'config' => array(
-                        'appearance' => array(
+                'foreign_selector_fieldTcaOverride' => [
+                    'config' => [
+                        'appearance' => [
                             'elementBrowserType' => 'file',
                             'elementBrowserAllowed' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
-                        ),
-                    ),
-                ),
-                'filter' => array(
+                        ],
+                    ],
+                ],
+                'filter' => [
                     'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren',
-                    'parameters' => array(
+                    'parameters' => [
                         'allowedFileExtensions' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
                         'disallowedFileExtensions' => '',
-                    ),
-                ),
-                'appearance' => array(
+                    ],
+                ],
+                'appearance' => [
                     'useSortable' => true,
-                    'headerThumbnail' => array(
+                    'headerThumbnail' => [
                         'field' => "uid_local",
                         'width' => "45",
                         'height' => "45c",
-                    ),
+                    ],
                     'showPossibleLocalizationRecords' => false,
                     'showRemovedLocalizationRecords' => false,
                     'showSynchronizationLink' => false,
                     'showAllLocalizationLink' => false,
-                    'enabledControls' => array(
+                    'enabledControls' => [
                         'info' => true,
                         'new' => false,
                         'dragdrop' => true,
@@ -147,51 +126,83 @@ return array(
                         'hide' => true,
                         'delete' => true,
                         'localize' => true,
-                    ),
+                    ],
                     'createNewRelationLinkTitle' => "LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference",
-                ),
-                'behaviour' => array(
+                ],
+                'behaviour' => [
                     'localizationMode' => "select",
                     'localizeChildrenAtParentLocalization' => true,
-                ),
-                'foreign_types' => array(
-                    0 => array(
+                ],
+                'foreign_types' => [
+                    0 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                    1 => array(
+                    ],
+                    1 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                    2 => array(
+                    ],
+                    2 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                    3 => array(
+                    ],
+                    3 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                    4 => array(
+                    ],
+                    4 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                    5 => array(
+                    ],
+                    5 => [
                         'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ),
-                ),
-            ),
-        ),
+                    ],
+                ],
+            ],
+        ],
 
-    ),
 
-    'interface' => array(
-        'showRecordFieldList' => '
-			sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable,
-			rte_1, tree_1, fal_1,
-		',
-    ),
+        'rte_1' => [
+            'exclude' => 1,
+            'label' => 'rte_1',
+            'config' => [
+                'type' => 'text',
+            ],
+            'defaultExtras' => 'richtext:rte_transform',
+        ],
 
-    'types' => array(
-        '0' => array(
+
+        'select_tree_1' => [
+            'exclude' => 1,
+            'label' => 'select_tree_1',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'size' => 8,
+                // @todo: *must* be set, otherwise invalid upon checking first item?!
+                'maxitems' => 99,
+                'treeConfig' => [
+                    'expandAll' => true,
+                    'parentField' => 'pid',
+                    'appearance' => [
+                        'showHeader' => true,
+                    ],
+                ],
+            ],
+        ],
+
+
+    ],
+
+
+    'types' => [
+        '0' => [
             'showitem' => '
-				tree_1, fal_1, rte_1,
-				--div--;dummy, dummy_1,
-			',
-        ),
-    ),
-);
+                --div--;fields,
+                    inline_fal_1, rte_1, select_tree_1,
+                --div--;dummy,
+                    dummy_1,
+            ',
+        ],
+
+
+    ],
+
+
+];

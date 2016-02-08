@@ -1,7 +1,7 @@
 <?php
-return array(
-    'ctrl' => array(
-        'title' => 'Form engine tests - Inline expand tests',
+return [
+    'ctrl' => [
+        'title' => 'Form engine - inline expand',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -10,89 +10,86 @@ return array(
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_inlineexpand.svg',
-
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
-    ),
+        ],
+    ],
 
-    'columns' => array(
-        'hidden' => array(
+
+    'columns' => [
+
+
+        'hidden' => [
             'exclude' => 1,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'Disable'
-                    ),
-                ),
-            ),
-        ),
-        'starttime' => array(
+                    ],
+                ],
+            ],
+        ],
+        'starttime' => [
             'exclude' => 1,
             'label' => 'Publish Date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '13',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0'
-            ),
+            ],
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
-        ),
-        'endtime' => array(
+        ],
+        'endtime' => [
             'exclude' => 1,
             'label' => 'Expiration Date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '13',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0',
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
-                )
-            ),
+                ]
+            ],
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
-        ),
+        ],
 
 
-        'inline_1' => array(
+        'inline_1' => [
             'exclude' => 1,
-            'label' => 'INLINE 1',
-            'config' => array(
+            'label' => 'inline_1',
+            'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_inlineexpand_inline_1_child1',
+                'foreign_table' => 'tx_styleguide_inline_expand_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
-            ),
-        ),
-    ),
+            ],
+        ],
 
 
-    'interface' => array(
-        'showRecordFieldList' => '
-			hidden, starttime, endtime,
-			inline_1,
-		',
-    ),
+    ],
 
-    'types' => array(
-        '0' => array(
+
+    'types' => [
+        '0' => [
             'showitem' => '
-				inline_1,
-			',
-        ),
-    ),
+                inline_1,
+            ',
+        ],
+    ],
 
-);
+
+];
