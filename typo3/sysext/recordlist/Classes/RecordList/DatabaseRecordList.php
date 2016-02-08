@@ -1071,10 +1071,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     // If the numeric clipboard pads are enabled, display the control icons for that:
                     if ($this->clipObj->current != 'normal') {
                         // The "select" link:
-                        $spriteIcon = '<span title="' . $lang->getLL('clip_selectMarked', true) . '">'
-                            . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render()
-                            . '</span>';
-                        $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB');
+                        $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
+                        $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
                         // The "edit marked" link:
                         $editIdList = implode(',', $currentIdList);
                         $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
@@ -1089,10 +1087,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                         // The "Delete marked" link:
                         $cells['delete'] = $this->linkClipboardHeaderIcon(
-                            '<span title="' . $lang->getLL('clip_deleteMarked', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span>',
+                            $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
                             $table,
                             'delete',
-                            sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
+                            sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
+                            $lang->getLL('clip_deleteMarked')
                         );
                         // The "Select all" link:
                         $onClick = htmlspecialchars(('checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;'));
@@ -1932,17 +1931,21 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      * @param string $string The HTML content to link (image/text)
      * @param string $table Table name
      * @param string $cmd Clipboard command (eg. "setCB" or "delete")
-     * @param string $warning Warning text, if any ("delete" uses this for confirmation)
+     * @param string $warning Warning text, if any ("delete" uses this for confirmation
+     * @param string $title title attribute for the anchor
      * @return string <a> tag wrapped link.
      */
-    public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '')
+    public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '', $title = '')
     {
         $onClickEvent = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd) . ';document.dblistForm.cmd_table.value='
             . GeneralUtility::quoteJSvalue($table) . ';document.dblistForm.submit();';
         if ($warning) {
             $onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
         }
-        return '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(($onClickEvent . 'return false;')) . '">' . $string . '</a>';
+        if ($title !== '') {
+            $title = 'title="' . htmlspecialchars($title) . '" ';
+        }
+        return '<a class="btn btn-default" href="#" ' . $title . ' onclick="' . htmlspecialchars(($onClickEvent . 'return false;')) . '">' . $string . '</a>';
     }
 
     /**
