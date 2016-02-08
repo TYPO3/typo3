@@ -1979,7 +1979,7 @@ class DataHandler
         }
         // For select types which has a foreign table attached:
         $unsetResult = false;
-        if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['foreign_table']) {
+        if ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] || isset($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages')) {
             // check, if there is a NEW... id in the value, that should be substituted later
             if (strpos($value, 'NEW') !== false) {
                 $this->remapStackRecords[$table][$id] = array('remapStackIndex' => count($this->remapStack));
@@ -2804,7 +2804,13 @@ class DataHandler
      */
     public function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField)
     {
-        $tables = $type == 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'];
+        if ($type === 'group') {
+            $tables = $tcaFieldConf['allowed'];
+        } elseif (!empty($tcaFieldConf['special']) && $tcaFieldConf['special'] === 'languages') {
+            $tables = 'sys_language';
+        } else {
+            $tables = $tcaFieldConf['foreign_table'];
+        }
         $prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : '';
         $newRelations = implode(',', $valueArray);
         /** @var $dbAnalysis RelationHandler */
