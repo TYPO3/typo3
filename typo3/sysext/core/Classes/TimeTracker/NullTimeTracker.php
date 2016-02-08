@@ -13,10 +13,12 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A fake time tracker that does nothing but providing the methods of the real time tracker.
  * This is done to save some performance over the real time tracker.
+ * @deprecated since TYPO3 v8, will be removed in v9
  */
 class NullTimeTracker
 {
@@ -27,9 +29,11 @@ class NullTimeTracker
      * does nothing
      *
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in v9, use the regular time tracking
      */
     public function start()
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 
     /**

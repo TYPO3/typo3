@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
-use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -47,7 +46,7 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Instance of the timetracker
-     * @var NullTimeTracker|TimeTracker
+     * @var TimeTracker
      */
     protected $timeTracker;
 
@@ -333,15 +332,8 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function initializeTimeTracker()
     {
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
-        if (empty($configuredCookieName)) {
-            $configuredCookieName = 'be_typo_user';
-        }
-        if ($this->request->getCookieParams()[$configuredCookieName]) {
-            $this->timeTracker = new TimeTracker();
-        } else {
-            $this->timeTracker = new NullTimeTracker();
-        }
+        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+        $this->timeTracker = new TimeTracker($this->request->getCookieParams()[$configuredCookieName] ? true : false);
 
         // We have to define this as reference here, because there is code around
         // which exchanges the TT object in the global variable. The reference ensures

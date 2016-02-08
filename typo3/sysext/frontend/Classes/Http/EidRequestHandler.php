@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,17 +53,9 @@ class EidRequestHandler implements RequestHandlerInterface
      */
     public function handleRequest(ServerRequestInterface $request)
     {
-        // Timetracking started
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
-        if (empty($configuredCookieName)) {
-            $configuredCookieName = 'be_typo_user';
-        }
-        if ($request->getCookieParams()[$configuredCookieName]) {
-            $GLOBALS['TT'] = new TimeTracker();
-        } else {
-            $GLOBALS['TT'] = new NullTimeTracker();
-        }
-
+        // Starting time tracking
+        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+        $GLOBALS['TT'] = new TimeTracker($request->getCookieParams()[$configuredCookieName] ? true : false);
         $GLOBALS['TT']->start();
 
         // Hook to preprocess the current request

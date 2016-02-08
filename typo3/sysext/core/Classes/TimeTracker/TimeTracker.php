@@ -24,6 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TimeTracker
 {
+
+    /**
+     * If set to true (see constructor) then then the timetracking is enabled
+     * @var bool
+     */
+    protected $isEnabled = false;
+
     /**
      * Is loaded with the millisecond time when this object is created
      *
@@ -59,12 +66,22 @@ class TimeTracker
     /**
      * @var array
      */
-    public $wrapError = array();
+    public $wrapError = [
+        0 => ['', ''],
+        1 => ['<strong>', '</strong>'],
+        2 => ['<strong style="color:#ff6600;">', '</strong>'],
+        3 => ['<strong style="color:#ff0000;">', '</strong>']
+    ];
 
     /**
      * @var array
      */
-    public $wrapIcon = array();
+    public $wrapIcon = [
+        0 => '',
+        1 => 'actions-document-info',
+        2 => 'status-dialog-warning',
+        3 => 'status-dialog-error'
+    ];
 
     /**
      * @var int
@@ -113,26 +130,27 @@ class TimeTracker
      * Logging parsing times in the scripts
      *
      *******************************************/
+
     /**
-     * Constructor
+     * TimeTracker constructor.
+     *
+     * @param bool $isEnabled
+     */
+    public function __construct($isEnabled = true)
+    {
+        $this->isEnabled = $isEnabled;
+    }
+
+    /**
      * Sets the starting time
      *
      * @return void
      */
     public function start()
     {
-        $this->wrapError = array(
-            0 => array('', ''),
-            1 => array('<strong>', '</strong>'),
-            2 => array('<strong style="color:#ff6600;">', '</strong>'),
-            3 => array('<strong style="color:#ff0000;">', '</strong>')
-        );
-        $this->wrapIcon = array(
-            0 => '',
-            1 => 'actions-document-info',
-            2 => 'status-dialog-warning',
-            3 => 'status-dialog-error'
-        );
+        if (!$this->isEnabled) {
+            return;
+        }
         $this->starttime = $this->getMilliseconds();
     }
 
@@ -146,6 +164,9 @@ class TimeTracker
      */
     public function push($tslabel, $value = '')
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         array_push($this->tsStack[$this->tsStackPointer], $tslabel);
         array_push($this->currentHashPointer, 'timetracker_' . $this->uniqueCounter++);
         $this->tsStackLevel++;
@@ -170,6 +191,9 @@ class TimeTracker
      */
     public function pull($content = '')
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         $k = end($this->currentHashPointer);
         $this->tsStackLog[$k]['endtime'] = microtime(true);
         $this->tsStackLog[$k]['content'] = $content;
@@ -188,6 +212,9 @@ class TimeTracker
      */
     public function setTSlogMessage($content, $num = 0)
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         end($this->currentHashPointer);
         $k = current($this->currentHashPointer);
         // Enlarge the "details" column by adding a span
@@ -207,6 +234,9 @@ class TimeTracker
      */
     public function setTSselectQuery(array $data, $msg = '')
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         end($this->currentHashPointer);
         $k = current($this->currentHashPointer);
         if ($msg !== '') {
@@ -223,6 +253,9 @@ class TimeTracker
      */
     public function incStackPointer()
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         $this->tsStackPointer++;
         $this->tsStack[$this->tsStackPointer] = array();
     }
@@ -235,6 +268,9 @@ class TimeTracker
      */
     public function decStackPointer()
     {
+        if (!$this->isEnabled) {
+            return;
+        }
         unset($this->tsStack[$this->tsStackPointer]);
         $this->tsStackPointer--;
     }
@@ -247,6 +283,9 @@ class TimeTracker
      */
     public function getMilliseconds($microtime = null)
     {
+        if (!$this->isEnabled) {
+            return 0;
+        }
         if (!isset($microtime)) {
             $microtime = microtime(true);
         }
@@ -276,6 +315,9 @@ class TimeTracker
      */
     public function printTSlog()
     {
+        if (!$this->isEnabled) {
+            return '';
+        }
         // Calculate times and keys for the tsStackLog
         foreach ($this->tsStackLog as $uniqueId => &$data) {
             $data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
@@ -317,9 +359,6 @@ class TimeTracker
         $flag_content = $this->printConf['flag_content'];
         $flag_queries = $this->printConf['flag_queries'];
         $keyLgd = $this->printConf['keyLgd'];
-        $factor = $this->printConf['factor'];
-        $col = $this->printConf['col'];
-        $highlight_col = $this->printConf['highlight_col'];
         $c = 0;
         foreach ($this->tsStackLog as $uniqueId => $data) {
             if ($this->highlightLongerThan && (int)$data['owntime'] > (int)$this->highlightLongerThan) {

@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
@@ -106,7 +106,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
         $this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
-        $GLOBALS['TT'] = new NullTimeTracker();
+        $GLOBALS['TT'] = new TimeTracker(false);
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 
         $this->subject = $this->getAccessibleMock(
