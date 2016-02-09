@@ -235,7 +235,6 @@
 									</numIndex>
 								</multiSelectFilterItems>
 								<wizards>
-									<_PADDING>1</_PADDING>
 									<_VERTICAL>1</_VERTICAL>
 									<edit>
 										<!-- @TODO: popup closes immediatly?! -->

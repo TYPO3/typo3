@@ -185,9 +185,9 @@ return [
             'showitem' => '
                 --div--;t3editor,
                     t3editor_1,
-                --div--;inline,
+                --div--;in inline,
                     t3editor_inline_1,
-                --div--;flex,
+                --div--;in flex,
                     t3editor_flex_1,
             ',
         ],

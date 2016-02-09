@@ -59,6 +59,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_31 text NOT NULL,
 	input_32 text NOT NULL,
 	input_33 text NOT NULL,
+	input_34 text NOT NULL,
+	input_35 text NOT NULL,
 
 	text_1 text,
 	text_2 text,
@@ -73,6 +75,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 	text_12 text,
 	text_13 text,
 	text_14 text,
+	text_15 text,
+	text_16 text,
 
 	checkbox_1 int(11) DEFAULT '0' NOT NULL,
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
@@ -109,6 +113,8 @@ CREATE TABLE tx_styleguide_elements_basic (
 
 	user_1 text,
 	user_2 text,
+
+	flex_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

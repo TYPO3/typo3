@@ -405,8 +405,6 @@ return [
                 'autoSizeMax' => 20,
                 'maxitems' => 999,
                 'wizards' => [
-                    // @todo: Has no sane effect
-                    '_PADDING' => 1,
                     '_VERTICAL' => 1,
                     'edit' => [
                         'type' => 'popup',

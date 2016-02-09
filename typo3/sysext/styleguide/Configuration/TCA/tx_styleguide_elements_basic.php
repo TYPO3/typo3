@@ -399,6 +399,40 @@ return [
                 ],
             ],
         ],
+        'input_34' => [
+            'exclude' => 1,
+            'label' => 'input_34 wizard colorbox',
+            'config' => [
+                'type' => 'input',
+                'wizards' => [
+                    'colorpicker' => [
+                        'type' => 'colorbox',
+                        'title' => 'Color picker',
+                        'module' => [
+                            'name' => 'wizard_colorpicker',
+                        ],
+                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                    ],
+                ],
+            ],
+        ],
+        'input_35' => [
+            'label' => 'input_35 wizard colorbox with image',
+            'config' => [
+                'type' => 'input',
+                'wizards' => [
+                    'colorpicker' => [
+                        'type' => 'colorbox',
+                        'title' => 'Color picker',
+                        'module' => [
+                            'name' => 'wizard_colorpicker',
+                        ],
+                        'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                        'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
+                    ],
+                ],
+            ],
+        ],
 
 
         'text_1' => [
@@ -530,6 +564,46 @@ return [
                 'type' => 'text',
             ],
             'defaultExtras' => 'fixed-font : enable-tab'
+        ],
+        'text_15' => [
+            'label' => 'text_15 wizard table',
+            'config' => [
+                'type' => 'text',
+                'cols' => '40',
+                'rows' => '5',
+                'wizards' => [
+                    'table' => [
+                        'type' => 'script',
+                        'title' => 'Table wizard',
+                        'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+                        'module' => [
+                            'name' => 'wizard_table'
+                        ],
+                        'params' => [
+                            'xmlOutput' => 0
+                        ],
+                        'notNewRecords' => 1,
+                    ],
+                ],
+            ],
+        ],
+        'text_16' => [
+            'label' => 'text_16 wizard select',
+            'config' => [
+                'type' => 'text',
+                'cols' => '40',
+                'rows' => '5',
+                'wizards' => [
+                    'select' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['Option 1', 'Dummy Text for Option 1'],
+                            ['Option 2', 'Dummy Text for Option 2'],
+                            ['Option 3', 'Dummy Text for Option 3'],
+                        ],
+                    ],
+                ],
+            ],
         ],
 
 
@@ -931,6 +1005,77 @@ return [
         ],
 
 
+        'flex_1' => [
+            'exclude' => 1,
+            'label' => 'flex_1',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <ROOT>
+                                <type>array</type>
+                                <el>
+                                    <input_1>
+                                        <TCEforms>
+                                            <label>input_1 wizard link</label>
+                                            <config>
+                                                <type>input</type>
+                                                <eval>trim</eval>
+                                                <softref>typolink</softref>
+                                                <wizards type="array">
+                                                    <link type="array">
+                                                        <type>popup</type>
+                                                        <title>Link</title>
+                                                        <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+                                                        <module type="array">
+                                                            <name>wizard_link</name>
+                                                            <urlParameters type="array">
+                                                                <act>file|url</act>
+                                                            </urlParameters>
+                                                        </module>
+                                                        <params type="array">
+                                                            <blindLinkOptions>mail,folder,spec</blindLinkOptions>
+                                                        </params>
+                                                        <JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+                                                    </link>
+                                                </wizards>
+                                            </config>
+                                        </TCEforms>
+                                    </input_1>
+                                    <input_2>
+                                        <TCEforms>
+                                            <label>input_2 wizard table</label>
+                                            <config>
+                                                <type>text</type>
+                                                <cols>30</cols>
+                                                <rows>5</rows>
+                                                <wizards>
+                                                    <table type="array">
+                                                        <type>script</type>
+                                                        <title>Table wizard</title>
+                                                        <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+                                                        <module type="array">
+                                                            <name>wizard_table</name>
+                                                        </module>
+                                                        <params type="array">
+                                                            <xmlOutput>0</xmlOutput>
+                                                        </params>
+                                                        <notNewRecords>1</notNewRecords>
+                                                    </table>
+                                                </wizards>
+                                            </config>
+                                        </TCEforms>
+                                    </input_2>
+                                </el>
+                            </ROOT>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
+
+
     ],
 
 
@@ -941,10 +1086,10 @@ return [
                     input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-                    input_31, input_32, input_33,
+                    input_31, input_32, input_33, input_34, input_35,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
-                    text_11, text_12, text_13, text_14,
+                    text_11, text_12, text_13, text_14, text_15, text_16,
                 --div--;check,
                     checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
@@ -956,6 +1101,8 @@ return [
                     passthrough_1,
                 --div--;user,
                     user_1, user_2,
+                --div--;in flex,
+                    flex_1,
             ',
         ],
     ],

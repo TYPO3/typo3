@@ -183,9 +183,9 @@ return [
             'showitem' => '
                 --div--;rte,
                     rte_1,
-                --div--;inline,
+                --div--;in inline,
                     rte_inline_1,
-                --div--;flex,
+                --div--;in flex,
                     rte_flex_1,
             ',
         ],
