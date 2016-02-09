@@ -10,8 +10,6 @@ return array(
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
-
-        'dividers2tabs' => 1,
     ),
     'columns' => array(
         'sys_language_uid' => array(

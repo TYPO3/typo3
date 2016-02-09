@@ -1,7 +1,7 @@
 <?php
-return array(
-    'ctrl' => array(
-        'title' => 'Form engine tests - Required fields',
+return [
+    'ctrl' => [
+        'title' => 'Form engine - required',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -10,183 +10,170 @@ return array(
         'sortby' => 'sorting',
         'default_sortby' => 'ORDER BY crdate',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_required.svg',
-
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
-    ),
+        ],
 
-    'columns' => array(
-        'hidden' => array(
+
+    ],
+
+
+    'columns' => [
+
+
+        'hidden' => [
             'exclude' => 1,
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'items' => array(
-                    '1' => array(
+                'items' => [
+                    '1' => [
                         '0' => 'Disable'
-                    ),
-                ),
-            ),
-        ),
-        'starttime' => array(
+                    ],
+                ],
+            ],
+        ],
+        'starttime' => [
             'exclude' => 1,
             'label' => 'Publish Date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '13',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0'
-            ),
+            ],
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
-        ),
-        'endtime' => array(
+        ],
+        'endtime' => [
             'exclude' => 1,
             'label' => 'Expiration Date',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '13',
                 'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0',
-                'range' => array(
+                'range' => [
                     'upper' => mktime(0, 0, 0, 12, 31, 2020)
-                )
-            ),
+                ]
+            ],
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
-        ),
+        ],
 
 
-        'notrequired_1' => array(
+        'notrequired_1' => [
             'exclude' => 1,
-            'label' => 'NOT REQUIRED 1: simple input',
-            'config' => array(
+            'label' => 'notrequired_1',
+            'config' => [
                 'type' => 'input',
-            ),
-        ),
+            ],
+        ],
 
 
-        'input_1' => array(
+        'input_1' => [
             'exclude' => 1,
-            'label' => 'INPUT 1: eval required',
-            'config' => array(
+            'label' => 'input_1 eval=required',
+            'config' => [
                 'type' => 'input',
                 'max' => 23,
                 'eval' => 'required',
-            ),
-        ),
-        'input_2' => array(
+            ],
+        ],
+        'input_2' => [
             'exclude' => 1,
-            'label' => 'INPUT 2: eval required',
-            'config' => array(
-                'type' => 'input',
-                'eval' => 'required',
-            ),
-        ),
-        'input_3' => array(
-            'exclude' => 1,
-            'label' => 'INPUT 3: eval required',
-            'config' => array(
-                'type' => 'input',
-                'eval' => 'required',
-            ),
-        ),
-        'input_4' => array(
-            'exclude' => 1,
-            'label' => 'INPUT 4: eval required,trim,date',
-            'config' => array(
+            'label' => 'input_2 eval=required,trim,date',
+            'config' => [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim,required,date',
-            ),
-        ),
-        'input_5' => array(
+            ],
+        ],
+        'input_3' => [
             'exclude' => 1,
-            'label' => 'INPUT 5: eval required, link wizard',
-            'config' => array(
+            'label' => 'input_3 eval=required, wizard link',
+            'config' => [
                 'type' => 'input',
                 'size' => 60,
                 'eval' => 'trim,required',
-                'wizards' => array(
-                    'link' => array(
+                'wizards' => [
+                    'link' => [
                         'type' => 'popup',
                         'title' => 'a title',
                         'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                        'module' => array(
+                        'module' => [
                             'name' => 'wizard_link',
-                            'urlParameters' => array(
+                            'urlParameters' => [
                                 'act' => 'file|url',
-                            ),
-                        ),
-                        'params' => array(
+                            ],
+                        ],
+                        'params' => [
                             'blindLinkOptions' => 'page,folder,mail,spec',
                             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                        ),
-                    ),
-                ),
-            ),
-        ),
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
 
-        'text_1' => array(
+        'text_1' => [
             'exclude' => 1,
-            'label' => 'TEXT 1: eval required',
-            'config' => array(
+            'label' => 'text_1 eval=required',
+            'config' => [
                 'type' => 'text',
                 'eval' => 'required',
-            ),
-        ),
+            ],
+        ],
 
 
-        'select_1' => array(
+        'select_1' => [
             'exclude' => 1,
-            'label' => 'SELECT 1: multiple, minitems=2, maxitems=5',
-            'config' => array(
+            'label' => 'select_1 selectMultipleSideBySide, minitems=2, maxitems=5',
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 3,
                 'maxitems' => 5,
                 'minitems' => 2,
-                'items' => array(
-                    array('foo1', 1),
-                    array('foo2', 2),
-                    array('foo3', 3),
-                    array('foo4', 4),
-                    array('foo5', 5),
-                    array('foo6', 6),
-                ),
-            ),
-        ),
-        'select_2' => array(
+                'items' => [
+                    ['foo1', 1],
+                    ['foo2', 2],
+                    ['foo3', 3],
+                    ['foo4', 4],
+                    ['foo5', 5],
+                    ['foo6', 6],
+                ],
+            ],
+        ],
+        'select_2' => [
             'exclude' => 1,
-            'label' => 'SELECT 2: singlebox, minitems=1, maxitems=1',
-            'config' => array(
+            'label' => 'select_2 selectSingle, minitems=1, maxitems=1',
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('foo1', 1),
-                    array('foo2', 2),
-                    array('foo3', 3),
-                ),
-                'size' => 2, // combination size > 1 & maxitems 1 triggers "singlebox" mode
+                'items' => [
+                    ['foo1', 1],
+                    ['foo2', 2],
+                    ['foo3', 3],
+                ],
+                // combination size > 1 & maxitems 1 triggers "singlebox" mode
+                'size' => 2,
                 'minitems' => 1,
                 'maxitems' => 1,
-            ),
-        ),
-/**
-        'select_singlebox_1' => [
+            ],
+        ],
+        'select_3' => [
             'exclude' => 1,
-            'label' => 'select_singlebox_1',
+            'label' => 'select_3, selectSingleBox, minitems=1, maxitems=2',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
@@ -197,306 +184,301 @@ return array(
                     ['foo 3', 3],
                     ['foo 4', 4],
                 ],
+                'minitems' => 1,
                 'maxitems' => 2,
             ],
         ],
-*/
-        'select_3' => array(
+        'select_4' => [
             'exclude' => 1,
-            'label' => 'SELECT 3: checkbox, minitems=1, maxitems=2',
-            'config' => array(
+            'label' => 'select_4 selectCheckBox, minitems=1, maxitems=2',
+            'config' => [
                 'type' => 'select',
+                // @todo: required handling on this type does not work yet
                 'renderType' => 'selectCheckBox',
-                'items' => array(
-                    array('foo1', 1),
-                    array('foo2', 2),
-                    array('foo3', 3),
-                ),
+                'items' => [
+                    ['foo1', 1],
+                    ['foo2', 2],
+                    ['foo3', 3],
+                ],
                 'minitems' => 1,
                 // @todo: maxitems does not work?
                 'maxitems' => 2,
-            ),
-        ),
-        'select_4' => array(
+            ],
+        ],
+        'select_5' => [
             'exclude' => 1,
-            'label' => 'SELECT: 4 tree, minitems=1, maxitems=3',
-            'config' => array(
+            'label' => 'select_5 selectTree, minitems=1, maxitems=3',
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'pages',
                 'size' => 20,
                 'minitems' => 1,
                 'maxitems' => 3,
-                'treeConfig' => array(
-                    'parentField' => 'pid',
-                ),
-            ),
-        ),
-        'select_5' => array(
-            'exclude' => 1,
-            'label' => 'SELECT: 34 renderMode=tree of pages',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectTree',
-                'foreign_table' => 'pages',
-                'size' => 20,
-                'minitems' => 1,
-                'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
-                'treeConfig' => array(
+                'treeConfig' => [
                     'expandAll' => true,
                     'parentField' => 'pid',
-                    'appearance' => array(
+                    'appearance' => [
                         'showHeader' => true,
-                    ),
-                ),
-            ),
-        ),
+                    ],
+                ],
+            ],
+        ],
 
 
-        'group_1' => array(
+        'group_1' => [
             'exclude' => 1,
-            'label' => 'GROUP 1: minitems = 1, maxitems=3',
-            'config' => array(
+            'label' => 'group_1 db, minitems=1, maxitems=3',
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'minitems' => 1,
                 'maxitems' => 3,
-            ),
-        ),
-        'group_2' => array(
+            ],
+        ],
+        'group_2' => [
             'exclude' => 1,
-            'label' => 'GROUP 2: minitems = 1, maxitems=1, size=1',
-            'config' => array(
+            'label' => 'group_2 db, minitems = 1, maxitems=1, size=1',
+            'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'show_thumbs' => true,
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
-            ),
-        ),
+            ],
+        ],
 
 
-        'rte_1' => array(
+        'rte_1' => [
             'exclude' => 1,
-            'label' => 'RTE 1: required',
-            'config' => array(
+            'label' => 'rte_1 eval=required',
+            'config' => [
                 'type' => 'text',
                 'eval' => 'required',
                 'rows' => '15',
                 'cols' => '80',
-            ),
-            'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
-        ),
-        'rte_2' => array(
+            ],
+            'defaultExtras' => 'richtext:rte_transform',
+        ],
+        'rte_2' => [
             'exclude' => 1,
-            'label' => 'RTE 2: Required in inline',
-            'config' => array(
+            'label' => 'rte_2 inline',
+            'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_required_rte_2_inline_1_child1',
+                'foreign_table' => 'tx_styleguide_required_rte_2_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
-            ),
-        ),
+            ],
+        ],
 
 
-        'inline_1' => array(
+        'inline_1' => [
             'exclude' => 1,
-            'label' => 'INLINE 1: minitems 1, maxitems 3',
-            'config' => array(
+            'label' => 'inline_1 minitems=1, maxitems=3',
+            'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_required_inline_1_child1',
-                'foreign_field' => 'parentid',
-                'foreign_table_field' => 'parenttable',
-                'minitems' => 1,
-                'maxitems' => 3,
-            ),
-        ),
-        'inline_2' => array(
-            'exclude' => 1,
-            'label' => 'INLINE 2: single required field',
-            'config' => array(
-                'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_required_inline_2_child1',
-                'foreign_field' => 'parentid',
-                'foreign_table_field' => 'parenttable',
-            ),
-        ),
-        'inline_3' => array(
-            'exclude' => 1,
-            'label' => 'INLINE 3: minitems 1, maxitems 3, elements with single required field',
-            'config' => array(
-                'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_required_inline_3_child1',
+                'foreign_table' => 'tx_styleguide_required_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'minitems' => 1,
                 'maxitems' => 3,
-            ),
-        ),
-
-
-        'flex_1' => array(
+            ],
+        ],
+        'inline_2' => [
             'exclude' => 1,
-            'label' => 'FLEX 1: input required',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => '
-						<T3DataStructure>
-							<ROOT>
-								<type>array</type>
-								<el>
-									<select_1>
-										<TCEforms>
-											<label>input required</label>
-											<config>
-												<type>text</type>
-												<eval>required</eval>
-											</config>
-										</TCEforms>
-									</select_1>
-								</el>
-							</ROOT>
-						</T3DataStructure>
-					',
-                ),
-            ),
-        ),
-        'flex_2' => array(
+            'label' => 'inline_2 required field in inline child',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_required_inline_2_child',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+            ],
+        ],
+        'inline_3' => [
             'exclude' => 1,
-            'label' => 'FLEX 2: tabs, section container, inline',
-            'config' => array(
+            'label' => 'inline_3 minitems=1, maxitems=3, required field in inline child',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_required_inline_3_child',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+                'minitems' => 1,
+                'maxitems' => 3,
+            ],
+        ],
+
+
+        'flex_1' => [
+            'exclude' => 1,
+            'label' => 'flex_1 required field in flex',
+            'config' => [
                 'type' => 'flex',
-                'ds' => array(
+                'ds' => [
                     'default' => '
-						<T3DataStructure>
-							<sheets>
-								<sGeneral>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>Single required element</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<input_1>
-												<TCEforms>
-													<label>input, required</label>
-													<config>
-														<type>input</type>
-														<eval>required</eval>
-													</config>
-												</TCEforms>
-											</input_1>
-										</el>
-									</ROOT>
-								</sGeneral>
-								<sSections>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>Section</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<section_1>
-												<title>section_1</title>
-												<type>array</type>
-												<section>1</section>
-												<el>
-													<container_1>
-														<type>array</type>
-														<title>1 required field</title>
-														<el>
-															<input_1>
-																<TCEforms>
-																	<label>input, required</label>
-																	<config>
-																		<type>input</type>
-																		<eval>required</eval>
-																	</config>
-																</TCEforms>
-															</input_1>
-														</el>
-													</container_1>
-												</el>
-											</section_1>
-										</el>
-									</ROOT>
-								</sSections>
-								<sInline>
-									<ROOT>
-										<TCEforms>
-											<sheetTitle>Inline</sheetTitle>
-										</TCEforms>
-										<type>array</type>
-										<el>
-											<inline_1>
-												<TCEforms>
-													<label>inline_1 to one required field</label>
-													<config>
-														<type>inline</type>
-														<foreign_table>tx_styleguide_required_flex_2_inline_1_child1</foreign_table>
-														<foreign_field>parentid</foreign_field>
-														<foreign_table_field>parenttable</foreign_table_field>
-													</config>
-												</TCEforms>
-											</inline_1>
-										</el>
-									</ROOT>
-								</sInline>
-							</sheets>
-						</T3DataStructure>
-					',
-                ),
-            ),
-        ),
-    ),
+                        <T3DataStructure>
+                            <ROOT>
+                                <type>array</type>
+                                <el>
+                                    <select_1>
+                                        <TCEforms>
+                                            <label>input required</label>
+                                            <config>
+                                                <type>text</type>
+                                                <eval>required</eval>
+                                            </config>
+                                        </TCEforms>
+                                    </select_1>
+                                </el>
+                            </ROOT>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
+        'flex_2' => [
+            'exclude' => 1,
+            'label' => 'flex_2 tabs, section container, inline',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <sheets>
+                                <sGeneral>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>tab</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <input_1>
+                                                <TCEforms>
+                                                    <label>input_1, eval=required</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <eval>required</eval>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_1>
+                                        </el>
+                                    </ROOT>
+                                </sGeneral>
+                                <sSections>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>section</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <section_1>
+                                                <title>section_1</title>
+                                                <type>array</type>
+                                                <section>1</section>
+                                                <el>
+                                                    <container_1>
+                                                        <type>array</type>
+                                                        <title>container_1</title>
+                                                        <el>
+                                                            <input_1>
+                                                                <TCEforms>
+                                                                    <label>input_1, eval=required</label>
+                                                                    <config>
+                                                                        <type>input</type>
+                                                                        <eval>required</eval>
+                                                                    </config>
+                                                                </TCEforms>
+                                                            </input_1>
+                                                        </el>
+                                                    </container_1>
+                                                </el>
+                                            </section_1>
+                                        </el>
+                                    </ROOT>
+                                </sSections>
+                                <sInline>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>inline</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <inline_1>
+                                                <TCEforms>
+                                                    <label>inline_1 required field in inline child</label>
+                                                    <config>
+                                                        <type>inline</type>
+                                                        <foreign_table>tx_styleguide_required_flex_2_inline_1_child</foreign_table>
+                                                        <foreign_field>parentid</foreign_field>
+                                                        <foreign_table_field>parenttable</foreign_table_field>
+                                                    </config>
+                                                </TCEforms>
+                                            </inline_1>
+                                        </el>
+                                    </ROOT>
+                                </sInline>
+                            </sheets>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
 
 
-    'interface' => array(
-        'showRecordFieldList' => '
-			hidden,starttime,endtime,
-			notrequired_1,
-			input_1, input_2, input_3, input_4, input_5
-			text_1,
-			select_1, select_2, select_3, select_4, select_34,
-			group_1, group_2,
-			rte_1, rte_2,
-			inline_1, inline_2, inline_3,
-			flex_1, flex_2,
-		',
-    ),
+        'palette_input_1' => [
+            'exclude' => 1,
+            'label' => 'palette_input_1 eval=required',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'required',
+            ],
+        ],
+        'palette_input_2' => [
+            'exclude' => 1,
+            'label' => 'palette_input_2 eval=required',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'required',
+            ],
+        ],
 
-    'types' => array(
-        '0' => array(
+
+    ],
+
+
+    'types' => [
+        '0' => [
             'showitem' => '
-				--div--;Not required,
-					notrequired_1,
-				--div--;Input,
-					input_1, input_4, input_5, --palette--;Required in palette;input_palette,
-				--div--;Text,
-					text_1,
-				--div--;Rte,
-					rte_1, rte_2,
-				--div--;Select,
-					select_1, select_2, select_5,
-				--div--;Group,
-					group_1, group_2,
-				--div--;Inline,
-					inline_1, inline_2, inline_3,
-				--div--;Flex,
-					flex_1, flex_2,
-			',
-//					select_3, select_4, // @todo: both checkbox and tree required handling still open
-        ),
-    ),
+                --div--;not required,
+                    notrequired_1,
+                --div--;Input,
+                    input_1, input_2, input_3,
+                --div--;Text,
+                    text_1,
+                --div--;Rte,
+                    rte_1, rte_2,
+                --div--;Select,
+                    select_1, select_2, select_3, select_4, select_5,
+                --div--;Group,
+                    group_1, group_2,
+                --div--;Inline,
+                    inline_1, inline_2, inline_3,
+                --div--;Flex,
+                    flex_1, flex_2,
+                --div--;palette,
+                    --palette--;palette_1;palette_1,
+            ',
+        ],
+    ],
 
-    'palettes' => array(
-        'input_palette' => array(
-            'showitem' => 'input_2, input_3',
-        ),
-    ),
 
-);
+    'palettes' => [
+        'palette_1' => [
+            'showitem' => 'palette_input_1, palette_input_2',
+        ],
+    ],
+
+
+];

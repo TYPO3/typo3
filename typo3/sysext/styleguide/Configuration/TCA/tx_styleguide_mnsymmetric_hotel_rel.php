@@ -16,7 +16,6 @@ return Array(
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-        'dividers2tabs' => true,
     ),
     'columns' => Array(
         'sys_language_uid' => array(

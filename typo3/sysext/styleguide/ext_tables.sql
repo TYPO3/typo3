@@ -666,6 +666,239 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
 );
 
 
+CREATE TABLE tx_styleguide_required (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	starttime int(11) DEFAULT '0' NOT NULL,
+	endtime int(11) DEFAULT '0' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(255) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	notrequired_1 text,
+
+	input_1 text NOT NULL,
+	input_2 text NOT NULL,
+	input_3 text NOT NULL,
+
+	text_1 text,
+
+	select_1 text,
+	select_2 text,
+	select_3 text,
+	select_4 text,
+	select_5 text,
+
+	group_1 text,
+	group_2 text,
+
+	rte_1 text,
+	rte_2 text,
+
+	inline_1 text,
+	inline_2 text,
+	inline_3 text,
+
+	flex_1 text,
+	flex_2 text,
+
+	palette_input_1 text NOT NULL,
+	palette_input_2 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_required_flex_2_inline_1_child (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	parentid int(11) DEFAULT '0' NOT NULL,
+	parenttable text NOT NULL,
+	parentidentifier text NOT NULL,
+	input_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_required_inline_1_child (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	parentid int(11) DEFAULT '0' NOT NULL,
+	parenttable text NOT NULL,
+	parentidentifier text NOT NULL,
+	input_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_required_inline_2_child (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	parentid int(11) DEFAULT '0' NOT NULL,
+	parenttable text NOT NULL,
+	parentidentifier text NOT NULL,
+	input_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_required_inline_3_child (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	parentid int(11) DEFAULT '0' NOT NULL,
+	parenttable text NOT NULL,
+	parentidentifier text NOT NULL,
+	input_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
+CREATE TABLE tx_styleguide_required_rte_2_child (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob NOT NULL,
+	sorting int(10) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	parentid int(11) DEFAULT '0' NOT NULL,
+	parenttable text NOT NULL,
+	parentidentifier text NOT NULL,
+	rte_1 text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
 CREATE TABLE tx_styleguide_staticdata (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -802,67 +1035,6 @@ CREATE TABLE tx_styleguide_forms (
 );
 
 
-CREATE TABLE tx_styleguide_required (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-	starttime int(11) DEFAULT '0' NOT NULL,
-	endtime int(11) DEFAULT '0' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumtext,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(255) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage int(11) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	notrequired_1 text,
-
-	input_1 text NOT NULL,
-	input_2 text NOT NULL,
-	input_3 text NOT NULL,
-	input_4 text NOT NULL,
-	input_5 text NOT NULL,
-
-	text_1 text,
-
-	select_1 text,
-	select_2 text,
-	select_3 text,
-	select_4 text,
-	select_5 text,
-
-	group_1 text,
-	group_2 text,
-
-	rte_1 text,
-	rte_2 text,
-
-	inline_1 text,
-	inline_2 text,
-	inline_3 text,
-	inline_4 int(11) DEFAULT '0' NOT NULL,
-
-	flex_1 text,
-	flex_2 text,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
 
 CREATE TABLE tx_styleguide_forms_inline_2_child1 (
 	uid int(11) NOT NULL auto_increment,
@@ -971,170 +1143,6 @@ CREATE TABLE tx_styleguide_forms_inline_3_child (
 	KEY parent (pid)
 );
 
-CREATE TABLE tx_styleguide_required_flex_2_inline_1_child1 (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
-	sorting int(10) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
-	input_1 text NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
-
-CREATE TABLE tx_styleguide_required_rte_2_inline_1_child1 (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
-	sorting int(10) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
-	text_1 text NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
-
-CREATE TABLE tx_styleguide_required_inline_1_child1 (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
-	sorting int(10) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
-	input_1 text NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
-
-CREATE TABLE tx_styleguide_required_inline_2_child1 (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
-	sorting int(10) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
-	input_1 text NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
-
-CREATE TABLE tx_styleguide_required_inline_3_child1 (
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
-	sorting int(10) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
-	hidden tinyint(4) DEFAULT '0' NOT NULL,
-
-	t3ver_oid int(11) DEFAULT '0' NOT NULL,
-	t3ver_id int(11) DEFAULT '0' NOT NULL,
-	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
-	t3ver_label varchar(30) DEFAULT '' NOT NULL,
-	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_stage tinyint(4) DEFAULT '0' NOT NULL,
-	t3ver_count int(11) DEFAULT '0' NOT NULL,
-	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
-	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
-	t3_origuid int(11) DEFAULT '0' NOT NULL,
-
-	parentid int(11) DEFAULT '0' NOT NULL,
-	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
-	input_1 text NOT NULL,
-
-	PRIMARY KEY (uid),
-	KEY parent (pid)
-);
 
 
 

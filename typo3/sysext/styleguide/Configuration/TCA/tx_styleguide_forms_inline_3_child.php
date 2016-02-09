@@ -13,8 +13,6 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-
-        'dividers2tabs' => true,
     ),
 
     'columns' => array(
