@@ -1077,7 +1077,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
         $moduleLoaderProphecy->modules = [
             'aModule' => [
-                'icon' => PATH_site . 'aModuleTabIcon.gif'
+                'iconIdentifier' => 'empty-empty'
             ]
         ];
 
@@ -1085,7 +1085,12 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aModuleLabel',
                 1 => 'aModule',
-                2 => '../aModuleTabIcon.gif',
+                2 => '<span class="t3js-icon icon icon-size-default icon-state-default icon-empty-empty" data-identifier="empty-empty">
+	<span class="icon-markup">
+<span class="icon-unify"><i class="fa fa-empty-empty"></i></span>
+	</span>
+
+</span>',
                 3 => [
                     'title' => 'aModuleTabLabel',
                     'description' => 'aModuleTabDescription',
