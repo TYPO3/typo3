@@ -149,7 +149,7 @@ class FileUploadController extends AbstractModule
         // back button
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
-                ->setHref(GeneralUtility::linkThisUrl($this->returnUrl))
+                ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);

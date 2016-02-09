@@ -572,20 +572,36 @@ class QueryView
             $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
-            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
-                    ('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-                    'redirect' => GeneralUtility::linkThisScript(array())
-                )) . '" title="' . $GLOBALS['LANG']->getLL('undelete_only', true) . '">';
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
+                        'cmd' => [
+                            $table => [
+                                $row['uid'] => [
+                                    'undelete' => 1
+                                ]
+                            ]
+                        ],
+                        'redirect' => GeneralUtility::linkThisScript()
+                    ])) . '" title="' . $GLOBALS['LANG']->getLL('undelete_only', true) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
-            $formEngineParameters = array(
-                'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
-                'returnUrl' => GeneralUtility::linkThisScript(array())
-            );
+            $formEngineParameters = [
+                'edit' => [
+                    $table => [
+                        $row['uid'] => 'edit'
+                    ]
+                ],
+                'returnUrl' => GeneralUtility::linkThisScript()
+            ];
             $redirectUrl = BackendUtility::getModuleUrl('record_edit', $formEngineParameters);
-            $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
-                    ('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db'), [
+                    'cmd' => [
+                        $table => [
+                            $row['uid'] => [
+                                'undelete' => 1
+                            ]
+                        ]
+                    ],
                     'redirect' => $redirectUrl
-                )) . '" title="' . $GLOBALS['LANG']->getLL('undelete_and_edit', true) . '">';
+                ]) . '" title="' . $GLOBALS['LANG']->getLL('undelete_and_edit', true) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
         }
         $_params = array($table => $row);

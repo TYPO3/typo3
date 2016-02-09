@@ -206,7 +206,7 @@ class ReplaceFileController extends AbstractModule
         // Back button
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
-                ->setHref(GeneralUtility::linkThisUrl($this->returnUrl))
+                ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton);

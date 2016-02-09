@@ -172,7 +172,7 @@ class RenameFileController extends AbstractModule
         // back button
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
-                ->sethref(GeneralUtility::linkThisUrl($this->returnUrl))
+                ->sethref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
