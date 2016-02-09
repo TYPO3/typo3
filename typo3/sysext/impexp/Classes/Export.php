@@ -174,6 +174,7 @@ class Export extends ImportExport
         $this->dat['header']['softrefCfg'] = $this->softrefCfg;
         // List of extensions the import depends on.
         $this->dat['header']['extensionDependencies'] = $this->extensionDependencies;
+        $this->dat['header']['charset'] = 'utf-8';
     }
 
     /**

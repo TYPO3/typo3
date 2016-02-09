@@ -166,7 +166,7 @@ class LocalizationUtility
         }
         $locallangPathAndFilename = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
         self::setLanguageKeys();
-        $renderCharset = TYPO3_MODE === 'FE' ? self::getTypoScriptFrontendController()->renderCharset : self::getLanguageService()->charSet;
+        $renderCharset = TYPO3_MODE === 'FE' ? self::getTypoScriptFrontendController()->renderCharset : 'utf-8';
 
         /** @var $languageFactory LocalizationFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
@@ -298,7 +298,7 @@ class LocalizationUtility
         if (TYPO3_MODE === 'FE') {
             return self::getTypoScriptFrontendController()->csConv($value, $charset);
         } else {
-            $convertedValue = self::getLanguageService()->csConvObj->conv($value, self::getLanguageService()->csConvObj->parse_charset($charset), self::getLanguageService()->charSet, 1);
+            $convertedValue = self::getLanguageService()->csConvObj->conv($value, self::getLanguageService()->csConvObj->parse_charset($charset), 'utf-8', 1);
             return $convertedValue !== null ? $convertedValue : $value;
         }
     }

@@ -38,7 +38,8 @@ class LanguageService
     public $lang = 'default';
 
     /**
-     * Default charset in backend
+     * Default charset in backend, is always UTF-8, option is not in use anymore, but is kept for third-party extensions
+     * using this option. Will be removed in future versions
      *
      * @var string
      */
@@ -406,7 +407,7 @@ class LanguageService
         }
         $localLanguage = array();
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language, $this->charSet);
+            $tempLL = $languageFactory->getParsedData($fileRef, $language, 'utf-8');
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
                 $localLanguage[$this->lang] = $localLanguage['default'];

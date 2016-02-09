@@ -174,9 +174,9 @@ class SuggestWizardDefaultReceiver
                     $languageService = $this->getLanguageService();
                     $croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
                         htmlspecialchars(
-                                $languageService->csConvObj->crop($languageService->charSet, $path, 10)
+                                $languageService->csConvObj->crop('utf-8', $path, 10)
                                 . '...'
-                                . $languageService->csConvObj->crop($languageService->charSet, $path, -20)
+                                . $languageService->csConvObj->crop('utf-8', $path, -20)
                         ) .
                         '</abbr>';
                 } else {

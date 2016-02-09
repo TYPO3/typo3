@@ -2168,19 +2168,19 @@ class Import extends ImportExport
     {
         $importCharset = $this->dat['header']['charset'];
         if ($importCharset) {
-            if ($importCharset !== $this->getLanguageService()->charSet) {
-                $this->error('CHARSET: Converting charset of input file (' . $importCharset . ') to the system charset (' . $this->getLanguageService()->charSet . ')');
+            if ($importCharset !== 'utf-8') {
+                $this->error('CHARSET: Converting charset of input file (' . $importCharset . ') to the system charset (utf-8)');
                 // Convert meta data:
                 if (is_array($this->dat['header']['meta'])) {
-                    $this->getLanguageService()->csConvObj->convArray($this->dat['header']['meta'], $importCharset, $this->getLanguageService()->charSet);
+                    $this->getLanguageService()->csConvObj->convArray($this->dat['header']['meta'], $importCharset, 'utf-8');
                 }
                 // Convert record headers:
                 if (is_array($this->dat['header']['records'])) {
-                    $this->getLanguageService()->csConvObj->convArray($this->dat['header']['records'], $importCharset, $this->getLanguageService()->charSet);
+                    $this->getLanguageService()->csConvObj->convArray($this->dat['header']['records'], $importCharset, 'utf-8');
                 }
                 // Convert records themselves:
                 if (is_array($this->dat['records'])) {
-                    $this->getLanguageService()->csConvObj->convArray($this->dat['records'], $importCharset, $this->getLanguageService()->charSet);
+                    $this->getLanguageService()->csConvObj->convArray($this->dat['records'], $importCharset, 'utf-8');
                 }
             }
         } else {

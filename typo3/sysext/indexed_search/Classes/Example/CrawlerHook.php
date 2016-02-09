@@ -85,7 +85,7 @@ class CrawlerHook
                     $indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
                     $indexerObj->forceIndexing = true;
                     // Indexing the content of the item (see \TYPO3\CMS\IndexedSearch\Indexer::backend_indexAsTYPO3Page() for options)
-                    $indexerObj->backend_indexAsTYPO3Page($item['title'], '', '', $item['content'], $GLOBALS['LANG']->charSet, $item['tstamp'], $item['create_date'], $item['ID']);
+                    $indexerObj->backend_indexAsTYPO3Page($item['title'], '', '', $item['content'], 'utf-8', $item['tstamp'], $item['create_date'], $item['ID']);
                 }
                 break;
             case 2:

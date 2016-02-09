@@ -67,10 +67,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 'setup' => $lang->getLL('setup')
             ),
             'ts_browser_toplevel_setup' => array(
-                '0' => $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('all'), 'toUpper')
+                '0' => $lang->csConvObj->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
             ),
             'ts_browser_toplevel_const' => array(
-                '0' => $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('all'), 'toUpper')
+                '0' => $lang->csConvObj->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
             ),
             'ts_browser_const' => array(
                 '0' => $lang->getLL('plainSubstitution'),
@@ -292,7 +292,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out = '<div class="form-group">';
                 $out .= '	<div class="checkbox">';
                 $out .= '		<label>';
-                $out .= '			' . htmlspecialchars($this->pObj->sObj) . ' ' . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper');
+                $out .= '			' . htmlspecialchars($this->pObj->sObj) . ' ' . $lang->csConvObj->conv_case('utf-8', $lang->getLL('clear'), 'toUpper');
                 $out .= '			<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
                 $out .= '		</label>';
                 $out .= '		<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
@@ -423,7 +423,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $remove = '';
             }
 
-            $label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('constantRoot'), 'toUpper'));
+            $label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case('utf-8', $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case('utf-8', $lang->getLL('constantRoot'), 'toUpper'));
 
             $theOutput .= '<div class="panel panel-space panel-default">';
             $theOutput .= '<div class="panel-heading">';

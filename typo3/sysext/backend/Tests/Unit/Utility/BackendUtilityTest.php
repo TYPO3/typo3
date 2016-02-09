@@ -786,7 +786,6 @@ class BackendUtilityTest extends UnitTestCase
         );
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
-        $GLOBALS['LANG']->charSet = 'utf-8';
         $GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
@@ -818,7 +817,6 @@ class BackendUtilityTest extends UnitTestCase
         );
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
-        $GLOBALS['LANG']->charSet = 'utf-8';
         $GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 

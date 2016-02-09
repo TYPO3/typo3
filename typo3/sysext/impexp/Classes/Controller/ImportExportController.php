@@ -345,7 +345,6 @@ class ImportExportController extends BaseScriptClass
         // Create export object and configure it:
         $this->export = GeneralUtility::makeInstance(Export::class);
         $this->export->init(0);
-        $this->export->setCharset($this->lang->charSet);
         $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
         $this->export->excludeMap = (array)$inData['exclude'];
         $this->export->softrefCfg = (array)$inData['softrefCfg'];

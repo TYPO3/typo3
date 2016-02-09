@@ -111,8 +111,7 @@ class FlexFormTools
                 $xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
                 $storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
                 if ($storeInCharset) {
-                    $currentCharset = $GLOBALS['LANG']->charSet;
-                    $xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
+                    $xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, 'utf-8', 1);
                 }
             }
             $editData = GeneralUtility::xml2array($xmlData);

@@ -149,11 +149,7 @@ class CropViewHelper extends AbstractViewHelper
         }
         // preparing renderCharset
         if (!is_object($GLOBALS['TSFE']->renderCharset)) {
-            if (is_object($GLOBALS['LANG'])) {
-                $GLOBALS['TSFE']->renderCharset = $GLOBALS['LANG']->charSet;
-            } else {
-                $GLOBALS['TSFE']->renderCharset = 'utf-8';
-            }
+            $GLOBALS['TSFE']->renderCharset = 'utf-8';
         }
     }
 

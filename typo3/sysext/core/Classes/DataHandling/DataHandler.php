@@ -1763,7 +1763,7 @@ class DataHandler
         }
         // Secures the string-length to be less than max.
         if ((int)$tcaFieldConf['max'] > 0) {
-            $value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, (string)$value, 0, (int)$tcaFieldConf['max']);
+            $value = $GLOBALS['LANG']->csConvObj->substr('utf-8', (string)$value, 0, (int)$tcaFieldConf['max']);
         }
         // Checking range of value:
         // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
@@ -2684,10 +2684,10 @@ class DataHandler
                     $value = trim($value);
                     break;
                 case 'upper':
-                    $value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toUpper');
+                    $value = $GLOBALS['LANG']->csConvObj->conv_case('utf-8', $value, 'toUpper');
                     break;
                 case 'lower':
-                    $value = $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $value, 'toLower');
+                    $value = $GLOBALS['LANG']->csConvObj->conv_case('utf-8', $value, 'toLower');
                     break;
                 case 'required':
                     if (!isset($value) || $value === '') {
