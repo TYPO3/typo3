@@ -67,34 +67,6 @@ return array(
         ),
 
 
-        'flex_1' => array(
-            'exclude' => 1,
-            'label' => 'FLEX: 1 simple flex form',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => '
-						<T3DataStructure>
-							<ROOT>
-								<type>array</type>
-								<el>
-									<input_1>
-										<TCEforms>
-											<label>Some input field</label>
-											<config>
-												<type>input</type>
-												<size>23</size>
-												<default>a default value</default>
-											</config>
-										</TCEforms>
-									</input_1>
-								</el>
-							</ROOT>
-						</T3DataStructure>
-					',
-                ),
-            ),
-        ),
         'flex_3' => array(
             'exclude' => 1,
             'label' => 'FLEX: 3 complex flexform in an external file',
@@ -102,45 +74,6 @@ return array(
                 'type' => 'flex',
                 'ds' => array(
                     'default' => 'FILE:EXT:styleguide/Configuration/Flexform/Flex_3.xml',
-                ),
-            ),
-        ),
-        'flex_4' => array(
-            'exclude' => 1,
-            'label' => 'FLEX: 4 multiple items',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => '
-						<T3DataStructure>
-							<meta>
-								<langDisable>1</langDisable>
-							</meta>
-							<ROOT>
-								<type>array</type>
-								<el>
-									<input_1>
-										<TCEforms>
-											<label>Some input field</label>
-											<config>
-												<type>input</type>
-												<size>23</size>
-											</config>
-										</TCEforms>
-									</input_1>
-									<input_2>
-										<TCEforms>
-											<label>Some input field</label>
-											<config>
-												<type>input</type>
-												<size>23</size>
-											</config>
-										</TCEforms>
-									</input_2>
-								</el>
-							</ROOT>
-						</T3DataStructure>
-					',
                 ),
             ),
         ),
@@ -372,7 +305,7 @@ return array(
         '0' => array(
             'showitem' => '
 				--div--;Flex,
-					flex_1, flex_2, flex_3, flex_4, flex_5,
+                    flex_3, flex_4, flex_5,
 				--div--;Inline,
 					inline_1, inline_2, inline_3, inline_4, inline_5,
 			',

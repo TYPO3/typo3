@@ -1013,62 +1013,174 @@ return [
                 'ds' => [
                     'default' => '
                         <T3DataStructure>
-                            <ROOT>
-                                <type>array</type>
-                                <el>
-                                    <input_1>
+                            <sheets>
+                                <sInput>
+                                    <ROOT>
+                                        <type>array</type>
                                         <TCEforms>
-                                            <label>input_1 wizard link</label>
-                                            <config>
-                                                <type>input</type>
-                                                <eval>trim</eval>
-                                                <softref>typolink</softref>
-                                                <wizards type="array">
-                                                    <link type="array">
-                                                        <type>popup</type>
-                                                        <title>Link</title>
-                                                        <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
-                                                        <module type="array">
-                                                            <name>wizard_link</name>
-                                                            <urlParameters type="array">
-                                                                <act>file|url</act>
-                                                            </urlParameters>
-                                                        </module>
-                                                        <params type="array">
-                                                            <blindLinkOptions>mail,folder,spec</blindLinkOptions>
-                                                        </params>
-                                                        <JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-                                                    </link>
-                                                </wizards>
-                                            </config>
+                                            <sheetTitle>input</sheetTitle>
                                         </TCEforms>
-                                    </input_1>
-                                    <input_2>
+                                        <el>
+                                            <input_1>
+                                                <TCEforms>
+                                                    <label>input_1 wizard link</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <eval>trim</eval>
+                                                        <softref>typolink</softref>
+                                                        <wizards type="array">
+                                                            <link type="array">
+                                                                <type>popup</type>
+                                                                <title>Link</title>
+                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+                                                                <module type="array">
+                                                                    <name>wizard_link</name>
+                                                                    <urlParameters type="array">
+                                                                        <act>file|url</act>
+                                                                    </urlParameters>
+                                                                </module>
+                                                                <params type="array">
+                                                                    <blindLinkOptions>mail,folder,spec</blindLinkOptions>
+                                                                </params>
+                                                                <JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+                                                            </link>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_1>
+                                            <input_2>
+                                                <TCEforms>
+                                                    <label>input_2 wizard table</label>
+                                                    <config>
+                                                        <type>text</type>
+                                                        <cols>30</cols>
+                                                        <rows>5</rows>
+                                                        <wizards>
+                                                            <table type="array">
+                                                                <type>script</type>
+                                                                <title>Table wizard</title>
+                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+                                                                <module type="array">
+                                                                    <name>wizard_table</name>
+                                                                </module>
+                                                                <params type="array">
+                                                                    <xmlOutput>0</xmlOutput>
+                                                                </params>
+                                                                <notNewRecords>1</notNewRecords>
+                                                            </table>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_2>
+                                            <input_3>
+                                                <TCEforms>
+                                                    <label>input_3 wizard select</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <wizards>
+                                                            <valuePicker>
+                                                                <type>select</type>
+                                                                <mode></mode>
+                                                                <items>
+                                                                    <numIndex index="0">
+                                                                        <numIndex index="0">Foo</numIndex>
+                                                                        <numIndex index="1">foo</numIndex>
+                                                                    </numIndex>
+                                                                    <numIndex index="1">
+                                                                        <numIndex index="0">Bar</numIndex>
+                                                                        <numIndex index="1">bar</numIndex>
+                                                                    </numIndex>
+                                                                </items>
+                                                            </valuePicker>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_3>
+                                        </el>
+                                    </ROOT>
+                                </sInput>
+
+                                <sText>
+                                    <ROOT>
+                                        <type>array</type>
                                         <TCEforms>
-                                            <label>input_2 wizard table</label>
-                                            <config>
-                                                <type>text</type>
-                                                <cols>30</cols>
-                                                <rows>5</rows>
-                                                <wizards>
-                                                    <table type="array">
-                                                        <type>script</type>
-                                                        <title>Table wizard</title>
-                                                        <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
-                                                        <module type="array">
-                                                            <name>wizard_table</name>
-                                                        </module>
-                                                        <params type="array">
-                                                            <xmlOutput>0</xmlOutput>
-                                                        </params>
-                                                        <notNewRecords>1</notNewRecords>
-                                                    </table>
-                                                </wizards>
-                                            </config>
+                                            <sheetTitle>text</sheetTitle>
                                         </TCEforms>
-                                    </input_2>
-                                </el>
-                            </ROOT>
+                                        <el>
+                                            <text_1>
+                                                <TCEforms>
+                                                    <label>text_1 cols=20, rows=4</label>
+                                                    <config>
+                                                        <type>text</type>
+                                                        <cols>20</cols>
+                                                        <rows>4</rows>
+                                                    </config>
+                                                </TCEforms>
+                                            </text_1>
+                                        </el>
+                                    </ROOT>
+                                </sText>
+
+                                <sCheck>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>check</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <check_1>
+                                                <TCEforms>
+                                                    <label>check_1</label>
+                                                    <config>
+                                                        <type>check</type>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">Foo</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">Bar</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="2">
+                                                                <numIndex index="0">FooBar</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                    </config>
+                                                </TCEforms>
+                                            </check_1>
+                                        </el>
+                                    </ROOT>
+                                </sCheck>
+
+                                <sRadio>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>radio</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <radio_1>
+                                                <TCEforms>
+                                                    <label>radio_1</label>
+                                                    <config>
+                                                        <type>radio</type>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">Foo</numIndex>
+                                                                <numIndex index="1">1</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">Bar</numIndex>
+                                                                <numIndex index="1">2</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                    </config>
+                                                </TCEforms>
+                                            </radio_1>
+                                        </el>
+                                    </ROOT>
+                                </sRadio>
+
+                            </sheets>
                         </T3DataStructure>
                     ',
                 ],
