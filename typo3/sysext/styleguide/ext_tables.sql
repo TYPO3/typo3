@@ -161,6 +161,8 @@ CREATE TABLE tx_styleguide_elements_group (
 	group_file_4 text NOT NULL,
 	group_folder_1 text NOT NULL,
 
+	flex_1 text,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -440,6 +442,8 @@ CREATE TABLE tx_styleguide_elements_select (
 	select_tree_2 text NOT NULL,
 	select_tree_3 text NOT NULL,
 	select_tree_4 text NOT NULL,
+
+	flex_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

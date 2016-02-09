@@ -225,6 +225,73 @@ return [
         ],
 
 
+        'flex_1' => [
+            'exclude' => 1,
+            'label' => 'flex_1',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <sheets>
+
+                                <sDb>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>internal_type=db</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <group_db_1>
+                                                <TCEforms>
+                                                    <label>group_db_1 wizard suggest</label>
+                                                    <config>
+                                                        <type>group</type>
+                                                        <internal_type>db</internal_type>
+                                                        <allowed>tx_styleguide_staticdata</allowed>
+                                                        <wizards>
+                                                            <suggest>
+                                                                <type>suggest</type>
+                                                            </suggest>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </group_db_1>
+                                        </el>
+                                    </ROOT>
+                                </sDb>
+
+                                <sFile>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>internal_type=file</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <group_file_1>
+                                                <TCEforms>
+                                                    <label>group_file_1</label>
+                                                    <config>
+                                                        <type>group</type>
+                                                        <internal_type>file</internal_type>
+                                                        <allowed>jpg</allowed>
+                                                        <size>3</size>
+                                                        <uploadfolder>uploads/pics</uploadfolder>
+                                                    </config>
+                                                </TCEforms>
+                                            </group_file_1>
+                                        </el>
+                                    </ROOT>
+                                </sFile>
+
+                            </sheets>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
+
+
     ],
 
 
@@ -237,6 +304,8 @@ return [
                     group_file_1, group_file_2, group_file_3, group_file_4,
                 --div--;internal_type=folder,
                     group_folder_1,
+                --div--;in flex,
+                    flex_1,
             ',
         ],
     ],

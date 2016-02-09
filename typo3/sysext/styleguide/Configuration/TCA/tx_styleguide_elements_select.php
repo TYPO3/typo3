@@ -529,6 +529,194 @@ return [
         ],
 
 
+        'flex_1' => [
+            'exclude' => 1,
+            'label' => 'flex_1',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '
+                        <T3DataStructure>
+                            <sheets>
+
+                                <sSingle>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>selectSingle</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <select_single_1>
+                                                <TCEforms>
+                                                    <label>select_single_1</label>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectSingle</renderType>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">foo1</numIndex>
+                                                                <numIndex index="1">foo1</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">foo2</numIndex>
+                                                                <numIndex index="1">foo2</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_single_1>
+                                        </el>
+                                    </ROOT>
+                                </sSingle>
+
+                                <sCheckbox>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>selectCheckBox</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <select_checkxox_1>
+                                                <TCEforms>
+                                                    <label>select_checkxox_1</label>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectCheckBox</renderType>
+                                                        <items>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0">foo1</numIndex>
+                                                                <numIndex index="1">1</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">foo 2</numIndex>
+                                                                <numIndex index="1">2</numIndex>
+                                                            </numIndex>
+                                                        </items>
+                                                        <maxitems>1</maxitems>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_checkxox_1>
+                                        </el>
+                                    </ROOT>
+                                </sCheckbox>
+
+                                <sTree>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>selectTree</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <select_tree_1>
+                                                <TCEforms>
+                                                    <label>select_tree_1</label>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectTree</renderType>
+                                                        <foreign_table>pages</foreign_table>
+                                                        <size>20</size>
+                                                        <maxitems>4</maxitems>
+                                                        <treeConfig>
+                                                            <expandAll>1</expandAll>
+                                                            <parentField>pid</parentField>
+                                                            <appearance>
+                                                                <showHeader>1</showHeader>
+                                                            </appearance>
+                                                        </treeConfig>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_tree_1>
+                                        </el>
+                                    </ROOT>
+                                </sTree>
+
+                                <sMultiplesidebyside>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>selectMultipleSideBySide</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <select_multiplesidebyside_1>
+                                                <TCEforms>
+                                                    <label>select_multiplesidebyside_1</label>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectMultipleSideBySide</renderType>
+                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                        <rootLevel>1</rootLevel>
+                                                        <size>5</size>
+                                                        <autoSizeMax>5</autoSizeMax>
+                                                        <minitems>0</minitems>
+                                                        <maxitems>999</maxitems>
+                                                        <enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
+                                                        <multiSelectFilterItems>
+                                                            <numIndex index="0">
+                                                                <numIndex index="0"></numIndex>
+                                                                <numIndex index="1"></numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <numIndex index="0">foo</numIndex>
+                                                                <numIndex index="1">foo</numIndex>
+                                                            </numIndex>
+                                                            <numIndex index="2">
+                                                                <numIndex index="0">bar</numIndex>
+                                                                <numIndex index="1">bar</numIndex>
+                                                            </numIndex>
+                                                        </multiSelectFilterItems>
+                                                        <wizards>
+                                                            <_VERTICAL>1</_VERTICAL>
+                                                            <edit>
+                                                                <type>popup</type>
+                                                                <title>edit</title>
+                                                                <module>
+                                                                    <name>wizard_edit</name>
+                                                                </module>
+                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif</icon>
+                                                                <popup_onlyOpenIfSelected>1</popup_onlyOpenIfSelected>
+                                                                <JSopenParams>height=350,width=580,status=0,menubar=0,scrollbars=1</JSopenParams>
+                                                            </edit>
+                                                            <add>
+                                                                <type>script</type>
+                                                                <title>add</title>
+                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif</icon>
+                                                                <module>
+                                                                    <name>wizard_add</name>
+                                                                </module>
+                                                                <params>
+                                                                    <table>tx_styleguide_staticdata</table>
+                                                                    <pid>0</pid>
+                                                                    <setValue>prepend</setValue>
+                                                                </params>
+                                                            </add>
+                                                            <list>
+                                                                <type>script</type>
+                                                                <title>liste</title>
+                                                                <icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif</icon>
+                                                                <module>
+                                                                    <name>wizard_list</name>
+                                                                </module>
+                                                                <params>
+                                                                    <table>tx_styleguide_staticdata</table>
+                                                                    <pid>0</pid>
+                                                                </params>
+                                                            </list>
+                                                        </wizards>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_multiplesidebyside_1>
+                                        </el>
+                                    </ROOT>
+                                </sMultiplesidebyside>
+
+                            </sheets>
+                        </T3DataStructure>
+                    ',
+                ],
+            ],
+        ],
+
+
     ],
 
 
@@ -548,6 +736,8 @@ return [
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4,
+                --div--;in flex,
+                    flex_1,
             ',
         ],
     ],
