@@ -1085,12 +1085,7 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aModuleLabel',
                 1 => 'aModule',
-                2 => '<span class="t3js-icon icon icon-size-default icon-state-default icon-empty-empty" data-identifier="empty-empty">
-	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-empty-empty"></i></span>
-	</span>
-
-</span>',
+                2 => '<span class="t3js-icon icon icon-size-default icon-state-default icon-empty-empty" data-identifier="empty-empty"><span class="icon-markup"><span class="icon-unify"><i class="fa fa-empty-empty"></i></span></span></span>',
                 3 => [
                     'title' => 'aModuleTabLabel',
                     'description' => 'aModuleTabDescription',
@@ -1100,6 +1095,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = $this->subject->addData($input);
 
+        $result['processedTca']['columns']['aField']['config']['items'][0][2] = str_replace([CR, LF, TAB], ['', '', ''], $result['processedTca']['columns']['aField']['config']['items'][0][2]);
         $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
