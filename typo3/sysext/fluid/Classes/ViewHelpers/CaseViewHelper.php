@@ -1,66 +1,88 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+/*                                                                        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\ViewHelpers\DefaultCaseViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper as OriginalSwitchViewHelper;
 
 /**
  * Case view helper that is only usable within the SwitchViewHelper.
- *
- * @see \TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper
+ * @see \TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper
  *
  * @api
  */
-class CaseViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\CaseViewHelper
+class CaseViewHelper extends AbstractViewHelper
 {
     /**
-     * Overrides the "value" argument definition, making it optional.
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @param mixed $value The switch value. If it matches, the child will be rendered
+     * @param bool $default If this is set, this child will be rendered, if none else matches
      *
-     * @return void
+     * @return string the contents of this view helper if $value equals the expression of the surrounding switch view helper, or $default is TRUE. otherwise an empty string
+     * @throws Exception
+     *
+     * @api
      */
-    public function initializeArguments() {
-        parent::initializeArguments();
-        $this->overrideArgument('value', 'mixed', 'Value to match in this case', false);
+    public function render($value = null, $default = false)
+    {
+        return static::renderStatic(
+            array(
+                'value' => $value,
+                'default' => $default
+            ),
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**
      * @param array $arguments
-     * @return void
+     * @param callable $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return mixed|string
+     * @throws Exception
      */
-    public function handleAdditionalArguments(array $arguments) {
-        if (isset($arguments['default'])) {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'];
+        $default = $arguments['default'];
+        $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+        if ($default !== false) {
             GeneralUtility::deprecationLog('Argument "default" on f:case is deprecated - use f:defaultCase instead');
-            if ((bool)$arguments['default']) {
-                // Patch the ViewHelperNode (parse-time only) and change it's class name
-                $attribute = new \ReflectionProperty($this->viewHelperNode, 'viewHelperClassName');
-                $attribute->setAccessible(true);
-                $attribute->setValue($this->viewHelperNode, DefaultCaseViewHelper::class);
-            }
         }
-    }
+        if ($value === null && $default === false) {
+            throw new Exception('The case View helper must have either value or default argument', 1382867521);
+        }
+        $expression = $viewHelperVariableContainer->get(OriginalSwitchViewHelper::class, 'switchExpression');
 
-    /**
-     * @param array $arguments
-     * @return void
-     */
-    public function validateAdditionalArguments(array $arguments) {
-        // Unset the "default" argument and let everything else through to be validated
-        unset($arguments['default']);
-        parent::validateAdditionalArguments($arguments);
+        // non-type-safe comparison by intention
+        if ($default === true || $expression == $value) {
+            $viewHelperVariableContainer->addOrUpdate(OriginalSwitchViewHelper::class, 'break', true);
+            return $renderChildrenClosure();
+        }
+
+        return '';
     }
 }
