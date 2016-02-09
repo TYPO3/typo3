@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Form engine elements - flex child flex_3 inline_1',
+        'title' => 'Form engine - flex child flex_3 inline_1',
         'label' => 'text_1',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
         'tstamp' => 'tstamp',
