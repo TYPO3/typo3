@@ -398,112 +398,13 @@ return array(
                 ),
             ),
         ),
-        'palette_1_1' => array(
-            'exclude' => 0,
-            'label' => 'checkbox is type check',
-            'config' => array(
-                'type' => 'check',
-                'default' => 1,
-            ),
-        ),
-        'palette_1_2' => array(
-            'exclude' => 0,
-            'label' => 'checkbox type is user',
-            'config' => array(
-                'default' => true,
-                'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUserPalette->render',
-            ),
-        ),
-        'palette_1_3' => array(
-            'exclude' => 0,
-            'label' => 'checkbox is type check',
-            'config' => array(
-                'type' => 'check',
-                'default' => 1,
-            ),
-        ),
-        'palette_2_1' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_3_1' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_3_2' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_4_1' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_4_2' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_4_3' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_4_4' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_5_1' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_5_2' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_6_1' => array(
-            'label' => 'PALETTE: Simple field with palette below',
-            'exclude' => 1,
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_6_2' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-        'palette_6_3' => array(
-            'label' => 'Palette Field',
-            'config' => array(
-                'type' => 'input',
-            ),
-        ),
-
 
         'wizard_1' => array(
             'label' => 'WIZARD: 1 vertical, edit, add, list',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_styleguide_forms_staticdata',
+                'foreign_table' => 'tx_styleguide_staticdata',
                 'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
@@ -530,7 +431,7 @@ return array(
                             'name' => 'wizard_add',
                         ),
                         'params' => array(
-                            'table' => 'tx_styleguide_forms_staticdata',
+                            'table' => 'tx_styleguide_staticdata',
                             'pid' => '0',
                             'setValue' => 'prepend',
                         ),
@@ -543,7 +444,7 @@ return array(
                             'name' => 'wizard_list',
                         ),
                         'params' => array(
-                            'table' => 'tx_styleguide_forms_staticdata',
+                            'table' => 'tx_styleguide_staticdata',
                             'pid' => '0',
                         ),
                     ),
@@ -590,7 +491,7 @@ return array(
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'disable_controls' => 'browser',
                 'maxitems' => 999,
                 'wizards' => array(
@@ -606,7 +507,7 @@ return array(
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'disable_controls' => 'browser',
                 'maxitems' => 999,
                 'wizards' => array(
@@ -752,13 +653,6 @@ return array(
 					flex_1, flex_2, flex_3, flex_4, flex_5,
 				--div--;Inline,
 					inline_1, inline_2, inline_3, inline_4, inline_5,
-				--div--;Palettes,
-					--palette--;Palettes 1;palettes_1,
-					--palette--;Palettes 2;palettes_2,
-					--palette--;Palettes 3;palettes_3,
-					--palette--;;palettes_4,
-					--palette--;Palettes 5;palettes_5,
-					palette_6_1;Field with palette below, --palette--;;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6, wizard_8,
 			',
@@ -782,26 +676,6 @@ return array(
     ),
 
     'palettes' => array(
-        'palettes_1' => array(
-            'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
-            'canNotCollapse' => 1,
-        ),
-        'palettes_2' => array(
-            'showitem' => 'palette_2_1',
-        ),
-        'palettes_3' => array(
-            'showitem' => 'palette_3_1, palette_3_2',
-        ),
-        'palettes_4' => array(
-            'showitem' => 'palette_4_1, palette_4_2, palette_4_3, --linebreak--, palette_4_4',
-        ),
-        'palettes_5' => array(
-            'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
-            'canNotCollapse' => 1,
-        ),
-        'palettes_6' => array(
-            'showitem' => 'palette_6_2, palette_6_3',
-        ),
         'visibility' => array(
             'showitem' => 'hidden;Shown in frontend',
             'canNotCollapse' => 1,

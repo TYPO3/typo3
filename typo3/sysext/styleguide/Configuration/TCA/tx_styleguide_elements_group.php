@@ -91,11 +91,11 @@ return [
         ],
         'group_db_3' => [
             'exclude' => 1,
-            'label' => 'group_db_3 allowed=tx_styleguide_forms_staticdata, wizard suggest, disable_controls=browser',
+            'label' => 'group_db_3 allowed=tx_styleguide_staticdata, wizard suggest, disable_controls=browser',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'disable_controls' => 'browser',
                 'wizards' => [
                     'suggest' => [
@@ -107,11 +107,11 @@ return [
         ],
         'group_db_4' => [
             'exclude' => 1,
-            'label' => 'group_db_4 allowed=tx_styleguide_forms_staticdata, show_thumbs=true, size=1, wizard suggest',
+            'label' => 'group_db_4 allowed=tx_styleguide_staticdata, show_thumbs=true, size=1, wizard suggest',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tx_styleguide_forms_staticdata',
+                'allowed' => 'tx_styleguide_staticdata',
                 'show_thumbs' => true,
                 'size' => 1,
                 'maxitems' => 1,

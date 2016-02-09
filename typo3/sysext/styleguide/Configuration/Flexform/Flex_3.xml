@@ -213,7 +213,7 @@
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
+								<foreign_table>tx_styleguide_staticdata</foreign_table>
 								<rootLevel>1</rootLevel>
 								<size>5</size>
 								<autoSizeMax>5</autoSizeMax>
@@ -256,7 +256,7 @@
 											<name>wizard_add</name>
 										</module>
 										<params>
-											<table>tx_styleguide_forms_staticdata</table>
+											<table>tx_styleguide_staticdata</table>
 											<pid>0</pid>
 											<setValue>prepend</setValue>
 										</params>
@@ -269,7 +269,7 @@
 											<name>wizard_list</name>
 										</module>
 										<params>
-											<table>tx_styleguide_forms_staticdata</table>
+											<table>tx_styleguide_staticdata</table>
 											<pid>0</pid>
 										</params>
 									</list>
@@ -285,7 +285,7 @@
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
-								<allowed>tx_styleguide_forms_staticdata</allowed>
+								<allowed>tx_styleguide_staticdata</allowed>
 								<wizards>
 									<suggest>
 										<type>suggest</type>

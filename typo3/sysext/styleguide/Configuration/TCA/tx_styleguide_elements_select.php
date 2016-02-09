@@ -110,8 +110,8 @@ return [
                     ['static -1', -1],
                     ['DB values', '--div--'],
                 ],
-                'foreign_table' => 'tx_styleguide_forms_staticdata',
-                'foreign_table_where' => 'AND tx_styleguide_forms_staticdata.value_1 LIKE \'%foo%\' ORDER BY uid',
+                'foreign_table' => 'tx_styleguide_staticdata',
+                'foreign_table_where' => 'AND tx_styleguide_staticdata.value_1 LIKE \'%foo%\' ORDER BY uid',
                 // @todo: docu of rootLevel says, foreign_table_where is *ignored*, which is NOT true.
                 'rootLevel' => 1,
                 'foreign_table_prefix' => 'A prefix: ',
@@ -399,7 +399,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'tx_styleguide_forms_staticdata',
+                'foreign_table' => 'tx_styleguide_staticdata',
                 'rootLevel' => 1,
                 'size' => 5,
                 'autoSizeMax' => 20,
@@ -426,7 +426,7 @@ return [
                             'name' => 'wizard_add',
                         ],
                         'params' => [
-                            'table' => 'tx_styleguide_forms_staticdata',
+                            'table' => 'tx_styleguide_staticdata',
                             'pid' => '0',
                             'setValue' => 'prepend',
                         ],
@@ -439,7 +439,7 @@ return [
                             'name' => 'wizard_list',
                         ],
                         'params' => [
-                            'table' => 'tx_styleguide_forms_staticdata',
+                            'table' => 'tx_styleguide_staticdata',
                             'pid' => '0',
                         ],
                     ],
