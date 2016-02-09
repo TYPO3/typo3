@@ -67,26 +67,6 @@ return array(
         ),
 
 
-        'flex_3' => array(
-            'exclude' => 1,
-            'label' => 'FLEX: 3 complex flexform in an external file',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => 'FILE:EXT:styleguide/Configuration/Flexform/Flex_3.xml',
-                ),
-            ),
-        ),
-        'flex_5' => array(
-            'exclude' => 1,
-            'label' => 'FLEX: 5 condition',
-            'config' => array(
-                'type' => 'flex',
-                'ds' => array(
-                    'default' => 'FILE:EXT:styleguide/Configuration/Flexform/Condition.xml',
-                ),
-            ),
-        ),
 
 
         'inline_1' => array(
@@ -292,20 +272,10 @@ return array(
     ),
 
 
-    'interface' => array(
-        'showRecordFieldList' => 'hidden,starttime,endtime,
-			type_field,
-			flex_1, flex_2, flex_3,
-			inline_1, inline_2, inline_3, inline_4, inline_5,
-			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7, wizard_8,
-			',
-    ),
 
     'types' => array(
         '0' => array(
             'showitem' => '
-				--div--;Flex,
-                    flex_3, flex_4, flex_5,
 				--div--;Inline,
 					inline_1, inline_2, inline_3, inline_4, inline_5,
 			',
