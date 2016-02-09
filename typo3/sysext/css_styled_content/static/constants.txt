@@ -4,10 +4,8 @@ styles.content >
 content {
     # cat=content/cHeader/h0; type=int[1-5]; label=Default Header type: Enter the number of the header layout to be used by default.
   defaultHeaderType = 1
-    # cat=advanced/links; type=small; label=Pageframe object: The name of the "contentframe". Normally set to "page" if the site has a frameset. Otherwise it should be an empty value. This is important, as it determines the target of internal links!
-  pageFrameObj =
 
-  shortcut.tables = tt_content,tt_address,tt_links,tt_guest,tt_board,tt_calender,tt_products,tt_news,tt_rating,tt_poll
+  shortcut.tables = tt_content,tt_address,tt_products,tt_news
 
     # cat=content/other/a; type=small; label= Content Element margins (before): Space before each content element.
   spaceBefore = 0
@@ -85,14 +83,6 @@ styles.content.uploads {
   jumpurl =
     # cat=content/cUploads; type=string; label=Labels of file sizes: The labels for bytes, kilobytes, megabytes and gigabytes
   filesizeBytesLabels = " | K| M| G"
-}
-
-styles.content.mailform {
-  target = {$PAGE_TARGET}
-    # cat=content/cMailform; type=; label= Message, Formmail OK: This is the message (if any) that is popped-up (JavaScript) when a user clicks "send" with an email-form
-  goodMess =
-    # cat=content/cMailform; type=; label= Message, Formmail Missing: This is the message that is popped-up when a user has NOT filled required fields in an email-form
-  badMess =
 }
 
 styles.content.table {

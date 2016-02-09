@@ -1774,14 +1774,8 @@ tt_content.default {
 }
 
 # *********************************************************************
-# ACCESSIBILTY MODE
+# ACCESSIBILITY MODE
 # *********************************************************************
-
-
-
-
-
-
 
 plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Headers */

@@ -1341,13 +1341,6 @@ Notice: In TYPO3 4.0 and later, CSS Styled Content is configured to produce acce
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="badMess" type="string">
-			<description><![CDATA[Prefixed Message for the formevaluation in case of missing required fields.
-This message is shown above the list of fields.
-
-NOTE: May be overridden by the property override feature of the formdata (see above)]]></description>
-			<default><![CDATA[No message]]></default>
-		</property>
 		<property name="commentWrap" type="stdWrap">
 			<description><![CDATA[Comments: Wrap for comments IF you use ###COMMENT###]]></description>
 			<default><![CDATA[
@@ -1450,12 +1443,6 @@ NOTE: May be overridden by the property override feature of the formdata (see ab
 <form name="...">]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>
-		<property name="goodMess" type="string">
-			<description><![CDATA[Message for the formevaluation function in case of correctly filled form.
-
-NOTE: May be overridden by the property override feature of the formdata (see above)]]></description>
-			<default><![CDATA[No message]]></default>
 		</property>
 		<property name="hiddenFields" type="cObjArray">
 			<description><![CDATA[Used to set hiddenFields from TS.
