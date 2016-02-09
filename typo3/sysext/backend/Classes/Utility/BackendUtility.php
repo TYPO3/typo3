@@ -3238,9 +3238,11 @@ class BackendUtility
      * @param string $linkTitle title for the link tag
      * @param string $linkText optional link text after the icon
      * @return string A complete <a href=""> tag
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use getModuleUrl and IconFactory methods directly
      */
     public static function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return '<a href="' . htmlspecialchars(self::getModuleUrl('web_list', $urlParameters)) . '" title="' . htmlspecialchars($linkTitle) . '">' . $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . htmlspecialchars($linkText) . '</a>';

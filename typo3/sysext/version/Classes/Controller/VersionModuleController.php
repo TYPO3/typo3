@@ -247,10 +247,13 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
             }
             // If access to Web>List for user, then link to that module.
-            $buttons['record_list'] = BackendUtility::getListViewLink(array(
-                'id' => $this->pageinfo['uid'],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            ), '', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
+            $buttons['record_list'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl(
+                'web_list',
+                [
+                   'id' => $this->pageinfo['uid'],
+                   'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ]
+            )) . '">' . $this->moduleTemplate->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList')) . '</a>';
         }
         return $buttons;
     }

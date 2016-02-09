@@ -366,12 +366,13 @@ function jumpToUrl(URL) {
     public function viewPageIcon($id)
     {
         // If access to Web>List for user, then link to that module.
-        $str = BackendUtility::getListViewLink(array(
+        $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', [
             'id' => $id,
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-        ), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
+            'returnUrl' > GeneralUtility::getIndpEnv('REQUEST_URI')
+        ])) . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList')) . '">' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</a>';
+
         // Make link to view page
-        $str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+        $str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
         return $str;
     }
 
