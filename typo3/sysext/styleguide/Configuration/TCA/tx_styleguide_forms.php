@@ -22,8 +22,6 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-
-        'type' => 'type_field',
     ),
 
     'columns' => array(
@@ -66,20 +64,6 @@ return array(
             ),
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
-        ),
-
-
-        'type_field' => array(
-            'exclude' => 1,
-            'label' => 'TYPE FIELD',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('type standard', '0'),
-                    array('type test', 'test'),
-                ),
-            ),
         ),
 
 
@@ -647,30 +631,12 @@ return array(
     'types' => array(
         '0' => array(
             'showitem' => '
-				--div--;Type,
-					type_field,
 				--div--;Flex,
 					flex_1, flex_2, flex_3, flex_4, flex_5,
 				--div--;Inline,
 					inline_1, inline_2, inline_3, inline_4, inline_5,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6, wizard_8,
-			',
-            'columnsOverrides' => array(
-                't3editor_2' => array(
-                    'config' => array(
-                        'renderType' => 't3editor',
-                        'format' => 'html',
-                    ),
-                ),
-            ),
-        ),
-        'test' => array(
-            'showitem' => '
-				--div--;Type,
-					type_field,
-				--div--;t3editor,
-					t3editor_2;T3EDITOR: 2 Should be usual text field,
 			',
         ),
     ),

@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Form engine default values for new records',
+        'title' => 'Form engine - default values new records',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
