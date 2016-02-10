@@ -1,6 +1,13 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser:
-            url: http://localhost:8000
+        - WebDriver
         - \Helper\Acceptance
+        - Asserts
+        - \Helper\Unit
+    config:
+      WebDriver:
+        window_size: 1024x768
+        url: http://localhost:8000
+        browser: firefox
+        http_proxy: direct

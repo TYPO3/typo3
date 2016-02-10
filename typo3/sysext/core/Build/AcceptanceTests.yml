@@ -2,8 +2,9 @@ actor: Tester
 paths:
     tests: Configuration/Acceptance
     log: ../../../../typo3temp/var/logs/codeception
-    data: ''
+    data: Configuration/Acceptance/Data
     support: Configuration/Acceptance/Support
+    envs: Configuration/Acceptance/Envs
 settings:
     colors: true
     memory_limit: 1024M
