@@ -8173,14 +8173,15 @@ class DataHandler
                     ->from('pages', 'B')
                     ->where(
                         $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid'))
+                        $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid')),
+                        $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     )
                     ->execute();
 
                 $pid_tmp = 0;
                 while ($row_tmp = $siblings->fetch()) {
                     $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
-                    $pid_tmp = $row_tmp['pid'];
+                    $pid_tmp = (int)$row_tmp['pid'];
                     // Add children as well:
                     if ($TSConfig['clearCache_pageSiblingChildren']) {
                         $siblingChildrenQuery = $connectionPool->getQueryBuilderForTable('pages');
@@ -8201,7 +8202,9 @@ class DataHandler
                     }
                 }
                 // Finally, add the parent page as well:
-                $pageIdsThatNeedCacheFlush[] = (int)$pid_tmp;
+                if ($pid_tmp > 0) {
+                    $pageIdsThatNeedCacheFlush[] = $pid_tmp;
+                }
                 // Add grand-parent as well:
                 if ($TSConfig['clearCache_pageGrandParent']) {
                     $parentQuery = $connectionPool->getQueryBuilderForTable('pages');
