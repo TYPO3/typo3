@@ -1041,6 +1041,7 @@ CREATE TABLE tx_styleguide_inline_fal (
 
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 	inline_2 int(11) DEFAULT '0' NOT NULL,
+	inline_flex_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
