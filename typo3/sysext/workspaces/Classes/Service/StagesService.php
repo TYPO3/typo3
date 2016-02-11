@@ -111,7 +111,7 @@ class StagesService {
 				break;
 			}
 		}
-		if ($found === FALSE) {
+		if ($found === FALSE || !$this->isStageAllowedForUser($currentStage['uid'])) {
 			$previousStage = array();
 		}
 		return array(
@@ -160,7 +160,7 @@ class StagesService {
 				break;
 			}
 		}
-		if ($found === FALSE) {
+		if ($found === FALSE || !$this->isStageAllowedForUser($currentStage['uid'])) {
 			$nextStage = array();
 		}
 		return array(
