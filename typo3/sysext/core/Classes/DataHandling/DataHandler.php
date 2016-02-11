@@ -7302,11 +7302,11 @@ class DataHandler {
 					$pageUid = $uid;
 				}
 				// Builds list of pages on the SAME level as this page (siblings)
-				$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0');
+				$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.pid AS pid, B.uid AS uid', 'pages A, pages B', 'A.uid=' . (int)$pageUid . ' AND B.pid=A.pid AND B.deleted=0 AND A.pid >= 0');
 				$pid_tmp = 0;
 				while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
 					$pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
-					$pid_tmp = $row_tmp['pid'];
+					$pid_tmp = (int)$row_tmp['pid'];
 					// Add children as well:
 					if ($TSConfig['clearCache_pageSiblingChildren']) {
 						$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$row_tmp['uid'] . ' AND deleted=0');
@@ -7318,7 +7318,9 @@ class DataHandler {
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
 				// Finally, add the parent page as well:
-				$pageIdsThatNeedCacheFlush[] = (int)$pid_tmp;
+				if ($pid_tmp > 0) {
+					$pageIdsThatNeedCacheFlush[] = (int)$pid_tmp;
+				}
 				// Add grand-parent as well:
 				if ($TSConfig['clearCache_pageGrandParent']) {
 					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', 'pages', 'uid=' . (int)$pid_tmp);
