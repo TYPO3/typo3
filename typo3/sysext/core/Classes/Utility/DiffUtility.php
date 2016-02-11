@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Granularity\Word;
 
 /**
  * This class has functions which generates a difference output of a content string
@@ -40,7 +41,7 @@ class DiffUtility
             $str1 = strip_tags($str1);
             $str2 = strip_tags($str2);
         }
-        $diff = new Diff();
+        $diff = new Diff(new Word());
         return $diff->render($str1, $str2);
     }
 }
