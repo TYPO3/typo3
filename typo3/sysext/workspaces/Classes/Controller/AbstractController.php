@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract action controller.
@@ -73,7 +74,9 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
-        $this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/module.css');
+        $cssFile = 'EXT:workspaces/Resources/Public/Css/module.css';
+        $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
+        $this->pageRenderer->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
         $this->pageRenderer->addInlineLanguageLabelArray(array(
             'title' => $GLOBALS['LANG']->getLL('title'),
             'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),

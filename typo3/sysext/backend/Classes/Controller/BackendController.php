@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
@@ -182,16 +183,16 @@ class BackendController
             foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
                 if (is_array($moduleConfig['cssFiles'])) {
                     foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
-                        $files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssFile));
-                        $files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
-                        $TYPO3backend->addCssFile($cssFileName, '../' . $files[0]);
+                        $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
+                        $cssFile = PathUtility::getAbsoluteWebPath($cssFile);
+                        $TYPO3backend->addCssFile($cssFileName, $cssFile);
                     }
                 }
                 if (is_array($moduleConfig['jsFiles'])) {
                     foreach ($moduleConfig['jsFiles'] as $jsFile) {
-                        $files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsFile));
-                        $files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
-                        $TYPO3backend->addJavascriptFile('../' . $files[0]);
+                        $jsFile = GeneralUtility::getFileAbsFileName($jsFile);
+                        $jsFile = PathUtility::getAbsoluteWebPath($jsFile);
+                        $TYPO3backend->addJavascriptFile($jsFile);
                     }
                 }
             }

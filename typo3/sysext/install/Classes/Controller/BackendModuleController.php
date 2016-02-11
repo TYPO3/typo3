@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
@@ -67,16 +68,15 @@ class BackendModuleController
             /** @var StandaloneView $view */
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html', false)
+                'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html')
             );
             $token = $formProtection->generateToken('installTool');
             $view->assign('installToolEnableToken', $token);
             /** @var ModuleTemplate $moduleTemplate */
             $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-            $pageRenderer = $moduleTemplate->getPageRenderer();
-            $pageRenderer->addCssFile(
-                ExtensionManagementUtility::extRelPath('install') . 'Resources/Public/Css/BackendModule/ShowEnableInstallToolButton.css'
-            );
+            $cssFile = 'EXT:install/Resources/Public/Css/BackendModule/ShowEnableInstallToolButton.css';
+            $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
+            $moduleTemplate->getPageRenderer()->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
             $moduleTemplate->setContent($view->render());
             $response->getBody()->write($moduleTemplate->renderContent());
         }

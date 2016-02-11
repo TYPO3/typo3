@@ -177,7 +177,6 @@ class SelectImage extends ElementBrowser
         $this->doc->bodyTagAdditions = 'onload="SelectImage.initEventListeners();"';
 
         $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
 		}');

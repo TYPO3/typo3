@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -1561,31 +1562,32 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
             }
-            $coreRelPath = ExtensionManagementUtility::extRelPath('core');
+            $corePath = ExtensionManagementUtility::extPath('core', 'Resources/Public/JavaScript/Contrib/');
+            $corePath = PathUtility::getAbsoluteWebPath($corePath);
             // first, load all paths for the namespaces, and configure contrib libs.
             $this->requireJsConfig['paths'] = array(
-                'jquery-ui' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery-ui',
-                'datatables' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.dataTables',
-                'nprogress' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/nprogress',
-                'moment' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/moment',
-                'cropper' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/cropper.min',
-                'imagesloaded' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
-                'bootstrap' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
-                'twbs/bootstrap-datetimepicker' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
-                'autosize' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/autosize',
-                'taboverride' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/taboverride.min',
-                'twbs/bootstrap-slider' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
-                'jquery/autocomplete' => $this->backPath . $coreRelPath . 'Resources/Public/JavaScript/Contrib/jquery.autocomplete',
+                'jquery-ui' => $corePath . 'jquery-ui',
+                'datatables' => $corePath . 'jquery.dataTables',
+                'nprogress' => $corePath . 'nprogress',
+                'moment' => $corePath . 'moment',
+                'cropper' => $corePath . 'cropper.min',
+                'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
+                'bootstrap' => $corePath . 'bootstrap/bootstrap',
+                'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',
+                'autosize' => $corePath . 'autosize',
+                'taboverride' => $corePath . 'taboverride.min',
+                'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
+                'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             );
             // get all extensions that are loaded
-            $loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+            $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
             foreach ($loadedExtensions as $packageName) {
                 $fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
                 $fullJsPath = GeneralUtility::getFileAbsFileName($fullJsPath);
-                $fullJsPath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath(PATH_typo3, $fullJsPath);
+                $fullJsPath = PathUtility::getAbsoluteWebPath($fullJsPath);
                 $fullJsPath = rtrim($fullJsPath, '/');
                 if ($fullJsPath) {
-                    $this->requireJsConfig['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $this->backPath . $fullJsPath;
+                    $this->requireJsConfig['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
                 }
             }
 

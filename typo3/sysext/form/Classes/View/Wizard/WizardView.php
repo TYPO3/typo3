@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
 
 /**
@@ -250,16 +251,14 @@ class WizardView
      */
     protected function loadCss()
     {
-        // @todo Set to TRUE when finished
-        $compress = false;
         $cssFiles = array(
             'Wizard/Form.css',
             'Wizard/Wizard.css'
         );
-        $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
+        $baseUrl = ExtensionManagementUtility::extPath('form') . 'Resources/Public/CSS/';
         // Load the wizards css
         foreach ($cssFiles as $cssFile) {
-            $this->getPageRenderer()->addCssFile($baseUrl . $cssFile, 'stylesheet', 'all', '', $compress, false);
+            $this->getPageRenderer()->addCssFile(PathUtility::getAbsoluteWebPath($baseUrl . $cssFile));
         }
     }
 

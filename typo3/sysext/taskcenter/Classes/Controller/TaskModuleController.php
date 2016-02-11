@@ -57,7 +57,8 @@ class TaskModuleController extends BaseScriptClass
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
+        $cssFile = GeneralUtility::getFileAbsFileName('EXT:taskcenter/Resources/Public/Css/styles.css');
+        $this->moduleTemplate->getPageRenderer()->addCssFile(PathUtility::getAbsoluteWebPath($cssFile));
         $this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
         $this->MCONF = array(
             'name' => $this->moduleName
