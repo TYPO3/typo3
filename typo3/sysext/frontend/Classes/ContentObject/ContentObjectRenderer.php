@@ -446,13 +446,6 @@ class ContentObjectRenderer
     public $parentRecord = array();
 
     /**
-     * Is set to 1 if the instance of this cObj is executed from a *_INT plugin (see pagegen, bottom of document)
-     *
-     * @var bool
-     */
-    public $INT_include = 0;
-
-    /**
      * This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
      *
      * @var array

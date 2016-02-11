@@ -3400,7 +3400,6 @@ class TypoScriptFrontendController
                     $incContent = '';
                     $INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
                     /* @var $INTiS_cObj ContentObjectRenderer */
-                    $INTiS_cObj->INT_include = 1;
                     switch ($INTiS_config[$INTiS_key]['type']) {
                         case 'COA':
                             $incContent = $INTiS_cObj->cObjGetSingle('COA', $INTiS_config[$INTiS_key]['conf']);
