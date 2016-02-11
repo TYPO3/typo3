@@ -1,7 +1,7 @@
 <?php
-return Array(
-    'ctrl' => Array(
-        'title' => 'Form engine tests - mn symmetric relation hotel',
+return [
+    'ctrl' => [
+        'title' => 'Form engine - inline mn symmetric',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -11,71 +11,77 @@ return Array(
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'sortby' => 'sorting',
         'delete' => 'deleted',
-        'enablecolumns' => Array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
-        ),
+        ],
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
-    ),
-    'columns' => Array(
-        'sys_language_uid' => array(
+    ],
+
+
+    'columns' => [
+
+
+        'sys_language_uid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-                )
-            )
-        ),
-        'l18n_parent' => array(
+                'items' => [
+                    ['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
+                    ['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]
+                ]
+            ]
+        ],
+        'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                ),
-                'foreign_table' => 'tx_styleguide_mnsymmetric_hotel',
-                'foreign_table_where' => 'AND tx_styleguide_mnsymmetric_hotel.pid=###CURRENT_PID### AND tx_styleguide_mnsymmetric_hotel.sys_language_uid IN (-1,0)',
-            )
-        ),
-        'l18n_diffsource' => array(
-            'config' => array(
+                'items' => [
+                    ['', 0],
+                ],
+                'foreign_table' => 'tx_styleguide_inline_mnsymmetric',
+                'foreign_table_where' => 'AND tx_styleguide_inline_mnsymmetric.pid=###CURRENT_PID### AND tx_styleguide_inline_mnsymmetric.sys_language_uid IN (-1,0)',
+            ]
+        ],
+        'l18n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough'
-            )
-        ),
-        'hidden' => Array(
+            ]
+        ],
+        'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => Array(
+            'config' => [
                 'type' => 'check',
                 'default' => '0'
-            )
-        ),
-        'title' => Array(
+            ]
+        ],
+
+
+        'title' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
             'label' => 'Title',
-            'config' => Array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'required',
-            )
-        ),
-        'branches' => Array(
+            ]
+        ],
+        'branches' => [
             'exclude' => 1,
-            'label' => 'Branches',
-            'config' => Array(
+            'label' => 'branches',
+            'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_mnsymmetric_hotel_rel',
+                'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
                 'foreign_field' => 'hotelid',
                 'foreign_sortby' => 'hotelsort',
                 'foreign_label' => 'branchid',
@@ -83,26 +89,30 @@ return Array(
                 'symmetric_sortby' => 'branchsort',
                 'symmetric_label' => 'hotelid',
                 'maxitems' => 10,
-                'appearance' => array(
+                'appearance' => [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
-                ),
-                'behaviour' => array(
+                ],
+                'behaviour' => [
                     'localizationMode' => 'select',
-                ),
-            )
-        ),
-    ),
-    'interface' => Array(
-        'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,branches'
-    ),
-    'types' => Array(
-        '0' => Array(
-            'showitem' => '--div--;General, title, branches,
-                --div--;Visibility, sys_language_uid, l18n_parent,
-                l18n_diffsource, hidden'
-        )
-    ),
-);
+                ],
+            ]
+        ],
+
+
+    ],
+
+
+    'types' => [
+        '0' => [
+            'showitem' => '
+                --div--;General, title, branches,
+                --div--;Visibility, sys_language_uid, l18n_parent,l18n_diffsource, hidden
+            '
+        ]
+    ],
+
+
+];

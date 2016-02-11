@@ -1,44 +1,42 @@
 <?php
-return array(
-    'ctrl' => array(
-        'title'    => 'Form engine tests - inline_3 child',
+return [
+    'ctrl' => [
+        'title'    => 'Form engine - inline use combination child',
         'label' => 'input_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
-    ),
+        ],
+    ],
 
-    'columns' => array(
-        'input_1' => array(
+
+    'columns' => [
+
+
+        'input_1' => [
             'label' => 'input_1',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-    ),
+            ],
+        ],
 
-    'interface' => array(
-        'showRecordFieldList' => 'input_1',
-    ),
 
-    'types' => array(
-        '1' => array(
+    ],
+
+
+    'types' => [
+        '1' => [
             'showitem' => 'input_1',
-        ),
-    ),
+        ],
+    ],
 
-    'palettes' => array(
-        '1' => array(
-            'showitem' => '',
-        ),
-    ),
-);
+
+];

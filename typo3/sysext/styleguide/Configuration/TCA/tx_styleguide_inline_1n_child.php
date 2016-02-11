@@ -1,8 +1,8 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'Form engine - required child inline_1',
-        'label' => 'uid',
+        'title' => 'Form engine - inline 1:n foreign field child',
+        'label' => 'input_1',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -17,7 +17,6 @@ return [
 
 
         'sys_language_uid' => [
-            'exclude' => 1,
             'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
             'config' => [
                 'type' => 'select',
@@ -32,7 +31,6 @@ return [
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
@@ -40,8 +38,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_styleguide_forms_inline_2_child2',
-                'foreign_table_where' => 'AND tx_styleguide_forms_inline_2_child2.pid=###CURRENT_PID### AND tx_styleguide_forms_inline_2_child2.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
+                'foreign_table_where' => 'AND tx_styleguide_forms_inline_2_child1.pid=###CURRENT_PID### AND tx_styleguide_forms_inline_2_child1.sys_language_uid IN (-1,0)',
             ]
         ],
         'l18n_diffsource' => [
@@ -54,7 +52,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'default' => '0'
-            ],
+            ]
         ],
 
 
@@ -69,9 +67,11 @@ return [
             ]
         ],
         'input_1' => [
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'input_1',
             'config' => [
                 'type' => 'input',
+                'size' => '30',
             ],
         ],
 
@@ -81,7 +81,10 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'input_1',
+            'showitem' => '
+                --div--;General, input_1,
+                --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
+            ',
         ],
     ],
 
