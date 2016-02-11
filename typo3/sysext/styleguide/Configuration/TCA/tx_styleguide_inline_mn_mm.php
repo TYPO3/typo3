@@ -13,7 +13,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg',
+        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],

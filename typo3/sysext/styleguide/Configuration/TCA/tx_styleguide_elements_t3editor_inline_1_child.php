@@ -3,7 +3,7 @@ return [
     'ctrl' => [
         'title' => 'Form engine elements - t3editor child inline_1',
         'label' => 't3editor_1',
-        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
+        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',

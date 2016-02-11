@@ -4,7 +4,7 @@ return [
         'title' => 'Form engine - static data',
         'label' => 'value_1',
         'rootLevel' => 1,
-        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
+        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
     ],
 
     'columns' => [
