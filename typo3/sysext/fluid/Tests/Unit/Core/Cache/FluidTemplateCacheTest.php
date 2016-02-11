@@ -51,7 +51,7 @@ class FluidTemplateCacheTest extends UnitTestCase
         $backend = $this->getMock(PhpCapableBackendInterface::class);
         $backend->expects($this->once())->method('set')->with(
             'test',
-            '<?php' . PHP_EOL . 'test' . PHP_EOL . '#',
+            '<?php' . LF . 'test' . LF . '#',
             array('foobar'),
             $this->anything()
         );
@@ -67,11 +67,11 @@ class FluidTemplateCacheTest extends UnitTestCase
         $backend = $this->getMock(PhpCapableBackendInterface::class);
         $backend->expects($this->once())->method('set')->with(
             'test',
-            '<?php' . PHP_EOL . 'test' . PHP_EOL . '#',
+            '<?php' . LF . 'test' . LF . '#',
             array('foobar'),
             $this->anything()
         );
         $instance = new FluidTemplateCache('dummy', $backend);
-        $instance->set('test', '<?php' . PHP_EOL . 'test', array('foobar'));
+        $instance->set('test', '<?php' . LF . 'test', array('foobar'));
     }
 }
