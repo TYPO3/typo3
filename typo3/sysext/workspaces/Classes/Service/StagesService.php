@@ -118,7 +118,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 break;
             }
         }
-        if ($found === false) {
+        if ($found === false || !$this->isStageAllowedForUser($currentStage['uid'])) {
             $previousStage = array();
         }
         return array(
@@ -166,7 +166,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 break;
             }
         }
-        if ($found === false) {
+        if ($found === false || !$this->isStageAllowedForUser($currentStage['uid'])) {
             $nextStage = array();
         }
         return array(
