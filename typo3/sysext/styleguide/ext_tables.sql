@@ -1189,6 +1189,8 @@ CREATE TABLE tx_styleguide_inline_mn_mm (
 	parentsort int(10) DEFAULT '0' NOT NULL,
 	childsort int(10) DEFAULT '0' NOT NULL,
 
+	check_1 int(11) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

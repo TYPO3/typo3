@@ -98,13 +98,19 @@ return [
                 'type' => 'passthrough',
             ]
         ],
+        'check_1' => [
+            'label' => 'check_1',
+            'config' => [
+                'type' => 'check',
+            ],
+        ],
     ],
 
 
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, title, parentid, childid,
+                --div--;General, title, parentid, childid, check_1,
                 --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
