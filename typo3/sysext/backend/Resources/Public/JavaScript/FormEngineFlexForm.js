@@ -109,6 +109,7 @@ define(['jquery',
 
 				// allow the toggle open/close of the main selection
 				me.$el.on('click', opts.sectionToggleButtonSelector, function(evt) {
+					evt.stopPropagation();
 					evt.preventDefault();
 					var $sectionEl = $(this).closest(opts.sectionSelector);
 					me.toggleSection($sectionEl);
