@@ -23,13 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FlexFormTools
 {
     /**
-     * If set, the charset of data XML is converted to system charset.
-     *
-     * @var bool
-     */
-    public $convertCharset = false;
-
-    /**
      * If set, section indexes are re-numbered before processing
      *
      * @var bool
@@ -104,17 +97,8 @@ class FlexFormTools
         $dataStructArray = BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
         // If data structure was ok, proceed:
         if (is_array($dataStructArray)) {
-            // Get flexform XML data:
-            $xmlData = $row[$field];
-            // Convert charset:
-            if ($this->convertCharset) {
-                $xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
-                $storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
-                if ($storeInCharset) {
-                    $xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, 'utf-8', 1);
-                }
-            }
-            $editData = GeneralUtility::xml2array($xmlData);
+            // Get flexform XML data
+            $editData = GeneralUtility::xml2array($row[$field]);
             if (!is_array($editData)) {
                 return 'Parsing error: ' . $editData;
             }
