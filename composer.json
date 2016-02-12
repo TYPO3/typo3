@@ -36,7 +36,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
-		"psr/log": "1.0.*@dev",
+		"psr/log": "1.0.0",
 		"pear/http_request2": "~2.2.1",
 		"swiftmailer/swiftmailer": "~5.4.1",
 		"symfony/console": "^3.0",
