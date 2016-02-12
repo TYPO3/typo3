@@ -2779,7 +2779,7 @@ class TypoScriptFrontendController {
 		// Setting sys_language_uid inside sys-page:
 		$this->sys_page->sys_language_uid = $this->sys_language_uid;
 		// If default translation is not available:
-		if ((!$this->sys_language_uid || !$this->sys_language_content) && $this->page['l18n_cfg'] & 1) {
+		if ((!$this->sys_language_uid || !$this->sys_language_content) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
 			$message = 'Page is not available in default language.';
 			GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			$this->pageNotFoundAndExit($message);

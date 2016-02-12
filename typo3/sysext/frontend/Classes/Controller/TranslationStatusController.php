@@ -121,7 +121,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$data['row']['uid'], $GLOBALS['BACK_PATH'], '', '', '', '&L=###LANG_UID###')
 				) . '" title="' . $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_viewPage') . '">' .
 				IconUtility::getSpriteIcon('actions-document-view') . '</a>';
-			$status = $data['row']['l18n_cfg'] & 1 ? 'c-blocked' : 'c-ok';
+			$status = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'c-blocked' : 'c-ok';
 			// Create links:
 			$info = '';
 			$editUid = $data['row']['uid'];
@@ -137,7 +137,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
 			$info .= '&nbsp;';
-			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
+			$info .= \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
 			$info .= \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.2', TRUE) . '">N</span>' : '&nbsp;';
 			// Put into cell:
 			$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
@@ -153,7 +153,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$info = '';
 					if (is_array($row)) {
 						$langRecUids[$langRow['uid']][] = $row['uid'];
-						$status = $row['_HIDDEN'] ? (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
+						$status = $row['_HIDDEN'] ? (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'c-blocked' : 'c-fallback') : 'c-ok';
 						$icon = IconUtility::getSpriteIconForRecord(
 							'pages_language_overlay',
 							$row,
@@ -192,7 +192,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							$status = 'c-blocked';
 							$info = '';
 						} else {
-							$status = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'c-blocked' : 'c-fallback';
+							$status = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'c-blocked' : 'c-fallback';
 							$info = '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
 							$newOL_js[$langRow['uid']] .= '
 								+(document.webinfoForm[\'newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']\'].checked ? \'&edit[pages_language_overlay][' . $data['row']['uid'] . ']=new\' : \'\')

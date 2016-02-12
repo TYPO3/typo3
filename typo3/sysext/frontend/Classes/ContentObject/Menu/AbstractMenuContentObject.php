@@ -406,7 +406,7 @@ class AbstractMenuContentObject {
 								$lRecs = array();
 							}
 							// Checking if the "disabled" state should be set.
-							if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
+							if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
 								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
 							} else {
 								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
@@ -988,7 +988,7 @@ class AbstractMenuContentObject {
 					if (!GeneralUtility::inArray($banUidArray, $uid)) {
 						// Checks if the default language version can be shown:
 						// Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
-						$blockPage = $data['l18n_cfg'] & 1 && (!$GLOBALS['TSFE']->sys_language_uid || $GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']);
+						$blockPage = GeneralUtility::hideIfDefaultLanguage($data['l18n_cfg']) && (!$GLOBALS['TSFE']->sys_language_uid || $GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']);
 						if (!$blockPage) {
 							// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;
