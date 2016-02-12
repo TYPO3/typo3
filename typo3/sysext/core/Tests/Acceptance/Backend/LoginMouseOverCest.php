@@ -33,6 +33,8 @@ class LoginMouseOverCest
         $I->waitForElement('#t3-username', 10);
         $I->wantTo('mouse over css change login button');
 
+        // Make sure mouse is not over submit button from a previous test
+        $I->moveMouseOver('#t3-username');
         $bs = $I->executeInSelenium(function(\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('box-shadow');
         });
@@ -42,6 +44,6 @@ class LoginMouseOverCest
         $bsmo = $I->executeInSelenium(function(\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('box-shadow');
         });
-        $I->assertFalse($bs == $bsmo);
+        $I->assertFalse($bs === $bsmo);
     }
 }
