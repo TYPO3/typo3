@@ -1086,7 +1086,7 @@ class ReferenceIndex
      */
     protected function fetchTableRelationFields($tableName)
     {
-        if (!isset($GLOBALS['TCA'][$tableName])) {
+        if (!isset($GLOBALS['TCA'][$tableName]['columns'])) {
             return '';
         }
 
