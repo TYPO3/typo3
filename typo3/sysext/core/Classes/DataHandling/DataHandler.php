@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -1763,7 +1764,9 @@ class DataHandler
         }
         // Secures the string-length to be less than max.
         if ((int)$tcaFieldConf['max'] > 0) {
-            $value = $GLOBALS['LANG']->csConvObj->substr('utf-8', (string)$value, 0, (int)$tcaFieldConf['max']);
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+            $value = $charsetConverter->substr('utf-8', (string)$value, 0, (int)$tcaFieldConf['max']);
         }
         // Checking range of value:
         // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
@@ -2684,10 +2687,14 @@ class DataHandler
                     $value = trim($value);
                     break;
                 case 'upper':
-                    $value = $GLOBALS['LANG']->csConvObj->conv_case('utf-8', $value, 'toUpper');
+                    /** @var CharsetConverter $charsetConverter */
+                    $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+                    $value = $charsetConverter->conv_case('utf-8', $value, 'toUpper');
                     break;
                 case 'lower':
-                    $value = $GLOBALS['LANG']->csConvObj->conv_case('utf-8', $value, 'toLower');
+                    /** @var CharsetConverter $charsetConverter */
+                    $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+                    $value = $charsetConverter->conv_case('utf-8', $value, 'toLower');
                     break;
                 case 'required':
                     if (!isset($value) || $value === '') {

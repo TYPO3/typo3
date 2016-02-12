@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -99,7 +100,9 @@ class LoginController
         $this->submitValue = GeneralUtility::_GP('commandLI');
 
         // Try to get the preferred browser language
-        $preferredBrowserLanguage = $this->getLanguageService()->csConvObj
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+        $preferredBrowserLanguage = $charsetConverter
             ->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 
         // If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in

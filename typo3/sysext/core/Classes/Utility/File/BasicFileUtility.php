@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Utility\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -89,11 +90,6 @@ class BasicFileUtility
      * @var bool
      */
     public $isInit = 0;
-
-    /**
-     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-     */
-    public $csConvObj;
 
     /**********************************
      *
@@ -379,35 +375,27 @@ class BasicFileUtility
      * Trailing dots are removed
      *
      * @param string $fileName Input string, typically the body of a filename
-     * @param string $charset Charset of the a filename (defaults to current charset; depending on context)
      * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
      * @todo Deprecate, but still in use by the core
      * @deprecated but still in use in the Core. Don't use in your extensions!
      */
-    public function cleanFileName($fileName, $charset = '')
+    public function cleanFileName($fileName)
     {
         // Handle UTF-8 characters
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
-            // Get conversion object or initialize if needed
-            if (!is_object($this->csConvObj)) {
-                $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-            }
             // Define character set
-            if (!$charset) {
-                if (TYPO3_MODE == 'FE') {
-                    $charset = $GLOBALS['TSFE']->renderCharset;
-                } else {
-                    // Backend
-                    $charset = 'utf-8';
-                }
+            if (is_object($GLOBALS['TSFE'])) {
+                $charset = $GLOBALS['TSFE']->renderCharset;
+            } else {
+                $charset = 'utf-8';
             }
-            // If a charset was found, convert filename
-            if ($charset) {
-                $fileName = $this->csConvObj->specCharsToASCII($charset, $fileName);
-            }
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+            $fileName = $charsetConverter->specCharsToASCII($charset, $fileName);
+
             // Replace unwanted characters by underscores
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
         }

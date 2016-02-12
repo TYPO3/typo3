@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -156,6 +157,8 @@ class SuggestWizardDefaultReceiver
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $this->selectClause, '', $this->orderByStatement, $start . ', 50');
         $allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
         if ($allRowsCount) {
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // check if we already have collected the maximum number of records
                 if (count($rows) > $this->maxItems) {
@@ -171,12 +174,11 @@ class SuggestWizardDefaultReceiver
                 $uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
                 if (strlen($path) > 30) {
-                    $languageService = $this->getLanguageService();
                     $croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
                         htmlspecialchars(
-                                $languageService->csConvObj->crop('utf-8', $path, 10)
+                            $charsetConverter->crop('utf-8', $path, 10)
                                 . '...'
-                                . $languageService->csConvObj->crop('utf-8', $path, -20)
+                                . $charsetConverter->crop('utf-8', $path, -20)
                         ) .
                         '</abbr>';
                 } else {

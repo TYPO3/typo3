@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -60,6 +61,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
     public function modMenu()
     {
         $lang = $this->getLanguageService();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $lang->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
         $modMenu = array(
             'ts_browser_type' => array(
@@ -67,10 +70,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 'setup' => $lang->getLL('setup')
             ),
             'ts_browser_toplevel_setup' => array(
-                '0' => $lang->csConvObj->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
+                '0' => $charsetConverter->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
             ),
             'ts_browser_toplevel_const' => array(
-                '0' => $lang->csConvObj->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
+                '0' => $charsetConverter->conv_case('utf-8', $lang->getLL('all'), 'toUpper')
             ),
             'ts_browser_const' => array(
                 '0' => $lang->getLL('plainSubstitution'),
@@ -142,6 +145,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         $lang = $this->getLanguageService();
         $POST = GeneralUtility::_POST();
         $documentTemplate = $this->getDocumentTemplate();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
 
         // Checking for more than one template an if, set a menu...
         $manyTemplatesMenu = $this->pObj->templateMenu();
@@ -292,7 +297,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $out = '<div class="form-group">';
                 $out .= '	<div class="checkbox">';
                 $out .= '		<label>';
-                $out .= '			' . htmlspecialchars($this->pObj->sObj) . ' ' . $lang->csConvObj->conv_case('utf-8', $lang->getLL('clear'), 'toUpper');
+                $out .= '			' . htmlspecialchars($this->pObj->sObj) . ' ' . $charsetConverter->conv_case('utf-8', $lang->getLL('clear'), 'toUpper');
                 $out .= '			<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
                 $out .= '		</label>';
                 $out .= '		<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
@@ -423,7 +428,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
                 $remove = '';
             }
 
-            $label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case('utf-8', $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case('utf-8', $lang->getLL('constantRoot'), 'toUpper'));
+            if ($theKey) {
+                $label = $theKey;
+            } else {
+                $label = $charsetConverter->conv_case('utf-8', $lang->getLL($bType === 'setup' ? 'setupRoot' : 'constantRoot'), 'toUpper');
+            }
 
             $theOutput .= '<div class="panel panel-space panel-default">';
             $theOutput .= '<div class="panel-heading">';

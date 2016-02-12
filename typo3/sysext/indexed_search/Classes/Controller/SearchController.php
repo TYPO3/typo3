@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -142,6 +143,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $typoScriptService;
 
     /**
+     * @var CharsetConverter
+     */
+    protected $charsetConverter;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
      */
     public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService)
@@ -157,6 +163,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function initialize($searchData = array())
     {
+        $this->charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         if (!is_array($searchData)) {
             $searchData = array();
         }
@@ -415,7 +422,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
         $title = $resultData['item_title'] . $resultData['titleaddition'];
-        $title = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
+        $title = $this->charsetConverter->crop('utf-8', $title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
         // If external media, link to the media-file instead.
         if ($row['item_type']) {
             if ($row['show_resume']) {
@@ -661,7 +668,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $this->getDatabaseConnection()->sql_free_result($res);
             }
             if (!trim($markedSW)) {
-                $outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
+                $outputStr = $this->charsetConverter->crop('utf-8', $row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
                 $outputStr = htmlspecialchars($outputStr);
             }
             $output = $outputStr ?: $markedSW;
@@ -708,25 +715,25 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         foreach ($parts as $k => $strP) {
             if ($k % 2 == 0) {
                 // Find length of the summary part:
-                $strLen = $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $parts[$k]);
+                $strLen = $this->charsetConverter->strlen('utf-8', $parts[$k]);
                 $output[$k] = $parts[$k];
                 // Possibly shorten string:
                 if (!$k) {
                     // First entry at all (only cropped on the frontside)
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 } elseif ($summaryLgd > $summaryMax || !isset($parts[$k + 1])) {
                     // In case summary length is exceed OR if there are no more entries at all:
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
                     }
                 } else {
                     if ($strLen > $postPreLgd * 2) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 }
-                $summaryLgd += $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);
+                $summaryLgd += $this->charsetConverter->strlen('utf-8', $output[$k]);
                 // Protect output:
                 $output[$k] = htmlspecialchars($output[$k]);
                 // If summary lgd is exceed, break the process:
@@ -734,7 +741,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     break;
                 }
             } else {
-                $summaryLgd += $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $strP);
+                $summaryLgd += $this->charsetConverter->strlen('utf-8', $strP);
                 $output[$k] = '<strong class="tx-indexedsearch-redMarkup">' . htmlspecialchars($parts[$k]) . '</strong>';
             }
         }
@@ -805,8 +812,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // shortening the string here is only a run-away feature!)
         $searchWords = substr($this->sword, 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
-        $searchWords = $GLOBALS['TSFE']->csConvObj->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
-        $searchWords = $GLOBALS['TSFE']->csConvObj->entities_to_utf8($searchWords, true);
+        $searchWords = $this->charsetConverter->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
+        $searchWords = $this->charsetConverter->entities_to_utf8($searchWords, true);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);
@@ -828,9 +835,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     array('-', 'AND NOT'),
                     // Add operators for various languages
                     // Converts the operators to UTF-8 and lowercase
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND'),
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'OR'),
-                    array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->conv(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND NOT')
+                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND'),
+                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'OR'),
+                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND NOT')
                 );
                 $swordArray = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {

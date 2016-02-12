@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -171,6 +172,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $lexerObj;
 
     /**
+     * @var CharsetConverter
+     */
+    protected $charsetConverter;
+
+    /**
      * Main function, called from TypoScript as a USER_INT object.
      *
      * @param string $content Content input, ignore (just put blank string)
@@ -180,6 +186,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function main($content, $conf)
     {
         // Initialize:
+        $this->charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $this->conf = $conf;
         $this->pi_loadLL('EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf');
         $this->pi_setPiVarDefaults();
@@ -326,9 +333,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         // Add operators for various languages
         // Converts the operators to UTF-8 and lowercase
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_AND'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND');
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_OR'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'OR');
-        $this->operator_translate_table[] = array($this->frontendController->csConvObj->conv_case('utf-8', $this->frontendController->csConvObj->conv($this->pi_getLL('local_operator_NOT'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND NOT');
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_AND'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND');
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_OR'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'OR');
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_NOT'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND NOT');
         // This is the id of the site root. This value may be a commalist of integer (prepared for this)
         $this->wholeSiteIdList = (int)$this->frontendController->config['rootLine'][0]['uid'];
         // Creating levels for section menu:
@@ -419,8 +426,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind, shortening the string here is only a run-away feature!)
         $inSW = substr($this->piVars['sword'], 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
-        $inSW = $this->frontendController->csConvObj->conv($inSW, $this->frontendController->metaCharset, 'utf-8');
-        $inSW = $this->frontendController->csConvObj->entities_to_utf8($inSW, true);
+        $inSW = $this->charsetConverter->conv($inSW, $this->frontendController->metaCharset, 'utf-8');
+        $inSW = $this->charsetConverter->entities_to_utf8($inSW, true);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($inSW, $defOp);
@@ -1937,7 +1944,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
             if (!trim($markedSW)) {
-                $outputStr = $this->frontendController->csConvObj->crop('utf-8', $row['item_description'], $lgd, $this->conf['results.']['summaryCropSignifier']);
+                $outputStr = $this->charsetConverter->crop('utf-8', $row['item_description'], $lgd, $this->conf['results.']['summaryCropSignifier']);
                 $outputStr = htmlspecialchars($outputStr);
             }
             $output = $this->utf8_to_currentCharset($outputStr ?: $markedSW);
@@ -1983,26 +1990,26 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         foreach ($parts as $k => $strP) {
             if ($k % 2 == 0) {
                 // Find length of the summary part:
-                $strLen = $this->frontendController->csConvObj->strlen('utf-8', $parts[$k]);
+                $strLen = $this->charsetConverter->strlen('utf-8', $parts[$k]);
                 $output[$k] = $parts[$k];
                 // Possibly shorten string:
                 if (!$k) {
                     // First entry at all (only cropped on the frontside)
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->frontendController->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 } elseif ($summaryLgd > $summaryMax || !isset($parts[$k + 1])) {
                     // In case summary length is exceed OR if there are no more entries at all:
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->frontendController->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
                     }
                 } else {
                     // In-between search words:
                     if ($strLen > $postPreLgd * 2) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->frontendController->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->frontendController->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 }
-                $summaryLgd += $this->frontendController->csConvObj->strlen('utf-8', $output[$k]);
+                $summaryLgd += $this->charsetConverter->strlen('utf-8', $output[$k]);
                 // Protect output:
                 $output[$k] = htmlspecialchars($output[$k]);
                 // If summary lgd is exceed, break the process:
@@ -2010,7 +2017,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     break;
                 }
             } else {
-                $summaryLgd += $this->frontendController->csConvObj->strlen('utf-8', $strP);
+                $summaryLgd += $this->charsetConverter->strlen('utf-8', $strP);
                 $output[$k] = '<strong class="tx-indexedsearch-redMarkup">' . htmlspecialchars($parts[$k]) . '</strong>';
             }
         }
@@ -2036,7 +2043,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $add = ', ' . $this->pi_getLL('word_page') . ' ' . $pp[0];
             }
         }
-        $outputString = $this->frontendController->csConvObj->crop('utf-8', $row['item_title'], $this->conf['results.']['titleCropAfter'], $this->conf['results.']['titleCropSignifier']);
+        $outputString = $this->charsetConverter->crop('utf-8', $row['item_title'], $this->conf['results.']['titleCropAfter'], $this->conf['results.']['titleCropSignifier']);
         return $this->utf8_to_currentCharset($outputString) . $add;
     }
 

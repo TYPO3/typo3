@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\Domain\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class for filters.
@@ -30,11 +32,11 @@ abstract class AbstractFilter
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Charset\CharsetConverter
+     * @return CharsetConverter
      */
     protected function getCharsetConverter()
     {
-        return $this->getTypoScriptFrontendController()->csConvObj;
+        return GeneralUtility::makeInstance(CharsetConverter::class);
     }
 
     /**

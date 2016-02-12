@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -273,16 +274,14 @@ class GeneralUtility
      */
     public static function fixed_lgd_cs($string, $chars, $appendString = '...')
     {
-        if (is_object($GLOBALS['LANG'])) {
-            return $GLOBALS['LANG']->csConvObj->crop('utf-8', $string, $chars, $appendString);
-        } elseif (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->csConvObj)) {
-            $charSet = $GLOBALS['TSFE']->renderCharset != '' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TSFE']->defaultCharSet;
-            return $GLOBALS['TSFE']->csConvObj->crop($charSet, $string, $chars, $appendString);
+        if (is_object($GLOBALS['TSFE'])) {
+            $charset = $GLOBALS['TSFE']->renderCharset != '' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TSFE']->defaultCharSet;
         } else {
-            // This case should not happen
-            $csConvObj = self::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-            return $csConvObj->crop('utf-8', $string, $chars, $appendString);
+            $charset = 'utf-8';
         }
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = self::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+        return $charsetConverter->crop($charset, $string, $chars, $appendString);
     }
 
     /**

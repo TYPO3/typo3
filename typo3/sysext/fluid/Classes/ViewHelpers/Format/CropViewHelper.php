@@ -141,11 +141,7 @@ class CropViewHelper extends AbstractViewHelper
         $GLOBALS['TSFE'] = new \stdClass();
         // preparing csConvObj
         if (!is_object($GLOBALS['TSFE']->csConvObj)) {
-            if (is_object($GLOBALS['LANG'])) {
-                $GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
-            } else {
-                $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-            }
+            $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
         }
         // preparing renderCharset
         if (!is_object($GLOBALS['TSFE']->renderCharset)) {

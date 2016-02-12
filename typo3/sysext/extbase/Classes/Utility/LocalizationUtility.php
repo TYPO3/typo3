@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -229,6 +230,8 @@ class LocalizationUtility
             return;
         }
         self::$LOCAL_LANG_UNSET[$extensionName] = array();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
             if (!(is_array($labels) && isset(self::$LOCAL_LANG[$extensionName][$languageKey]))) {
                 continue;
@@ -239,11 +242,7 @@ class LocalizationUtility
                     if ($labelValue === '') {
                         self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$labelKey] = '';
                     }
-                    if (is_object($GLOBALS['LANG'])) {
-                        self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getLanguageService()->csConvObj->charSetArray[$languageKey];
-                    } else {
-                        self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getTypoScriptFrontendController()->csConvObj->charSetArray[$languageKey];
-                    }
+                    self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $charsetConverter->charSetArray[$languageKey];
                 } elseif (is_array($labelValue)) {
                     $labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
                     foreach ($labelValue as $key => $value) {

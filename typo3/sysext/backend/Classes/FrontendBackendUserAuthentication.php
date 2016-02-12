@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -292,9 +293,10 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
         }
         // Label string in the default backend output charset.
         $labelStr = htmlspecialchars($this->getLanguageService()->getLL($key));
-        $labelStr = $this->getLanguageService()->csConvObj->utf8_to_entities($labelStr);
-        // Return the result:
-        return $labelStr;
+
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+        return $charsetConverter->utf8_to_entities($labelStr);
     }
 
     /**
