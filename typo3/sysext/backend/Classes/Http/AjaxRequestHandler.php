@@ -76,9 +76,6 @@ class AjaxRequestHandler implements RequestHandlerInterface
     {
         // First get the ajaxID
         $ajaxID = isset($request->getParsedBody()['ajaxID']) ? $request->getParsedBody()['ajaxID'] : $request->getQueryParams()['ajaxID'];
-
-        // used for backwards-compatibility
-        $GLOBALS['ajaxID'] = $ajaxID;
         $request = $request->withAttribute('routePath', $ajaxID);
         $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($ajaxID);
         $this->boot($proceedIfNoUserIsLoggedIn);
@@ -174,9 +171,11 @@ class AjaxRequestHandler implements RequestHandlerInterface
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function dispatchTraditionalAjaxRequest($request)
     {
+        GeneralUtility::deprecationLog('Using the traditional way for AJAX requests via $TYPO3_CONF_VARS[BE][AJAX] is discouraged. Use the Backend Routes logic instead.');
         $ajaxID = $request->getAttribute('routePath');
         // Finding the script path from the registry
         $ajaxRegistryEntry = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID]) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID] : null;

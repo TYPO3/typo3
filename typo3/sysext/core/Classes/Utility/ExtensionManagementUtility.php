@@ -991,9 +991,11 @@ class ExtensionManagementUtility
      * @param string $ajaxId Identifier of the handler, that is used in the request
      * @param string $callbackMethod TYPO3 callback method (className->methodName).
      * @param bool $csrfTokenCheck Only set this to FALSE if you are sure that the registered handler does not modify any data!
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function registerAjaxHandler($ajaxId, $callbackMethod, $csrfTokenCheck = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxId] = array(
             'callbackMethod' => $callbackMethod,
             'csrfTokenCheck' => $csrfTokenCheck

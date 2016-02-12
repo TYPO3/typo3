@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class to hold all the information about an AJAX call and send
  * the right headers for the request type
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class AjaxRequestHandler
 {
