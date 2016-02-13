@@ -111,7 +111,7 @@ CREATE TABLE index_stat_search (
   searchoptions blob,
   tstamp int(11) DEFAULT '0' NOT NULL,
   feuser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  cookie varchar(10) DEFAULT '' NOT NULL,
+  cookie varchar(32) DEFAULT '' NOT NULL,
   IP varchar(255) DEFAULT '' NOT NULL,
   hits int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid)
