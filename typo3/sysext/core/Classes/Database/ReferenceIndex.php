@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -1214,7 +1215,12 @@ class ReferenceIndex
             $recordsCheckedString,
             $errorCount ? FlashMessage::ERROR : FlashMessage::OK
         );
-        $bodyContent = $flashMessage->render();
+        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue->enqueue($flashMessage);
+        $bodyContent = $defaultFlashMessageQueue->renderFlashMessages();
         if ($cli_echo) {
             echo $recordsCheckedString . ($errorCount ? 'Updates: ' . $errorCount : 'Index Integrity was perfect!') . LF;
         }
