@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1455466284" source-language="en" datatype="plaintext" original="messages" date="2016-02-14T16:11:24Z" product-name="core">
+		<header/>
+		<body>
+			<trans-unit id="wizard.button.next">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="wizard.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="wizard.progress">
+				<source>Step {0} of {1}</source>
+			</trans-unit>
+			<trans-unit id="wizard.processing.title">
+				<source>Processing...</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

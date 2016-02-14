@@ -93,7 +93,7 @@ define(['jquery',
 	 * - confirm.button.ok
 	 *
 	 * @param {String} title the title for the confirm modal
-	 * @param {String} content the content for the conform modal, e.g. the main question
+	 * @param {*} content the content for the conform modal, e.g. the main question
 	 * @param {int} [severity=Severity.warning] severity default Severity.warning
 	 * @param {array} [buttons] an array with buttons, default no buttons
 	 * @param {array} [additionalCssClasses=''] additional css classes to add to the modal
@@ -154,7 +154,7 @@ define(['jquery',
 	 * - button.clicked
 	 *
 	 * @param {String} title the title for the confirm modal
-	 * @param {String} content the content for the conform modal, e.g. the main question
+	 * @param {*} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
 	 * @param {array} additionalCssClasses additional css classes to add to the modal

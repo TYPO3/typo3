@@ -1335,6 +1335,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
             // Debugger Console strings
             $this->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
+
+            $this->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
         }
         /** @var $extDirect \TYPO3\CMS\Core\ExtDirect\ExtDirectApi */
         $extDirect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class);
