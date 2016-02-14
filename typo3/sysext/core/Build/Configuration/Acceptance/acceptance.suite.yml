@@ -7,7 +7,16 @@ modules:
         - \Helper\Unit
     config:
       WebDriver:
-        window_size: 1024x768
         url: http://localhost:8000
-        browser: firefox
-        http_proxy: direct
+        browser: phantomjs
+
+env:
+    firefox:
+        modules:
+            config:
+                WebDriver:
+                    browser: 'firefox'
+                    window_size: 1024x768
+                    http_proxy: direct
+    phantom:
+        # nothing changed

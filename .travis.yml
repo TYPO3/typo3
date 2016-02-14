@@ -5,11 +5,11 @@ matrix:
 
   include:
     - php: 5.5
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
     - php: 5.6
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes ACCEPTANCE_TESTS=yes PHP_LINT=yes
 
 sudo: false
 
@@ -74,6 +74,18 @@ script:
         export typo3DatabaseUsername="root";
         export typo3DatabasePassword="";
         find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+    fi
+  - >
+    if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
+        ./bin/selenium-server-standalone &
+        php -S 0.0.0.0:8000 &
+        sleep 3;
+        mysql -e 'create database acceptance';
+        mysql acceptance < typo3/sysext/core/ext_tables.sql;
+        mkdir -p typo3temp/var/logs/codeception/ typo3conf/ext;
+        cp typo3/sysext/core/Build/Configuration/Acceptance/TravisLocalConfiguration.php typo3conf/LocalConfiguration.php;
+        cp typo3/sysext/core/Build/Configuration/Acceptance/TravisPackageStates.php typo3conf/PackageStates.php;
+        ./bin/codecept run acceptance -c typo3/sysext/core/Build/AcceptanceTests.yml typo3/sysext/core/Tests/Acceptance
     fi
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
