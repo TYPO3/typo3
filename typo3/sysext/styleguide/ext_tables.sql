@@ -932,6 +932,7 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
 	inline_fal_1 int(11) DEFAULT '0' NOT NULL,
 	rte_1 text NOT NULL,
 	select_tree_1 text NOT NULL,
+	t3editor_1 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

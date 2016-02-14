@@ -188,6 +188,16 @@ return [
         ],
 
 
+        't3editor_1' => [
+            'exclude' => 1,
+            'label' => 't3editor_1',
+            'config' => [
+                'type' => 'text',
+                'renderType' => 't3editor',
+            ],
+        ],
+
+
     ],
 
 
@@ -195,7 +205,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;fields,
-                    inline_fal_1, rte_1, select_tree_1,
+                    inline_fal_1, rte_1, select_tree_1, t3editor_1,
                 --div--;dummy,
                     dummy_1,
             ',
