@@ -1179,9 +1179,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     } else {
                         // The task object is not valid
                         // Prepare to issue an error
-                        /** @var $flashMessage FlashMessage */
-                        $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($this->getLanguageService()->getLL('msg.invalidTaskClass'), $class), '', FlashMessage::ERROR);
-                        $executionStatusOutput = $flashMessage->render();
+                        $executionStatusOutput = '<span class="label label-danger">'
+                            . htmlspecialchars(sprintf(
+                                $this->getLanguageService()->getLL('msg.invalidTaskClass'),
+                                $class
+                            ))
+                            . '</span>';
                         $table[] =
                             '<tr>'
                                 . '<td>' . $startExecutionElement . '</td>'
