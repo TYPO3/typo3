@@ -65,7 +65,7 @@ define(['jquery',
 							Severity.error,
 							[{
 								text: TYPO3.lang['button.ok'] || 'OK',
-								btnClass: 'btn-' + Modal.getSeverityClass(Severity.error),
+								btnClass: 'btn-' + Severity.getCssClass(Severity.error),
 								name: 'ok',
 								active: true
 							}]

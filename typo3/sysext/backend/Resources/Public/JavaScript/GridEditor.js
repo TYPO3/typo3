@@ -387,7 +387,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			},
 			{
 				text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
-				btnClass: 'btn-' + Modal.getSeverityClass(Severity.notice),
+				btnClass: 'btn-' + Severity.getCssClass(Severity.notice),
 				name: 'ok'
 			}
 		]);

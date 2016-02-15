@@ -30,7 +30,7 @@ define(function () {
 		}
 
 		// fetch object from outer frame
-		if (top && top.TYPO3.Severity) {
+		if (top && top.TYPO3 && top.TYPO3.Severity) {
 			return top.TYPO3.Severity;
 		}
 	} catch (e) {
@@ -54,6 +54,34 @@ define(function () {
 		ok: 0,
 		warning: 1,
 		error: 2
+	};
+
+	/**
+	 * Gets the CSS class for the severity
+	 *
+	 * @param {Number} severity
+	 * @returns {String}
+	 */
+	Severity.getCssClass = function(severity) {
+		var severityClass;
+		switch (severity) {
+			case Severity.notice:
+				severityClass = 'notice';
+				break;
+			case Severity.ok:
+				severityClass = 'success';
+				break;
+			case Severity.warning:
+				severityClass = 'warning';
+				break;
+			case Severity.error:
+				severityClass = 'danger';
+				break;
+			case Severity.info:
+			default:
+				severityClass = 'info';
+		}
+		return severityClass;
 	};
 
 	// attach to global frame

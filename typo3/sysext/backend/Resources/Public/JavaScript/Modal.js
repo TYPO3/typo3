@@ -76,28 +76,13 @@ define(['jquery',
 	 * @param {int} severity use constants from Severity.*
 	 * @returns {String}
 	 * @private
+	 * @deprecated
 	 */
 	Modal.getSeverityClass = function(severity) {
-		var severityClass;
-		switch (severity) {
-			case Severity.notice:
-				severityClass = 'notice';
-				break;
-			case Severity.ok:
-				severityClass = 'success';
-				break;
-			case Severity.warning:
-				severityClass = 'warning';
-				break;
-			case Severity.error:
-				severityClass = 'danger';
-				break;
-			case Severity.info:
-			default:
-				severityClass = 'info';
-				break;
+		if (console) {
+			console.warn('Modal.getSeverityClass() is deprecated and will be removed with TYPO3 v9, please use Severity.getCssClass()');
 		}
-		return severityClass;
+		return Severity.getCssClass(severity);
 	};
 
 	/**
@@ -124,7 +109,7 @@ define(['jquery',
 				},
 				{
 					text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
-					btnClass: 'btn-' + Modal.getSeverityClass(severity),
+					btnClass: 'btn-' + Severity.getCssClass(severity),
 					name: 'ok'
 				}
 			];
@@ -203,7 +188,7 @@ define(['jquery',
 			currentModal.find('.modal-body').html(content);
 		}
 
-		currentModal.addClass('t3-modal-' + Modal.getSeverityClass(severity));
+		currentModal.addClass('t3-modal-' + Severity.getCssClass(severity));
 		if (buttons.length > 0) {
 			for (i = 0; i<buttons.length; i++) {
 				var button = buttons[i];
@@ -319,7 +304,7 @@ define(['jquery',
 				},
 				{
 					text: $element.data('button-ok-text') || 'OK',
-					btnClass: 'btn-' + Modal.getSeverityClass(severity),
+					btnClass: 'btn-' + Severity.getCssClass(severity),
 					trigger: function() {
 						Modal.currentModal.trigger('modal-dismiss');
 						evt.target.ownerDocument.location.href = $element.data('href') || $element.attr('href');
