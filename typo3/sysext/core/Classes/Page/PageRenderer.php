@@ -1314,10 +1314,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if (empty($filterNamespaces)) {
             $filterNamespaces = array('TYPO3');
         }
-        // @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 9
-        // add compatibility mapping for the old flashmessage API
-        $this->addJsFile(GeneralUtility::resolveBackPath($this->backPath .
-            ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/flashmessage_compatibility.js'));
 
         // Add language labels for ExtDirect
         if (TYPO3_MODE === 'FE') {
