@@ -1131,7 +1131,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             if ($table === 'tt_content' && $this->newWizards) {
                                 // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
                                 $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
-                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+                                $newContentElementWizard = isset($tmpTSc['properties']['newContentElementWizard.']['override'])
+                                    ? $tmpTSc['properties']['newContentElementWizard.']['override']
+                                    : 'new_content_element';
                                 $newContentWizScriptPath = BackendUtility::getModuleUrl($newContentElementWizard, array('id' => $this->id));
 
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';

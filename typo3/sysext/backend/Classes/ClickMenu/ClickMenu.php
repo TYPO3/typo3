@@ -680,7 +680,9 @@ class ClickMenu
         } else {
             //  If mod.newContentElementWizard.override is set, use a custom module instead
             $tsConfig = BackendUtility::getModTSconfig((int)$this->pageinfo['uid'], 'mod');
-            $newContentWizardModuleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+            $newContentWizardModuleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+                ? $tsConfig['properties']['newContentElementWizard.']['override']
+                : 'new_content_element';
             $url = BackendUtility::getModuleUrl($newContentWizardModuleName, ['id' => $rec['pid'], 'sys_language_uid' => (int)$rec['sys_language_uid']]);
         }
         return $this->linkItem(

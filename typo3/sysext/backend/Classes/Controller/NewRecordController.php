@@ -501,7 +501,9 @@ class NewRecordController extends AbstractModule
                             $rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
                             $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
-                            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+                            $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+                                ? $tsConfig['properties']['newContentElementWizard.']['override']
+                                : 'new_content_element';
                             $url = BackendUtility::getModuleUrl($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($url) . '">' . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard')) . '</a></li></ul>';
                         } else {

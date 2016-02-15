@@ -529,7 +529,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             'uid_pid' => $id,
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $url = BackendUtility::getModuleUrl('new_content_element', $urlParameters);
+                        $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
+                        $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+                            ? $tsConfig['properties']['newContentElementWizard.']['override']
+                            : 'new_content_element';
+                        $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
                     } else {
                         $urlParameters = [
                             'edit' => [
@@ -640,7 +644,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                         'uid_pid' => -$row['uid'],
                                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                                     ];
-                                    $url = BackendUtility::getModuleUrl('new_content_element', $urlParameters);
+                                    $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod');
+                                    $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+                                        ? $tsConfig['properties']['newContentElementWizard.']['override']
+                                        : 'new_content_element';
+                                    $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
                                 } else {
                                     $urlParameters = [
                                         'edit' => [
@@ -1822,7 +1830,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     public function newContentElementOnClick($id, $colPos, $sys_language)
     {
         if ($this->option_newWizard) {
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id . '&colPos=' . $colPos
+            $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
+            $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+                ? $tsConfig['properties']['newContentElementWizard.']['override']
+                : 'new_content_element';
+            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($moduleName) . '&id=' . $id . '&colPos=' . $colPos
                 . '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id
                 . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
         } else {
