@@ -9,6 +9,7 @@ modules:
       WebDriver:
         url: http://localhost:8000
         browser: phantomjs
+        http_proxy: direct
 
 env:
     firefox:
@@ -17,6 +18,5 @@ env:
                 WebDriver:
                     browser: 'firefox'
                     window_size: 1024x768
-                    http_proxy: direct
     phantom:
         # nothing changed
