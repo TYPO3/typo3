@@ -3,26 +3,6 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
     // Setting up scripts that can be run from the cli_dispatch.phpsh script.
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['lowlevel_refindex'] = array(
-        function () {
-            // Call the functionality
-            if (in_array('-e', $_SERVER['argv']) || in_array('-c', $_SERVER['argv'])) {
-                $testOnly = in_array('-c', $_SERVER['argv']);
-                $refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
-                list($headerContent, $bodyContent) = $refIndexObj->updateIndex($testOnly, !in_array('-s', $_SERVER['argv']));
-                $bodyContent = str_replace('##LF##', LF, $bodyContent);
-            } else {
-                echo '
-			Options:
-			-c = Check refindex
-			-e = Update refindex
-			-s = Silent
-			';
-                die;
-            }
-        },
-        '_CLI_lowlevel'
-    );
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['lowlevel_cleaner'] = array(
         function () {
             $cleanerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\CleanerCommand::class);

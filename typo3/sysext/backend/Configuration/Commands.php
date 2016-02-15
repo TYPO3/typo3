@@ -14,5 +14,9 @@ return [
     ],
     'backend:unlock' => [
         'class' => \TYPO3\CMS\Backend\Command\LockBackendCommand::class
+    ],
+    'referenceindex:update' => [
+        'class' => \TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand::class,
+        'user' => '_cli_lowlevel'
     ]
 ];
