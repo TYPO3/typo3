@@ -12,6 +12,7 @@ The following ViewHelpers have changed behaviours in Fluid:
 * Arguments ``iconOnly`` and ``styleAttributes`` have been removed from ``f:be.buttons.csh``.
 * Argument ``alternateBackgroundColors`` has been removed from ``f:be.tableList``.
 * ViewHelpers no longer use the ``escapingInterceptorEnabled`` property but instead use ``escapeChildren`` and ``escapeOutput`` to control each behavior.
+* All ViewHelpers no longer initialize standard arguments ("additionalArguments" and "data") in ``__construct()``, but instead do this in ``initializeArguments()``. If you override this method, you need to make sure you include a call to ``parent::initializeArguments()`` in your subclass.
 
 The following ViewHelper classes are now only found in namespace ``TYPO3Fluid\Fluid\ViewHelpers`` and no longer exist in ``TYPO3\CMS\Fluid\ViewHelpers``:
 

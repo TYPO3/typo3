@@ -60,6 +60,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
      */
     public function initializeArguments()
     {
+        parent::initializeArguments();
         $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
         $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
         $this->registerTagAttribute('name', 'string', 'Name of form');
