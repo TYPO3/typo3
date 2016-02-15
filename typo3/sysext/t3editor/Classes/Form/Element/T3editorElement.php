@@ -123,6 +123,7 @@ class T3editorElement extends AbstractFormElement
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             array('target' => 0)
         );
+        $this->resultArray['additionalJavaScriptPost'][] = 'require(["TYPO3/CMS/T3editor/T3editor"], function(T3editor) {T3editor.findAndInitializeEditors();});';
 
         $this->initJavascriptCode();
         return $this->resultArray;
@@ -158,7 +159,6 @@ class T3editorElement extends AbstractFormElement
     protected function initJavascriptCode()
     {
         $this->resultArray['stylesheetFiles'][] = $this->relExtPath . 'Resources/Public/Css/t3editor.css';
-        $this->resultArray['requireJsModules'][] = 'TYPO3/CMS/T3editor/T3editor';
         if ($this->mode === self::MODE_TYPOSCRIPT) {
             foreach ($this->codeCompletionComponents as $codeCompletionComponent) {
                 $this->resultArray['requireJsModules'][] = 'TYPO3/CMS/T3editor/Plugins/CodeCompletion/' . $codeCompletionComponent;
