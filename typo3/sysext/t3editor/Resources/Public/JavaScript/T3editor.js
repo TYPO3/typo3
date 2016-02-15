@@ -45,6 +45,9 @@ define(['jquery',
 	 * @param {Number} index
 	 */
 	T3editor.initializeEditor = function($editor, index) {
+		if ($editor.data('initialized')) {
+			return;
+		}
 		var $textarea = $editor.find('textarea'),
 			options = {
 				labels: $textarea.data('labels'),
@@ -76,6 +79,7 @@ define(['jquery',
 				$textarea.hide();
 			}
 		});
+		$editor.data('initialized', true);
 	};
 
 	/**
