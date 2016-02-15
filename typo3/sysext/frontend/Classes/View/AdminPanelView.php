@@ -649,7 +649,9 @@ class AdminPanelView
         $tsfe = $this->getTypoScriptFrontendController();
         //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
         $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod');
-        $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+        $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
+            ? $tsConfig['properties']['newContentElementWizard.']['override']
+            : 'new_content_element';
         $newContentWizScriptPath = BackendUtility::getModuleUrl($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
