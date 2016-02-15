@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<be_users>
+		<uid>1</uid>
+		<pid>0</pid>
+		<tstamp>1366642540</tstamp>
+		<username>admin</username>
+		<password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
+		<admin>1</admin>
+		<disable>0</disable>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<options>0</options>
+		<crdate>1366642540</crdate>
+		<cruser_id>0</cruser_id>
+		<workspace_perms>1</workspace_perms>
+		<disableIPlock>1</disableIPlock>
+		<deleted>0</deleted>
+		<TSconfig>NULL</TSconfig>
+		<lastlogin>1371033743</lastlogin>
+		<createdByAction>0</createdByAction>
+		<workspace_id>0</workspace_id>
+		<workspace_preview>1</workspace_preview>
+	</be_users>
+	<be_users>
+		<uid>2</uid>
+		<pid>0</pid>
+		<tstamp>1452944912</tstamp>
+		<username>editor</username>
+		<password>$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1</password> <!-- password -->
+		<admin>0</admin>
+		<disable>0</disable>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<options>0</options>
+		<crdate>1452944912</crdate>
+		<cruser_id>1</cruser_id>
+		<workspace_perms>1</workspace_perms>
+		<disableIPlock>1</disableIPlock>
+		<deleted>0</deleted>
+		<TSconfig>NULL</TSconfig>
+		<lastlogin>1452944915</lastlogin>
+		<createdByAction>0</createdByAction>
+		<workspace_id>0</workspace_id>
+		<workspace_preview>1</workspace_preview>
+		<db_mountpoints>1</db_mountpoints>
+		<usergroup>1</usergroup>
+	</be_users>
+</dataset>

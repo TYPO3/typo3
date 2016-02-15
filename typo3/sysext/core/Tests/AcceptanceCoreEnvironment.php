@@ -121,6 +121,18 @@ class AcceptanceCoreEnvironment extends Extension
     protected $additionalFoldersToCreate = [];
 
     /**
+     * XML database fixtures to be loaded into database.
+     *
+     * Given paths are expected to be relative to your document root.
+     *
+     * @var array
+     */
+    protected $xmlDatabaseFixtures = [
+        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_users.xml',
+        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_groups.xml',
+    ];
+
+    /**
      * Events to listen to
      */
     public static $events = [
@@ -210,6 +222,10 @@ class AcceptanceCoreEnvironment extends Extension
         // unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['extbase']);
         $suite = $suiteEvent->getSuite();
         $suite->setBackupGlobals(FALSE);
+
+        foreach ($this->xmlDatabaseFixtures as $fixture) {
+            $testbase->importXmlDatabaseFixture(ORIGINAL_ROOT . $fixture);
+        }
     }
 
 }

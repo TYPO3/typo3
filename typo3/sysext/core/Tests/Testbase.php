@@ -616,6 +616,68 @@ class Testbase {
     }
 
     /**
+     * Imports a data set represented as XML into the test database,
+     *
+     * @param string $path Absolute path to the XML file containing the data set to load
+     * @return void
+     * @throws Exception
+     */
+    public function importXmlDatabaseFixture($path)
+    {
+        if (!is_file($path)) {
+            throw new Exception(
+                'Fixture file ' . $path . ' not found',
+                1376746261
+            );
+        }
+
+        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
+        $database = $GLOBALS['TYPO3_DB'];
+
+        $fileContent = file_get_contents($path);
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+        $xml = simplexml_load_string($fileContent);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
+        $foreignKeys = array();
+
+        /** @var $table \SimpleXMLElement */
+        foreach ($xml->children() as $table) {
+            $insertArray = array();
+
+            /** @var $column \SimpleXMLElement */
+            foreach ($table->children() as $column) {
+                $columnName = $column->getName();
+                $columnValue = null;
+
+                if (isset($column['ref'])) {
+                    list($tableName, $elementId) = explode('#', $column['ref']);
+                    $columnValue = $foreignKeys[$tableName][$elementId];
+                } elseif (isset($column['is-NULL']) && ($column['is-NULL'] === 'yes')) {
+                    $columnValue = null;
+                } else {
+                    $columnValue = (string)$table->$columnName;
+                }
+
+                $insertArray[$columnName] = $columnValue;
+            }
+
+            $tableName = $table->getName();
+            $result = $database->exec_INSERTquery($tableName, $insertArray);
+            if ($result === false) {
+                throw new Exception(
+                    'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->sql_error(),
+                    1376746262
+                );
+            }
+            if (isset($table['id'])) {
+                $elementId = (string)$table['id'];
+                $foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
+            }
+        }
+    }
+
+    /**
      * Returns the absolute path the TYPO3 document root.
      * This is the "original" document root, not the "instance" root for functional / acceptance tests.
      *
