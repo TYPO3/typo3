@@ -666,12 +666,12 @@ return array(
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
                             'showitem' => '
-								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
 								--palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
                             'showitem' => '
-								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+								--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
 								--palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
