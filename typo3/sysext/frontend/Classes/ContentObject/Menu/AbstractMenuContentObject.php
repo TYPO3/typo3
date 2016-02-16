@@ -1100,7 +1100,7 @@ abstract class AbstractMenuContentObject
             $recArr['last'] = end($prevnext_menu);
             // prevsection / nextsection is found
             // You can only do this, if there is a valid page two levels up!
-            if (is_array($recArr['index'])) {
+            if (!empty($recArr['index']['uid'])) {
                 $prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $sortingField, $additionalWhere));
                 $lastKey = 0;
                 $nextActive = 0;
