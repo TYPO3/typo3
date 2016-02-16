@@ -216,8 +216,8 @@ class ExtDirectServer extends AbstractHandler
                     );
 
                     if ($configuration['type'] == 'group' && $configuration['internal_type'] == 'file') {
-                        $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
-                        $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
+                        $versionThumb = BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName);
+                        $liveThumb = BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName);
                         $diffReturnArray[] = array(
                             'field' => $fieldName,
                             'label' => $fieldTitle,

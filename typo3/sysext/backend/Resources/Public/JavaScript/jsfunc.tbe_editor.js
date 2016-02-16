@@ -38,8 +38,6 @@ var TBE_EDITOR = {
 	formnameUENC: '',
 	isChanged: 0,
 
-	backPath: '',
-
 	isPalettedoc: null,
 	doSaveFieldName: 0,
 

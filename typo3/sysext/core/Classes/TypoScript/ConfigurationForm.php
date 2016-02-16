@@ -53,18 +53,12 @@ class ConfigurationForm extends ExtendedTemplateService
     protected $ext_realValues = array();
 
     /**
-     * @var string
-     */
-    protected $ext_backPath = '';
-
-    /**
      * @param string $configTemplate
      * @param string $pathRel PathRel is the path relative to the typo3/ directory
      * @param string $pathAbs PathAbs is the absolute path from root
-     * @param string $backPath BackPath is the backReference from current position to typo3/ dir
      * @return array
      */
-    public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath = '')
+    public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs)
     {
         // Do not log time-performance information
         $this->tt_track = 0;
@@ -72,8 +66,7 @@ class ConfigurationForm extends ExtendedTemplateService
         // The editable constants are returned in an array.
         $theConstants = $this->generateConfig_constants();
         $this->ext_localGfxPrefix = $pathAbs;
-        $this->ext_localWebGfxPrefix = $backPath . $pathRel;
-        $this->ext_backPath = $backPath;
+        $this->ext_localWebGfxPrefix = $pathRel;
         return $theConstants;
     }
 

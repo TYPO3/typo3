@@ -391,8 +391,7 @@ class ResourceCompressorTest extends BaseTestCase
         // we have to fix relative paths, if we aren't working on a file in our target directory
         $relativeFilename = str_replace(PATH_site, '', $cssFile);
         if (strpos($relativeFilename, $this->subject->_get('targetDirectory')) === false) {
-            $filenameRelativeToMainDir = substr($relativeFilename, strlen($this->subject->_get('backPath')));
-            $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, dirname($filenameRelativeToMainDir) . '/');
+            $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, dirname($relativeFilename) . '/');
         }
         $this->assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
     }

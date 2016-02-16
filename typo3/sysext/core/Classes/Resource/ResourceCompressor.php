@@ -167,7 +167,6 @@ class ResourceCompressor
             if (!empty($fileOptions['excludeFromConcatenation'])) {
                 continue;
             }
-            // we remove BACK_PATH from $filename, so make it relative to root path
             $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
             // if $options['baseDirectories'] set, we only include files below these directories
             if (
@@ -229,7 +228,6 @@ class ResourceCompressor
             if (!isset($filesToInclude[$fileOptions['section']])) {
                 $filesToInclude[$fileOptions['section']] = array();
             }
-            // we remove BACK_PATH from $filename, so make it relative to root path
             $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
             if ($fileOptions['forceOnTop']) {
                 array_unshift($filesToInclude[$fileOptions['section']], $filenameFromMainDir);

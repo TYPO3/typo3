@@ -134,7 +134,7 @@ abstract class AbstractContainer extends AbstractNode
                         $table,
                         $field,
                         '',
-                        'thumbs.php',
+                        '',
                         $config['config']['uploadfolder'], 0, ' align="middle"'
                     ) .
                     ($absFilePath ? BackendUtility::wrapClickMenuOnIcon($fileIcon, $absFilePath, 0, 1, '', '+copy,info,edit,view') : $fileIcon) .

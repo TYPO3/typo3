@@ -1468,7 +1468,7 @@ class BackendUtility
                     $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">' . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 if ($linkInfoPopup) {
-                    $onClick = 'top.launchView(\'_FILE\',\'' . (int)$fileObject->getUid() . '\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
+                    $onClick = 'top.launchView(\'_FILE\',\'' . (int)$fileObject->getUid() . '\'); return false;';
                     $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
                 } else {
                     $thumbData .= $imgTag;
@@ -1519,7 +1519,7 @@ class BackendUtility
                         ))->getPublicUrl(true);
                         $image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
                         if ($linkInfoPopup) {
-                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . ');return false;';
+                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\');return false;';
                             $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
                         } else {
                             $thumbData .= $image;
@@ -1528,7 +1528,7 @@ class BackendUtility
                         // Gets the icon
                         $fileIcon = '<span title="' . htmlspecialchars($fileObject->getName()) . '">' . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
                         if ($linkInfoPopup) {
-                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
+                            $onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\'); return false;';
                             $thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
                         } else {
                             $thumbData .= $fileIcon;
@@ -3187,19 +3187,17 @@ class BackendUtility
      *
      * @param string $moduleName Name of the module
      * @param array $urlParameters URL parameters that should be added as key value pairs
-     * @param bool|string $backPathOverride (unused)
-     * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
      * @return string Calculated URL
      */
-    public static function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = false, $returnAbsoluteUrl = false)
+    public static function getModuleUrl($moduleName, $urlParameters = array())
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {
-            $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+            $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             // no route registered, use the fallback logic to check for a module
-            $uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+            $uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters);
         }
         return (string)$uri;
     }
@@ -3213,20 +3211,18 @@ class BackendUtility
      *
      * @param string $ajaxIdentifier Identifier of the AJAX callback
      * @param array $urlParameters URL parameters that should be added as key value pairs
-     * @param bool $backPathOverride (unused)
-     * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
      * @return string Calculated URL
      */
-    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = false, $returnAbsoluteUrl = false)
+    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = array())
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {
             $routeIdentifier = 'ajax_' . $ajaxIdentifier;
-            $uri = $uriBuilder->buildUriFromRoute($routeIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+            $uri = $uriBuilder->buildUriFromRoute($routeIdentifier, $urlParameters);
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             // no route registered, use the fallback logic to check for a module
-            $uri = $uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+            $uri = $uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters);
         }
         return (string)$uri;
     }

@@ -192,7 +192,6 @@ class FormResultCompiler
         // set variables to be accessible for JS
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
-        $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
 
         return $this->JSbottom('editform');
     }
@@ -279,7 +278,6 @@ class FormResultCompiler
         $out .= '
 		TBE_EDITOR.formname = "' . $formname . '";
 		TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
-		TBE_EDITOR.backPath = "";
 		TBE_EDITOR.isPalettedoc = null;
 		TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
 		TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
