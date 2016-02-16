@@ -85,9 +85,9 @@ class FileUploadController extends AbstractModule
         $this->target = GeneralUtility::_GP('target');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         if (!$this->returnUrl) {
-            $this->returnUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
-                . TYPO3_mainDir . BackendUtility::getModuleUrl('file_list')
-                . '&id=' . rawurlencode($this->target);
+            $this->returnUrl = BackendUtility::getModuleUrl('file_list', [
+                'id' => rawurlencode($this->target)
+            ]);
         }
         // Create the folder object
         if ($this->target) {
