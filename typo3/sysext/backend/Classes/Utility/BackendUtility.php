@@ -1442,6 +1442,10 @@ class BackendUtility
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($fileReferences !== null) {
             foreach ($fileReferences as $fileReferenceObject) {
+                // Do not show previews of hidden references
+                if ($fileReferenceObject->getProperty('hidden')) {
+                    continue;
+                }
                 $fileObject = $fileReferenceObject->getOriginalFile();
 
                 if ($fileObject->isMissing()) {
