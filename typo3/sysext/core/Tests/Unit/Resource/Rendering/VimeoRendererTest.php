@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
  */
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
 use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -120,6 +121,25 @@ class VimeoRendererTest extends UnitTestCase
         $this->assertSame(
             '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithAutoplayFromReferenceIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+
+        /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileReferenceMock = $this->getMock(FileReference::class, array(), array(), '', false);
+        $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
+        $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
+
+        $this->assertSame(
+            '<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
+            $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
 

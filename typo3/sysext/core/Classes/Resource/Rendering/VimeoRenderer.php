@@ -89,7 +89,8 @@ class VimeoRenderer implements FileRendererInterface
      */
     public function render(FileInterface $file, $width, $height, array $options = null, $usedPathsRelativeToCurrentScript = false)
     {
-        if ($file instanceof FileReference) {
+        // Check for an autoplay option at the file reference itself, if not overriden yet.
+        if (!isset($options['autoplay']) && $file instanceof FileReference) {
             $autoplay = $file->getProperty('autoplay');
             if ($autoplay !== null) {
                 $options['autoplay'] = $autoplay;
