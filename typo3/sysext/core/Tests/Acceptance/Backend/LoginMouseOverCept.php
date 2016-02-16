@@ -5,7 +5,7 @@
 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('check login functions');
-$I->amOnPage('/typo3');
+$I->amOnPage('/typo3/index.php');
 $I->waitForElement('#t3-username', 10);
 $I->wantTo('mouse over css change login button');
 
