@@ -277,7 +277,7 @@ class InternalLinktype extends AbstractLinktype
             }
         }
         if (isset($errorPage) && isset($errorContent)) {
-            $response = $errorPage . '<br />' . $errorContent;
+            $response = $errorPage . LF . $errorContent;
         } elseif (isset($errorPage)) {
             $response = $errorPage;
         } elseif (isset($errorContent)) {
