@@ -212,6 +212,13 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * @return 	string		Output string
 	 */
 	protected function compileAddslashes($str) {
+		// DatabaseConnection::quoteWhereClause() returns an unmodified where clause in native mode,
+		// escaping of special characters needs to be done here.
+		if ((string)$this->databaseConnection->handlerCfg[$this->databaseConnection->lastHandlerKey]['type'] === 'native') {
+			return parent::compileAddslashes($str);
+		}
+
+		// Return unmodified value, DBMS specific escaping is handled in DatabaseConnection::quoteWhereClause()
 		return $str;
 	}
 
