@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,13 +48,6 @@ class LocalizationUtility
      * @var array
      */
     protected static $LOCAL_LANG_UNSET = array();
-
-    /**
-     * Local Language content charset for individual labels (overriding)
-     *
-     * @var array
-     */
-    protected static $LOCAL_LANG_charset = array();
 
     /**
      * Key of the language to use
@@ -99,9 +91,6 @@ class LocalizationUtility
             ) {
                 // Local language translation for key exists
                 $value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
-                if (!empty(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
-                    $value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
-                }
             } elseif (!empty(self::$alternativeLanguageKeys)) {
                 $languages = array_reverse(self::$alternativeLanguageKeys);
                 foreach ($languages as $language) {
@@ -110,9 +99,6 @@ class LocalizationUtility
                     ) {
                         // Alternative language translation for key exists
                         $value = self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'];
-                        if (!empty(self::$LOCAL_LANG_charset[$extensionName][$language][$key])) {
-                            $value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][$language][$key]);
-                        }
                         break;
                     }
                 }
@@ -230,8 +216,6 @@ class LocalizationUtility
             return;
         }
         self::$LOCAL_LANG_UNSET[$extensionName] = array();
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
             if (!(is_array($labels) && isset(self::$LOCAL_LANG[$extensionName][$languageKey]))) {
                 continue;
@@ -242,7 +226,6 @@ class LocalizationUtility
                     if ($labelValue === '') {
                         self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$labelKey] = '';
                     }
-                    self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $charsetConverter->charSetArray[$languageKey];
                 } elseif (is_array($labelValue)) {
                     $labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
                     foreach ($labelValue as $key => $value) {
@@ -282,24 +265,6 @@ class LocalizationUtility
             }
         }
         return $result;
-    }
-
-    /**
-     * Converts a string from the specified character set to the current.
-     * The current charset is defined by the TYPO3 mode.
-     *
-     * @param string $value string to be converted
-     * @param string $charset The source charset
-     * @return string converted string
-     */
-    protected static function convertCharset($value, $charset)
-    {
-        if (TYPO3_MODE === 'FE') {
-            return self::getTypoScriptFrontendController()->csConv($value, $charset);
-        } else {
-            $convertedValue = self::getLanguageService()->csConvObj->conv($value, self::getLanguageService()->csConvObj->parse_charset($charset), 'utf-8', 1);
-            return $convertedValue !== null ? $convertedValue : $value;
-        }
     }
 
     /**
