@@ -35,7 +35,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 			shortcutFormTitleSelector: 'input[name="shortcut-title"]',
 			shortcutFormGroupSelector: 'select[name="shortcut-group"]',
 			shortcutFormSaveSelector: '.shortcut-form-save',
-			shortcutFormCancelSelector: '.shortcut-form-cancel'
+			shortcutFormCancelSelector: '.shortcut-form-cancel',
+			shortcutFormSelector: '.shortcut-form'
 		}
 	};
 
@@ -188,6 +189,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 			evt.stopImmediatePropagation();
 			ShortcutMenu.editShortcut($(this).closest(ShortcutMenu.options.shortcutItemSelector));
 		}).on('click', ShortcutMenu.options.shortcutFormSaveSelector, function(evt) {
+			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutItemSelector));
+		}).on('submit', ShortcutMenu.options.shortcutFormSelector, function(evt) {
+			evt.preventDefault();
+			evt.stopImmediatePropagation();
 			ShortcutMenu.saveShortcutForm($(this).closest(ShortcutMenu.options.shortcutItemSelector));
 		}).on('click', ShortcutMenu.options.shortcutFormCancelSelector, function() {
 			// re-render the menu on canceling the update of a shortcut
