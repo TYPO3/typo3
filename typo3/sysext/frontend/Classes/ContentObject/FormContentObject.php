@@ -293,7 +293,10 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						// Create the select-box:
 						$iCount = count($items);
 						for ($a = 0; $a < $iCount; $a++) {
-							$option .= '<option value="' . $items[$a][1] . '"' . (in_array($items[$a][1], $defaults) ? ' selected="selected"' : '') . '>' . trim($items[$a][0]) . '</option>';
+							$option .= '<option value="' . htmlspecialchars($items[$a][1]) . '"' .
+								(in_array($items[$a][1], $defaults) ? ' selected="selected"' : '') . '>' .
+								htmlspecialchars(trim($items[$a][0])) .
+								'</option>';
 						}
 						if ($multiple) {
 							// The fieldname must be prepended '[]' if multiple select. And the reason why it's prepended is, because the required-field list later must also have [] prepended.
@@ -336,16 +339,16 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 							$optionParts = '';
 							$radioId = $prefix . $fName . $this->cObj->cleanFormName($items[$a][0]);
 							if ($accessibility) {
-								$radioLabelIdAttribute = ' id="' . $radioId . '"';
+								$radioLabelIdAttribute = ' id="' . htmlspecialchars($radioId) . '"';
 							} else {
 								$radioLabelIdAttribute = '';
 							}
-							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' . $radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' . ((string)$items[$a][1] === (string)$default ? ' checked="checked"' : '') . $addParams . ' />';
+							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' . $radioLabelIdAttribute . ' value="' . htmlspecialchars($items[$a][1]) . '"' . ((string)$items[$a][1] === (string)$default ? ' checked="checked"' : '') . $addParams . ' />';
 							if ($accessibility) {
 								$label = isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : trim($items[$a][0]);
 								$optionParts .= '<label for="' . $radioId . '">' . $label . '</label>';
 							} else {
-								$optionParts .= isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : trim($items[$a][0]);
+								$optionParts .= isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : htmlspecialchars(trim($items[$a][0]));
 							}
 							$option .= isset($conf['radioInputWrap.']) ? $this->cObj->stdWrap($optionParts, $conf['radioInputWrap.']) : $optionParts;
 						}
