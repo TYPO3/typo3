@@ -106,12 +106,12 @@ class SystemEnvironmentBuilder
         define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
         // A null, a tabulator, a linefeed, a carriage return, a substitution, a CR-LF combination
-        define('NUL', chr(0));
-        define('TAB', chr(9));
-        define('LF', chr(10));
-        define('CR', chr(13));
-        define('SUB', chr(26));
-        define('CRLF', CR . LF);
+        defined('NUL') ?: define('NUL', chr(0));
+        defined('TAB') ?: define('TAB', chr(9));
+        defined('LF') ?: define('LF', chr(10));
+        defined('CR') ?: define('CR', chr(13));
+        defined('SUB') ?: define('SUB', chr(26));
+        defined('CRLF') ?: define('CRLF', CR . LF);
 
         // Security related constant: Default value of fileDenyPattern
         define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-7]?|phpsh|phtml)(\\..*)?$|^\\.htaccess$');
@@ -120,7 +120,7 @@ class SystemEnvironmentBuilder
 
         // Operating system identifier
         // Either "WIN" or empty string
-        define('TYPO3_OS', self::getTypo3Os());
+        defined('TYPO3_OS') ?: define('TYPO3_OS', self::getTypo3Os());
 
         // Service error constants
         // General error - something went wrong

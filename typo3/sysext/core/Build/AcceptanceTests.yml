@@ -1,13 +1,14 @@
 actor: Tester
 paths:
-    tests: Configuration/Acceptance
-    log: ../../../../typo3temp/var/logs/codeception
-    data: Configuration/Acceptance/Data
-    support: Configuration/Acceptance/Support
-    envs: Configuration/Acceptance/Envs
+  tests: Configuration/Acceptance
+  log: ../../../../typo3temp/var/tests
+  data: Configuration/Acceptance/Data
+  support: Configuration/Acceptance/Support
+  envs: Configuration/Acceptance/Envs
 settings:
-    colors: true
-    memory_limit: 1024M
+  colors: true
+  memory_limit: 1024M
 extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
+  enabled:
+    - Codeception\Extension\RunFailed
+    - TYPO3\CMS\Core\Tests\AcceptanceCoreEnvironment

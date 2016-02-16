@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Core\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base test case class for functional tests, all TYPO3 CMS
@@ -48,6 +51,23 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
  */
 abstract class FunctionalTestCase extends BaseTestCase
 {
+
+    /**
+     * An unique identifier for this test case. Location of the test
+     * instance and database name depend on this. Calculated early in setUp()
+     *
+     * @var string
+     */
+    protected $identifier;
+
+    /**
+     * Absolute path to test instance document root. Depends on $identifier.
+     * Calculated early in setUp()
+     *
+     * @var string
+     */
+    protected $instancePath;
+
     /**
      * Core extensions to load.
      *
@@ -65,7 +85,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * @see FunctionalTestCaseUtility $defaultActivatedCoreExtensions
      * @var array
      */
-    protected $coreExtensionsToLoad = array();
+    protected $coreExtensionsToLoad = [];
 
     /**
      * Array of test/fixture extensions paths that should be loaded for a test.
@@ -87,7 +107,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $testExtensionsToLoad = array();
+    protected $testExtensionsToLoad = [];
 
     /**
      * Array of test/fixture folder or file paths that should be linked for a test.
@@ -117,7 +137,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array();
+    protected $pathsToLinkInTestInstance = [];
 
     /**
      * This configuration array is merged with TYPO3_CONF_VARS
@@ -125,7 +145,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $configurationToUseInTestInstance = array();
+    protected $configurationToUseInTestInstance = [];
 
     /**
      * Array of folders that should be created inside the test instance document root.
@@ -151,7 +171,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $additionalFoldersToCreate = array();
+    protected $additionalFoldersToCreate = [];
 
     /**
      * The fixture which is used when initializing a backend user
@@ -159,34 +179,6 @@ abstract class FunctionalTestCase extends BaseTestCase
      * @var string
      */
     protected $backendUserFixture = 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml';
-
-    /**
-     * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
-     *
-     * @var \TYPO3\CMS\Core\Tests\FunctionalTestCaseBootstrapUtility
-     */
-    private $bootstrapUtility = null;
-
-    /**
-     * Calculate a "unique" identifier for the test database and the
-     * instance patch based on the given test case class name.
-     *
-     * @return string
-     */
-    protected function getInstanceIdentifier()
-    {
-        return FunctionalTestCaseBootstrapUtility::getInstanceIdentifier(get_class($this));
-    }
-
-    /**
-     * Calculates path to TYPO3 CMS test installation for this test case.
-     *
-     * @return string
-     */
-    protected function getInstancePath()
-    {
-        return FunctionalTestCaseBootstrapUtility::getInstancePath(get_class($this));
-    }
 
     /**
      * Set up creates a test instance and database.
@@ -200,15 +192,64 @@ abstract class FunctionalTestCase extends BaseTestCase
         if (!defined('ORIGINAL_ROOT')) {
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
-        $this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-        $this->bootstrapUtility->setUp(
-            get_class($this),
-            $this->coreExtensionsToLoad,
-            $this->testExtensionsToLoad,
-            $this->pathsToLinkInTestInstance,
-            $this->configurationToUseInTestInstance,
-            $this->additionalFoldersToCreate
-        );
+
+        // Use a 7 char long hash of class name as identifier
+        $this->identifier = substr(sha1(get_class($this)), 0, 7);
+        $this->instancePath = ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . $this->identifier;
+
+        $testbase = new Testbase();
+        $testbase->defineTypo3ModeBe();
+        $testbase->setTypo3TestingContext();
+        if ($testbase->recentTestInstanceExists($this->instancePath)) {
+            // Reusing an existing instance. This typically happens for the second, third, ... test
+            // in a test case, so environment is set up only once per test case.
+            $testbase->setUpBasicTypo3Bootstrap($this->instancePath);
+            $testbase->initializeTestDatabaseAndTruncateTables();
+            $testbase->loadExtensionTables();
+        } else {
+            $testbase->removeOldInstanceIfExists($this->instancePath);
+            // Basic instance directory structure
+            $testbase->createDirectory($this->instancePath . '/fileadmin');
+            $testbase->createDirectory($this->instancePath . '/typo3temp/var/transient');
+            $testbase->createDirectory($this->instancePath . '/typo3temp/assets');
+            $testbase->createDirectory($this->instancePath . '/typo3conf/ext');
+            $testbase->createDirectory($this->instancePath . '/uploads');
+            // Additionally requested directories
+            foreach ($this->additionalFoldersToCreate as $directory) {
+                $testbase->createDirectory($this->instancePath . '/' . $directory);
+            }
+            $testbase->createLastRunTextfile($this->instancePath);
+            $testbase->setUpInstanceCoreLinks($this->instancePath);
+            $testbase->linkTestExtensionsToInstance($this->instancePath, $this->testExtensionsToLoad);
+            $testbase->linkPathsInTestInstance($this->instancePath, $this->pathsToLinkInTestInstance);
+            $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
+            $originalDatabaseName = $localConfiguration['DB']['database'];
+            // Append the unique identifier to the base database name to end up with a single database per test case
+            $localConfiguration['DB']['database'] = $originalDatabaseName . '_ft' . $this->identifier;
+            $testbase->testDatabaseNameIsNotTooLong($originalDatabaseName, $localConfiguration);
+            // Set some hard coded base settings for the instance. Those could be overruled by
+            // $this->configurationToUseInTestInstance if needed again.
+            $localConfiguration['SYS']['isInitialInstallationInProgress'] = false;
+            $localConfiguration['SYS']['isInitialDatabaseImportDone'] = true;
+            $localConfiguration['SYS']['displayErrors'] = '1';
+            $localConfiguration['SYS']['debugExceptionHandler'] = '';
+            $localConfiguration['SYS']['trustedHostsPattern'] = '.*';
+            $localConfiguration['SYS']['setDBinit'] = 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';';
+            $testbase->setUpLocalConfiguration($this->instancePath, $localConfiguration, $this->configurationToUseInTestInstance);
+            $defaultCoreExtensionsToLoad = [
+                'core',
+                'backend',
+                'frontend',
+                'lang',
+                'extbase',
+                'install',
+            ];
+            $testbase->setUpPackageStates($this->instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
+            $testbase->setUpBasicTypo3Bootstrap($this->instancePath);
+            $testbase->setUpTestDatabase($localConfiguration['DB']['database'], $originalDatabaseName);
+            $testbase->loadExtensionTables();
+            $testbase->createDatabaseStructure();
+        }
     }
 
     /**
@@ -228,7 +269,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * Initialize backend user
      *
      * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      * @throws Exception
      */
     protected function setUpBackendUserFromFixture($userUid)
@@ -237,8 +278,8 @@ abstract class FunctionalTestCase extends BaseTestCase
         $database = $this->getDatabaseConnection();
         $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
-        /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-        $backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        /** @var $backendUser BackendUserAuthentication */
+        $backendUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $sessionId = $backendUser->createSessionId();
         $_COOKIE['be_typo_user'] = $sessionId;
         $backendUser->id = $sessionId;
@@ -381,7 +422,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         }
 
         $arguments = array(
-            'documentRoot' => $this->getInstancePath(),
+            'documentRoot' => $this->instancePath,
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
         );
 
@@ -408,4 +449,5 @@ abstract class FunctionalTestCase extends BaseTestCase
         $response = new Response($result['status'], $result['content'], $result['error']);
         return $response;
     }
+
 }

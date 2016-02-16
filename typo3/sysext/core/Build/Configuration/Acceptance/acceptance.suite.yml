@@ -1,22 +1,18 @@
 class_name: AcceptanceTester
 modules:
-    enabled:
-        - WebDriver
-        - \Helper\Acceptance
-        - Asserts
-        - \Helper\Unit
-    config:
-      WebDriver:
-        url: http://localhost:8000
-        browser: phantomjs
-        http_proxy: direct
-
+  enabled:
+    - WebDriver
+    - \Helper\Acceptance
+    - Asserts
+  config:
+    WebDriver:
+      url: http://localhost:8000/typo3temp/var/tests/acceptance
+      browser: phantomjs
+      http_proxy: direct
 env:
-    firefox:
-        modules:
-            config:
-                WebDriver:
-                    browser: 'firefox'
-                    window_size: 1024x768
-    phantom:
-        # nothing changed
+  firefox:
+    modules:
+      config:
+        WebDriver:
+          browser: 'firefox'
+          window_size: 1024x768
