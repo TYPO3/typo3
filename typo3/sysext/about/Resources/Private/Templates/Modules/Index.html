@@ -18,7 +18,9 @@
 
 		<f:for each="{modules}" as="mainModule">
 			<f:if condition="{mainModule.subModules}">
-				<h2>{mainModule.label}</h2>
+				<f:if condition="{mainModule.label}">
+					<h2>{f:translate(key: mainModule.label)}</h2>
+				</f:if>
 				<div class="container-fuid">
 					<div class="row">
 						<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
@@ -27,10 +29,10 @@
 									<a
 										href="#"
 										onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-										title="{subModule.shortDescription}"
+										title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
 										class="pull-left"
 									>
-										<span class="typo3-app-icon media-object" title="{subModule.label}">
+										<span class="typo3-app-icon media-object" title="{f:if(condition: subModule.label, then: '{f:translate(key: subModule.label)}')}">
 											<span>
 												<span>
 													<core:icon identifier="{subModule.iconIdentifier}" size="default" />
@@ -40,19 +42,23 @@
 									</a>
 
 									<div class="media-body">
-										<strong>
-											<a
-												href="#"
-												onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-												title="{subModule.shortDescription}"
-												>{subModule.label}</a>
-										</strong><br>
-
-										<f:if condition="{subModule.shortDescription}">
-											<small class="text-muted">{subModule.shortDescription}</small><br>
+										<f:if condition="{subModule.label}">
+											<strong>
+												<a
+													href="#"
+													onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+													title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
+												>{f:translate(key: subModule.label)}</a>
+											</strong><br>
 										</f:if>
 
-										{subModule.longDescription -> f:format.raw()}
+										<f:if condition="{subModule.shortDescription}">
+											<small class="text-muted"><f:translate key="{subModule.shortDescription}" /></small><br>
+										</f:if>
+
+										<f:if condition="{subModule.longDescription}">
+											{f:translate(key: subModule.longDescription) -> f:format.raw()}
+										</f:if>
 									</div>
 								</div>
 							</div>

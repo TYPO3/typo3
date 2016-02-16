@@ -75,6 +75,12 @@ class ModuleLoader
     protected $navigationComponents = array();
 
     /**
+     * Labels for the modules
+     * @var array
+     */
+    protected $moduleLabels = [];
+
+    /**
      * Init.
      * The outcome of the load() function will be a $this->modules array populated with the backend module structure available to the BE_USER
      * Further the global var $LANG will have labels and images for the modules loaded in an internal array.
@@ -145,6 +151,7 @@ class ModuleLoader
                 if ($this->checkModAccess($name, $MCONF) !== true) {
                     return false;
                 }
+                $this->addLabelsForModule($name, $MCONF['labels']);
                 return $MCONF;
             }
         }
@@ -166,23 +173,7 @@ class ModuleLoader
         $finalModuleConfiguration = $setupInformation['configuration'];
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
-        $lang = $this->getLanguageService();
-        if (is_object($lang)) {
-            $defaultLabels = $setupInformation['labels']['default'];
-
-            // If LOCAL_LANG references are used for labels of the module:
-            if ($defaultLabels['ll_ref']) {
-                // Now the 'default' key is loaded with the CURRENT language - not the english translation...
-                $defaultLabels['labels']['tablabel'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_labels_tablabel');
-                $defaultLabels['labels']['tabdescr'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_labels_tabdescr');
-                $defaultLabels['tabs']['tab'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_tabs_tab');
-                $lang->addModuleLabels($defaultLabels, $name . '_');
-            } else {
-                // ... otherwise use the old way:
-                $lang->addModuleLabels($defaultLabels, $name . '_');
-                $lang->addModuleLabels($setupInformation['labels'][$lang->lang], $name . '_');
-            }
-        }
+        $this->addLabelsForModule($name, $setupInformation['labels']);
 
         // Default script setup
         if ($setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {
@@ -360,6 +351,69 @@ class ModuleLoader
     public function cleanName($str)
     {
         return preg_replace('/[^a-z0-9]/i', '', $str);
+    }
+
+    /**
+     * Registers labels for a module in a unified way.
+     *
+     * Legacy info: This was previously named
+     * - labels->tablabel (now called "shortdescription")
+     * - labels->tabdescr (now called "description")
+     * - tabs->tab (now called "title")
+     *
+     * The LLL information is stored, not the actual translated string.
+     *
+     * @param string $moduleName the name of the module
+     * @param string|array $labels the information about the three labels
+     */
+    public function addLabelsForModule($moduleName, $labels)
+    {
+        // If LOCAL_LANG references are used for labels of the module:
+        if (is_string($labels)) {
+            // Extbase-based modules
+            $this->moduleLabels[$moduleName] = [
+                'shortdescription' => $labels . ':mlang_labels_tablabel',
+                'description' => $labels . ':mlang_labels_tabdescr',
+                'title' => $labels . ':mlang_tabs_tab',
+            ];
+        } elseif (isset($labels['title'])) {
+            // New way, where all labels can be LLL references
+            $this->moduleLabels[$moduleName] = $labels;
+        } elseif (isset($labels['ll_ref'])) {
+            // Classic, non-extbase module labels
+            $this->addLabelsForModule($moduleName, $labels['ll_ref']);
+        } else {
+            // Very old obsolete approach, don't use anymore, use one of the ways above.
+            if (is_object($this->getLanguageService())) {
+                $language = $this->getLanguageService()->lang;
+            } else {
+                $language = 'default';
+            }
+
+            if (isset($labels[$language]['ll_ref'])) {
+                $this->addLabelsForModule($moduleName, $labels[$language]['ll_ref']);
+            } elseif (isset($labels['default']['ll_ref'])) {
+                $this->addLabelsForModule($moduleName, $labels['default']['ll_ref']);
+            } else {
+                $this->moduleLabels[$moduleName] = [
+                    'shortdescription' => isset($labels[$language]['labels']['tablabel']) ? $labels[$language]['labels']['tablabel'] : $labels['default']['labels']['tablabel'],
+                    'description' => isset($labels[$language]['labels']['tabdescr']) ? $labels[$language]['labels']['tabdescr'] : $labels['default']['labels']['tabdescr'],
+                    'title' => isset($labels[$language]['tabs']['tab']) ? $labels[$language]['tabs']['tab'] : $labels['default']['tabs']['tab'],
+                ];
+            }
+
+        }
+    }
+
+    /**
+     * Returns the labels for the given module
+     *
+     * @param string $moduleName
+     * @return array
+     */
+    public function getLabelsForModule($moduleName)
+    {
+        return isset($this->moduleLabels[$moduleName]) ? $this->moduleLabels[$moduleName] : array();
     }
 
     /**

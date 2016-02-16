@@ -1058,15 +1058,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        $languageService->moduleLabels = [
-            'labels' => [
-                'aModule_tablabel' => 'aModuleTabLabel',
-                'aModule_tabdescr' => 'aModuleTabDescription',
-            ],
-            'tabs' => [
-                'aModule_tab' => 'aModuleLabel',
-            ]
-        ];
 
         /** @var ModuleLoader|ObjectProphecy $moduleLoaderProphecy */
         $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
@@ -1080,6 +1071,11 @@ class TcaSelectItemsTest extends UnitTestCase
                 'iconIdentifier' => 'empty-empty'
             ]
         ];
+        $moduleLoaderProphecy->getLabelsForModule('aModule')->shouldBeCalled()->willReturn([
+            'shortdescription' => 'aModuleTabLabel',
+            'description' => 'aModuleTabDescription',
+            'title' => 'aModuleLabel'
+        ]);
 
         $expectedItems = [
             0 => [

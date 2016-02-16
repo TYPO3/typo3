@@ -884,16 +884,6 @@ class ExtensionManagementUtility
             unset($moduleConfiguration['icon']);
         }
 
-        $moduleLabels = array(
-            'labels' => array(
-                'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
-                'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr')
-            ),
-            'tabs' => array(
-                'tab' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_tabs_tab')
-            )
-        );
-        $GLOBALS['LANG']->addModuleLabels($moduleLabels, $moduleSignature . '_');
         return $moduleConfiguration;
     }
 

@@ -286,9 +286,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             // Check for module access
             $moduleName = $row['M_module_name'] ?: $row['module_name'];
 
-            if (!isset($this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tablabel'])) {
-                // Nice hack to check if the user has access to this module
-                // - otherwise the translation label would not have been loaded :-)
+            // Check if the user has access to this module
+            if (!is_array($this->moduleLoader->checkMod($moduleName))) {
                 continue;
             }
             if (!$backendUser->isAdmin()) {
@@ -658,12 +657,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function addShortcut($url, $shortcutName, $module)
     {
-        // Shorts
-        $db = $this->getDatabaseConnection();
-        $lS = $this->getLanguageService();
-
-        if ($shortcutName === 'Shortcut' && !empty($lS->moduleLabels['labels'][$module . '_tablabel'])) {
-            $shortcutName = $lS->moduleLabels['labels'][$module . '_tablabel'];
+        $moduleLabels = $this->moduleLoader->getLabelsForModule($module);
+        if ($shortcutName === 'Shortcut' && !empty($moduleLabels['shortdescription'])) {
+            $shortcutName = $this->getLanguageService()->sL($moduleLabels['shortdescription']);
         }
 
         $motherModule = GeneralUtility::_POST('motherModName');
@@ -675,14 +671,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface
             'sorting' => $GLOBALS['EXEC_TIME']
         ];
 
-        $db->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
+        $this->getDatabaseConnection()->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
 
-        $shortcutCreated = 'failed';
-        if ($db->sql_affected_rows() === 1) {
-            $shortcutCreated = 'success';
+        if ($this->getDatabaseConnection()->sql_affected_rows() === 1) {
+            return 'success';
+        } else {
+            return 'failed';
         }
-
-        return $shortcutCreated;
     }
 
     /**
@@ -881,10 +876,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         if (substr($moduleName, 0, 5) == 'xMOD_') {
             $title = substr($moduleName, 5);
         } else {
-            $splitModuleName = explode('_', $moduleName);
-            $title = $languageService->moduleLabels['tabs'][$splitModuleName[0] . '_tab'];
-            if (count($splitModuleName) > 1) {
-                $title .= '>' . $languageService->moduleLabels['tabs'][$moduleName . '_tab'];
+            list($mainModule, $subModule) = explode('_', $moduleName);
+            $mainModuleLabels = $this->moduleLoader->getLabelsForModule($mainModule);
+            $title = $languageService->sL($mainModuleLabels['title']);
+            if (!empty($subModule)) {
+                $subModuleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
+                $title .= '>' . $languageService->sL($subModuleLabels['title']);
             }
         }
         if ($parentModuleName) {

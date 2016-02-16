@@ -55,6 +55,7 @@ class LanguageService
     /**
      * Can contain labels and image references from the backend modules.
      * Relies on \TYPO3\CMS\Backend\Module\ModuleLoader to initialize modules after a global instance of $LANG has been created.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use ModuleLoader directly instead.
      *
      * @var array
      */
@@ -158,9 +159,11 @@ class LanguageService
      * @param string $prefix Module name prefix
      * @return void
      * @see \TYPO3\CMS\Backend\Module\ModuleLoader
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use ModuleLoader instead.
      */
     public function addModuleLabels($arr, $prefix)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (is_array($arr)) {
             foreach ($arr as $k => $larr) {
                 if (!isset($this->moduleLabels[$k])) {

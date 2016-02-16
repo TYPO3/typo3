@@ -304,34 +304,36 @@ abstract class AbstractItemProvider
                 }
                 break;
             case ($special === 'modListGroup' || $special === 'modListUser'):
+                /** @var ModuleLoader $loadModules */
                 $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
                 $loadModules->load($GLOBALS['TBE_MODULES']);
                 $modList = $special === 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
                 if (is_array($modList)) {
                     foreach ($modList as $theMod) {
+                        $moduleLabels = $loadModules->getLabelsForModule($theMod);
+                        list($mainModule, $subModule) = explode('_', $theMod, 2);
                         // Icon:
-                        if (strpos($theMod, '_') !== false) {
-                            list($mainModule, $subModule) = explode('_', $theMod, 2);
+                        if (!empty($subModule)) {
                             $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
                         } else {
                             $icon = $loadModules->modules[$theMod]['iconIdentifier'];
                         }
                         // Add help text
                         $helpText = [
-                            'title' => $languageService->moduleLabels['labels'][$theMod . '_tablabel'],
-                            'description' => $languageService->moduleLabels['labels'][$theMod . '_tabdescr']
+                            'title' => $languageService->sL($moduleLabels['shortdescription']),
+                            'description' => $languageService->sL($moduleLabels['description'])
                         ];
 
                         $label = '';
-                        // Add label for main module:
-                        $pp = explode('_', $theMod);
-                        if (count($pp) > 1) {
-                            $label .= $languageService->moduleLabels['tabs'][$pp[0] . '_tab'] . '>';
+                        // Add label for main module if this is a submodule
+                        if (!empty($subModule)) {
+                            $mainModuleLabels = $loadModules->getLabelsForModule($mainModule);
+                            $label .= $languageService->sL($mainModuleLabels['title']) . '>';
                         }
-                        // Add modules own label now:
-                        $label .= $languageService->moduleLabels['tabs'][$theMod . '_tab'];
+                        // Add modules own label now
+                        $label .= $languageService->sL($moduleLabels['title']);
 
-                        // Item configuration:
+                        // Item configuration
                         $items[] = [$label, $theMod, $icon, $helpText];
                     }
                 }

@@ -117,12 +117,13 @@ class ModulesController extends ActionController
         $loadedModules->load($GLOBALS['TBE_MODULES']);
         $mainModulesData = array();
         foreach ($loadedModules->modules as $moduleName => $moduleInfo) {
-            $mainModuleData = array();
-            $moduleKey = $moduleName . '_tab';
-            $mainModuleData['name'] = $moduleName;
-            $mainModuleData['label'] = $this->languageService->moduleLabels['tabs'][$moduleKey];
+            $moduleLabels = $loadedModules->getLabelsForModule($moduleName);
+            $mainModuleData = [
+                'name'  => $moduleName,
+                'label' => $moduleLabels['title']
+            ];
             if (is_array($moduleInfo['sub']) && !empty($moduleInfo['sub'])) {
-                $mainModuleData['subModules'] = $this->getSubModuleData($moduleName, $moduleInfo['sub']);
+                $mainModuleData['subModules'] = $this->getSubModuleData($loadedModules, $moduleName);
             }
             $mainModulesData[] = $mainModuleData;
         }
@@ -132,22 +133,22 @@ class ModulesController extends ActionController
     /**
      * Create array with data of all subModules of a specific main module
      *
+     * @param ModuleLoader $loadedModules the module loader instance
      * @param string $moduleName Name of the main module
-     * @param array $subModulesInfo Sub module information
      * @return array
      */
-    protected function getSubModuleData($moduleName, array $subModulesInfo = array())
+    protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName)
     {
         $subModulesData = array();
-        foreach ($subModulesInfo as $subModuleName => $subModuleInfo) {
-            $subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
+        foreach ($loadedModules->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
+            $moduleLabels = $loadedModules->getLabelsForModule($moduleName . '_' . $subModuleName);
             $subModuleData = array();
             $subModuleData['name'] = $subModuleName;
             $subModuleData['icon'] = $subModuleInfo['icon'];
             $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'];
-            $subModuleData['label'] = $this->languageService->moduleLabels['tabs'][$subModuleKey];
-            $subModuleData['shortDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'label'];
-            $subModuleData['longDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'descr'];
+            $subModuleData['label'] = $moduleLabels['title'];
+            $subModuleData['shortDescription'] = $moduleLabels['shortdescription'];
+            $subModuleData['longDescription'] = $moduleLabels['description'];
             $subModulesData[] = $subModuleData;
         }
         return $subModulesData;
