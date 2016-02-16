@@ -203,7 +203,7 @@ class AbstractPlugin
      * Should normally be set in the main function with the TypoScript content passed to the method.
      *
      * $conf[LOCAL_LANG][_key_] is reserved for Local Language overrides.
-     * $conf[userFunc] / $conf[includeLibs]  reserved for setting up the USER / USER_INT object. See TSref
+     * $conf[userFunc] reserved for setting up the USER / USER_INT object. See TSref
      *
      * @var array
      */

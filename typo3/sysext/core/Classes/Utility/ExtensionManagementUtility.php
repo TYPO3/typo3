@@ -1395,24 +1395,21 @@ class ExtensionManagementUtility
      * FOR USE IN ext_localconf.php FILES
      *
      * @param string $key The extension key
-     * @param string $classFile The PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
+     * @param string $_ unused since TYPO3 CMS 8
      * @param string $suffix Is used as a suffix of the class name (e.g. "_pi1")
      * @param string $type See description above
      * @param int $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
      *
      * @return void
      */
-    public static function addPItoST43($key, $classFile = '', $suffix = '', $type = 'list_type', $cached = 0)
+    public static function addPItoST43($key, $_, $suffix = '', $type = 'list_type', $cached = 0)
     {
-        $classFile = $classFile ? $classFile : 'pi/class.tx_' . str_replace('_', '', $key) . $suffix . '.php';
         $cN = self::getCN($key);
         // General plugin
         $pluginContent = trim('
 plugin.' . $cN . $suffix . ' = USER' . ($cached ? '' : '_INT') . '
-plugin.' . $cN . $suffix . ' {
-	includeLibs = ' . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $classFile . '
-	userFunc = ' . $cN . $suffix . '->main
-}');
+plugin.' . $cN . $suffix . '.userFunc = ' . $cN . $suffix . '->main
+');
         self::addTypoScript($key, 'setup', '
 # Setting ' . $key . ' plugin TypoScript
 ' . $pluginContent);

@@ -35,10 +35,8 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
             return '';
         }
         $substKey = 'INT_SCRIPT.' . $this->getTypoScriptFrontendController()->uniqueHash();
-        $includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
         $content = '<!--' . $substKey . '-->';
         $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = array(
-            'file' => $includeLibs,
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'COA'

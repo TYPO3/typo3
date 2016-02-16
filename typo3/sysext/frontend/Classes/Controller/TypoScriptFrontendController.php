@@ -3350,29 +3350,11 @@ class TypoScriptFrontendController
     {
         do {
             $INTiS_config = $this->config['INTincScript'];
-            $this->INTincScript_includeLibs($INTiS_config);
             $this->INTincScript_process($INTiS_config);
             // Check if there were new items added to INTincScript during the previous execution:
             $INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
             $reprocess = count($INTiS_config) > 0;
         } while ($reprocess);
-    }
-
-    /**
-     * Include libraries for uncached objects.
-     *
-     * @param array $INTiS_config $GLOBALS['TSFE']->config['INTincScript'] or part of it
-     * @return void
-     * @see INTincScript()
-     */
-    protected function INTincScript_includeLibs($INTiS_config)
-    {
-        foreach ($INTiS_config as $INTiS_cPart) {
-            if (isset($INTiS_cPart['conf']['includeLibs']) && $INTiS_cPart['conf']['includeLibs']) {
-                $INTiS_resourceList = GeneralUtility::trimExplode(',', $INTiS_cPart['conf']['includeLibs'], true);
-                $this->includeLibraries($INTiS_resourceList);
-            }
-        }
     }
 
     /**
@@ -3396,7 +3378,9 @@ class TypoScriptFrontendController
             if (substr($INTiS_cPart, 32, 3) === '-->') {
                 $INTiS_key = 'INT_SCRIPT.' . substr($INTiS_cPart, 0, 32);
                 if (is_array($INTiS_config[$INTiS_key])) {
-                    $timeTracker->push('Include ' . $INTiS_config[$INTiS_key]['file'], '');
+                    $label = 'Include ' . $INTiS_config[$INTiS_key]['type'];
+                    $label = $label . isset($INTiS_config[$INTiS_key]['file']) ? ' ' . $INTiS_config[$INTiS_key]['file'] : '';
+                    $timeTracker->push($label, '');
                     $incContent = '';
                     $INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
                     /* @var $INTiS_cObj ContentObjectRenderer */
@@ -3981,10 +3965,11 @@ class TypoScriptFrontendController
      *
      * @param array $libraries The libraries to be included.
      * @return void
-     * @todo deprecate this method
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use proper class loading instead.
      */
     public function includeLibraries(array $libraries)
     {
+        GeneralUtility::logDeprecatedFunction();
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('Include libraries');
         $timeTracker->setTSlogMessage('Files for inclusion: "' . implode(', ', $libraries) . '"');

@@ -77,7 +77,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         /** @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMock(TypoScriptFrontendController::class, array(
             'INTincScript_process',
-            'INTincScript_includeLibs',
             'INTincScript_loadJSCode',
             'setAbsRefPrefix',
             'regeneratePageTitle'

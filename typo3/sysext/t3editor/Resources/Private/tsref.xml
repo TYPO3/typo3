@@ -154,14 +154,6 @@ helloWorld.value = this item will be returned
 	<type id="COA" extends="COBJ_ARRAY">
   </type>
 	<type id="COA_INT" extends="COBJ_ARRAY">
-		<property name="includeLibs" type="stdWrap">
-			<description><![CDATA[list of resources/stdWrap
-(This property is used only if the object is COA_INT!, See introduction.)
-This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
-This is possible to do because any include-files will be known before the scripts are included.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 	</type>
 	<type id="CONFIG">
 		<property name="ATagParams" type="string">
@@ -5432,13 +5424,6 @@ In this example the MYLINK subpart will be substituted by the wrap which is the 
 		</property>
 	</type>
 	<type id="USER">
-		<property name="includeLibs" type="stringList">
-			<description><![CDATA[(This property applies only if the object is created as USER_INT)
-This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
-This is possible to do because any include-files will be known before the scripts are included.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
@@ -5449,7 +5434,6 @@ This TypoScript will display all content element headers of a page in reversed o
 
 page = PAGE
 page.typeNum=0
-includeLibs.something = media/scripts/example_callfunction.php
 
 page.30 = USER
 page.30 {
@@ -5461,13 +5445,6 @@ page.30 {
 		</property>
 	</type>
 	<type id="USER_INT">
-		<property name="includeLibs" type="stringList">
-			<description><![CDATA[(This property applies only if the object is created as USER_INT)
-This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
-This is possible to do because any include-files will be known before the scripts are included.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
@@ -5478,7 +5455,6 @@ This TypoScript will display all content element headers of a page in reversed o
 
 page = PAGE
 page.typeNum=0
-includeLibs.something = media/scripts/example_callfunction.php
 
 page.30 = USER
 page.30 {
@@ -5498,12 +5474,6 @@ These values are stored with cached pages which means they are also accessible w
 		</property>
 		<property name="constants" type="CONSTANTS">
 			<description><![CDATA[Site-specific constants, eg. a general email-adresse. These constants may be substituted in the text throughout the pages. The substitution is done by parseFunc. (Option: constants=1)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="includeLibs" type="array">
-			<description><![CDATA[With this you can include php-files with function libraries for use in your includescript in TYPO3.
-Please see the PAGE-object, which has the same property.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5777,21 +5747,6 @@ includeJSLibs.twitter.external = 1
 		<property name="includeJSFooterlibs" type="array">
 			<description><![CDATA[	Same as includeJSLibs above, except that this block gets included at the bottom of the page (just before the closing body tag).
 ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="includeLibs" type="array">
-			<description><![CDATA[With this you may include php-files. This does the same as "includeLibrary" in ->CONFIG but this can include more than one file. These files are included after the file of includeLibrary.
-
-NOTE:
-The toplevel object "includeLibs" and the scripts defined with this property is added to each other. Script-keys (that is the "array of strings"-value, like below "ts_address") from this property of the page overrides any scripts-keys from the toplevel "includeLibs" property!
-The script-filenames are of the datatype "resource".
-
-Example:
-includeLibs.ts_address = lib_filename.php
-includeLibs.ts_shop = lib_filename.php
-
-Please do not use the prefix shown above ("ts_") as this will probably be used by the standard TYPO3 libraries that will appear in the future. ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6756,11 +6711,6 @@ This works only if the plugin calls $this->pi_setPiVarDefaults().]]></descriptio
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="includeLibs" type="stringList">
-			<description><![CDATA[Property setting up the USER / USER_INT object of the plugin]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[Property setting up the USER / USER_INT object of the plugin]]></description>
 			<default><![CDATA[
@@ -7355,7 +7305,6 @@ You can paste this example directly into a new template record.
 
 page = PAGE
 page.typeNum=0
-includeLibs.something = media/scripts/example_callfunction.php
 
 page.10 = TEXT
 page.10 {

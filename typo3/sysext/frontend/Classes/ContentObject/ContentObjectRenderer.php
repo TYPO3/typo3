@@ -7053,9 +7053,11 @@ class ContentObjectRenderer
      *
      * @param array $config TypoScript configuration
      * @return bool Whether a configuration for including libs was found and processed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use proper class loading instead.
      */
     public function includeLibs(array $config)
     {
+        GeneralUtility::logDeprecatedFunction();
         $librariesIncluded = false;
         if (isset($config['includeLibs']) && $config['includeLibs']) {
             $libraries = GeneralUtility::trimExplode(',', $config['includeLibs'], true);

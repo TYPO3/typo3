@@ -31,9 +31,7 @@ class UserInternalContentObject extends AbstractContentObject
         $tsfe = $this->getTypoScriptFrontendController();
         $substKey = 'INT_SCRIPT.' . $tsfe->uniqueHash();
         $content = '<!--' . $substKey . '-->';
-        $includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
         $tsfe->config['INTincScript'][$substKey] = array(
-            'file' => $includeLibs,
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'FUNC'

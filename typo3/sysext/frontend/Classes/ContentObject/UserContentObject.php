@@ -36,7 +36,6 @@ class UserContentObject extends AbstractContentObject
             // Come here only if we are not called from $TSFE->INTincScript_process()!
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
         }
-        $this->cObj->includeLibs($conf);
         $tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
         if ($this->cObj->doConvertToUserIntObject) {
             $this->cObj->doConvertToUserIntObject = false;

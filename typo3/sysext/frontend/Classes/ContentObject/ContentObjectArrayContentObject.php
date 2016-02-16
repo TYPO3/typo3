@@ -37,7 +37,6 @@ class ContentObjectArrayContentObject extends AbstractContentObject
             return '';
         }
 
-        $this->cObj->includeLibs($conf);
         $content = $this->cObj->cObjGet($conf);
         $wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
         if ($wrap) {
