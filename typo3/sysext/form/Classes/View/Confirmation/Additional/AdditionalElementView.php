@@ -43,7 +43,10 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Ab
 	 * @return string The value of the additional
 	 */
 	public function getAdditionalValue() {
-		return htmlspecialchars($this->model->getAdditionalValue(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE)));
+		return htmlspecialchars(
+			$this->model->getAdditionalValue(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE)),
+			ENT_QUOTES
+		);
 	}
 
 }

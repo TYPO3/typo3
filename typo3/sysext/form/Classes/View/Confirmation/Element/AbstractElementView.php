@@ -235,7 +235,7 @@ abstract class AbstractElementView {
 		$attributes = $this->model->getAttributes();
 		foreach ($attributes as $key => $attribute) {
 			if (!empty($attribute)) {
-				$value = $attribute->getValue();
+				$value = htmlspecialchars($attribute->getValue(), ENT_QUOTES);
 				if ($value !== '') {
 					$domElement->setAttribute($key, $value);
 				}
@@ -251,7 +251,7 @@ abstract class AbstractElementView {
 	 * @return void
 	 */
 	public function setAttribute(\DOMElement $domElement, $key) {
-		$attribute = $this->model->getAttributeValue((string) $key);
+		$attribute = htmlspecialchars($this->model->getAttributeValue((string) $key), ENT_QUOTES);
 		if (!empty($attribute)) {
 			$domElement->setAttribute($key, $attribute);
 		}
@@ -267,7 +267,7 @@ abstract class AbstractElementView {
 	 * @return unknown_type
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
-		$attribute = $this->model->getAttributeValue((string) $other);
+		$attribute = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
 		if (!empty($attribute)) {
 			$domElement->setAttribute($key, $attribute);
 		}
@@ -301,10 +301,12 @@ abstract class AbstractElementView {
 	 */
 	public function getInputValue() {
 		if (method_exists($this->model, 'getData')) {
-			$inputValue = nl2br($this->model->getData(), TRUE);
+			$inputValue = $this->model->getData();
 		} else {
 			$inputValue = $this->model->getAttributeValue('value');
 		}
+		$inputValue = htmlspecialchars($inputValue, ENT_QUOTES);
+		$inputValue = nl2br($inputValue, TRUE);
 		return $inputValue;
 	}
 

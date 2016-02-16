@@ -100,7 +100,7 @@ abstract class AbstractElementView {
 								if ($this->model->additionalIsSet($nodeName)) {
 									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
 								} else {
-									$replaceNode = $dom->createTextNode($this->model->getName());
+									$replaceNode = $dom->createTextNode(htmlspecialchars($this->model->getName()));
 									$node->parentNode->insertBefore($replaceNode, $node);
 								}
 								$deleteNode = TRUE;
