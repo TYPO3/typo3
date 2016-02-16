@@ -906,7 +906,7 @@ function jumpToUrl(URL) {
         // Read all files in directory and sort them alphabetically
         $cssFiles = GeneralUtility::getFilesInDir($path, 'css');
         foreach ($cssFiles as $cssFile) {
-            $this->pageRenderer->addCssFile(PathUtility::getAbsoluteWebPath($path . $cssFile));
+            $this->pageRenderer->addCssFile(PathUtility::getRelativePathTo($path) . $cssFile);
         }
     }
 
