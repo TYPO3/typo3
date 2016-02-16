@@ -1173,6 +1173,18 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.bookmarksDelete">
 				<source>Delete bookmark</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.confirmBookmarksDelete">
+				<source>Do you really want to remove this bookmark?</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.createBookmark">
+				<source>Create bookmark</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.bookmarkSavedTitle">
+				<source>Bookmark saved</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.bookmarkSavedMessage">
+				<source>The bookmark was saved.</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>

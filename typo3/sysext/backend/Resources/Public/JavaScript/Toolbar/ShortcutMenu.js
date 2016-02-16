@@ -16,7 +16,11 @@
  * shortcut menu logic to add new shortcut, remove a shortcut
  * and edit a shortcut
  */
-define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], function($, Modal, Icons) {
+define(['jquery',
+		'TYPO3/CMS/Backend/Modal',
+		'TYPO3/CMS/Backend/Icons',
+		'TYPO3/CMS/Backend/Notification'
+	], function($, Modal, Icons, Notification) {
 	'use strict';
 
 	/**
@@ -75,7 +79,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 			type: 'post',
 			cache: false
 		}).done(function(data) {
-			// @todo: we can evaluate here, but what to do? a message?
+			Notification.success(TYPO3.lang['bookmark.savedTitle'], TYPO3.lang['bookmark.savedMessage']);
 			ShortcutMenu.refreshMenu();
 		});
 	};
@@ -86,8 +90,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	 * @param {Object} $shortcutRecord
 	 */
 	ShortcutMenu.deleteShortcut = function($shortcutRecord) {
-		// @todo: translations
-		Modal.confirm('Delete bookmark', 'Do you really want to remove this bookmark?')
+		Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
 			.on('confirm.button.ok', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['shortcut_remove'],
@@ -122,8 +125,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 	 */
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule, shortcutButton, displayName) {
 		if (typeof confirmationText !== 'undefined') {
-			// @todo: translations
-			Modal.confirm('Create bookmark', confirmationText)
+			Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText)
 				.on('confirm.button.ok', function() {
  					var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector),
 						$existingIcon = $toolbarItemIcon.clone();

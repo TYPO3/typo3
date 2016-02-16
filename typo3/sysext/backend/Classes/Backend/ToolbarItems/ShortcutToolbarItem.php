@@ -102,6 +102,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $this->shortcuts = $this->initShortcuts();
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
+        $languageService = $this->getLanguageService();
+        $this->getPageRenderer()->addInlineLanguageLabelArray([
+            'bookmark.delete' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete'),
+            'bookmark.confirmDelete' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.confirmBookmarksDelete'),
+            'bookmark.create' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.createBookmark'),
+            'bookmark.savedTitle' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarkSavedTitle'),
+            'bookmark.savedMessage' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarkSavedMessage'),
+        ]);
     }
 
     /**
