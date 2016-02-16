@@ -78,6 +78,7 @@ class LanguageService
      * instance of the "\TYPO3\CMS\Core\Charset\CharsetConverter" class. May be used by any application.
      *
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Charset is a singleton, load it via GeneralUtility directly
      */
     public $csConvObj;
 
@@ -85,6 +86,8 @@ class LanguageService
      * instance of the parser factory
      *
      * @var LocalizationFactory
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as LocalizationFactory is a singleton, load it via
+     * GeneralUtility directly
      */
     public $parserFactory;
 
@@ -97,36 +100,42 @@ class LanguageService
     protected $languageDependencies = array();
 
     /**
+     * LanguageService constructor.
+     */
+    public function __construct()
+    {
+        // Initialize the conversion object
+        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
+        // Initialize the localization factory object
+        $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lang']['debug']) {
+            $this->debugKey = true;
+        }
+    }
+
+    /**
      * Initializes the backend language.
      * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
      * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
      * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
      *
      * @throws \RuntimeException
-     * @param string $lang The language key (two character string from backend users profile)
+     * @param string $languageKey The language key (two character string from backend users profile)
      * @return void
      */
-    public function init($lang)
+    public function init($languageKey)
     {
-        // Initialize the conversion object:
-        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-        // Initialize the parser factory object
-        $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        // Find the requested language in this list based
-        // on the $lang key being inputted to this function.
+        // Find the requested language in this list based on the $languageKey
         /** @var $locales \TYPO3\CMS\Core\Localization\Locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
         // Language is found. Configure it:
-        if (in_array($lang, $locales->getLocales())) {
+        if (in_array($languageKey, $locales->getLocales())) {
             // The current language key
-            $this->lang = $lang;
-            $this->languageDependencies[] = $this->lang;
-            foreach ($locales->getLocaleDependencies($this->lang) as $language) {
+            $this->lang = $languageKey;
+            $this->languageDependencies[] = $languageKey;
+            foreach ($locales->getLocaleDependencies($languageKey) as $language) {
                 $this->languageDependencies[] = $language;
             }
-        }
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lang']['debug']) {
-            $this->debugKey = true;
         }
     }
 
@@ -134,9 +143,11 @@ class LanguageService
      * Gets the parser factory.
      *
      * @return LocalizationFactory
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getParserFactory()
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->parserFactory;
     }
 
@@ -393,10 +404,6 @@ class LanguageService
      */
     protected function readLLfile($fileRef)
     {
-        // @todo: Usually, an instance of the LocalizationFactory is found in $this->parserFactory.
-        // @todo: This is not the case if $GLOBALS['LANG'] is not used to get hold of this object,
-        // @todo: but the objectManager instead. If then init() is not called, this will fatal ...
-        // @todo: To be sure, we always create an instance here for now.
         /** @var $languageFactory LocalizationFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 

@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneA
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -786,10 +785,7 @@ class BackendUtilityTest extends UnitTestCase
         );
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
-        $GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
-
-        $GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')->will($this->returnArgument(1));
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
@@ -817,10 +813,7 @@ class BackendUtilityTest extends UnitTestCase
         );
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', false);
-        $GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
         $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
-
-        $GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')->will($this->returnArgument(1));
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');
