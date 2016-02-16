@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
  */
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -123,6 +124,26 @@ class YouTubeRendererTest extends UnitTestCase
         $this->assertSame(
             '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithAutoplayFromFileReferenceIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->getMock(File::class, array(), array(), '', false);
+
+        /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileReferenceMock = $this->getMock(FileReference::class, array(), array(), '', false);
+        $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
+        $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
+
+
+        $this->assertSame(
+            '<iframe src="//www.youtube.com/embed/7331?autohide=1&amp;controls=2&amp;autoplay=1&amp;enablejsapi=1&amp;origin=test.server.org&amp;showinfo=0" allowfullscreen width="300" height="200"></iframe>',
+            $this->subject->render($fileReferenceMock, '300m', '200')
         );
     }
 
