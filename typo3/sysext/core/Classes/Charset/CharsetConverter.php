@@ -224,6 +224,7 @@ class CharsetConverter implements SingletonInterface
      * Empty values means "utf-8"
      *
      * @var array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use Locales
      */
     public $charSetArray = array(
         'af' => '',
@@ -1417,62 +1418,14 @@ class CharsetConverter implements SingletonInterface
      *
      * @param string $languageCodesList List of language codes. something like 'de,en-us;q=0.9,de-de;q=0.7,es-cl;q=0.6,en;q=0.4,es;q=0.3,zh;q=0.1'
      * @return string A preferred language that TYPO3 supports, or "default" if none found
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use Locales::getPreferredClientLanguage() for usage
      */
     public function getPreferredClientLanguage($languageCodesList)
     {
-        $allLanguageCodes = $this->getAllLanguageCodes();
-        $selectedLanguage = 'default';
-        $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
-        // Order the preferred languages after they key
-        $sortedPreferredLanguages = array();
-        foreach ($preferredLanguages as $preferredLanguage) {
-            $quality = 1.0;
-            if (strpos($preferredLanguage, ';q=') !== false) {
-                list($preferredLanguage, $quality) = explode(';q=', $preferredLanguage);
-            }
-            $sortedPreferredLanguages[$preferredLanguage] = $quality;
-        }
-        // Loop through the languages, with the highest priority first
-        arsort($sortedPreferredLanguages, SORT_NUMERIC);
-        foreach ($sortedPreferredLanguages as $preferredLanguage => $quality) {
-            if (isset($allLanguageCodes[$preferredLanguage])) {
-                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
-                break;
-            }
-            // Strip the country code from the end
-            list($preferredLanguage, ) = explode('-', $preferredLanguage);
-            if (isset($allLanguageCodes[$preferredLanguage])) {
-                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
-                break;
-            }
-        }
-        if (!$selectedLanguage || $selectedLanguage === 'en') {
-            $selectedLanguage = 'default';
-        }
-        return $selectedLanguage;
-    }
-
-    /**
-     * Merges all available charsets and locales, currently only used for getPreferredClientLanguage()
-     *
-     * @return array
-     */
-    protected function getAllLanguageCodes()
-    {
-        // Get all languages where TYPO3 code is the same as the ISO code
-        $typo3LanguageCodes = array_keys($this->charSetArray);
-        $allLanguageCodes = array_combine($typo3LanguageCodes, $typo3LanguageCodes);
-        // Get all languages where TYPO3 code differs from ISO code
-        // or needs the country part
-        // the iso codes will here overwrite the default typo3 language in the key
+        GeneralUtility::logDeprecatedFunction();
         /** @var Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
-        foreach ($locales->getIsoMapping() as $typo3Lang => $isoLang) {
-            $isoLang = join('-', explode('_', $isoLang));
-            $allLanguageCodes[$typo3Lang] = $isoLang;
-        }
-        // Move the iso codes to the (because we're comparing the keys with "isset" later on)
-        return array_flip($allLanguageCodes);
+        return $locales->getPreferredClientLanguage($languageCodesList);
     }
 
     /********************************************

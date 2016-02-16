@@ -20,12 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Locales.
  *
- * Defining backend system languages
+ * Used to define backend system languages
  * When adding new keys, remember to:
- * - Add character encoding for lang. key in \TYPO3\CMS\Core\Charset\CharsetConverter
- * (default for new languages is "utf-8")
- * - Add mappings for language in \TYPO3\CMS\Core\Charset\CharsetConverter
- * (TYPO3/ISO, language/script, script/charset)
  * - Update 'setup' extension labels (sysext/setup/Resources/Private/Language/locallang.xlf)
  * That's it!
  */
@@ -214,4 +210,55 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         }
         return $dependencies;
     }
+
+
+    /**
+     * Converts the language codes that we get from the client (usually HTTP_ACCEPT_LANGUAGE)
+     * into a TYPO3-readable language code
+     *
+     * @param string $languageCodesList List of language codes. something like 'de,en-us;q=0.9,de-de;q=0.7,es-cl;q=0.6,en;q=0.4,es;q=0.3,zh;q=0.1'
+     * @return string A preferred language that TYPO3 supports, or "default" if none found
+     */
+    public function getPreferredClientLanguage($languageCodesList)
+    {
+        $allLanguageCodesFromLocales = [];
+        foreach ($this->getIsoMapping() as $typo3Lang => $isoLang) {
+            $isoLang = str_replace('_', '-', $isoLang);
+            $allLanguageCodesFromLocales[$isoLang] = $typo3Lang;
+        }
+        foreach ($this->getLocales() as $locale) {
+            $locale = str_replace('_', '-', $locale);
+            $allLanguageCodesFromLocales[$locale] = $locale;
+        }
+        $selectedLanguage = 'default';
+        $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
+        // Order the preferred languages after they key
+        $sortedPreferredLanguages = array();
+        foreach ($preferredLanguages as $preferredLanguage) {
+            $quality = 1.0;
+            if (strpos($preferredLanguage, ';q=') !== false) {
+                list($preferredLanguage, $quality) = explode(';q=', $preferredLanguage);
+            }
+            $sortedPreferredLanguages[$preferredLanguage] = $quality;
+        }
+        // Loop through the languages, with the highest priority first
+        arsort($sortedPreferredLanguages, SORT_NUMERIC);
+        foreach ($sortedPreferredLanguages as $preferredLanguage => $quality) {
+            if (isset($allLanguageCodes[$preferredLanguage])) {
+                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
+                break;
+            }
+            // Strip the country code from the end
+            list($preferredLanguage, ) = explode('-', $preferredLanguage);
+            if (isset($allLanguageCodes[$preferredLanguage])) {
+                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
+                break;
+            }
+        }
+        if (!$selectedLanguage || $selectedLanguage === 'en') {
+            $selectedLanguage = 'default';
+        }
+        return $selectedLanguage;
+    }
+
 }
