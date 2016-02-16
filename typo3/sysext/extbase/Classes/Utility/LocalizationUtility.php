@@ -50,13 +50,6 @@ class LocalizationUtility
     protected static $LOCAL_LANG_UNSET = array();
 
     /**
-     * Local Language content charset for individual labels (overriding)
-     *
-     * @var array
-     */
-    protected static $LOCAL_LANG_charset = array();
-
-    /**
      * Key of the language to use
      *
      * @var string
@@ -98,9 +91,6 @@ class LocalizationUtility
             ) {
                 // Local language translation for key exists
                 $value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
-                if (!empty(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
-                    $value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
-                }
             } elseif (!empty(self::$alternativeLanguageKeys)) {
                 $languages = array_reverse(self::$alternativeLanguageKeys);
                 foreach ($languages as $language) {
@@ -109,9 +99,6 @@ class LocalizationUtility
                     ) {
                         // Alternative language translation for key exists
                         $value = self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'];
-                        if (!empty(self::$LOCAL_LANG_charset[$extensionName][$language][$key])) {
-                            $value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][$language][$key]);
-                        }
                         break;
                     }
                 }
@@ -239,11 +226,6 @@ class LocalizationUtility
                     if ($labelValue === '') {
                         self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$labelKey] = '';
                     }
-                    if (is_object($GLOBALS['LANG'])) {
-                        self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getLanguageService()->csConvObj->charSetArray[$languageKey];
-                    } else {
-                        self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getTypoScriptFrontendController()->csConvObj->charSetArray[$languageKey];
-                    }
                 } elseif (is_array($labelValue)) {
                     $labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
                     foreach ($labelValue as $key => $value) {
@@ -283,24 +265,6 @@ class LocalizationUtility
             }
         }
         return $result;
-    }
-
-    /**
-     * Converts a string from the specified character set to the current.
-     * The current charset is defined by the TYPO3 mode.
-     *
-     * @param string $value string to be converted
-     * @param string $charset The source charset
-     * @return string converted string
-     */
-    protected static function convertCharset($value, $charset)
-    {
-        if (TYPO3_MODE === 'FE') {
-            return self::getTypoScriptFrontendController()->csConv($value, $charset);
-        } else {
-            $convertedValue = self::getLanguageService()->csConvObj->conv($value, self::getLanguageService()->csConvObj->parse_charset($charset), self::getLanguageService()->charSet, 1);
-            return $convertedValue !== null ? $convertedValue : $value;
-        }
     }
 
     /**
