@@ -41,11 +41,6 @@ class ResourceCompressor
     protected $rootPath = '';
 
     /**
-     * @var string
-     */
-    protected $backPath = '';
-
-    /**
      * gzipped versions are only created if $TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] is set
      *
      * @var bool
@@ -151,19 +146,6 @@ class ResourceCompressor
     {
         if (is_string($rootPath)) {
             $this->rootPath = $rootPath;
-        }
-    }
-
-    /**
-     * Sets relative back path
-     *
-     * @param string $backPath Back path
-     * @return void
-     */
-    public function setBackPath($backPath)
-    {
-        if (is_string($backPath)) {
-            $this->backPath = $backPath;
         }
     }
 
@@ -353,7 +335,9 @@ class ResourceCompressor
             $concatenated = '';
             // concatenate all the files together
             foreach ($filesToInclude as $filename) {
-                $contents = GeneralUtility::getUrl(GeneralUtility::resolveBackPath($this->rootPath . $filename));
+                $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
+                $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
+                $contents = GeneralUtility::getUrl($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
                 if (StringUtility::beginsWith($contents, "\xEF\xBB\xBF")) {
                     $contents = substr($contents, 3);
@@ -418,8 +402,10 @@ class ResourceCompressor
         } else {
             $unique = $filenameAbsolute;
         }
+        // make sure it is again the full filename
+        $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
 
-        $pathinfo = PathUtility::pathinfo($filename);
+        $pathinfo = PathUtility::pathinfo($filenameAbsolute);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
         if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
@@ -489,36 +475,28 @@ class ResourceCompressor
      */
     protected function getFilenameFromMainDir($filename)
     {
-        // if BACK_PATH is empty return $filename
-        if (empty($this->backPath)) {
-            return $filename;
-        }
         // if the file exists in the root path, just return the $filename
-        if (strpos($filename, $this->backPath) === 0) {
-            $file = str_replace($this->backPath, '', $filename);
-            if (is_file(GeneralUtility::resolveBackPath($this->rootPath . $file))) {
-                return $file;
-            }
+        if (is_file($this->rootPath . ltrim($filename, '/'))) {
+            return ltrim($filename, '/');
         }
         // if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
         if (is_file(realpath(PATH_site . TYPO3_mainDir . $filename))) {
             $filename = TYPO3_mainDir . $filename;
         }
         // build the file path relatively to the PATH_site
-        $backPath = str_replace(TYPO3_mainDir, '', $this->backPath);
-        $file = str_replace($backPath, '', $filename);
-        if (substr($file, 0, 3) === '../') {
-            $file = GeneralUtility::resolveBackPath(PATH_typo3 . $file);
+        if (substr($filename, 0, 3) === '../') {
+            $file = GeneralUtility::resolveBackPath(PATH_typo3 . $filename);
         } else {
-            $file = PATH_site . $file;
+            $file = PATH_site . ltrim($filename, '/');
         }
+
         // check if the file exists, and if so, return the path relative to TYPO3_mainDir
         if (is_file($file)) {
             $mainDirDepth = substr_count(TYPO3_mainDir, '/');
             return str_repeat('../', $mainDirDepth) . str_replace(PATH_site, '', $file);
         }
         // none of above conditions were met, fallback to default behaviour
-        return substr($filename, strlen($this->backPath));
+        return $filename;
     }
 
     /**
@@ -548,8 +526,7 @@ class ResourceCompressor
      */
     protected function cssFixRelativeUrlPaths($contents, $oldDir)
     {
-        $mainDir = TYPO3_MODE === 'BE' ? TYPO3_mainDir : '';
-        $newDir = '../../../' . $mainDir . $oldDir;
+        $newDir = '../../../' . $oldDir;
         // Replace "url()" paths
         if (stripos($contents, 'url') !== false) {
             $regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';
