@@ -806,9 +806,14 @@ class EditDocumentController extends AbstractModule
      */
     protected function generatePreviewCode()
     {
-        $currentPageId = MathUtility::convertToPositiveInteger($this->popViewId);
         $table = $this->previewData['table'];
         $recordId = $this->previewData['id'];
+
+        if ($table === 'pages') {
+            $currentPageId = $recordId;
+        } else {
+            $currentPageId = MathUtility::convertToPositiveInteger($this->popViewId);
+        }
 
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $previewConfiguration = isset($pageTsConfig['TCEMAIN.']['preview.'][$table . '.'])
