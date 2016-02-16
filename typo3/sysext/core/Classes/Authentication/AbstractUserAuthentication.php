@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Authentication of users in TYPO3
@@ -344,14 +347,14 @@ abstract class AbstractUserAuthentication
      * d) Garbage collection, setting of no-cache headers.
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
      *
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws Exception
      * @return void
      */
     public function start()
     {
         // Backend or frontend login - used for auth services
         if (empty($this->loginType)) {
-            throw new \TYPO3\CMS\Core\Exception('No loginType defined, should be set explicitly by subclass');
+            throw new Exception('No loginType defined, should be set explicitly by subclass');
         }
         // Enable dev logging if set
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog']) {
@@ -364,7 +367,7 @@ abstract class AbstractUserAuthentication
             $this->writeDevLog = true;
         }
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('## Beginning of auth logging.', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('## Beginning of auth logging.', AbstractUserAuthentication::class);
         }
         // Init vars.
         $mode = '';
@@ -449,7 +452,7 @@ abstract class AbstractUserAuthentication
      * Sets the session cookie for the current disposal.
      *
      * @return void
-     * @throws \TYPO3\CMS\Core\Exception
+     * @throws Exception
      */
     protected function setSessionCookie()
     {
@@ -472,11 +475,11 @@ abstract class AbstractUserAuthentication
                 setcookie($this->name, $this->id, $cookieExpire, $cookiePath, $cookieDomain, $cookieSecure, $cookieHttpOnly);
                 $this->cookieWasSetOnCurrentRequest = true;
             } else {
-                throw new \TYPO3\CMS\Core\Exception('Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].', 1254325546);
+                throw new Exception('Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].', 1254325546);
             }
             if ($this->writeDevLog) {
                 $devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
-                GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), AbstractUserAuthentication::class);
             }
         }
     }
@@ -564,14 +567,14 @@ abstract class AbstractUserAuthentication
         // Indicates if an active authentication failed (not auto login)
         $this->loginFailure = false;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login type: ' . $this->loginType, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login type: ' . $this->loginType, AbstractUserAuthentication::class);
         }
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class);
         }
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] == 'logout') {
@@ -581,7 +584,7 @@ abstract class AbstractUserAuthentication
             }
             // Logout written to log
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User logged out. Id: ' . $this->id, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User logged out. Id: ' . $this->id, AbstractUserAuthentication::class, -1);
             }
             $this->logoff();
         }
@@ -589,7 +592,7 @@ abstract class AbstractUserAuthentication
         if ($loginData['status'] == 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Active login (eg. with login form)', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('Active login (eg. with login form)', AbstractUserAuthentication::class);
             }
             // check referer for submitted login values
             if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
@@ -621,12 +624,12 @@ abstract class AbstractUserAuthentication
         }
         if ($this->writeDevLog) {
             if ($haveSession) {
-                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 0);
+                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 0);
             } else {
-                GeneralUtility::devLog('No user session found.', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('No user session found.', AbstractUserAuthentication::class, 2);
             }
             if (is_array($this->svConfig['setup'])) {
-                GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 0);
+                GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), AbstractUserAuthentication::class, 0);
             }
         }
         // Fetch user if ...
@@ -644,7 +647,7 @@ abstract class AbstractUserAuthentication
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
-                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 0);
+                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 0);
                     }
                     // User found, just stop to search for more if not configured to go on
                     if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
@@ -655,16 +658,16 @@ abstract class AbstractUserAuthentication
             }
             unset($serviceObj);
             if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
-                GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', AbstractUserAuthentication::class);
             }
             if ($this->writeDevLog && $serviceChain) {
-                GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, AbstractUserAuthentication::class);
             }
             if ($this->writeDevLog && empty($tempuserArr)) {
-                GeneralUtility::devLog('No user found by services', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('No user found by services', AbstractUserAuthentication::class);
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', AbstractUserAuthentication::class);
             }
         }
         // If no new user was set we use the already found user session
@@ -674,14 +677,14 @@ abstract class AbstractUserAuthentication
             // User is authenticated because we found a user session
             $authenticated = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class);
             }
         }
         // Re-auth user when 'auth'-service option is set
         if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
             $authenticated = false;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('alwaysAuthUser option is enabled', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('alwaysAuthUser option is enabled', AbstractUserAuthentication::class);
             }
         }
         // Authenticate the user if needed
@@ -691,7 +694,7 @@ abstract class AbstractUserAuthentication
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                    GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), AbstractUserAuthentication::class);
                 }
                 $serviceChain = '';
                 $subType = 'authUser' . $this->loginType;
@@ -715,7 +718,7 @@ abstract class AbstractUserAuthentication
                 }
                 unset($serviceObj);
                 if ($this->writeDevLog && $serviceChain) {
-                    GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                    GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, AbstractUserAuthentication::class);
                 }
                 if ($authenticated) {
                     // Leave foreach() because a user is authenticated
@@ -739,7 +742,7 @@ abstract class AbstractUserAuthentication
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if ($this->writeDevLog && is_array($this->user)) {
-                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
+                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, -1);
                 }
             } elseif ($haveSession) {
                 $this->user = $authInfo['userSession'];
@@ -752,24 +755,24 @@ abstract class AbstractUserAuthentication
                 $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', array($tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')), '', '', '', -1, '', $tempuser['uid']);
             }
             if ($this->writeDevLog && $activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', AbstractUserAuthentication::class, -1);
             }
             if ($this->writeDevLog && !$activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', AbstractUserAuthentication::class, -1);
             }
         } elseif ($activeLogin || !empty($tempuserArr)) {
             $this->loginFailure = true;
             if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class, 2);
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, array($this->userid_column, $this->username_column)), AbstractUserAuthentication::class, 2);
             }
         }
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(array('warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
+                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(array('warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax)), AbstractUserAuthentication::class, -1);
             }
 
             // Hook to implement login failure tracking methods
@@ -834,7 +837,7 @@ abstract class AbstractUserAuthentication
     public function createUserSession($tempuser)
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Create session ses_id = ' . $this->id, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Create session ses_id = ' . $this->id, AbstractUserAuthentication::class);
         }
         // Delete session entry first
         $this->db->exec_DELETEquery(
@@ -849,7 +852,7 @@ abstract class AbstractUserAuthentication
             $message = 'Session data could not be written to DB. Error: ' . $this->db->sql_error();
             GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
             if ($this->writeDevLog) {
-                GeneralUtility::devLog($message, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
+                GeneralUtility::devLog($message, AbstractUserAuthentication::class, 2);
             }
         }
         // Updating lastLogin_column carrying information about last login.
@@ -894,7 +897,7 @@ abstract class AbstractUserAuthentication
     {
         $user = false;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, AbstractUserAuthentication::class);
         }
 
         // Fetch the user session from the DB
@@ -907,7 +910,7 @@ abstract class AbstractUserAuthentication
         }
         if ($user) {
             // A user was found
-            if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
+            if (MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
                 // Get timeout from object
                 $timeout = (int)$this->auth_timeout_field;
             } else {
@@ -943,10 +946,10 @@ abstract class AbstractUserAuthentication
     public function logoff()
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('logoff: ses_id = ' . $this->id, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('logoff: ses_id = ' . $this->id, AbstractUserAuthentication::class);
         }
         // Release the locked records
-        \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
+        BackendUtility::lockRecords();
         // Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'])) {
             $_params = array();
@@ -1111,7 +1114,7 @@ abstract class AbstractUserAuthentication
         if ($parts >= 4) {
             return $IP;
         } else {
-            $parts = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts, 1, 3);
+            $parts = MathUtility::forceIntegerInRange($parts, 1, 3);
             $IPparts = explode('.', $IP);
             for ($a = 4; $a > $parts; $a--) {
                 unset($IPparts[$a - 1]);
@@ -1178,7 +1181,7 @@ abstract class AbstractUserAuthentication
                 $variable = $this->uc;
             }
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column], \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column], AbstractUserAuthentication::class);
             }
             $this->db->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . (int)$this->user[$this->userid_column], array('uc' => serialize($variable)));
         }
@@ -1262,7 +1265,7 @@ abstract class AbstractUserAuthentication
         $sesDat[$key] = $data;
         $this->user['ses_data'] = serialize($sesDat);
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], AbstractUserAuthentication::class);
         }
         $this->db->exec_UPDATEquery($this->session_table, 'ses_id=' . $this->db->fullQuoteStr($this->user['ses_id'], $this->session_table), array('ses_data' => $this->user['ses_data']));
     }
@@ -1311,7 +1314,7 @@ abstract class AbstractUserAuthentication
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+            GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), AbstractUserAuthentication::class);
         }
         $serviceChain = '';
         $subType = 'processLoginData' . $this->loginType;
@@ -1335,7 +1338,7 @@ abstract class AbstractUserAuthentication
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Processed login data: ' . GeneralUtility::arrayToLogString($processedLoginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
+                GeneralUtility::devLog('Processed login data: ' . GeneralUtility::arrayToLogString($processedLoginData), AbstractUserAuthentication::class);
             }
         }
         return $loginData;
