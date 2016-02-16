@@ -106,12 +106,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     );
 
     /**
-     * For debugging/display of order in which subgroups are included.
-     * @var array
-     */
-    public $includeHierarchy = array();
-
-    /**
      * List of group_id's in the order they are processed.
      * @var array
      */
@@ -1399,7 +1393,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
                 }
                 // Add the group uid, current list, TSconfig to the internal arrays.
                 $this->includeGroupArray[] = $uid;
-                $this->includeHierarchy[] = $idList;
                 $this->TSdataArray[] = $this->addTScomment('Group "' . $row['title'] . '" [' . $row['uid'] . '] TSconfig field:') . $row['TSconfig'];
                 // Mount group database-mounts
                 if (($this->user['options'] & Permission::PAGE_SHOW) == 1) {
