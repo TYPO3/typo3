@@ -1248,7 +1248,7 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -1284,7 +1284,7 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric_mm (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
