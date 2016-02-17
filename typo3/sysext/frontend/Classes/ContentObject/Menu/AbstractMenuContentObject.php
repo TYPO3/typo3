@@ -406,7 +406,7 @@ class AbstractMenuContentObject {
 								$lRecs = array();
 							}
 							// Checking if the "disabled" state should be set.
-							if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
+							if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || GeneralUtility::hideIfDefaultLanguage($GLOBALS['TSFE']->page['l18n_cfg']) && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
 								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
 							} else {
 								$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
