@@ -108,7 +108,7 @@ class SectionViewHelper extends AbstractViewHelper
         $constraints = [];
         if (trim($column) !== '') {
             $colPosList = implode(',', GeneralUtility::intExplode(',', $column, true));
-            $constraints[] = 'colPos IN(' . ($colPosList !== '' ?: '0') . ')';
+            $constraints[] = 'colPos IN(' . ($colPosList !== '' ? $colPosList : '0') . ')';
         }
 
         switch ($type) {
