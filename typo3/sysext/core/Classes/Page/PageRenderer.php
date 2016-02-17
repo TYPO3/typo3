@@ -2006,7 +2006,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getTemplateForPart($part)
     {
-        $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile, true);
+        $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
         $template = GeneralUtility::getUrl($templateFile);
         if ($this->removeLineBreaksFromTemplate) {
             $template = strtr($template, array(LF => '', CR => ''));

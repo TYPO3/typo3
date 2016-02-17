@@ -145,7 +145,7 @@ class PreviewProcessing
             $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height'] . ' '
                 . $arguments['originalFileName'] . '[0] ' . $arguments['temporaryFileName'];
 
-            $cmd = GeneralUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
+            $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
             CommandUtility::exec($cmd);
         }
 

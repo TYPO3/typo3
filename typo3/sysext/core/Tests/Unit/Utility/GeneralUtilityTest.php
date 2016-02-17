@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\FileStreamWrapper;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
@@ -25,6 +27,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -4182,37 +4185,54 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function getFileAbsFileNameDateprovider()
     {
         return [
-            'sysext/core/ext_icon.png, true, true' => ['sysext/core/ext_icon.png', true, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
-            'fileadmin/foo.txt, true, false' => ['fileadmin/foo.txt', true, false, PATH_site . 'fileadmin/foo.txt'],
-            'sysext/core/ext_icon.png, false, true' => ['sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
-            'fileadmin/foo.txt, false, false' => ['fileadmin/foo.txt', false, false, PATH_site . 'fileadmin/foo.txt'],
-            './sysext/core/ext_icon.png, true, true' => ['./sysext/core/ext_icon.png', true, true, PATH_site . 'typo3/./sysext/core/ext_icon.png'],
-            './fileadmin/foo.txt, true, false' => ['./fileadmin/foo.txt', true, false, PATH_site . './fileadmin/foo.txt'],
-            './sysext/core/ext_icon.png, false, true' => ['./sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/./sysext/core/ext_icon.png'],
-            './fileadmin/foo.txt, false, false' => ['./fileadmin/foo.txt', false, false, PATH_site . './fileadmin/foo.txt'],
-            '../sysext/core/ext_icon.png, true, true' => ['../sysext/core/ext_icon.png', true, true, ''],
-            '../fileadmin/foo.txt, true, false' => ['../fileadmin/foo.txt', true, false, ''],
-            '../sysext/core/ext_icon.png, false, true' => ['../sysext/core/ext_icon.png', false, true, ''],
-            '../fileadmin/foo.txt, false, false' => ['../fileadmin/foo.txt', false, false, ''],
-            'PATH_site . sysext/core/ext_icon.png, true, true' => [PATH_site . 'sysext/core/ext_icon.png', true, true, ''],
-            'PATH_site . fileadmin/foo.txt, true, false' => [PATH_site . 'fileadmin/foo.txt', true, false, PATH_site . 'fileadmin/foo.txt'],
-            'PATH_site . typo3/sysext/core/ext_icon.png, false, true' => [PATH_site . 'typo3/sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
-            'PATH_site . fileadmin/foo.txt, false, false' => [PATH_site . 'fileadmin/foo.txt', false, false, PATH_site . 'fileadmin/foo.txt'],
+            'typo3/sysext/core/ext_icon.png' => ['typo3/sysext/core/ext_icon.png', PATH_site . 'typo3/sysext/core/ext_icon.png'],
+            'sysext/core/ext_icon.png' => ['sysext/core/ext_icon.png', PATH_site . 'sysext/core/ext_icon.png'],
+            './typo3/sysext/core/ext_icon.png' => ['./typo3/sysext/core/ext_icon.png', PATH_site . './typo3/sysext/core/ext_icon.png'],
+            'fileadmin/foo.txt' => ['fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
+            './fileadmin/foo.txt' => ['./fileadmin/foo.txt', PATH_site . './fileadmin/foo.txt'],
+            '../sysext/core/ext_icon.png' => ['../sysext/core/ext_icon.png', ''],
+            '../fileadmin/foo.txt' => ['../fileadmin/foo.txt', ''],
+            'PATH_site . ../sysext/core/ext_icon.png' => [PATH_site . '../sysext/core/ext_icon.png', ''],
+            'PATH_site . fileadmin/foo.txt' => [PATH_site . 'fileadmin/foo.txt', PATH_site . 'fileadmin/foo.txt'],
+            'PATH_site . typo3/sysext/core/ext_icon.png' => [PATH_site . 'typo3/sysext/core/ext_icon.png', PATH_site . 'typo3/sysext/core/ext_icon.png'],
+            'EXT:foo/ext_icon.png' => ['EXT:foo/ext_icon.png', PATH_site . 'typo3/sysext/foo/ext_icon.png']
         ];
     }
 
     /**
      * @param string $path
-     * @param bool $onlyRelative
-     * @param bool $relToTYPO3_mainDir
      * @param string $expected
      * @test
      * @dataProvider getFileAbsFileNameDateprovider
      */
-    public function getFileAbsFileNameReturnsCorrectValues($path, $onlyRelative, $relToTYPO3_mainDir, $expected)
+    public function getFileAbsFileNameReturnsCorrectValues($path, $expected)
     {
-        $result = GeneralUtility::getFileAbsFileName($path, $onlyRelative, $relToTYPO3_mainDir);
+
+        // build the dummy package "foo" for use in ExtensionManagementUtility::extPath('foo');
+        $package = $this->getMockBuilder(Package::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('getPackagePath'))
+            ->getMock();
+        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
+        $packageManager = $this->getMock(PackageManager::class, array('isPackageActive', 'getPackage'));
+        $package->expects($this->any())
+            ->method('getPackagePath')
+            ->will($this->returnValue(PATH_site . 'typo3/sysext/foo/'));
+        $packageManager->expects($this->any())
+            ->method('isPackageActive')
+            ->with($this->equalTo('foo'))
+            ->will($this->returnValue(true));
+        $packageManager->expects($this->any())
+            ->method('getPackage')
+            ->with('foo')
+            ->will($this->returnValue($package));
+        ExtensionManagementUtility::setPackageManager($packageManager);
+
+        $result = GeneralUtility::getFileAbsFileName($path);
         $this->assertEquals($expected, $result);
+
+        // Reset the package manager to use the original one again
+        ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class));
     }
 
     /**

@@ -878,7 +878,7 @@ class ExtensionManagementUtility
             $iconIdentifier = 'module-' . $moduleSignature;
             $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
             $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
-                'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'], false, true)
+                'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])
             ]);
             $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
             unset($moduleConfiguration['icon']);
@@ -956,7 +956,7 @@ class ExtensionManagementUtility
                 $iconIdentifier = 'module-' . $fullModuleSignature;
                 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
                 $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
-                    'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'], false, true)
+                    'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])
                 ]);
                 $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
                 unset($moduleConfiguration['icon']);

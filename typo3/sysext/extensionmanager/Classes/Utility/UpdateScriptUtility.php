@@ -94,10 +94,7 @@ class UpdateScriptUtility
      */
     protected function determineUpdateClassName($extensionKey)
     {
-        $updateScript = GeneralUtility::getFileAbsFileName(
-            'EXT:' . $extensionKey . '/class.ext_update.php',
-            false
-        );
+        $updateScript = GeneralUtility::getFileAbsFileName('EXT:' . $extensionKey . '/class.ext_update.php');
         if (!file_exists($updateScript)) {
             return '';
         }

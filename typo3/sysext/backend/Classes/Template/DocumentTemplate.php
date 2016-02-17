@@ -580,7 +580,7 @@ function jumpToUrl(URL) {
         }
         // alternative template for Header and Footer
         if ($this->pageHeaderFooterTemplateFile) {
-            $file = GeneralUtility::getFileAbsFileName($this->pageHeaderFooterTemplateFile, true);
+            $file = GeneralUtility::getFileAbsFileName($this->pageHeaderFooterTemplateFile);
             if ($file) {
                 $this->pageRenderer->setTemplateFile($file);
             }
@@ -1251,7 +1251,7 @@ function jumpToUrl(URL) {
             $filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
         }
         if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
-            $filename = GeneralUtility::getFileAbsFileName($filename, true, true);
+            $filename = GeneralUtility::getFileAbsFileName($filename);
         } elseif (!GeneralUtility::isAbsPath($filename)) {
             $filename = GeneralUtility::resolveBackPath($filename);
         } elseif (!GeneralUtility::isAllowedAbsPath($filename)) {

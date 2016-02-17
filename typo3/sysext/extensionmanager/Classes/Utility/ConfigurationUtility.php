@@ -183,8 +183,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $rawString = '';
         $extConfTemplateFileLocation = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-            'EXT:' . $extensionKey . '/ext_conf_template.txt',
-            false
+            'EXT:' . $extensionKey . '/ext_conf_template.txt'
         );
         if (file_exists($extConfTemplateFileLocation)) {
             $rawString = file_get_contents($extConfTemplateFileLocation);

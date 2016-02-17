@@ -131,7 +131,7 @@ class LocalPreviewHelper
                 $parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' '
                     . CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($targetFilePath);
 
-                $cmd = GeneralUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
+                $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
                 CommandUtility::exec($cmd);
 
                 if (!file_exists($targetFilePath)) {

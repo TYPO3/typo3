@@ -79,7 +79,7 @@ class CommandRequestHandler implements RequestHandlerInterface
         }
 
         // Make sure output is not buffered, so command-line output and interaction can take place
-        GeneralUtility::flushOutputBuffers();
+        $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
         $exitCode = $this->application->run($input, $output);
         exit($exitCode);
     }

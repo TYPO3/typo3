@@ -2042,9 +2042,11 @@ class GeneralUtility
      *
      * @param string $xmlData XML data
      * @return array Attributes of the xml prologue (header)
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function xmlGetHeaderAttribs($xmlData)
     {
+        self::logDeprecatedFunction();
         $match = array();
         if (preg_match('/^\\s*<\\?xml([^>]*)\\?\\>/', $xmlData, $match)) {
             return self::get_tag_attributes($match[1]);
@@ -2361,7 +2363,7 @@ class GeneralUtility
         $result = false;
         // Make path absolute
         if (!static::isAbsPath($path)) {
-            $path = static::getFileAbsFileName($path, false);
+            $path = static::getFileAbsFileName($path);
         }
         if (static::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
@@ -3476,18 +3478,20 @@ class GeneralUtility
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
      * @param string $filename The input filename/filepath to evaluate
-     * @param bool $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
-     * @param bool $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to PATH_site
+     * @param bool $_ - obsolete, will be removed in TYPO3 CMS 9
+     * @param bool $_2 - obsolete, will be removed in TYPO3 CMS 9
      * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
      */
-    public static function getFileAbsFileName($filename, $onlyRelative = true, $relToTYPO3_mainDir = false)
+    public static function getFileAbsFileName($filename, $_ = null, $_2 = null)
     {
         if ((string)$filename === '') {
             return '';
         }
-        $relPathPrefix = PATH_site;
-        if ($relToTYPO3_mainDir) {
-            $relPathPrefix = PATH_typo3;
+        if ($_ !== null) {
+            self::deprecationLog('Parameter 2 of GeneralUtility::getFileAbsFileName is obsolete and can be omitted.');
+        }
+        if ($_2 !== null) {
+            self::deprecationLog('Parameter 3 of GeneralUtility::getFileAbsFileName is obsolete and can be omitted.');
         }
 
         // Extension
@@ -3498,17 +3502,18 @@ class GeneralUtility
                 $filename = ExtensionManagementUtility::extPath($extKey) . $local;
             }
         } elseif (!static::isAbsPath($filename)) {
-            // relative. Prepended with $relPathPrefix
-            $filename = $relPathPrefix . $filename;
-        } elseif ($onlyRelative && !static::isFirstPartOfStr($filename, $relPathPrefix)) {
+            // is relative. Prepended with PATH_site
+            $filename = PATH_site . $filename;
+        } elseif (!static::isFirstPartOfStr($filename, PATH_site)) {
             // absolute, but set to blank if not allowed
             $filename = '';
         }
         if ((string)$filename !== '' && static::validPathStr($filename)) {
             // checks backpath.
             return $filename;
+        } else {
+            return '';
         }
-        return '';
     }
 
     /**
@@ -4724,9 +4729,11 @@ class GeneralUtility
      * @param string $parameters The parameters string
      * @param string $path Override the default path (e.g. used by the install tool)
      * @return string Compiled command that deals with ImageMagick & GraphicsMagick
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9. - use CommandUtility directly
      */
     public static function imageMagickCommand($command, $parameters, $path = '')
     {
+        self::logDeprecatedFunction();
         return CommandUtility::imageMagickCommand($command, $parameters, $path);
     }
 
@@ -4795,9 +4802,11 @@ class GeneralUtility
      * Ends and flushes all output buffers
      *
      * @return void
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function flushOutputBuffers()
     {
+        self::logDeprecatedFunction();
         $obContent = '';
         while ($content = ob_get_clean()) {
             $obContent .= $content;

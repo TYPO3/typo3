@@ -2528,7 +2528,7 @@ class GraphicalFunctions
         }
 
         $frame = $this->addFrameSelection ? '[0]' : '';
-        $cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
+        $cmd = CommandUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
         $returnVal = array();
         CommandUtility::exec($cmd, $returnVal);
         $splitstring = array_pop($returnVal);
@@ -2572,7 +2572,7 @@ class GraphicalFunctions
         // If addFrameSelection is set in the Install Tool, a frame number is added to
         // select a specific page of the image (by default this will be the first page)
         $frame  = $this->addFrameSelection ? '[' . (int)$frame . ']' : '';
-        $cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
+        $cmd = CommandUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
         $this->IM_commands[] = array($output, $cmd);
         $ret = CommandUtility::exec($cmd);
         // Change the permissions of the file
@@ -2604,7 +2604,7 @@ class GraphicalFunctions
                       . CommandUtility::escapeShellArgument($overlay) . ' '
                       . CommandUtility::escapeShellArgument($theMask) . ' '
                       . CommandUtility::escapeShellArgument($output);
-        $cmd = GeneralUtility::imageMagickCommand('combine', $parameters);
+        $cmd = CommandUtility::imageMagickCommand('combine', $parameters);
         $this->IM_commands[] = array($output, $cmd);
         $ret = CommandUtility::exec($cmd);
         // Change the permissions of the file
@@ -2645,7 +2645,7 @@ class GraphicalFunctions
             $temporaryName = dirname($theFile) . '/' . md5(uniqid('', true)) . '.gif';
             // Rename could fail, if a simultaneous thread is currently working on the same thing
             if (@rename($theFile, $temporaryName)) {
-                $cmd = GeneralUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['processor_path_lzw']);
+                $cmd = CommandUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['processor_path_lzw']);
                 CommandUtility::exec($cmd);
                 unlink($temporaryName);
             }
@@ -2691,7 +2691,7 @@ class GraphicalFunctions
             GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
         }
         $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
-        $cmd = GeneralUtility::imageMagickCommand(
+        $cmd = CommandUtility::imageMagickCommand(
             'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']
         );
         CommandUtility::exec($cmd);

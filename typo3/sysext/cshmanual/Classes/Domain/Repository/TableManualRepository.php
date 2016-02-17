@@ -279,7 +279,7 @@ class TableManualRepository
                     );
                 } elseif (substr($referenceUrl[1], 0, 5) === 'FILE:') {
                     // File reference
-                    $fileName = GeneralUtility::getFileAbsFileName(substr($referenceUrl[1], 5), 1, 1);
+                    $fileName = GeneralUtility::getFileAbsFileName(substr($referenceUrl[1], 5));
                     if ($fileName && @is_file($fileName)) {
                         $fileName = '../' . PathUtility::stripPathSitePrefix($fileName);
                         $lines[] = array(
@@ -359,7 +359,7 @@ class TableManualRepository
             $descrArray = explode(LF, $descriptions, count($imgArray));
             foreach ($imgArray as $k => $image) {
                 $descriptions = $descrArray[$k];
-                $absImagePath = GeneralUtility::getFileAbsFileName($image, true, true);
+                $absImagePath = GeneralUtility::getFileAbsFileName($image);
                 if ($absImagePath && @is_file($absImagePath)) {
                     $imgFile = PathUtility::stripPathSitePrefix($absImagePath);
                     $imgInfo = @getimagesize($absImagePath);

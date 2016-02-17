@@ -109,10 +109,9 @@ class CliRequestHandler implements RequestHandlerInterface
 
         $this->bootstrap
             ->initializeBackendAuthentication()
-            ->initializeLanguageObject();
-
-        // Make sure output is not buffered, so command-line output and interaction can take place
-        GeneralUtility::flushOutputBuffers();
+            ->initializeLanguageObject()
+            // Make sure output is not buffered, so command-line output and interaction can take place
+            ->endOutputBufferingAndCleanPreviousOutput();
     }
 
     /**
