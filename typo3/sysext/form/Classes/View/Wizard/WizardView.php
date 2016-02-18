@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -373,17 +374,19 @@ class WizardView
      */
     protected function getBodyContent()
     {
-        if ($this->recordIsAvailable) {
-            $bodyContent = '';
-        } else {
+        if (!$this->recordIsAvailable) {
             /** @var $flashMessage FlashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class,
                 $this->getLanguageService()->getLL('errorMessage', true),
                 $this->getLanguageService()->getLL('errorTitle', true),
                 FlashMessage::ERROR);
-            $bodyContent = $flashMessage->render();
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        return $bodyContent;
+        return '';
     }
 
     /**
