@@ -2696,21 +2696,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function processJsFile($filename)
     {
-        switch (TYPO3_MODE) {
-            case 'FE':
-                if ($this->compressJavascript) {
-                    $filename = $this->getCompressor()->compressJsFile($filename);
-                } else {
-                    $filename = GeneralUtility::createVersionNumberedFilename($filename);
-                }
-                break;
-            case 'BE':
-                if ($this->compressJavascript) {
-                    $filename = $this->getCompressor()->compressJsFile($filename);
-                }
-                break;
+        if ($this->compressJavascript) {
+            return $this->getCompressor()->compressJsFile($filename);
+        } elseif (TYPO3_MODE === 'FE') {
+            return GeneralUtility::createVersionNumberedFilename($filename);
+        } else {
+            return $filename;
         }
-        return $filename;
     }
 
     /**

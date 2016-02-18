@@ -33,11 +33,6 @@ class ResourceCompressor
     /**
      * @var string
      */
-    protected $relativePath = '';
-
-    /**
-     * @var string
-     */
     protected $rootPath = '';
 
     /**
@@ -87,53 +82,7 @@ class ResourceCompressor
                 $this->gzipCompressionLevel = (int)$compressionLevel;
             }
         }
-        $this->setInitialPaths();
-    }
-
-    /**
-     * Sets initial values for paths.
-     *
-     * @return void
-     */
-    public function setInitialPaths()
-    {
-        $this->setInitialRelativePath();
-        $this->setInitialRootPath();
-    }
-
-    /**
-     * Sets absolute path to working directory
-     *
-     * @return void
-     */
-    protected function setInitialRootPath()
-    {
-        $rootPath = TYPO3_MODE === 'BE' ? PATH_typo3 : PATH_site;
-        $this->setRootPath($rootPath);
-    }
-
-    /**
-     * Sets relative path to PATH_site
-     *
-     * @return void
-     */
-    protected function setInitialRelativePath()
-    {
-        $relativePath = TYPO3_MODE === 'BE' ? '../' : '';
-        $this->setRelativePath($relativePath);
-    }
-
-    /**
-     * Sets relative path to PATH_site
-     *
-     * @param string $relativePath Relative path to site root
-     * @return void
-     */
-    public function setRelativePath($relativePath)
-    {
-        if (is_string($relativePath)) {
-            $this->relativePath = $relativePath;
-        }
+        $this->setRootPath(TYPO3_MODE === 'BE' ? PATH_typo3 : PATH_site);
     }
 
     /**
@@ -194,9 +143,8 @@ class ResourceCompressor
                     continue;
                 }
                 $targetFile = $this->createMergedCssFile($filesToInclude);
-                $targetFileRelative = $this->relativePath . $targetFile;
                 $concatenatedOptions = array(
-                    'file' => $targetFileRelative,
+                    'file' => $targetFile,
                     'rel' => 'stylesheet',
                     'media' => $mediaOption,
                     'compress' => true,
@@ -205,7 +153,7 @@ class ResourceCompressor
                     'allWrap' => ''
                 );
                 // place the merged stylesheet on top of the stylesheets
-                $cssFiles = array_merge($cssFiles, array($targetFileRelative => $concatenatedOptions));
+                $cssFiles = array_merge($cssFiles, array($targetFile => $concatenatedOptions));
             }
         }
         return $cssFiles;
@@ -240,9 +188,8 @@ class ResourceCompressor
         if (!empty($filesToInclude)) {
             foreach ($filesToInclude as $section => $files) {
                 $targetFile = $this->createMergedJsFile($files);
-                $targetFileRelative = $this->relativePath . $targetFile;
                 $concatenatedOptions = array(
-                    'file' => $targetFileRelative,
+                    'file' => $targetFile,
                     'type' => 'text/javascript',
                     'section' => $section,
                     'compress' => true,
@@ -251,7 +198,7 @@ class ResourceCompressor
                     'allWrap' => ''
                 );
                 // place the merged javascript on top of the JS files
-                $jsFiles = array_merge(array($targetFileRelative => $concatenatedOptions), $jsFiles);
+                $jsFiles = array_merge(array($targetFile => $concatenatedOptions), $jsFiles);
             }
         }
         return $jsFiles;
@@ -329,7 +276,7 @@ class ResourceCompressor
         }
         $targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
         // if the file doesn't already exist, we create it
-        if (!file_exists((PATH_site . $targetFile))) {
+        if (!file_exists(PATH_site . $targetFile)) {
             $concatenated = '';
             // concatenate all the files together
             foreach ($filesToInclude as $filename) {
@@ -406,14 +353,14 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filenameAbsolute);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
-        if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
+        if (!file_exists($filenameAbsolute) || $this->createGzipped && !file_exists($filenameAbsolute . '.gzip')) {
             $contents = $this->compressCssString(GeneralUtility::getUrl($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
             }
             $this->writeFileAndCompressed($targetFile, $contents);
         }
-        return $this->relativePath . $this->returnFileReference($targetFile);
+        return $this->returnFileReference($targetFile);
     }
 
     /**
@@ -458,11 +405,11 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filename);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
         // only create it, if it doesn't exist, yet
-        if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
+        if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
             $contents = GeneralUtility::getUrl($filenameAbsolute);
             $this->writeFileAndCompressed($targetFile, $contents);
         }
-        return $this->relativePath . $this->returnFileReference($targetFile);
+        return $this->returnFileReference($targetFile);
     }
 
     /**
@@ -623,10 +570,9 @@ class ResourceCompressor
     {
         // if the client accepts gzip and we can create gzipped files, we give him compressed versions
         if ($this->createGzipped && strpos(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip') !== false) {
-            return $filename . '.gzip';
-        } else {
-            return $filename;
+            $filename .= '.gzip';
         }
+        return PathUtility::getRelativePath($this->rootPath, PATH_site) . $filename;
     }
 
     /**

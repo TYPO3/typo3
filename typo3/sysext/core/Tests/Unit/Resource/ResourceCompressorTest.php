@@ -148,7 +148,6 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects($this->once())
             ->method('createMergedCssFile')
             ->will($this->returnValue($concatenatedFileName));
-        $this->subject->setRelativePath('');
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
@@ -189,7 +188,6 @@ class ResourceCompressorTest extends BaseTestCase
                 $this->returnValue('merged_' . $allFileName),
                 $this->returnValue('merged_' . $screenFileName1)
             ));
-        $this->subject->setRelativePath('');
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
@@ -232,7 +230,6 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects($this->once())
             ->method('createMergedCssFile')
             ->with($this->equalTo(array($screen3FileName, $screen1FileName, $screen2FileName)));
-        $this->subject->setRelativePath('');
 
         $this->subject->concatenateCssFiles($testFileFixture);
     }
@@ -267,7 +264,6 @@ class ResourceCompressorTest extends BaseTestCase
             ->method('createMergedCssFile')
             ->with($this->equalTo(array($screen1FileName, $screen3FileName)))
             ->will($this->returnValue('merged_screen'));
-        $this->subject->setRelativePath('');
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
         $this->assertEquals(array(
@@ -295,7 +291,6 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects($this->once())
             ->method('createMergedJsFile')
             ->will($this->returnValue($concatenatedFileName));
-        $this->subject->setRelativePath('');
 
         $result = $this->subject->concatenateJsFiles($testFileFixture);
 
