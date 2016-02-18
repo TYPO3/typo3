@@ -384,7 +384,17 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     public function read($id)
     {
         $sessionFile = $this->getSessionFile($id);
-        $content = (string)(@file_get_contents($sessionFile));
+        $content = '';
+        if (file_exists($sessionFile)) {
+            if ($fd = fopen($sessionFile, 'rb')) {
+                $lockres = flock($fd, LOCK_SH);
+                if ($lockres) {
+                    $content = fread($fd, filesize($sessionFile));
+                    flock($fd, LOCK_UN);
+                }
+                fclose($fd);
+            }
+        }
         // Do a "test write" of the session file after opening it. The real session data is written in
         // __destruct() and we can not create a sane error message there anymore, so this test should fail
         // before if final session file can not be written due to permission problems.
@@ -403,7 +413,24 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     public function write($id, $sessionData)
     {
         $sessionFile = $this->getSessionFile($id);
-        $result = GeneralUtility::writeFile($sessionFile, $sessionData);
+        $result = false;
+        $changePermissions = !@is_file($sessionFile);
+        if ($fd = fopen($sessionFile, 'cb')) {
+            if (flock($fd, LOCK_EX)) {
+                ftruncate($fd, 0);
+                $res = fwrite($fd, $sessionData);
+                if ($res !== false) {
+                    fflush($fd);
+                    $result = true;
+                }
+                flock($fd, LOCK_UN);
+            }
+            fclose($fd);
+            // Change the permissions only if the file has just been created
+            if ($changePermissions) {
+                GeneralUtility::fixPermissions($sessionFile);
+            }
+        }
         if (!$result) {
             throw new Exception(
                 'Session file not writable. Please check permission on typo3temp/var/InstallToolSessions and its subdirectories.',
