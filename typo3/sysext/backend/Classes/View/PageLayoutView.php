@@ -1509,6 +1509,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         if ($this->getBackendUser()->user['admin']
             || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+            && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
         ) {
             return true;
         }
