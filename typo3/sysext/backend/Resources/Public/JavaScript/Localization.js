@@ -74,26 +74,32 @@ define([
 
 		$(document).on('click', Localization.identifier.triggerButton, function() {
 			var $triggerButton = $(this),
-				slideStep1 =
-					'<div data-toggle="buttons">'
-						+ '<div class="row">'
-							+ '<div class="btn-group col-sm-3">' + Localization.actions.translate[0].outerHTML + '</div>'
-							+ '<div class="col-sm-9">'
-								+ '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
-							+ '</div>'
-						+ '</div>';
+				actions = [],
+				slideStep1 = '';
 
-			if ($triggerButton.data('hasElements') === 0) {
-				slideStep1 +=
-					'<hr>'
-					+ '<div class="row">'
+			if ($triggerButton.data('allowTranslate')) {
+				actions.push(
+					'<div class="row">'
+						+ '<div class="btn-group col-sm-3">' + Localization.actions.translate[0].outerHTML + '</div>'
+						+ '<div class="col-sm-9">'
+							+ '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
+						+ '</div>'
+					+ '</div>'
+				);
+			}
+
+			if ($triggerButton.data('allowCopy')) {
+				actions.push(
+					'<div class="row">'
 						+ '<div class="col-sm-3 btn-group">' + Localization.actions.copy[0].outerHTML + '</div>'
 						+ '<div class="col-sm-9">'
 							+ '<p class="t3js-helptext t3js-helptext-copy text-muted">' + TYPO3.lang['localize.educate.copy'] + '</p>'
 						+ '</div>'
-					+ '</div>';
+					+ '</div>'
+				);
 			}
-			slideStep1 += '</div>';
+
+			slideStep1 += '<div data-toggle="buttons">' + actions.join('<hr>') + '</div>';
 
 			Wizard.addSlide('localize-choose-action', TYPO3.lang['localize.wizard.header'].replace('{0}', $triggerButton.data('colposName')).replace('{1}', $triggerButton.data('languageName')), slideStep1, Severity.info);
 			Wizard.addSlide('localize-choose-language', TYPO3.lang['localize.view.chooseLanguage'], '', Severity.info, function($slide) {
@@ -144,7 +150,8 @@ define([
 
 					Localization.getSummary(
 						$triggerButton.data('pageId'),
-						$triggerButton.data('colposId')
+						$triggerButton.data('colposId'),
+						$triggerButton.data('languageId')
 					).done(function(result) {
 						var $summary = $('<div />', {class: 'row'});
 						Localization.records = [];
@@ -215,14 +222,16 @@ define([
 		 *
 		 * @param {Integer} pageId
 		 * @param {Integer} colPos
+		 * @param {Integer} languageId
 		 * @return {Promise}
 		 */
-		Localization.getSummary = function(pageId, colPos) {
+		Localization.getSummary = function(pageId, colPos, languageId) {
 			return $.ajax({
 				url: TYPO3.settings.ajaxUrls['records_localize_summary'],
 				data: {
 					pageId: pageId,
 					colPos: colPos,
+					destLanguageId: languageId,
 					languageId: Localization.settings.language
 				}
 			});

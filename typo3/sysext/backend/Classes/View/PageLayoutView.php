@@ -1798,6 +1798,24 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         $theNewButton = '';
 
+        $allowCopy = true;
+        $allowTranslate = true;
+        if (!empty($this->languageHasTranslationsCache[$lP])) {
+            if (isset($this->languageHasTranslationsCache[$lP]['hasStandAloneContent'])) {
+                $allowTranslate = false;
+            }
+            if (isset($this->languageHasTranslationsCache[$lP]['hasTranslations'])) {
+                $allowCopy = false;
+            }
+        }
+
+        foreach ($this->contentElementCache[$lP][$colPos] as $record) {
+            $key = array_search($record['t3_origuid'], $defLanguageCount);
+            if ($key !== false) {
+                unset($defLanguageCount[$key]);
+            }
+        }
+
         if (!empty($defLanguageCount)) {
             $theNewButton =
                 '<input'
@@ -1806,6 +1824,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     . ' disabled'
                     . ' value="' . htmlspecialchars($this->getLanguageService()->getLL('newPageContent_translate', true)) . '"'
                     . ' data-has-elements="' . (int)!empty($this->contentElementCache[$lP][$colPos]) . '"'
+                    . ' data-allow-copy="' . (int)$allowCopy . '"'
+                    . ' data-allow-translate="' . (int)$allowTranslate . '"'
                     . ' data-table="tt_content"'
                     . ' data-page-id="' . (int)GeneralUtility::_GP('id') . '"'
                     . ' data-language-id="' . $lP . '"'

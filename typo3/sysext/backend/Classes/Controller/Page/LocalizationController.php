@@ -133,14 +133,14 @@ class LocalizationController
     public function getRecordLocalizeSummary(ServerRequestInterface $request, ResponseInterface $response)
     {
         $params = $request->getQueryParams();
-        if (!isset($params['pageId'], $params['colPos'], $params['languageId'])) {
+        if (!isset($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'])) {
             $response = $response->withStatus(500);
             return $response;
         }
 
         $records = [];
         $databaseConnection = $this->getDatabaseConnection();
-        $res = $this->getRecordsToCopyDatabaseResult($params['pageId'], $params['colPos'], $params['languageId'], '*');
+        $res = $this->getRecordsToCopyDatabaseResult($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'], '*');
         while ($row = $databaseConnection->sql_fetch_assoc($res)) {
             $records[] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
@@ -259,18 +259,38 @@ class LocalizationController
      *
      * @param int $pageId
      * @param int $colPos
+     * @param int $destLanguageId
      * @param int $languageId
      * @param string $fields
      * @return bool|\mysqli_result|object
      */
-    protected function getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, $fields = '*')
+    protected function getRecordsToCopyDatabaseResult($pageId, $colPos, $destLanguageId, $languageId, $fields = '*')
     {
-        return $this->getDatabaseConnection()->exec_SELECTquery(
+        $db = $this->getDatabaseConnection();
+
+        // Get original uid of existing elements triggered language / colpos
+        $originalUids = $db->exec_SELECTgetRows(
+            't3_origuid',
+            'tt_content',
+            'sys_language_uid=' . (int)$destLanguageId
+                . ' AND tt_content.colPos = ' . (int)$colPos
+                . ' AND tt_content.pid=' . (int)$pageId
+                . BackendUtility::deleteClause('tt_content')
+                . BackendUtility::versioningPlaceholderClause('tt_content'),
+            '',
+            '',
+            '',
+            't3_origuid'
+        );
+        $originalUidList = $db->cleanIntList(implode(',', array_keys($originalUids)));
+
+        return $db->exec_SELECTquery(
             $fields,
             'tt_content',
             'tt_content.sys_language_uid=' . (int)$languageId
             . ' AND tt_content.colPos = ' . (int)$colPos
             . ' AND tt_content.pid=' . (int)$pageId
+            . ' AND tt_content.uid NOT IN (' . $originalUidList . ')'
             . BackendUtility::deleteClause('tt_content')
             . BackendUtility::versioningPlaceholderClause('tt_content'),
             '',
