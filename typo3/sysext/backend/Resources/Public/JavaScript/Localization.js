@@ -74,28 +74,36 @@ define([
 
 		$(document).on('click', Localization.identifier.triggerButton, function() {
 			var $triggerButton = $(this),
+				actions = [],
 				modalContent =
 					'<div id="localization-carousel" class="carousel slide" data-ride="carousel" data-interval="false">'
 						+ '<div class="carousel-inner" role="listbox">'
 							+ '<div class="item active">'
-								+ '<div data-toggle="buttons">'
-									+ '<div class="row">'
-										+ '<div class="btn-group col-sm-3">' + Localization.actions.translate[0].outerHTML + '</div>'
-										+ '<div class="col-sm-9">'
-											+ '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
-										+ '</div>'
-									+ '</div>';
+								+ '<div data-toggle="buttons">';
 
-			if ($triggerButton.data('hasElements') === 0) {
-				modalContent +=
-					'<hr>'
-					+ '<div class="row">'
+			if ($triggerButton.data('allowTranslate')) {
+				actions.push(
+					'<div class="row">'
+						+ '<div class="btn-group col-sm-3">' + Localization.actions.translate[0].outerHTML + '</div>'
+						+ '<div class="col-sm-9">'
+							+ '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
+						+ '</div>'
+					+ '</div>'
+				);
+			}
+
+			if ($triggerButton.data('allowCopy')) {
+				actions.push(
+					'<div class="row">'
 						+ '<div class="col-sm-3 btn-group">' + Localization.actions.copy[0].outerHTML + '</div>'
 						+ '<div class="col-sm-9">'
 							+ '<p class="t3js-helptext t3js-helptext-copy text-muted">' + TYPO3.lang['localize.educate.copy'] + '</p>'
 						+ '</div>'
-					+ '</div>';
+					+ '</div>'
+				);
 			}
+
+			modalContent += actions.join('<hr>');
 
 			modalContent += 	'</div>'
 							+ '</div>'
@@ -248,7 +256,8 @@ define([
 
 						Localization.getSummary(
 							$triggerButton.data('pageId'),
-							$triggerButton.data('colposId')
+							$triggerButton.data('colposId'),
+							$triggerButton.data('languageId')
 						).done(function(result) {
 							var $summary = $('<div />', {class: 'row'});
 							Localization.records = [];
@@ -331,14 +340,16 @@ define([
 		 *
 		 * @param {Integer} pageId
 		 * @param {Integer} colPos
+		 * @param {Integer} languageId
 		 * @return {Promise}
 		 */
-		Localization.getSummary = function(pageId, colPos) {
+		Localization.getSummary = function(pageId, colPos, languageId) {
 			return $.ajax({
 				url: TYPO3.settings.ajaxUrls['records_localize_summary'],
 				data: {
 					pageId: pageId,
 					colPos: colPos,
+					destLanguageId: languageId,
 					languageId: Localization.settings.language
 				}
 			});
