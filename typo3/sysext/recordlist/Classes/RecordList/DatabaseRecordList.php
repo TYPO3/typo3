@@ -1705,13 +1705,35 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), array('returnUrl' => ''))) . ');')
                     . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', true) . '">'
                     . $copyIcon->render() . '</a>';
-                if (true) {
-                    $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
+
+                // Check permission to cut page or content
+                if ($table == 'pages') {
+                    $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
+                    $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
+                } else {
+                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
+                }
+                $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
+
+                // If the listed table is 'pages' we have to request the permission settings for each page:
+                if ($table == 'pages') {
+                    if ($permsEdit) {
+                        $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), array('returnUrl' => ''))) . ');')
                         . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', true) . '">'
                         . $cutIcon->render() . '</a>';
+                    } else {
+                        $cells['cut'] = $this->spaceIcon;
+                    }
                 } else {
-                    $cells['cut'] = $this->spaceIcon;
+                    if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT) {
+                        $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
+                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), array('returnUrl' => ''))) . ');')
+                        . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', true) . '">'
+                        . $cutIcon->render() . '</a>';
+                    } else {
+                        $cells['cut'] = $this->spaceIcon;
+                    }
                 }
             }
         } else {

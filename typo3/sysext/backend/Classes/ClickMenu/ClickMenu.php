@@ -275,7 +275,7 @@ class ClickMenu
                 $menuItems['copy'] = $this->DB_copycut($table, $uid, 'copy');
             }
             // Cut:
-            if (!in_array('cut', $this->disabledItems, true) && !$root && !$DBmount && !$l10nOverlay) {
+            if (!in_array('cut', $this->disabledItems, true) && !$root && !$DBmount && !$l10nOverlay && $this->editOK) {
                 $menuItems['cut'] = $this->DB_copycut($table, $uid, 'cut');
             }
             // Paste:
