@@ -540,6 +540,19 @@ $(function() {
 		$panels.collapse(action);
 	});
 
+	if ($('#configSearch').length > 0) {
+		$(window).bind('keydown', function(event) {
+			if (event.ctrlKey || event.metaKey) {
+				switch (String.fromCharCode(event.which).toLowerCase()) {
+					case 'f':
+						event.preventDefault();
+						$('#configSearch').focus();
+						break;
+				}
+			}
+		});
+	}
+
 	// Simple password strength indicator
 	$('.t3-install-form-password-strength').on('keyup', function() {
 		var value = $(this).val();
