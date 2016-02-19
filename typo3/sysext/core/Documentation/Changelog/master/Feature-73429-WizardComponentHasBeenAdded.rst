@@ -46,8 +46,8 @@ addFinalProcessingSlide
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Adds a slide to the wizard containing a spinner. This should always be the latest slide. This method returns a Promise
-object due to internal handling. This means you have to add a :js:`done()` callback containing :js:`Wizard.show()`,
-please see the example below.
+object due to internal handling. This means you have to add a :js:`done()` callback containing :js:`Wizard.show()` and ,
+:js:`Wizard.getComponent()` please see the example below.
 
 ========== =============== ============ ======================================================================================================
 Name       DataType        Mandatory    Description
@@ -62,6 +62,11 @@ Example code:
 
         Wizard.addFinalProcessingSlide().done(function() {
             Wizard.show();
+
+            Wizard.getComponent().on('click', '.my-element', function(e) {
+                e.preventDefault();
+                $(this).doSomething();
+            });
         });
 
 set

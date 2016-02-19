@@ -173,21 +173,21 @@ define([
 				});
 			}).done(function() {
 				Wizard.show();
-			});
 
-			Wizard.getComponent().on('click', '.t3js-option', function(e) {
-				var $me = $(this),
-					$radio = $me.find('input[type="radio"]');
+				Wizard.getComponent().on('click', '.t3js-option', function(e) {
+					var $me = $(this),
+						$radio = $me.find('input[type="radio"]');
 
-				if ($me.data('helptext')) {
-					var $container = $(e.delegateTarget);
-					$container.find('.t3js-helptext').addClass('text-muted');
-					$container.find($me.data('helptext')).removeClass('text-muted');
-				}
-				if ($radio.length > 0) {
-					Localization.settings[$radio.attr('name')] = $radio.val();
-				}
-				Wizard.unlockNextStep();
+					if ($me.data('helptext')) {
+						var $container = $(e.delegateTarget);
+						$container.find('.t3js-helptext').addClass('text-muted');
+						$container.find($me.data('helptext')).removeClass('text-muted');
+					}
+					if ($radio.length > 0) {
+						Localization.settings[$radio.attr('name')] = $radio.val();
+					}
+					Wizard.unlockNextStep();
+				});
 			});
 		});
 

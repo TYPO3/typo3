@@ -41,14 +41,17 @@ define(['jquery',
 	}
 
 	/**
-	 * @type {{slides: Array, settings: {}, forceSelection: boolean, $carousel: null}}
+	 * @type {{setup: {slides: Array, settings: {}, forceSelection: boolean, $carousel: null}, originalSetup: {}}}
 	 * @exports TYPO3/CMS/Backend/Wizard
 	 */
 	var Wizard = {
-		slides: [],
-		settings: {},
-		forceSelection: true,
-		$carousel: null
+		setup: {
+			slides: [],
+			settings: {},
+			forceSelection: true,
+			$carousel: null
+		},
+		originalSetup: {}
 	};
 
 	/**
@@ -57,50 +60,50 @@ define(['jquery',
 	 * @private
 	 */
 	Wizard.initializeEvents = function() {
-		var $modal = Wizard.$carousel.closest('.modal'),
+		var $modal = Wizard.setup.$carousel.closest('.modal'),
 			$modalTitle = $modal.find('.modal-title'),
 			$modalFooter = $modal.find('.modal-footer'),
 			$nextButton = $modalFooter.find('button[name="next"]');
 
 		$nextButton.on('click', function() {
-			Wizard.$carousel.carousel('next');
+			Wizard.setup.$carousel.carousel('next');
 		});
 
-		Wizard.$carousel.on('slide.bs.carousel', function() {
-			var nextSlideNumber = Wizard.$carousel.data('currentSlide') + 1,
-				currentIndex = Wizard.$carousel.data('currentIndex') + 1;
+		Wizard.setup.$carousel.on('slide.bs.carousel', function() {
+			var nextSlideNumber = Wizard.setup.$carousel.data('currentSlide') + 1,
+				currentIndex = Wizard.setup.$carousel.data('currentIndex') + 1;
 
-			$modalTitle.text(Wizard.slides[currentIndex].title);
+			$modalTitle.text(Wizard.setup.slides[currentIndex].title);
 
-			Wizard.$carousel.data('currentSlide', nextSlideNumber);
-			Wizard.$carousel.data('currentIndex', currentIndex);
+			Wizard.setup.$carousel.data('currentSlide', nextSlideNumber);
+			Wizard.setup.$carousel.data('currentIndex', currentIndex);
 
-			if (nextSlideNumber >= Wizard.$carousel.data('realSlideCount')) {
+			if (nextSlideNumber >= Wizard.setup.$carousel.data('realSlideCount')) {
 				// Point of no return - hide modal footer disable any closing ability
 				$modal.find('.modal-header .close').remove();
 				$modalFooter.slideUp();
 			} else {
 				$modalFooter.find('.progress-bar')
-					.width(Wizard.$carousel.data('initialStep') * nextSlideNumber + '%')
+					.width(Wizard.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
 					.text(top.TYPO3.lang['wizard.progress']
 						.replace('{0}', nextSlideNumber)
-						.replace('{1}', Wizard.$carousel.data('slideCount')));
+						.replace('{1}', Wizard.setup.$carousel.data('slideCount')));
 			}
 
 			$nextButton
-				.removeClass('btn-' + Severity.getCssClass(Wizard.slides[currentIndex -1].severity))
-				.addClass('btn-' + Severity.getCssClass(Wizard.slides[currentIndex].severity));
+				.removeClass('btn-' + Severity.getCssClass(Wizard.setup.slides[currentIndex -1].severity))
+				.addClass('btn-' + Severity.getCssClass(Wizard.setup.slides[currentIndex].severity));
 
 			$modal
-				.removeClass('t3-modal-' + Severity.getCssClass(Wizard.slides[currentIndex -1].severity))
-				.addClass('t3-modal-' + Severity.getCssClass(Wizard.slides[currentIndex].severity));
+				.removeClass('t3-modal-' + Severity.getCssClass(Wizard.setup.slides[currentIndex -1].severity))
+				.addClass('t3-modal-' + Severity.getCssClass(Wizard.setup.slides[currentIndex].severity));
 		}).on('slid.bs.carousel', function(e) {
-			var currentIndex = Wizard.$carousel.data('currentIndex'),
-				slide = Wizard.slides[currentIndex];
+			var currentIndex = Wizard.setup.$carousel.data('currentIndex'),
+				slide = Wizard.setup.slides[currentIndex];
 
 			Wizard.runSlideCallback(slide, $(e.relatedTarget));
 
-			if (Wizard.forceSelection) {
+			if (Wizard.setup.forceSelection) {
 				Wizard.lockNextStep();
 			}
 		});
@@ -124,7 +127,7 @@ define(['jquery',
 	 * @returns {Object}
 	 */
 	Wizard.set = function(key, value) {
-		Wizard.settings[key] = value;
+		Wizard.setup.settings[key] = value;
 		return Wizard;
 	};
 
@@ -139,7 +142,7 @@ define(['jquery',
 	 * @returns {Object}
 	 */
 	Wizard.addSlide = function(identifier, title, content, severity, callback) {
-		Wizard.slides.push({
+		Wizard.setup.slides.push({
 			identifier: identifier,
 			title: title,
 			content: content || '',
@@ -180,15 +183,15 @@ define(['jquery',
 	 * @private
 	 */
 	Wizard.addProgressBar = function() {
-		var realSlideCount = Wizard.$carousel.find('.item').length,
+		var realSlideCount = Wizard.setup.$carousel.find('.item').length,
 			slideCount = Math.max(1, realSlideCount),
 			initialStep,
-			$modal = Wizard.$carousel.closest('.modal'),
+			$modal = Wizard.setup.$carousel.closest('.modal'),
 			$modalFooter = $modal.find('.modal-footer');
 
 		initialStep = Math.round(100 / slideCount);
 
-		Wizard.$carousel
+		Wizard.setup.$carousel
 			.data('initialStep', initialStep)
 			.data('slideCount', slideCount)
 			.data('realSlideCount', realSlideCount)
@@ -222,12 +225,17 @@ define(['jquery',
 	 * @private
 	 */
 	Wizard.generateSlides = function() {
+		// Check whether the slides were already generated
+		if (Wizard.setup.$carousel !== null) {
+			return Wizard.setup.$carousel;
+		}
+
 		var slides =
 			'<div class="carousel slide" data-ride="carousel" data-interval="false">'
 			+ '<div class="carousel-inner" role="listbox">';
 
-		for (var i = 0; i < Wizard.slides.length; ++i) {
-			var currentSlide = Wizard.slides[i],
+		for (var i = 0; i < Wizard.setup.slides.length; ++i) {
+			var currentSlide = Wizard.setup.slides[i],
 				slideContent = currentSlide.content;
 
 			if (typeof slideContent === 'object') {
@@ -238,10 +246,10 @@ define(['jquery',
 
 		slides += '</div></div>';
 
-		Wizard.$carousel = $(slides);
-		Wizard.$carousel.find('.item').first().addClass('active');
+		Wizard.setup.$carousel = $(slides);
+		Wizard.setup.$carousel.find('.item').first().addClass('active');
 
-		return Wizard.$carousel;
+		return Wizard.setup.$carousel;
 	};
 
 	/**
@@ -251,7 +259,7 @@ define(['jquery',
 	 */
 	Wizard.show = function() {
 		var $slides = Wizard.generateSlides(),
-			firstSlide = Wizard.slides[0];
+			firstSlide = Wizard.setup.slides[0];
 
 		var $modal = Modal.confirm(
 			firstSlide.title,
@@ -271,20 +279,19 @@ define(['jquery',
 				name: 'next'
 			}]
 		);
-		$modal.on('hidden.bs.modal', function() {
-			Wizard.slides = [];
-			Wizard.settings = [];
-			Wizard.forceSelection = true;
-		});
 
-		Wizard.runSlideCallback(firstSlide, Wizard.$carousel.find('.item').first());
-
-		if (Wizard.forceSelection) {
+		if (Wizard.setup.forceSelection) {
 			Wizard.lockNextStep();
 		}
 
 		Wizard.addProgressBar($modal);
 		Wizard.initializeEvents();
+
+		Wizard.getComponent().on('wizard-visible', function() {
+			Wizard.runSlideCallback(firstSlide, Wizard.setup.$carousel.find('.item').first());
+		}).on('wizard-dismissed', function() {
+			Wizard.setup = $.extend(true, {}, Wizard.originalSetup);
+		});
 	};
 
 	/**
@@ -296,7 +303,7 @@ define(['jquery',
 	 */
 	Wizard.runSlideCallback = function(slide, $slide) {
 		if (typeof slide.callback === 'function') {
-			slide.callback($slide, Wizard.settings);
+			slide.callback($slide, Wizard.setup.settings);
 		}
 	};
 
@@ -306,7 +313,10 @@ define(['jquery',
 	 * @returns {$}
 	 */
 	Wizard.getComponent = function() {
-		return Wizard.$carousel.parent();
+		if (Wizard.setup.$carousel === null) {
+			Wizard.generateSlides();
+		}
+		return Wizard.setup.$carousel;
 	};
 
 	/**
@@ -322,7 +332,7 @@ define(['jquery',
 	 * @returns {$}
 	 */
 	Wizard.lockNextStep = function() {
-		var $button = Wizard.$carousel.closest('.modal').find('button[name="next"]');
+		var $button = Wizard.setup.$carousel.closest('.modal').find('button[name="next"]');
 		$button.prop('disabled', true);
 
 		return $button;
@@ -334,11 +344,14 @@ define(['jquery',
 	 * @returns {$}
 	 */
 	Wizard.unlockNextStep = function() {
-		var $button = Wizard.$carousel.closest('.modal').find('button[name="next"]');
+		var $button = Wizard.setup.$carousel.closest('.modal').find('button[name="next"]');
 		$button.prop('disabled', false);
 
 		return $button;
 	};
+
+	// Store the initial setup
+	Wizard.originalSetup = $.extend(true, {}, Wizard.setup);
 
 	// expose as global object
 	TYPO3.Wizard = Wizard;
