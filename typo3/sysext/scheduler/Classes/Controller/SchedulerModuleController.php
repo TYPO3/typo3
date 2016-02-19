@@ -573,6 +573,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     {
         $task = $this->scheduler->fetchTask($this->submittedData['uid']);
         $task->setDisabled(!$task->isDisabled());
+        // If a disabled single task is enabled again, we register it for a
+        // single execution at next scheduler run.
+        if ($task->getType() === AbstractTask::TYPE_SINGLE) {
+            $task->registerSingleExecution(time());
+        }
         $task->save();
     }
 
@@ -624,13 +629,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     if (!empty($taskInfo['interval']) || !empty($taskInfo['croncmd'])) {
                         // Guess task type from the existing information
                         // If an interval or a cron command is defined, it's a recurring task
-                        // @todo remove magic numbers for the type, use class constants instead
-                        $taskInfo['type'] = 2;
+                        $taskInfo['type'] = AbstractTask::TYPE_RECURRING;
                         $taskInfo['frequency'] = $taskInfo['interval'] ?: $taskInfo['croncmd'];
                     } else {
                         // It's not a recurring task
                         // Make sure interval and cron command are both empty
-                        $taskInfo['type'] = 1;
+                        $taskInfo['type'] = AbstractTask::TYPE_SINGLE;
                         $taskInfo['frequency'] = '';
                         $taskInfo['end'] = 0;
                     }
@@ -643,7 +647,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $taskInfo['end'] = 0;
                     $taskInfo['frequency'] = '';
                     $taskInfo['multiple'] = false;
-                    $taskInfo['type'] = 1;
+                    $taskInfo['type'] = AbstractTask::TYPE_SINGLE;
                 }
             } catch (\OutOfBoundsException $e) {
                 // Add a message and continue throwing the exception
@@ -653,7 +657,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         } else {
             // If adding a new object, set some default values
             $taskInfo['class'] = key($registeredClasses);
-            $taskInfo['type'] = 2;
+            $taskInfo['type'] = AbstractTask::TYPE_RECURRING;
             $taskInfo['start'] = $GLOBALS['EXEC_TIME'];
             $taskInfo['end'] = '';
             $taskInfo['frequency'] = '';
@@ -752,8 +756,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 . BackendUtility::wrapInHelp($this->cshKey, 'task_type', $label)
                 . '<div class="form-control-wrap">'
                     . '<select name="tx_scheduler[type]" id="task_type" class="form-control">'
-                        . '<option value="1" ' . ((int)$taskInfo['type'] === 1 ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.single') . '</option>'
-                        . '<option value="2" ' . ((int)$taskInfo['type'] === 2 ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.recurring') . '</option>'
+                        . '<option value="1" ' . ((int)$taskInfo['type'] === AbstractTask::TYPE_SINGLE ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.single') . '</option>'
+                        . '<option value="2" ' . ((int)$taskInfo['type'] === AbstractTask::TYPE_RECURRING ? ' selected="selected"' : '') . '>' . $this->getLanguageService()->getLL('label.type.recurring') . '</option>'
                     . '</select>'
                 . '</div>'
             . '</div></div>';
@@ -1100,7 +1104,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                             }
                         }
                         // Get execution type
-                        if ($task->getExecution()->getInterval() == 0 && $task->getExecution()->getCronCmd() == '') {
+                        if ($task->getType() === AbstractTask::TYPE_SINGLE) {
                             $execType = $this->getLanguageService()->getLL('label.type.single');
                             $frequency = '-';
                         } else {
@@ -1251,7 +1255,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 return;
             }
             // Register single execution
-            if ((int)$this->submittedData['type'] === 1) {
+            if ((int)$this->submittedData['type'] === AbstractTask::TYPE_SINGLE) {
                 $task->registerSingleExecution($this->submittedData['start']);
             } else {
                 if (!empty($this->submittedData['croncmd'])) {
@@ -1293,7 +1297,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Create an instance of chosen class
             /** @var $task AbstractTask */
             $task = GeneralUtility::makeInstance($this->submittedData['class']);
-            if ((int)$this->submittedData['type'] === 1) {
+            if ((int)$this->submittedData['type'] === AbstractTask::TYPE_SINGLE) {
                 // Set up single execution
                 $task->registerSingleExecution($this->submittedData['start']);
             } else {
@@ -1361,7 +1365,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             }
         }
         // Check end date, if recurring task
-        if ($this->submittedData['type'] == 2 && !empty($this->submittedData['end'])) {
+        if ((int)$this->submittedData['type'] === AbstractTask::TYPE_RECURRING && !empty($this->submittedData['end'])) {
             try {
                 $this->submittedData['end'] = (int)$this->submittedData['end'];
                 if ($this->submittedData['end'] < $this->submittedData['start']) {
@@ -1377,7 +1381,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->submittedData['interval'] = 0;
         $this->submittedData['croncmd'] = '';
         // Check type and validity of frequency, if recurring
-        if ($this->submittedData['type'] == 2) {
+        if ((int)$this->submittedData['type'] === AbstractTask::TYPE_RECURRING) {
             $frequency = trim($this->submittedData['frequency']);
             if (empty($frequency)) {
                 // Empty frequency, not valid

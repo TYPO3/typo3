@@ -21,6 +21,10 @@ namespace TYPO3\CMS\Scheduler\Task;
  */
 abstract class AbstractTask
 {
+
+    const TYPE_SINGLE = 1;
+    const TYPE_RECURRING = 2;
+
     /**
      * Reference to a scheduler object
      *
@@ -514,5 +518,19 @@ abstract class AbstractTask
     public function remove()
     {
         $this->scheduler->removeTask($this);
+    }
+
+    /**
+     * Guess task type from the existing information
+     * If an interval or a cron command is defined, it's a recurring task
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        if (!empty($this->getExecution()->getInterval()) || !empty($this->getExecution()->getCronCmd())) {
+            return self::TYPE_RECURRING;
+        }
+        return self::TYPE_SINGLE;
     }
 }
