@@ -4177,6 +4177,45 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * @return array
+     */
+    public function getFileAbsFileNameDateprovider()
+    {
+        return [
+            'sysext/core/ext_icon.png, true, true' => ['sysext/core/ext_icon.png', true, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
+            'fileadmin/foo.txt, true, false' => ['fileadmin/foo.txt', true, false, PATH_site . 'fileadmin/foo.txt'],
+            'sysext/core/ext_icon.png, false, true' => ['sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
+            'fileadmin/foo.txt, false, false' => ['fileadmin/foo.txt', false, false, PATH_site . 'fileadmin/foo.txt'],
+            './sysext/core/ext_icon.png, true, true' => ['./sysext/core/ext_icon.png', true, true, PATH_site . 'typo3/./sysext/core/ext_icon.png'],
+            './fileadmin/foo.txt, true, false' => ['./fileadmin/foo.txt', true, false, PATH_site . './fileadmin/foo.txt'],
+            './sysext/core/ext_icon.png, false, true' => ['./sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/./sysext/core/ext_icon.png'],
+            './fileadmin/foo.txt, false, false' => ['./fileadmin/foo.txt', false, false, PATH_site . './fileadmin/foo.txt'],
+            '../sysext/core/ext_icon.png, true, true' => ['../sysext/core/ext_icon.png', true, true, ''],
+            '../fileadmin/foo.txt, true, false' => ['../fileadmin/foo.txt', true, false, ''],
+            '../sysext/core/ext_icon.png, false, true' => ['../sysext/core/ext_icon.png', false, true, ''],
+            '../fileadmin/foo.txt, false, false' => ['../fileadmin/foo.txt', false, false, ''],
+            'PATH_site . sysext/core/ext_icon.png, true, true' => [PATH_site . 'sysext/core/ext_icon.png', true, true, ''],
+            'PATH_site . fileadmin/foo.txt, true, false' => [PATH_site . 'fileadmin/foo.txt', true, false, PATH_site . 'fileadmin/foo.txt'],
+            'PATH_site . typo3/sysext/core/ext_icon.png, false, true' => [PATH_site . 'typo3/sysext/core/ext_icon.png', false, true, PATH_site . 'typo3/sysext/core/ext_icon.png'],
+            'PATH_site . fileadmin/foo.txt, false, false' => [PATH_site . 'fileadmin/foo.txt', false, false, PATH_site . 'fileadmin/foo.txt'],
+        ];
+    }
+
+    /**
+     * @param string $path
+     * @param bool $onlyRelative
+     * @param bool $relToTYPO3_mainDir
+     * @param string $expected
+     * @test
+     * @dataProvider getFileAbsFileNameDateprovider
+     */
+    public function getFileAbsFileNameReturnsCorrectValues($path, $onlyRelative, $relToTYPO3_mainDir, $expected)
+    {
+        $result = GeneralUtility::getFileAbsFileName($path, $onlyRelative, $relToTYPO3_mainDir);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * Data provider for validPathStrDetectsInvalidCharacters.
      *
      * @return array
