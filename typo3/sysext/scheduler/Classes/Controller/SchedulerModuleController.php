@@ -1556,13 +1556,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save'));
             $saveButtonDropdown->addItem($saveButton);
-            $saveAndCloseButton = $buttonBar->makeInputButton()
-                ->setName('CMD')
-                ->setValue('saveclose')
-                ->setForm('tx_scheduler_form')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose'));
-            $saveButtonDropdown->addItem($saveAndCloseButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue('savenew')
@@ -1570,6 +1563,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc'));
             $saveButtonDropdown->addItem($saveAndNewButton);
+            $saveAndCloseButton = $buttonBar->makeInputButton()
+                ->setName('CMD')
+                ->setValue('saveclose')
+                ->setForm('tx_scheduler_form')
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose'));
+            $saveButtonDropdown->addItem($saveAndCloseButton);
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
         // Edit
