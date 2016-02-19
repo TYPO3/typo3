@@ -2026,8 +2026,9 @@ class GeneralUtility
 
             $followLocationSucceeded = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
+            $curlIncludeHeaders = !$followLocationSucceeded || $includeHeader;
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HEADER, !$followLocationSucceeded || $includeHeader ? 1 : 0);
+            curl_setopt($ch, CURLOPT_HEADER, $curlIncludeHeaders ? 1 : 0);
             curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
             curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -2052,6 +2053,23 @@ class GeneralUtility
             }
             $content = curl_exec($ch);
             $curlInfo = curl_getinfo($ch);
+
+            // Remove additional proxy header block, when proxy is used for https request and CURL_HEADER is enabled.
+            // Most HTTPS proxies add a second header before the actual server headers in their response, as a
+            // response to the CONNECT message sent by the client to the proxy. cURL does not strip this since 2005,
+            // so there are two headers arriving here, of which the first is not of interest to us—therefore, we can
+            // safely strip it.
+            // Detecting two linebreaks followed by a "HTTP/" (as done here) is the only reliable way to detect the
+            // proxy headers, as the relevant RFCs do not specify the exact status code (it might be any of 2xx) or
+            // the status message. Therefore, we check if there is a second HTTP headers block and then strip the
+            // first one.
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']
+                && $curlIncludeHeaders
+                && preg_match('/^https:/', $url)
+                && strpos($content, "\r\n\r\nHTTP/") !== false
+            ) {
+                $content = self::stripHttpHeaders($content);
+            }
 
             if (!$followLocationSucceeded) {
                 // Check if we need to do redirects
