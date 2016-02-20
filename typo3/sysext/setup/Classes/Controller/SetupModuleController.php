@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -375,42 +376,7 @@ class SetupModuleController extends AbstractModule
         $this->loadModules->observeWorkspaces = true;
         $this->loadModules->load($GLOBALS['TBE_MODULES']);
         $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'));
-        // Show if setup was saved
-        if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('setupWasUpdated'), $this->getLanguageService()->getLL('UserSettings'));
-            $this->content .= $flashMessage->render();
-        }
-
-        // Show if temporary data was cleared
-        if ($this->settingsAreResetToDefault) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('settingsAreReset'), $this->getLanguageService()->getLL('resetConfiguration'));
-            $this->content .= $flashMessage->render();
-        }
-
-        // Notice
-        if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('activateChanges'), '', FlashMessage::INFO);
-            $this->content .= $flashMessage->render();
-        }
-
-        // If password is updated, output whether it failed or was OK.
-        if ($this->passwordIsSubmitted) {
-            $flashMessage = null;
-            switch ($this->passwordIsUpdated) {
-                case self::PASSWORD_OLD_WRONG:
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('oldPassword_failed'), $this->getLanguageService()->getLL('newPassword'), FlashMessage::ERROR);
-                    break;
-                case self::PASSWORD_NOT_THE_SAME:
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('newPassword_failed'), $this->getLanguageService()->getLL('newPassword'), FlashMessage::ERROR);
-                    break;
-                case self::PASSWORD_UPDATED:
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('newPassword_ok'), $this->getLanguageService()->getLL('newPassword'));
-                    break;
-            }
-            if ($flashMessage) {
-                $this->content .= $flashMessage->render();
-            }
-        }
+        $this->addFlashMessages();
 
         // Render user switch
         $this->content .= $this->renderSimulateUserSelectAndLabel();
@@ -718,9 +684,9 @@ class SetupModuleController extends AbstractModule
             <select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
             </select>';
         if ($this->getBackendUser()->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $this->getBackendUser()->uc['lang']))) {
-            $languageUnavailableWarning = 'The selected language "' . $this->getLanguageService()->getLL(('lang_' . $this->getBackendUser()->uc['lang']), true) . '" is not available before the language files are installed.<br />' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
-            $languageUnavailableMessage = GeneralUtility::makeInstance(FlashMessage::class, $languageUnavailableWarning, '', FlashMessage::WARNING);
-            $languageCode = $languageUnavailableMessage->render() . $languageCode;
+            // TODO: The text constants have to be moved into language files
+            $languageUnavailableWarning = 'The selected language "' . $this->getLanguageService()->getLL(('lang_' . $this->getBackendUser()->uc['lang']), true) . '" is not available before the language files are installed.&nbsp;&nbsp;<br />&nbsp;&nbsp;' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
+            $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;
         }
         return $languageCode;
     }
@@ -743,7 +709,7 @@ class SetupModuleController extends AbstractModule
                     $modName = $subData['name'];
                     $modules .= '<option value="' . htmlspecialchars($modName) . '"';
                     $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
-                    $modules .=  '>' . $this->getLanguageService()->moduleLabels['tabs'][$modName . '_tab'] . '</option>';
+                    $modules .= '>' . $this->getLanguageService()->moduleLabels['tabs'][$modName . '_tab'] . '</option>';
                 }
                 $groupLabel = $this->getLanguageService()->moduleLabels['tabs'][$mainMod . '_tab'];
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
@@ -1027,5 +993,80 @@ class SetupModuleController extends AbstractModule
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * Add FlashMessages for various actions
+     *
+     * @return void
+     */
+    protected function addFlashMessages()
+    {
+        $flashMessages = [];
+
+        // Show if setup was saved
+        if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
+            $flashMessages[] = $this->getFlashMessage('setupWasUpdated', 'UserSettings');
+        }
+
+        // Show if temporary data was cleared
+        if ($this->settingsAreResetToDefault) {
+            $flashMessages[] = $this->getFlashMessage('settingsAreReset', 'resetConfiguration');
+        }
+
+        // Notice
+        if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
+            $flashMessages[] = $this->getFlashMessage('activateChanges', '', FlashMessage::INFO);
+        }
+
+        // If password is updated, output whether it failed or was OK.
+        if ($this->passwordIsSubmitted) {
+            $flashMessage = null;
+            switch ($this->passwordIsUpdated) {
+                case self::PASSWORD_OLD_WRONG:
+                    $flashMessages[] = $this->getFlashMessage('oldPassword_failed', 'newPassword', FlashMessage::ERROR);
+                    break;
+                case self::PASSWORD_NOT_THE_SAME:
+                    $flashMessages[] = $this->getFlashMessage('newPassword_failed', 'newPassword', FlashMessage::ERROR);
+                    break;
+                case self::PASSWORD_UPDATED:
+                    $flashMessages[] = $this->getFlashMessage('newPassword_ok', 'newPassword');
+                    break;
+            }
+        }
+        if (!empty($flashMessages)) {
+            $this->enqueueFlashMessages($flashMessages);
+        }
+    }
+
+    /**
+     * @param array $flashMessages
+     * @throws \TYPO3\CMS\Core\Exception
+     * @return void
+     */
+    protected function enqueueFlashMessages(array $flashMessages)
+    {
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        foreach ($flashMessages as $flashMessage) {
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param string $title
+     * @param int $severity
+     * @return FlashMessage
+     */
+    protected function getFlashMessage($message, $title, $severity = FlashMessage::OK)
+    {
+        $title = !empty($title) ? $this->getLanguageService()->getLL($title) : ' ';
+        return GeneralUtility::makeInstance(
+            FlashMessage::class,
+            $this->getLanguageService()->getLL($message),
+            $title,
+            $severity
+        );
     }
 }
