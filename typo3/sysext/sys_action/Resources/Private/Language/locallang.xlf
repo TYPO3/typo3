@@ -70,7 +70,7 @@
 				<source>Action error!</source>
 			</trans-unit>
 			<trans-unit id="action_lowlevelMissing">
-				<source>The extension "lowlevel" must be installed in order to create a query.</source>
+				<source>The extension 'lowlevel' must be installed in order to create a query.</source>
 			</trans-unit>
 			<trans-unit id="action_BEu_hidden">
 				<source>Disable user</source>
