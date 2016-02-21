@@ -133,6 +133,24 @@ class RecyclerUtility
     }
 
     /**
+     * Get pid of uid
+     *
+     * @param int $uid
+     * @param string $table
+     * @return int
+     */
+    public static function getPidOfUid($uid, $table)
+    {
+        $db = static::getDatabaseConnection();
+        $res = $db->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
+        if ($res !== false) {
+            $record = $db->sql_fetch_assoc($res);
+            return $record['pid'];
+        }
+        return 0;
+    }
+
+    /**
      * Gets the TCA of the table used in the current context.
      *
      * @param string $tableName Name of the table to get TCA for
