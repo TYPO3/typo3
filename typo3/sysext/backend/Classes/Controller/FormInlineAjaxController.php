@@ -371,13 +371,20 @@ class FormInlineAjaxController
             $parentLanguage = $parentData['databaseRow'][$parentLanguageField];
             $oldItemList = $parentData['databaseRow'][$parentFieldName];
 
+            // DataHandler cannot handle arrays as field value
+            if (is_array($parentLanguage)) {
+                $parentLanguage = implode(',', $parentLanguage);
+            }
+
             $cmd = array();
+            // Localize a single child element from default language of the parent element
             if (MathUtility::canBeInterpretedAsInteger($type)) {
                 $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
                     'field' => $parent['field'],
                     'language' => $parentLanguage,
                     'ids' => array($type),
                 );
+            // Either localize or synchronize all child elements from default language of the parent element
             } else {
                 $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = array(
                     'field' => $parent['field'],
