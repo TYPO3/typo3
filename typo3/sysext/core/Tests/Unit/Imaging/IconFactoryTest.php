@@ -228,47 +228,6 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject->getIcon($this->registeredIconIdentifier, 'foo')->render();
     }
 
-    /**
-     * @test
-     * @param $deprecationSettings
-     * @param $expected
-     * @dataProvider getIconReturnsReplacementIconWhenDeprecatedDataProvider
-     */
-    public function getIconReturnsReplacementIconWhenDeprecated($deprecationSettings, $expected)
-    {
-        $this->iconRegistryMock->isDeprecated($this->registeredIconIdentifier)->willReturn(true);
-        $this->iconRegistryMock->getDeprecationSettings($this->registeredIconIdentifier)->willReturn($deprecationSettings);
-
-        $this->assertContains(
-            $expected,
-            $this->subject->getIcon($this->registeredIconIdentifier, Icon::SIZE_SMALL)->render()
-        );
-    }
-
-    /**
-     * Data provider for getIconReturnsReplacementIconWhenDeprecated
-     *
-     * @return array
-     */
-    public function getIconReturnsReplacementIconWhenDeprecatedDataProvider()
-    {
-        return array(
-            'Deprecated icon returns replacement' => [
-                [
-                    'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8',
-                    'replacement' => 'alternative-icon-identifier' // must be registered
-                ],
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-alternative-icon-identifier" data-identifier="alternative-icon-identifier">'
-            ],
-            'Deprecated icon returns default icon' => [
-                [
-                    'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8'
-                ],
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-document-close" data-identifier="actions-document-close">'
-            ],
-        );
-    }
-
     //
     // Tests for getIconForFileExtension
     //

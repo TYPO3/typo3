@@ -53,6 +53,13 @@ class IconFactory
     protected $overlayPriorities = array();
 
     /**
+     * Runtime icon cache
+     *
+     * @var array
+     */
+    protected static $iconCache = array();
+
+    /**
      * @param IconRegistry $iconRegistry
      */
     public function __construct(IconRegistry $iconRegistry = null)
@@ -98,12 +105,9 @@ class IconFactory
      */
     public function getIcon($identifier, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = null, IconState $state = null)
     {
-        if ($this->iconRegistry->isDeprecated($identifier)) {
-            $deprecationSettings = $this->iconRegistry->getDeprecationSettings($identifier);
-            GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
-            if (!empty($deprecationSettings['replacement'])) {
-                $identifier = $deprecationSettings['replacement'];
-            }
+        $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . (string)$state);
+        if (!empty(static::$iconCache[$cacheIdentifier])) {
+            return static::$iconCache[$cacheIdentifier];
         }
         if (!$this->iconRegistry->isRegistered($identifier)) {
             $identifier = $this->iconRegistry->getDefaultIconIdentifier();
@@ -116,6 +120,8 @@ class IconFactory
         /** @var IconProviderInterface $iconProvider */
         $iconProvider = GeneralUtility::makeInstance($iconConfiguration['provider']);
         $iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
+
+        static::$iconCache[$cacheIdentifier] = $icon;
 
         return $icon;
     }
@@ -514,5 +520,13 @@ class IconFactory
     protected function getSignalSlotDispatcher()
     {
         return GeneralUtility::makeInstance(Dispatcher::class);
+    }
+
+    /**
+     * clear icon cache
+     */
+    public function clearIconCache()
+    {
+        static::$iconCache = [];
     }
 }

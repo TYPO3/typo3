@@ -2771,7 +2771,7 @@ class IconRegistry implements SingletonInterface
             throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
         }
         if ($this->isDeprecated($identifier)) {
-            $deprecationSettings = $this->getDeprecationSettings($identifier);
+            $deprecationSettings = $this->deprecatedIcons[$identifier];
             GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
             if (!empty($deprecationSettings['replacement'])) {
                 $identifier = $deprecationSettings['replacement'];
@@ -2785,9 +2785,11 @@ class IconRegistry implements SingletonInterface
      *
      * @return array
      * @throws Exception
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getDeprecationSettings($identifier)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!$this->isDeprecated($identifier)) {
             throw new Exception('Icon with identifier "' . $identifier . '" is not deprecated"', 1437425804);
         }
