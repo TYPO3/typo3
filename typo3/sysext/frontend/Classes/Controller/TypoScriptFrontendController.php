@@ -1226,8 +1226,6 @@ class TypoScriptFrontendController
                 GeneralUtility::callUserFunction($functionReference, $parameters, $this);
             }
         }
-        // Getting ARG-v values if some
-        $this->setIDfromArgV();
         // If there is a Backend login we are going to check for any preview settings:
         $this->getTimeTracker()->push('beUserLogin', '');
         $originalFrontendUser = null;
@@ -1845,23 +1843,6 @@ class TypoScriptFrontendController
             }
         }
         return $output;
-    }
-
-    /**
-     * This checks if there are ARGV-parameters in the QUERY_STRING and if so, those are used for the id
-     * $this->id must be 'FALSE' in order for any processing to happen in here
-     * If an id/alias value is extracted from the QUERY_STRING it is set in $this->id
-     *
-     * @return void
-     * @access private
-     */
-    public function setIDfromArgV()
-    {
-        if (!$this->id) {
-            list($theAlias) = explode('&', GeneralUtility::getIndpEnv('QUERY_STRING'));
-            $theAlias = trim($theAlias);
-            $this->id = $theAlias != '' && strpos($theAlias, '=') === false ? $theAlias : 0;
-        }
     }
 
     /**
