@@ -117,9 +117,10 @@ if (TYPO3_MODE === 'BE') {
                 'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration',
                 'buttonlabel' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfigurationButton',
                 'csh' => 'reset',
-                'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'setValuesToDefault\').value = 1; this.form.submit(); }',
-                'onClickLabels' => array(
-                    'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion'
+                'confirm' => true,
+                'confirmData' => array(
+                    'message' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion',
+                    'jsCodeAfterOk' => 'document.getElementById(\'setValuesToDefault\').value = 1; document.getElementById(\'SetupModuleController\').submit();'
                 )
             ),
             'resizeTextareas_Flexible' => array(

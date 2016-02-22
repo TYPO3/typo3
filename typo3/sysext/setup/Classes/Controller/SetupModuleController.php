@@ -167,6 +167,7 @@ class SetupModuleController extends AbstractModule
     {
         parent::__construct();
         $this->formProtection = FormProtectionFactory::get();
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
     }
 
     /**
@@ -575,6 +576,15 @@ class SetupModuleController extends AbstractModule
                         $html = '<br><input class="btn btn-default" type="button"
                             value="' . $this->getLabel($config['buttonlabel'], '', false) . '"
                             onclick="' . $onClick . '" />';
+                    }
+                    if (!empty($config['confirm'])) {
+                        $confirmData = $config['confirmData'];
+                        $html = '<br><input class="btn btn-default t3js-modal-trigger" type="button"'
+                            . ' value="' . $this->getLabel($config['buttonlabel'], '', false) . '"'
+                            . ' data-href="javascript:' . htmlspecialchars($confirmData['jsCodeAfterOk']) . '"'
+                            . ' data-severity="warning"'
+                            . ' data-title="' . $this->getLabel($config['label'], '', false) . '"'
+                            . ' data-content="' . $this->getLabel($confirmData['message'], '', false) . '" />';
                     }
                     break;
                 case 'avatar':
