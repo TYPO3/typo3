@@ -865,7 +865,7 @@ class PageLayoutController
                 $content .= '</div>';
             }
             // CSH
-            $content .= BackendUtility::cshItem($this->descrTable, 'quickEdit_selElement');
+            $content .= BackendUtility::cshItem($this->descrTable, 'quickEdit_selElement', null, '<span class="btn btn-default btn-sm">|</span>');
         }
 
         return $content;
