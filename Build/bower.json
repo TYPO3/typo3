@@ -34,7 +34,7 @@
     "moment": "2.10.6",
     "moment-timezone": "0.5.0",
     "nprogress": "0.2.0",
-    "datatables": "1.10.10",
+    "datatables": "1.10.11",
     "autosize": "3.0.14",
     "cropper": "0.9.3",
     "imagesloaded": "3.1.8",
