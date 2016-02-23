@@ -1769,6 +1769,7 @@ tt_content.default = TEXT
 tt_content.default {
 	field = CType
 	wrap = <p style="background-color: yellow;"><b>ERROR:</b> Content Element type "|" has no rendering definition!</p>
+	htmlSpecialChars = 1
 
 	prefixComment = 2 | Unknown element message:
 }
