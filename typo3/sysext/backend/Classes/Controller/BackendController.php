@@ -583,7 +583,6 @@ class BackendController
         $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-200);
         $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-250);
 
-        $pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($beUser->getTSConfigVal('options.overridePageModule'));
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -592,18 +591,11 @@ class BackendController
         }
         $t3Configuration = array(
             'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
-            'PATH_typo3' => $pathTYPO3,
-            'PATH_typo3_enc' => rawurlencode($pathTYPO3),
             'username' => htmlspecialchars($beUser->user['username']),
-            'userUid' => htmlspecialchars($beUser->user['uid']),
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
-            'securityLevel' => trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal',
-            'TYPO3_mainDir' => TYPO3_mainDir,
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
             'workspaceFrontendPreviewEnabled' => $beUser->user['workspace_preview'] ? 1 : 0,
-            'veriCode' => $beUser->veriCode(),
-            'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
             'moduleMenuWidth' => $this->menuWidth - 1,
             'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 45,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
@@ -628,13 +620,8 @@ class BackendController
 	 * TypoSetup object.
 	 */
 	function typoSetup() {	//
-		this.PATH_typo3 = TYPO3.configuration.PATH_typo3;
-		this.PATH_typo3_enc = TYPO3.configuration.PATH_typo3_enc;
 		this.username = TYPO3.configuration.username;
 		this.uniqueID = TYPO3.configuration.uniqueID;
-		this.securityLevel = TYPO3.configuration.securityLevel;
-		this.veriCode = TYPO3.configuration.veriCode;
-		this.denyFileTypes = TYPO3.configuration.denyFileTypes;
 	}
 	var TS = new typoSetup();
 		//backwards compatibility

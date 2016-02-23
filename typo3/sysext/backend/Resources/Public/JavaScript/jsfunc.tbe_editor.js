@@ -336,7 +336,6 @@ var TBE_EDITOR = {
 
 function typoSetup	() {
 	this.passwordDummy = '********';
-	this.decimalSign = '.';
 }
 // @todo: maybe obsolete, need a deeper check
 var TS = new typoSetup();

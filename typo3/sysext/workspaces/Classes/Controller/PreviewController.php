@@ -207,7 +207,6 @@ class PreviewController extends AbstractController
      */
     protected function generateJavascript()
     {
-        $pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -216,17 +215,11 @@ class PreviewController extends AbstractController
         }
         $t3Configuration = array(
             'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
-            'PATH_typo3' => $pathTYPO3,
-            'PATH_typo3_enc' => rawurlencode($pathTYPO3),
             'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
             'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
-            'securityLevel' => trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal',
-            'TYPO3_mainDir' => TYPO3_mainDir,
             'pageModule' => $pageModule,
             'inWorkspace' => $GLOBALS['BE_USER']->workspace !== 0,
             'workspaceFrontendPreviewEnabled' => $GLOBALS['BE_USER']->user['workspace_preview'] ? 1 : 0,
-            'veriCode' => $GLOBALS['BE_USER']->veriCode(),
-            'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
             'moduleMenuWidth' => $this->menuWidth - 1,
             'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false,
@@ -277,13 +270,8 @@ class PreviewController extends AbstractController
 		 * TypoSetup object.
 		 */
 		function typoSetup()	{	//
-			this.PATH_typo3 = TYPO3.configuration.PATH_typo3;
-			this.PATH_typo3_enc = TYPO3.configuration.PATH_typo3_enc;
 			this.username = TYPO3.configuration.username;
 			this.uniqueID = TYPO3.configuration.uniqueID;
-			this.securityLevel = TYPO3.configuration.securityLevel;
-			this.veriCode = TYPO3.configuration.veriCode;
-			this.denyFileTypes = TYPO3.configuration.denyFileTypes;
 		}
 		var TS = new typoSetup();
 			//backwards compatibility
