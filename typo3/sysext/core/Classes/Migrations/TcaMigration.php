@@ -132,7 +132,7 @@ class TcaMigration
                 continue;
             }
             foreach ($tableDefinition['types'] as $typeName => $typeArray) {
-                if (!is_string($typeArray['showitem']) || strpos($typeArray['showitem'], ';') === false) {
+                if (!isset($typeArray['showitem']) || !is_string($typeArray['showitem']) || strpos($typeArray['showitem'], ';') === false) {
                     // Continue directly if no semicolon is found
                     continue;
                 }
