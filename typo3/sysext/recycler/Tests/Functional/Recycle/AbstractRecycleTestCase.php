@@ -92,7 +92,11 @@ abstract class AbstractRecycleTestCase extends \TYPO3\CMS\Core\Tests\FunctionalT
         }
 
         $data = array();
-        $xml = simplexml_load_file($path);
+        $fileContent = file_get_contents($path);
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+        $xml = simplexml_load_string($fileContent);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {

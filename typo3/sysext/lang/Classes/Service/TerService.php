@@ -59,12 +59,15 @@ class TerService extends TerUtility implements SingletonInterface
     {
         // Create parser:
         $parser = xml_parser_create();
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $values = array();
         $index = array();
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
             // Parse content
         xml_parse_into_struct($parser, $string, $values, $index);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
             // If error, return error message
         if (xml_get_error_code($parser)) {
             $line = xml_get_current_line_number($parser);

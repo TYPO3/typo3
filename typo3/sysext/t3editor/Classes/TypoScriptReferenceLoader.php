@@ -75,8 +75,11 @@ class TypoScriptReferenceLoader
      */
     protected function loadFile($filepath)
     {
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $this->xmlDoc = new \DOMDocument('1.0', 'utf-8');
         $this->xmlDoc->load($filepath);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         // @TODO: oliver@typo3.org: I guess this is not required here
         $this->xmlDoc->saveXML();
     }

@@ -1647,6 +1647,8 @@ class GeneralUtility
      */
     public static function xml2tree($string, $depth = 999, $parserOptions = array())
     {
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $parser = xml_parser_create();
         $vals = array();
         $index = array();
@@ -1656,6 +1658,7 @@ class GeneralUtility
             xml_parser_set_option($parser, $option, $value);
         }
         xml_parse_into_struct($parser, $string, $vals, $index);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
@@ -1895,6 +1898,8 @@ class GeneralUtility
      */
     protected static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
     {
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         // Create parser:
         $parser = xml_parser_create();
         $vals = array();
@@ -1909,6 +1914,7 @@ class GeneralUtility
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
         // Parse content:
         xml_parse_into_struct($parser, $string, $vals, $index);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         // If error, return error message:
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));

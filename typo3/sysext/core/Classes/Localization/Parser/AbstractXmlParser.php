@@ -91,7 +91,11 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      */
     protected function parseXmlFile()
     {
-        $rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXMLElement', LIBXML_NOWARNING);
+        $xmlContent = file_get_contents($this->sourcePath);
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+        $rootXmlNode = simplexml_load_string($xmlContent, 'SimpleXMLElement', LIBXML_NOWARNING);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         if (!isset($rootXmlNode) || $rootXmlNode === false) {
             throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file.', 1278155988);
         }
