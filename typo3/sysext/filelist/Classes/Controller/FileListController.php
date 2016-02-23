@@ -420,6 +420,10 @@ class FileListController extends ActionController
                     ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
                     'file_upload'
                 );
+                $pageRenderer->addInlineLanguageLabelArray([
+                    'permissions.read' => $this->getLanguageService()->getLL('read'),
+                    'permissions.write' => $this->getLanguageService()->getLL('write'),
+                ]);
             }
 
             // Setting up the buttons

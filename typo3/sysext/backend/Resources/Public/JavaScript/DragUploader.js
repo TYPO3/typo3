@@ -509,10 +509,10 @@ define(['jquery',
 			$('<td />').text(DragUploader.fileSizeAsString(fileInfo.size)).appendTo(me.$row);
 			var permissions = '';
 			if (fileInfo.permissions.read) {
-				permissions += '<strong class="text-danger">R</strong>';
+				permissions += '<strong class="text-danger">' + TYPO3.lang['permissions.read'] + '</strong>';
 			}
 			if (fileInfo.permissions.write) {
-				permissions += '<strong class="text-danger">W</strong>';
+				permissions += '<strong class="text-danger">' + TYPO3.lang['permissions.write'] + '</strong>';
 			}
 			$('<td />').html(permissions).appendTo(me.$row);
 			$('<td />').text('-').appendTo(me.$row);
