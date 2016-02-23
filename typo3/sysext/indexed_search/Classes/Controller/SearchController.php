@@ -186,7 +186,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($searchData['_freeIndexUid'] !== '' && $searchData['_freeIndexUid'] !== '_') {
             $searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
         }
-        $searchData['numberOfResults'] = MathUtility::forceIntegerInRange($searchData['numberOfResults'], 1, 100000, $this->defaultResultNumber);
+        $searchData['numberOfResults'] = MathUtility::forceIntegerInRange($searchData['numberOfResults'], 1, 100, $this->defaultResultNumber);
         // This gets the search-words into the $searchWordArray
         $this->sword = $searchData['sword'];
         // Add previous search words to current

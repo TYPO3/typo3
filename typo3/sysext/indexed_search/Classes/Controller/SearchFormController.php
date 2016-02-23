@@ -245,7 +245,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($this->piVars['sword_prev_include'] && $this->piVars['sword_prev']) {
             $this->piVars['sword'] = trim($this->piVars['sword_prev']) . ' ' . $this->piVars['sword'];
         }
-        $this->piVars['results'] = MathUtility::forceIntegerInRange($this->piVars['results'], 1, 100000, $this->defaultResultNumber);
+        $this->piVars['results'] = MathUtility::forceIntegerInRange($this->piVars['results'], 1, 100, $this->defaultResultNumber);
         // Make sure that some cropping and markup constants used later are defined
         $this->loadSettings();
 
