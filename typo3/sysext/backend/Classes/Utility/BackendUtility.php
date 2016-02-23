@@ -3355,12 +3355,12 @@ class BackendUtility
     {
         self::fixVersioningPid($table, $row);
         $res = array();
-        $typeVal = self::getTCAtypeValue($table, $row);
         // Get main config for the table
         list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
         if ($TScID >= 0) {
             $tempConf = static::getBackendUserAuthentication()->getTSConfig('TCEFORM.' . $table, self::getPagesTSconfig($TScID));
             if (is_array($tempConf['properties'])) {
+                $typeVal = self::getTCAtypeValue($table, $row);
                 foreach ($tempConf['properties'] as $key => $val) {
                     if (is_array($val)) {
                         $fieldN = substr($key, 0, -1);
@@ -3377,15 +3377,6 @@ class BackendUtility
         $res['_THIS_UID'] = $row['uid'];
         // So the row will be passed to foreign_table_where_query()
         $res['_THIS_ROW'] = $row;
-        $rootLine = self::BEgetRootLine($TScID, '', true);
-        foreach ($rootLine as $rC) {
-            if (!$res['_STORAGE_PID']) {
-                $res['_STORAGE_PID'] = (int)$rC['storage_pid'];
-            }
-            if (!$res['_SITEROOT']) {
-                $res['_SITEROOT'] = $rC['is_siteroot'] ? (int)$rC['uid'] : 0;
-            }
-        }
         return $res;
     }
 
