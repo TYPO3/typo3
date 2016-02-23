@@ -275,7 +275,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		// Print a message telling which words in which sections we searched for
 		if (substr($this->searchData['sections'], 0, 2) == 'rl') {
-			$result['searchedInSectionInfo'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
+			$result['searchedInSectionInfo'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . preg_replace('#^/#', '', $this->getPathFromPageId(substr($this->searchData['sections'], 4))) . '"';
 		}
 		return $result;
 	}
