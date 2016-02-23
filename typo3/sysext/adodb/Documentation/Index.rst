@@ -25,6 +25,7 @@ updated to upstream.
 - ADOdb: Allow setting NOT NULL/DEFAULT on blob and text columns (67442_) (Upstream pull request: [3]_)
 - ADOdb: Table names in sequences broken (64990_)
 - ADOdb: PHP7 redefinition of parameter (71244_)
+- Security: XML entity expansion (61269_)
 
 .. [2] https://github.com/ADOdb/ADOdb/commit/85f05a98974ea85ecae943faf230a27afdbaa746
 .. [3] https://github.com/ADOdb/ADOdb/pull/118
@@ -38,6 +39,7 @@ updated to upstream.
 .. _67442: https://forge.typo3.org/issues/67442
 .. _64990: https://forge.typo3.org/issues/64990
 .. _71244: https://forge.typo3.org/issues/71244
+.. _61269: https://forge.typo3.org/issues/61269
 
 
 Diff

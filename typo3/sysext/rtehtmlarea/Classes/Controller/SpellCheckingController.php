@@ -316,6 +316,8 @@ class SpellCheckingController
             $content = GeneralUtility::_POST('content');
             // Parsing the input HTML
             $parser = xml_parser_create(strtoupper($this->parserCharset));
+            // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
             xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
             xml_set_object($parser, $this);
             if (!xml_set_element_handler($parser, 'startHandler', 'endHandler')) {
@@ -333,6 +335,7 @@ class SpellCheckingController
             if (xml_get_error_code($parser)) {
                 throw new \UnexpectedValueException('Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser)), 1294585788);
             }
+            libxml_disable_entity_loader($previousValueOfEntityLoader);
             xml_parser_free($parser);
             if ($this->pspell_is_available && !$this->forceCommandMode) {
                 pspell_clear_session($this->pspell_link);

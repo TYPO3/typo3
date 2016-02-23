@@ -107,9 +107,12 @@ class MicroDataSchema extends RteHtmlAreaApi
     {
         $types = array();
         $properties = array();
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         // Load the document
         $document = new \DOMDocument();
         $document->loadXML($string);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         if ($document) {
             // Scan resource descriptions
             $items = $document->getElementsByTagName('Description');

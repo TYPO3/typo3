@@ -86,7 +86,11 @@ class ImageInfo extends FileInfo
     {
         $imagesSizes = array();
 
-        $xml = simplexml_load_file($this->getPathname());
+        $fileContent = file_get_contents($this->getPathname());
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+        $xml = simplexml_load_string($fileContent);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
         $xmlAttributes = $xml->attributes();
 
         // First check if width+height are set

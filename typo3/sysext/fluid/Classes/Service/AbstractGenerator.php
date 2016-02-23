@@ -105,6 +105,8 @@ abstract class AbstractGenerator
      */
     protected function addChildWithCData(\SimpleXMLElement $parentXmlNode, $childNodeName, $childNodeValue)
     {
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $parentDomNode = dom_import_simplexml($parentXmlNode);
         $domDocument = new \DOMDocument();
 
@@ -112,6 +114,9 @@ abstract class AbstractGenerator
         $childNode->appendChild($domDocument->createCDATASection($childNodeValue));
         $childNodeTarget = $parentDomNode->ownerDocument->importNode($childNode, true);
         $parentDomNode->appendChild($childNodeTarget);
-        return simplexml_import_dom($childNodeTarget);
+        $returnValue = simplexml_import_dom($childNodeTarget);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
+
+        return $returnValue;
     }
 }
