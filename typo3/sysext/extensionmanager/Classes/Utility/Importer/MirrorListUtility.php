@@ -56,7 +56,7 @@ class MirrorListUtility implements \SplObserver
 
     /**
      * Method collects mirrors' details and returns instance of
-     * Tx_Extensionmanager_Domain_Model_Mirrors with retrieved details.
+     * \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors with retrieved details.
      *
      * @param string $localMirrorListFile absolute path to local mirror xml.gz file
      * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors

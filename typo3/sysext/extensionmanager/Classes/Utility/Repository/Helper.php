@@ -255,7 +255,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * extension list might be outdated.
      *
      * @access public
-     * @see Tx_Extensionmanager_Utility_Repository_Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
+     * @see \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
      * @throws ExtensionManagerException
      * @return int "0" if everything is perfect, otherwise bitmask with problems
      */
