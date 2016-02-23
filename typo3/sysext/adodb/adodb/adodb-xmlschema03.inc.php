@@ -1612,6 +1612,8 @@ class adoSchema {
 		$this->success = 2;
 
 		$xmlParser = $this->create_parser();
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 
 		// Process the file
 		while( $data = fread( $fp, 4096 ) ) {
@@ -1624,6 +1626,7 @@ class adoSchema {
 			}
 		}
 
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		xml_parser_free( $xmlParser );
 
 		return $this->sqlArray;
@@ -1659,6 +1662,8 @@ class adoSchema {
 		$this->success = 2;
 
 		$xmlParser = $this->create_parser();
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 
 		if( !xml_parse( $xmlParser, $xmlstring, TRUE ) ) {
 			die( sprintf(
@@ -1668,6 +1673,7 @@ class adoSchema {
 			) );
 		}
 
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		xml_parser_free( $xmlParser );
 
 		return $this->sqlArray;

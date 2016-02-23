@@ -68,6 +68,8 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser {
 		if (!is_resource($this->objXml)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640663);
 		}
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		// keep original character case of XML document
 		xml_parser_set_option($this->objXml, XML_OPTION_CASE_FOLDING, FALSE);
 		xml_parser_set_option($this->objXml, XML_OPTION_SKIP_WHITE, FALSE);
@@ -82,6 +84,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), htmlspecialchars($file)), 1342640703);
 			}
 		}
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		xml_parser_free($this->objXml);
 	}
 

@@ -51,6 +51,8 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	protected function parseL10nXML($string) {
 			// Create parser:
 		$parser = xml_parser_create();
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		$values = array();
 		$index = array();
 
@@ -59,7 +61,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 
 			// Parse content
 		xml_parse_into_struct($parser, $string, $values, $index);
-
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 			// If error, return error message
 		if (xml_get_error_code($parser)) {
 			$line = xml_get_current_line_number($parser);

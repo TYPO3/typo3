@@ -213,12 +213,15 @@ abstract class AbstractElementView {
 	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		$useLayout = $this->getLayout((string) $type);
 		$dom = new \DOMDocument('1.0', 'utf-8');
 		$dom->formatOutput = TRUE;
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadXML($useLayout);
 		$this->parseXML($dom, $dom);
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		if ($returnFirstChild) {
 			return $dom->firstChild;
 		} else {

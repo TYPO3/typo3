@@ -2015,12 +2015,15 @@ class GeneralUtility {
 	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasperYYYY@typo3.com
 	 */
 	static public function xml2tree($string, $depth = 999) {
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		$parser = xml_parser_create();
 		$vals = array();
 		$index = array();
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 		xml_parse_into_struct($parser, $string, $vals, $index);
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		if (xml_get_error_code($parser)) {
 			return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
 		}
@@ -2256,6 +2259,8 @@ class GeneralUtility {
 	 * @see array2xml()
 	 */
 	static protected function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = FALSE) {
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		// Create parser:
 		$parser = xml_parser_create();
 		$vals = array();
@@ -2270,6 +2275,7 @@ class GeneralUtility {
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
 		// Parse content:
 		xml_parse_into_struct($parser, $string, $vals, $index);
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		// If error, return error message:
 		if (xml_get_error_code($parser)) {
 			return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));

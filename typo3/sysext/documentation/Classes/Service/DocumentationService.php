@@ -239,7 +239,10 @@ class DocumentationService {
 	 * @return array Array representation of XML data
 	 */
 	protected function parsePackagesXML($string) {
+		// Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+		$previousValueOfEntityLoader = libxml_disable_entity_loader(TRUE);
 		$data = json_decode(json_encode((array)simplexml_load_string($string)), TRUE);
+		libxml_disable_entity_loader($previousValueOfEntityLoader);
 		if (count($data) != 2) {
 			throw new \TYPO3\CMS\Documentation\Exception\XmlParser('Error in XML parser while decoding packages XML file.', 1374222437);
 		}
