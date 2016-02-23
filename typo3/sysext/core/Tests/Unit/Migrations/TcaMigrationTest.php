@@ -382,6 +382,7 @@ class TcaMigrationTest extends UnitTestCase
                     0 => array(
                         'showitem' => 'aField;;;',
                     ),
+                    1 => array()
                 ),
             ),
         );
