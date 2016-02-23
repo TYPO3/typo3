@@ -1666,12 +1666,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $out .=  $this->linkEditContent('<strong>' . $this->getLanguageService()->sL($label, true) . '</strong>', $row) . '<br />';
                         } else {
                             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
-                            $out .= GeneralUtility::makeInstance(
-                                FlashMessage::class,
-                                htmlspecialchars($message),
-                                '',
-                                FlashMessage::WARNING
-                            )->render();
+                            $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                         }
                     } elseif (!empty($row['select_key'])) {
                         $out .= $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), true)
@@ -1700,12 +1695,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'),
                             $row['CType']
                         );
-                        $out .= GeneralUtility::makeInstance(
-                            FlashMessage::class,
-                            htmlspecialchars($message),
-                            '',
-                            FlashMessage::WARNING
-                        )->render();
+                        $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                     }
             }
         }
