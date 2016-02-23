@@ -1,3 +1,15 @@
+2016-02-23  6828e26                  [RELEASE] Release of TYPO3 6.2.19 (TYPO3 Release Team)
+2016-02-23  1b446ce  #73458          [SECURITY] Limit the search results per page (Benni Mack)
+2016-02-23  b55c5e7  #73450          [SECURITY] Escape output of tt_content.default (Georg Ringer)
+2016-02-23  f071653  #73449          [SECURITY] Stored XSS in shortcut functionality (Wouter Wolters)
+2016-02-23  844369e  #61269          [SECURITY] XML entity expansion (Benni Mack)
+2016-02-22  bfcd0ca  #73607          [TASK] Remove adodb diff (Christian Kuhn)
+2016-02-20  d3be3f7  #73480          [TASK] Disallow Composer installation with PHP 7.x (Mathias Brodala)
+2016-02-18  b3225d1  #73518          [BUGFIX] Fix disabled menu item state for l18n_cfg=1 (Mathias Brodala)
+2016-02-17  438d90a  #58752          [BUGFIX] Remove addQueryStringMethod parameter from widget links (Nicole Cordes)
+2016-02-16  3b53f2f                  [TASK] Set TYPO3 version to 6.2.19-dev (TYPO3 Release Team)
+
+
 2016-02-16  0d56422                  [RELEASE] Release of TYPO3 6.2.18 (TYPO3 Release Team)
 2016-02-16  3256617  #58896          [SECURITY] SQLi in DBAL (Morton Jonuschat)
 2016-02-16  c88aa57  #54205          [SECURITY] XSS in form extension (Wouter Wolters)
