@@ -300,7 +300,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($this->getTokenUrl($row['url'])) . '\'),\'' . $moduleName . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
+			$shortcut['action'] = 'jump(' . GeneralUtility::quoteJSvalue($this->getTokenUrl($row['url'])) . ',' . GeneralUtility::quoteJSvalue($moduleName) . ',' . GeneralUtility::quoteJSvalue($moduleParts[0]) . ', ' . (int)$pageId . ');';
 
 			$shortcuts[] = $shortcut;
 		}
