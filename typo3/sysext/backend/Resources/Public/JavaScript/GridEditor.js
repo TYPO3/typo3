@@ -326,7 +326,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	 */
 	GridEditor.setName = function(newName, col, row) {
 		var cell = GridEditor.getCell(col, row);
-		if (!cell) return false;
+		if (!cell) {
+			return false;
+		}
 		cell.name = GridEditor.stripMarkup(newName);
 		return true;
 	};
@@ -346,7 +348,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		if (!cell) {
 			return false;
 		}
-		cell.column = GridEditor.stripMarkup(newColumn);
+		cell.column = parseInt(GridEditor.stripMarkup(newColumn), 10);
 		return true;
 	};
 
