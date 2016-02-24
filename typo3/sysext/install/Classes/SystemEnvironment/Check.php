@@ -283,7 +283,7 @@ class Check
      */
     protected function checkPhpVersion()
     {
-        $minimumPhpVersion = '5.5.0';
+        $minimumPhpVersion = '7.0.0';
         $currentPhpVersion = phpversion();
         if (version_compare($currentPhpVersion, $minimumPhpVersion) < 0) {
             $status = new Status\ErrorStatus();

@@ -29,7 +29,7 @@ TYPO3 requires a web server with a PHP environment and a database. The minimum
 system requirements for running TYPO3 CMS 7 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
-* PHP 5.5 up to 7
+* PHP 7
 * MySQL 5.5 up to 5.7 or compatible
 * more than 200 MB of disk space
 
@@ -102,7 +102,7 @@ functionality:
 * GraphicsMagick or ImageMagick v6 or newer installed on the server
 
 * PHP
-  * version 5.5 or later
+  * version 7.0 or later
   * memory_limit set to at least 128M
   * max_execution_time set to at least 240s
   * max_input_vars set to at least 1500

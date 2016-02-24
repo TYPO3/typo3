@@ -93,16 +93,11 @@
  *   can exist yet.
  */
 
-/*
- * This check avoids a parse error "unexpected 'class'" for users installing TYPO3 CMS 7
- * on PHP 5.4. Without it the redirect to the install tool does not work.
- * @see https://forge.typo3.org/issues/64504
- */
-if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-    die('TYPO3 CMS requires PHP 5.5 or above');
+// Exit early if php requirement is not satisfied.
+if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+    die('This version of TYPO3 CMS requires PHP 7.0 or above');
 }
 
-// set up bare minimum application: class loader, LocalConfiguration, but no extensions and such
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
     (new \TYPO3\CMS\Install\Http\Application($classLoader))->run();

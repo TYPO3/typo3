@@ -12,6 +12,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+// Exit early if php requirement is not satisfied.
+if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+    die('This version of TYPO3 CMS requires PHP 7.0 or above');
+}
+
 /**
  * Main entry point for all backend-related scripts.
  */

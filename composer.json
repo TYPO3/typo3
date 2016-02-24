@@ -31,7 +31,7 @@
 		"typo3/sysext/core/bin/typo3"
 	],
 	"require": {
-		"php": ">=5.5.0",
+		"php": "^7.0",
 		"ext-fileinfo": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",
