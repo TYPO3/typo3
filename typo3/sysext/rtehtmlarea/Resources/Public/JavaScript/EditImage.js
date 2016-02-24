@@ -106,8 +106,8 @@ define(['jquery', 'TYPO3/CMS/Rtehtmlarea/SelectImage'], function($, SelectImage)
 				selectedImageRef.style.cssFloat = value ? value : "";
 			}
 
-			if (SelectImage.classesImage) {
-				$element = $('t3js-iClass');
+			if (EditImage.classesImage) {
+				$element = $('#t3js-iClass');
 				if ($element) {
 					var iClass;
 					if ($element.find('option').length > 0) {
@@ -220,7 +220,7 @@ define(['jquery', 'TYPO3/CMS/Rtehtmlarea/SelectImage'], function($, SelectImage)
 			}
 
 			$element = $('#t3js-iClass');
-			if ($element && SelectImage.classesImage) {
+			if ($element && EditImage.classesImage) {
 				$element.val(selectedImageRef.className);
 			}
 
