@@ -42,6 +42,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class Nl2brViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Replaces newline characters by HTML line breaks.
      *
      * @param string $value string to format
