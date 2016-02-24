@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains the update class to create and alter tables, fields and keys to comply to the database schema
  */
@@ -36,7 +38,7 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $contextService = $this->objectManager->get(\TYPO3\CMS\Install\Service\ContextService::class);
+        $contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class);
         $description = 'There are tables or fields in the database which need to be changed.<br /><br />' .
         'This update wizard can be run only when there are no other update wizards left to make sure they have all needed fields unchanged.<br /><br />' .
         'If you want to apply changes selectively, <a href="Install.php?install[action]=importantActions&amp;install[context]=' . $contextService->getContextString() . '&amp;install[controller]=tool">go to Database Analyzer</a>.';

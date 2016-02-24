@@ -14,24 +14,13 @@ namespace TYPO3\CMS\Install\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Instantiate and configure all known features and presets
  */
 class FeatureManager
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
     /**
      * @var array List of feature class names
      */
@@ -54,7 +43,7 @@ class FeatureManager
         $features = array();
         foreach ($this->featureRegistry as $featureClass) {
             /** @var FeatureInterface $featureInstance */
-            $featureInstance = $this->objectManager->get($featureClass);
+            $featureInstance = GeneralUtility::makeInstance($featureClass);
             if (!($featureInstance instanceof FeatureInterface)) {
                 throw new Exception(
                     'Feature ' . $featureClass . ' does not implement FeatureInterface',

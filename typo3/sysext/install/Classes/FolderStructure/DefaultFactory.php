@@ -26,7 +26,6 @@ class DefaultFactory
      *
      * @throws Exception
      * @return RootNode
-     * @TODO: Use objectManager instead of new (will be injected)
      */
     public function getStructure()
     {

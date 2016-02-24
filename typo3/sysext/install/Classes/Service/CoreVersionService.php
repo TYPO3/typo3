@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
@@ -22,11 +23,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class CoreVersionService
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
     /**
      * @var \TYPO3\CMS\Core\Registry
      */
@@ -40,19 +36,14 @@ class CoreVersionService
     protected $downloadBaseUri;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * Initialize update URI
+     *
+     * @param Registry $registry
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function __construct(Registry $registry = null)
     {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Registry $registry
-     */
-    public function injectRegistry(\TYPO3\CMS\Core\Registry $registry)
-    {
-        $this->registry = $registry;
+        $this->downloadBaseUri = 'https://get.typo3.org/';
+        $this->registry = $registry ?: GeneralUtility::makeInstance(Registry::class);
     }
 
     /**
@@ -61,14 +52,6 @@ class CoreVersionService
     public function getDownloadBaseUri()
     {
         return $this->downloadBaseUri;
-    }
-
-    /**
-     * Initialize update URI
-     */
-    public function __construct()
-    {
-        $this->downloadBaseUri = 'https://get.typo3.org/';
     }
 
     /**

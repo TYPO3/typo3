@@ -24,11 +24,6 @@ use TYPO3\CMS\Install\Service\EnableFileService;
 class AbstractController
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
      * @var \TYPO3\CMS\Install\Service\SessionService
      */
     protected $session = null;
@@ -44,7 +39,7 @@ class AbstractController
     protected function isInstallToolAvailable()
     {
         /** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
-        $installToolEnableService = $this->objectManager->get(\TYPO3\CMS\Install\Service\EnableFileService::class);
+        $installToolEnableService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\EnableFileService::class);
         if ($installToolEnableService->isFirstInstallAllowed()) {
             return true;
         }
@@ -65,11 +60,11 @@ class AbstractController
         if (!$this->isInstallToolAvailable()) {
             if (!EnableFileService::isFirstInstallAllowed() && !\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->checkIfEssentialConfigurationExists()) {
                 /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
-                $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\FirstInstallAction::class);
+                $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\FirstInstallAction::class);
                 $action->setAction('firstInstall');
             } else {
                 /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
-                $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);
+                $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);
                 $action->setAction('installToolDisabled');
             }
             $action->setController('common');
@@ -89,7 +84,7 @@ class AbstractController
             && (empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']))
         ) {
             /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
-            $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
+            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
             $action->setController('common');
             $action->setAction('installToolPasswordNotSet');
             $this->output($action->handle());
@@ -147,7 +142,7 @@ class AbstractController
                 $this->redirect();
             } else {
                 /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $message->setTitle('Invalid form token');
                 $message->setMessage(
                     'The form protection token was invalid. You have been logged out, please log in and try again.'
@@ -185,7 +180,7 @@ class AbstractController
             $this->redirect();
         } else {
             /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Session expired');
             $message->setMessage(
                 'Your Install Tool session has expired. You have been logged out, please log in and try again.'
@@ -203,7 +198,7 @@ class AbstractController
     protected function loginForm(\TYPO3\CMS\Install\Status\StatusInterface $message = null)
     {
         /** @var \TYPO3\CMS\Install\Controller\Action\Common\LoginForm $action */
-        $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\LoginForm::class);
+        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\LoginForm::class);
         $action->setController('common');
         $action->setAction('login');
         $action->setToken($this->generateTokenForAction('login'));
@@ -236,7 +231,8 @@ class AbstractController
                 } elseif (md5($password) === $installToolPassword) {
                     // Update install tool password
                     $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
-                    $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+                    /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+                    $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
                     $configurationManager->setLocalConfigurationValueByPath(
                         'BE/installToolPassword',
                         $saltFactory->getHashedPassword($password)
@@ -252,7 +248,7 @@ class AbstractController
                 $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
                 $hashedPassword = $saltFactory->getHashedPassword($password);
                 /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $message->setTitle('Login failed');
                 $message->setMessage('Given password does not match the install tool login password. ' .
                     'Calculated hash: ' . $hashedPassword);
@@ -289,7 +285,7 @@ class AbstractController
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if ($warningEmailAddress) {
             /** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
-            $mailMessage = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+            $mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
             $mailMessage
                 ->addTo($warningEmailAddress)
                 ->setSubject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
@@ -314,7 +310,7 @@ class AbstractController
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if ($warningEmailAddress) {
             /** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
-            $mailMessage = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+            $mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
             $mailMessage
                 ->addTo($warningEmailAddress)
                 ->setSubject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
@@ -363,7 +359,7 @@ class AbstractController
     protected function isInitialInstallationInProgress()
     {
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
         $localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
         $localConfigurationFileExists = @is_file($localConfigurationFileLocation);
@@ -386,7 +382,7 @@ class AbstractController
     protected function initializeSession()
     {
         /** @var \TYPO3\CMS\Install\Service\SessionService $session */
-        $this->session = $this->objectManager->get(\TYPO3\CMS\Install\Service\SessionService::class);
+        $this->session = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SessionService::class);
         if (!$this->session->hasSession()) {
             $this->session->startSession();
         }
@@ -403,18 +399,6 @@ class AbstractController
         foreach ($messages as $message) {
             $this->session->addMessage($message);
         }
-    }
-
-    /**
-     * Initialize extbase object manager for fluid rendering
-     *
-     * @return void
-     */
-    protected function initializeObjectManager()
-    {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -529,6 +513,7 @@ class AbstractController
      *
      * @param string $controller Can be set to 'tool' to redirect from step to tool controller
      * @param string $action Set specific action for next request, used in step controller to specify next step
+     * @throws Exception\RedirectLoopException
      * @return void
      */
     protected function redirect($controller = '', $action = '')

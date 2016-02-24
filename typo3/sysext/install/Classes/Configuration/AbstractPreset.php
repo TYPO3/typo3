@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract preset class implements common preset code
  */
@@ -47,9 +50,9 @@ abstract class AbstractPreset implements PresetInterface
     /**
      * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager)
+    public function __construct(ConfigurationManager $configurationManager = null)
     {
-        $this->configurationManager = $configurationManager;
+        $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /**

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
@@ -32,14 +33,9 @@ use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 class SilentConfigurationUpgradeService
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
      * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
      */
-    protected $configurationManager = null;
+    protected $configurationManager;
 
     /**
      * List of obsolete configuration options in LocalConfiguration to be removed
@@ -92,20 +88,9 @@ class SilentConfigurationUpgradeService
         'GFX/image_processing',
     );
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function __construct(ConfigurationManager $configurationManager = null)
     {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
-     */
-    public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
+        $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /**

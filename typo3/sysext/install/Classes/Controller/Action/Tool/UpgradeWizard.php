@@ -91,7 +91,7 @@ class UpgradeWizard extends Action\AbstractAction
     {
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
             $message->setTitle('No update wizards registered');
             return $message;
         }
@@ -128,7 +128,7 @@ class UpgradeWizard extends Action\AbstractAction
         $this->view->assign('availableUpdates', $availableUpdates);
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Show available update wizards');
         return $message;
     }
@@ -158,7 +158,7 @@ class UpgradeWizard extends Action\AbstractAction
         $this->view->assign('updateData', $updateData);
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Show wizard options');
         return $message;
     }
@@ -186,7 +186,7 @@ class UpgradeWizard extends Action\AbstractAction
         $wizardInputErrorMessage = '';
         if (method_exists($updateObject, 'checkUserInput') && !$updateObject->checkUserInput($wizardInputErrorMessage)) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Input parameter broken');
             $message->setMessage($wizardInputErrorMessage ?: 'Something went wrong!');
             $wizardData['wizardInputBroken'] = true;
@@ -205,11 +205,11 @@ class UpgradeWizard extends Action\AbstractAction
 
             if ($performResult) {
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
                 $message->setTitle('Update successful');
             } else {
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $message->setTitle('Update failed!');
                 if ($customOutput) {
                     $message->setMessage($customOutput);
@@ -288,10 +288,10 @@ class UpgradeWizard extends Action\AbstractAction
     protected function silentCacheFrameworkTableSchemaMigration()
     {
         /** @var $sqlHandler \TYPO3\CMS\Install\Service\SqlSchemaMigrationService */
-        $sqlHandler = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+        $sqlHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
 
         /** @var \TYPO3\CMS\Core\Cache\DatabaseSchemaService $cachingFrameworkDatabaseSchemaService */
-        $cachingFrameworkDatabaseSchemaService = $this->objectManager->get(\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class);
+        $cachingFrameworkDatabaseSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class);
         $expectedSchemaString = $cachingFrameworkDatabaseSchemaService->getCachingFrameworkRequiredDatabaseSchema();
         $cleanedExpectedSchemaString = implode(LF, $sqlHandler->getStatementArray($expectedSchemaString, true, '^CREATE TABLE '));
         $neededTableDefinition = $sqlHandler->getFieldDefinitions_fileContent($cleanedExpectedSchemaString);

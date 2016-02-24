@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Environment status check for errors
  */
@@ -27,14 +29,14 @@ class EnvironmentStatus extends AbstractAjaxAction
     protected function executeAction()
     {
         /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
+        $statusUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
         // Count of failed environment checks to be displayed in the left navigation menu
-        $environmentStatus = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class)->getStatus();
+        $environmentStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\Check::class)->getStatus();
         $environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
 
         // Count of failed database checks to be displayed in the left navigation menu
-        $databaseStatus = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class)->getStatus();
+        $databaseStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class)->getStatus();
         $databaseErrors = $statusUtility->filterBySeverity($databaseStatus, 'error');
 
         return count($environmentErrors) + count($databaseErrors);

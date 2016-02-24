@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\Controller\Action;
 
 /**
@@ -29,22 +32,16 @@ class Configuration extends Action\AbstractAction
     /**
      * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
      */
-    protected $configurationManager = null;
+    protected $configurationManager;
 
     /**
-     * @param \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager
+     * @param FeatureManager $featureManager
+     * @param ConfigurationManager $configurationManager
      */
-    public function injectFeatureManager(\TYPO3\CMS\Install\Configuration\FeatureManager $featureManager)
+    public function __construct(FeatureManager $featureManager = null, ConfigurationManager $configurationManager = null)
     {
-        $this->featureManager = $featureManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
-     */
-    public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
+        $this->featureManager = $featureManager ?: GeneralUtility::makeInstance(FeatureManager::class);
+        $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /**
@@ -79,7 +76,7 @@ class Configuration extends Action\AbstractAction
         if (!empty($configurationValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Configuration written');
             $messageBody = array();
             foreach ($configurationValues as $configurationKey => $configurationValue) {
@@ -88,7 +85,7 @@ class Configuration extends Action\AbstractAction
             $message->setMessage(implode(LF, $messageBody));
         } else {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
             $message->setTitle('No configuration change selected');
         }
         return $message;

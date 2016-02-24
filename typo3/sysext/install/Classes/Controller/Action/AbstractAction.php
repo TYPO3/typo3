@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Install\Controller\Action;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -24,34 +23,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 abstract class AbstractAction implements ActionInterface
 {
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
-     * Inject object manager
-     *
-     * @param ObjectManager $objectManager
-     */
-    public function injectObjectManager(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * @var StandaloneView
      */
     protected $view = null;
-
-    /**
-     * Inject View
-     *
-     * @param StandaloneView $view
-     */
-    public function injectView(StandaloneView $view)
-    {
-        $this->view = $view;
-    }
 
     /**
      * @var string Name of controller. One of the strings 'step', 'tool' or 'common'
@@ -102,11 +76,12 @@ abstract class AbstractAction implements ActionInterface
     protected function initializeHandle()
     {
         // Context service distinguishes between standalone and backend context
-        $contextService = $this->objectManager->get(\TYPO3\CMS\Install\Service\ContextService::class);
+        $contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class);
 
         $viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
         $controllerActionDirectoryName = ucfirst($this->controller);
         $mainTemplate = ucfirst($this->action);
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setTemplatePathAndFilename($viewRootPath . 'Templates/Action/' . $controllerActionDirectoryName . '/' . $mainTemplate . '.html');
         $this->view->setLayoutRootPaths(array($viewRootPath . 'Layouts/'));
         $this->view->setPartialRootPaths(array($viewRootPath . 'Partials/'));
@@ -237,7 +212,7 @@ abstract class AbstractAction implements ActionInterface
         static $database;
         if (!is_object($database)) {
             /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-            $database = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+            $database = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
             $database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
             $database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
             $database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
@@ -292,16 +267,16 @@ abstract class AbstractAction implements ActionInterface
         $extensionCompatibilityTesterMessages = array();
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\LoadingStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\LoadingStatus::class);
         $message->setTitle('Loading...');
         $extensionCompatibilityTesterMessages[] = $message;
 
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
         $message->setTitle('Incompatible extension found!');
         $message->setMessage('Something went wrong and no protocol was written.');
         $extensionCompatibilityTesterMessages[] = $message;
 
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('All local extensions can be loaded!');
         $extensionCompatibilityTesterMessages[] = $message;
 

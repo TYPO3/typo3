@@ -23,19 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ClearCacheService
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * This clear cache implementation follows a pretty brutal approach.
      * Goal is to reliably get rid of cache entries, even if some broken
      * extension is loaded that would kill the backend 'clear cache' action.
@@ -109,7 +96,7 @@ class ClearCacheService
         static $database;
         if (!is_object($database)) {
             /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-            $database = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+            $database = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
             $database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
             $database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
             $database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);

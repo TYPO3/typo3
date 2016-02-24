@@ -45,8 +45,6 @@ class StepController extends AbstractController
     public function execute()
     {
         $this->loadBaseExtensions();
-        $this->initializeObjectManager();
-
         $this->outputInstallToolNotEnabledMessageIfNeeded();
         $this->outputInstallToolPasswordNotSetMessageIfNeeded();
         $this->recreatePackageStatesFileIfNotExisting();
@@ -146,7 +144,7 @@ class StepController extends AbstractController
         $this->validateAuthenticationAction($action);
         $actionClass = ucfirst($action);
         /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $stepAction */
-        $stepAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\' . $actionClass);
+        $stepAction = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\' . $actionClass);
         if (!($stepAction instanceof Action\Step\StepInterface)) {
             throw new Exception(
                 $action . ' does non implement StepInterface',
@@ -183,7 +181,7 @@ class StepController extends AbstractController
     protected function recreatePackageStatesFileIfNotExisting()
     {
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
         $localConfigurationFileExists = is_file($localConfigurationFileLocation);
         $packageStatesFilePath = PATH_typo3conf . 'PackageStates.php';
@@ -260,13 +258,13 @@ class StepController extends AbstractController
             && $postValues['action'] === 'environmentAndFolders'
         ) {
             /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-            $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
+            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
             $errorMessagesFromExecute = $action->execute();
             $wasExecuted = true;
         }
 
         /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-        $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
+        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
 
         $needsExecution = true;
         try {
@@ -279,7 +277,7 @@ class StepController extends AbstractController
 
         if (!@is_dir(PATH_typo3conf) || $needsExecution) {
             /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-            $action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
+            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
             if ($this->isInitialInstallationInProgress()) {
                 $currentStep = (array_search('environmentAndFolders', $this->authenticationActions) + 1);
                 $totalSteps = count($this->authenticationActions);
@@ -308,7 +306,7 @@ class StepController extends AbstractController
         }
 
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('SYS/trustedHostsPattern', '.*');
         $this->redirect();
     }
@@ -321,7 +319,7 @@ class StepController extends AbstractController
     protected function executeSilentConfigurationUpgradesIfNeeded()
     {
         /** @var SilentConfigurationUpgradeService $upgradeService */
-        $upgradeService = $this->objectManager->get(SilentConfigurationUpgradeService::class);
+        $upgradeService = GeneralUtility::makeInstance(SilentConfigurationUpgradeService::class);
         try {
             $upgradeService->execute();
         } catch (Exception\RedirectException $e) {

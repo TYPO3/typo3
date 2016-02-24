@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Folder status check for errors
  */
@@ -28,16 +30,16 @@ class FolderStatus extends AbstractAjaxAction
     {
         // Count of folder structure errors are displayed in left navigation menu
         /** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
-        $folderStructureFacade = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class)->getStructure();
+        $folderStructureFacade = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class)->getStructure();
         $folderStatus = $folderStructureFacade->getStatus();
 
         /** @var $permissionCheck \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck */
-        $permissionCheck = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck::class);
+        $permissionCheck = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck::class);
         $folderStatus[] = $permissionCheck->getMaskStatus('fileCreateMask');
         $folderStatus[] = $permissionCheck->getMaskStatus('folderCreateMask');
 
         /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
+        $statusUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
         $folderStructureErrors = array_merge(
             $statusUtility->filterBySeverity($folderStatus, 'error'),

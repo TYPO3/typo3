@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Check if a younger version is available
  */
@@ -70,7 +72,7 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
     protected function getMessage($severity, $title, $message = '')
     {
         /** @var $statusMessage \TYPO3\CMS\Install\Status\StatusInterface */
-        $statusMessage = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\' . ucfirst($severity) . 'Status');
+        $statusMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Status\\' . ucfirst($severity) . 'Status');
         $statusMessage->setTitle($title);
         $statusMessage->setMessage($message);
 

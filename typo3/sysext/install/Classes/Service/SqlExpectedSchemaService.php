@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Expected schema service
@@ -24,29 +25,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SqlExpectedSchemaService
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
-    /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @param Dispatcher $signalSlotDispatcher
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function __construct(Dispatcher $signalSlotDispatcher = null)
     {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
+        $this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance(Dispatcher::class);
     }
 
     /**
@@ -57,7 +45,7 @@ class SqlExpectedSchemaService
     public function getExpectedDatabaseSchema()
     {
         /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
         // Raw concatenated ext_tables.sql and friends string
         $expectedSchemaString = $this->getTablesDefinitionString();
         // Remove comments

@@ -109,13 +109,13 @@ class TestSetup extends Action\AbstractAction
             || !GeneralUtility::validEmail($this->postValues['values']['testEmailRecipient'])
         ) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Mail not sent');
             $message->setMessage('Given address is not a valid email address.');
         } else {
             $recipient = $this->postValues['values']['testEmailRecipient'];
             /** @var $mailMessage \TYPO3\CMS\Core\Mail\MailMessage */
-            $mailMessage = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+            $mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
             $mailMessage
                 ->addTo($recipient)
                 ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
@@ -123,7 +123,7 @@ class TestSetup extends Action\AbstractAction
                 ->setBody('<html><body>html test content</body></html>', 'text/html')
                 ->addPart('TEST CONTENT')
                 ->send();
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Test mail sent');
             $message->setMessage('Recipient: ' . $recipient);
         }
@@ -199,7 +199,7 @@ class TestSetup extends Action\AbstractAction
         imagegif($image, $outputFile);
 
         /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
         $message->setTitle('True type font');
         $message->setMessage(
             'If the two images below do not look the same, please check your FreeType 2 module.'
@@ -234,7 +234,7 @@ class TestSetup extends Action\AbstractAction
             $result = array();
             if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $formatToTest)) {
                 /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
                 $message->setTitle('Skipped test');
                 $message->setMessage('Handling format ' . $formatToTest . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']');
                 $result['error'] = $message;
@@ -287,7 +287,7 @@ class TestSetup extends Action\AbstractAction
                 clearstatcache();
                 $compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
                 /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
                 $message->setTitle('Compressed gif');
                 $message->setMessage(
                     'Method used by compress: ' . $methodUsed . LF
@@ -295,7 +295,7 @@ class TestSetup extends Action\AbstractAction
                 );
             } else {
                 /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
                 $message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
             }
             $testResults['gif']['message'] = $message;
@@ -529,7 +529,7 @@ class TestSetup extends Action\AbstractAction
             $testResults['niceText']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-niceText.' . $gifOrPng;
             $testResults['niceText']['command'] = $imageProcessor->IM_commands;
             /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
             $message->setTitle('Note on \'niceText\'');
             $message->setMessage(
                 '\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by'
@@ -565,7 +565,7 @@ class TestSetup extends Action\AbstractAction
             $testResults['shadow']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-shadow.' . $gifOrPng;
             $testResults['shadow']['command'] = $imageProcessor->IM_commands;
             /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\InfoStatus::class);
             $message->setTitle('Note on \'shadow\'');
             $message->setMessage(
                 'This test makes sense only if the above test had a correct output. But if so, you may not see'
@@ -590,7 +590,7 @@ class TestSetup extends Action\AbstractAction
     protected function imageTestDoneMessage($parseTime = 0)
     {
         /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Executed image tests');
         $message->setMessage('Parse time: ' . $parseTime . ' ms');
         return $message;
@@ -604,7 +604,7 @@ class TestSetup extends Action\AbstractAction
     protected function imageMagickDisabledMessage()
     {
         /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
         $message->setTitle('Tests not executed');
         $message->setMessage('ImageMagick / GraphicsMagick handling is disabled or not configured correctly.');
         return $message;
@@ -618,7 +618,7 @@ class TestSetup extends Action\AbstractAction
     protected function imageGenerationFailedMessage()
     {
         /** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
         $message->setTitle('Image generation failed');
         $message->setMessage(
             'ImageMagick / GraphicsMagick handling is enabled, but the execute'
@@ -655,7 +655,7 @@ class TestSetup extends Action\AbstractAction
     protected function initializeImageProcessor()
     {
         /** @var GraphicalFunctions $imageProcessor */
-        $imageProcessor = $this->objectManager->get(GraphicalFunctions::class);
+        $imageProcessor = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $imageProcessor->init();
         $imageProcessor->tempPath = PATH_site . 'typo3temp/';
         $imageProcessor->dontCheckForExistingTempFile = 1;
@@ -701,7 +701,7 @@ class TestSetup extends Action\AbstractAction
      */
     protected function setUpDatabaseConnectionMock()
     {
-        $database = $this->objectManager->get(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
+        $database = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
         $GLOBALS['TYPO3_DB'] = $database;
     }
 }

@@ -146,12 +146,12 @@ class CleanUp extends Action\AbstractAction
         }
         if (!empty($clearedTables)) {
             /** @var OkStatus $message */
-            $message = $this->objectManager->get(OkStatus::class);
+            $message = GeneralUtility::makeInstance(OkStatus::class);
             $message->setTitle('Cleared tables');
             $message->setMessage('List of cleared tables: ' . implode(', ', $clearedTables));
         } else {
             /** @var InfoStatus $message */
-            $message = $this->objectManager->get(InfoStatus::class);
+            $message = GeneralUtility::makeInstance(InfoStatus::class);
             $message->setTitle('No tables selected to clear');
         }
         return $message;
@@ -167,7 +167,7 @@ class CleanUp extends Action\AbstractAction
         $database = $this->getDatabaseConnection();
         $database->exec_UPDATEquery('be_users', '', array('uc' => ''));
         /** @var OkStatus $message */
-        $message = $this->objectManager->get(OkStatus::class);
+        $message = GeneralUtility::makeInstance(OkStatus::class);
         $message->setTitle('Reset all backend users preferences');
         return $message;
     }
@@ -249,7 +249,7 @@ class CleanUp extends Action\AbstractAction
         $data['numberOfDeletedFiles'] = $deleteCounter;
 
         if ($deleteCounter > 0) {
-            $message = $this->objectManager->get(OkStatus::class);
+            $message = GeneralUtility::makeInstance(OkStatus::class);
             $message->setTitle('Deleted ' . $deleteCounter . ' files from typo3temp/' . $subDirectory . '/');
             $this->actionMessages[] = $message;
         }
@@ -299,11 +299,11 @@ class CleanUp extends Action\AbstractAction
         $failedDeletions = $repository->removeAll();
         if ($failedDeletions) {
             /** @var ErrorStatus $message */
-            $message = $this->objectManager->get(ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(ErrorStatus::class);
             $message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/logs/typo3_*.log)');
         } else {
             /** @var OkStatus $message */
-            $message = $this->objectManager->get(OkStatus::class);
+            $message = GeneralUtility::makeInstance(OkStatus::class);
             $message->setTitle('Cleared processed files');
         }
 

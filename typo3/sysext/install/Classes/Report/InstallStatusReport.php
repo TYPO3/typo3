@@ -174,10 +174,8 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected function getNewVersionStatus()
     {
         $languageService = $this->getLanguageService();
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
-        $coreVersionService = $objectManager->get(\TYPO3\CMS\Install\Service\CoreVersionService::class);
+        $coreVersionService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreVersionService::class);
 
         // No updates for development versions
         if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {

@@ -14,16 +14,13 @@ namespace TYPO3\CMS\Install\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract feature class implements common code
  */
 abstract class AbstractFeature
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = null;
-
     /**
      * @var string Name of feature
      */
@@ -45,14 +42,6 @@ abstract class AbstractFeature
     protected $postValues = array();
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * Initialize presets of feature
      *
      * @param array $postValues List of $POST values of this feature
@@ -72,7 +61,7 @@ abstract class AbstractFeature
         $customPresetFound = false;
         foreach ($this->presetRegistry as $presetClass) {
             /** @var PresetInterface $presetInstance */
-            $presetInstance = $this->objectManager->get($presetClass);
+            $presetInstance = GeneralUtility::makeInstance($presetClass);
             if (!($presetInstance instanceof PresetInterface)) {
                 throw new Exception(
                     'Preset ' . $presetClass . ' does not implement PresetInterface',

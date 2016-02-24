@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
+use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
+
 /**
  * Contains the update class to create and alter tables, fields and keys to comply to the database schema
  */
@@ -35,18 +39,12 @@ abstract class AbstractDatabaseSchemaUpdate extends AbstractUpdate
     protected $expectedSchemaService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
      * Constructor function.
      */
-    public function __construct()
+    public function __construct(SqlSchemaMigrationService $schemaMigrationService = null, SqlExpectedSchemaService $expectedSchemaService = null)
     {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
-        $this->expectedSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
+        $this->schemaMigrationService = $schemaMigrationService ?: GeneralUtility::makeInstance(SqlSchemaMigrationService::class);
+        $this->expectedSchemaService = $expectedSchemaService ?: GeneralUtility::makeInstance(SqlExpectedSchemaService::class);
     }
 
     /**

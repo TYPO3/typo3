@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Install tool ajax controller, handles ajax requests
  *
@@ -52,7 +54,6 @@ class AjaxController extends AbstractController
     public function execute()
     {
         $this->loadBaseExtensions();
-        $this->initializeObjectManager();
         // Warning: Order of these methods is security relevant and interferes with different access
         // conditions (new/existing installation). See the single method comments for details.
         $this->outputInstallToolNotEnabledMessageIfNeeded();
@@ -142,7 +143,7 @@ class AjaxController extends AbstractController
         $this->validateAuthenticationAction($action);
         $actionClass = ucfirst($action);
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
-        $toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
+        $toolAction = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
         if (!($toolAction instanceof Action\ActionInterface)) {
             throw new Exception(
                 $action . ' does not implement ActionInterface',

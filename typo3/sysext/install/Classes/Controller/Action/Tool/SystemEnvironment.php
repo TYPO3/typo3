@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Install\Status\StatusUtility;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
@@ -32,15 +33,15 @@ class SystemEnvironment extends Action\AbstractAction
     protected function executeAction()
     {
         /** @var $statusCheck Check */
-        $statusCheck = $this->objectManager->get(Check::class);
+        $statusCheck = GeneralUtility::makeInstance(Check::class);
         $statusObjects = $statusCheck->getStatus();
 
         /** @var $statusCheck DatabaseCheck */
-        $databaseStatusCheck = $this->objectManager->get(DatabaseCheck::class);
+        $databaseStatusCheck = GeneralUtility::makeInstance(DatabaseCheck::class);
         $statusObjects = array_merge($statusObjects, $databaseStatusCheck->getStatus());
 
         /** @var $statusUtility StatusUtility */
-        $statusUtility = $this->objectManager->get(StatusUtility::class);
+        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
         $sortedStatusObjects = $statusUtility->sortBySeverity($statusObjects);
         $this->view->assign('statusObjectsBySeverity', $sortedStatusObjects);
 

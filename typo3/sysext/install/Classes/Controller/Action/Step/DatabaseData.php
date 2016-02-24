@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\ErrorStatus;
 
 /**
@@ -32,7 +33,7 @@ class DatabaseData extends AbstractStepAction
         $result = array();
 
         /** @var ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
 
         $postValues = $this->postValues['values'];
 
@@ -41,7 +42,7 @@ class DatabaseData extends AbstractStepAction
         // Check password and return early if not good enough
         $password = $postValues['password'];
         if (strlen($password) < 8) {
-            $errorStatus = $this->objectManager->get(ErrorStatus::class);
+            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
             $errorStatus->setTitle('Administrator password not secure enough!');
             $errorStatus->setMessage(
                 'You are setting an important password here! It gives an attacker full control over your instance if cracked.' .
@@ -70,7 +71,7 @@ class DatabaseData extends AbstractStepAction
             'crdate' => $GLOBALS['EXEC_TIME']
         );
         if (false === $this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields)) {
-            $errorStatus = $this->objectManager->get(ErrorStatus::class);
+            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
             $errorStatus->setTitle('Administrator account not created!');
             $errorStatus->setMessage(
                 'The administrator account could not be created. The following error occurred:' . LF .
@@ -132,9 +133,9 @@ class DatabaseData extends AbstractStepAction
         // Import database data
         $database = $this->getDatabaseConnection();
         /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
         /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
+        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
 
         // Raw concatenated ext_tables.sql and friends string
         $expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(true);
@@ -168,7 +169,7 @@ class DatabaseData extends AbstractStepAction
         }
 
         foreach ($result as $statement => &$message) {
-            $errorStatus = $this->objectManager->get(ErrorStatus::class);
+            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
             $errorStatus->setTitle('Database query failed!');
             $errorStatus->setMessage(
                 'Query:' . LF .
@@ -187,7 +188,7 @@ class DatabaseData extends AbstractStepAction
      */
     protected function markImportDatabaseDone()
     {
-        $this->objectManager->get(ConfigurationManager::class)
+        GeneralUtility::makeInstance(ConfigurationManager::class)
             ->setLocalConfigurationValueByPath('SYS/isInitialDatabaseImportDone', true);
     }
 
@@ -198,7 +199,7 @@ class DatabaseData extends AbstractStepAction
      */
     protected function isImportDatabaseDone()
     {
-        return $this->objectManager->get(ConfigurationManager::class)
+        return GeneralUtility::makeInstance(ConfigurationManager::class)
             ->getConfigurationValueByPath('SYS/isInitialDatabaseImportDone');
     }
 }

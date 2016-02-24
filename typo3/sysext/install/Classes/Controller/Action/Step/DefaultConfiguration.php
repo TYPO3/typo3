@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
@@ -29,7 +30,7 @@ class DefaultConfiguration extends AbstractStepAction
     public function execute()
     {
         /** @var \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager */
-        $featureManager = $this->objectManager->get(\TYPO3\CMS\Install\Configuration\FeatureManager::class);
+        $featureManager = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Configuration\FeatureManager::class);
         // Get best matching configuration presets
         $configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
 
@@ -115,11 +116,11 @@ For each website you need a TypoScript template on the main page of your website
         }
 
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
         /** @var \TYPO3\CMS\Install\Service\SessionService $session */
-        $session = $this->objectManager->get(\TYPO3\CMS\Install\Service\SessionService::class);
+        $session = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SessionService::class);
         $session->destroySession();
 
         /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */

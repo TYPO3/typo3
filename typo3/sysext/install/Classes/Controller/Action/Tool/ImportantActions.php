@@ -72,7 +72,7 @@ class ImportantActions extends Action\AbstractAction
         $opcodeCacheService = GeneralUtility::makeInstance(OpcodeCacheService::class);
 
         /** @var \TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService */
-        $coreUpdateService = $this->objectManager->get(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
+        $coreUpdateService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
         $this->view
             ->assign('enableCoreUpdate', $coreUpdateService->isCoreUpdateEnabled())
             ->assign('composerMode', Bootstrap::usesComposerClassLoading())
@@ -102,23 +102,23 @@ class ImportantActions extends Action\AbstractAction
         $values = $this->postValues['values'];
         if ($values['newInstallToolPassword'] !== $values['newInstallToolPasswordCheck']) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Install tool password not changed');
             $message->setMessage('Given passwords do not match.');
         } elseif (strlen($values['newInstallToolPassword']) < 8) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Install tool password not changed');
             $message->setMessage('Given password must be at least eight characters long.');
         } else {
             /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-            $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+            $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
             $configurationManager->setLocalConfigurationValueByPath(
                 'BE/installToolPassword',
                 $this->getHashedPassword($values['newInstallToolPassword'])
             );
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Install tool password changed');
         }
         return $message;
@@ -134,15 +134,15 @@ class ImportantActions extends Action\AbstractAction
         $values = $this->postValues['values'];
         if (isset($values['newSiteName']) && $values['newSiteName'] !== '') {
             /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-            $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+            $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
             $configurationManager->setLocalConfigurationValueByPath('SYS/sitename', $values['newSiteName']);
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
             $message->setTitle('Site name changed');
             $this->view->assign('siteName', $values['newSiteName']);
         } else {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Site name not changed');
             $message->setMessage('Site name must be at least one character long.');
         }
@@ -157,9 +157,9 @@ class ImportantActions extends Action\AbstractAction
     protected function clearAllCache()
     {
         /** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
-        $clearCacheService = $this->objectManager->get(\TYPO3\CMS\Install\Service\ClearCacheService::class);
+        $clearCacheService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ClearCacheService::class);
         $clearCacheService->clearAll();
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Successfully cleared all caches');
         return $message;
     }
@@ -172,7 +172,7 @@ class ImportantActions extends Action\AbstractAction
     protected function clearOpcodeCache()
     {
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Successfully cleared all available opcode caches');
         return $message;
     }
@@ -186,7 +186,7 @@ class ImportantActions extends Action\AbstractAction
     {
         $newKey = \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(96);
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $newKey);
         /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
         $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
@@ -194,7 +194,7 @@ class ImportantActions extends Action\AbstractAction
         );
         $formProtection->clean();
         /** @var \TYPO3\CMS\Install\Service\SessionService $session */
-        $session = $this->objectManager->get(\TYPO3\CMS\Install\Service\SessionService::class);
+        $session = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SessionService::class);
         $session->destroySession();
         \TYPO3\CMS\Core\Utility\HttpUtility::redirect('Install.php?install[context]=' . $this->getContext());
     }
@@ -213,17 +213,17 @@ class ImportantActions extends Action\AbstractAction
 
         if (strlen($username) < 1) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Administrator user not created');
             $message->setMessage('No valid username given.');
         } elseif ($password !== $passwordCheck) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Administrator user not created');
             $message->setMessage('Passwords do not match.');
         } elseif (strlen($password) < 8) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
             $message->setTitle('Administrator user not created');
             $message->setMessage('Password must be at least eight characters long.');
         } else {
@@ -235,7 +235,7 @@ class ImportantActions extends Action\AbstractAction
             );
             if ($userExists) {
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $message->setTitle('Administrator user not created');
                 $message->setMessage('A user with username "' . $username . '" exists already.');
             } else {
@@ -249,7 +249,7 @@ class ImportantActions extends Action\AbstractAction
                 );
                 $database->exec_INSERTquery('be_users', $adminUserFields);
                 /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
                 $message->setTitle('Administrator created with username "' . $username . '".');
             }
         }
@@ -269,16 +269,16 @@ class ImportantActions extends Action\AbstractAction
         // Early return in case no update was selected
         if (empty($this->postValues['values'])) {
             /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
             $message->setTitle('No database changes selected');
             $messages[] = $message;
             return $messages;
         }
 
         /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
         /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
+        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
         $expectedSchema = $expectedSchemaService->getExpectedDatabaseSchema();
         $currentSchema = $schemaMigrationService->getFieldDefinitions_database();
 
@@ -306,7 +306,7 @@ class ImportantActions extends Action\AbstractAction
             if (is_array($resultSet)) {
                 foreach ($resultSet as $errorMessage) {
                     /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-                    $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $message->setTitle('Database update failed');
                     $message->setMessage('Error: ' . $errorMessage);
                     $messages[] = $message;
@@ -315,7 +315,7 @@ class ImportantActions extends Action\AbstractAction
         }
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Executed database updates');
         $messages[] = $message;
 
@@ -332,9 +332,9 @@ class ImportantActions extends Action\AbstractAction
     protected function databaseAnalyzerAnalyze()
     {
         /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
         /** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
+        $expectedSchemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
         $expectedSchema = $expectedSchemaService->getExpectedDatabaseSchema();
 
         $currentSchema = $schemaMigrationService->getFieldDefinitions_database();
@@ -424,7 +424,7 @@ class ImportantActions extends Action\AbstractAction
         $this->view->assign('databaseAnalyzerSuggestion', $databaseAnalyzerSuggestion);
 
         /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
         $message->setTitle('Analyzed current database');
         return $message;
     }

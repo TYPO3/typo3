@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Database connect step:
@@ -37,7 +38,7 @@ class DatabaseConnect extends AbstractStepAction
         $result = array();
 
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
         $postValues = $this->postValues['values'];
         if (isset($postValues['loadDbal'])) {
@@ -92,7 +93,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/username'] = $value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database username not valid');
                     $errorStatus->setMessage('Given username must be shorter than fifty characters.');
                     $result[] = $errorStatus;
@@ -105,7 +106,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/password'] = $value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database password not valid');
                     $errorStatus->setMessage('Given password must be shorter than fifty characters.');
                     $result[] = $errorStatus;
@@ -118,7 +119,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/host'] = $value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database host not valid');
                     $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than fifty characters.');
                     $result[] = $errorStatus;
@@ -131,7 +132,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/port'] = (int)$value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database port not valid');
                     $errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
                     $result[] = $errorStatus;
@@ -143,7 +144,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/socket'] = $postValues['socket'];
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Socket does not exist');
                     $errorStatus->setMessage('Given socket location does not exist on server.');
                     $result[] = $errorStatus;
@@ -156,7 +157,7 @@ class DatabaseConnect extends AbstractStepAction
                     $localConfigurationPathValuePairs['DB/database'] = $value;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database name not valid');
                     $errorStatus->setMessage('Given database name must be shorter than fifty characters.');
                     $result[] = $errorStatus;
@@ -174,11 +175,11 @@ class DatabaseConnect extends AbstractStepAction
                     ->disableCoreCache();
                 if ($this->isDbalEnabled()) {
                     require(ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+                    GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
                 }
                 if (!$this->isConnectSuccessful()) {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-                    $errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                    $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                     $errorStatus->setTitle('Database connect not successful');
                     $errorStatus->setMessage('Connecting to the database with given settings failed. Please check.');
                     $result[] = $errorStatus;
@@ -286,7 +287,7 @@ class DatabaseConnect extends AbstractStepAction
     protected function isConnectSuccessful()
     {
         /** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-        $databaseConnection = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+        $databaseConnection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 
         if ($this->isDbalEnabled()) {
             // Set additional connect information based on dbal driver. postgres for example needs
@@ -374,14 +375,14 @@ class DatabaseConnect extends AbstractStepAction
         // If host is "local" either by upgrading or by first install, we try a socket
         // connection first and use TCP/IP as fallback
         if ($localConfigurationPathValuePairs['DB/host'] === 'localhost'
-            || \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($localConfigurationPathValuePairs['DB/host'], '127.*.*.*')
+            || GeneralUtility::cmpIP($localConfigurationPathValuePairs['DB/host'], '127.*.*.*')
             || (string)$localConfigurationPathValuePairs['DB/host'] === ''
         ) {
             if ($this->isConnectionWithUnixDomainSocketPossible()) {
                 $localConfigurationPathValuePairs['DB/host'] = 'localhost';
                 $localConfigurationPathValuePairs['DB/socket'] = $this->getConfiguredSocket();
             } else {
-                if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($localConfigurationPathValuePairs['DB/host'], '127.')) {
+                if (!GeneralUtility::isFirstPartOfStr($localConfigurationPathValuePairs['DB/host'], '127.')) {
                     $localConfigurationPathValuePairs['DB/host'] = '127.0.0.1';
                 }
             }
@@ -399,7 +400,7 @@ class DatabaseConnect extends AbstractStepAction
         }
 
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
     }
 
@@ -572,7 +573,7 @@ class DatabaseConnect extends AbstractStepAction
             ExtensionManagementUtility::loadExtension('dbal');
         }
         /** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-        $warningStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+        $warningStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
         $warningStatus->setTitle('Loaded database abstraction layer');
         return $warningStatus;
     }
@@ -592,7 +593,7 @@ class DatabaseConnect extends AbstractStepAction
         }
         // @TODO: Remove configuration from TYPO3_CONF_VARS['EXTCONF']['dbal']
         /** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-        $warningStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
+        $warningStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
         $warningStatus->setTitle('Removed database abstraction layer');
         return $warningStatus;
     }

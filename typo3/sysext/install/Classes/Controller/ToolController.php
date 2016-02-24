@@ -48,7 +48,6 @@ class ToolController extends AbstractController
     public function execute()
     {
         $this->loadBaseExtensions();
-        $this->initializeObjectManager();
 
         // Warning: Order of these methods is security relevant and interferes with different access
         // conditions (new/existing installation). See the single method comments for details.
@@ -177,7 +176,7 @@ class ToolController extends AbstractController
         $this->validateAuthenticationAction($action);
         $actionClass = ucfirst($action);
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
-        $toolAction = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Tool\\' . $actionClass);
+        $toolAction = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\Action\\Tool\\' . $actionClass);
         if (!($toolAction instanceof Action\ActionInterface)) {
             throw new Exception(
                 $action . ' does not implement ActionInterface',
