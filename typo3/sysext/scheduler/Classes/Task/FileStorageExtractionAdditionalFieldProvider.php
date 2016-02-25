@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -115,14 +114,9 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
 
         if (empty($extractors)) {
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.without_extractors';
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $this->getLanguageService()->sL($labelKey),
-                '',
-                FlashMessage::WARNING
-            );
-            $content = $flashMessage->render();
+            $content = '<span class="label label-warning">'
+                . htmlspecialchars($this->getLanguageService()->sL($labelKey))
+                . '</span>';
         } else {
             // Assemble the extractor bullet list first.
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.extractor';
@@ -137,14 +131,9 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
 
             // Finalize content assembling.
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.with_extractors';
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                '<ul>' . implode(LF, $bullets) . '</ul>',
-                $this->getLanguageService()->sL($labelKey),
-                FlashMessage::INFO
-            );
-            $content = $flashMessage->render();
+            $title = $this->getLanguageService()->sL($labelKey);
+            $content = '<p>' . htmlspecialchars($title) . '</p>';
+            $content .= '<ul>' . implode(LF, $bullets) . '</ul>';
         }
 
         $fieldConfiguration = array(
