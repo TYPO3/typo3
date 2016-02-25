@@ -485,7 +485,8 @@ class RteHtmlParser extends HtmlParser
                     } else {
                         $href = $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
                     }
-                    $bTag = '<link ' . $href . ($attribArray['target'] ? ' ' . $attribArray['target'] : ($attribArray['class'] || $attribArray['title'] ? ' -' : '')) . ($attribArray['class'] ? ' ' . $attribArray['class'] : ($attribArray['title'] ? ' -' : '')) . ($attribArray['title'] ? ' ' . $attribArray['title'] : '') . '>';
+                    $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode(array('url' => $href, 'target' => $attribArray['target'], 'class' => trim($attribArray['class'], '"'), 'title' => trim($attribArray['title'], '"'), 'additionalParams' => ''));
+                    $bTag = '<link ' . $typoLink . '>';
                     $eTag = '</link>';
                     // Modify parameters
                     if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
