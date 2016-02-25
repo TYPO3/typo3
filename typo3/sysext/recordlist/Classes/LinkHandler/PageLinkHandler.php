@@ -229,7 +229,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             return '';
         }
         $link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">'
-            . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', true) . '</a>';
+            . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', true) . '</a>';
 
         return GeneralUtility::makeInstance(FlashMessage::class, $link, '', FlashMessage::INFO)->render();
     }
