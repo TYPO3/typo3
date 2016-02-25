@@ -929,7 +929,7 @@ return array(
 									name = copy
 									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
 									iconName = actions-edit-copy
-									displayCondition = isInCopyMode = 0 && canBeCopied != 0
+									displayCondition = isInCopyMode = 0
 									callbackAction = enableCopyMode
 								}
 
@@ -938,7 +938,7 @@ return array(
 									name = copy
 									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
 									iconName = actions-edit-copy-release
-									displayCondition = isInCopyMode = 1 && canBeCopied != 0
+									displayCondition = isInCopyMode = 1
 									callbackAction = disableCopyMode
 								}
 
