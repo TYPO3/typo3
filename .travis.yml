@@ -68,8 +68,8 @@ script:
     fi
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-        ./bin/selenium-server-standalone &
-        php -S 0.0.0.0:8000 &
+        ./bin/selenium-server-standalone >/dev/null 2>&1 &
+        php -S 0.0.0.0:8000 >/dev/null 2>&1 &
         sleep 3;
         export typo3DatabaseName="typo3";
         export typo3DatabaseHost="localhost";
