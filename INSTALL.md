@@ -2,7 +2,7 @@ INSTALLING TYPO3
 ================
 
 TYPO3 is an open source PHP based web content management system released
-under the GNU GPL. TYPO3 is copyright (c) 1999-2015 by Kasper Skaarhoj.
+under the GNU GPL. TYPO3 is copyright (c) 1999-2016 by Kasper Skaarhoj.
 
 This document describes:
 
@@ -13,13 +13,14 @@ This document describes:
 Client browser support
 ----------------------
 
-The TYPO3 backend is accessed through a web browser. TYPO3 CMS 7
+The TYPO3 backend is accessed through a web browser. TYPO3 CMS 8
 supports the following web browsers:
 
-* Internet Explorer 9 and later
-* Google Chrome (Windows, MacOS, Linux)
-* Firefox (Windows, MacOS, Linux)
-* Safari on MacOS
+* Internet Explorer 11 and later
+* Microsoft Edge
+* Google Chrome (Windows, MacOS X, Linux)
+* Firefox (Windows, MacOS X, Linux)
+* Safari on MacOS X
 * and other compatible modern browsers
 
 Server system requirements
@@ -106,7 +107,6 @@ functionality:
   * memory_limit set to at least 128M
   * max_execution_time set to at least 240s
   * max_input_vars set to at least 1500
-  * always_populate_raw_post_data set to -1 (PHP version >= 5.6, <7.0)
 
 * Additional PHP extensions:
   * PHP opcode cache, i.e.: apc, xcache, eaccelerator, Zend Optimizer, wincache (in case of an IIS installation)
@@ -129,13 +129,13 @@ functionality:
 Installation
 ------------
 
-### Important note for upgrades from TYPO3 CMS versions **below 6.2 LTS**
+### Important note for upgrades from TYPO3 CMS versions **below 7 LTS**
 
-It is not possible to upgrade any version below 6.2 LTS to 7 directly,
-since some upgrade wizards are not available anymore on 7.
+It is not possible to upgrade any version below 7 LTS to 8 directly,
+since some upgrade wizards are not available anymore on 8.
 
-It is highly recommended to upgrade to 6.2 LTS first and continue with
-a second upgrade to 7.
+It is highly recommended to upgrade to 7 LTS first and continue with
+a second upgrade to 8.
 
 ### If SSH and symlinks are possible
 
@@ -143,11 +143,11 @@ If you have SSH access to your webserver and are able to create symlinks,
 this is the recommended way of setting up TYPO3 so that it can easily
 be upgraded later through the Install Tool:
 
-* Uncompress the `typo3_src-7.6.x.tar.gz` file one level above the Document
+* Uncompress the `typo3_src-8.x.x.tar.gz` file one level above the Document
   Root of your Web server:
 ```
 /var/www/site/htdocs/ $ cd ..
-/var/www/site/ $ tar xzf typo3_src-7.6.x.tar.gz
+/var/www/site/ $ tar xzf typo3_src-8.x.x.tar.gz
 ```
 
 * Important: If you use GIT to fetch the sources, don't forget to run the following commands,
@@ -161,7 +161,7 @@ cd ..
 * Create the symlinks in your Document Root:
 ```
   cd htdocs
-  ln -s ../typo3_src-7.6.x typo3_src
+  ln -s ../typo3_src-8.x.x typo3_src
   ln -s typo3_src/index.php
   ln -s typo3_src/typo3
 ```
@@ -174,8 +174,8 @@ cd ..
 You end up with the follow structure of files:
 
 ```
-  typo3_src-7.6.x/
-  htdocs/typo3_src -> ../typo3_src-7.6.x/
+  typo3_src-8.x.x/
+  htdocs/typo3_src -> ../typo3_src-8.x.x/
   htdocs/typo3 -> typo3_src/typo3/
   htdocs/index.php -> typo3_src/index.php
   htdocs/.htaccess
@@ -189,8 +189,8 @@ be found in the Install Tool.
 
 On Windows Vista and newer you can create symbolic links using the `mklink` tool:
 ```
-  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-7.6.x
-  mklink C:\<dir>\example.com\index.php C:\<dir>\typo3_src-7.6.x\index.php
+  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-8.x.x
+  mklink C:\<dir>\example.com\index.php C:\<dir>\typo3_src-8.x.x\index.php
 ```
 
 Windows users might need to copy `index.php` from the source directory to the
@@ -208,7 +208,7 @@ installation once a new patch-level release is out.
 
 Please note that this is not a recommended setup!
 
-* Uncompress `typo3_src-7.6.x.zip` locally
+* Uncompress `typo3_src-8.x.x.zip` locally
 * Upload all files and subdirectories directly in your Document Root
   (where files that are served by your webserver are located).
 * In case your provider uses Apache, rename the file `_.htaccess` to `.htaccess`.
@@ -240,9 +240,6 @@ discrepancies.
 
 The Install Tool will create the required directory structure for you
 (typo3conf, uploads, fileadmin, typo3temp).
-
-Former versions of TYPO3 required the download of a "Dummy Package"
-(or "Blank Package"). This is no longer required since version 6.2!
 
 TYPO3 Security
 --------------
