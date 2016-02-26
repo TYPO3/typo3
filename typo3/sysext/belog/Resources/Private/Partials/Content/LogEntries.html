@@ -172,7 +172,11 @@
 									<f:else>[{logItem.backendUserUid}]</f:else>
 								</f:if>
 								<f:if condition="{logItem.logData.originalUser}">
-									({f:translate(key:'viaUser')} <f:if condition="{belog:username(uid:logItem.backendUserUid)}"><f:then><belog:username uid="{logItem.backendUserUid}" /></f:then><f:else>[{logItem.backendUserUid}]</f:else></f:if>)
+									({f:translate(key:'viaUser')}
+									<f:if condition="{belog:username(uid:logItem.logData.originalUser)}">
+										<f:then><belog:username uid="{logItem.logData.originalUser}" /></f:then>
+										<f:else>[{logItem.logData.originalUser}]</f:else>
+									</f:if>)
 								</f:if>
 								<br>
 								<span class="text-muted">
