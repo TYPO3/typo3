@@ -34,11 +34,10 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception|\Throwable $exception The exception object
+     * @param \Throwable $exception The throwable object.
      * @return void
-     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionWeb($exception)
+    public function echoExceptionWeb(\Throwable $exception)
     {
         $this->sendStatusHeaders($exception);
         $filePathAndName = $exception->getFile();
@@ -113,21 +112,17 @@ class DebugExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception for the command line
      *
-     * @param \Exception|\Throwable $exception The exception object
+     * @param \Throwable $exception The throwable object.
      * @return void
-     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionCLI($exception)
+    public function echoExceptionCLI(\Throwable $exception)
     {
         $filePathAndName = $exception->getFile();
         $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
         $this->writeLogEntries($exception, self::CONTEXT_CLI);
-        echo '
-Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . LF;
+        echo LF . 'Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . LF;
         echo 'thrown in file ' . $filePathAndName . LF;
-        echo 'in line ' . $exception->getLine() . '
-
-';
+        echo 'in line ' . $exception->getLine() . LF . LF;
         die(1);
     }
 

@@ -85,9 +85,6 @@ class CliRequestHandler implements RequestHandlerInterface
         } catch (\RuntimeException $e) {
             $output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
             $exitCode = $e->getCode();
-        } catch (\Exception $e) {
-            $output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
-            $exitCode = $e->getCode();
         } catch (\Throwable $e) {
             $output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
             $exitCode = $e->getCode();

@@ -29,27 +29,24 @@ interface ExceptionHandlerInterface
     /**
      * Handles the given exception
      *
-     * @param \Exception|\Throwable $exception The exception(PHP 5.x) or throwable(PHP >= 7.0) object.
+     * @param \Throwable $exception The throwable object.
      * @return void
-     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function handleException($exception);
+    public function handleException(\Throwable $exception);
 
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception|\Throwable $exception The exception(PHP 5.x) or throwable(PHP >= 7.0) object.
+     * @param \Throwable $exception The throwable object.
      * @return void
-     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionWeb($exception);
+    public function echoExceptionWeb(\Throwable $exception);
 
     /**
      * Formats and echoes the exception for the command line
      *
-     * @param \Exception|\Throwable $exception The exception(PHP 5.x) or throwable(PHP >= 7.0) object.
+     * @param \Throwable $exception The throwable object.
      * @return void
-     * @TODO #72293 This will change to \Throwable only if we are >= PHP7.0 only
      */
-    public function echoExceptionCLI($exception);
+    public function echoExceptionCLI(\Throwable $exception);
 }
