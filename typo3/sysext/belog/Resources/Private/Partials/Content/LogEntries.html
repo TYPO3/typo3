@@ -167,9 +167,16 @@
 								</f:if>
 							</td>
 							<td valign="top">
-								<f:render partial="Content/Username" arguments="{userId:logItem.backendUserUid}" />
+								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
+									<f:then><belog:username uid="{logItem.backendUserUid}" /></f:then>
+									<f:else>[{logItem.backendUserUid}]</f:else>
+								</f:if>
 								<f:if condition="{logItem.logData.originalUser}">
-									({f:translate(key:'viaUser')} <f:render partial="Content/Username" arguments="{userId:logItem.logData.originalUser}" />)
+									({f:translate(key:'viaUser')}
+									<f:if condition="{belog:username(uid:logItem.logData.originalUser)}">
+										<f:then><belog:username uid="{logItem.logData.originalUser}" /></f:then>
+										<f:else>[{logItem.logData.originalUser}]</f:else>
+									</f:if>)
 								</f:if>
 								<br>
 								<span class="text-muted">
