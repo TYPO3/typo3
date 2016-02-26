@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
@@ -110,8 +111,9 @@ For each website you need a TypoScript template on the main page of your website
         // Mark upgrade wizards as done
         $this->loadExtLocalconfDatabaseAndExtTables();
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+            $registry = GeneralUtility::makeInstance(Registry::class);
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
-                $configurationValues['INSTALL/wizardDone/' . $updateClassName] = 1;
+                $registry->set('installUpdate', $updateClassName, 1);
             }
         }
 

@@ -74,7 +74,6 @@ class ConfigurationManager
     protected $whiteListedLocalConfigurationPaths = array(
         'EXT/extConf',
         'EXTCONF',
-        'INSTALL/wizardDone',
         'DB',
         'SYS/caching/cacheConfigurations',
     );

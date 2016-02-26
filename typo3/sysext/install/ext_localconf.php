@@ -20,5 +20,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
     = \TYPO3\CMS\Install\Updates\ExtensionManagerTables::class;
 
 // Add update wizards below this line
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\WizardDoneToRegistry::class]
+    = \TYPO3\CMS\Install\Updates\WizardDoneToRegistry::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class]
     = \TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class;

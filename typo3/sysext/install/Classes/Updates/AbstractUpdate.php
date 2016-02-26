@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
 
@@ -197,8 +199,7 @@ abstract class AbstractUpdate
      */
     protected function markWizardAsDone($confValue = 1)
     {
-        GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
-            ->setLocalConfigurationValueByPath('INSTALL/wizardDone/' . get_class($this), $confValue);
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', get_class($this), $confValue);
     }
 
     /**
@@ -209,13 +210,18 @@ abstract class AbstractUpdate
     protected function isWizardDone()
     {
         $wizardClassName = get_class($this);
-        $done = false;
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName])
-            && $GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName]
-        ) {
-            $done = true;
+        $done = GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $wizardClassName, false);
+
+        // Fall back in case the wizard for migration of "wizard done" flags to system registry was not run yet
+        if (!$done) {
+            try {
+                GeneralUtility::makeInstance(ConfigurationManager::class)
+                    ->getLocalConfigurationValueByPath('INSTALL/wizardDone/' . $wizardClassName);
+                $done = true;
+            } catch (\RuntimeException $e) {
+            }
         }
+
         return $done;
     }
 
