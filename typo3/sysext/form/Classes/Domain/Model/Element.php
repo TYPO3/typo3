@@ -73,14 +73,6 @@ class Element extends AbstractEntity
     protected $id;
 
     /**
-     * The element layout
-     *
-     * @var array
-     * @deprecated since TYPO3 CMS 7, this property will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
-     */
-    protected $layout;
-
-    /**
      * The mandatory validation messages
      *
      * @var array
@@ -363,27 +355,6 @@ class Element extends AbstractEntity
     public function setId($id)
     {
         $this->id = (string)$id;
-    }
-
-    /**
-     * Returns the element layout
-     *
-     * @return array
-     */
-    public function getLayout()
-    {
-        return $this->layout;
-    }
-
-    /**
-     * Sets the element layout
-     *
-     * @param array $layout
-     * @return void
-     */
-    public function setLayout(array $layout)
-    {
-        $this->layout = $layout;
     }
 
     /**
