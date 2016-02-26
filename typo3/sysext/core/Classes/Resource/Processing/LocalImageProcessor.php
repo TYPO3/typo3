@@ -106,26 +106,26 @@ class LocalImageProcessor implements ProcessorInterface
      */
     protected function checkForExistingTargetFile(TaskInterface $task)
     {
-        $processingFolder = $task->getTargetFile()->getStorage()->getProcessingFolder();
+        // the storage of the processed file, not of the original file!
         $storage = $task->getTargetFile()->getStorage();
-        // @todo: make proper use of the FAL API, see https://forge.typo3.org/issues/67126
-        if ($processingFolder->hasFile($task->getTargetFileName()) && $storage->getDriverType() === 'Local') {
-            $processedFileIdentifier = rtrim($processingFolder->getIdentifier(), '/') . '/' . $task->getTargetFileName();
-            $configuration = $storage->getConfiguration();
-            if ($configuration['pathType'] === 'relative') {
-                $absoluteBasePath = PATH_site . $configuration['basePath'];
-            } else {
-                $absoluteBasePath = $configuration['basePath'];
-            }
-            $targetFile = $absoluteBasePath . ltrim($processedFileIdentifier, '/');
+        $processingFolder = $storage->getProcessingFolder();
+
+        // explicitly check for the raw filename here, as we check for files that existed before we even started
+        // processing, i.e. that were processed earlier
+        if ($processingFolder->hasFile($task->getTargetFileName())) {
+            // If the processed file already exists, fetch it and update its properties to reflect the actual file.
+            $processedFile = $storage->getFileInFolder($task->getTargetFileName(), $processingFolder);
+            // If the processed file is stored on a remote server, we must fetch a local copy of the file, as we
+            // have no API for fetching file metadata from a remote file.
+            $localProcessedFile = $storage->getFileForLocalProcessing($processedFile, false);
 
             $task->setExecuted(true);
-            $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($targetFile);
+            $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($localProcessedFile);
             $task->getTargetFile()->setName($task->getTargetFileName());
             $properties = array(
                 'width' => $imageDimensions[0],
                 'height' => $imageDimensions[1],
-                'size' => filesize($targetFile),
+                'size' => filesize($localProcessedFile),
                 'checksum' => $task->getConfigurationChecksum()
             );
             $task->getTargetFile()->updateProperties($properties);
