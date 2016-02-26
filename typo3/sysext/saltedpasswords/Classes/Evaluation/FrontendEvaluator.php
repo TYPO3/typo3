@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
 
 /**
  * Class implementing salted evaluation methods for FE users.
- * @since 2009-06-14
  */
 class FrontendEvaluator extends Evaluator
 {

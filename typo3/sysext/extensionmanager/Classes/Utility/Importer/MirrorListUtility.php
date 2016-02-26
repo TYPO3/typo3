@@ -15,11 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  */
 
 /**
- * Module: Extension manager - Mirror list importer
- */
-/**
  * Importer object for mirror list.
- * @since 2010-02-10
  */
 class MirrorListUtility implements \SplObserver
 {

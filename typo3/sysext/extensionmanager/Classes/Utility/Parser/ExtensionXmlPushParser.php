@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  */
 
 /**
- * Module: Extension manager - Extension.xml push-parser
- */
-/**
  * Parser for TYPO3's extension.xml file.
  *
  * Depends on PHP ext/xml which should be available
@@ -26,7 +23,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * array" behaviour).
  * Notice: ext/xml has proven to be buggy with entities.
  * Use at least PHP 5.2.9+ and libxml2 2.7.3+!
- * @since 2010-02-10
  */
 class ExtensionXmlPushParser extends AbstractExtensionXmlParser
 {

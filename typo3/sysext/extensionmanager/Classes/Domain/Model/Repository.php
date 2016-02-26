@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 /**
  * Repository object for extension manager.
- * @since 2010-02-11
  */
 class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

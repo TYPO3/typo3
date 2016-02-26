@@ -15,14 +15,10 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  */
 
 /**
- * Module: Extension manager - Extension.xml pull-parser
- */
-/**
  * Parser for TYPO3's extension.xml file.
  *
  * Depends on PHP ext/xmlreader which should be available
  * with PHP >= 5.1.0.
- * @since 	   2010-02-09
  */
 class ExtensionXmlPullParser extends AbstractExtensionXmlParser
 {

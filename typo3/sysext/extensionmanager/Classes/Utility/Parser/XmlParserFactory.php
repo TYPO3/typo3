@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Factory for XML parsers.
- * @since 2010-02-10
  */
 class XmlParserFactory
 {

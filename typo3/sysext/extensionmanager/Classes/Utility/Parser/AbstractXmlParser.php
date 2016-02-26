@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Abstract parser for EM related TYPO3 xml files.
- * @since 2010-02-09
  */
 abstract class AbstractXmlParser implements \SplSubject
 {

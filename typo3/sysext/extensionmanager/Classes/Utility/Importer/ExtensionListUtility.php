@@ -15,11 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  */
 
 /**
- * Module: Extension manager - Extension list importer
- */
-/**
  * Importer object for extension list
- * @since 2010-02-10
  */
 class ExtensionListUtility implements \SplObserver
 {

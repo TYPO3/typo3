@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  *
  * Depends on PHP ext/xmlreader which should be available
  * with PHP >= 5.1.0.
- * @sincer 2010-02-19
  */
 class MirrorXmlPullParser extends AbstractMirrorXmlParser
 {

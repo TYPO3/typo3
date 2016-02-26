@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class implements salted-password hashes authentication service.
  * Contains authentication service class for salted hashed passwords.
- * @since 2009-06-14
  */
 class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
 {
