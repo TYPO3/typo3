@@ -2807,7 +2807,6 @@ class GeneralUtility
      *
      * @param string $path URL / path to prepend full URL addressing to.
      * @return string
-     * @throws \InvalidArgumentException
      */
     public static function locationHeaderUrl($path)
     {
@@ -2818,10 +2817,6 @@ class GeneralUtility
         } elseif (!$uI['scheme']) {
             // No scheme either
             $path = self::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
-        }
-        // Can be removed once minimum PHP requirement is at least 5.5.22 or 5.6.6
-        if (strpbrk($path, "\r\n") !== false) {
-            throw new \InvalidArgumentException('HTTP header injection attempt in "' . $path . '"', 1448194036);
         }
         return $path;
     }
