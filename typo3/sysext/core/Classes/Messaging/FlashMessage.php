@@ -104,4 +104,32 @@ class FlashMessage extends AbstractMessage
     {
         return $this->icons[$this->severity];
     }
+
+    /**
+     * Gets the message rendered as clean and secure markup
+     *
+     * @return string
+     */
+    public function getMessageAsMarkup()
+    {
+        $messageTitle = $this->getTitle();
+        $markup = [];
+        $markup[] = '<div class="alert ' . htmlspecialchars($this->getClass()) . '">';
+        $markup[] = '    <div class="media">';
+        $markup[] = '        <div class="media-left">';
+        $markup[] = '            <span class="fa-stack fa-lg">';
+        $markup[] = '                <i class="fa fa-circle fa-stack-2x"></i>';
+        $markup[] = '                <i class="fa fa-' . htmlspecialchars($this->getIconName()) . ' fa-stack-1x"></i>';
+        $markup[] = '            </span>';
+        $markup[] = '        </div>';
+        $markup[] = '        <div class="media-body">';
+        if (!empty($messageTitle)) {
+            $markup[] = '            <h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
+        }
+        $markup[] = '            <p class="alert-message">' . htmlspecialchars($this->getMessage()) . '</p>';
+        $markup[] = '        </div>';
+        $markup[] = '    </div>';
+        $markup[] = '</div>';
+        return implode('', $markup);
+    }
 }

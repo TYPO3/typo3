@@ -357,7 +357,7 @@ class QueryView
                 }
             }
             if (!empty($flashMessage)) {
-                $msg = $this->buildFlashMessageMarkup($flashMessage);
+                $msg = $flashMessage->getMessageAsMarkup();
             }
         }
         if ($saveStoreArray) {
@@ -374,54 +374,6 @@ class QueryView
             );
         }
         return $msg;
-    }
-
-    /**
-     * Build markup for a FlashMessage.
-     *
-     * @param FlashMessage $flashMessage
-     *
-     * @return string
-     * @internal
-     * @TODO: This method is only a temporary solution and must be cleaned up later within a fluid view
-     */
-    protected function buildFlashMessageMarkup(FlashMessage $flashMessage)
-    {
-        $classes = array(
-            FlashMessage::NOTICE => 'notice',
-            FlashMessage::INFO => 'info',
-            FlashMessage::OK => 'success',
-            FlashMessage::WARNING => 'warning',
-            FlashMessage::ERROR => 'danger'
-        );
-
-        $icons = array(
-            FlashMessage::NOTICE => 'lightbulb-o',
-            FlashMessage::INFO => 'info',
-            FlashMessage::OK => 'check',
-            FlashMessage::WARNING => 'exclamation',
-            FlashMessage::ERROR => 'times'
-        );
-
-        $title = trim($flashMessage->getTitle());
-        $output = '';
-        $output .= '<div class="alert alert-' . $classes[$flashMessage->getSeverity()] . '" style="margin-top: 20px;">';
-        $output .= '  <div class="media">';
-        $output .= '    <div class="media-left">';
-        $output .= '      <span class="fa-stack fa-lg">';
-        $output .= '        <i class="fa fa-circle fa-stack-2x"></i>';
-        $output .= '        <i class="fa fa-' . $icons[$flashMessage->getSeverity()] . ' fa-stack-1x"></i>';
-        $output .= '      </span>';
-        $output .= '    </div>';
-        $output .= '    <div class="media-body">';
-        if (!empty($title)) {
-            $output .= '      <h4 class="alert-title">' . htmlspecialchars($title) . '</h4>';
-        }
-        $output .= '      <div class="alert-message">' . htmlspecialchars($flashMessage->getMessage()) . '</div>';
-        $output .= '    </div>';
-        $output .= '  </div>';
-        $output .= '</div>';
-        return $output;
     }
 
     /**
@@ -525,7 +477,13 @@ class QueryView
                         . '</table>';
                 }
                 if (!$out) {
-                    $out = '<div class="alert-info">No rows selected!</div>';
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        'No rows selected!',
+                        '',
+                        FlashMessage::INFO
+                    );
+                    $out = $flashMessage->getMessageAsMarkup();
                 }
                 $cPR['header'] = 'Result';
                 $cPR['content'] = $out;

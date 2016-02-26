@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * <f:flashMessages class="specialClass" />
  * </code>
  * <output>
- * <ul class="specialClass">
+ * <div class="specialClass">
  * ...
  * </ul>
  * </output>
@@ -42,15 +42,22 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * <f:flashMessages />
  * </code>
  * <output>
- * <ul class="typo3-messages">
- * <li class="alert alert-ok">
- * <h4>Some Message Header</h4>
- * Some message body
- * </li>
- * <li class="alert alert-notice">
- * Some notice message without header
- * </li>
- * </ul>
+ * <div class="typo3-messages">
+ *  <div class="alert alert-info">
+ *      <div class="media">
+ *          <div class="media-left">
+ *              <span class="fa-stack fa-lg">
+ *                  <i class="fa fa-circle fa-stack-2x"></i>
+ *                  <i class="fa fa-info fa-stack-1x"></i>
+ *              </span>
+ *          </div>
+ *          <div class="media-body">
+ *              <h4 class="alert-title">Info - Title for Info message</h4>
+ *              <p class="alert-message">Message text here.</p>
+ *          </div>
+ *      </div>
+ *  </div>
+ * </div>
  * </output>
  * <code title="Output flash messages as a description list">
  * <f:flashMessages as="flashMessages">
@@ -80,7 +87,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
     /**
      * @var string
      */
-    protected $tagName = 'ul';
+    protected $tagName = 'div';
 
     /**
      * Initialize arguments
@@ -114,7 +121,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
         }
 
         if ($as === null) {
-            $content = $this->renderAsList($flashMessages);
+            $content = $this->renderDefault($flashMessages);
         } else {
             $content = $this->renderFromTemplate($flashMessages, $as);
         }
@@ -128,19 +135,14 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
      * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
      * @return string
      */
-    protected function renderAsList(array $flashMessages)
+    protected function renderDefault(array $flashMessages)
     {
         $flashMessagesClass = $this->hasArgument('class') ? $this->arguments['class'] : 'typo3-messages';
         $tagContent = '';
         $this->tag->addAttribute('class', $flashMessagesClass);
         /** @var $singleFlashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
         foreach ($flashMessages as $singleFlashMessage) {
-            $severityClass = sprintf('alert %s', $singleFlashMessage->getClass());
-            $messageContent = htmlspecialchars($singleFlashMessage->getMessage());
-            if ($singleFlashMessage->getTitle() !== '') {
-                $messageContent = sprintf('<h4>%s</h4>', htmlspecialchars($singleFlashMessage->getTitle())) . $messageContent;
-            }
-            $tagContent .= sprintf('<li class="%s">%s</li>', htmlspecialchars($severityClass), $messageContent);
+            $tagContent .= $singleFlashMessage->getMessageAsMarkup();
         }
         $this->tag->setContent($tagContent);
         return $this->tag->render();

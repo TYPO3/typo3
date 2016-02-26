@@ -249,6 +249,8 @@ class InlineRecordContainer extends AbstractContainer
             }
             $message = $this->getLanguageService()->sL($combinationWarningMessage);
             $markup = [];
+            // @TODO: This is not a FlashMessage! The markup must be changed and special CSS
+            // @TODO: should be created, in order to prevent confusion.
             $markup[] = '<div class="alert alert-warning">';
             $markup[] = '    <div class="media">';
             $markup[] = '        <div class="media-left">';

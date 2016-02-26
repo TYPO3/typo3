@@ -57,11 +57,11 @@ This kind of information is not static, it is a temporary and volatile informati
 2) Callouts (InfoBox-ViewHelper)
 --------------------------------
 Callouts are designed to display permanent information, a very good example is the usage in the Page-Module.
-If a user opens a system folder with the page module, the callout explains: „Hey, you try to use the page module on a sys folder, please switch to the list module“.
+If a user opens a system folder with the page module, the callout explains: 'Hey, you try to use the page module on a sys folder, please switch to the list module'.
 This ViewHelper can also be used to show some help or instruction how to use a backend module.
 
 
 3) Any other information
 ------------------------
 For any other information e.g. a list of files which has changed, must be handled in the action / view of the module or plugin. This is not a use case for a FlashMessage or Callout!
-Example: It makes  sense to show a list of a hundred files within a FlashMessage or Callout, build custom markup in the view to handle this kind of message.
+Example: Display a list of a hundred files within a FlashMessage or Callout is a bad idea, build custom markup in the view to handle this kind of message.

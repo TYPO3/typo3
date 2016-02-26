@@ -3,26 +3,7 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-	<f:flashMessages as="flashMessages" queueIdentifier="impexp.errors">
-		<f:for each="{flashMessages}" as="flashMessage">
-			<div class="alert {flashMessage.class}">
-				<div class="media">
-					<div class="media-left">
-						<span class="fa-stack fa-lg">
-							<i class="fa fa-circle fa-stack-2x"></i>
-							<i class="fa fa-{flashMessage.iconName} fa-stack-1x"></i>
-						</span>
-					</div>
-					<div class="media-body">
-						<f:if condition="{flashMessage.title}">
-							<h4 class="alert-title">{flashMessage.title}</h4>
-						</f:if>
-						<div class="alert-message">{flashMessage.message}</div>
-					</div>
-				</div>
-			</div>
-		</f:for>
-	</f:flashMessages>
+	<f:flashMessages queueIdentifier="impexp.errors" />
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active">
 			<a class="text-capitalize" href="#import-import" aria-controls="import-import" role="tab" data-toggle="tab">
