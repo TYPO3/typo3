@@ -106,35 +106,4 @@ class FlashMessage extends AbstractMessage
     {
         return $this->icons[$this->severity];
     }
-
-    /**
-     * Renders the flash message.
-     *
-     * @return string The flash message as HTML.
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     */
-    public function render()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $title = '';
-        if (!empty($this->title)) {
-            $title = '<h4 class="alert-title">' . $this->title . '</h4>';
-        }
-        $message = '
-			<div class="alert ' . $this->getClass() . '">
-				<div class="media">
-					<div class="media-left">
-						<span class="fa-stack fa-lg">
-							<i class="fa fa-circle fa-stack-2x"></i>
-							<i class="fa fa-' . $this->getIconName() . ' fa-stack-1x"></i>
-						</span>
-					</div>
-					<div class="media-body">
-						' . $title . '
-						<div class="alert-message">' . $this->message . '</div>
-					</div>
-				</div>
-			</div>';
-        return $message;
-    }
 }
