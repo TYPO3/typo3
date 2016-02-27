@@ -63,8 +63,6 @@ class ConsoleOutput
      */
     public function __construct()
     {
-        $this->input = new ArgvInput();
-
         $this->output = new SymfonyConsoleOutput();
         $this->output->getFormatter()->setStyle('b', new OutputFormatterStyle(null, null, array('bold')));
         $this->output->getFormatter()->setStyle('i', new OutputFormatterStyle('black', 'white'));
@@ -167,7 +165,7 @@ class ConsoleOutput
             ->setMaxAttempts($attempts)
             ->setErrorMessage('Value "%s" is invalid');
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -184,7 +182,7 @@ class ConsoleOutput
         $question = (new Question($question, $default))
             ->setAutocompleterValues($autocomplete);
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -200,7 +198,7 @@ class ConsoleOutput
     {
         $question = new ConfirmationQuestion($question, $default);
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -217,7 +215,7 @@ class ConsoleOutput
             ->setHidden(true)
             ->setHiddenFallback($fallback);
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -242,7 +240,7 @@ class ConsoleOutput
             ->setMaxAttempts($attempts)
             ->setAutocompleterValues($autocomplete);
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -268,7 +266,7 @@ class ConsoleOutput
             ->setHidden(true)
             ->setHiddenFallback($fallback);
 
-        return $this->getQuestionHelper()->ask($this->input, $this->output, $question);
+        return $this->getQuestionHelper()->ask($this->getInput(), $this->output, $question);
     }
 
     /**
@@ -314,6 +312,21 @@ class ConsoleOutput
     public function progressFinish()
     {
         $this->getProgressBar()->finish();
+    }
+
+    /**
+     * @return ArgvInput
+     * @throws \RuntimeException
+     */
+    protected function getInput() {
+        if ($this->input === null) {
+            if (!isset($_SERVER['argv'])) {
+                throw new \RuntimeException('Cannot initialize ArgvInput object without CLI context.', 1456914444);
+            }
+            $this->input = new ArgvInput();
+        }
+
+        return $this->input;
     }
 
     /**
