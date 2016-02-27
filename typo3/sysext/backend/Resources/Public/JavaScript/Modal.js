@@ -228,6 +228,7 @@ define(['jquery',
 				Modal.instances.splice(lastIndex, 1);
 				Modal.currentModal = Modal.instances[lastIndex-1];
 			}
+			currentModal.trigger('modal-destroyed');
 			$(this).remove();
 			// Keep class modal-open on body tag as long as open modals exist
 			if (Modal.instances.length > 0) {
