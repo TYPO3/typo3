@@ -209,7 +209,8 @@ class ObjectStorageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $object2 = new \StdClass();
         $objectStorage->attach($object1, 'foo');
         $objectStorage->attach($object2, 'bar');
-        $this->assertEquals($objectStorage->toArray(), array($object1, $object2));
+        $this->assertEquals(array($object1, $object2), $objectStorage->toArray());
+        $this->assertEquals(array($object1, $object2), $objectStorage->getArray());
     }
 
     /**

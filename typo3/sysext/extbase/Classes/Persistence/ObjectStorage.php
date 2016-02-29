@@ -299,6 +299,18 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
+     * Alias of toArray which allows that method to be used from contexts which support
+     * for example dotted paths, e.g. ObjectAccess::getPropertyPath($object, 'children.array.123')
+     * to get exactly the 123rd item in the "children" property which is an ObjectStorage.
+     *
+     * @return array
+     */
+    public function getArray()
+    {
+        return $this->toArray();
+    }
+
+    /**
      * Dummy method to avoid serialization.
      *
      * @throws \RuntimeException
