@@ -706,9 +706,11 @@ class Clipboard
      * @param array $clElements Array of selected elements
      * @param string $columnLabel Name of the content column
      * @return string JavaScript "confirm" message
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '')
     {
+        GeneralUtility::logDeprecatedFunction();
         $message = $this->confirmMsgText($table, $rec, $type, $clElements, $columnLabel);
         if (!empty($message)) {
             $message = 'confirm(' . GeneralUtility::quoteJSvalue($message) . ');';
