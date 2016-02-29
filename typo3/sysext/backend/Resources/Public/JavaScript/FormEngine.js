@@ -568,21 +568,23 @@ define(['jquery',
 
 		// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
 		$(document).on('click', '.t3-btn-moveoption-top, .t3-btn-moveoption-up, .t3-btn-moveoption-down, .t3-btn-moveoption-bottom, .t3-btn-removeoption', function(evt) {
+			evt.preventDefault();
+
 			var $el = $(this)
 					,fieldName = $el.data('fieldname')
 					,$listFieldEl = FormEngine.getFieldElement(fieldName, '_list');
 
 			if ($listFieldEl.length > 0) {
 
-				if ($el.hasClass('t3-btn-moveoption-top')) {
+				if ($el.hasClass('t3js-btn-moveoption-top')) {
 					FormEngine.moveOptionToTop($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-up')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-up')) {
 					FormEngine.moveOptionUp($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-down')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-down')) {
 					FormEngine.moveOptionDown($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-bottom')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-bottom')) {
 					FormEngine.moveOptionToBottom($listFieldEl);
-				} else if ($el.hasClass('t3-btn-removeoption')) {
+				} else if ($el.hasClass('t3js-btn-removeoption')) {
 					FormEngine.removeOption($listFieldEl);
 				}
 
