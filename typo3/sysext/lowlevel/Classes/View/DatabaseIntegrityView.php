@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -312,6 +313,8 @@ class DatabaseIntegrityView extends BaseScriptClass
     public function func_refindex()
     {
         $this->view->assign('PATH_typo3', PATH_typo3);
+        $this->view->assign('ReadmeLink', ExtensionManagementUtility::extRelPath('lowlevel') . 'README.rst');
+        $this->view->assign('ReadmeLocation', ExtensionManagementUtility::extPath('lowlevel', 'README.rst'));
 
         if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
             $testOnly = (bool)GeneralUtility::_GP('_check');
