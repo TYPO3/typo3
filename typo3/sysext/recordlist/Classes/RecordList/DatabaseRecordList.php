@@ -1961,15 +1961,29 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '', $title = '')
     {
-        $onClickEvent = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd) . ';document.dblistForm.cmd_table.value='
-            . GeneralUtility::quoteJSvalue($table) . ';document.dblistForm.submit();';
-        if ($warning) {
-            $onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
-        }
+        $jsCode = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd)
+            . ';document.dblistForm.cmd_table.value='
+            . GeneralUtility::quoteJSvalue($table)
+            . ';document.dblistForm.submit();';
+
+        $attributes = [
+            'class' => 'btn btn-default'
+        ];
         if ($title !== '') {
-            $title = 'title="' . htmlspecialchars($title) . '" ';
+            $attributes['title'] = $title;
         }
-        return '<a class="btn btn-default" href="#" ' . $title . ' onclick="' . htmlspecialchars(($onClickEvent . 'return false;')) . '">' . $string . '</a>';
+        if ($warning) {
+            $attributes['class'] = 'btn btn-default t3js-modal-trigger';
+            $attributes['data-href'] = 'javascript:' . $jsCode;
+            $attributes['data-severity'] = 'warning';
+            $attributes['data-title'] = $title;
+            $attributes['data-content'] = $warning;
+        }
+        $attributesString = '';
+        foreach ($attributes as $key => $value) {
+            $attributesString .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
+        }
+        return '<a href="#" ' . $attributesString . '>' . $string . '</a>';
     }
 
     /**
