@@ -244,14 +244,14 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         // Loop through the languages, with the highest priority first
         arsort($sortedPreferredLanguages, SORT_NUMERIC);
         foreach ($sortedPreferredLanguages as $preferredLanguage => $quality) {
-            if (isset($allLanguageCodes[$preferredLanguage])) {
-                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
+            if (isset($allLanguageCodesFromLocales[$preferredLanguage])) {
+                $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;
             }
             // Strip the country code from the end
             list($preferredLanguage, ) = explode('-', $preferredLanguage);
-            if (isset($allLanguageCodes[$preferredLanguage])) {
-                $selectedLanguage = $allLanguageCodes[$preferredLanguage];
+            if (isset($allLanguageCodesFromLocales[$preferredLanguage])) {
+                $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;
             }
         }
