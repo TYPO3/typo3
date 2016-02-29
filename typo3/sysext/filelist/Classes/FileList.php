@@ -367,7 +367,23 @@ class FileList extends AbstractRecordList
                             $elToConfirm[$key] = $clipBoardElement->getName();
                         }
                         if ($addPasteButton) {
-                            $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', 1) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
+                            $cells[] = '<a class="btn btn-default t3js-modal-trigger"'.
+                                ' href="' . htmlspecialchars($this->clipObj->pasteUrl(
+                                    '_FILE',
+                                    $this->folderObject->getCombinedIdentifier()
+                                )) . '"'
+                                . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText(
+                                    '_FILE',
+                                    $this->path,
+                                    'into',
+                                    $elToConfirm
+                                )) . '"'
+                                . ' data-severity="warning"'
+                                . ' data-title="' . $this->getLanguageService()->getLL('clip_paste', true) . '"'
+                                . ' title="' . $this->getLanguageService()->getLL('clip_paste', true) . '">'
+                                . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)
+                                    ->render()
+                                . '</a>';
                         }
                     }
                     if ($this->clipObj->current !== 'normal' && $iOut) {
@@ -858,7 +874,15 @@ class FileList extends AbstractRecordList
                 $elToConfirm[$key] = $clipBoardElement->getName();
             }
             if ($addPasteButton) {
-                $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullName, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '">' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';
+                $cells[] = '<a class="btn btn-default t3js-modal-trigger" '
+                    . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '"'
+                    . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm)) . '"'
+                    . ' data-severity="warning"'
+                    . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                    . ' title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                    .'>'
+                    . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
+                    . '</a>';
             }
         }
         // Compile items into a DIV-element:

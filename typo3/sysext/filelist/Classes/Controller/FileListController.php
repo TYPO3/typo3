@@ -661,11 +661,17 @@ class FileListController extends ActionController
                     $elToConfirm[$key] = $clipBoardElement->getName();
                 }
                 if ($addPasteButton) {
+                    $confirmText = $this->filelist->clipObj
+                        ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into', $elToConfirm);
                     $pasteButton = $buttonBar->makeLinkButton()
-                        ->setHref($this->filelist->clipObj->pasteUrl('_FILE',
-                            $this->folderObject->getCombinedIdentifier()))
-                        ->setOnClick('return ' . $this->filelist->clipObj->confirmMsg('_FILE',
-                                $this->folderObject->getReadablePath(), 'into', $elToConfirm))
+                        ->setHref($this->filelist->clipObj
+                            ->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier()))
+                        ->setClasses('t3js-modal-trigger')
+                        ->setDataAttributes([
+                            'severity' => 'warning',
+                            'content' => $confirmText,
+                            'title' => $lang->getLL('clip_paste')
+                        ])
                         ->setTitle($lang->getLL('clip_paste'))
                         ->setIcon($iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
