@@ -569,7 +569,9 @@ define(['jquery',
 		$(document).on('change', 'input,textarea,select', function() {
 			// Keep track of input fields to set the dirty state
 			FormEngine.isDirty = $(document).find('.has-change').length > 0;
-		}).on('click', '.t3-btn-moveoption-top, .t3-btn-moveoption-up, .t3-btn-moveoption-down, .t3-btn-moveoption-bottom, .t3-btn-removeoption', function(evt) {
+		}).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
+			evt.preventDefault();
+
 			// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
 			var $el = $(this)
 					,fieldName = $el.data('fieldname')
@@ -577,15 +579,15 @@ define(['jquery',
 
 			if ($listFieldEl.length > 0) {
 
-				if ($el.hasClass('t3-btn-moveoption-top')) {
+				if ($el.hasClass('t3js-btn-moveoption-top')) {
 					FormEngine.moveOptionToTop($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-up')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-up')) {
 					FormEngine.moveOptionUp($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-down')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-down')) {
 					FormEngine.moveOptionDown($listFieldEl);
-				} else if ($el.hasClass('t3-btn-moveoption-bottom')) {
+				} else if ($el.hasClass('t3js-btn-moveoption-bottom')) {
 					FormEngine.moveOptionToBottom($listFieldEl);
-				} else if ($el.hasClass('t3-btn-removeoption')) {
+				} else if ($el.hasClass('t3js-btn-removeoption')) {
 					FormEngine.removeOption($listFieldEl);
 				}
 

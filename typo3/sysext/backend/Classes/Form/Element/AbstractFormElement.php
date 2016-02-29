@@ -591,7 +591,7 @@ abstract class AbstractFormElement extends AbstractNode
                 if ($sSize >= 5) {
                     $icons['L'][] = '
 						<a href="#"
-							class="btn btn-default t3-btn-moveoption-top"
+							class="btn btn-default t3js-btn-moveoption-top"
 							data-fieldname="' . $fName . '"
 							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top')) . '">
 							' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render() . '
@@ -599,14 +599,14 @@ abstract class AbstractFormElement extends AbstractNode
                 }
                 $icons['L'][] = '
 					<a href="#"
-						class="btn btn-default t3-btn-moveoption-up"
+						class="btn btn-default t3js-btn-moveoption-up"
 						data-fieldname="' . $fName . '"
 						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up')) . '">
 						' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '
 					</a>';
                 $icons['L'][] = '
 					<a href="#"
-						class="btn btn-default t3-btn-moveoption-down"
+						class="btn btn-default t3js-btn-moveoption-down"
 						data-fieldname="' . $fName . '"
 						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down')) . '">
 						' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '
@@ -614,7 +614,7 @@ abstract class AbstractFormElement extends AbstractNode
                 if ($sSize >= 5) {
                     $icons['L'][] = '
 						<a href="#"
-							class="btn btn-default t3-btn-moveoption-bottom"
+							class="btn btn-default t3js-btn-moveoption-bottom"
 							data-fieldname="' . $fName . '"
 							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom')) . '">
 							' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render() . '
@@ -649,7 +649,7 @@ abstract class AbstractFormElement extends AbstractNode
         if (!$params['readOnly'] && !$params['noDelete']) {
             $icons['L'][] = '
 				<a href="#"
-					class="btn btn-default t3-btn-removeoption"
+					class="btn btn-default t3js-btn-removeoption"
 					onClick="' . $rOnClickInline . '"
 					data-fieldname="' . $fName . '"
 					title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected')) . '">
