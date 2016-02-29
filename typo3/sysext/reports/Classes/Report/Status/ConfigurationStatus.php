@@ -45,13 +45,6 @@ class ConfigurationStatus implements StatusProviderInterface
     protected $deprecationLogFileSizeErrorThreshold = 104857600;
 
     /**
-     * Backpath to the typo3 main directory
-     *
-     * @var string
-     */
-    protected $backPath = '../';
-
-    /**
      * Determines the Install Tool's status, mainly concerning its protection.
      *
      * @return array List of statuses
@@ -258,9 +251,8 @@ class ConfigurationStatus implements StatusProviderInterface
     protected function getDeprecationLogFileLink()
     {
         $logFile = GeneralUtility::getDeprecationLogFileName();
-        $relativePath = GeneralUtility::resolveBackPath($this->backPath . PathUtility::stripPathSitePrefix($logFile));
-        $link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
-        return $link;
+        $linkToLogFile = PathUtility::getAbsoluteWebPath($logFile);
+        return '<a href="' . $linkToLogFile . '">' . $logFile . '</a>';
     }
 
     /**
