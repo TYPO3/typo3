@@ -283,10 +283,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
                 $elFromTable = $this->clipObj->elFromTable('');
                 if (!empty($elFromTable)) {
-                    $onClick = htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)));
-                    $buttons['paste'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id))
-                        . '" onclick="' . $onClick . '" title="' . $lang->getLL('clip_paste', true) . '">'
-                        . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
+                    $confirmText = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
+                    $buttons['paste'] = '<a'
+                        . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id)) . '"'
+                        . ' title="' . $lang->getLL('clip_paste', true) . '"'
+                        . ' class="t3js-modal-trigger"'
+                        . ' data-severity="warning"'
+                        . ' data-title="' . $lang->getLL('clip_paste', true) . '"'
+                        . ' data-content="' . htmlspecialchars($confirmText) . '"'
+                        . '>'
+                        . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
+                        . '</a>';
                 }
             }
             // Cache
@@ -407,11 +414,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             if ($this->showClipboard && ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
                 $elFromTable = $this->clipObj->elFromTable('');
                 if (!empty($elFromTable)) {
-                    $onClick = 'return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable);
+                    $confirmMessage = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
                     $pasteButton = $buttonBar->makeLinkButton()
                         ->setHref($this->clipObj->pasteUrl('', $this->id))
-                        ->setOnClick($onClick)
                         ->setTitle($lang->getLL('clip_paste'))
+                        ->setClasses('t3js-modal-trigger')
+                        ->setDataAttributes([
+                            'severity' => 'warning',
+                            'content' => $confirmMessage,
+                            'title' => $lang->getLL('clip_paste')
+                        ])
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
                     $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 }
@@ -1063,10 +1075,15 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $elFromTable = $this->clipObj->elFromTable($table);
                     if (!empty($elFromTable) && $this->overlayEditLockPermissions($table)) {
                         $href = htmlspecialchars($this->clipObj->pasteUrl($table, $this->id));
-                        $onClick = htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable));
-                        $cells['pasteAfter'] = '<a class="btn btn-default" href="' . $href . '" onclick="' . $onClick
-                            . '" title="' . $lang->getLL('clip_paste', true) . '">'
-                            . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
+                        $confirmMessage = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
+                        $cells['pasteAfter'] = '<a class="btn btn-default t3js-modal-trigger"'
+                            . ' href="' . $href . '"'
+                            . ' title="' . $lang->getLL('clip_paste', true) . '"'
+                            . ' data-title="' . $lang->getLL('clip_paste', true) . '"'
+                            . ' data-content="' . htmlspecialchars($confirmMessage) . '"'
+                            . ' data-severity="warning">'
+                            . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render()
+                            . '</a>';
                     }
                     // If the numeric clipboard pads are enabled, display the control icons for that:
                     if ($this->clipObj->current != 'normal') {
@@ -1763,17 +1780,23 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             // IF elements are found, they can be individually ordered and are not locked by editlock, then add a "paste after" icon:
             $cells['pasteAfter'] = $isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)
                 ? $this->spaceIcon
-                : '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '" onclick="'
-                    . htmlspecialchars(('return ' . $this->clipObj->confirmMsg($table, $row, 'after', $elFromTable)))
-                    . '" title="' . $this->getLanguageService()->getLL('clip_pasteAfter', true) . '">'
+                : '<a class="btn btn-default t3js-modal-trigger"'
+                    . ' href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '"'
+                    . ' title="' . $this->getLanguageService()->getLL('clip_pasteAfter', true) . '"'
+                    . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteAfter', true) . '"'
+                    . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'after', $elFromTable)) . '"'
+                    . ' data-severity="warning">'
                     . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
         }
         // Now, looking for elements in general:
         $elFromTable = $this->clipObj->elFromTable('');
         if ($table == 'pages' && !empty($elFromTable)) {
-            $cells['pasteInto'] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid']))
-                . '" onclick="' . htmlspecialchars('return ' . $this->clipObj->confirmMsg($table, $row, 'into', $elFromTable))
-                . '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '">'
+            $cells['pasteInto'] = '<a class="btn btn-default t3js-modal-trigger"'
+                . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
+                . ' title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                . ' data-title="' . $this->getLanguageService()->getLL('clip_pasteInto', true) . '"'
+                . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'into', $elFromTable)) . '"'
+                . ' data-severity="warning">'
                 . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';
         }
         /**
