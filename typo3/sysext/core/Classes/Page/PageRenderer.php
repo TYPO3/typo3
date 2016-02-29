@@ -264,7 +264,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected $jsLibraryNames = array('extjs');
 
-    // Paths to contibuted libraries
+    // Paths to contributed libraries
 
     /**
      * default path to the requireJS library, relative to the typo3/ directory
@@ -402,21 +402,17 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $endingSlash = '';
 
     /**
-     * Used by BE modules
-     *
-     * @var null|string
-     */
-    public $backPath;
-
-    /**
      * @param string $templateFile Declare the used template file. Omit this parameter will use default template
-     * @param string $backPath Relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
      */
-    public function __construct($templateFile = '', $backPath = null)
+    public function __construct($templateFile = '')
     {
         $this->reset();
 
-        $coreRelPath = ExtensionManagementUtility::extRelPath('core');
+        if (TYPO3_MODE === 'FE') {
+            $coreRelPath = ExtensionManagementUtility::siteRelPath('core');
+        } else {
+            $coreRelPath = ExtensionManagementUtility::extRelPath('core');
+        }
         $this->requireJsPath = $coreRelPath . $this->requireJsPath;
         $this->extJsPath = $coreRelPath . $this->extJsPath;
         $this->jQueryPath = $coreRelPath . $this->jQueryPath;
@@ -426,7 +422,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
-        $this->backPath = isset($backPath) ? $backPath : '';
         $this->inlineJavascriptWrap = array(
             '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
             '/*]]>*/' . LF . '</script>' . LF
@@ -605,17 +600,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function setTemplateFile($file)
     {
         $this->templateFile = $file;
-    }
-
-    /**
-     * Sets back path
-     *
-     * @param string $backPath
-     * @return void
-     */
-    public function setBackPath($backPath)
-    {
-        $this->backPath = $backPath;
     }
 
     /**
@@ -2049,7 +2033,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             // load the paths of the requireJS configuration
             $out .= GeneralUtility::wrapJS('var require = ' . json_encode($this->requireJsConfig)) . LF;
                 // directly after that, include the require.js file
-            $out .= '<script src="' . $this->processJsFile(($this->backPath . $this->requireJsPath . 'require.js')) . '" type="text/javascript"></script>' . LF;
+            $out .= '<script src="' . $this->processJsFile($this->requireJsPath . 'require.js') . '" type="text/javascript"></script>' . LF;
         }
 
         // Include jQuery Core for each namespace, depending on the version and source
@@ -2061,8 +2045,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         // Include extJS
         if ($this->addExtJS) {
             // Use the base adapter all the time
-            $out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extJsPath . 'adapter/ext-base' . ($this->enableExtJsDebug ? '-debug' : '') . '.js')) . '" type="text/javascript"></script>' . LF;
-            $out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extJsPath . 'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js')) . '" type="text/javascript"></script>' . LF;
+            $out .= '<script src="' . $this->processJsFile($this->extJsPath . 'adapter/ext-base' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') . '" type="text/javascript"></script>' . LF;
+            $out .= '<script src="' . $this->processJsFile($this->extJsPath . 'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') . '" type="text/javascript"></script>' . LF;
             // Add extJS localization
             // Load standard ISO mapping and modify for use with ExtJS
             $localeMap = $this->locales->getIsoMapping();
@@ -2076,11 +2060,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $localeMap['se'] = 'se_SV';
             $extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
             $extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
-            if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
-                $out .= '<script src="' . $this->processJsFile(($this->backPath . $extJsLocaleFile)) . '" type="text/javascript" charset="utf-8"></script>' . LF;
+            if (file_exists(PATH_site . $extJsLocaleFile)) {
+                $out .= '<script src="' . $this->processJsFile($extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
             }
             // Remove extjs from JScodeLibArray
-            unset($this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'], $this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']);
+            unset($this->jsFiles[$this->extJsPath . 'ext-all.js'], $this->jsFiles[$this->extJsPath . 'ext-all-debug.js']);
         }
         $this->loadJavaScriptLanguageStrings();
         if (TYPO3_MODE === 'BE') {
@@ -2096,7 +2080,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                     $code .= $block;
                 }
             }
-            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl($this->backPath . ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/clear.gif'));
+            $clearGifPath = htmlspecialchars(GeneralUtility::locationHeaderUrl(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/clear.gif'));
             $out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
 				Ext.BLANK_IMAGE_URL = "' . $clearGifPath . '";
@@ -2109,20 +2093,20 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $this->extOnReadyCode = array();
             // Include TYPO3.l10n object
             if (TYPO3_MODE === 'BE') {
-                $out .= '<script src="' . $this->processJsFile(($this->backPath . ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/Typo3Lang.js')) . '" type="text/javascript" charset="utf-8"></script>' . LF;
+                $out .= '<script src="' . $this->processJsFile(ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
             }
             if ($this->extJScss) {
                 if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
-                    $this->addCssLibrary($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'all', '', true);
+                    $this->addCssLibrary($GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'all', '', true);
                 } else {
-                    $this->addCssLibrary($this->backPath . $this->extJsPath . 'resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', true);
+                    $this->addCssLibrary($this->extJsPath . 'resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', true);
                 }
             }
             if ($this->extJStheme) {
                 if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
-                    $this->addCssLibrary($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'all', '', true);
+                    $this->addCssLibrary($GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'all', '', true);
                 } else {
-                    $this->addCssLibrary($this->backPath . $this->extJsPath . 'resources/css/xtheme-blue.css', 'stylesheet', 'all', '', true);
+                    $this->addCssLibrary($this->extJsPath . 'resources/css/xtheme-blue.css', 'stylesheet', 'all', '', true);
                 }
             }
         } else {
@@ -2210,7 +2194,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 $jQueryFileName = sprintf($this->jQueryCdnUrls[$source], $version, $minifyPart);
                 break;
             case $source === 'local':
-                $jQueryFileName = $this->backPath . $this->jQueryPath . 'jquery-' . rawurlencode($version);
+                $jQueryFileName = $this->jQueryPath . 'jquery-' . rawurlencode($version);
                 if ($this->enableJqueryDebug) {
                     $jQueryFileName .= '.js';
                 } else {

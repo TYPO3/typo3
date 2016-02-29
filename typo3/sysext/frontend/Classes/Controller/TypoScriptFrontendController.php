@@ -905,7 +905,6 @@ class TypoScriptFrontendController
         }
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
-        $this->pageRenderer->setBackPath(TYPO3_mainDir);
     }
 
     /**
