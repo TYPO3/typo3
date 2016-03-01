@@ -15,6 +15,7 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
  */
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -36,6 +37,12 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class ClickEnlargeViewHelper extends AbstractViewHelper
 {
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Initialize ViewHelper arguments
      *
@@ -43,7 +50,7 @@ class ClickEnlargeViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('image', '', 'The original image file', true);
+        $this->registerArgument('image', FileReference::class, 'The original image file', true);
         $this->registerArgument(
             'configuration',
             'mixed',
