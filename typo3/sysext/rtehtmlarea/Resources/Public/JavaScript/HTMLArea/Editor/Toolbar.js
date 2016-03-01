@@ -32,6 +32,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	 */
 	var Toolbar = function (config) {
 		Util.apply(this, config);
+
+		/**
+		 * The toolbar items
+		 */
+		this.items = {};
 	};
 
 	Toolbar.prototype = {
@@ -75,11 +80,6 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 		getEditor: function() {
 			return RTEarea[this.editorId].editor;
 		},
-
-		/**
-		 * The toolbar items
-		 */
-		items: {},
 
 		/**
 		 * Create the toolbar items based on editor toolbar configuration
