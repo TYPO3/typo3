@@ -55,7 +55,7 @@ class SwitchUserViewHelper extends AbstractViewHelper
     {
         $backendUser = $arguments['backendUser'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive()) {
+        if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive() || $GLOBALS['BE_USER']->user['ses_backuserid']) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
         $title = LocalizationUtility::translate('switchBackMode', 'beuser');
