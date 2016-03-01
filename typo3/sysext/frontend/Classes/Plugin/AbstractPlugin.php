@@ -103,13 +103,6 @@ class AbstractPlugin
     protected $LOCAL_LANG_UNSET = array();
 
     /**
-     * Local Language content charset for individual labels (overriding)
-     *
-     * @var array
-     */
-    public $LOCAL_LANG_charset = array();
-
-    /**
      * Flag that tells if the locallang file has been fetch (or tried to
      * be fetched) already.
      *
@@ -918,12 +911,7 @@ class AbstractPlugin
         if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])
             || isset($this->LOCAL_LANG_UNSET[$this->LLkey][$key])
         ) {
-            // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-            if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
-                $word = $this->frontendController->csConv($this->LOCAL_LANG[$this->LLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->LLkey][$key]);
-            } else {
-                $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
-            }
+            $word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
         } elseif ($this->altLLkey) {
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             $alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
@@ -933,13 +921,6 @@ class AbstractPlugin
                 ) {
                     // Alternative language translation for key exists
                     $word = $this->LOCAL_LANG[$languageKey][$key][0]['target'];
-                    // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-                    if (isset($this->LOCAL_LANG_charset[$languageKey][$key])) {
-                        $word = $this->frontendController->csConv(
-                            $word,
-                            $this->LOCAL_LANG_charset[$this->altLLkey][$key]
-                        );
-                    }
                     break;
                 }
             }
@@ -1009,7 +990,6 @@ class AbstractPlugin
                                 if ($labelValue === '') {
                                     $this->LOCAL_LANG_UNSET[$languageKey][$labelKey] = '';
                                 }
-                                $this->LOCAL_LANG_charset[$languageKey][$labelKey] = 'utf-8';
                             }
                         }
                     }
