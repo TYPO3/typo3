@@ -57,7 +57,6 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->tsfe->sys_page = $sysPageMock;
         $GLOBALS['TSFE'] = $this->tsfe;
         $GLOBALS['TSFE']->csConvObj = new CharsetConverter();
-        $GLOBALS['TSFE']->renderCharset = 'utf-8';
 
         $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap(array(

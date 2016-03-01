@@ -339,10 +339,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
         // Add operators for various languages
-        // Converts the operators to UTF-8 and lowercase
-        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_AND'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND');
-        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_OR'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'OR');
-        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv($this->pi_getLL('local_operator_NOT'), $this->frontendController->renderCharset, 'utf-8'), 'toLower'), 'AND NOT');
+        // Converts the operators to lowercase
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->pi_getLL('local_operator_AND'), 'toLower'), 'AND');
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->pi_getLL('local_operator_OR'), 'toLower'), 'OR');
+        $this->operator_translate_table[] = array($this->charsetConverter->conv_case('utf-8', $this->pi_getLL('local_operator_NOT'), 'toLower'), 'AND NOT');
         // This is the id of the site root. This value may be a commalist of integer (prepared for this)
         $this->wholeSiteIdList = (int)$this->frontendController->config['rootLine'][0]['uid'];
         // Creating levels for section menu:
@@ -1761,17 +1761,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             if ($c) {
                 switch ($v['oper']) {
                     case 'OR':
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_or', '', true) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_or', '', true) . ' ' . $this->wrapSW($v['sword']);
                         break;
                     case 'AND NOT':
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_butNot', '', true) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_butNot', '', true) . ' ' . $this->wrapSW($v['sword']);
                         break;
                     default:
                         // AND...
-                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_and', '', true) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+                        $searchingFor .= ' ' . $this->pi_getLL('searchFor_and', '', true) . ' ' . $this->wrapSW($v['sword']);
                 }
             } else {
-                $searchingFor = $this->pi_getLL('searchFor', '', true) . ' ' . $this->wrapSW($this->utf8_to_currentCharset($v['sword']));
+                $searchingFor = $this->pi_getLL('searchFor', '', true) . ' ' . $this->wrapSW($v['sword']);
             }
             $c++;
         }
@@ -1954,7 +1954,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $outputStr = $this->charsetConverter->crop('utf-8', $row['item_description'], $lgd, $this->conf['results.']['summaryCropSignifier']);
                 $outputStr = htmlspecialchars($outputStr);
             }
-            $output = $this->utf8_to_currentCharset($outputStr ?: $markedSW);
+            $output = $outputStr ?: $markedSW;
         } else {
             $output = '<span class="noResume">' . $this->pi_getLL('res_noResume', '', true) . '</span>';
         }
@@ -2051,7 +2051,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
         $outputString = $this->charsetConverter->crop('utf-8', $row['item_title'], $this->conf['results.']['titleCropAfter'], $this->conf['results.']['titleCropSignifier']);
-        return $this->utf8_to_currentCharset($outputString) . $add;
+        return $outputString . $add;
     }
 
     /**
@@ -2310,9 +2310,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @param string String to convert (utf-8)
      * @return string Converted string (backend charset if different from utf-8)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function utf8_to_currentCharset($str)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->frontendController->csConv($str, 'utf-8');
     }
 

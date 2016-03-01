@@ -153,14 +153,13 @@ class LocalizationUtility
         }
         $locallangPathAndFilename = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
         self::setLanguageKeys();
-        $renderCharset = TYPO3_MODE === 'FE' ? self::getTypoScriptFrontendController()->renderCharset : 'utf-8';
 
         /** @var $languageFactory LocalizationFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 
-        self::$LOCAL_LANG[$extensionName] = $languageFactory->getParsedData($locallangPathAndFilename, self::$languageKey, $renderCharset);
+        self::$LOCAL_LANG[$extensionName] = $languageFactory->getParsedData($locallangPathAndFilename, self::$languageKey, 'utf-8');
         foreach (self::$alternativeLanguageKeys as $language) {
-            $tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language, $renderCharset);
+            $tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language, 'utf-8');
             if (self::$languageKey !== 'default' && isset($tempLL[$language])) {
                 self::$LOCAL_LANG[$extensionName][$language] = $tempLL[$language];
             }

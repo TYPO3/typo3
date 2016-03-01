@@ -672,7 +672,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $outputStr = htmlspecialchars($outputStr);
             }
             $output = $outputStr ?: $markedSW;
-            $output = $GLOBALS['TSFE']->csConv($output, 'utf-8');
         } else {
             $output = '<span class="noResume">' . LocalizationUtility::translate('result.noResume', 'IndexedSearch') . '</span>';
         }
@@ -834,10 +833,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     array('|', 'OR'),
                     array('-', 'AND NOT'),
                     // Add operators for various languages
-                    // Converts the operators to UTF-8 and lowercase
-                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND'),
-                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'OR'),
-                    array($this->charsetConverter->conv_case('utf-8', $this->charsetConverter->conv(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset, 'utf-8'), 'toLower'), 'AND NOT')
+                    // Converts the operators to lowercase
+                    array($this->charsetConverter->conv_case('utf-8', LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), 'toLower'), 'AND'),
+                    array($this->charsetConverter->conv_case('utf-8', LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), 'toLower'), 'OR'),
+                    array($this->charsetConverter->conv_case('utf-8', LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), 'toLower'), 'AND NOT')
                 );
                 $swordArray = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {

@@ -339,7 +339,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
      * Set the default character set used
      *
      * Respect formMailCharset if it was set, otherwise use metaCharset for mail
-     * if different from renderCharset
+     * if different than utf-8
      *
      * @return void
      */
@@ -348,7 +348,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
         $characterSet = null;
         if ($GLOBALS['TSFE']->config['config']['formMailCharset']) {
             $characterSet = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
-        } elseif ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset) {
+        } elseif ($GLOBALS['TSFE']->metaCharset !== 'utf-8') {
             $characterSet = $GLOBALS['TSFE']->metaCharset;
         }
         if ($characterSet) {

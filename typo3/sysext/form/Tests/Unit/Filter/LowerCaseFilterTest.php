@@ -29,7 +29,6 @@ class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject = new \TYPO3\CMS\Form\Domain\Filter\LowerCaseFilter();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
-        $GLOBALS['TSFE']->renderCharset = 'utf-8';
     }
 
     public function dataProvider()

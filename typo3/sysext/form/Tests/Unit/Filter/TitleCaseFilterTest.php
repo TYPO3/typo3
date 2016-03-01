@@ -35,7 +35,6 @@ class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->subject = new TitleCaseFilter();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->csConvObj = new CharsetConverter();
-        $GLOBALS['TSFE']->renderCharset = 'utf-8';
     }
 
     /**

@@ -594,8 +594,8 @@ config.message_preview_workspace = <div class="previewbox">Displaying workspace 
 
 Is used for a) HTML meta-tag, b) HTTP header (unless disabled with .disableCharsetHeader) and c) xhtml prologues (if available)
 
-If renderCharset and metaCharset are different the output content is automatically converted to metaCharset before output and likewise are values posted back to the page converted from metaCharset to renderCharset for internal processing. This conversion takes time of course so there is another good reason to use the same charset for both.]]></description>
-			<default><![CDATA[value of ".renderCharset"]]></default>
+If metaCharset is different than utf-8 the output content is automatically converted to metaCharset before output and likewise are values posted back to the page converted from metaCharset to utf-8 for internal processing. This conversion takes time of course so there is another good reason to use the same charset for both.]]></description>
+			<default><![CDATA[utf-8]]></default>
 		</property>
 		<property name="moveJsFromHeaderToFooter" type="boolean">
 			<description><![CDATA[
@@ -747,15 +747,6 @@ Example:
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/class.tx_myext_cssConcatenateHandler.php:tx_myext_cssConcatenateHandler->concatenateCss';]]></description>
 			<default><![CDATA[false]]></default>
-		</property>
-		<property name="renderCharset" type="string">
-			<description><![CDATA[Charset used for rendering internally of the page content. It is highly recommended that this value is the same as the charset of the content coming from the main data source (eg. the database). Thus you don't need to do any other conversion.
-All strings from locallang files and locale strings are (and should be) converted to "renderCharset" during rendering.
-
-If you need another output charset than the render charset, see "metaCharset" below.
-
-]]></description>
-			<default><![CDATA[UTF-8]]></default>
 		</property>
 		<property name="sendCacheHeaders" type="boolean">
 			<description><![CDATA[If set, TYPO3 will output cache-control headers to the client based mainly on  whether the page was cached internally. This feature allows client browsers and/or reverse proxies to take load of TYPO3 websites.
@@ -1005,7 +996,7 @@ output = only the output code just before it's echoed out.]]></description>
 		<property name="xmlprologue" type="string">
 			<description><![CDATA[If empty (not set) then the default XML 1.0 prologue is set, when the doctype is set to a known keyword (eg xhtml_11):
 
-<?xml version="1.0" encoding="[config.renderCharset]">
+<?xml version="1.0" encoding="utf-8">
 
 If set to one of the know keywords then a standard prologue will be set:
 "xml_10" XML 1.0 prologue (see above)
@@ -6948,7 +6939,7 @@ bytes.labels = " | K| M| G"]]></description>
 - lower: Converts to lower case
 - capitalize: Capitalize words
 
-Uses "renderCharset" for the operation.]]></description>
+Uses utf-8 for the operation.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6967,7 +6958,7 @@ Examples:
 -20 | ... => max 20 characters. If more, the value will be truncated to last 20 chars and appended with "..."
 20 | ... | 1 => max 20 characters. If more, the value will be truncated to last 20 chars and appended with "...". If the division is in the middle of a word, the remains of that word is removed.
 
-Uses "renderCharset" for the operation.]]></description>
+Uses utf-8 for the operation.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6979,7 +6970,7 @@ Note that stdWrap.crop should not be used if stdWrap.cropHTML is already used.]]
 ]]></default>
 		</property>
 		<property name="csConv" type="string">
-			<description><![CDATA[Convert the charset of the string from the charset given as value to the current rendering charset of the frontend (renderCharset).]]></description>
+			<description><![CDATA[Convert the charset of the string from the charset given as value to utf-8.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7494,7 +7485,7 @@ If set, a clear gif is not used by rather a <div> tag with a style-attribute set
 This formatting is useful if the locale is set in advance in the CONFIG-object. See this.
 
 Properties:
-.charset  : Can be set to the charset of the output string if you need to convert it to renderCharset. Default is to take the intelligently guessed charset from \TYPO3\CMS\Core\Charset\CharsetConverter.]]></description>
+.charset  : Can be set to the charset of the output string if you need to convert it to utf-8. Default is to take the intelligently guessed charset from \TYPO3\CMS\Core\Charset\CharsetConverter.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7506,7 +7497,7 @@ Properties:
 		<property name="substring" type="stringList">
 			<description><![CDATA[Returns the substring with [p1] and [p2] send as the 2nd and 3rd parameter to the PHP substring function.
 
-Uses "renderCharset" for the operation.]]></description>
+Uses utf-8 as character set for the operation.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

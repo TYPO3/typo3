@@ -185,7 +185,7 @@ class RequestHandler implements RequestHandlerInterface
         $this->controller->settingLocale();
         $this->timeTracker->pull();
 
-        // Convert POST data to internal "renderCharset" if different from the metaCharset
+        // Convert POST data to utf-8 for internal processing if metaCharset is different
         $this->controller->convPOSTCharset();
 
         $this->controller->initializeRedirectUrlHandlers();

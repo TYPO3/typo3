@@ -300,30 +300,18 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
      *
      * @param string $fileName Input string, typically the body of a fileName
-     * @param string $charset Charset of the a fileName (defaults to current charset; depending on context)
+     * @param string $charset Charset of the a fileName (defaults to utf-8)
      * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
      * @throws Exception\InvalidFileNameException
      */
-    public function sanitizeFileName($fileName, $charset = '')
+    public function sanitizeFileName($fileName, $charset = 'utf-8')
     {
         // Handle UTF-8 characters
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
-            // Define character set
-            if (!$charset) {
-                if (TYPO3_MODE === 'FE') {
-                    $charset = $GLOBALS['TSFE']->renderCharset;
-                } else {
-                    // default for Backend
-                    $charset = 'utf-8';
-                }
-            }
-            // If a charset was found, convert fileName
-            if ($charset) {
-                $fileName = $this->getCharsetConversion()->specCharsToASCII($charset, $fileName);
-            }
+            $fileName = $this->getCharsetConversion()->specCharsToASCII($charset, $fileName);
             // Replace unwanted characters by underscores
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
         }

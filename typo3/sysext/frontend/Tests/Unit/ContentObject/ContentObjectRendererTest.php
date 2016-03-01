@@ -104,7 +104,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->typoScriptFrontendControllerMock->page = array();
         $this->typoScriptFrontendControllerMock->sys_page = $pageRepositoryMock;
         $this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
-        $this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 
@@ -142,17 +141,16 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Converts the subject and the expected result into the target charset.
+     * Converts the subject and the expected result into utf-8.
      *
-     * @param string $charset the target charset
      * @param string $subject the subject, will be modified
      * @param string $expected the expected result, will be modified
      */
-    protected function handleCharset($charset, &$subject, &$expected)
+    protected function handleCharset(&$subject, &$expected)
     {
-        $GLOBALS['TSFE']->renderCharset = $charset;
-        $subject = $GLOBALS['TSFE']->csConvObj->conv($subject, 'iso-8859-1', $charset);
-        $expected = $GLOBALS['TSFE']->csConvObj->conv($expected, 'iso-8859-1', $charset);
+        $charsetConverter = new CharsetConverter();
+        $subject = $charsetConverter->conv($subject, 'iso-8859-1', 'utf-8');
+        $expected = $charsetConverter->conv($expected, 'iso-8859-1', 'utf-8');
     }
 
     /////////////////////////////////////////////
@@ -486,276 +484,228 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j implemented the original version of the crop function.';
         $textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>' . ' implemented</strong> the original version of the crop function.';
         $textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original ' . 'version of the crop function.';
-        $charsets = array('iso-8859-1', 'utf-8', 'ascii', 'big5');
-        $data = array();
-        foreach ($charsets as $charset) {
-            $data = array_merge($data, array(
-                $charset . ' plain text; 11|...' => array(
-                    '11|...',
-                    $plainText,
-                    'Kasper Sk' . chr(229) . 'r...',
-                    $charset
-                ),
-                $charset . ' plain text; -58|...' => array(
-                    '-58|...',
-                    $plainText,
-                    '...h' . chr(248) . 'j implemented the original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' plain text; 4|...|1' => array(
-                    '4|...|1',
-                    $plainText,
-                    'Kasp...',
-                    $charset
-                ),
-                $charset . ' plain text; 20|...|1' => array(
-                    '20|...|1',
-                    $plainText,
-                    'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...',
-                    $charset
-                ),
-                $charset . ' plain text; -5|...|1' => array(
-                    '-5|...|1',
-                    $plainText,
-                    '...tion.',
-                    $charset
-                ),
-                $charset . ' plain text; -49|...|1' => array(
-                    '-49|...|1',
-                    $plainText,
-                    '...the original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with markup; 11|...' => array(
-                    '11|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'r...</a></strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 13|...' => array(
-                    '13|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . '...</a></strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 14|...' => array(
-                    '14|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 15|...' => array(
-                    '15|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> ...</strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 29|...' => array(
-                    '29|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> th...',
-                    $charset
-                ),
-                $charset . ' text with markup; -58|...' => array(
-                    '-58|...',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with markup 4|...|1' => array(
-                    '4|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasp...</a></strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 11|...|1' => array(
-                    '11|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 13|...|1' => array(
-                    '13|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 14|...|1' => array(
-                    '14|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 15|...|1' => array(
-                    '15|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
-                    $charset
-                ),
-                $charset . ' text with markup; 29|...|1' => array(
-                    '29|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong>...',
-                    $charset
-                ),
-                $charset . ' text with markup; -66|...|1' => array(
-                    '-66|...|1',
-                    $textWithMarkup,
-                    '<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities 9|...' => array(
-                    '9|...',
-                    $textWithEntities,
-                    'Kasper Sk...',
-                    $charset
-                ),
-                $charset . ' text with entities 10|...' => array(
-                    '10|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;...',
-                    $charset
-                ),
-                $charset . ' text with entities 11|...' => array(
-                    '11|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;r...',
-                    $charset
-                ),
-                $charset . ' text with entities 13|...' => array(
-                    '13|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;...',
-                    $charset
-                ),
-                $charset . ' text with entities 14|...' => array(
-                    '14|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j...',
-                    $charset
-                ),
-                $charset . ' text with entities 15|...' => array(
-                    '15|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j ...',
-                    $charset
-                ),
-                $charset . ' text with entities 16|...' => array(
-                    '16|...',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j i...',
-                    $charset
-                ),
-                $charset . ' text with entities -57|...' => array(
-                    '-57|...',
-                    $textWithEntities,
-                    '...j implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities -58|...' => array(
-                    '-58|...',
-                    $textWithEntities,
-                    '...&oslash;j implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities -59|...' => array(
-                    '-59|...',
-                    $textWithEntities,
-                    '...h&oslash;j implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities 4|...|1' => array(
-                    '4|...|1',
-                    $textWithEntities,
-                    'Kasp...',
-                    $charset
-                ),
-                $charset . ' text with entities 9|...|1' => array(
-                    '9|...|1',
-                    $textWithEntities,
-                    'Kasper...',
-                    $charset
-                ),
-                $charset . ' text with entities 10|...|1' => array(
-                    '10|...|1',
-                    $textWithEntities,
-                    'Kasper...',
-                    $charset
-                ),
-                $charset . ' text with entities 11|...|1' => array(
-                    '11|...|1',
-                    $textWithEntities,
-                    'Kasper...',
-                    $charset
-                ),
-                $charset . ' text with entities 13|...|1' => array(
-                    '13|...|1',
-                    $textWithEntities,
-                    'Kasper...',
-                    $charset
-                ),
-                $charset . ' text with entities 14|...|1' => array(
-                    '14|...|1',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j...',
-                    $charset
-                ),
-                $charset . ' text with entities 15|...|1' => array(
-                    '15|...|1',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j...',
-                    $charset
-                ),
-                $charset . ' text with entities 16|...|1' => array(
-                    '16|...|1',
-                    $textWithEntities,
-                    'Kasper Sk&aring;rh&oslash;j...',
-                    $charset
-                ),
-                $charset . ' text with entities -57|...|1' => array(
-                    '-57|...|1',
-                    $textWithEntities,
-                    '...implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities -58|...|1' => array(
-                    '-58|...|1',
-                    $textWithEntities,
-                    '...implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with entities -59|...|1' => array(
-                    '-59|...|1',
-                    $textWithEntities,
-                    '...implemented the; original version of the crop function.',
-                    $charset
-                ),
-                $charset . ' text with dash in html-element 28|...|1' => array(
-                    '28|...|1',
-                    'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it',
-                    'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>',
-                    $charset
-                ),
-                $charset . ' html elements with dashes in attributes' => array(
-                    '9',
-                    '<em data-foo="x">foobar</em>foobaz',
-                    '<em data-foo="x">foobar</em>foo',
-                    $charset
-                ),
-                $charset . ' html elements with iframe embedded 24|...|1' => array(
-                    '24|...|1',
-                    'Text with iframe <iframe src="//what.ever/"></iframe> and text after it',
-                    'Text with iframe <iframe src="//what.ever/"></iframe> and...',
-                    $charset
-                ),
-                $charset . ' html elements with script tag embedded 24|...|1' => array(
-                    '24|...|1',
-                    'Text with script <script>alert(\'foo\');</script> and text after it',
-                    'Text with script <script>alert(\'foo\');</script> and...',
-                    $charset
-                ),
-            ));
-        }
+        $data = array(
+            'plain text; 11|...' => array(
+                '11|...',
+                $plainText,
+                'Kasper Sk' . chr(229) . 'r...'
+            ),
+            'plain text; -58|...' => array(
+                '-58|...',
+                $plainText,
+                '...h' . chr(248) . 'j implemented the original version of the crop function.'
+            ),
+            'plain text; 4|...|1' => array(
+                '4|...|1',
+                $plainText,
+                'Kasp...'
+            ),
+            'plain text; 20|...|1' => array(
+                '20|...|1',
+                $plainText,
+                'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...'
+            ),
+            'plain text; -5|...|1' => array(
+                '-5|...|1',
+                $plainText,
+                '...tion.'
+            ),
+            'plain text; -49|...|1' => array(
+                '-49|...|1',
+                $plainText,
+                '...the original version of the crop function.'
+            ),
+            'text with markup; 11|...' => array(
+                '11|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'r...</a></strong>'
+            ),
+            'text with markup; 13|...' => array(
+                '13|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . '...</a></strong>'
+            ),
+            'text with markup; 14|...' => array(
+                '14|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>'
+            ),
+            'text with markup; 15|...' => array(
+                '15|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> ...</strong>'
+            ),
+            'text with markup; 29|...' => array(
+                '29|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> th...'
+            ),
+            'text with markup; -58|...' => array(
+                '-58|...',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.'
+            ),
+            'text with markup 4|...|1' => array(
+                '4|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasp...</a></strong>'
+            ),
+            'text with markup; 11|...|1' => array(
+                '11|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>'
+            ),
+            'text with markup; 13|...|1' => array(
+                '13|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>'
+            ),
+            'text with markup; 14|...|1' => array(
+                '14|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>'
+            ),
+            'text with markup; 15|...|1' => array(
+                '15|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>'
+            ),
+            'text with markup; 29|...|1' => array(
+                '29|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong>...'
+            ),
+            'text with markup; -66|...|1' => array(
+                '-66|...|1',
+                $textWithMarkup,
+                '<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.'
+            ),
+            'text with entities 9|...' => array(
+                '9|...',
+                $textWithEntities,
+                'Kasper Sk...'
+            ),
+            'text with entities 10|...' => array(
+                '10|...',
+                $textWithEntities,
+                'Kasper Sk&aring;...'
+            ),
+            'text with entities 11|...' => array(
+                '11|...',
+                $textWithEntities,
+                'Kasper Sk&aring;r...'
+            ),
+            'text with entities 13|...' => array(
+                '13|...',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;...'
+            ),
+            'text with entities 14|...' => array(
+                '14|...',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j...'
+            ),
+            'text with entities 15|...' => array(
+                '15|...',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j ...'
+            ),
+            'text with entities 16|...' => array(
+                '16|...',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j i...'
+            ),
+            'text with entities -57|...' => array(
+                '-57|...',
+                $textWithEntities,
+                '...j implemented the; original version of the crop function.'
+            ),
+            'text with entities -58|...' => array(
+                '-58|...',
+                $textWithEntities,
+                '...&oslash;j implemented the; original version of the crop function.'
+            ),
+            'text with entities -59|...' => array(
+                '-59|...',
+                $textWithEntities,
+                '...h&oslash;j implemented the; original version of the crop function.'
+            ),
+            'text with entities 4|...|1' => array(
+                '4|...|1',
+                $textWithEntities,
+                'Kasp...'
+            ),
+            'text with entities 9|...|1' => array(
+                '9|...|1',
+                $textWithEntities,
+                'Kasper...'
+            ),
+            'text with entities 10|...|1' => array(
+                '10|...|1',
+                $textWithEntities,
+                'Kasper...'
+            ),
+            'text with entities 11|...|1' => array(
+                '11|...|1',
+                $textWithEntities,
+                'Kasper...'
+            ),
+            'text with entities 13|...|1' => array(
+                '13|...|1',
+                $textWithEntities,
+                'Kasper...'
+            ),
+            'text with entities 14|...|1' => array(
+                '14|...|1',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j...'
+            ),
+            'text with entities 15|...|1' => array(
+                '15|...|1',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j...'
+            ),
+            'text with entities 16|...|1' => array(
+                '16|...|1',
+                $textWithEntities,
+                'Kasper Sk&aring;rh&oslash;j...'
+            ),
+            'text with entities -57|...|1' => array(
+                '-57|...|1',
+                $textWithEntities,
+                '...implemented the; original version of the crop function.'
+            ),
+            'text with entities -58|...|1' => array(
+                '-58|...|1',
+                $textWithEntities,
+                '...implemented the; original version of the crop function.'
+            ),
+            'text with entities -59|...|1' => array(
+                '-59|...|1',
+                $textWithEntities,
+                '...implemented the; original version of the crop function.'
+            ),
+            'text with dash in html-element 28|...|1' => array(
+                '28|...|1',
+                'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it',
+                'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>'
+            ),
+            'html elements with dashes in attributes' => array(
+                '9',
+                '<em data-foo="x">foobar</em>foobaz',
+                '<em data-foo="x">foobar</em>foo'
+            ),
+            'html elements with iframe embedded 24|...|1' => array(
+                '24|...|1',
+                'Text with iframe <iframe src="//what.ever/"></iframe> and text after it',
+                'Text with iframe <iframe src="//what.ever/"></iframe> and...'
+            ),
+            'html elements with script tag embedded 24|...|1' => array(
+                '24|...|1',
+                'Text with script <script>alert(\'foo\');</script> and text after it',
+                'Text with script <script>alert(\'foo\');</script> and...'
+            )
+        );
         return $data;
     }
 
@@ -767,12 +717,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param string $settings
      * @param string $subject the string to crop
      * @param string $expected the expected cropped result
-     * @param string $charset the charset that will be set as renderCharset
      */
-    public function cropHtmlWithDataProvider($settings, $subject, $expected, $charset)
+    public function cropHtmlWithDataProvider($settings, $subject, $expected)
     {
-        $this->handleCharset($charset, $subject, $expected);
-        $this->assertEquals($expected, $this->subject->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"');
+        $this->handleCharset($subject, $expected);
+        $this->assertEquals($expected, $this->subject->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '"');
     }
 
     /**
@@ -783,7 +732,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cropHtmlWorksWithComplexContent()
     {
-        $GLOBALS['TSFE']->renderCharset = 'iso-8859-1';
         $input =
             '<h1>Blog Example</h1>' . LF .
             '<hr>' . LF .
@@ -2646,7 +2594,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeTsfe()
     {
-        $this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->subject->getData('tsfe:renderCharset'));
+        $this->assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('tsfe:metaCharset'));
     }
 
     /**
@@ -2769,7 +2717,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDataWithTypeGlobal()
     {
-        $this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->subject->getData('global:TSFE|renderCharset'));
+        $this->assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('global:TSFE|metaCharset'));
     }
 
     /**

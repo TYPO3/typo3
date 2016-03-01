@@ -44,7 +44,6 @@ class CaseContentObjectTest extends UnitTestCase
         $tsfe->page = array();
         $tsfe->sys_page = $this->getMock(PageRepository::class, array('getRawRecord'));
         $tsfe->csConvObj = new CharsetConverter();
-        $tsfe->renderCharset = 'utf-8';
         $GLOBALS['TSFE'] = $tsfe;
 
         $contentObjectRenderer = new ContentObjectRenderer();

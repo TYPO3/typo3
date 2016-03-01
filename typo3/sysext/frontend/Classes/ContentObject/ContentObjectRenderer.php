@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -2531,7 +2532,14 @@ class ContentObjectRenderer
      */
     public function stdWrap_csConv($content = '', $conf = array())
     {
-        return $this->getTypoScriptFrontendController()->csConv($content, $conf['csConv']);
+        if (!empty($conf['csConv'])) {
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+            $output = $charsetConverter->conv($content, $charsetConverter->parse_charset($conf['csConv']), 'utf-8');
+            return $output ?: $content;
+        } else {
+            return $content;
+        }
     }
 
     /**
@@ -2723,7 +2731,10 @@ class ContentObjectRenderer
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = $conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content);
         if (!empty($conf['strftime.']['charset'])) {
-            $content = $this->getTypoScriptFrontendController()->csConv($content, $conf['strftime.']['charset']);
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+            $output = $charsetConverter->conv($content, $charsetConverter->parse_charset($conf['strftime.']['charset']), 'utf-8');
+            return $output ?: $content;
         }
         return $content;
     }
@@ -3819,9 +3830,9 @@ class ContentObjectRenderer
         $tsfe = $this->getTypoScriptFrontendController();
         $options = GeneralUtility::intExplode(',', $options . ',');
         if ($options[1]) {
-            return $tsfe->csConvObj->substr($tsfe->renderCharset, $content, $options[0], $options[1]);
+            return $tsfe->csConvObj->substr('utf-8', $content, $options[0], $options[1]);
         } else {
-            return $tsfe->csConvObj->substr($tsfe->renderCharset, $content, $options[0]);
+            return $tsfe->csConvObj->substr('utf-8', $content, $options[0]);
         }
     }
 
@@ -3841,17 +3852,18 @@ class ContentObjectRenderer
         $afterstring = trim($options[1]);
         $crop2space = trim($options[2]);
         if ($chars) {
-            $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe->csConvObj->strlen($tsfe->renderCharset, $content) > abs($chars)) {
+            /** @var CharsetConverter $charsetConverter */
+            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+            if ($charsetConverter->strlen('utf-8', $content) > abs($chars)) {
                 $truncatePosition = false;
                 if ($chars < 0) {
-                    $content = $tsfe->csConvObj->substr($tsfe->renderCharset, $content, $chars);
+                    $content = $charsetConverter->substr('utf-8', $content, $chars);
                     if ($crop2space) {
                         $truncatePosition = strpos($content, ' ');
                     }
                     $content = $truncatePosition ? $afterstring . substr($content, $truncatePosition) : $afterstring . $content;
                 } else {
-                    $content = $tsfe->csConvObj->substr($tsfe->renderCharset, $content, 0, $chars);
+                    $content = $charsetConverter->substr('utf-8', $content, 0, $chars);
                     if ($crop2space) {
                         $truncatePosition = strrpos($content, ' ');
                     }
@@ -3933,12 +3945,13 @@ class ContentObjectRenderer
         $strLen = 0;
         // This is the offset of the content item which was cropped.
         $croppedOffset = null;
-        $tsfe = $this->getTypoScriptFrontendController();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $countSplittedContent = count($splittedContent);
         for ($offset = 0; $offset < $countSplittedContent; $offset++) {
             if ($offset % 2 === 0) {
-                $tempContent = $tsfe->csConvObj->conv($splittedContent[$offset], $tsfe->renderCharset, 'utf-8');
-                $thisStrLen = $tsfe->csConvObj->strlen('utf-8', html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'));
+                $tempContent = $splittedContent[$offset];
+                $thisStrLen = $charsetConverter->strlen('utf-8', html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'));
                 if ($strLen + $thisStrLen > $absChars) {
                     $croppedOffset = $offset;
                     $cropPosition = $absChars - $strLen;
@@ -3960,7 +3973,7 @@ class ContentObjectRenderer
                             }
                         }
                     }
-                    $splittedContent[$offset] = $tsfe->csConvObj->conv($tempContent, 'utf-8', $tsfe->renderCharset);
+                    $splittedContent[$offset] = $tempContent;
                     break;
                 } else {
                     $strLen += $thisStrLen;
@@ -6762,19 +6775,19 @@ class ContentObjectRenderer
         $tsfe = $this->getTypoScriptFrontendController();
         switch (strtolower($case)) {
             case 'upper':
-                $theValue = $tsfe->csConvObj->conv_case($tsfe->renderCharset, $theValue, 'toUpper');
+                $theValue = $tsfe->csConvObj->conv_case('utf-8', $theValue, 'toUpper');
                 break;
             case 'lower':
-                $theValue = $tsfe->csConvObj->conv_case($tsfe->renderCharset, $theValue, 'toLower');
+                $theValue = $tsfe->csConvObj->conv_case('utf-8', $theValue, 'toLower');
                 break;
             case 'capitalize':
                 $theValue = ucwords($theValue);
                 break;
             case 'ucfirst':
-                $theValue = $tsfe->csConvObj->convCaseFirst($tsfe->renderCharset, $theValue, 'toUpper');
+                $theValue = $tsfe->csConvObj->convCaseFirst('utf-8', $theValue, 'toUpper');
                 break;
             case 'lcfirst':
-                $theValue = $tsfe->csConvObj->convCaseFirst($tsfe->renderCharset, $theValue, 'toLower');
+                $theValue = $tsfe->csConvObj->convCaseFirst('utf-8', $theValue, 'toLower');
                 break;
             case 'uppercamelcase':
                 $theValue = GeneralUtility::underscoredToUpperCamelCase($theValue);

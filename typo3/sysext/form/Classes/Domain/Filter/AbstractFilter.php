@@ -23,9 +23,8 @@ abstract class AbstractFilter
 {
     protected function convertCase($value, $case)
     {
-        $frontendController = $this->getTypoScriptFrontendController();
         return $this->getCharsetConverter()->conv_case(
-            $frontendController->renderCharset,
+            'utf-8',
             $value,
             $case
         );
@@ -37,13 +36,5 @@ abstract class AbstractFilter
     protected function getCharsetConverter()
     {
         return GeneralUtility::makeInstance(CharsetConverter::class);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 }

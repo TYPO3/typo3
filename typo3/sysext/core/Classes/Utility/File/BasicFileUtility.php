@@ -386,15 +386,9 @@ class BasicFileUtility
             // allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
-            // Define character set
-            if (is_object($GLOBALS['TSFE'])) {
-                $charset = $GLOBALS['TSFE']->renderCharset;
-            } else {
-                $charset = 'utf-8';
-            }
             /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $fileName = $charsetConverter->specCharsToASCII($charset, $fileName);
+            $fileName = $charsetConverter->specCharsToASCII('utf-8', $fileName);
 
             // Replace unwanted characters by underscores
             $cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));

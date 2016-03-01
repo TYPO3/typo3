@@ -129,7 +129,7 @@ class CropViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
+     * Sets the global variable $GLOBALS['TSFE']->csConvObj in Backend mode
      * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of
      * ContentObjectRenderer rely on those variables to be set
      *
@@ -142,10 +142,6 @@ class CropViewHelper extends AbstractViewHelper
         // preparing csConvObj
         if (!is_object($GLOBALS['TSFE']->csConvObj)) {
             $GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-        }
-        // preparing renderCharset
-        if (!is_object($GLOBALS['TSFE']->renderCharset)) {
-            $GLOBALS['TSFE']->renderCharset = 'utf-8';
         }
     }
 

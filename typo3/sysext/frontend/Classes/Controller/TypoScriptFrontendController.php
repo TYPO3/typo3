@@ -730,20 +730,22 @@ class TypoScriptFrontendController
 
     /**
      * The default charset used in the frontend if nothing else is set.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @var string
      */
     public $defaultCharSet = 'utf-8';
 
     /**
      * Internal charset of the frontend during rendering. (Default: UTF-8)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @var string
      */
     public $renderCharset = 'utf-8';
 
     /**
      * Output charset of the websites content. This is the charset found in the
-     * header, meta tag etc. If different from $renderCharset a conversion
-     * happens before output to browser. Defaults to ->renderCharset if not set.
+     * header, meta tag etc. If different than utf-8 a conversion
+     * happens before output to browser. Defaults to utf-8.
      * @var string
      */
     public $metaCharset = 'utf-8';
@@ -2987,8 +2989,6 @@ class TypoScriptFrontendController
 		If this message does not disappear within ' . $seconds . ' seconds, please reload.';
             $message = $this->config['config']['message_page_is_being_generated'];
             if ((string)$message !== '') {
-                // This page is always encoded as UTF-8
-                $message = $this->csConvObj->conv($message, $this->renderCharset, 'utf-8');
                 $message = str_replace('###TITLE###', $title, $message);
                 $message = str_replace('###REQUEST_URI###', $request_uri, $message);
             } else {
@@ -3243,8 +3243,8 @@ class TypoScriptFrontendController
         // Convert char-set for output: (should be BEFORE indexing of the content (changed 22/4 2005)),
         // because otherwise indexed search might convert from the wrong charset!
         // One thing is that the charset mentioned in the HTML header would be wrong since the output charset (metaCharset)
-        // has not been converted to from renderCharset. And indexed search will internally convert from metaCharset
-        // to renderCharset so the content MUST be in metaCharset already!
+        // has not been converted to from utf-8. And indexed search will internally convert from metaCharset
+        // to utf-8 so the content MUST be in metaCharset already!
         $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
         if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
@@ -4259,7 +4259,7 @@ class TypoScriptFrontendController
 
         $localLanguage = array();
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language, $this->renderCharset);
+            $tempLL = $languageFactory->getParsedData($fileRef, $language, 'utf-8');
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
                 $localLanguage[$this->lang] = $localLanguage['default'];
@@ -4318,15 +4318,15 @@ class TypoScriptFrontendController
             }
         }
 
-        // Setting charsets:
-        $this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : 'utf-8');
         // Rendering charset of HTML page.
-        $this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset'] ? $this->config['config']['metaCharset'] : $this->renderCharset);
+        if ($this->config['config']['metaCharset']) {
+            $this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset']);
+        }
     }
 
     /**
      * Converts the charset of the input string if applicable.
-     * The "to" charset is determined by the currently used charset for the page which is "utf-8" by default or set by $GLOBALS['TSFE']->config['config']['renderCharset']
+     * The "to" charset is determined by the currently used charset for the page which is "utf-8" by default
      * Only if there is a difference between the two charsets will a conversion be made
      * The conversion is done real-time - no caching for performance at this point!
      *
@@ -4338,7 +4338,7 @@ class TypoScriptFrontendController
     public function csConv($str, $from = '')
     {
         if ($from) {
-            $output = $this->csConvObj->conv($str, $this->csConvObj->parse_charset($from), $this->renderCharset, 1);
+            $output = $this->csConvObj->conv($str, $this->csConvObj->parse_charset($from), 'utf-8');
             return $output ?: $str;
         } else {
             return $str;
@@ -4346,28 +4346,28 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Converts input string from renderCharset to metaCharset IF the two charsets are different.
+     * Converts input string from utf-8 to metaCharset IF the two charsets are different.
      *
      * @param string $content Content to be converted.
      * @return string Converted content string.
      */
     public function convOutputCharset($content)
     {
-        if ($this->renderCharset != $this->metaCharset) {
-            $content = $this->csConvObj->conv($content, $this->renderCharset, $this->metaCharset, true);
+        if ($this->metaCharset !== 'utf-8') {
+            $content = $this->csConvObj->conv($content, 'utf-8', $this->metaCharset, true);
         }
         return $content;
     }
 
     /**
-     * Converts the $_POST array from metaCharset (page HTML charset from input form) to renderCharset (internal processing) IF the two charsets are different.
+     * Converts the $_POST array from metaCharset (page HTML charset from input form) to utf-8 (internal processing) IF the two charsets are different.
      *
      * @return void
      */
     public function convPOSTCharset()
     {
-        if ($this->renderCharset != $this->metaCharset && is_array($_POST) && !empty($_POST)) {
-            $this->csConvObj->convArray($_POST, $this->metaCharset, $this->renderCharset);
+        if ($this->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
+            $this->csConvObj->convArray($_POST, $this->metaCharset, 'utf-8');
             $GLOBALS['HTTP_POST_VARS'] = $_POST;
         }
     }
