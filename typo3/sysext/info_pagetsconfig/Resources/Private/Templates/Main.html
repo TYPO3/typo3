@@ -1,0 +1,8 @@
+<f:if condition="{pageZero}">
+    <f:then>
+        <f:render partial="PageZero" arguments="{_all}" />
+    </f:then>
+    <f:else>
+        <f:render partial="Page" arguments="{_all}" />
+    </f:else>
+</f:if>

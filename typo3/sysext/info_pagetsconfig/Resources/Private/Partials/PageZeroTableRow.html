@@ -1,0 +1,18 @@
+<tr>
+    <td nowrap style="padding-left: {line.padding}px">
+        <f:if condition="{line.link}">
+            <f:then>
+                <a href="{line.link}" title="{line.title}">
+                    <f:format.raw>{line.icon}</f:format.raw>
+                    <f:format.raw>{line.pageTitle}</f:format.raw>
+                </a>
+            </f:then>
+            <f:else>
+                <f:format.raw>{line.icon}</f:format.raw>
+                <f:format.raw>{line.pageTitle}</f:format.raw>
+            </f:else>
+        </f:if>
+    </td>
+    <td>{line.includedFiles}</td>
+    <td>{line.lines}</td>
+</tr>

@@ -1,0 +1,30 @@
+<h1>{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:tsconf_title')}</h1>
+<span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
+<f:render partial="Menu" arguments="{_all}" />
+<f:if condition="{tsconfParts99}">
+    <f:then>
+        <div>
+            <table border="0" cellpadding="0" cellspacing="1">
+                <f:for each="{lines}" as="line">
+                    <tr><td nowrap="nowrap" class="bgColor5">
+                        <f:if condition="{line.defaultPageTSconfig}">
+                            <f:then>
+                                <strong>{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:editTSconfig_default')}</strong>
+                            </f:then>
+                            <f:else>
+                                <f:format.raw>{line.title}</f:format.raw>
+                            </f:else>
+                        </f:if></td></tr>
+                    <tr><td nowrap="nowrap" class="bgColor4"><f:format.raw>{line.content}</f:format.raw><f:render partial="EditIcon" arguments="{editIcon: line.editIcon, editTitle: line.editTitle}" /></td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                </f:for>
+            </table><br />
+            <f:render partial="EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
+        </div>
+    </f:then>
+    <f:else>
+        <div class="nowrap">
+            <f:format.raw>{tree}</f:format.raw>
+        </div>
+    </f:else>
+</f:if>
