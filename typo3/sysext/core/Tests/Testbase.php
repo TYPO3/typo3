@@ -80,9 +80,7 @@ class Testbase {
      */
     public function defineSitePath()
     {
-        /** @var string */
         define('PATH_site', $this->getWebRoot());
-        /** @var string */
         define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
@@ -101,7 +99,6 @@ class Testbase {
     public function defineOriginalRootPath()
     {
         if (!defined('ORIGINAL_ROOT')) {
-            /** @var string */
             define('ORIGINAL_ROOT', $this->getWebRoot());
         }
 
@@ -117,7 +114,6 @@ class Testbase {
      */
     public function defineTypo3ModeBe()
     {
-        /** @var string */
         define('TYPO3_MODE', 'BE');
     }
 
@@ -128,7 +124,6 @@ class Testbase {
      */
     public function setTypo3TestingContext()
     {
-        /** @var string */
         putenv('TYPO3_CONTEXT=Testing');
     }
 
