@@ -353,7 +353,7 @@ class ResourceCompressor
         $pathinfo = PathUtility::pathinfo($filenameAbsolute);
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
-        if (!file_exists($filenameAbsolute) || $this->createGzipped && !file_exists($filenameAbsolute . '.gzip')) {
+        if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
             $contents = $this->compressCssString(GeneralUtility::getUrl($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
