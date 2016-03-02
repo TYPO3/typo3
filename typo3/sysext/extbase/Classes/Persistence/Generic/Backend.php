@@ -584,7 +584,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $row = [];
         $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
         if ($parentKeyFieldName !== null) {
-            $row[$parentKeyFieldName] = $parentObject->getUid();
+            $row[$parentKeyFieldName] = $parentObject->_getProperty('_localizedUid') ?: $parentObject->getUid();
             $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
             if ($parentTableFieldName !== null) {
                 $row[$parentTableFieldName] = $parentDataMap->getTableName();
