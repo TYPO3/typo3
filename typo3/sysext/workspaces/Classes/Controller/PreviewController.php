@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Implements the preview controller of the workspace module.
@@ -37,13 +38,16 @@ class PreviewController extends AbstractController
     /**
      * Set up the doc header properly here
      *
-     * @param BackendTemplateView $view
+     * @param ViewInterface $view
      */
-    protected function initializeView(BackendTemplateView $view)
+    protected function initializeView(ViewInterface $view)
     {
-        parent::initializeView($view);
-        $view->getModuleTemplate()->getDocHeaderComponent()->disable();
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        if ($view instanceof BackendTemplateView) {
+            /** @var BackendTemplateView $view */
+            parent::initializeView($view);
+            $view->getModuleTemplate()->getDocHeaderComponent()->disable();
+            $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        }
     }
 
     /**
