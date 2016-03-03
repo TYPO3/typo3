@@ -1010,8 +1010,6 @@ class Bootstrap
      */
     public function initializeBackendRouter()
     {
-        $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
-
         // See if the Routes.php from all active packages have been built together already
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((TYPO3_version . PATH_site . 'BackendRoutesFromPackages'));
 
@@ -1023,13 +1021,14 @@ class Bootstrap
             $routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
         } else {
             // Loop over all packages and check for a Configuration/Backend/Routes.php file
+            $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             $packages = $packageManager->getActivePackages();
             foreach ($packages as $package) {
                 $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/Routes.php';
                 if (file_exists($routesFileNameForPackage)) {
                     $definedRoutesInPackage = require $routesFileNameForPackage;
                     if (is_array($definedRoutesInPackage)) {
-                        $routesFromPackages += $definedRoutesInPackage;
+                        $routesFromPackages = array_merge($routesFromPackages, $definedRoutesInPackage);
                     }
                 }
                 $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/AjaxRoutes.php';
