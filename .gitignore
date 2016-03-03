@@ -34,6 +34,7 @@ Build/node_modules/*
 .session
 typo3/sysext/core/Build/Configuration/Acceptance/Support/_generated/*
 typo3/sysext/core/Build/Configuration/Acceptance/Support/AcceptanceTester.php
+phantomjsdriver.log
 #
 # Ignore composer stuff
 bin/*
