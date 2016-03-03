@@ -153,7 +153,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		switch (type) {
 			case 'date':
 				var parsedInt = parseInt(value);
-				if (!parsedInt) {
+				if (isNaN(parsedInt)) {
 					return '';
 				}
 				theTime = new Date(parsedInt * 1000);
