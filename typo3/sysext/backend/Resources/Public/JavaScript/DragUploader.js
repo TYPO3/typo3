@@ -542,7 +542,7 @@ define(['jquery',
 		me.$iconCol.html('<span class="t3-icon t3-icon-mimetypes t3-icon-other-other">&nbsp;</span>')
 
 		// check file size
-		if (me.file.size > me.dragUploader.maxFileSize) {
+		if (me.dragUploader.maxFileSize > 0 && me.file.size > me.dragUploader.maxFileSize) {
 			me.updateMessage(TYPO3.lang['file_upload.maxFileSizeExceeded']
 				.replace(/\{0\}/g, me.file.name)
 				.replace(/\{1\}/g, DragUploader.fileSizeAsString(me.dragUploader.maxFileSize)));
