@@ -44,6 +44,11 @@ class ElementBuilder
     protected $typoScriptRepository;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+     */
+    protected $typoScriptService;
+
+    /**
      * @var array
      */
     protected $userConfiguredElementTyposcript = array();
@@ -80,6 +85,15 @@ class ElementBuilder
     public function injectTypoScriptRepository(\TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository)
     {
         $this->typoScriptRepository = $typoScriptRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
+     * @return void
+     */
+    public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService)
+    {
+        $this->typoScriptService = $typoScriptService;
     }
 
     /**
@@ -272,7 +286,8 @@ class ElementBuilder
         $viewHelperDefaultArguments = $this->typoScriptRepository->getModelConfigurationByScope($this->element->getElementType(), 'viewHelperDefaultArguments.');
         if (is_array($viewHelperDefaultArguments)) {
             foreach ($viewHelperDefaultArguments as $viewHelperDefaulArgumentName => $viewHelperDefaulArgumentValue) {
-                $this->additionalArguments[$viewHelperDefaulArgumentName] = $viewHelperDefaulArgumentValue;
+                $viewHelperDefaulArgumentNameWithoutDot = rtrim($viewHelperDefaulArgumentName, '.');
+                $this->additionalArguments[$viewHelperDefaulArgumentNameWithoutDot] = $viewHelperDefaulArgumentValue;
             }
         }
         unset($this->userConfiguredElementTyposcript['viewHelperDefaultArguments']);
@@ -286,7 +301,9 @@ class ElementBuilder
      */
     public function moveAllOtherUserdefinedPropertiesToAdditionalArguments()
     {
+        $viewHelperDefaultArguments = $this->typoScriptRepository->getModelConfigurationByScope($this->element->getElementType(), 'viewHelperDefaultArguments.');
         $ignoreKeys = array();
+
         foreach ($this->userConfiguredElementTyposcript as $attributeName => $attributeValue) {
             // ignore child elements
             if (
@@ -303,10 +320,18 @@ class ElementBuilder
             $attributeNameWithoutDot = rtrim($attributeName, '.');
             $attributeNameToSet = $attributeNameWithoutDot;
 
-            $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
-                $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
-                $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
-            );
+            if (
+                isset($viewHelperDefaultArguments[$attributeName])
+                || isset($viewHelperDefaultArguments[$attributeNameWithoutDot])
+            ) {
+                $this->formBuilder->getFormUtility()->renderArrayItems($attributeValue);
+                $attributeValue = $this->typoScriptService->convertTypoScriptArrayToPlainArray($attributeValue);
+            } else {
+                $attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+                    $this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+                );
+            }
             $this->additionalArguments[$attributeNameToSet] = $attributeValue;
             $ignoreKeys[$attributeNameToSet . '.'] = true;
             $ignoreKeys[$attributeNameToSet] = true;
