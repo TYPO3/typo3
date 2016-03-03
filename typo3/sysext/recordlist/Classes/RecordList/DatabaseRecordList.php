@@ -1978,7 +1978,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $attributes['data-severity'] = 'warning';
             $attributes['data-title'] = $title;
             $attributes['data-content'] = $warning;
+        } else {
+            $attributes['onclick'] = htmlspecialchars(($jsCode . 'return false;'));
         }
+
         $attributesString = '';
         foreach ($attributes as $key => $value) {
             $attributesString .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
