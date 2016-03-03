@@ -812,7 +812,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $searchWords = substr($this->sword, 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
         $searchWords = $this->charsetConverter->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
-        $searchWords = $this->charsetConverter->entities_to_utf8($searchWords, true);
+        $searchWords = $this->charsetConverter->entities_to_utf8($searchWords);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);

@@ -687,7 +687,7 @@ class Indexer
             $content = $this->csObj->conv($content, $charset, 'utf-8');
         }
         // Convert entities, assuming document is now UTF-8:
-        return $this->csObj->entities_to_utf8($content, true);
+        return $this->csObj->entities_to_utf8($content);
     }
 
     /**
@@ -1289,7 +1289,7 @@ class Indexer
                     $contentArr[$key] = $this->csObj->conv($contentArr[$key], $charset, 'utf-8');
                 }
                 // decode all numeric / html-entities in the string to real characters:
-                $contentArr[$key] = $this->csObj->entities_to_utf8($contentArr[$key], true);
+                $contentArr[$key] = $this->csObj->entities_to_utf8($contentArr[$key]);
             }
         }
     }

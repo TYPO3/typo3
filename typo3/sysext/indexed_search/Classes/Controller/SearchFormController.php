@@ -434,7 +434,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $inSW = substr($this->piVars['sword'], 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
         $inSW = $this->charsetConverter->conv($inSW, $this->frontendController->metaCharset, 'utf-8');
-        $inSW = $this->charsetConverter->entities_to_utf8($inSW, true);
+        $inSW = $this->charsetConverter->entities_to_utf8($inSW);
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($inSW, $defOp);

@@ -811,7 +811,7 @@ class GraphicalFunctions
                     $x += $wordW + $wordSpacing;
                 }
             } else {
-                $utf8Chars = $this->csConvObj->utf8_to_numberarray($theText, true, true);
+                $utf8Chars = $this->csConvObj->utf8_to_numberarray($theText);
                 // For each UTF-8 char, do:
                 foreach ($utf8Chars as $char) {
                     $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'], $sF);
@@ -928,7 +928,7 @@ class GraphicalFunctions
                 $x += $wordW + $wordSpacing;
             }
         } else {
-            $utf8Chars = $this->csConvObj->utf8_to_numberarray($text, true, true);
+            $utf8Chars = $this->csConvObj->utf8_to_numberarray($text);
             // For each UTF-8 char, do:
             foreach ($utf8Chars as $char) {
                 $charInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $char, $splitRenderingConf, $sF);
@@ -1152,7 +1152,7 @@ class GraphicalFunctions
                                 $currentState = -1;
                                 $bankAccum = '';
                                 // Explode the string value by the word value to highlight:
-                                $utf8Chars = $this->csConvObj->utf8_to_numberarray($part['str'], true, true);
+                                $utf8Chars = $this->csConvObj->utf8_to_numberarray($part['str']);
                                 foreach ($utf8Chars as $utfChar) {
                                     // Find number and evaluate position:
                                     $uNumber = (int)$this->csConvObj->utf8CharToUnumber($utfChar);

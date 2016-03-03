@@ -551,17 +551,14 @@ class CharsetConverter implements SingletonInterface
     }
 
     /**
-     * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars
-     *
+     * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars.
+     * All string-HTML entities (like &amp; or &pound;) will be converted as well
      * @param string $str Input string, UTF-8
-     * @param bool $alsoStdHtmlEnt If set, then all string-HTML entities (like &amp; or &pound; will be converted as well)
      * @return string Output string
      */
-    public function entities_to_utf8($str, $alsoStdHtmlEnt = false)
+    public function entities_to_utf8($str)
     {
-        if ($alsoStdHtmlEnt) {
-            $trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'UTF-8'));
-        }
+        $trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT));
         $token = md5(microtime());
         $parts = explode($token, preg_replace('/(&([#[:alnum:]]*);)/', $token . '${2}' . $token, $str));
         foreach ($parts as $k => $v) {
@@ -579,7 +576,7 @@ class CharsetConverter implements SingletonInterface
                     $v = substr($v, $position);
                 }
                 $parts[$k] = $this->UnumberToChar($v);
-            } elseif ($alsoStdHtmlEnt && isset($trans_tbl['&' . $v . ';'])) {
+            } elseif (isset($trans_tbl['&' . $v . ';'])) {
                 // Other entities:
                 $v = $trans_tbl['&' . $v . ';'];
                 $parts[$k] = $v;
@@ -592,19 +589,18 @@ class CharsetConverter implements SingletonInterface
     }
 
     /**
-     * Converts all chars in the input UTF-8 string into integer numbers returned in an array
+     * Converts all chars in the input UTF-8 string into integer numbers returned in an array.
+     * All HTML entities (like &amp; or &pound; or &#123; or &#x3f5d;) will be detected as characters.
+     * Also, instead of integer numbers the real UTF-8 char is returned.
      *
      * @param string $str Input string, UTF-8
-     * @param bool $convEntities If set, then all HTML entities (like &amp; or &pound; or &#123; or &#x3f5d;) will be detected as characters.
-     * @param bool $retChar If set, then instead of integer numbers the real UTF-8 char is returned.
      * @return array Output array with the char numbers
      */
-    public function utf8_to_numberarray($str, $convEntities = false, $retChar = false)
+    public function utf8_to_numberarray($str)
     {
-        // If entities must be registered as well...:
-        if ($convEntities) {
-            $str = $this->entities_to_utf8($str, 1);
-        }
+        // Entities must be registered as well
+        $str = $this->entities_to_utf8($str);
+
         // Do conversion:
         $strLen = strlen($str);
         $outArr = array();
@@ -631,12 +627,12 @@ class CharsetConverter implements SingletonInterface
                             break;
                         }
                     }
-                    $outArr[] = $retChar ? $buf : $this->utf8CharToUnumber($buf);
+                    $outArr[] = $buf;
                 } else {
-                    $outArr[] = $retChar ? chr($this->noCharByteVal) : $this->noCharByteVal;
+                    $outArr[] = chr($this->noCharByteVal);
                 }
             } else {
-                $outArr[] = $retChar ? chr($ord) : $ord;
+                $outArr[] = chr($ord);
             }
         }
         return $outArr;
