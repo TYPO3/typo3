@@ -51,6 +51,12 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Render
      *
