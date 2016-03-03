@@ -363,39 +363,6 @@ class ModuleLoader
     }
 
     /**
-     * Get relative path for $destDir compared to $baseDir
-     *
-     * @param string $baseDir Base directory
-     * @param string $destDir Destination directory
-     * @return string The relative path of destination compared to base.
-     */
-    public function getRelativePath($baseDir, $destDir)
-    {
-        // A special case, the dirs are equal
-        if ($baseDir === $destDir) {
-            return './';
-        }
-        // Remove beginning
-        $baseDir = ltrim($baseDir, '/');
-        $destDir = ltrim($destDir, '/');
-        $found = true;
-        do {
-            $slash_pos = strpos($destDir, '/');
-            if ($slash_pos !== false && substr($destDir, 0, $slash_pos) == substr($baseDir, 0, $slash_pos)) {
-                $baseDir = substr($baseDir, $slash_pos + 1);
-                $destDir = substr($destDir, $slash_pos + 1);
-            } else {
-                $found = false;
-            }
-        } while ($found);
-        $slashes = strlen($baseDir) - strlen(str_replace('/', '', $baseDir));
-        for ($i = 0; $i < $slashes; $i++) {
-            $destDir = '../' . $destDir;
-        }
-        return GeneralUtility::resolveBackPath($destDir);
-    }
-
-    /**
      * @return LanguageService
      */
     protected function getLanguageService()
