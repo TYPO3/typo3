@@ -33,6 +33,7 @@
 	"require": {
 		"php": "^7.0",
 		"ext-fileinfo": "*",
+		"ext-json": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
@@ -60,7 +61,8 @@
 		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files",
 		"ext-openssl": "",
 		"ext-soap": "",
-		"ext-zip": ""
+		"ext-zip": "",
+		"ext-mysqli": ""
 	},
 	"extra": {
 		"typo3/class-alias-loader": {
