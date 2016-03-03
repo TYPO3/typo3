@@ -10,12 +10,6 @@ use TYPO3\CMS\Backend\Controller;
  */
 return [
 
-    // Expand or toggle in legacy database tree
-    'sc_alt_db_navframe_expandtoggle' => [
-        'path' => '/record/tree/expand',
-        'target' => Controller\PageTreeNavigationController::class . '::ajaxExpandCollapse'
-    ],
-
     // Expand or toggle in legacy file tree
     'sc_alt_file_navframe_expandtoggle' => [
         'path' => '/folder/tree/expand',

@@ -95,8 +95,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Lega
 		}
 	};
 
-	Tree.ajaxID = 'sc_alt_file_navframe_expandtoggle';
-
 	$(function() {
 		$.extend(BrowseFiles.elements, $('body').data('elements'));
 

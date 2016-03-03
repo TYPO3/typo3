@@ -152,12 +152,10 @@ class FileSystemNavigationFrameController
         $this->moduleTemplate->setBodyTag('<body id="ext-backend-Modules-FileSystemNavigationFrame-index-php">');
 
         // Adding javascript code for drag&drop and the filetree as well as the click menu code
-        $dragDropCode = '
-			Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
-			Tree.registerDragDropHandlers()';
+        $dragDropCode = '';
         if ($this->doHighlight) {
             $hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
-            $dragDropCode .= '
+            $dragDropCode = '
 			Tree.highlightClass = "' . $hlClass . '";
 			Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
 			';
@@ -168,6 +166,7 @@ class FileSystemNavigationFrameController
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
             DragDrop.table = "folders";
+			Tree.registerDragDropHandlers();
             ' . $dragDropCode . '
         }');
 

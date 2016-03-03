@@ -100,7 +100,7 @@ define(['jquery'], function($) {
 	};
 
 	Tree = {
-		ajaxID: 'sc_alt_db_navframe_expandtoggle',	// has to be either "sc_alt_db_navframe_expandtoggle" or "sc_alt_file_navframe_expandtoggle"
+		ajaxID: 'sc_alt_file_navframe_expandtoggle',
 		frameSetModule: null,
 		activateDragDrop: true,
 		highlightClass: 'active',

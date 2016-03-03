@@ -47,8 +47,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 		LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
 	};
 
-	Tree.ajaxID = 'sc_alt_file_navframe_expandtoggle';
-
 	$(function() {
 		FileLinkHandler.currentLink = $('body').data('currentLink');
 
