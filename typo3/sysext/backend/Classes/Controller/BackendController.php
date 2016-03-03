@@ -262,18 +262,19 @@ class BackendController
         // Prepare the scaffolding, at this point extension may still add javascript and css
         $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
-        // Render the TYPO3 logo in the left corner
-        $logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/typo3-topbar@2x.png';
-        $logoPath = GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
+        // Extension Configuration to find the TYPO3 logo in the left corner
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend']);
+        $logoPath = $extConf['backendLogo'] ?? 'EXT:backend/Resources/Public/Images/typo3-topbar@2x.png';
+        $logoPath = GeneralUtility::getFileAbsFileName($logoPath);
         list($logoWidth, $logoHeight) = @getimagesize($logoPath);
 
         // High-resolution?
-        if (strpos($logoUrl, '@2x.') !== false) {
+        if (strpos($logoPath, '@2x.') !== false) {
             $logoWidth = $logoWidth/2;
             $logoHeight = $logoHeight/2;
         }
 
-        $view->assign('logoUrl', $logoUrl);
+        $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
         $view->assign('logoLink', TYPO3_URL_GENERAL);
