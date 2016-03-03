@@ -15,6 +15,9 @@
 			<trans-unit id="status_ok">
 				<source>OK</source>
 			</trans-unit>
+			<trans-unit id="status_wrongValue">
+				<source>Wrong value detected</source>
+			</trans-unit>
 			<trans-unit id="status_insecure">
 				<source>Insecure</source>
 			</trans-unit>
@@ -38,6 +41,9 @@
 			</trans-unit>
 			<trans-unit id="status_connectionFailed">
 				<source>Connection Failed</source>
+			</trans-unit>
+			<trans-unit id="status_checkFailed">
+				<source>Check Failed</source>
 			</trans-unit>
 			<trans-unit id="status_updateComplete">
 				<source>Update Complete</source>
@@ -95,6 +101,18 @@
 			</trans-unit>
 			<trans-unit id="status_CreatedDirectoryPermissions.writable">
 				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet">
+				<source>MySQL Database Character Set</source>
+			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed">
+				<source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported">
+				<source>Your database uses character set "%1$s", but only "utf8" is supported with TYPO3.</source>
+			</trans-unit>
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok">
+				<source>Your database uses utf-8. All good.</source>
 			</trans-unit>
 			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>

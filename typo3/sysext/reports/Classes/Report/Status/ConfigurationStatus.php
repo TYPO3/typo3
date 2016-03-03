@@ -63,6 +63,9 @@ class ConfigurationStatus implements StatusProviderInterface
             $statuses['createdFilesWorldWritable'] = $this->getCreatedFilesWorldWritableStatus();
             $statuses['createdDirectoriesWorldWritable'] = $this->getCreatedDirectoriesWorldWritableStatus();
         }
+        if ($this->isMysqlUsed()) {
+            $statuses['mysqlDatabaseUsesUtf8'] = $this->getMysqlDatabaseUtf8Status();
+        }
         return $statuses;
     }
 
@@ -253,6 +256,53 @@ class ConfigurationStatus implements StatusProviderInterface
         $logFile = GeneralUtility::getDeprecationLogFileName();
         $linkToLogFile = PathUtility::getAbsoluteWebPath($logFile);
         return '<a href="' . $linkToLogFile . '">' . $logFile . '</a>';
+    }
+
+    /**
+     * Verifies that MySQL is used.
+     *
+     * @return bool
+     */
+    protected function isMysqlUsed()
+    {
+        return get_class($this->getDatabaseConnection()) == DatabaseConnection::class;
+    }
+
+    /**
+     * Checks the character set of the database and reports an error if it is not utf-8.
+     *
+     * @return ReportStatus
+     */
+    protected function getMysqlDatabaseUtf8Status()
+    {
+        $result = $this->getDatabaseConnection()->admin_query('SHOW VARIABLES LIKE "character_set_database"');
+        $row = $this->getDatabaseConnection()->sql_fetch_assoc($result);
+
+        $key = $row['Variable_name'];
+        $value = $row['Value'];
+
+        $message = '';
+        $severity = ReportStatus::OK;
+        $statusValue = $this->getLanguageService()->getLL('status_ok');
+
+        if ($key !== 'character_set_database') {
+            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_CheckFailed'),$key);
+            $severity = ReportStatus::WARNING;
+            $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
+        }
+        // also allow utf8mb4
+        if (substr($value, 0, 4) !== 'utf8') {
+            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Unsupported'),$value);
+            $severity = ReportStatus::ERROR;
+            $statusValue = $this->getLanguageService()->getLL('status_wrongValue');
+        } else {
+            $message = $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Ok');
+        }
+
+        return GeneralUtility::makeInstance(ReportStatus::class,
+            $this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet'),
+            $statusValue, $message, $severity
+        );
     }
 
     /**
