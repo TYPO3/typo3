@@ -73,7 +73,7 @@ class UpgradeWizard extends Action\AbstractAction
             $actionMessages[] = $this->performUpdate();
             $this->view->assign('updateAction', 'performUpdate');
         } else {
-            $actionMessages[] = $this->listUpdates();
+            $this->listUpdates();
             $this->view->assign('updateAction', 'listUpdates');
         }
 
@@ -85,7 +85,7 @@ class UpgradeWizard extends Action\AbstractAction
     /**
      * List of available updates
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return void
      */
     protected function listUpdates()
     {
@@ -127,10 +127,21 @@ class UpgradeWizard extends Action\AbstractAction
 
         $this->view->assign('availableUpdates', $availableUpdates);
 
-        /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
-        $message->setTitle('Show available update wizards');
-        return $message;
+        // compute done wizards for statistics
+        $wizardsDone = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
+            /** @var AbstractUpdate $updateObject */
+            $updateObject = $this->getUpdateObjectInstance($className, $identifier);
+            if ($updateObject->shouldRenderWizard() !== true) {
+                $wizardsDone[] = $updateObject;
+            }
+        }
+        $this->view->assign('wizardsDone', $wizardsDone);
+
+        $wizardsTotal = (count($wizardsDone) + count($availableUpdates));
+        $this->view->assign('wizardsTotal', $wizardsTotal);
+
+        $this->view->assign('wizardsPercentageDone', floor(($wizardsTotal - count($availableUpdates)) * 100 / $wizardsTotal));
     }
 
     /**

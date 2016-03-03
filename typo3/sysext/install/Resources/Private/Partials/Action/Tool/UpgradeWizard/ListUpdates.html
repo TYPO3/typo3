@@ -5,6 +5,14 @@
 </p>
 <hr />
 
+<h2>Wizards available</h2>
+<div class="progress">
+	<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+		 aria-valuenow="{wizardsPercentageDone}" aria-valuemin="0" aria-valuemax="100"
+		 style="width: {wizardsPercentageDone}%;">
+		{wizardsPercentageDone}% Complete
+	</div>
+</div>
 <f:if condition="{availableUpdates}">
 	<f:then>
 		<f:for each="{availableUpdates}" as="availableUpdate">
@@ -32,6 +40,16 @@
 		<hr />
 	</f:else>
 </f:if>
+
+<f:if condition="{wizardsDone}">
+	<h2>Wizards done</h2>
+	<ul>
+		<f:for each="{wizardsDone}" as="wizardDone">
+			<li>{wizardDone.title}</li>
+		</f:for>
+	</ul>
+</f:if>
+<hr />
 
 <h4>Hint</h4>
 <p>
