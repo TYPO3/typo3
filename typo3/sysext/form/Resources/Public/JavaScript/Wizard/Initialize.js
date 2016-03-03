@@ -14,6 +14,7 @@
  */
 Ext.onReady(function() {
 		// Instantiate new viewport
+	TYPO3.Form.Wizard.Settings.ajaxUrl = document.location.href;
 	var viewport = new TYPO3.Form.Wizard.Viewport({});
 		// When the window is resized, the viewport has to be resized as well
 	Ext.EventManager.onWindowResize(viewport.doLayout, viewport);

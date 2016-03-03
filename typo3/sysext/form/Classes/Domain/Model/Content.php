@@ -41,6 +41,13 @@ class Content
     protected $typoscript = array();
 
     /**
+     * The plain bodytext
+     *
+     * @var string
+     */
+    protected $bodytext = '';
+
+    /**
      * Sets the uid
      *
      * @param int $uid The uid
@@ -101,5 +108,26 @@ class Content
     public function getTyposcript()
     {
         return $this->typoscript;
+    }
+
+    /**
+     * Sets the bodytext
+     *
+     * @param string $bodytext The bodytext
+     * @return void
+     */
+    public function setBodytext($bodytext = '')
+    {
+        $this->bodytext = $bodytext;
+    }
+
+    /**
+     * Returns the bodytext
+     *
+     * @return string The bodytext
+     */
+    public function getBodytext()
+    {
+        return $this->bodytext;
     }
 }

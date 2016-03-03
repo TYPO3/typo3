@@ -6,7 +6,7 @@ Ext.namespace('TYPO3.Form.Wizard.Viewport.Left.Form');
  * @class TYPO3.Form.Wizard.Viewport.Left.Form.Prefix
  * @extends Ext.Panel
  */
-TYPO3.Form.Wizard.Viewport.Left.Form.Prefix = Ext.extend(Ext.FormPanel, {
+TYPO3.Form.Wizard.Viewport.Left.Form.Prefix = Ext.extend(Ext.ux.form.FakeFormPanel, {
 	/**
 	 * @cfg {String} id
 	 * The unique id of this component (defaults to an auto-assigned id).

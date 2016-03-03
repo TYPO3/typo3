@@ -33,24 +33,6 @@ class WizardController
     }
 
     /**
-     * The index action
-     *
-     * The action which should be taken when the wizard is loaded
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface returns a 500 error or a valid JSON response
-     */
-    public function indexAction(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        /** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
-        $view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
-        $content = $view->render();
-        $response->getBody()->write($content);
-        return $response;
-    }
-
-    /**
      * The save action called via AJAX
      *
      * The action which should be taken when the form in the wizard is saved
@@ -62,20 +44,25 @@ class WizardController
     public function saveAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $repository = $this->getRepository();
-        $success = false;
+        $typoscript = '';
+        $jsonArray = [];
+
         // Check if the referenced record is available
         if ($repository->hasRecord()) {
             // Save the data
-            $success = $repository->save();
+            $typoscript = $repository->save();
         }
 
-        if (!$success) {
+        if (!$typoscript) {
             $response = $response->withStatus(500);
             $message = $this->getLanguageService()->getLL('action_save_message_failed', false);
         } else {
             $message = $this->getLanguageService()->getLL('action_save_message_saved', false);
+            $jsonArray['fakeTs'] = $typoscript;
         }
-        $response->getBody()->write(json_encode(['message' => $message]));
+
+        $jsonArray['message'] = $message;
+        $response->getBody()->write(json_encode($jsonArray));
         return $response
                 ->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
                 ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')

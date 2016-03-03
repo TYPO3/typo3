@@ -84,8 +84,4 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrid
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext'])) {
     $GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext'] = array();
 }
-$baseDefaultExtrasOfBodytext = '';
-if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
-    $baseDefaultExtrasOfBodytext = $GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'] . ':';
-}
-$GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap:wizards[forms]';
+$GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext']['config']['renderType'] = 'formwizard';

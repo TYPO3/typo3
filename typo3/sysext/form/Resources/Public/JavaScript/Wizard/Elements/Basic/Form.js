@@ -29,9 +29,9 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 	 * Adding novalidate attribute avoids HTML5 validation of elements.
 	 */
 	tpl: new Ext.XTemplate(
-		'<form {[this.getAttributes(values.attributes)]} novalidate="novalidate">',
+		'<div id="fake-form" {[this.getAttributes(values.attributes)]} novalidate="novalidate">',
 			'<ol></ol>',
-		'</form>',
+		'</div>',
 		{
 			compiled: true,
 			getAttributes: function(attributes) {
@@ -141,13 +141,6 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 	 */
 	afterRender: function() {
 		this.addContainerAfterRender();
-
-		this.getEl().child('form').on(
-			'submit',
-			function(eventObject, htmlElement, object) {
-				eventObject.stopEvent();
-			}
-		);
 
 			// Call parent
 		TYPO3.Form.Wizard.Elements.Basic.Form.superclass.afterRender.call(this);

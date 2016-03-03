@@ -1,79 +1,118 @@
 @charset "UTF-8";
 
-span.t3-icon-actions {
-	cursor: pointer;
+/* outer wrapper of whole wizard */
+#form-wizard-element {
+	z-index: 1;
 }
 
-div#typo3-inner-docbody {
-	height: 100%;
-	padding: 0;
-}
-
-/* Override the default setting for wizard */
-form li {
-	overflow: visible;
-}
-
-div.overflow-hidden {
-	overflow: hidden;
-}
-
-form ol {
-	padding-left: 0;
-	list-style: none;
-}
-
+/* inner wrapper of whole wizard */
 #formwizard {
-	height: 100%;
 	background-color: #F8F8F8;
 }
 
+/* applied when a element is moved */
 #formwizard.hover-move {
 	cursor: move;
 }
 
-#formwizard-left {
-	padding: 10px;
-	padding-right: 0;
+/* left panel */
+#formwizard-left.x-border-panel {
+	position: relative;
+	left: auto;
+	top: auto;
 }
 
-#formwizard-left > div ul {
-	margin-bottom: 0;
-}
-
+/* tabs */
 #formwizard-left .x-tab-panel-header {
 	background-color: transparent;
+}
+
+/* tabs inner */
+#formwizard-left .x-tab-strip {
+	margin-bottom: 0;
 }
 
 #formwizard-left .x-tab-strip-top .x-tab-left {
 	padding-right: 20px;
 }
 
+#formwizard-left .x-tab-strip-top .x-tab-right {
+	padding: 5px 10px 2px;
+	background-color: #EDEDED;
+	border-radius: 0;
+}
+
+#formwizard-left .x-tab-strip-top .x-tab-strip-active .x-tab-right {
+	background-color: transparent;
+	border-bottom-color: #F8F8F8;
+}
+
+#formwizard-left .x-tab-strip-top .x-tab-strip-over .x-tab-right {
+	background-color: #E1E1E1;
+}
+
 #formwizard-left li.validation-error .x-tab-left,
 #formwizard-left div.validation-error .x-accordion-hd {
-	background-image: url("../../../../../../../typo3/sysext/t3skin/extjs/images/form/exclamation.gif");
+	margin-right: 14px;
+	background-image: url("../../../../../t3skin/extjs/images/form/exclamation.gif");
 	background-position: right 1px;
 	background-repeat: no-repeat;
-	margin-right: 14px;
 }
 
+/* content below tabs */
 #formwizard-left .x-tab-panel-body-content {
+	min-height: 330px;
+	padding: 10px;
+	background: transparent;
 	border: 1px solid #C0C0C0;
 	border-top-width: 0;
-	padding: 10px;
-	background: #ECECEC;
 }
 
-#formwizard-left .x-accordion-hd,
-#formwizard-left .x-tab-panel-body {
+/* info messages (also for drag and drop) */
+#formwizard-left .message-information,
+#fake-form .message-information,
+.x-dd-drag-ghost .message-information {
+	margin: 10px 0 15px 16px;
+	padding: 12px 10px;
+	background-image: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+#formwizard-left .message-information p,
+#fake-form .message-information p,
+.x-dd-drag-ghost .message-information {
+	margin: 0;
+}
+
+/* intro info messages */
+#formwizard-left #formwizard-left-elements-intro,
+#formwizard-left #formwizard-left-options-dummy,
+#fake-form .message-information {
+	margin: 0 0 10px;
+}
+
+#formwizard-left .x-tab-panel-body,
+#formwizard-left .x-accordion-hd {
 	background: transparent none;
 	border-width: 0;
 }
 
+/* accordion */
+#formwizard-left .x-panel-accordion {
+	border-bottom: 1px solid #C7C7C7;
+}
+
+#formwizard-left .x-panel-accordion:last-child {
+	border-bottom: medium none;
+}
+
+/* headline of accordion */
 #formwizard-left .x-accordion-hd {
 	padding-left: 0;
 }
 
+/* toggle icon of accordion */
 #formwizard-left .x-accordion-hd .x-tool-toggle {
 	margin: 0;
 	float: left;
@@ -86,51 +125,35 @@ form ol {
 	background-position: 1px 3px;
 }
 
-#formwizard-left .x-panel-accordion {
-	border-bottom: 1px solid #C7C7C7;
-}
-
-#formwizard-left .x-form {
-	margin-left: 15px;
-	margin-top: 10px;
-}
-
-#formwizard-left .x-panel-accordion:last-child {
-	border-bottom: medium none;
-}
-
 #formwizard-left .x-accordion-hd .x-panel-header-text {
 	font-weight: bold;
-	text-transform: uppercase;
-}
-
-#formwizard-left .x-fieldset-noborder {
-	padding: 0;
-	border: 0 none transparent;
-}
-
-#formwizard-left .x-form fieldset legend {
-	margin-left: -2px;
-}
-
-#formwizard-left .x-panel-tbar {
-	border-width: 0;
-	padding-bottom: 0;
-	padding-left: 15px;
 }
 
 #formwizard-left .x-accordion-hd .x-panel-body {
 	padding-left: 15px;
 }
 
-#formwizard-left .formwizard-left-dummy {
-	margin-top: 10px;
+/* element inside accordion */
+#formwizard-left .x-form {
 	margin-left: 15px;
+	margin-top: 10px;
 }
 
-#formwizard-left #formwizard-left-elements-intro,
-#formwizard-left #formwizard-left-options-dummy {
-	margin: 0 0 10px;
+#formwizard-left .x-form fieldset {
+	padding: 0;
+	border: none;
+}
+#formwizard-left .x-form fieldset legend {
+	padding: 0;
+	font-size: 12px;
+	color: #222222;
+}
+
+#formwizard-left .x-panel-tbar {
+	margin-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 0;
+	border-width: 0;
 }
 
 #formwizard-left .x-panel-tbar .x-toolbar {
@@ -141,23 +164,26 @@ form ol {
 	margin-bottom: 10px;
 }
 
+/* generic element like textfield */
 #formwizard-left .formwizard-element {
+	margin-left: 12px;
 	background-color: transparent;
 	background-image: none;
 	border-color: transparent;
-	margin-left: 12px;
 }
 
 #formwizard-left .formwizard-element.x-btn-over {
 	background-color: #D5D5D5;
 	background-image: -moz-linear-gradient(center top , #F6F6F6 10%, #D5D5D5 90%);
 	border-color: #C0C0C0;
+	border-radius: 0;
 }
 
 #formwizard-left .formwizard-element .x-btn-mc {
 	text-align: left;
 }
 
+/* form elements in left panel */
 .formwizard-left-elements-basic-button {
 	background-image: url("../../Images/ui-button.png");
 }
@@ -230,115 +256,104 @@ form ol {
 	background-image: url("../../Images/edit-textblock.png");
 }
 
-.x-form-field-wrap .x-form-submit-trigger {
+#formwizard-left .x-form-text {
+	height: 17px;
+}
+
+#formwizard-left .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+	color: black;
+}
+
+#formwizard-left .x-small-editor .x-form-text {
+	height: 13px !important;
+}
+
+/* icon in element field for applying entered text */
+#formwizard-left .x-form-field-wrap .x-form-submit-trigger {
 	background-image: url("../../Images/submit-trigger.gif");
 }
 
-.x-grid-panel .remove {
-	background-image: url("../../Images/remove.gif");
-	width: 15px;
-	height: 16px;
-}
-
+/* right panel */
 #formwizard-right {
-	padding: 38px 10px 10px 0;
+	min-height: 350px;
+	padding: 30px 0 10px 2px;
 }
 
-#formwizard-right form {
-	background-color: #FFFFFF;
-	border: 1px solid #C0C0C0;
-	-moz-box-shadow: inset 0 0 3px #C0C0C0;
-	-webkit-box-shadow: inset 0 0 2px #C0C0C0;
-	box-shadow: inner 0 0 2px #C0C0C0;
+#fake-form {
 	padding: 10px;
+	background-color: tansparent;
+	border: 1px solid #C0C0C0;
 }
 
-li#element-placeholder {
-	border: 1px dashed #C5DBE6;
-	background-color: #F9FCFF;
+#fake-form li {
+	overflow: visible;
 }
 
-li.formwizard-element {
+/* visible area of element on right panel */
+#fake-form div.overflow-hidden {
+	overflow: hidden;
+}
+
+/* wrap around all elements on right panel */
+#fake-form .formwizard-element {
 	border: 1px solid transparent;
 	position: relative;
 }
 
-li.formwizard-element div.buttongroup {
-	position: absolute;
-	right: 0;
-	top: -35px;
-	padding: 4px 4px 12px;
-	display: none;
-	z-index: 1;
-	background-image: url("../../Images/tooltip.png");
-}
-
-li.formwizard-element.hover > div.buttongroup,
-li.formwizard-element.active > div.buttongroup {
-	display: block;
-}
-
-li.formwizard-element div.buttongroup button {
-	border: 0 solid transparent;
-	background-color: transparent;
-	height: 16px;
-	width: 16px;
-}
-
-li.formwizard-element div.buttongroup span {
-	margin: 0 3px;
-}
-
-li.formwizard-element div.buttongroup span.x-btn-over {
-	background-color: transparent;
-	background-image: none;
-}
-
-li.formwizard-element.hover,
-li.formwizard-element.hidden.hover {
-	border: 1px solid #C5DBE6;
+#fake-form .formwizard-element.hover,
+#fake-form .formwizard-element.hidden.hover {
 	background-color: #F9FCFF;
+	border: 1px solid #C5DBE6;
 }
 
-li.formwizard-element.active,
-li.formwizard-element.hidden.active {
+#fake-form .formwizard-element.active,
+#fake-form .formwizard-element.hidden.active {
 	background-color: #EAF7FF;
 	border: 1px solid #C5DBE6;
 }
 
-li.formwizard-element.hidden {
+#fake-form .formwizard-element.hidden {
+	min-height: 1em;
 	background-color: transparent;
 	border: 1px dotted #C5DBE6;
-	min-height: 1em;
 }
 
-li.formwizard-element.hidden-element {
-	cursor: default;
+/* toolbar on each element */
+#fake-form .formwizard-element div.buttongroup {
+	position: absolute;
+	right: 0;
+	top: -35px;
+	display: none;
+	z-index: 1;
+	padding: 4px 3px 12px;
+	background-image: url("../../Images/tooltip.png");
 }
 
-li.formwizard-element .hidden-dummy-element {
-	margin: 0;
-	padding: 5px;
-	border:1px dotted #A9A9A9;
+#fake-form .formwizard-element.hover > div.buttongroup,
+#fake-form .formwizard-element.active > div.buttongroup {
+	display: block;
 }
 
-li.formwizard-element.form {
-	padding: 0;
+#fake-form .formwizard-element div.buttongroup button {
+	width: 16px;
+	height: 16px;
+	background-color: transparent;
+	border: 0 solid transparent;
 }
 
-li.formwizard-element.form.hover {
-	border: 1px solid transparent;
-	background-color: none;
+#fake-form .formwizard-element div.buttongroup span {
+	margin: 0 3px;
 }
 
-.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
-	color: black;
+#fake-form .formwizard-element div.buttongroup span.x-btn-over {
+	background-color: transparent;
+	background-image: none;
 }
 
-.x-combo-list-item {
-	background:#e7e7e7;
+#fake-form .formwizard-element button.t3-icon-edit-delete {
+	background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-delete.svg');
 }
 
-#formwizard .x-btn-text {
-	color: black;
+#fake-form .formwizard-element button.t3-icon-document-open {
+	background-image: url('../../../../../core/Resources/Public/Icons/T3Icons/actions/actions-open.svg');
 }

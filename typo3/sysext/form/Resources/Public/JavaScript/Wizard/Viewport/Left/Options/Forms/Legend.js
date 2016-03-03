@@ -6,7 +6,7 @@ Ext.namespace('TYPO3.Form.Wizard.Viewport.Left.Options.Forms');
  * @class TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Legend
  * @extends Ext.FormPanel
  */
-TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Legend = Ext.extend(Ext.FormPanel, {
+TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Legend = Ext.extend(Ext.ux.form.FakeFormPanel, {
 	/**
 	 * @cfg {String} title
 	 * The title text to be used as innerHTML (html tags are accepted) to

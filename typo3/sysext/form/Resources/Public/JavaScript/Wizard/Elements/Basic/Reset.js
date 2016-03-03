@@ -62,6 +62,34 @@ TYPO3.Form.Wizard.Elements.Basic.Reset = Ext.extend(TYPO3.Form.Wizard.Elements, 
 
 	/**
 	 * Constructor
+	 */
+	initComponent: function() {
+
+		// call parent
+		TYPO3.Form.Wizard.Elements.Basic.Reset.superclass.initComponent.apply(this, arguments);
+
+		// Initialize events after rendering
+		this.on('afterrender', this.afterRender, this);
+	},
+
+	/**
+	 * Called by the 'afterrender' event.
+	 *
+	 * Stop click propagation
+	 */
+	afterRender: function() {
+		this.getEl().addListener('click', function(e) {
+			if(e.type == 'click') {
+				e.stopEvent();
+			}
+		});
+
+		// Call parent
+		TYPO3.Form.Wizard.Elements.Basic.Reset.superclass.afterRender.call(this);
+	},
+
+	/**
+	 * Constructor
 	 *
 	 * Add the configuration object to this component
 	 * @param config

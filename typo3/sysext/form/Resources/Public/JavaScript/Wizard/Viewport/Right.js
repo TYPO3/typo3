@@ -72,6 +72,7 @@ TYPO3.Form.Wizard.Viewport.Right = Ext.extend(Ext.Container, {
 	 */
 	initializeForm: function() {
 		this.loadForm();
+
 	},
 
 	/**
@@ -80,7 +81,8 @@ TYPO3.Form.Wizard.Viewport.Right = Ext.extend(Ext.Container, {
 	 * Loads the configuration and initializes the history
 	 */
 	loadForm: function() {
-		var url = document.location.href.substring(document.location.href.indexOf('&P'));
+		var wizardUrl = TYPO3.Form.Wizard.Settings.ajaxUrl;
+		var url = wizardUrl.substring(wizardUrl.indexOf('&P'));
 		url = TYPO3.settings.ajaxUrls['formwizard_load'] + url;
 		Ext.Ajax.request({
 			url: url,

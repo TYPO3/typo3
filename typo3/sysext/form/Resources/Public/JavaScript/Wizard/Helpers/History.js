@@ -70,7 +70,6 @@ TYPO3.Form.Wizard.Helpers.History = Ext.extend(Ext.util.Observable, {
 			this.history.shift();
 		}
 		this.marker = this.history.length;
-		this.buttons();
 	},
 
 	/**
@@ -94,7 +93,6 @@ TYPO3.Form.Wizard.Helpers.History = Ext.extend(Ext.util.Observable, {
 		if (this.marker >= 1) {
 			this.marker--;
 			var undoObject = Ext.decode(this.history[this.marker-1]);
-			this.buttons();
 			Ext.getCmp('formwizard-right').loadConfiguration(undoObject);
 			TYPO3.Form.Wizard.Helpers.Element.unsetActive();
 		}
@@ -111,7 +109,6 @@ TYPO3.Form.Wizard.Helpers.History = Ext.extend(Ext.util.Observable, {
 		if (this.history.length > this.marker) {
 			this.marker++;
 			var redoObject = Ext.decode(this.history[this.marker-1]);
-			this.buttons();
 			Ext.getCmp('formwizard-right').loadConfiguration(redoObject);
 			TYPO3.Form.Wizard.Helpers.Element.unsetActive();
 		}

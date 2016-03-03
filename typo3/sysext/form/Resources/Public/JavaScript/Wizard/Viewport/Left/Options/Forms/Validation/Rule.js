@@ -6,7 +6,7 @@ Ext.namespace('TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation');
  * @class TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule
  * @extends Ext.FormPanel
  */
-TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.FormPanel, {
+TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.ux.form.FakeFormPanel, {
 	/**
 	 * @cfg {Boolean} border
 	 * True to display the borders of the panel's body element, false to hide

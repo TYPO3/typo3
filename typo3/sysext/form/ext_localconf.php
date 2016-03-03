@@ -7,9 +7,20 @@ if (TYPO3_MODE === 'BE') {
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">'
     );
 
+    // Add default User TS Config FORM configuration
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/UserTSconfig/userTSConfig.txt">'
+    );
+
     // Backend view
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] =
         \TYPO3\CMS\Form\Hooks\PageLayoutView\MailformPreviewRenderer::class;
+
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1440772316] = array(
+        'nodeName' => 'formwizard',
+        'priority' => 40,
+        'class' => \TYPO3\CMS\Form\View\Wizard\Element\FormWizardElement::class,
+    );
 } else {
     // Handling of cObjects "FORM" and "FORM_INT"
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(

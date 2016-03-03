@@ -67,13 +67,39 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 		};
 
 			// Add the buttons to the docheader
-		this.addButtonsToDocHeader();
+		this.splitButtons.addPreSubmitCallback(this.save);
+		this.hijackTBE();
 
 			// apply config
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
 
 			// call parent
 		TYPO3.Form.Wizard.Viewport.superclass.initComponent.apply(this, arguments);
+	},
+
+	/**
+	 * hijack TBE save method
+	 */
+	hijackTBE: function() {
+		/**
+		 * @see TBE_EDITOR.submitForm
+		 */
+		TBE_EDITOR.submitForm = function() {
+			if (TBE_EDITOR.doSaveFieldName) {
+				document[TBE_EDITOR.formname][TBE_EDITOR.doSaveFieldName].value=1;
+			}
+			// Set a short timeout to allow other JS processes to complete, in particular those from
+			// EXT:backend/Resources/Public/JavaScript/FormEngine.js (reference: http://forge.typo3.org/issues/58755).
+			// TODO: This should be solved in a better way when this script is refactored.
+			window.setTimeout(function() {
+				var form0 = document.getElementsByName(TBE_EDITOR.formname).item(0);
+				if(form0 && form0.dataset.typo3_formwizard == 'wait') {
+					TBE_EDITOR.submitForm();
+					return;
+				}
+				document.getElementsByName(TBE_EDITOR.formname).item(0).submit();
+			}, 10);
+		}
 	},
 
 	/**
@@ -145,6 +171,13 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	},
 
 	/**
+	 * @returns {Element}
+	 */
+	getEditForm: function() {
+		return document.querySelector('[name=editform]');
+	},
+
+	/**
 	 * Save the form
 	 *
 	 * @param event
@@ -153,30 +186,38 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	 */
 	save: function(event, element, object) {
 		var configuration = Ext.getCmp('formwizard-right').getConfiguration();
-		var url = document.location.href.substring(document.location.href.indexOf('&P'));
+		var wizardUrl = TYPO3.Form.Wizard.Settings.ajaxUrl;
+		var url = wizardUrl.substring(wizardUrl.indexOf('&P'));
 		url = TYPO3.settings.ajaxUrls['formwizard_save'] + url;
 
-		Ext.Ajax.request({
-			url: url,
-			method: 'POST',
-			params: {
-				configuration: Ext.encode(configuration)
-			},
-			success: function(response, opts) {
-				var responseObject = Ext.decode(response.responseText);
-				Ext.MessageBox.alert(
-					TYPO3.l10n.localize('action_save'),
-					responseObject.message
-				);
-			},
-			failure: function(response, opts) {
-				Ext.MessageBox.alert(
-					TYPO3.l10n.localize('action_save'),
-					TYPO3.l10n.localize('action_save_error') + ' ' + response.status
-				);
-			},
-			scope: this
-		});
+		// prepare config json
+		var encodedConfiguration = Ext.encode(configuration);
+		var formData = new FormData();
+		formData.append('configuration', encodedConfiguration);
+		formData.append('action', 'save');
+
+		// get domElement
+		var Viewport = Ext.getCmp('formwizard');
+
+		// synchronous ajax request
+		var r = new XMLHttpRequest();
+		r.open("POST", url, true);
+		r.onreadystatechange = function () {
+			if (this.readyState != 4 || this.status != 200) return;
+			// form ready
+			var editForm = Viewport.getEditForm();
+			if(editForm) {
+				editform.dataset.typo3_formwizard = 'ready';
+			}
+			var responseObject = Ext.decode(this.responseText);
+			Viewport.transportEl.value = responseObject.fakeTs;
+		};
+		// form not ready
+		var editForm = Viewport.getEditForm();
+		if(editForm) {
+			editform.dataset.typo3_formwizard = 'wait';
+		}
+		r.send(formData);
 	},
 
 	/**

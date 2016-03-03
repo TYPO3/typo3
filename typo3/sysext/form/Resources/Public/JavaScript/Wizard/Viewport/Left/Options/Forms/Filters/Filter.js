@@ -6,7 +6,7 @@ Ext.namespace('TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters');
  * @class TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter
  * @extends Ext.FormPanel
  */
-TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.FormPanel, {
+TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.ux.form.FakeFormPanel, {
 	/**
 	 * @cfg {Boolean} border
 	 * True to display the borders of the panel's body element, false to hide
