@@ -15,7 +15,7 @@
 				class="t3-install-tool-configuration-radio-label"
 			>
 				<strong>
-					APC cache backend
+					APCu cache backend
 				</strong>
 				{f:if(condition:'{preset.isActive}', then:' [Active]')}
 			</label>
@@ -24,11 +24,11 @@
 	<div class="message-body>">
 		<f:if condition="{preset.isAvailable}">
 			<f:then>
-				Use APC cache backend. This reduces your MySQL load and
+				Use APCu (APC Userland) cache backend. This reduces your MySQL load and
 				speeds up lots of TYPO3 CMS requests. Use if available.
 			</f:then>
 			<f:else>
-				APCu 4.x is not loaded or not enough memory is left. APC should
+				APCu 5+ is not loaded or not enough memory is left. APCu should
 				have at least 5MB free memory.
 			</f:else>
 		</f:if>

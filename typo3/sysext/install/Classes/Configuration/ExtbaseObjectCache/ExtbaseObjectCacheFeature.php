@@ -30,7 +30,8 @@ class ExtbaseObjectCacheFeature extends Configuration\AbstractFeature implements
      * @var array List of preset classes
      */
     protected $presetRegistry = array(
-        \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\DatabasePreset::class,
-        \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ApcPreset::class,
+        DatabasePreset::class,
+        ApcPreset::class,
+        ApcuPreset::class,
     );
 }
