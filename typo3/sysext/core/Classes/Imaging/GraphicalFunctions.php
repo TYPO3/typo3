@@ -646,7 +646,7 @@ class GraphicalFunctions
                 for ($a = 0; $a < $conf['iterations']; $a++) {
                     // If any kind of spacing applys, we use this function:
                     if ($spacing || $wordSpacing) {
-                        $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, self::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
+                        $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
                     } else {
                         $this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf);
                     }
@@ -671,7 +671,7 @@ class GraphicalFunctions
                 $Fcolor = ImageColorAllocate($maskImg, 0, 0, 0);
                 // If any kind of spacing applies, we use this function:
                 if ($spacing || $wordSpacing) {
-                    $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, self::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
+                    $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
                 } else {
                     $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf, $sF);
                 }
@@ -997,7 +997,7 @@ class GraphicalFunctions
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
         // Traverse string parts:
         foreach ($stringParts as $strCfg) {
-            $fontFile = self::prependAbsolutePath($strCfg['fontFile']);
+            $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 /**
                  * Calculate Bounding Box for part.
@@ -1063,12 +1063,12 @@ class GraphicalFunctions
                 $x += (int)$strCfg['xSpaceBefore'];
                 $y -= (int)$strCfg['ySpaceBefore'];
             }
-            $fontFile = self::prependAbsolutePath($strCfg['fontFile']);
+            $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 // Render part:
                 ImageTTFText($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
                 // Calculate offset to apply:
-                $wordInf = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+                $wordInf = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
                 $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
                 $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
             } else {
@@ -1974,18 +1974,17 @@ class GraphicalFunctions
      *
      *********************************/
     /**
-     * Checks if the $fontFile is already at an absolute path and if not, prepends the correct path.
-     * Use PATH_site unless we are in the backend.
+     * Checks if the $fontFile is already at an absolute path and if not, prepends the PATH_site.
      * Call it by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::prependAbsolutePath()
      *
      * @param string $fontFile The font file
      * @return string The font file with absolute path.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use GeneralUtility::getFileAbsFileName()
      */
     public function prependAbsolutePath($fontFile)
     {
-        $absPath = defined('PATH_typo3') ? dirname(PATH_thisScript) . '/' : PATH_site;
-        $fontFile = GeneralUtility::isAbsPath($fontFile) ? $fontFile : GeneralUtility::resolveBackPath($absPath . $fontFile);
-        return $fontFile;
+        GeneralUtility::logDeprecatedFunction();
+        return GeneralUtility::isAbsPath($fontFile) ? $fontFile : PATH_site . $fontFile;
     }
 
     /**
