@@ -11267,6 +11267,8 @@ em {
   border-radius: 2px;
   background-color: #484848;
   vertical-align: middle;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .typo3-app-icon > span {
   display: table;
