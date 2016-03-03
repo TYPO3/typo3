@@ -61,6 +61,7 @@ CREATE TABLE tx_styleguide_elements_basic (
 	input_33 text NOT NULL,
 	input_34 text NOT NULL,
 	input_35 text NOT NULL,
+	input_36 text NOT NULL,
 
 	text_1 text,
 	text_2 text,
