@@ -938,7 +938,7 @@ class ResourceStorage implements ResourceStorageInterface
         }
         // Max upload size (kb) for files.
         $maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-        if ($uploadedFileSize >= $maxUploadFileSize) {
+        if ($maxUploadFileSize > 0 && $uploadedFileSize >= $maxUploadFileSize) {
             unlink($localFilePath);
             throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
         }
