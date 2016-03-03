@@ -498,8 +498,8 @@ class Testbase {
             $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
             throw new Exception(
                 'Unable to create database with name ' . $databaseName . '. This is probably a permission problem.'
-                . ' For this instance this could be fixed executing'
-                . ' "GRANT ALL ON `' . $originalDatabaseName . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
+                . ' For this instance this could be fixed executing:'
+                . ' GRANT ALL ON `' . $originalDatabaseName . '_%`.* TO `' . $user . '`@`' . $host . '`;',
                 1376579070
             );
         }
