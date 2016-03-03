@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend;
  */
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 

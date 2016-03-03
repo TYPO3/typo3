@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

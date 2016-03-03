@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;

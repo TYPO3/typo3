@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;

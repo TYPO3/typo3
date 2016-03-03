@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

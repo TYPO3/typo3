@@ -54,7 +54,6 @@ class EscapeChildrenRenderingTest extends FunctionalTestCase
                 '<strong>Bla</strong>'
             ],
 
-
             'EscapeChildrenDisabledAndEscapeOutputDisabled: Tag syntax with children, properly encodes variable value' =>
             [
                 '<ft:escapeChildrenDisabledAndEscapeOutputDisabled>{settings.test}</ft:escapeChildrenDisabledAndEscapeOutputDisabled>',
@@ -110,10 +109,10 @@ class EscapeChildrenRenderingTest extends FunctionalTestCase
     {
         $view = new TemplateView();
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
-        $templateString = "{namespace ft=TYPO3Fluid\\FluidTest\\ViewHelpers}";
+        $templateString = '{namespace ft=TYPO3Fluid\\FluidTest\\ViewHelpers}';
         $templateString .= $viewHelperTemplate;
-		$view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
-		$view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
+        $view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
+        $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
 
         $this->assertSame($expectedOutput, $view->render());
     }

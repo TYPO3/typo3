@@ -15,10 +15,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        */
 
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;

@@ -211,7 +211,6 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         return $dependencies;
     }
 
-
     /**
      * Converts the language codes that we get from the client (usually HTTP_ACCEPT_LANGUAGE)
      * into a TYPO3-readable language code
@@ -260,5 +259,4 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         }
         return $selectedLanguage;
     }
-
 }

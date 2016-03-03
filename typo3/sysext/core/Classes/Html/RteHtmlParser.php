@@ -432,7 +432,6 @@ class RteHtmlParser extends HtmlParser
         return implode('', $imgSplit);
     }
 
-
     /**
      * Transformation handler: 'ts_links' / direction: "db"
      * Converting <A>-tags to <link tags>

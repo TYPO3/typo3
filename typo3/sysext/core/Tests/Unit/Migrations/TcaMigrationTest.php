@@ -1380,7 +1380,8 @@ class TcaMigrationTest extends UnitTestCase
      * @param array $givenConfig
      * @param array $expectedConfig
      */
-    public function migrateRemovesRteTransformOptions(array $givenConfig, array $expectedConfig) {
+    public function migrateRemovesRteTransformOptions(array $givenConfig, array $expectedConfig)
+    {
         $subject = new TcaMigration();
         $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
     }

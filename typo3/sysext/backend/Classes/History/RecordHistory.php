@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\History;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;

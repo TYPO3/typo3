@@ -356,7 +356,8 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @return array
      */
-    public function stripEmptyTagsKeepsConfiguredTagsDataProvider() {
+    public function stripEmptyTagsKeepsConfiguredTagsDataProvider()
+    {
         return [
             array(
                 'tr,td',
@@ -381,7 +382,8 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param string $content The HTML content that should be parsed.
      * @param string $expectedResult The expected HTML code result.
      */
-    public function stripEmptyTagsKeepsConfiguredTags($tagList, $treatNonBreakingSpaceAsEmpty, $content, $expectedResult) {
+    public function stripEmptyTagsKeepsConfiguredTags($tagList, $treatNonBreakingSpaceAsEmpty, $content, $expectedResult)
+    {
         $tsConfig = array(
             'keepNonMatchedTags' => 1,
             'stripEmptyTags' => 1,

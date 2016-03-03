@@ -1,5 +1,4 @@
 <?php
-use TYPO3\CMS\Backend\Controller;
 
 /**
  * Definitions for routes provided by EXT:backend

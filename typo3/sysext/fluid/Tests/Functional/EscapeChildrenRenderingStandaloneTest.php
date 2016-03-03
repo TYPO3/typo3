@@ -3,7 +3,6 @@ namespace TYPO3\Fluid\Tests\Functional;
 
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolver;
 
 class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
 {
@@ -54,7 +53,6 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
                 '<ft:escapeChildrenEnabledAndEscapeOutputDisabled content="{ft:escapeChildrenEnabledAndEscapeOutputDisabled(content: settings.test)}" />',
                 '<strong>Bla</strong>'
             ],
-
 
             'EscapeChildrenDisabledAndEscapeOutputDisabled: Tag syntax with children, properly encodes variable value' =>
             [
@@ -110,8 +108,8 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
     public function renderingTest($viewHelperTemplate, $expectedOutput)
     {
         $view = new StandaloneView();
-		$view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
-		$view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
+        $view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
+        $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
 
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
 

@@ -144,7 +144,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                     $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                     $editIcon = htmlspecialchars($url);
                     $editTitle = 'editTSconfig_all';
-
                 } else {
                     $editIcon = '';
                     $editTitle = '';

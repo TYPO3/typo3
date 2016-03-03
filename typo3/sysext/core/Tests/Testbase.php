@@ -31,7 +31,8 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
  * Use the classes "UnitTestCase", "FunctionalTestCase" or "AcceptanceCoreEnvironment"
  * to indirectly benefit from this class in own extensions.
  */
-class Testbase {
+class Testbase
+{
 
     /**
      * Makes sure error messages during the tests get displayed no matter what is set in php.ini.

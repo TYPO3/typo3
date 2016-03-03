@@ -15,9 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        */
 
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 
 /**
  * Resizes a given image (if required) and renders the respective img tag

@@ -26,7 +26,6 @@
  * - typo3/../bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
  *     typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
  */
-
 call_user_func(function () {
     // Ensure cli only as security measure
     if (PHP_SAPI !== 'cli') {
@@ -69,4 +68,3 @@ call_user_func(function () {
         // Find all class names
         ->ensureClassLoadingInformationExists();
 });
-

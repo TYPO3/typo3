@@ -401,5 +401,4 @@ abstract class FunctionalTestCase extends BaseTestCase
         $response = new Response($result['status'], $result['content'], $result['error']);
         return $response;
     }
-
 }

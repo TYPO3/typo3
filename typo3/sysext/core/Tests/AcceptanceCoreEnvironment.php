@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Codeception\Events;
 use Codeception\Event\SuiteEvent;
+use Codeception\Events;
 use Codeception\Extension;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
@@ -148,7 +148,8 @@ class AcceptanceCoreEnvironment extends Extension
      * @param SuiteEvent $suiteEvent
      * @throws Exception
      */
-    public function bootstrapTypo3Environment(SuiteEvent $suiteEvent) {
+    public function bootstrapTypo3Environment(SuiteEvent $suiteEvent)
+    {
         $testbase = new Testbase();
         $testbase->enableDisplayErrors();
         $testbase->defineBaseConstants();
@@ -221,11 +222,10 @@ class AcceptanceCoreEnvironment extends Extension
         // Alternative solution:
         // unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['extbase']);
         $suite = $suiteEvent->getSuite();
-        $suite->setBackupGlobals(FALSE);
+        $suite->setBackupGlobals(false);
 
         foreach ($this->xmlDatabaseFixtures as $fixture) {
             $testbase->importXmlDatabaseFixture(ORIGINAL_ROOT . $fixture);
         }
     }
-
 }

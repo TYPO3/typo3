@@ -17,7 +17,6 @@
  * before instantiating the test suites, it must also be included
  * with phpunit parameter --bootstrap if executing single test case classes.
  */
-
 call_user_func(function () {
     // Ensure cli only as security measure
     if (PHP_SAPI !== 'cli') {
