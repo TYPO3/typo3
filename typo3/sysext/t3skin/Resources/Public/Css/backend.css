@@ -8893,9 +8893,6 @@ div#contentMenu1 {
   color: #fff;
   content: "\f0da";
 }
-ul.typo3-messages {
-  padding: 0;
-}
 .alert-notice {
   background-color: #333333;
   border-color: transparent;

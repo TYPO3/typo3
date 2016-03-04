@@ -35,7 +35,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     const PART_HEADER = 1;
     const PART_FOOTER = 2;
     // jQuery Core version that is shipped with TYPO3
-    const JQUERY_VERSION_LATEST = '2.1.4';
+    const JQUERY_VERSION_LATEST = '2.2.1';
     // jQuery namespace options
     const JQUERY_NAMESPACE_NONE = 'none';
     const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
