@@ -34,7 +34,8 @@ class MailformPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewD
     public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row)
     {
         if ($row['CType'] === 'mailform') {
-            $itemContent = $parentObject->linkEditContent($parentObject->renderText($row['bodytext']), $row) . '<br />';
+            $contentType = $parentObject->CType_labels[$row['CType']];
+            $itemContent = $parentObject->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
             $drawItem = false;
         }
     }
