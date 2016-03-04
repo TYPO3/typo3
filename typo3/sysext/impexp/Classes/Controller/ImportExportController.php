@@ -1013,7 +1013,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$extKeysToInstall = array();
 					if (is_array($import->dat['header']['extensionDependencies'])) {
 						foreach ($import->dat['header']['extensionDependencies'] as $extKey) {
-							if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
+							if (!empty($extKey) && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
 								$extKeysToInstall[] = $extKey;
 							}
 						}
