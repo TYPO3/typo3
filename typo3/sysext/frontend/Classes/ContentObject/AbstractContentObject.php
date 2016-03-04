@@ -51,11 +51,23 @@ abstract class AbstractContentObject
     abstract public function render($conf = array());
 
     /**
-     * Getter for current cObj
+     * Getter for current ContentObjectRenderer
+     *
+     * @return ContentObjectRenderer
+     * @deprecated since TYPO3 v8, will be removed with TYPO3 v9. Use getContentObjectRenderer() instead.
+     */
+    public function getContentObject()
+    {
+        GeneralUtility::logDeprecatedFunction();
+        return $this->getContentObjectRenderer();
+    }
+
+    /**
+     * Getter for current ContentObjectRenderer
      *
      * @return ContentObjectRenderer
      */
-    public function getContentObject()
+    public function getContentObjectRenderer()
     {
         return $this->cObj;
     }

@@ -99,7 +99,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function constructSetsContentObjectRenderer()
     {
-        $this->assertSame($this->contentObjectRenderer, $this->subject->getContentObject());
+        $this->assertSame($this->contentObjectRenderer, $this->subject->getContentObjectRenderer());
     }
 
     /**
