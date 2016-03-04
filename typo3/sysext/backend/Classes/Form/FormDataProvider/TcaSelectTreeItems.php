@@ -81,6 +81,26 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             // Keys may contain table names, so a numeric array is created
             $fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
 
+            // A couple of tree specific config parameters can be overwritten via page TS.
+            // Pick those that influence the data fetching and write them into the config
+            // given to the tree data provider
+            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'])) {
+                $pageTsConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'];
+                // If rootUid is set in pageTsConfig, use it
+                if (isset($pageTsConfig['rootUid'])) {
+                    $fieldConfig['config']['treeConfig']['rootUid'] = (int)$pageTsConfig['rootUid'];
+                }
+                if (isset($pageTsConfig['appearance.']['expandAll'])) {
+                    $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];
+                }
+                if (isset($pageTsConfig['appearance.']['maxLevels'])) {
+                    $fieldConfig['config']['treeConfig']['appearance']['maxLevels'] = (int)$pageTsConfig['appearance.']['maxLevels'];
+                }
+                if (isset($pageTsConfig['appearance.']['nonSelectableLevels'])) {
+                    $fieldConfig['config']['treeConfig']['appearance']['nonSelectableLevels'] = $pageTsConfig['appearance.']['nonSelectableLevels'];
+                }
+            }
+
             $fieldConfig['config']['treeData'] = $this->renderTree($result, $fieldConfig, $fieldName, $staticItems);
 
             $result['processedTca']['columns'][$fieldName] = $fieldConfig;

@@ -116,4 +116,76 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         ];
         $this->assertEquals($expected, $this->subject->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataHandsPageTsConfigSettingsOverToTableConfigurationTree()
+    {
+        $GLOBALS['TCA']['foreignTable'] = [];
+
+        /** @var DatabaseConnection|ObjectProphecy $database */
+        $database = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $database->reveal();
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
+        $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
+        GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
+
+        /** @var  TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
+        $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
+        GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
+
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '1'
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'childrenField' => 'childrenField'
+                            ],
+                            'foreign_table' => 'foreignTable',
+                            'items' => [],
+                            'maxitems' => 1
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'config.' => [
+                                'treeConfig.' => [
+                                    'rootUid' => '42',
+                                    'appearance.' => [
+                                        'expandAll' => 1,
+                                        'maxLevels' => 4,
+                                        'nonSelectableLevels' => '0,1',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->subject->addData($input);
+
+        $treeDataProviderProphecy->setRootUid(42)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setLevelMaximum(4)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setNonSelectableLevelList('0,1')->shouldHaveBeenCalled();
+    }
 }
