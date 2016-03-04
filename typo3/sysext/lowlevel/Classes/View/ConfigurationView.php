@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Lowlevel\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -113,7 +114,8 @@ class ConfigurationView extends BaseScriptClass
                 6 => LocalizationUtility::translate('tbemodulesext', 'lowlevel'),
                 7 => LocalizationUtility::translate('tbeStyles', 'lowlevel'),
                 8 => LocalizationUtility::translate('beUser', 'lowlevel'),
-                9 => LocalizationUtility::translate('usersettings', 'lowlevel')
+                9 => LocalizationUtility::translate('usersettings', 'lowlevel'),
+                10 => LocalizationUtility::translate('routes', 'lowlevel')
             ),
             'regexsearch' => '',
             'fixedLgd' => ''
@@ -190,6 +192,19 @@ class ConfigurationView extends BaseScriptClass
                 $theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
                 ArrayUtility::naturalKeySortRecursive($theVar);
                 $arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
+                break;
+            case 10:
+                $router = GeneralUtility::makeInstance(Router::class);
+                $routes = $router->getRoutes();
+                $theVar = [];
+                foreach ($routes as $identifier => $route) {
+                    $theVar[$identifier] = [
+                        'path' => $route->getPath(),
+                        'options' => $route->getOptions()
+                    ];
+                }
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = 'BackendRoutes';
                 break;
             default:
                 $theVar = array();
