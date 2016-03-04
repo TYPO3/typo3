@@ -123,33 +123,19 @@ class FormEngineUtility
     public static function getIconHtml($icon, $alt = '', $title = '')
     {
         $icon = (string)$icon;
-        $iconFile = '';
-        $iconInfo = false;
+        $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
+        if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
+            $iconInfo = StringUtility::endsWith($absoluteFilePath, '.svg')
+                ? true
+                : getimagesize($absoluteFilePath);
 
-        if (StringUtility::beginsWith($icon, 'EXT:')) {
-            $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
-            if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
-                $iconFile = '../' . PathUtility::stripPathSitePrefix($absoluteFilePath);
-                $iconInfo = (StringUtility::endsWith($absoluteFilePath, '.svg'))
-                    ? true
-                    : getimagesize($absoluteFilePath);
+            if ($iconInfo !== false) {
+                return '<img'
+                    . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
+                    . ' alt="' . htmlspecialchars($alt) . '" '
+                    . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
+                . ' />';
             }
-        } elseif (StringUtility::beginsWith($icon, '../')) {
-            // @TODO: this is special modList, files from folders and selicon
-            $iconFile = GeneralUtility::resolveBackPath($icon);
-            if (is_file(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
-                $iconInfo = (StringUtility::endsWith($icon, '.svg'))
-                    ? true
-                    : getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
-            }
-        }
-
-        if ($iconInfo !== false && is_file(GeneralUtility::resolveBackPath(PATH_typo3 . $iconFile))) {
-            return '<img'
-                . ' src="' . htmlspecialchars($iconFile) . '"'
-                . ' alt="' . htmlspecialchars($alt) . '" '
-                . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
-            . ' />';
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

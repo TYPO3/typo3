@@ -1085,7 +1085,7 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'aModuleLabel',
                 1 => 'aModule',
-                2 => '<span class="t3js-icon icon icon-size-default icon-state-default icon-empty-empty" data-identifier="empty-empty"><span class="icon-markup"><span class="icon-unify"><i class="fa fa-empty-empty"></i></span></span></span>',
+                2 => 'empty-empty',
                 3 => [
                     'title' => 'aModuleTabLabel',
                     'description' => 'aModuleTabDescription',
@@ -1139,13 +1139,13 @@ class TcaSelectItemsTest extends UnitTestCase
             0 => [
                 0 => 'anImage.gif',
                 1 => 'anImage.gif',
-                2 => '../' . $directory . 'anImage.gif',
+                2 => PATH_site . $directory . 'anImage.gif',
                 3 => null,
             ],
             1 => [
                 0 => 'subdir/anotherImage.gif',
                 1 => 'subdir/anotherImage.gif',
-                2 => '../' . $directory . 'subdir/anotherImage.gif',
+                2 => PATH_site . $directory . 'subdir/anotherImage.gif',
                 3 => null,
             ],
         ];

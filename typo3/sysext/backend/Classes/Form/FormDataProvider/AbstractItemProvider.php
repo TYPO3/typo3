@@ -316,10 +316,6 @@ abstract class AbstractItemProvider
                         } else {
                             $icon = $loadModules->modules[$theMod]['iconIdentifier'];
                         }
-                        if ($icon) {
-                            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-                            $icon = $iconFactory->getIcon($icon)->render();
-                        }
                         // Add help text
                         $helpText = [
                             'title' => $languageService->moduleLabels['labels'][$theMod . '_tablabel'],
@@ -386,7 +382,7 @@ abstract class AbstractItemProvider
             foreach ($fileArray as $fileReference) {
                 $fileInformation = pathinfo($fileReference);
                 $icon = GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($fileInformation['extension']))
-                    ? '../' . PathUtility::stripPathSitePrefix($fileFolder) . $fileReference
+                    ? $fileFolder . $fileReference
                     : '';
                 $items[] = [
                     $fileReference,

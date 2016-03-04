@@ -102,7 +102,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             'checked' => $checked,
                             'disabled' => false,
                             'class' => '',
-                            'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()),
+                            'icon' => FormEngineUtility::getIconHtml(!empty($p[2]) ? $p[2] : 'empty-empty'),
                             'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', false),
                             'help' => $help
                         );

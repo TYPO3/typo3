@@ -2850,20 +2850,12 @@ class IconRegistry implements SingletonInterface
             // This method is only needed for TCA tables where typeicon_classes are not configured
             if (is_array($GLOBALS['TCA'][$tableName])) {
                 $tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
-                $icon = null;
                 $iconIdentifier = 'tcarecords-' . $tableName . '-default';
                 if (isset($this->icons[$iconIdentifier])) {
                     continue;
                 }
                 if (isset($tcaCtrl['iconfile'])) {
-                    if (StringUtility::beginsWith($tcaCtrl['iconfile'], 'EXT:')) {
-                        $icon = $tcaCtrl['iconfile'];
-                    } elseif (strpos($tcaCtrl['iconfile'], '/') !== false) {
-                        $icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($tcaCtrl['iconfile']);
-                    }
-                    if ($icon !== null) {
-                        $resultArray[$iconIdentifier] = $icon;
-                    }
+                    $resultArray[$iconIdentifier] = $tcaCtrl['iconfile'];
                 }
             }
         }
