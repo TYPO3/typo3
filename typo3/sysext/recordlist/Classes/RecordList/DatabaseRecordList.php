@@ -1989,9 +1989,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             . GeneralUtility::quoteJSvalue($table)
             . ';document.dblistForm.submit();';
 
-        $attributes = [
-            'class' => 'btn btn-default'
-        ];
+        $attributes = [];
         if ($title !== '') {
             $attributes['title'] = $title;
         }
@@ -2002,7 +2000,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $attributes['data-title'] = $title;
             $attributes['data-content'] = $warning;
         } else {
-            $attributes['onclick'] = htmlspecialchars(($jsCode . 'return false;'));
+            $attributes['class'] = 'btn btn-default';
+            $attributes['onclick'] = $jsCode . 'return false;';
         }
 
         $attributesString = '';
