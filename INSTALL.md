@@ -69,7 +69,6 @@ Your PHP needs to support the following extensions. Install will
 check if these are available.
 
 * These are usually part of the standard PHP package on most distributions:
-  * fileinfo
   * filter
   * hash
   * openssl

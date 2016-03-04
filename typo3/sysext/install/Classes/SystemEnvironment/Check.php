@@ -52,7 +52,6 @@ class Check
      * @var array List of required PHP extensions
      */
     protected $requiredPhpExtensions = array(
-        'fileinfo',
         'filter',
         'gd',
         'hash',
