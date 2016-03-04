@@ -184,9 +184,9 @@ class AcceptanceCoreEnvironment extends Extension
         $testbase->linkTestExtensionsToInstance($instancePath, $testExtensionsToLoad);
         $testbase->linkPathsInTestInstance($instancePath, $this->pathsToLinkInTestInstance);
         $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
-        $originalDatabaseName = $localConfiguration['DB']['database'];
+        $originalDatabaseName = $localConfiguration['DB']['Connections']['Default']['dbname'];
         // Append the unique identifier to the base database name to end up with a single database per test case
-        $localConfiguration['DB']['database'] = $originalDatabaseName . '_at';
+        $localConfiguration['DB']['Connections']['Default']['dbname'] = $originalDatabaseName . '_at';
         $testbase->testDatabaseNameIsNotTooLong($originalDatabaseName, $localConfiguration);
         // Set some hard coded base settings for the instance. Those could be overruled by
         // $this->configurationToUseInTestInstance if needed again.
@@ -223,7 +223,7 @@ class AcceptanceCoreEnvironment extends Extension
         ];
         $testbase->setUpPackageStates($instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $testExtensionsToLoad);
         $testbase->setUpBasicTypo3Bootstrap($instancePath);
-        $testbase->setUpTestDatabase($localConfiguration['DB']['database'], $originalDatabaseName);
+        $testbase->setUpTestDatabase($localConfiguration['DB']['Connections']['Default']['dbname'], $originalDatabaseName);
         $testbase->loadExtensionTables();
         $testbase->createDatabaseStructure();
 

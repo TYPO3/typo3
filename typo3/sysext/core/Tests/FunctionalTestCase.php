@@ -223,9 +223,9 @@ abstract class FunctionalTestCase extends BaseTestCase
             $testbase->linkTestExtensionsToInstance($this->instancePath, $this->testExtensionsToLoad);
             $testbase->linkPathsInTestInstance($this->instancePath, $this->pathsToLinkInTestInstance);
             $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
-            $originalDatabaseName = $localConfiguration['DB']['database'];
+            $originalDatabaseName = $localConfiguration['DB']['Connections']['Default']['dbname'];
             // Append the unique identifier to the base database name to end up with a single database per test case
-            $localConfiguration['DB']['database'] = $originalDatabaseName . '_ft' . $this->identifier;
+            $localConfiguration['DB']['Connections']['Default']['dbname'] = $originalDatabaseName . '_ft' . $this->identifier;
             $testbase->testDatabaseNameIsNotTooLong($originalDatabaseName, $localConfiguration);
             // Set some hard coded base settings for the instance. Those could be overruled by
             // $this->configurationToUseInTestInstance if needed again.
@@ -246,7 +246,7 @@ abstract class FunctionalTestCase extends BaseTestCase
             ];
             $testbase->setUpPackageStates($this->instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
             $testbase->setUpBasicTypo3Bootstrap($this->instancePath);
-            $testbase->setUpTestDatabase($localConfiguration['DB']['database'], $originalDatabaseName);
+            $testbase->setUpTestDatabase($localConfiguration['DB']['Connections']['Default']['dbname'], $originalDatabaseName);
             $testbase->loadExtensionTables();
             $testbase->createDatabaseStructure();
         }

@@ -1248,27 +1248,31 @@ class DatabaseConnection
             ? 'p:' . $this->databaseHost
             : $this->databaseHost;
 
-        $this->link = mysqli_init();
-        $connected = $this->link->real_connect(
-            $host,
-            $this->databaseUsername,
-            $this->databaseUserPassword,
-            null,
-            (int)$this->databasePort,
-            $this->databaseSocket,
-            $this->connectionCompression ? MYSQLI_CLIENT_COMPRESS : 0
-        );
+        // We are not using the TYPO3 CMS shim here as the database parameters in this class
+        // are settable externally. This requires building the connection parameter array
+        // just in time when establishing the connection.
+        $connection = \Doctrine\DBAL\DriverManager::getConnection([
+            'driver' => 'mysqli',
+            'wrapperClass' => Connection::class,
+            'host' => $host,
+            'port' => (int)$this->databasePort,
+            'unix_socket' => $this->databaseSocket,
+            'user' => $this->databaseUsername,
+            'password' => $this->databaseUserPassword,
+            'charset' => $this->connectionCharset,
+        ]);
 
-        if ($connected) {
+        // Mimic the previous behavior of returning false on connection errors
+        try {
+            /** @var \Doctrine\DBAL\Driver\Mysqli\MysqliConnection $mysqliConnection */
+            $mysqliConnection = $connection->getWrappedConnection();
+            $this->link = $mysqliConnection->getWrappedResourceHandle();
+        } catch (\Doctrine\DBAL\Exception\ConnectionException $exception) {
+            return false;
+        }
+
+        if ($connection->isConnected()) {
             $this->isConnected = true;
-
-            if ($this->link->set_charset($this->connectionCharset) === false) {
-                GeneralUtility::sysLog(
-                    'Error setting connection charset to "' . $this->connectionCharset . '"',
-                    'core',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
-                );
-            }
 
             foreach ($this->initializeCommandsAfterConnect as $command) {
                 if ($this->query($command) === false) {
@@ -1285,11 +1289,13 @@ class DatabaseConnection
             $error_msg = $this->link->connect_error;
             $this->link = null;
             GeneralUtility::sysLog(
-                'Could not connect to MySQL server ' . $host . ' with user ' . $this->databaseUsername . ': ' . $error_msg,
+                'Could not connect to MySQL server ' . $host . ' with user ' . $this->databaseUsername . ': '
+                . $error_msg,
                 'core',
                 GeneralUtility::SYSLOG_SEVERITY_FATAL
             );
         }
+
         return $this->link;
     }
 

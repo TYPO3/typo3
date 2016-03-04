@@ -36,7 +36,7 @@ class DatabaseCharsetUpdate extends AbstractUpdate
         $description = 'Sets the default database charset to utf-8 to ensure new tables are created with correct charset.
         WARNING: This will NOT convert any existing data.';
 
-        if($this->isDbalEnabled()) {
+        if ($this->isDbalEnabled()) {
             return $result;
         }
         // check if database charset is utf-8
@@ -60,7 +60,7 @@ class DatabaseCharsetUpdate extends AbstractUpdate
     {
         $result = true;
         $db = $this->getDatabaseConnection();
-        $query = 'ALTER DATABASE `' . $GLOBALS['TYPO3_CONF_VARS']['DB']['database'] . '` DEFAULT CHARACTER SET utf8';
+        $query = 'ALTER DATABASE `' . $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] . '` DEFAULT CHARACTER SET utf8';
         $db->admin_query($query);
         $dbQueries[] = $query;
         if ($db->sql_error()) {

@@ -316,26 +316,32 @@ class Testbase
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = array(
-                'DB' => array(),
-            );
+            $originalConfigurationArray = [
+                'DB' => [
+                    'Connections' => [
+                        'Default' => [
+                            'driver' => 'mysqli'
+                        ],
+                    ],
+                ],
+            ];
             if ($databaseName) {
-                $originalConfigurationArray['DB']['database'] = $databaseName;
+                $originalConfigurationArray['DB']['Connections']['Default']['dbname'] = $databaseName;
             }
             if ($databaseHost) {
-                $originalConfigurationArray['DB']['host'] = $databaseHost;
+                $originalConfigurationArray['DB']['Connections']['Default']['host'] = $databaseHost;
             }
             if ($databaseUsername) {
-                $originalConfigurationArray['DB']['username'] = $databaseUsername;
+                $originalConfigurationArray['DB']['Connections']['Default']['user'] = $databaseUsername;
             }
             if ($databasePassword) {
-                $originalConfigurationArray['DB']['password'] = $databasePassword;
+                $originalConfigurationArray['DB']['Connections']['Default']['password'] = $databasePassword;
             }
             if ($databasePort) {
-                $originalConfigurationArray['DB']['port'] = $databasePort;
+                $originalConfigurationArray['DB']['Connections']['Default']['port'] = $databasePort;
             }
             if ($databaseSocket) {
-                $originalConfigurationArray['DB']['socket'] = $databaseSocket;
+                $originalConfigurationArray['DB']['Connections']['Default']['unix_socket'] = $databaseSocket;
             }
         } elseif (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
             // See if a LocalConfiguration file exists in "parent" instance to get db credentials from
@@ -361,8 +367,8 @@ class Testbase
     public function testDatabaseNameIsNotTooLong($originalDatabaseName, array $configuration)
     {
         // Maximum database name length for mysql is 64 characters
-        if (strlen($configuration['DB']['database']) > 64) {
-            $suffixLength = strlen($configuration['DB']['database']) - strlen($originalDatabaseName);
+        if (strlen($configuration['DB']['Connections']['Default']['dbname']) > 64) {
+            $suffixLength = strlen($configuration['DB']['Connections']['Default']['dbname']) - strlen($originalDatabaseName);
             $maximumOriginalDatabaseName = 64 - $suffixLength;
             throw new Exception(
                 'The name of the database that is used for the functional test (' . $originalDatabaseName . ')' .
@@ -507,8 +513,8 @@ class Testbase
         $database->admin_query('DROP DATABASE IF EXISTS `' . $databaseName . '`');
         $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $databaseName . '` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
         if (!$createDatabaseResult) {
-            $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
-            $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
+            $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'];
+            $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'];
             throw new Exception(
                 'Unable to create database with name ' . $databaseName . '. This is probably a permission problem.'
                 . ' For this instance this could be fixed executing:'
@@ -565,7 +571,7 @@ class Testbase
                 1377620117
             );
         }
-        $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
+        $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
         $database->sql_select_db();
         foreach ($database->admin_get_tables() as $table) {
             $database->admin_query('TRUNCATE ' . $table['Name'] . ';');

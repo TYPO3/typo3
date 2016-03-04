@@ -47,7 +47,7 @@ class DatabaseSelect extends AbstractStepAction
             if ($this->isValidDatabaseName($newDatabaseName)) {
                 $createDatabaseResult = $this->databaseConnection->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8');
                 if ($createDatabaseResult) {
-                    $localConfigurationPathValuePairs['DB/database'] = $newDatabaseName;
+                    $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $newDatabaseName;
                 } else {
                     /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
                     $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
@@ -118,8 +118,8 @@ class DatabaseSelect extends AbstractStepAction
     {
         $this->initializeDatabaseConnection();
         $result = true;
-        if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['database'] !== '') {
-            $this->databaseConnection->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
+        if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] !== '') {
+            $this->databaseConnection->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
             try {
                 $selectResult = $this->databaseConnection->sql_select_db();
                 if ($selectResult === true) {
@@ -188,11 +188,11 @@ class DatabaseSelect extends AbstractStepAction
     protected function initializeDatabaseConnection()
     {
         $this->databaseConnection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-        $this->databaseConnection->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
-        $this->databaseConnection->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
-        $this->databaseConnection->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
-        $this->databaseConnection->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['port']);
-        $this->databaseConnection->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']);
+        $this->databaseConnection->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user']);
+        $this->databaseConnection->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password']);
+        $this->databaseConnection->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host']);
+        $this->databaseConnection->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['port']);
+        $this->databaseConnection->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket']);
         $this->databaseConnection->sql_pconnect();
     }
 

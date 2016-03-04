@@ -46,7 +46,25 @@ class SilentConfigurationUpgradeService
      *
      * @var array
      */
-    protected $obsoleteLocalConfigurationSettings = array(
+    protected $obsoleteLocalConfigurationSettings = [
+        // #72367
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\AccessRightParametersUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\BackendUserStartModuleUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\Compatibility6ExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ContentTypesToTextMediaUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileListIsStartModuleUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilesReplacePermissionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\LanguageIsoCodeUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MediaceExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateMediaToAssetsForTextMediaCe',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateShortcutUrlsAgainUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\OpenidExtractionUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\PageShortcutParentUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ProcessedFileChecksumUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TableFlexFormToTtContentFieldsUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\WorkspacesNotificationSettingsUpdate',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties',
+        'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\RteAcronymButtonRenamedToAbbreviation',
         // #72400
         'BE/spriteIconGenerator_handler',
         // #72417
@@ -79,7 +97,7 @@ class SilentConfigurationUpgradeService
         // #75355
         'BE/niceFlexFormXMLtags',
         'BE/compactFlexFormXML'
-    );
+    ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
     {
@@ -104,6 +122,7 @@ class SilentConfigurationUpgradeService
         $this->removeObsoleteLocalConfigurationSettings();
         $this->migrateThumbnailsPngSetting();
         $this->migrateLockSslSetting();
+        $this->migrateDatabaseConnectionSettings();
     }
 
     /**
@@ -145,7 +164,8 @@ class SilentConfigurationUpgradeService
             }
         } catch (\RuntimeException $e) {
             // If an exception is thrown, the value is not set in LocalConfiguration
-            $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', $rsaauthLoaded ? 'rsa' : 'normal');
+            $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel',
+                $rsaauthLoaded ? 'rsa' : 'normal');
             $this->throwRedirectException();
         }
     }
@@ -163,7 +183,7 @@ class SilentConfigurationUpgradeService
         try {
             $extensionConfiguration = @unserialize($this->configurationManager->getLocalConfigurationValueByPath('EXT/extConf/saltedpasswords'));
         } catch (\RuntimeException $e) {
-            $extensionConfiguration = array();
+            $extensionConfiguration = [];
         }
         if (is_array($extensionConfiguration) && !empty($extensionConfiguration)) {
             if (isset($extensionConfiguration['BE.']['enabled'])) {
@@ -414,7 +434,7 @@ class SilentConfigurationUpgradeService
      */
     protected function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_enabled');
         } catch (\RuntimeException $e) {
@@ -477,7 +497,7 @@ class SilentConfigurationUpgradeService
      */
     protected function setImageMagickDetailSettings()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor');
         } catch (\RuntimeException $e) {
@@ -520,8 +540,8 @@ class SilentConfigurationUpgradeService
      */
     protected function migrateImageProcessorSetting()
     {
-        $changedSettings = array();
-        $settingsToRename = array(
+        $changedSettings = [];
+        $settingsToRename = [
             'GFX/im' => 'GFX/processor_enabled',
             'GFX/im_version_5' => 'GFX/processor',
             'GFX/im_v5effects' => 'GFX/processor_effects',
@@ -533,7 +553,7 @@ class SilentConfigurationUpgradeService
             'GFX/im_stripProfileCommand' => 'GFX/processor_stripColorProfileCommand',
             'GFX/im_useStripProfileByDefault' => 'GFX/processor_stripColorProfileByDefault',
             'GFX/colorspace' => 'GFX/processor_colorspace',
-        );
+        ];
 
         foreach ($settingsToRename as $oldPath => $newPath) {
             try {
@@ -555,19 +575,22 @@ class SilentConfigurationUpgradeService
         if (!empty($changedSettings['GFX/im_noScaleUp'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noScaleUp');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowUpscaling', $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowUpscaling',
+                $newProcessorValue);
         }
 
         if (!empty($changedSettings['GFX/im_noFramePrepended'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noFramePrepended');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowFrameSelection', $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowFrameSelection',
+                $newProcessorValue);
         }
 
         if (!empty($changedSettings['GFX/im_mask_temp_ext_gif'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng', $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng',
+                $newProcessorValue);
         }
 
         if (!empty(array_filter($changedSettings))) {
@@ -596,7 +619,7 @@ class SilentConfigurationUpgradeService
      */
     protected function migrateThumbnailsPngSetting()
     {
-        $changedValues = array();
+        $changedValues = [];
         try {
             $currentThumbnailsPngValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails_png');
         } catch (\RuntimeException $e) {
@@ -628,6 +651,78 @@ class SilentConfigurationUpgradeService
             }
         } catch (\RuntimeException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Move the database connection settings to a "Default" connection
+     *
+     * @return void
+     */
+    protected function migrateDatabaseConnectionSettings()
+    {
+        $changedSettings = [];
+        $settingsToRename = [
+            'DB/username' => 'DB/Connections/Default/user',
+            'DB/password' => 'DB/Connections/Default/password',
+            'DB/host' => 'DB/Connections/Default/host',
+            'DB/port' => 'DB/Connections/Default/port',
+            'DB/socket' => 'DB/Connections/Default/unix_socket',
+            'DB/database' => 'DB/Connections/Default/dbname',
+            'SYS/setDBinit' => 'DB/Connections/Default/initCommands',
+            'SYS/no_pconnect' => 'DB/Connections/Default/persistentConnection',
+            'SYS/dbClientCompress' => 'DB/Connections/Default/driverOptions',
+
+        ];
+
+        $confManager = $this->configurationManager;
+
+        foreach ($settingsToRename as $oldPath => $newPath) {
+            try {
+                $value = $confManager->getLocalConfigurationValueByPath($oldPath);
+                $confManager->setLocalConfigurationValueByPath($newPath, $value);
+                $changedSettings[$oldPath] = true;
+            } catch (\RuntimeException $e) {
+                // If an exception is thrown, the value is not set in LocalConfiguration
+                $changedSettings[$oldPath] = false;
+            }
+        }
+
+        // Remove empty socket connects
+        if (!empty($changedSettings['DB/Connections/Default/unix_socket'])) {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/unix_socket');
+            if (empty($value)) {
+                $confManager->removeLocalConfigurationKeysByPath(array_keys('DB/Connections/Default/unix_socket'));
+            }
+        }
+
+        // Convert the dbClientCompress flag to a mysqli driver option
+        if (!empty($changedSettings['DB/Connections/Default/driverOptions'])) {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/driverOptions');
+            $confManager->setLocalConfigurationValueByPath(
+                'DB/Connections/Default/driverOptions',
+                (bool)$value ? MYSQLI_CLIENT_COMPRESS : 0
+            );
+        }
+
+        // Swap value as the semantics have changed
+        if (!empty($changedSettings['DB/Connections/Default/persistentConnection'])) {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/persistentConnection');
+            $confManager->setLocalConfigurationValueByPath(
+                'DB/Connections/Default/persistentConnection',
+                !$value
+            );
+        }
+
+        // Set the utf-8 connection charset by default
+        $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf-8');
+
+        // Use the mysqli driver by default
+        $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/driver', 'mysqli');
+
+        if (!empty(array_filter($changedSettings))) {
+            $confManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
+            $this->throwRedirectException();
         }
     }
 }
