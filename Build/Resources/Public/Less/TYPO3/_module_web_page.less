@@ -27,7 +27,8 @@
 @page-ce-dropzone-bg: @state-success-bg;
 @page-ce-dropzone-border: @state-success-border;
 @page-ce-dropzone-border-radius: @page-ce-border-radius;
-
+@page-ce-dropzone-possible-bg: @state-warning-bg;
+@page-ce-dropzone-possible-border: @state-warning-border;
 
 //
 // Grid
@@ -214,17 +215,28 @@
 //
 // Dropzone
 //
-.t3-page-ce-dropzone-available.active,
-.t3-page-ce-dropzone-possible {
+.t3-page-ce-dropzone-available.active {
+	border: 1px dashed @page-ce-dropzone-possible-border;
+	border-radius: @page-ce-dropzone-border-radius;
+background-color: @page-ce-dropzone-possible-bg;
+	height: 27px;
+}
+.t3-page-ce-dropzone-available.active.t3-page-ce-dropzone-possible {
 	border: 1px dashed @page-ce-dropzone-border;
 	border-radius: @page-ce-dropzone-border-radius;
 	background-color: @page-ce-dropzone-bg;
+	margin: -38px 0 -37px 0;
+	padding: 50px 10px;
+	z-index: 500;
+	position: relative;
+	opacity: 0.65;
 }
-.t3-page-ce-dropzone-available.active {
-	height: 2em;
+.t3-page-ce-dragitem.dragitem-shadow {
+	opacity: 0.65;
+	box-shadow: 0 1px 24px rgba(0, 0, 0, 0.50);
 }
-.t3-page-ce-dropzone-possible {
-	margin: @page-grid-spacing;
+.t3-page-ce.ui-draggable-handle {
+	height: auto!important;
 }
 
 

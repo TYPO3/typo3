@@ -12253,17 +12253,28 @@ iframe {
 .t3-page-ce-hidden:hover {
   opacity: 1.0;
 }
-.t3-page-ce-dropzone-available.active,
-.t3-page-ce-dropzone-possible {
+.t3-page-ce-dropzone-available.active {
+  border: 1px dashed #e8a33d;
+  border-radius: 2px;
+  background-color: #fbefdd;
+  height: 27px;
+}
+.t3-page-ce-dropzone-available.active.t3-page-ce-dropzone-possible {
   border: 1px dashed #79a548;
   border-radius: 2px;
   background-color: #d1e2bd;
+  margin: -38px 0 -37px 0;
+  padding: 50px 10px;
+  z-index: 500;
+  position: relative;
+  opacity: 0.65;
 }
-.t3-page-ce-dropzone-available.active {
-  height: 2em;
+.t3-page-ce-dragitem.dragitem-shadow {
+  opacity: 0.65;
+  box-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
 }
-.t3-page-ce-dropzone-possible {
-  margin: 10px;
+.t3-page-ce.ui-draggable-handle {
+  height: auto!important;
 }
 .t3-page-ce-dragitem .t3-page-ce-header-draggable:hover {
   cursor: move;
