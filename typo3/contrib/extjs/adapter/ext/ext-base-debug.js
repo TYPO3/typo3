@@ -48,20 +48,20 @@ Ext = {
  * @return {Object} returns obj
  * @member Ext apply
  */
-Ext.apply = function(o, c, defaults){
+Ext.apply = function(o, c, defaults) {
     // no "this" reference for friendly out of scope calls
-    if(defaults){
+    if (defaults) {
         Ext.apply(o, defaults);
     }
-    if(o && c && typeof c == 'object'){
-        for(var p in c){
+    if (o && c && typeof c == 'object') {
+        for (var p in c) {
             o[p] = c[p];
         }
     }
     return o;
 };
 
-(function(){
+(function() {
     var idSeed = 0,
         toString = Object.prototype.toString,
         ua = navigator.userAgent.toLowerCase(),
@@ -71,13 +71,15 @@ Ext.apply = function(o, c, defaults){
         DOC = document,
         docMode = DOC.documentMode,
         isStrict = DOC.compatMode == "CSS1Compat",
-        isOpera = check(/opera/),
-        isChrome = check(/\bchrome\b/),
-        isWebKit = check(/webkit/),
-        isSafari = !isChrome && check(/safari/),
+        isEdge = check(/edge/),
+        isOpera = !isEdge && check(/opera/),
+        isChrome = !isEdge && check(/\bchrome\b/),
+        isWebKit = !isEdge && check(/webkit/),
+        isSafari = !isEdge && !isChrome && check(/safari/),
         isSafari2 = isSafari && check(/applewebkit\/4/), // unique to Safari 2
         isSafari3 = isSafari && check(/version\/3/),
         isSafari4 = isSafari && check(/version\/4/),
+
         isIE = !isOpera && (check(/msie/) || check(/trident/)),
         isIE7 = isIE && ((check(/msie 7/) && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 7),
         isIE8 = isIE && ((check(/msie 8/) && docMode != 7 && docMode != 9 && docMode != 10) || docMode == 8),
@@ -86,7 +88,7 @@ Ext.apply = function(o, c, defaults){
         isIE11 = isIE && ((check(/trident\/7\.0/) && docMode != 7 && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 11),
         isIE6 = isIE && check(/msie 6/),
         isIE9m = isIE && (isIE6 || isIE7 || isIE8 || isIE9),
-        isGecko = !isWebKit && check(/gecko/) && ! check(/trident/),
+        isGecko = !isEdge && !isWebKit && check(/gecko/) && ! check(/trident/),
         isGecko2 = isGecko && check(/rv:1\.8/),
         isGecko3 = isGecko && check(/rv:1\.9/),
         isBorderBox = isIE9m && !isStrict,
@@ -445,7 +447,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *      obj.someMethod('Say '); // alerts 'Say something'
          *
          * To create an anonymous class, pass `null` for the `className`:
-         * 
+         *
          *      Ext.define(null, {
          *          constructor: function () {
          *              // ...
@@ -456,21 +458,21 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          * properties. The best way to do this is to pass a function instead of an object
          * as the second parameter. This function will be called to produce the class
          * body:
-         * 
+         *
          *      Ext.define('MyApp.foo.Bar', function () {
          *          var id = 0;
-         *          
+         *
          *          return {
          *              nextId: function () {
          *                  return ++id;
          *              }
          *          };
          *      });
-         * 
+         *
          * When using this form of `Ext.define`, the function is passed a reference to its
          * class. This can be used as an efficient way to access any static properties you
          * may have:
-         * 
+         *
          *      Ext.define('MyApp.foo.Bar', function (Bar) {
          *          return {
          *              statics: {
@@ -478,7 +480,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *                      // ...
          *                  }
          *              },
-         *              
+         *
          *              method: function () {
          *                  return Bar.staticMethod();
          *              }
@@ -616,7 +618,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
                     Ext.applyIf(cls.prototype, Base.prototype);
                 }
                 cls.prototype.self = cls;
-                
+
                 if (body.xtype) {
                     Ext.reg(body.xtype, cls);
                 }
@@ -638,17 +640,17 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *
          * If the `target` is a function, it is assumed to be a constructor and the contents
          * of `overrides` are applied to its `prototype` using {@link Ext#apply Ext.apply}.
-         * 
+         *
          * If the `target` is an instance of a class created using {@link #define},
          * the `overrides` are applied to only that instance. In this case, methods are
          * specially processed to allow them to use {@link Ext.Base#callParent}.
-         * 
+         *
          *      var panel = new Ext.Panel({ ... });
-         *      
+         *
          *      Ext.override(panel, {
          *          initComponent: function () {
          *              // extra processing...
-         *              
+         *
          *              this.callParent();
          *          }
          *      });
@@ -659,7 +661,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          * Please refer to {@link Ext#define Ext.define} for further details.
          *
          * @param {Object} target The target to override.
-         * @param {Object} overrides The properties to add or replace on `target`. 
+         * @param {Object} overrides The properties to add or replace on `target`.
          * @method override
          */
         override: function (target, overrides) {
@@ -1179,6 +1181,11 @@ function(el){
          */
         isSafari2 : isSafari2,
         /**
+         * True if the detected browser is Edge
+         * @type Boolean
+         */
+        isEdge : isEdge,
+        /**
          * True if the detected browser is Internet Explorer.
          * @type Boolean
          */
@@ -1203,13 +1210,13 @@ function(el){
          * @type Boolean
          */
         isIE9 : isIE9,
-        
+
         /**
          * True if the detected browser is Internet Explorer 10.x
          * @type Boolean
          */
         isIE10 : isIE10,
-        
+
         /**
          * True if the detected browser is Internet Explorer 11.x
          * @type Boolean
@@ -1221,17 +1228,17 @@ function(el){
          * @type Boolean
          */
         isIE9m : isIE9m,
-        
+
         /**
          * True if the detected browser is Internet Explorer 10.x or higher
          * @type Boolean
-         */ 
+         */
         isIE10p : isIE && !(isIE6 || isIE7 || isIE8 || isIE9),
-        
+
         // IE10 quirks behaves like Gecko/WebKit quirks, so don't include it here
         // Used internally
         isIEQuirks: isIE && (!isStrict && (isIE6 || isIE7 || isIE8 || isIE9)),
-                
+
         /**
          * True if the detected browser uses the Gecko layout engine (e.g. Mozilla, Firefox).
          * @type Boolean
@@ -1531,7 +1538,7 @@ Ext.applyIf(Array.prototype, {
 // Start a simple clock task that updates a div once per second
 var updateClock = function(){
     Ext.fly('clock').update(new Date().format('g:i:s A'));
-} 
+}
 var task = {
     run: updateClock,
     interval: 1000 //1 second
@@ -1547,15 +1554,15 @@ Ext.TaskMgr.start({
 
  * </code></pre>
  * <p>See the {@link #start} method for details about how to configure a task object.</p>
- * Also see {@link Ext.util.DelayedTask}. 
- * 
+ * Also see {@link Ext.util.DelayedTask}.
+ *
  * @constructor
  * @param {Number} interval (optional) The minimum precision in milliseconds supported by this TaskRunner instance
  * (defaults to 10)
  */
 Ext.util.TaskRunner = function(interval){
     interval = interval || 10;
-    var tasks = [], 
+    var tasks = [],
     	removeQueue = [],
     	id = 0,
     	running = false,
@@ -1582,12 +1589,12 @@ Ext.util.TaskRunner = function(interval){
 	            t.onStop.apply(t.scope || t);
 	        }
 	    },
-	    
+
     	// private
     	runTasks = function(){
 	    	var rqLen = removeQueue.length,
-	    		now = new Date().getTime();	    			    		
-	    
+	    		now = new Date().getTime();
+
 	        if(rqLen > 0){
 	            for(var i = 0; i < rqLen; i++){
 	                tasks.remove(removeQueue[i]);
@@ -1597,7 +1604,7 @@ Ext.util.TaskRunner = function(interval){
 	                stopThread();
 	                return;
 	            }
-	        }	        
+	        }
 	        for(var i = 0, t, itime, rt, len = tasks.length; i < len; ++i){
 	            t = tasks[i];
 	            itime = now - t.taskRunTime;
@@ -1695,7 +1702,7 @@ Ext.TaskMgr.start(task);
  */
 Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 	var libFlyweight;
-	
+
 	function fly(el) {
         if (!libFlyweight) {
             libFlyweight = new Ext.Element.Flyweight();
@@ -1703,18 +1710,18 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
         libFlyweight.dom = el;
         return libFlyweight;
     }
-    
+
     (function(){
 	var doc = document,
 		isCSS1 = doc.compatMode == "CSS1Compat",
-		MAX = Math.max,		
+		MAX = Math.max,
         ROUND = Math.round,
 		PARSEINT = parseInt;
-		
+
 	Ext.lib.Dom = {
 	    isAncestor : function(p, c) {
 		    var ret = false;
-			
+
 			p = Ext.getDom(p);
 			c = Ext.getDom(c);
 			if (p && c) {
@@ -1724,13 +1731,13 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 					return !!(p.compareDocumentPosition(c) & 16);
 				} else {
 					while (c = c.parentNode) {
-						ret = c == p || ret;	        			
+						ret = c == p || ret;
 					}
-				}	            
-			}	
+				}
+			}
 			return ret;
 		},
-		
+
         getViewWidth : function(full) {
             return full ? this.getDocumentWidth() : this.getViewportWidth();
         },
@@ -1739,16 +1746,16 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
             return full ? this.getDocumentHeight() : this.getViewportHeight();
         },
 
-        getDocumentHeight: function() {            
+        getDocumentHeight: function() {
             return MAX(!isCSS1 ? doc.body.scrollHeight : doc.documentElement.scrollHeight, this.getViewportHeight());
         },
 
-        getDocumentWidth: function() {            
+        getDocumentWidth: function() {
             return MAX(!isCSS1 ? doc.body.scrollWidth : doc.documentElement.scrollWidth, this.getViewportWidth());
         },
 
         getViewportHeight: function(){
-	        return Ext.isIE9m ? 
+	        return Ext.isIE9m ?
 	        	   (Ext.isStrict ? doc.documentElement.clientHeight : doc.body.clientHeight) :
 	        	   self.innerHeight;
         },
@@ -1757,7 +1764,7 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 	        return !Ext.isStrict && !Ext.isOpera ? doc.body.clientWidth :
 	        	   Ext.isIE9m ? doc.documentElement.clientWidth : self.innerWidth;
         },
-        
+
         getY : function(el) {
             return this.getXY(el)[1];
         },
@@ -1767,19 +1774,19 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
         },
 
         getXY : function(el) {
-            var p, 
-            	pe, 
+            var p,
+            	pe,
             	b,
-            	bt, 
-            	bl,     
-            	dbd,       	
+            	bt,
+            	bl,
+            	dbd,
             	x = 0,
-            	y = 0, 
+            	y = 0,
             	scroll,
-            	hasAbsolute, 
+            	hasAbsolute,
             	bd = (doc.body || doc.documentElement),
             	ret = [0,0];
-            	
+
             el = Ext.getDom(el);
 
             if(el != bd){
@@ -1787,21 +1794,21 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 	                b = el.getBoundingClientRect();
 	                scroll = fly(document).getScroll();
 	                ret = [ROUND(b.left + scroll.left), ROUND(b.top + scroll.top)];
-	            } else {  
-		            p = el;		
+	            } else {
+		            p = el;
 		            hasAbsolute = fly(el).isStyle("position", "absolute");
-		
+
 		            while (p) {
-			            pe = fly(p);		
+			            pe = fly(p);
 		                x += p.offsetLeft;
 		                y += p.offsetTop;
-		
+
 		                hasAbsolute = hasAbsolute || pe.isStyle("position", "absolute");
-		                		
-		                if (Ext.isGecko) {		                    
+
+		                if (Ext.isGecko) {
 		                    y += bt = PARSEINT(pe.getStyle("borderTopWidth"), 10) || 0;
-		                    x += bl = PARSEINT(pe.getStyle("borderLeftWidth"), 10) || 0;	
-		
+		                    x += bl = PARSEINT(pe.getStyle("borderLeftWidth"), 10) || 0;
+
 		                    if (p != el && !pe.isStyle('overflow','visible')) {
 		                        x += bl;
 		                        y += bt;
@@ -1809,18 +1816,18 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 		                }
 		                p = p.offsetParent;
 		            }
-		
+
 		            if (Ext.isSafari && hasAbsolute) {
 		                x -= bd.offsetLeft;
 		                y -= bd.offsetTop;
 		            }
-		
+
 		            if (Ext.isGecko && !hasAbsolute) {
 		                dbd = fly(bd);
 		                x += PARSEINT(dbd.getStyle("borderLeftWidth"), 10) || 0;
 		                y += PARSEINT(dbd.getStyle("borderTopWidth"), 10) || 0;
 		            }
-		
+
 		            p = el.parentNode;
 		            while (p && p != bd) {
 		                if (!Ext.isOpera || (p.tagName != 'TR' && !fly(p).isStyle("display", "inline"))) {
@@ -1837,12 +1844,12 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 
         setXY : function(el, xy) {
             (el = Ext.fly(el, '_setXY')).position();
-            
+
             var pts = el.translatePoints(xy),
             	style = el.dom.style,
-            	pos;            	
-            
-            for (pos in pts) {	            
+            	pos;
+
+            for (pos in pts) {
 	            if (!isNaN(pts[pos])) {
 	                style[pos] = pts[pos] + "px";
                 }
@@ -1955,7 +1962,7 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 
         if(!locked){
             locked = true;
-            
+
             for(i = 0; i < onAvailStack.length; ++i){
                 v = onAvailStack[i];
                 if(v && (element = doc.getElementById(v.id))){
@@ -2169,7 +2176,7 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 
         _load : function(e) {
             loadComplete = true;
-            
+
             if (Ext.isIE9m && e !== true) {
                 // IE8 complains that _load is null or not an object
                 // so lets remove self via arguments.callee
@@ -2372,7 +2379,7 @@ Ext.lib.Ajax = function() {
         releaseObject(o);
         responseObject = null;
     }
-    
+
     function checkResponse(o, callback, conn, tId, poll, cbTimeout){
         if (conn && conn.readyState == 4) {
             clearInterval(poll[tId]);
@@ -2385,11 +2392,11 @@ Ext.lib.Ajax = function() {
             handleTransactionResponse(o, callback);
         }
     }
-    
+
     function checkTimeout(o, callback){
         pub.abort(o, callback, true);
     }
-    
+
 
     // private
     function handleReadyState(o, callback){
@@ -2485,18 +2492,18 @@ Ext.lib.Ajax = function() {
         },
 
         serializeForm : function(form) {
-            var fElements = form.elements || (document.forms[form] || Ext.getDom(form)).elements, 
-                hasSubmit = false, 
-                encoder = encodeURIComponent, 
-                name, 
-                data = '', 
-                type, 
+            var fElements = form.elements || (document.forms[form] || Ext.getDom(form)).elements,
+                hasSubmit = false,
+                encoder = encodeURIComponent,
+                name,
+                data = '',
+                type,
                 hasValue;
-    
+
             Ext.each(fElements, function(element){
                 name = element.name;
                 type = element.type;
-        
+
                 if (!element.disabled && name) {
                     if (/select-(one|multiple)/i.test(type)) {
                         Ext.each(element.options, function(opt){
@@ -3342,7 +3349,7 @@ Ext.lib.Ajax = function() {
             }
         }
     });
-})();	
+})();
 	if (Ext.isIE9m) {
         function fnCleanUp() {
             var p = Function.prototype;

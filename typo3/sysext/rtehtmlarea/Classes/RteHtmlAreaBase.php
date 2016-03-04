@@ -1370,7 +1370,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo($userAgent);
 		// Known engines: order is not irrelevant!
-		$knownEngines = array('opera', 'msie', 'gecko', 'webkit');
+		$knownEngines = array('opera', 'msie', 'edge', 'gecko', 'webkit');
 		if (is_array($browserInfo['all'])) {
 			foreach ($knownEngines as $engine) {
 				if ($browserInfo['all'][$engine]) {

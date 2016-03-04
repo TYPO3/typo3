@@ -71,10 +71,11 @@ Ext.apply = function(o, c, defaults){
         DOC = document,
         docMode = DOC.documentMode,
         isStrict = DOC.compatMode == "CSS1Compat",
-        isOpera = check(/opera/),
-        isChrome = check(/\bchrome\b/),
-        isWebKit = check(/webkit/),
-        isSafari = !isChrome && check(/safari/),
+        isEdge = check(/edge/),
+        isOpera = !isEdge && check(/opera/),
+        isChrome = !isEdge && check(/\bchrome\b/),
+        isWebKit = !isEdge && check(/webkit/),
+        isSafari = !isEdge && !isChrome && check(/safari/),
         isSafari2 = isSafari && check(/applewebkit\/4/), // unique to Safari 2
         isSafari3 = isSafari && check(/version\/3/),
         isSafari4 = isSafari && check(/version\/4/),
@@ -86,7 +87,7 @@ Ext.apply = function(o, c, defaults){
         isIE11 = isIE && ((check(/trident\/7\.0/) && docMode != 7 && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 11),
         isIE6 = isIE && check(/msie 6/),
         isIE9m = isIE && (isIE6 || isIE7 || isIE8 || isIE9),
-        isGecko = !isWebKit && check(/gecko/) && ! check(/trident/),
+        isGecko = !isEdge && !isWebKit && check(/gecko/) && ! check(/trident/),
         isGecko2 = isGecko && check(/rv:1\.8/),
         isGecko3 = isGecko && check(/rv:1\.9/),
         isBorderBox = isIE9m && !isStrict,
@@ -445,7 +446,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *      obj.someMethod('Say '); // alerts 'Say something'
          *
          * To create an anonymous class, pass `null` for the `className`:
-         * 
+         *
          *      Ext.define(null, {
          *          constructor: function () {
          *              // ...
@@ -456,21 +457,21 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          * properties. The best way to do this is to pass a function instead of an object
          * as the second parameter. This function will be called to produce the class
          * body:
-         * 
+         *
          *      Ext.define('MyApp.foo.Bar', function () {
          *          var id = 0;
-         *          
+         *
          *          return {
          *              nextId: function () {
          *                  return ++id;
          *              }
          *          };
          *      });
-         * 
+         *
          * When using this form of `Ext.define`, the function is passed a reference to its
          * class. This can be used as an efficient way to access any static properties you
          * may have:
-         * 
+         *
          *      Ext.define('MyApp.foo.Bar', function (Bar) {
          *          return {
          *              statics: {
@@ -478,7 +479,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *                      // ...
          *                  }
          *              },
-         *              
+         *
          *              method: function () {
          *                  return Bar.staticMethod();
          *              }
@@ -616,7 +617,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
                     Ext.applyIf(cls.prototype, Base.prototype);
                 }
                 cls.prototype.self = cls;
-                
+
                 if (body.xtype) {
                     Ext.reg(body.xtype, cls);
                 }
@@ -638,17 +639,17 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          *
          * If the `target` is a function, it is assumed to be a constructor and the contents
          * of `overrides` are applied to its `prototype` using {@link Ext#apply Ext.apply}.
-         * 
+         *
          * If the `target` is an instance of a class created using {@link #define},
          * the `overrides` are applied to only that instance. In this case, methods are
          * specially processed to allow them to use {@link Ext.Base#callParent}.
-         * 
+         *
          *      var panel = new Ext.Panel({ ... });
-         *      
+         *
          *      Ext.override(panel, {
          *          initComponent: function () {
          *              // extra processing...
-         *              
+         *
          *              this.callParent();
          *          }
          *      });
@@ -659,7 +660,7 @@ MyGridPanel = Ext.extend(Ext.grid.GridPanel, {
          * Please refer to {@link Ext#define Ext.define} for further details.
          *
          * @param {Object} target The target to override.
-         * @param {Object} overrides The properties to add or replace on `target`. 
+         * @param {Object} overrides The properties to add or replace on `target`.
          * @method override
          */
         override: function (target, overrides) {
@@ -1179,6 +1180,11 @@ function(el){
          */
         isSafari2 : isSafari2,
         /**
+         * True if the detected browser is Edge
+         * @type Boolean
+         */
+        isEdge : isEdge,
+        /**
          * True if the detected browser is Internet Explorer.
          * @type Boolean
          */
@@ -1203,7 +1209,7 @@ function(el){
          * @type Boolean
          */
         isIE9 : isIE9,
-        
+
         /**
          * True if the detected browser is Internet Explorer 10.x
          * @type Boolean
@@ -1215,23 +1221,23 @@ function(el){
          * @type Boolean
          */
         isIE11 : isIE11,
-        
+
         /**
          * True if the detected browser is Internet Explorer 9.x or lower
          * @type Boolean
          */
         isIE9m : isIE9m,
-        
+
         /**
          * True if the detected browser is Internet Explorer 10.x or higher
          * @type Boolean
-         */ 
+         */
         isIE10p : isIE && !(isIE6 || isIE7 || isIE8 || isIE9),
-        
+
         // IE10 quirks behaves like Gecko/WebKit quirks, so don't include it here
         // Used internally
         isIEQuirks: isIE && (!isStrict && (isIE6 || isIE7 || isIE8 || isIE9)),
-                
+
         /**
          * True if the detected browser uses the Gecko layout engine (e.g. Mozilla, Firefox).
          * @type Boolean
@@ -1531,7 +1537,7 @@ Ext.applyIf(Array.prototype, {
 // Start a simple clock task that updates a div once per second
 var updateClock = function(){
     Ext.fly('clock').update(new Date().format('g:i:s A'));
-} 
+}
 var task = {
     run: updateClock,
     interval: 1000 //1 second
@@ -1547,15 +1553,15 @@ Ext.TaskMgr.start({
 
  * </code></pre>
  * <p>See the {@link #start} method for details about how to configure a task object.</p>
- * Also see {@link Ext.util.DelayedTask}. 
- * 
+ * Also see {@link Ext.util.DelayedTask}.
+ *
  * @constructor
  * @param {Number} interval (optional) The minimum precision in milliseconds supported by this TaskRunner instance
  * (defaults to 10)
  */
 Ext.util.TaskRunner = function(interval){
     interval = interval || 10;
-    var tasks = [], 
+    var tasks = [],
     	removeQueue = [],
     	id = 0,
     	running = false,
@@ -1582,12 +1588,12 @@ Ext.util.TaskRunner = function(interval){
 	            t.onStop.apply(t.scope || t);
 	        }
 	    },
-	    
+
     	// private
     	runTasks = function(){
 	    	var rqLen = removeQueue.length,
-	    		now = new Date().getTime();	    			    		
-	    
+	    		now = new Date().getTime();
+
 	        if(rqLen > 0){
 	            for(var i = 0; i < rqLen; i++){
 	                tasks.remove(removeQueue[i]);
@@ -1597,7 +1603,7 @@ Ext.util.TaskRunner = function(interval){
 	                stopThread();
 	                return;
 	            }
-	        }	        
+	        }
 	        for(var i = 0, t, itime, rt, len = tasks.length; i < len; ++i){
 	            t = tasks[i];
 	            itime = now - t.taskRunTime;

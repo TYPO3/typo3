@@ -71,10 +71,11 @@ Ext.apply = function(o, c, defaults){
         DOC = document,
         docMode = DOC.documentMode,
         isStrict = DOC.compatMode == "CSS1Compat",
-        isOpera = check(/opera/),
-        isChrome = check(/\bchrome\b/),
-        isWebKit = check(/webkit/),
-        isSafari = !isChrome && check(/safari/),
+        isEdge = check(/edge/),
+        isOpera = !isEdge && check(/opera/),
+        isChrome = !isEdge && check(/\bchrome\b/),
+        isWebKit = !isEdge && check(/webkit/),
+        isSafari = !isEdge && !isChrome && check(/safari/),
         isSafari2 = isSafari && check(/applewebkit\/4/), // unique to Safari 2
         isSafari3 = isSafari && check(/version\/3/),
         isSafari4 = isSafari && check(/version\/4/),
@@ -86,7 +87,7 @@ Ext.apply = function(o, c, defaults){
         isIE11 = isIE && ((check(/trident\/7\.0/) && docMode != 7 && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 11),
         isIE6 = isIE && check(/msie 6/),
         isIE9m = isIE && (isIE6 || isIE7 || isIE8 || isIE9),
-        isGecko = !isWebKit && check(/gecko/) && ! check(/trident/),
+        isGecko = !isEdge && !isWebKit && check(/gecko/) && !check(/trident/),
         isGecko2 = isGecko && check(/rv:1\.8/),
         isGecko3 = isGecko && check(/rv:1\.9/),
         isBorderBox = isIE9m && !isStrict,
@@ -1178,6 +1179,11 @@ function(el){
          * @type Boolean
          */
         isSafari2 : isSafari2,
+        /**
+         * True if the detected browser is Edge
+         * @type Boolean
+         */
+        isEdge: isEdge,
         /**
          * True if the detected browser is Internet Explorer.
          * @type Boolean

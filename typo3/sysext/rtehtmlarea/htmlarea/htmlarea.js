@@ -99,7 +99,7 @@ Ext.apply(HTMLArea, {
 	 * @return	boolean		true if the client is supported
 	 */
 	checkSupportedBrowser: function () {
-		return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isIE;
+		return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isEdge || Ext.isIE;
 	},
 	/*
 	 * Write message to JavaScript console
