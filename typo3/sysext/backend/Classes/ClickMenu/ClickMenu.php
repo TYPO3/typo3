@@ -541,12 +541,26 @@ class ClickMenu
     public function DB_paste($table, $uid, $type, $elInfo)
     {
         $loc = 'top.content.list_frame';
+        $jsCode = $loc . '.location.href='
+            . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=')
+            . ' + top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+'
+            . $this->frameLocation($loc . '.document') . '.search);';
+
         if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
-        } else {
-            $conf = $loc;
+            $title = $this->languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_paste');
+            $lllKey = ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_' . $type;
+            $confirmMessage = sprintf(
+                $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . $lllKey),
+                $elInfo[0],
+                $elInfo[1]
+            );
+            $jsCode = 'top.TYPO3.Modal.confirm(' . GeneralUtility::quoteJSvalue($title) . ', '
+                . GeneralUtility::quoteJSvalue($confirmMessage) . ')'
+                . '.on(\'button.clicked\', function(e) { if (e.target.name === \'ok\') {'
+                . $jsCode
+                . '} top.TYPO3.Modal.dismiss(); });';
         }
-        $editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
+        $editOnClick = 'if(' . $loc . ') { ' . $jsCode . ' }';
         return $this->linkItem(
             $this->label('paste' . $type),
             $this->iconFactory->getIcon('actions-document-paste-' . $type, Icon::SIZE_SMALL)->render(),
@@ -793,20 +807,41 @@ class ClickMenu
     public function DB_delete($table, $uid, $elInfo)
     {
         $loc = 'top.content.list_frame';
-        if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $conf = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord')) . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')))) . ')';
-        } else {
-            $conf = '1==1';
-        }
-        $editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=' .
-            GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
-            $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
-            GeneralUtility::quoteJSvalue(
+        $jsCode = $loc . '.location.href='
+            . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=')
+            . '+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+'
+            . $this->frameLocation($loc . '.document') . '.search)+'
+            . GeneralUtility::quoteJSvalue(
                 '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode()
-            ) . ';};';
+            );
+
         if ($table === 'pages') {
-            $editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
+            $jsCode .= 'top.nav.refresh.defer(500, top.nav);';
         }
+
+        if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
+            $title = $this->languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete');
+            $confirmMessage = sprintf(
+                $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'),
+                $elInfo[0]
+            );
+            $confirmMessage .= BackendUtility::referenceCount(
+                $table,
+                $uid,
+                ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord')
+            );
+            $confirmMessage .= BackendUtility::translationCount(
+                $table,
+                $uid,
+                ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')
+            );
+            $jsCode = 'top.TYPO3.Modal.confirm(' . GeneralUtility::quoteJSvalue($title) . ', '
+                . GeneralUtility::quoteJSvalue($confirmMessage) . ')'
+                . '.on(\'button.clicked\', function(e) { if (e.target.name === \'ok\') {'
+                . $jsCode
+                . '} top.TYPO3.Modal.dismiss(); });';
+        }
+        $editOnClick = 'if(' . $loc . ') { ' . $jsCode . ' }';
         return $this->linkItem(
             $this->label('delete'),
             $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
@@ -1103,17 +1138,32 @@ class ClickMenu
     public function FILE_delete($path)
     {
         $loc = 'top.content.list_frame';
-        if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile')))) . ')';
-        } else {
-            $conf = '1==1';
-        }
-        $editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=' .
-            GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
-            $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
+        $jsCode = $loc . '.location.href='
+            . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=')
+            . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document'))
+            . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
             GeneralUtility::quoteJSvalue(
                 '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode()
-            ) . ';};';
+            );
+
+        if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
+            $title = $this->languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete');
+            $confirmMessage = sprintf(
+                $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'),
+                basename($path)
+            );
+            $confirmMessage .= BackendUtility::referenceCount(
+                '_FILE',
+                $path,
+                ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile')
+            );
+            $jsCode = 'top.TYPO3.Modal.confirm(' . GeneralUtility::quoteJSvalue($title) . ', '
+                . GeneralUtility::quoteJSvalue($confirmMessage) . ')'
+                . '.on(\'button.clicked\', function(e) { if (e.target.name === \'ok\') {'
+                . $jsCode
+                . '} top.TYPO3.Modal.dismiss(); });';
+        }
+        $editOnClick = 'if(' . $loc . ') { ' . $jsCode . ' }';
         return $this->linkItem(
             $this->label('delete'),
             $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
@@ -1133,12 +1183,29 @@ class ClickMenu
     public function FILE_paste($path, $target, $elInfo)
     {
         $loc = 'top.content.list_frame';
+
+        $jsCode = $loc . '.location.href='
+            . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=')
+            . '+top.rawurlencode(' . $this->frameLocation($loc . '.document')
+            . '.pathname+' . $this->frameLocation($loc . '.document') . '.search); top.nav.refresh();';
+
         if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_into')), $elInfo[0], $elInfo[1])) . ')';
-        } else {
-            $conf = $loc;
+            $title = $this->languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_paste');
+
+            $confirmMessage = sprintf(
+                $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.'
+                    . ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_into'),
+                $elInfo[0],
+                $elInfo[1]
+            );
+
+            $jsCode = 'top.TYPO3.Modal.confirm(' . GeneralUtility::quoteJSvalue($title) . ', '
+                . GeneralUtility::quoteJSvalue($confirmMessage) . ')'
+                . '.on(\'button.clicked\', function(e) { if (e.target.name === \'ok\') {'
+                . $jsCode
+                . '} top.TYPO3.Modal.dismiss(); });';
         }
-        $editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
+        $editOnClick = 'if(' . $loc . ') { ' . $jsCode . ' }';
         return $this->linkItem(
             $this->label('pasteinto'),
             $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render(),
