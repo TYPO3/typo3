@@ -286,13 +286,13 @@ class ConfigurationStatus implements StatusProviderInterface
         $statusValue = $this->getLanguageService()->getLL('status_ok');
 
         if ($key !== 'character_set_database') {
-            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_CheckFailed'),$key);
+            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_CheckFailed'), $key);
             $severity = ReportStatus::WARNING;
             $statusValue = $this->getLanguageService()->getLL('status_checkFailed');
         }
         // also allow utf8mb4
         if (substr($value, 0, 4) !== 'utf8') {
-            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Unsupported'),$value);
+            $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_Unsupported'), $value);
             $severity = ReportStatus::ERROR;
             $statusValue = $this->getLanguageService()->getLL('status_wrongValue');
         } else {
