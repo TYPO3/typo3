@@ -67,10 +67,10 @@ class ContentContentObject extends AbstractContentObject
         }
         $again = false;
         $tmpValue = '';
-        $cobjValue = '';
 
         do {
             $records = $this->cObj->getRecords($conf['table'], $conf['select.']);
+            $cobjValue = '';
             if (!empty($records)) {
                 $this->cObj->currentRecordTotal = count($records);
                 $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' .  count($records));
@@ -79,7 +79,6 @@ class ContentContentObject extends AbstractContentObject
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
-                $cobjValue = '';
 
                 foreach ($records as $row) {
                     // Call hook for possible manipulation of database row for cObj->data
