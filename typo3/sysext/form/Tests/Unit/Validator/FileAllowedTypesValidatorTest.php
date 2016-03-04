@@ -24,20 +24,24 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
      */
     protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\FileAllowedTypesValidator::class;
 
-    protected function setUp()
-    {
-        $this->markTestSkipped('Erros found in specific implementation, see @todo remarks there');
-    }
-
     /**
      * @return array
      */
     public function validTypesProvider()
     {
         return array(
-            'pdf in (pdf)'       => array(array('application/pdf', 'application/pdf')),
-            'pdf in (pdf, json)' => array(array('application/pdf, application/json', 'application/pdf'))
-
+            'pdf in (pdf)' => [
+                'application/pdf',
+                [
+                    'type' => 'application/pdf',
+                ],
+            ],
+            'pdf in (pdf, json)' => [
+                'application/pdf, application/json',
+                [
+                    'type' => 'application/pdf',
+                ],
+            ],
         );
     }
 
@@ -47,38 +51,64 @@ class FileAllowedTypesValidatorTest extends AbstractValidatorTest
     public function invalidTypesProvider()
     {
         return array(
-            'xml in (pdf, json)' => array(array('application/pdf, application/json', 'application/xml')),
-            'xml in (pdf)'       => array(array('application/pdf, application/json', 'application/xml'))
+            'xml in (pdf, json)' => [
+                'application/pdf, application/json',
+                [
+                    'type' => 'application/xml',
+                ],
+            ],
+            'xml in (pdf)' => [
+                'application/pdf',
+                [
+                    'type' => 'application/xml',
+                ],
+            ],
+            'empty mimetype' => [
+                'application/pdf, application/json',
+                [
+                    'type' => '',
+                ],
+            ],
+            'empty value' => [
+                'application/pdf, application/json',
+                '',
+            ],
         );
     }
 
     /**
      * @test
+     * @param string $types
+     * @param array $value
      * @dataProvider validTypesProvider
      */
-    public function validateForValidInputHasEmptyErrorResult($input)
+    public function validateForValidInputHasEmptyErrorResult($types, $value)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-        $options['types'] = $input[0];
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+            'types' => $types,
+        ];
         $subject = $this->createSubject($options);
 
-        $this->assertEmpty(
-            $subject->validate($input[1])->getErrors()
-        );
+        $this->assertEmpty($subject->validate($value)->getErrors());
     }
 
     /**
      * @test
+     * @param string $types
+     * @param array $value
      * @dataProvider invalidTypesProvider
      */
-    public function validateForInvalidInputHasNotEmptyErrorResult($input)
+    public function validateForInvalidInputHasNotEmptyErrorResult($types, $value)
     {
-        $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
-        $options['types'] = $input[0];
+        $options = [
+            'element' => uniqid('test'),
+            'errorMessage' => uniqid('error'),
+            'types' => $types,
+        ];
         $subject = $this->createSubject($options);
 
-        $this->assertNotEmpty(
-            $subject->validate($input[1])->getErrors()
-        );
+        $this->assertNotEmpty($subject->validate($value)->getErrors());
     }
 }
