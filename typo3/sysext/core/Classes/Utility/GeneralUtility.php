@@ -3721,6 +3721,9 @@ class GeneralUtility
     public static function tempnam($filePrefix, $fileSuffix = '')
     {
         $temporaryPath = PATH_site . 'typo3temp/var/transient/';
+        if (!is_dir($temporaryPath)) {
+            GeneralUtility::mkdir_deep($temporaryPath);
+        }
         if ($fileSuffix === '') {
             $tempFileName = static::fixWindowsFilePath(tempnam($temporaryPath, $filePrefix));
         } else {
