@@ -31,7 +31,9 @@ class EmailValidatorTest extends AbstractValidatorTest
     {
         return array(
             'a@b.de' => array('a@b.de'),
-            'somebody@mymac.local' => array('somebody@mymac.local')
+            'somebody@mymac.local' => array('somebody@mymac.local'),
+            'empty value' => array(''),
+            'unexpected value' => array(array()),
         );
     }
 

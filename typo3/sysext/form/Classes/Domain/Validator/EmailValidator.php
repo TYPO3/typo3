@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Class EmailValidator
+ */
 class EmailValidator extends AbstractValidator
 {
     /**
@@ -32,7 +37,11 @@ class EmailValidator extends AbstractValidator
      */
     public function isValid($value)
     {
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($value)) {
+        if (empty($value) || !is_string($value)) {
+            return;
+        }
+
+        if (!GeneralUtility::validEmail($value)) {
             $this->addError(
                 $this->renderMessage(
                     $this->options['errorMessage'][0],
