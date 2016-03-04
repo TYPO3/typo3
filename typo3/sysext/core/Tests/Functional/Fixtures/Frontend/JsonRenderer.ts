@@ -15,7 +15,7 @@ config {
 			pages = uid,_ORIG_uid,pid,sorting,title
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
-			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,downloadname,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
+			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
 			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_irretutorial_1nff_hotels
 			tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 			tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
