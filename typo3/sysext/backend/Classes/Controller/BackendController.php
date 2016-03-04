@@ -264,8 +264,17 @@ class BackendController
 
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend']);
-        $logoPath = $extConf['backendLogo'] ?? 'EXT:backend/Resources/Public/Images/typo3-topbar@2x.png';
-        $logoPath = GeneralUtility::getFileAbsFileName($logoPath);
+        $logoPath = '';
+        if (!empty($extConf['backendLogo'])) {
+            $customBackendLogo = GeneralUtility::getFileAbsFileName($extConf['backendLogo']);
+            if (!empty($customBackendLogo)) {
+                $logoPath = $customBackendLogo;
+            }
+        }
+        // if no custom logo was set or the path is invalid, use the original one
+        if (empty($logoPath)) {
+            $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3-topbar@2x.png');
+        }
         list($logoWidth, $logoHeight) = @getimagesize($logoPath);
 
         // High-resolution?
