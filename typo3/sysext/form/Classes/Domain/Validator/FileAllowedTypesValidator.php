@@ -38,16 +38,18 @@ class FileAllowedTypesValidator extends AbstractValidator
      * Check if the file mime type is allowed.
      *
      * The mime type is set in the propertymapper
+     *
      * @see TYPO3\CMS\Form\Domain\Property\TypeConverter::convertFrom
      *
-     * @param mixed $value
+     * @param array $value
      * @return void
      */
     public function isValid($value)
     {
         $allowedTypes = strtolower($this->options['types']);
-        $allowedMimeTypes = GeneralUtility::trimExplode(', ', $allowedTypes);
-        $fileMimeType = strtolower($value['type']);
+        $allowedMimeTypes = GeneralUtility::trimExplode(',', $allowedTypes, true);
+        $fileMimeType = !empty($value['type']) ? strtolower($value['type']) : '';
+
         if (!in_array($fileMimeType, $allowedMimeTypes, true)) {
             $this->addError(
                 $this->renderMessage(
@@ -69,7 +71,11 @@ class FileAllowedTypesValidator extends AbstractValidator
      */
     public function substituteMarkers($message)
     {
-        $message = str_replace('%allowedTypes', implode(',', $this->options['types']), $message);
+        $allowedTypes = strtolower($this->options['types']);
+        $allowedMimeTypes = GeneralUtility::trimExplode(',', $allowedTypes);
+        $allowedTypesStringForDisplay = implode(', ', $allowedMimeTypes);
+        $message = str_replace('%allowedTypes', $allowedTypesStringForDisplay, $message);
+
         return $message;
     }
 }
