@@ -14,8 +14,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for BackendUserAuthentication
@@ -65,18 +70,23 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn()
     {
-        $formProtection = $this->getMock(
-            \TYPO3\CMS\Core\FormProtection\BackendFormProtection::class,
-            array('clean'),
-            array(),
-            '',
-            false
-        );
-        $formProtection->expects($this->once())->method('clean');
+        /** @var ObjectProphecy|Connection $connection */
+        $connection = $this->prophesize(Connection::class);
+        $connection->delete('be_sessions', Argument::cetera())->willReturn(1);
+
+        /** @var ObjectProphecy|ConnectionPool $connectionPool */
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getConnectionForTable(Argument::cetera())->willReturn($connection->reveal());
+
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+
+        /** @var ObjectProphecy|\TYPO3\CMS\Core\FormProtection\AbstractFormProtection $formProtection */
+        $formProtection = $this->prophesize(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class);
+        $formProtection->clean()->shouldBeCalled();
 
         \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(
             'default',
-            $formProtection
+            $formProtection->reveal()
         );
 
         // logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
@@ -236,7 +246,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration)
     {
-        $subject = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', FALSE);
+        $subject = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', false);
         $subject->userTS = $completeConfiguration;
 
         $actualConfiguration = $subject->getTSConfig($objectString);

@@ -15,11 +15,15 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Authentication of users in TYPO3
@@ -824,11 +828,10 @@ abstract class AbstractUserAuthentication
         $oldSessionId = $this->id;
         $this->id = $this->createSessionId();
         // Update session record with new ID
-        $this->db->exec_UPDATEquery(
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
             $this->session_table,
-            'ses_id = ' . $this->db->fullQuoteStr($oldSessionId, $this->session_table)
-                . ' AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table),
-            array('ses_id' => $this->id)
+            ['ses_id' => $this->id],
+            ['ses_id' => $oldSessionId, 'ses_name' => $this->name]
         );
         $this->newSessionID = true;
     }
@@ -851,16 +854,17 @@ abstract class AbstractUserAuthentication
             GeneralUtility::devLog('Create session ses_id = ' . $this->id, AbstractUserAuthentication::class);
         }
         // Delete session entry first
-        $this->db->exec_DELETEquery(
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table);
+        $connection->delete(
             $this->session_table,
-            'ses_id = ' . $this->db->fullQuoteStr($this->id, $this->session_table)
-                . ' AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table)
+            ['ses_id' => $this->id, 'ses_name' => $this->name]
         );
+
         // Re-create session entry
         $insertFields = $this->getNewSessionRecord($tempuser);
-        $inserted = (bool)$this->db->exec_INSERTquery($this->session_table, $insertFields);
+        $inserted = (bool)$connection->insert($this->session_table, $insertFields);
         if (!$inserted) {
-            $message = 'Session data could not be written to DB. Error: ' . $this->db->sql_error();
+            $message = 'Session data could not be written to DB. Error: ' . $connection->errorInfo();
             GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
             if ($this->writeDevLog) {
                 GeneralUtility::devLog($message, AbstractUserAuthentication::class, 2);
@@ -868,14 +872,15 @@ abstract class AbstractUserAuthentication
         }
         // Updating lastLogin_column carrying information about last login.
         if ($this->lastLogin_column && $inserted) {
-            $this->db->exec_UPDATEquery(
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table);
+            $connection->update(
                 $this->user_table,
-                $this->userid_column . '=' . $this->db->fullQuoteStr($tempuser[$this->userid_column], $this->user_table),
-                array($this->lastLogin_column => $GLOBALS['EXEC_TIME'])
+                [$this->lastLogin_column => $GLOBALS['EXEC_TIME']],
+                [$this->userid_column => $tempuser[$this->userid_column]]
             );
         }
 
-        return $inserted ? $insertFields : array();
+        return $inserted ? $insertFields : [];
     }
 
     /**
@@ -912,13 +917,8 @@ abstract class AbstractUserAuthentication
         }
 
         // Fetch the user session from the DB
-        $statement = $this->fetchUserSessionFromDB();
+        $user = $this->fetchUserSessionFromDB();
 
-        if ($statement) {
-            $statement->execute();
-            $user = $statement->fetch();
-            $statement->free();
-        }
         if ($user) {
             // A user was found
             $user['ses_tstamp'] = (int)$user['ses_tstamp'];
@@ -934,8 +934,11 @@ abstract class AbstractUserAuthentication
             if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $user['ses_tstamp'] + $timeout) {
                 $sessionUpdateGracePeriod = 61;
                 if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($user['ses_tstamp'] + $sessionUpdateGracePeriod)) {
-                    $this->db->exec_UPDATEquery($this->session_table, 'ses_id=' . $this->db->fullQuoteStr($this->id, $this->session_table)
-                        . ' AND ses_name=' . $this->db->fullQuoteStr($this->name, $this->session_table), array('ses_tstamp' => $GLOBALS['EXEC_TIME']));
+                    GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
+                        $this->session_table,
+                        ['ses_tstamp' => $GLOBALS['EXEC_TIME']],
+                        ['ses_id' => $this->id, 'ses_name' => $this->name]
+                    );
                     // Make sure that the timestamp is also updated in the array
                     $user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];
                 }
@@ -971,8 +974,12 @@ abstract class AbstractUserAuthentication
                 }
             }
         }
-        $this->db->exec_DELETEquery($this->session_table, 'ses_id = ' . $this->db->fullQuoteStr($this->id, $this->session_table) . '
-						AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table));
+
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->delete(
+            $this->session_table,
+            ['ses_id' => $this->id, 'ses_name' => $this->name]
+        );
+
         $this->user = null;
         // Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
@@ -1008,11 +1015,14 @@ abstract class AbstractUserAuthentication
      */
     public function isExistingSessionRecord($id)
     {
-        $statement = $this->db->prepare_SELECTquery('COUNT(*)', $this->session_table, 'ses_id = :ses_id');
-        $statement->execute(array(':ses_id' => $id));
-        $row = $statement->fetch(\TYPO3\CMS\Core\Database\PreparedStatement::FETCH_NUM);
-        $statement->free();
-        return (bool)$row[0];
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table);
+        $count = $conn->count(
+            '*',
+            $this->session_table,
+            ['ses_id' => $id]
+        );
+
+        return (bool)$count;
     }
 
     /**
@@ -1038,25 +1048,104 @@ abstract class AbstractUserAuthentication
      * then don't evaluate with the hashLockClause, as the client/browser is included in this hash
      * and thus, the flash request would be rejected
      *
-     * @return \TYPO3\CMS\Core\Database\PreparedStatement
+     * @return array|false
      * @access private
      */
     protected function fetchUserSessionFromDB()
     {
-        $statement = null;
-        $ipLockClause = $this->ipLockClause();
-        $statement = $this->db->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
-					AND ' . $this->session_table . '.ses_name = :ses_name
-					AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
-					' . $ipLockClause['where'] . '
-					' . $this->hashLockClause() . '
-					' . $this->user_where_clause());
-        $statement->bindValues(array(
-                ':ses_id' => $this->id,
-                ':ses_name' => $this->name
-            ));
-        $statement->bindValues($ipLockClause['parameters']);
-        return $statement;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->session_table);
+        $queryBuilder->select('*')
+            ->from($this->session_table)
+            ->from($this->user_table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $this->session_table . '.ses_id',
+                    $queryBuilder->createNamedParameter($this->id)
+                )
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    $this->session_table . '.ses_name',
+                    $queryBuilder->createNamedParameter($this->name)
+                )
+            )
+            // Condition on which to join the session and user table
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    $this->session_table . '.ses_userid',
+                    $queryBuilder->quoteIdentifier($this->user_table . '.' . $this->userid_column)
+                )
+            )
+            ->andWhere(
+                $queryBuilder->expr()->eq(
+                    $this->session_table . '.ses_hashlock',
+                    $queryBuilder->createNamedParameter($this->hashLockClause_getHashInt())
+                )
+            )
+            ->andWhere($this->userConstraints($queryBuilder->expr()));
+
+        if ($this->lockIP) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $this->session_table . '.ses_iplock',
+                    $queryBuilder->createNamedParameter(
+                        [$this->ipLockClause_remoteIPNumber($this->lockIP), '[DISABLED]'],
+                        Connection::PARAM_STR_ARRAY // Automatically expand the array into multiple named parameters
+                    )
+                )
+            );
+        }
+
+        // Force the fetch mode to ensure we get back an array independently of the default fetch mode.
+        return $queryBuilder->execute()->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param ExpressionBuilder $expressionBuilder
+     * @param string $tableAlias
+     * @return \Doctrine\DBAL\Query\Expression\CompositeExpression
+     * @internal
+     */
+    protected function userConstraints(
+        ExpressionBuilder $expressionBuilder,
+        string $tableAlias = ''
+    ): \Doctrine\DBAL\Query\Expression\CompositeExpression {
+        if ($tableAlias === '') {
+            $tableAlias = $this->user_table;
+        }
+
+        $constraints = $expressionBuilder->andX();
+        if ($this->enablecolumns['rootLevel']) {
+            $constraints->add(
+                $expressionBuilder->eq($tableAlias . '.pid', 0)
+            );
+        }
+        if ($this->enablecolumns['disabled']) {
+            $constraints->add(
+                $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['disabled'], 0)
+            );
+        }
+        if ($this->enablecolumns['deleted']) {
+            $constraints->add(
+                $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['deleted'], 0)
+            );
+        }
+        if ($this->enablecolumns['starttime']) {
+            $constraints->add(
+                $expressionBuilder->lte($tableAlias . '.' . $this->enablecolumns['starttime'], $GLOBALS['EXEC_TIME'])
+            );
+        }
+        if ($this->enablecolumns['endtime']) {
+            $constraints->add(
+                $expressionBuilder->orX(
+                    $expressionBuilder->eq($tableAlias . '.' . $this->enablecolumns['endtime'], 0),
+                    $expressionBuilder->gt($tableAlias . '.' . $this->enablecolumns['endtime'], $GLOBALS['EXEC_TIME'])
+                )
+            );
+        }
+
+        return $constraints;
     }
 
     /**
@@ -1065,9 +1154,12 @@ abstract class AbstractUserAuthentication
      *
      * @return string
      * @access private
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function user_where_clause()
     {
+        GeneralUtility::logDeprecatedFunction();
+
         $whereClause = '';
         if ($this->enablecolumns['rootLevel']) {
             $whereClause .= 'AND ' . $this->user_table . '.pid=0 ';
@@ -1093,9 +1185,11 @@ abstract class AbstractUserAuthentication
      *
      * @return array
      * @access private
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected function ipLockClause()
     {
+        GeneralUtility::logDeprecatedFunction();
         $statementClause = array(
             'where' => '',
             'parameters' => array()
@@ -1183,7 +1277,7 @@ abstract class AbstractUserAuthentication
      * You can fetch the data again through $this->uc in this class!
      * If $variable is not an array, $this->uc is saved!
      *
-     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is blank string), the internal variable, ->uc, is stored by default
+     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default
      * @return void
      */
     public function writeUC($variable = '')
@@ -1193,9 +1287,16 @@ abstract class AbstractUserAuthentication
                 $variable = $this->uc;
             }
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column], AbstractUserAuthentication::class);
+                GeneralUtility::devLog(
+                    'writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column],
+                    AbstractUserAuthentication::class
+                );
             }
-            $this->db->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . (int)$this->user[$this->userid_column], array('uc' => serialize($variable)));
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
+                $this->user_table,
+                ['uc' => serialize($variable)],
+                [$this->userid_column => (int)$this->user[$this->userid_column]]
+            );
         }
     }
 
@@ -1279,7 +1380,11 @@ abstract class AbstractUserAuthentication
         if ($this->writeDevLog) {
             GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], AbstractUserAuthentication::class);
         }
-        $this->db->exec_UPDATEquery($this->session_table, 'ses_id=' . $this->db->fullQuoteStr($this->user['ses_id'], $this->session_table), array('ses_data' => $this->user['ses_data']));
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
+            $this->session_table,
+            ['ses_data' => $this->user['ses_data']],
+            ['ses_id' => $this->user['ses_id']]
+        );
     }
 
     /*************************
@@ -1364,6 +1469,8 @@ abstract class AbstractUserAuthentication
      */
     public function getAuthInfoArray()
     {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
+        $expressionBuilder = $queryBuilder->expr();
         $authInfo = array();
         $authInfo['loginType'] = $this->loginType;
         $authInfo['refInfo'] = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
@@ -1377,11 +1484,13 @@ abstract class AbstractUserAuthentication
         $authInfo['db_user']['username_column'] = $this->username_column;
         $authInfo['db_user']['userident_column'] = $this->userident_column;
         $authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
-        $authInfo['db_user']['enable_clause'] = $this->user_where_clause();
+        $authInfo['db_user']['enable_clause'] = $this->userConstraints($expressionBuilder);
         if ($this->checkPid && $this->checkPid_value !== null) {
             $authInfo['db_user']['checkPidList'] = $this->checkPid_value;
-            $authInfo['db_user']['check_pid_clause'] = ' AND pid IN (' .
-                $this->db->cleanIntList($this->checkPid_value) . ')';
+            $authInfo['db_user']['check_pid_clause'] = $expressionBuilder->in(
+                'pid',
+                GeneralUtility::intExplode(',', $this->checkPid_value)
+            );
         } else {
             $authInfo['db_user']['checkPidList'] = '';
             $authInfo['db_user']['check_pid_clause'] = '';
@@ -1411,7 +1520,21 @@ abstract class AbstractUserAuthentication
      */
     public function gc()
     {
-        $this->db->exec_DELETEquery($this->session_table, 'ses_tstamp < ' . (int)($GLOBALS['EXEC_TIME'] - $this->gc_time) . ' AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table));
+        $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->session_table);
+        $query->delete($this->session_table)
+            ->where(
+                $query->expr()->lt(
+                    'ses_tstamp',
+                    $query->createNamedParameter((int)($GLOBALS['EXEC_TIME'] - $this->gc_time))
+                )
+            )
+            ->andWhere(
+                $query->expr()->eq(
+                    'ses_name',
+                    $query->createNamedParameter($this->name)
+                )
+            )
+            ->execute();
     }
 
     /**
@@ -1485,13 +1608,13 @@ abstract class AbstractUserAuthentication
      */
     public function getRawUserByUid($uid)
     {
-        $user = false;
-        $dbres = $this->db->exec_SELECTquery('*', $this->user_table, 'uid=' . (int)$uid . ' ' . $this->user_where_clause());
-        if ($dbres) {
-            $user = $this->db->sql_fetch_assoc($dbres);
-            $this->db->sql_free_result($dbres);
-        }
-        return $user;
+        $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
+        $query->select('*')
+            ->from($this->user_table)
+            ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
+            ->andWhere($this->userConstraints($query->expr()));
+
+        return $query->execute()->fetch();
     }
 
     /**
@@ -1504,13 +1627,13 @@ abstract class AbstractUserAuthentication
      */
     public function getRawUserByName($name)
     {
-        $user = false;
-        $dbres = $this->db->exec_SELECTquery('*', $this->user_table, 'username=' . $this->db->fullQuoteStr($name, $this->user_table) . ' ' . $this->user_where_clause());
-        if ($dbres) {
-            $user = $this->db->sql_fetch_assoc($dbres);
-            $this->db->sql_free_result($dbres);
-        }
-        return $user;
+        $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->user_table);
+        $query->select('*')
+            ->from($this->user_table)
+            ->where($query->expr()->eq('username', $query->createNamedParameter($name)))
+            ->andWhere($this->userConstraints($query->expr()));
+
+        return $query->execute()->fetch();
     }
 
     /*************************
@@ -1530,15 +1653,29 @@ abstract class AbstractUserAuthentication
     public function fetchUserRecord($dbUser, $username, $extraWhere = '')
     {
         $user = false;
-        $usernameClause = $username ? $dbUser['username_column'] . '=' . $this->db->fullQuoteStr($username, $dbUser['table']) : '1=1';
         if ($username || $extraWhere) {
-            // Look up the user by the username and/or extraWhere:
-            $dbres = $this->db->exec_SELECTquery('*', $dbUser['table'], $usernameClause . $dbUser['check_pid_clause'] . $dbUser['enable_clause'] . $extraWhere);
-            if ($dbres) {
-                $user = $this->db->sql_fetch_assoc($dbres);
-                $this->db->sql_free_result($dbres);
+            $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($dbUser['table']);
+
+            $constraints = array_filter([
+                QueryHelper::stripLogicalOperatorPrefix($dbUser['check_pid_clause']),
+                QueryHelper::stripLogicalOperatorPrefix($dbUser['enable_clause']),
+                QueryHelper::stripLogicalOperatorPrefix($extraWhere),
+            ]);
+
+            if (!empty($username)) {
+                array_unshift(
+                    $constraints,
+                    $query->expr()->eq($dbUser['username_column'], $query->createNamedParameter($username))
+                );
             }
+
+            $user = $query->select('*')
+                ->from($dbUser['table'])
+                ->where(...$constraints)
+                ->execute()
+                ->fetch();
         }
+
         return $user;
     }
 
