@@ -343,7 +343,7 @@ class Import extends ImportExport
         // Check #1: Extension dependencies
         $extKeysToInstall = array();
         foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-            if (!ExtensionManagementUtility::isLoaded($extKey)) {
+            if (!empty($extKey) && !ExtensionManagementUtility::isLoaded($extKey)) {
                 $extKeysToInstall[] = $extKey;
             }
         }
@@ -2131,7 +2131,6 @@ class Import extends ImportExport
      */
     public function loadInit()
     {
-        $this->cleanupImportData();
         $this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
         $this->excludeMap = (array)$this->dat['header']['excludeMap'];
         $this->softrefCfg = (array)$this->dat['header']['softrefCfg'];
@@ -2142,20 +2141,6 @@ class Import extends ImportExport
         ) {
             $this->legacyImport = true;
             $this->initializeLegacyImportFolder();
-        }
-    }
-
-    /**
-     * Cleanses any inconsistent states which can occur in imported T3D/XML
-     *
-     * @return void
-     */
-    protected function cleanupImportData()
-    {
-        if (is_array($this->dat['header']['extensionDependencies'])) {
-            $this->dat['header']['extensionDependencies'] = array_filter($this->dat['header']['extensionDependencies']);
-        } else {
-            $this->dat['header']['extensionDependencies'] = array();
         }
     }
 

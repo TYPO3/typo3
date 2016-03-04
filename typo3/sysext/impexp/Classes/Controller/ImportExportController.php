@@ -348,7 +348,7 @@ class ImportExportController extends BaseScriptClass
         $this->export->maxFileSize = $inData['maxFileSize'] * 1024;
         $this->export->excludeMap = (array)$inData['exclude'];
         $this->export->softrefCfg = (array)$inData['softrefCfg'];
-        $this->export->extensionDependencies = (array)$inData['extension_dep'];
+        $this->export->extensionDependencies = ($inData['extension_dep'] === '') ? array() : (array)$inData['extension_dep'];
         $this->export->showStaticRelations = $inData['showStaticRelations'];
         $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
         $this->excludeDisabledRecords = (bool)$inData['excludeDisabled'];
