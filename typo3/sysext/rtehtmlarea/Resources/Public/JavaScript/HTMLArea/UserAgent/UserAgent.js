@@ -21,21 +21,24 @@ define([], function () {
 	var userAgent = navigator.userAgent.toLowerCase();
 	var documentMode = document.documentMode,
 		isOpera = /opera/i.test(userAgent),
-		isChrome = /\bchrome\b/i.test(userAgent),
-		isWebKit = /webkit/i.test(userAgent),
+		isEdge = /edge/i.test(userAgent),
+		isChrome = !isEdge && /\bchrome\b/i.test(userAgent),
+		isWebKit = !isEdge && /webkit/i.test(userAgent),
+		isSafari = !isEdge && !isChrome && /safari/i.test(userAgent),
 		isIE = (!isOpera && /msie/i.test(userAgent)) || /trident/i.test(userAgent),
 		isIE6 = isIE && /msie 6/i.test(userAgent),
 		isIE7 = isIE && (/msie 7/i.test(userAgent) || documentMode == 7),
 		isIE8 = isIE && ((/msie 8/i.test(userAgent) && documentMode != 7) || documentMode == 8),
 		isIEBeforeIE9 = isIE6 || isIE7 || isIE8 || (isIE && typeof documentMode !== 'undefined' && documentMode < 9),
-		isGecko = !isWebKit && !isIE && /gecko/i.test(userAgent),
+		isGecko = !isWebKit && !isIE && !isEdge && /gecko/i.test(userAgent),
 		isiPhone = /iphone/i.test(userAgent),
 		isiPad = /ipad/i.test(userAgent);
 	return {
 		isOpera: isOpera,
+		isEdge: isEdge,
 		isChrome: isChrome,
 		isWebKit: isWebKit,
-		isSafari: !isChrome && /safari/i.test(userAgent),
+		isSafari: isSafari,
 		isIE: isIE,
 		isIE6: isIE6,
 		isIE7: isIE7,
@@ -58,7 +61,7 @@ define([], function () {
 		 * @return boolean true if the client is supported
 		 */
 		isSupported: function () {
-			return isGecko || isWebKit || isOpera || (isIE && !isIEBeforeIE9);
+			return isGecko || isWebKit || isOpera || isEdge ||(isIE && !isIEBeforeIE9);
 		}
 	};
 });
