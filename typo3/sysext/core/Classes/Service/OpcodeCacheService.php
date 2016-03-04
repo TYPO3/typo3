@@ -54,7 +54,8 @@ class OpcodeCacheService
 
             // http://www.php.net/manual/de/book.wincache.php
             'WinCache' => array(
-                'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1',
+                'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1'
+                    && version_compare(phpversion('wincache'), '2.0.0.0', '<'),
                 'version' => phpversion('wincache'),
                 'canReset' => true,
                 'canInvalidate' => true, // wincache_refresh_if_changed()
