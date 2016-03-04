@@ -20,6 +20,7 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'requestUpdate' => 't3editor_reload_1',
     ],
 
 
@@ -76,6 +77,23 @@ return [
                 'renderType' => 't3editor',
                 'format' => 'html',
                 'rows' => 7,
+            ],
+        ],
+        't3editor_reload_1' => [
+            'exclude' => 1,
+            'label' => 't3editor_reload_1',
+            'config' => [
+                'type' => 'select',
+                'items' => [
+                    [
+                        'label1',
+                        0,
+                    ],
+                    [
+                        'label2',
+                        1,
+                    ],
+                ],
             ],
         ],
         't3editor_inline_1' => [
@@ -185,6 +203,7 @@ return [
             'showitem' => '
                 --div--;t3editor,
                     t3editor_1,
+                    t3editor_reload_1,
                 --div--;in inline,
                     t3editor_inline_1,
                 --div--;in flex,
