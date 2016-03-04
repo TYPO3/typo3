@@ -12119,9 +12119,11 @@ iframe {
   margin: 0;
 }
 .t3-page-column-header-icons {
-  visibility: hidden;
+  transition: opacity 0.15s ease-in;
+  opacity: 0.3;
   position: absolute;
-  right: 0;
+  right: 10px;
+  bottom: 5px;
 }
 .t3-page-column-header {
   padding: 20px 10px 5px 10px;
@@ -12135,7 +12137,7 @@ iframe {
   position: relative;
 }
 .t3-page-column-header:hover .t3-page-column-header-icons {
-  visibility: visible;
+  opacity: 1;
 }
 .t3-page-columns-mode img.c-divider {
   margin: 10px 0 5px 0;

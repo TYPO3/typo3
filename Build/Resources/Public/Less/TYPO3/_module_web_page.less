@@ -66,9 +66,11 @@
 	}
 }
 .t3-page-column-header-icons {
-	visibility: hidden;
+	.transition(opacity .15s ease-in);
+	opacity: 0.3;
 	position: absolute;
-	right: 0;
+	right: @page-grid-spacing;
+	bottom: @page-grid-spacing / 2;
 }
 .t3-page-column-header {
 	padding: (@page-grid-spacing * 2) @page-grid-spacing (@page-grid-spacing / 2) @page-grid-spacing;
@@ -82,7 +84,7 @@
 	}
 	&:hover {
 		.t3-page-column-header-icons {
-			visibility: visible;
+			opacity: 1;
 		}
 	}
 }
