@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -65,7 +65,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
             $itemsConf = $conf;
             $conf = $this->mconf['main.'];
             if (is_array($conf)) {
-                $sKeyArray = TemplateService::sortedKeyList($conf);
+                $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($conf);
                 $gifObjCount = (int)end($sKeyArray);
                 // Now we add graphical objects to the gifbuilder-setup
                 $waArr = array();
@@ -73,7 +73,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                     if (is_array($val)) {
                         $gifObjCount++;
                         $waArr[$key]['free'] = $gifObjCount;
-                        $sKeyArray = TemplateService::sortedKeyList($val);
+                        $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($val);
                         foreach ($sKeyArray as $theKey) {
                             $theValue = $val[$theKey];
                             if ((int)$theKey && ($theValArr = $val[$theKey . '.'])) {
@@ -123,7 +123,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                                 // This code goes one level in if the object is an image. If 'file' and/or 'mask' appears to be GIFBUILDER-objects, they are both searched for TEXT objects, and if a textobj is found, it's checked with the currently loaded record!!
                                 if ($theValue === 'IMAGE') {
                                     if ($theValArr['file'] === 'GIFBUILDER') {
-                                        $temp_sKeyArray = TemplateService::sortedKeyList($theValArr['file.']);
+                                        $temp_sKeyArray = ArrayUtility::filterAndSortByNumericKeys($theValArr['file.']);
                                         foreach ($temp_sKeyArray as $temp_theKey) {
                                             if ($theValArr['mask.'][$temp_theKey] === 'TEXT') {
                                                 $gifCreator->data = $this->menuArr[$key] ?: array();
@@ -134,7 +134,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                                         }
                                     }
                                     if ($theValArr['mask'] === 'GIFBUILDER') {
-                                        $temp_sKeyArray = TemplateService::sortedKeyList($theValArr['mask.']);
+                                        $temp_sKeyArray = ArrayUtility::filterAndSortByNumericKeys($theValArr['mask.']);
                                         foreach ($temp_sKeyArray as $temp_theKey) {
                                             if ($theValArr['mask.'][$temp_theKey] === 'TEXT') {
                                                 $gifCreator->data = $this->menuArr[$key] ?: array();

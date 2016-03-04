@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Form\Domain\Builder;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
 use TYPO3\CMS\Form\Domain\Model\Element;
@@ -302,7 +302,7 @@ class FormBuilder
     protected function setChildElementsByIntegerKey(Element $element, array $userConfiguredElementTypoScript)
     {
         if (is_array($userConfiguredElementTypoScript)) {
-            $keys = TemplateService::sortedKeyList($userConfiguredElementTypoScript);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($userConfiguredElementTypoScript);
             foreach ($keys as $key) {
                 if (
                     (int)$key
@@ -445,7 +445,7 @@ class FormBuilder
             /* filter values and set it back to incoming fields */
                 /* remove xss every time */
             $userConfiguredElementTypoScript['filters.'][-1] = 'removexss';
-            $keys = TemplateService::sortedKeyList($userConfiguredElementTypoScript['filters.']);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($userConfiguredElementTypoScript['filters.']);
             foreach ($keys as $key) {
                 $class = $userConfiguredElementTypoScript['filters.'][$key];
                 if (

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,7 +38,7 @@ class ContentDataProcessor
             && is_array($configuration['dataProcessing.'])
         ) {
             $processors = $configuration['dataProcessing.'];
-            $processorKeys = TemplateService::sortedKeyList($processors);
+            $processorKeys = ArrayUtility::filterAndSortByNumericKeys($processors);
 
             foreach ($processorKeys as $key) {
                 $className = $processors[$key];

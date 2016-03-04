@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1098,7 +1098,7 @@ class GraphicalFunctions
         // Traverse the split-rendering configuration:
         // Splitting will create more entries in $result with individual configurations.
         if (is_array($splitRendering)) {
-            $sKeyArray = TemplateService::sortedKeyList($splitRendering);
+            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($splitRendering);
             // Traverse configured options:
             foreach ($sKeyArray as $key) {
                 $cfg = $splitRendering[$key . '.'];

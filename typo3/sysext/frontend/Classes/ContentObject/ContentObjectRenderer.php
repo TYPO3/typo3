@@ -787,7 +787,7 @@ class ContentObjectRenderer
         if (!is_array($setup)) {
             return '';
         }
-        $sKeyArray = TemplateService::sortedKeyList($setup);
+        $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($setup);
         $content = '';
         foreach ($sKeyArray as $theKey) {
             $theValue = $setup[$theKey];
@@ -3280,7 +3280,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_orderedStdWrap($content = '', $conf = array())
     {
-        $sortedKeysArray = TemplateService::sortedKeyList($conf['orderedStdWrap.'], true);
+        $sortedKeysArray = ArrayUtility::filterAndSortByNumericKeys($conf['orderedStdWrap.'], true);
         foreach ($sortedKeysArray as $key) {
             $content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.']);
         }

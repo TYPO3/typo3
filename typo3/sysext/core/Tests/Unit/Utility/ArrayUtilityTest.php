@@ -2140,4 +2140,167 @@ class ArrayUtilityTest extends UnitTestCase
         $this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));
         $this->assertEquals($expectedResult, array_values(array_keys($testArray)));
     }
+
+    /**
+     * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue
+     *
+     * @return array
+     */
+    public function filterAndSortByNumericKeysWithAcceptAnyKey()
+    {
+        return [
+            'ordered list of plain numeric keys' => [
+                'input' => [
+                    '10' => 'foo',
+                    '20' => 'bar',
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'unordered list of plain numeric keys' => [
+                'input' => [
+                    '20' => 'bar',
+                    '10' => 'foo',
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'list of string keys' => [
+                'input' => [
+                    '10.' => [
+                        'wrap' => 'foo',
+                        ],
+                    '20.' => [
+                        'wrap' => 'bar',
+                    ],
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'list of mixed keys' => [
+                'input' => [
+                    '10' => 'foo',
+                    '20.' => [
+                        'wrap' => 'bar',
+                    ],
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'list of mixed keys with one not interpreted as integer' => [
+                'input' => [
+                    '10' => 'foo',
+                    'bla20.' => [
+                        'wrap' => 'bar',
+                    ],
+                ],
+                'expected' => [
+                    0,
+                    10,
+                ],
+            ],
+            'list of mixed keys with more than one not interpreted as integer' => [
+                'input' => [
+                    '10' => 'foo',
+                    'bla20.' => [
+                        'wrap' => 'bar',
+                    ],
+                    'bla21.' => [
+                        'wrap' => 'foobar',
+                    ],
+                ],
+                'expected' => [
+                    0,
+                    10,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterAndSortByNumericKeysWithAcceptAnyKey
+     *
+     * @param array $input
+     * @param array $expected
+     */
+    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue($input, $expected)
+    {
+        $result = ArrayUtility::filterAndSortByNumericKeys($input, true);
+        $this->assertEquals($result, $expected);
+    }
+
+    /**
+     * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse
+     *
+     * @return array
+     */
+    public function filterAndSortByNumericKeysWithoutAcceptAnyKey()
+    {
+        return [
+            'ordered list of plain numeric keys' => [
+                'input' => [
+                    '10' => 'foo',
+                    '20' => 'bar',
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'unordered list of plain numeric keys' => [
+                'input' => [
+                    '20' => 'bar',
+                    '10' => 'foo',
+                ],
+                'expected' => [
+                    10,
+                    20,
+                ],
+            ],
+            'list of string keys' => [
+                'input' => [
+                    '10.' => [
+                        'wrap' => 'foo',
+                    ],
+                    '20.' => [
+                        'wrap' => 'bar',
+                    ],
+                ],
+                'expected' => [],
+            ],
+            'list of mixed keys' => [
+                'input' => [
+                    '10' => 'foo',
+                    '20.' => [
+                        'wrap' => 'bar',
+                    ],
+                ],
+                'expected' => [
+                    10,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterAndSortByNumericKeysWithoutAcceptAnyKey
+     *
+     * @param array $input
+     * @param array $expected
+     */
+    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse($input, $expected)
+    {
+        $result = ArrayUtility::filterAndSortByNumericKeys($input);
+        $this->assertEquals($result, $expected);
+    }
 }

@@ -695,4 +695,27 @@ class ArrayUtility
 
         return true;
     }
+
+
+    /**
+     * Takes a TypoScript array as input and returns an array which contains all integer properties found which had a value (not only properties). The output array will be sorted numerically.
+     *
+     * @param array $setupArr TypoScript array with numerical array in
+     * @param bool $acceptAnyKeys If set, then a value is not required - the properties alone will be enough.
+     * @return array An array with all integer properties listed in numeric order.
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::makeImageMap()
+     */
+    public static function filterAndSortByNumericKeys($setupArr, $acceptAnyKeys = false)
+    {
+        $filteredKeys = [];
+        $keys = array_keys($setupArr);
+        foreach ($keys as $key) {
+            if ($acceptAnyKeys || MathUtility::canBeInterpretedAsInteger($key)) {
+                $filteredKeys[] = (int)$key;
+            }
+        }
+        $filteredKeys = array_unique($filteredKeys);
+        sort($filteredKeys);
+        return $filteredKeys;
+    }
 }

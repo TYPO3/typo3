@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Form\Domain\Builder;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
 use TYPO3\CMS\Form\Domain\Validator\AbstractValidator;
 use TYPO3\CMS\Form\Utility\FormUtility;
@@ -113,7 +113,7 @@ class ValidationBuilder
         $rulesTyposcript = isset($userConfiguredFormTyposcript['rules.']) ? $userConfiguredFormTyposcript['rules.'] : null;
         $this->rules[$this->configuration->getPrefix()] = array();
         if (is_array($rulesTyposcript)) {
-            $keys = TemplateService::sortedKeyList($rulesTyposcript);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($rulesTyposcript);
             foreach ($keys as $key) {
                 $ruleName = $rulesTyposcript[$key];
                 $validatorClassName = $this->typoScriptRepository->getRegisteredClassName($ruleName, 'registeredValidators');

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Form\PostProcess;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * The post processor
@@ -70,7 +70,7 @@ class PostProcessor extends AbstractPostProcessor
         $html = '';
 
         if (is_array($this->postProcessorTypoScript)) {
-            $keys = TemplateService::sortedKeyList($this->postProcessorTypoScript);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($this->postProcessorTypoScript);
 
             foreach ($keys as $key) {
                 if (!(int)$key || strpos($key, '.') !== false) {

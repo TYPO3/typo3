@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,7 +33,7 @@ class FramesetRenderer
     {
         $content = '';
         if (is_array($setup)) {
-            $sKeyArray = TemplateService::sortedKeyList($setup);
+            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($setup);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $setup[$theKey];
                 if ((int)$theKey && ($conf = $setup[$theKey . '.'])) {

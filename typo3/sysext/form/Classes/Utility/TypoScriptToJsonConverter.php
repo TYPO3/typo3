@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement;
 
@@ -114,7 +115,7 @@ class TypoScriptToJsonConverter
     protected function getChildElementsByIntegerKey(AbstractJsonElement $parentElement, array $typoscript)
     {
         if (is_array($typoscript)) {
-            $keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($typoscript);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($typoscript);
             foreach ($keys as $key) {
                 $class = $typoscript[$key];
                 if ((int)$key && strpos($key, '.') === false) {

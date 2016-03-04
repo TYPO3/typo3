@@ -1414,9 +1414,11 @@ class TemplateService
      * @param string $url Input string
      * @return string Output string, free of "?" in the end, if any such character.
      * @see linkData(), \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use rtrim($url, '?') instead
      */
     public function removeQueryString($url)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (substr($url, -1) == '?') {
             return substr($url, 0, -1);
         } else {
@@ -1432,19 +1434,12 @@ class TemplateService
      * @param bool $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
      * @return array An array with all integer properties listed in numeric order.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::makeImageMap()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use ArrayUtility::filterAndSortByNumericKeys instead
      */
     public static function sortedKeyList($setupArr, $acceptOnlyProperties = false)
     {
-        $keyArr = array();
-        $setupArrKeys = array_keys($setupArr);
-        foreach ($setupArrKeys as $key) {
-            if ($acceptOnlyProperties || MathUtility::canBeInterpretedAsInteger($key)) {
-                $keyArr[] = (int)$key;
-            }
-        }
-        $keyArr = array_unique($keyArr);
-        sort($keyArr);
-        return $keyArr;
+        GeneralUtility::logDeprecatedFunction();
+        return ArrayUtility::filterAndSortByNumericKeys($setupArr, $acceptOnlyProperties);
     }
 
     /**
@@ -1550,7 +1545,7 @@ class TemplateService
         // If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
         $LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c' . $page['sectionIndex_uid'] : '';
         // Compile the normal total url
-        $LD['totalURL'] = $this->removeQueryString(($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken)) . $LD['sectionIndex'];
+        $LD['totalURL'] = rtrim($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken, '?') . $LD['sectionIndex'];
         // Call post processing function for link rendering:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
             $_params = array(

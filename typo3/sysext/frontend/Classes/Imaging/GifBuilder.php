@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend\Imaging;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -145,7 +145,7 @@ class GifBuilder extends GraphicalFunctions
                 }
             }
             // Getting sorted list of TypoScript keys from setup.
-            $sKeyArray = TemplateService::sortedKeyList($this->setup);
+            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             // Setting the background color, passing it through stdWrap
             if ($conf['backColor.'] || $conf['backColor']) {
                 $this->setup['backColor'] = isset($this->setup['backColor.']) ? trim($this->cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.'])) : $this->setup['backColor'];
@@ -399,7 +399,7 @@ class GifBuilder extends GraphicalFunctions
         }
         // Traverse the GIFBUILDER objects an render each one:
         if (is_array($this->setup)) {
-            $sKeyArray = TemplateService::sortedKeyList($this->setup);
+            $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
                 if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * JSON name
@@ -81,9 +82,8 @@ class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElem
     protected function setVarious(array $parameters)
     {
         if (is_array($parameters)) {
-            $keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($parameters);
+            $keys = ArrayUtility::filterAndSortByNumericKeys($parameters);
             foreach ($keys as $key) {
-                $class = $parameters[$key];
                 if ((int)$key && strpos($key, '.') === false) {
                     if (isset($parameters[$key . '.'])) {
                         $childElementArguments = $parameters[$key . '.'];
