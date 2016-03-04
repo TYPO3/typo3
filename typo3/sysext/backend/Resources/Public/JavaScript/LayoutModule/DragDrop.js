@@ -80,6 +80,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	DragDrop.onDragStart = function ($element) {
 		// Add css class for the drag shadow
 		$element.children(DragDrop.dragIdentifier).addClass('dragitem-shadow');
+		$element.append('<div class="ui-draggable-copy-message">' + TYPO3.lang['dragdrop.copy.message'] + '</div>');
 		// Hide create new element button
 		$element.children(DragDrop.dropZoneIdentifier).addClass('drag-start');
 		$element.closest(DragDrop.columnIdentifier).removeClass('active');
@@ -87,9 +88,8 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 		$element.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).hide();
 		$element.find(DragDrop.dropZoneIdentifier).hide();
 
-		// make the drop zones visible (all except the previous one in the current list)
-		var $previousDropZone = $element.prev().children(DragDrop.dropZoneIdentifier);
-		$(DragDrop.dropZoneIdentifier).not($previousDropZone).each(function () {
+		// make the drop zones visible
+		$(DragDrop.dropZoneIdentifier).each(function () {
 			if (
 				$(this).parent().find('.icon-actions-document-new').length
 			) {
@@ -113,6 +113,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 		$element.closest(DragDrop.columnIdentifier).addClass('active');
 		$element.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).show();
 		$element.find(DragDrop.dropZoneIdentifier).show();
+		$element.find('.ui-draggable-copy-message').remove();
 		$(DragDrop.dropZoneIdentifier + '.' + DragDrop.validDropZoneClass).removeClass(DragDrop.validDropZoneClass);
 	};
 
@@ -174,31 +175,59 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 			}
 			parameters['cmd'] = {tt_content: {}};
 			parameters['data'] = {tt_content: {}};
-			parameters['data']['tt_content'][contentElementUid] = {
-				colPos: colPos,
-				sys_language_uid: language
-			};
-			parameters['cmd']['tt_content'][contentElementUid] = {move: targetPid};
-			// fire the request, and show a message if it has failed
-			require(['TYPO3/CMS/Backend/AjaxDataHandler'], function (DataHandler) {
-				DataHandler.process(parameters).done(function (result) {
-					if (!result.hasErrors) {
-						// insert draggable on the new position
-						if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
-							$draggableElement.detach().css({top: 0, left: 0})
-								.insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
-						} else {
-							$draggableElement.detach().css({top: 0, left: 0})
-								.insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
-						}
-						if ($('.t3js-page-lang-column').length) {
-							self.location.reload(true);
+			var copyAction = evt && evt.originalEvent.ctrlKey;
+			if (copyAction) {
+				parameters['cmd']['tt_content'][contentElementUid] = {
+					copy: {
+						action: 'paste',
+						target: targetPid,
+						update: {
+							colPos: colPos,
+							sys_language_uid: language
 						}
 					}
-				});
-			});
+				};
+				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction);
+			} else {
+				parameters['data']['tt_content'][contentElementUid] = {
+					colPos: colPos,
+					sys_language_uid: language
+				};
+				parameters['cmd']['tt_content'][contentElementUid] = {move: targetPid};
+				// fire the request, and show a message if it has failed
+				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction);
+			}
 		}
 	};
+
+	/**
+	 * this method does the actual AJAX request for both, the  move and the copy action.
+	 *
+	 * @param $droppableElement
+	 * @param $draggableElement
+	 * @param parameters
+	 * @param copyAction
+	 * @private
+	 */
+	DragDrop.ajaxAction = function ($droppableElement, $draggableElement, parameters, copyAction) {
+		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function (DataHandler) {
+			DataHandler.process(parameters).done(function (result) {
+				if (!result.hasErrors) {
+					// insert draggable on the new position
+					if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
+						$draggableElement.detach().css({top: 0, left: 0})
+							.insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
+					} else {
+						$draggableElement.detach().css({top: 0, left: 0})
+							.insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
+					}
+					if ($('.t3js-page-lang-column').length || copyAction) {
+						self.location.reload(true);
+					}
+				}
+			});
+		});
+	}
 
 	/**
 	 * returns the next "upper" container colPos parameter inside the code
