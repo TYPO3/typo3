@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -1204,22 +1205,25 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     /**
      * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
      * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK).
-     * See \TYPO3\CMS\Core\Type\Bitmask\JsConfirmation.
      *
-     * @param int $bitmask Bitmask
+     * @param int $bitmask Bitmask, one of \TYPO3\CMS\Core\Type\Bitmask\JsConfirmation
      * @return bool TRUE if the confirmation should be shown
+     * @see JsConfirmation
      */
     public function jsConfirmation($bitmask)
     {
         $alertPopup = $this->getTSConfig('options.alertPopups');
-        if (empty($alertPopup['value'])) {
-            // Default: show all warnings
-            $alertPopup = 255;
+
+        if (trim((string)$alertPopup['value']) === '') {
+            // Default: show all confirmations
+            $alertPopup = JsConfirmation::ALL;
         } else {
-            $alertPopup = (int)$alertPopup['value'];
+            $alertPopup = $alertPopup['value'];
         }
-        // Show confirmation
-        return ($alertPopup & $bitmask) == $bitmask;
+
+        $bitmask = JsConfirmation::cast($bitmask);
+        $alertPopup = JsConfirmation::cast($alertPopup);
+        return $bitmask->matches($alertPopup);
     }
 
     /**
