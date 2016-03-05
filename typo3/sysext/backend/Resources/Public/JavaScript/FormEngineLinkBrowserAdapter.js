@@ -50,22 +50,6 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 		var field = FormEngineLinkBrowserAdapter.checkReference();
 		if (field) {
 			var attributeValues = LinkBrowser.getLinkAttributeValues();
-
-			// remove page: prefix from page links
-			if (input.indexOf('page:') === 0) {
-				input = input.substr(5);
-			}
-
-			// remove the mailto: prefix from mail links
-			if (input.indexOf('mailto:') === 0) {
-				input = input.substr(7);
-			}
-
-			// remove http:// schema for external links
-			if (attributeValues['data-htmlarea-external'] && input.substr(0, 7) === "http://") {
-				input = input.substr(7);
-			}
-
 			// encode link on server
 			attributeValues.url = input;
 

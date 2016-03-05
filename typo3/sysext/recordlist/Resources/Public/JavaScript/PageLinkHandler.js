@@ -33,11 +33,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	 */
 	PageLinkHandler.linkPage = function(event) {
 		event.preventDefault();
-
-		var id = $(this).data('id');
-		var anchor = $(this).data('anchor');
-
-		LinkBrowser.finalizeFunction('page:' + id + (anchor ? anchor : ''));
+		LinkBrowser.finalizeFunction($(this).attr('href'));
 	};
 
 	/**
@@ -52,7 +48,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 			return;
 		}
 
-		LinkBrowser.finalizeFunction('page:' + value);
+		LinkBrowser.finalizeFunction(value);
 	};
 
 	/**
@@ -61,8 +57,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	 */
 	PageLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
-
-		LinkBrowser.finalizeFunction('page:' + PageLinkHandler.currentLink);
+		LinkBrowser.finalizeFunction(PageLinkHandler.currentLink);
 	};
 
 	$(function() {

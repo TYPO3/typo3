@@ -15,7 +15,7 @@
 					<f:for each="{itemsInSelectedFolder}" as="folder">
 						<li{f:if(condition: '{folder.identifier} == {currentIdentifier}', then: ' class="active"')}>
 							 <span class="list-tree-group">
-									<a href="#" class="t3js-fileLink list-tree-group" title="{folder.name}" data-file="file:{folder.identifier}">
+									<a href="{folder.url}" class="t3js-fileLink list-tree-group" title="{folder.name}">
 										<span class="list-tree-icon">
 											<span title="{folder.name}">{folder.icon -> f:format.raw()}</span>
 										</span>

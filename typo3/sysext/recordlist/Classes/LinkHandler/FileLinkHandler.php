@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
@@ -71,21 +70,9 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         if (!$linkParts['url']) {
             return false;
         }
-        $url = rawurldecode($linkParts['url']);
-
-        if (StringUtility::beginsWith($url, 'file:') && !StringUtility::beginsWith($url, 'file://')) {
-            $rel = substr($url, 5);
-            try {
-                // resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-                $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($rel);
-                if (is_a($fileOrFolderObject, $this->expectedClass)) {
-                    $this->linkParts = $linkParts;
-                    $this->linkParts['url'] = $rel;
-                    $this->linkParts['name'] = $fileOrFolderObject->getName();
-                    return true;
-                }
-            } catch (FileDoesNotExistException $e) {
-            }
+        if (isset($linkParts['url'][$this->mode]) && $linkParts['url'][$this->mode] instanceof $this->expectedClass) {
+            $this->linkParts = $linkParts;
+            return true;
         }
         return false;
     }
@@ -97,7 +84,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function formatCurrentUrl()
     {
-        return $this->linkParts['name'];
+        return $this->linkParts['url'][$this->mode]->getName();
     }
 
     /**
@@ -111,15 +98,21 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     {
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/FileLinkHandler');
 
-        $this->expandFolder = isset($request->getQueryParams()['expandFolder']) ? $request->getQueryParams()['expandFolder'] : null;
-        if (!empty($this->linkParts) && !isset($this->expandFolder)) {
-            $this->expandFolder = $this->linkParts['url'];
-        }
-
         /** @var ElementBrowserFolderTreeView $folderTree */
         $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
         $folderTree->setLinkParameterProvider($this);
         $this->view->assign('tree', $folderTree->getBrowsableTree());
+
+        $this->expandFolder = isset($request->getQueryParams()['expandFolder']) ? $request->getQueryParams()['expandFolder'] : null;
+        if (!empty($this->linkParts) && !isset($this->expandFolder)) {
+            $this->expandFolder = $this->linkParts['url'][$this->mode];
+            if ($this->expandFolder instanceof Folder) {
+                if ($this->mode === 'file') {
+                    $this->expandFolder = $this->expandFolder->getParentFolder();
+                }
+                $this->expandFolder = $this->expandFolder->getCombinedIdentifier();
+            }
+        }
 
         // Create upload/create folder forms, if a path is given
         $selectedFolder = $this->getSelectedFolder($this->expandFolder);
@@ -161,7 +154,11 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL)->render();
         $this->view->assign('selectedFolderIcon', $folderIcon);
         $this->view->assign('selectedFolderTitle', GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), (int)$this->getBackendUser()->uc['titleLen']));
-        $this->view->assign('currentIdentifier', !empty($this->linkParts) ? $this->linkParts['url'] : '');
+        if ($this->mode === 'file') {
+            $this->view->assign('currentIdentifier', !empty($this->linkParts) ? $this->linkParts['url']['file']->getUid() : '');
+        } else {
+            $this->view->assign('currentIdentifier', !empty($this->linkParts) ? $this->linkParts['url']['folder']->getCombinedIdentifier() : '');
+        }
 
         // Get files from the folder:
         $fileObjects = $this->getFolderContent($folder, $extensionList);
@@ -178,7 +175,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * @param Folder $folder
      * @param string $extensionList
      *
-     * @return FileInterface[]
+     * @return FileInterface[]|Folder[]
      */
     protected function getFolderContent(Folder $folder, $extensionList)
     {
@@ -215,6 +212,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             'uid'  => $fileOrFolderObject->getUid(),
             'size' => $size,
             'name' => $fileOrFolderObject->getName(),
+            'url'  => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $fileOrFolderObject]),
             'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
         ];
     }
@@ -225,7 +223,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getBodyTagAttributes()
     {
         return [
-            'data-current-link' => empty($this->linkParts) ? '' : 'file:' . $this->linkParts['url']
+            'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $this->linkParts['url']['file']])
         ];
     }
 
@@ -237,7 +235,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getUrlParameters(array $values)
     {
         $parameters = [
-            'expandFolder' => isset($values['identifier']) ? $values['identifier'] : (string)$this->expandFolder
+            'expandFolder' => $values['identifier'] ?? $this->expandFolder
         ];
         return array_merge($this->linkBrowser->getUrlParameters($values), $parameters);
     }

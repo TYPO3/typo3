@@ -63,7 +63,7 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function canHandleLink(array $linkParts)
     {
-        if ($linkParts['url'] && strpos($linkParts['url'], '@')) {
+        if (isset($linkParts['url']['email'])) {
             $this->linkParts = $linkParts;
             return true;
         }
@@ -77,7 +77,7 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function formatCurrentUrl()
     {
-        return $this->linkParts['url'];
+        return $this->linkParts['url']['email'];
     }
 
     /**
@@ -91,7 +91,7 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     {
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/MailLinkHandler');
 
-        $this->view->assign('email', !empty($this->linkParts) ? $this->linkParts['url'] : '');
+        $this->view->assign('email', !empty($this->linkParts) ? $this->linkParts['url']['email'] : '');
         return $this->view->render('Mail');
     }
 

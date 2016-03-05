@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
@@ -75,7 +76,8 @@ class ElementBrowserPageTreeView extends BrowseTreeView
     public function wrapTitle($title, $v, $ext_pArrPages = false)
     {
         if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
-            return '<span class="list-tree-title"><a href="#" class="t3js-pageLink" data-id="' . (int)$v['uid'] . '">' . $title . '</a></span>';
+            $url = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$v['uid']]);
+            return '<span class="list-tree-title"><a href="' . htmlspecialchars($url) . '" class="t3js-pageLink">' . $title . '</a></span>';
         } else {
             return '<span class="list-tree-title text-muted">' . $title . '</span>';
         }

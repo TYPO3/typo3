@@ -33,8 +33,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 	 */
 	FileLinkHandler.linkFile = function(event) {
 		event.preventDefault();
-
-		LinkBrowser.finalizeFunction($(this).data('file'));
+		LinkBrowser.finalizeFunction($(this).attr('href'));
 	};
 
 	/**
@@ -43,13 +42,11 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/LegacyT
 	 */
 	FileLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
-
 		LinkBrowser.finalizeFunction(FileLinkHandler.currentLink);
 	};
 
 	$(function() {
 		FileLinkHandler.currentLink = $('body').data('currentLink');
-
 		$('a.t3js-fileLink').on('click', FileLinkHandler.linkFile);
 		$('input.t3js-linkCurrent').on('click', FileLinkHandler.linkCurrent);
 	});

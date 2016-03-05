@@ -61,8 +61,8 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
         if (!$linkParts['url']) {
             return false;
         }
-        if (strpos($linkParts['url'], '://') === false) {
-            $linkParts['url'] = 'http://' . $linkParts['url'];
+        if (isset($linkParts['url']['url'])) {
+            $linkParts['url'] = $linkParts['url']['url'];
         }
         $this->linkParts = $linkParts;
 

@@ -2708,65 +2708,6 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @return array
      */
-    public function detectLinkTypeFromLinkParameterDataProvider()
-    {
-        return [
-            'Domain only' => [
-                'example.com',
-                'url'
-            ],
-            'URL without a file' => [
-                'http://example.com',
-                'url'
-            ],
-            'URL with schema and a file' => [
-                'http://example.com/index.php',
-                'url'
-            ],
-            'URL with a file but without a schema' => [
-                'example.com/index.php',
-                'url'
-            ],
-            'file' => [
-                '/index.php',
-                'file'
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @param string $linkParameter
-     * @param string $expectedResult
-     * @dataProvider detectLinkTypeFromLinkParameterDataProvider
-     */
-    public function detectLinkTypeFromLinkParameter($linkParameter, $expectedResult)
-    {
-        /** @var TemplateService|\PHPUnit_Framework_MockObject_MockObject $templateServiceObjectMock */
-        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
-            ->setMethods(array('dummy'))
-            ->getMock();
-        $templateServiceObjectMock->setup = array(
-            'lib.' => array(
-                'parseFunc.' => $this->getLibParseFunc(),
-            ),
-        );
-        /** @var TypoScriptFrontendController|\PHPUnit_Framework_MockObject_MockObject $typoScriptFrontendControllerMockObject */
-        $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
-        $typoScriptFrontendControllerMockObject->config = array(
-            'config' => array(),
-            'mainScript' => 'index.php',
-        );
-        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
-        $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
-        $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
-
-        $this->assertEquals($expectedResult, $this->subject->_call('detectLinkTypeFromLinkParameter', $linkParameter));
-    }
-
-    /**
-     * @return array
-     */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider()
     {
         return array(

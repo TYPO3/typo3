@@ -19,7 +19,7 @@
 					<f:for each="{itemsInSelectedFolder}" as="file">
 						<li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
 							 <span class="list-tree-group">
-									<a href="#" class="t3js-fileLink list-tree-group" title="{file.name}" data-file="file:{file.uid}">
+									<a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
 										<span class="list-tree-icon">
 											<span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
 										</span>

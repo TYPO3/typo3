@@ -280,6 +280,13 @@ return array(
         'fluid' => array(
             'interceptors' => array(),
         ),
+        'linkHandler' => array( // Array: Available link types, class which implement the LinkHandling interface
+            'page'   => \TYPO3\CMS\Core\LinkHandling\PageLinkHandler::class,
+            'file'   => \TYPO3\CMS\Core\LinkHandling\FileLinkHandler::class,
+            'folder' => \TYPO3\CMS\Core\LinkHandling\FolderLinkHandler::class,
+            'url'    => \TYPO3\CMS\Core\LinkHandling\UrlLinkHandler::class,
+            'email'  => \TYPO3\CMS\Core\LinkHandling\EmailLinkHandler::class,
+        ),
         'livesearch' => array(),    // Array: keywords used for commands to search for specific tables
         'isInitialInstallationInProgress' => false,        // Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
         'isInitialDatabaseImportDone' => true,        // Boolean: If TRUE, the database import is finished. This value is handled within the install tool step installer internally.

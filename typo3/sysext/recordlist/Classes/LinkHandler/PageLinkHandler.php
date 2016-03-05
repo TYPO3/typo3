@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -58,31 +59,26 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             return false;
         }
 
-        $id = $linkParts['url'];
-        $parts = explode('#', $id);
-        if (count($parts) > 1) {
-            $id = $parts[0];
-            $anchor = $parts[1];
-        } else {
-            $anchor = '';
-        }
+        $data = $linkParts['url'];
         // Checking if the id-parameter is an alias.
-        if (!MathUtility::canBeInterpretedAsInteger($id)) {
-            $records = BackendUtility::getRecordsByField('pages', 'alias', $id);
+        if (isset($data['pagealias'])) {
+            $records = BackendUtility::getRecordsByField('pages', 'alias', $data['pagealias']);
             if (empty($records)) {
                 return false;
             }
-            $id = (int)$records[0]['uid'];
+            $data['pageuid'] = (int)$records[0]['uid'];
         }
-        $pageRow = BackendUtility::getRecordWSOL('pages', $id);
-        if (!$pageRow) {
+        // Check if the page still exists
+        if ((int)$data['pageuid'] > 0) {
+            $pageRow = BackendUtility::getRecordWSOL('pages', $data['pageuid']);
+            if (!$pageRow) {
+                return false;
+            }
+        } elseif ($data['pageuid'] !== 'current') {
             return false;
         }
 
         $this->linkParts = $linkParts;
-        $this->linkParts['pageid'] = $id;
-        $this->linkParts['anchor'] = $anchor;
-
         return true;
     }
 
@@ -96,12 +92,12 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $lang = $this->getLanguageService();
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
-        $id = $this->linkParts['pageid'];
+        $id = $this->linkParts['url']['pageuid'];
         $pageRow = BackendUtility::getRecordWSOL('pages', $id);
 
         return htmlspecialchars($lang->getLL('page'))
             . ' \'' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)) . '\''
-            . ' (ID:' . $id . ($this->linkParts['anchor'] ? ', #' . $this->linkParts['anchor'] : '') . ')';
+            . ' (ID: ' . $id . ($this->linkParts['url']['fragment'] ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
     }
 
     /**
@@ -143,9 +139,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     protected function getRecordsOnExpandedPage($pageId)
     {
         // If there is an anchor value (content element reference) in the element reference, then force an ID to expand:
-        if (!$pageId && isset($this->linkParts['anchor'])) {
+        if (!$pageId && isset($this->linkParts['url']['fragment'])) {
             // Set to the current link page id.
-            $pageId = $this->linkParts['pageid'];
+            $pageId = $this->linkParts['url']['pageuid'];
         }
         // Draw the record list IF there is a page id to expand:
         if ($pageId && MathUtility::canBeInterpretedAsInteger($pageId) && $this->getBackendUser()->isInWebMount($pageId)) {
@@ -179,7 +175,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
             // Enrich list of records
             foreach ($contentElements as &$contentElement) {
-                $contentElement['isSelected'] = !empty($this->linkParts) && (int)$this->linkParts['anchor'] === (int)$contentElement['uid'];
+                $contentElement['url'] = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$pageId, 'fragment' => $contentElement['uid']]);
+                $contentElement['isSelected'] = !empty($this->linkParts) && (int)$this->linkParts['url']['fragment'] === (int)$contentElement['uid'];
                 $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, Icon::SIZE_SMALL)->render();
                 $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
             }
@@ -234,11 +231,15 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function getBodyTagAttributes()
     {
-        if (empty($this->linkParts)) {
+        if (count($this->linkParts) === 0 || empty($this->linkParts['url']['pageuid'])) {
             return [];
         }
         return [
-            'data-current-link' => $this->linkParts['pageid'] . ($this->linkParts['anchor'] !== '' ? '#' . $this->linkParts['anchor'] : '')
+            'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
+                'type' => LinkService::TYPE_PAGE,
+                'pageuid' => (int)$this->linkParts['url']['pageuid'],
+                'fragment' => $this->linkParts['url']['fragment']
+            ])
         ];
     }
 
@@ -262,7 +263,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function isCurrentlySelectedItem(array $values)
     {
-        return !empty($this->linkParts) && (int)$this->linkParts['pageid'] === (int)$values['pid'];
+        return !empty($this->linkParts) && (int)$this->linkParts['url']['pageuid'] === (int)$values['pid'];
     }
 
     /**

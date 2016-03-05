@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
  */
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -39,11 +40,25 @@ class FolderLinkHandler extends FileLinkHandler
     /**
      * @param Folder $folder
      * @param string $extensionList
-     * @return FileInterface[]
+     * @return FileInterface[]|Folder[]
      */
     protected function getFolderContent(Folder $folder, $extensionList)
     {
         return $folder->getSubfolders();
+    }
+
+    /**
+     * @return string[] Array of body-tag attributes
+     */
+    public function getBodyTagAttributes()
+    {
+        if ($this->linkParts['url']['folder'] instanceof $this->expectedClass) {
+            return [
+                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $this->linkParts['url']['folder']])
+            ];
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -67,6 +82,7 @@ class FolderLinkHandler extends FileLinkHandler
             'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL, $overlay)->render(),
             'identifier' => $fileOrFolderObject->getCombinedIdentifier(),
             'name' => $fileOrFolderObject->getName(),
+            'url'  => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $fileOrFolderObject]),
             'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
         ];
     }
