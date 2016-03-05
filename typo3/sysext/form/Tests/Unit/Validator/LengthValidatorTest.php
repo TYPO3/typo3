@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Form\Domain\Validator\LengthValidator;
 
 /**
  * Test case
@@ -82,8 +83,9 @@ class LengthValidatorTest extends AbstractValidatorTest
         $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[1];
+        /** @var LengthValidator $subject */
         $subject = $this->createSubject($options);
-        $subject->_set('charsetConverter', $this->charsetConverterProphecy->reveal());
+        $subject->injectCharsetConverter($this->charsetConverterProphecy->reveal());
 
         $this->assertEmpty(
             $subject->validate($input[2])->getErrors()
@@ -114,8 +116,9 @@ class LengthValidatorTest extends AbstractValidatorTest
         $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
         $options['minimum'] = $input[0];
         $options['maximum'] = $input[1];
+        /** @var LengthValidator $subject */
         $subject = $this->createSubject($options);
-        $subject->_set('charsetConverter', $this->charsetConverterProphecy->reveal());
+        $subject->injectCharsetConverter($this->charsetConverterProphecy->reveal());
 
         $this->assertNotEmpty(
             $subject->validate($input[2])->getErrors()
