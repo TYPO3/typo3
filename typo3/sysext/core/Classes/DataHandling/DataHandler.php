@@ -988,17 +988,6 @@ class DataHandler
                 }
                 $theRealPid = null;
 
-                // Handle native date/time fields
-                $dateTimeFormats = QueryHelper::getDateTimeFormats();
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
-                    if (isset($incomingFieldArray[$column])) {
-                        if (isset($config['config']['dbType']) && ($config['config']['dbType'] === 'date' || $config['config']['dbType'] === 'datetime')) {
-                            $emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
-                            $format = $dateTimeFormats[$config['config']['dbType']]['format'];
-                            $incomingFieldArray[$column] = $incomingFieldArray[$column] && $incomingFieldArray[$column] !== $emptyValue ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
-                        }
-                    }
-                }
                 // Hook: processDatamap_preProcessFieldArray
                 foreach ($hookObjectsArr as $hookObj) {
                     if (method_exists($hookObj, 'processDatamap_preProcessFieldArray')) {
@@ -1751,18 +1740,19 @@ class DataHandler
         $isDateOrDateTimeField = false;
         $format = '';
         $emptyValue = '';
+        // normal integer "date" fields (timestamps) are handled in checkValue_input_Eval
         if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
             if (empty($value)) {
                 $value = 0;
             } else {
                 $isDateOrDateTimeField = true;
                 $dateTimeFormats = QueryHelper::getDateTimeFormats();
+                $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
+
                 // Convert the date/time into a timestamp for the sake of the checks
                 $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-                $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
-                // At this point in the processing, the timestamps are still based on UTC
-                $timeZone = new \DateTimeZone('UTC');
-                $dateTime = \DateTime::createFromFormat('!' . $format, $value, $timeZone);
+                // We store UTC timestamps in the database, which is what getTimestamp() returns.
+                $dateTime = new \DateTime($value);
                 $value = $value === $emptyValue ? 0 : $dateTime->getTimestamp();
             }
         }
@@ -2711,7 +2701,20 @@ class DataHandler
                     break;
                 case 'date':
                 case 'datetime':
-                    $value = (int)$value;
+                    // a hyphen as first character indicates a negative timestamp
+                    if (strpos($value, '-') === false || strpos($value, '-') === 0) {
+                        $value = (int)$value;
+                    } else {
+                        // ISO 8601 dates
+                        $dateTime = new \DateTime($value);
+                        // The returned timestamp is always UTC
+                        $value = $dateTime->getTimestamp();
+                    }
+                    // $value is a UTC timestamp here.
+                    // The value will be stored in the server’s local timezone, but treated as UTC, so we brute force
+                    // subtract the offset here. The offset is subtracted instead of added because the value is stored
+                    // in the timezone, but interpreted as UTC, so if we switched the server to UTC, the correct
+                    // value would be returned.
                     if ($value !== 0 && !$this->dontProcessTransformations) {
                         $value -= date('Z', $value);
                     }

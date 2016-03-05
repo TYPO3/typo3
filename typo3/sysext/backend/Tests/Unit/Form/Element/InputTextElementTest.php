@@ -59,17 +59,17 @@ class InputTextElementTest extends UnitTestCase
         return [
             // German standard time (without DST) is one hour ahead of UTC
             'date in 2016 in German timezone' => [
-                1457103519, 'Europe/Berlin', 1457103519 + 3600
+                1457103519, 'Europe/Berlin', '2016-03-04T15:58:39+00:00'
             ],
             'date in 1969 in German timezone' => [
-                -7200, 'Europe/Berlin', -3600
+                -7200, 'Europe/Berlin', '1969-12-31T23:00:00+00:00'
             ],
             // Los Angeles is 8 hours behind UTC
             'date in 2016 in Los Angeles timezone' => [
-                1457103519, 'America/Los_Angeles', 1457103519 - 28800
+                1457103519, 'America/Los_Angeles', '2016-03-04T06:58:39+00:00'
             ],
             'date in UTC' => [
-                1457103519, 'UTC', 1457103519
+                1457103519, 'UTC', '2016-03-04T14:58:39+00:00'
             ]
         ];
     }

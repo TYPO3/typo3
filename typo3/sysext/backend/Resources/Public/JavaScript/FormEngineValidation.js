@@ -16,7 +16,7 @@
  * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
-define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
+define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEngine, moment) {
 
 	/**
 	 * The main FormEngineValidation object
@@ -147,41 +147,60 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 	 *
 	 * @param {String} type
 	 * @param {String} value
-	 * @param {array} config
+	 * @param {Object} config
 	 * @returns {String}
 	 */
 	FormEngineValidation.formatValue = function(type, value, config) {
 		var theString = '';
 		switch (type) {
 			case 'date':
-				var parsedInt = parseInt(value);
-				if (!parsedInt) {
-					return '';
-				}
-				theTime = new Date(parsedInt * 1000);
-				if (FormEngineValidation.USmode) {
-					theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
+				// poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
+				if (value.toString().indexOf('-') > 0) {
+					var date = moment(value).utc();
+					if (FormEngineValidation.USmode) {
+						theString = date.format('MM-DD-YYYY');
+					} else {
+						theString = date.format('DD-MM-YYYY');
+					}
 				} else {
-					theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
+					var parsedInt = parseInt(value);
+					if (!parsedInt) {
+						return '';
+					}
+					theTime = new Date(parsedInt * 1000);
+					if (FormEngineValidation.USmode) {
+						theString = (theTime.getUTCMonth() + 1) + '-' + theTime.getUTCDate() + '-' + this.getYear(theTime);
+					} else {
+						theString = theTime.getUTCDate() + '-' + (theTime.getUTCMonth() + 1) + '-' + this.getYear(theTime);
+					}
 				}
 				break;
 			case 'datetime':
-				if (!parseInt(value)) {
+				if (value.toString().indexOf('-') <= 0 && !parseInt(value)) {
 					return '';
 				}
 				theString = FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config);
 				break;
 			case 'time':
 			case 'timesec':
-				var parsedInt = parseInt(value);
-				if (!parsedInt && value.toString() !== '0') {
-					return '';
+				if (value.toString().indexOf('-') > 0) {
+					var date = moment(value).utc();
+					if (type == 'timesec') {
+						theString = date.format('HH:mm:ss');
+					} else {
+						theString = date.format('HH:mm');
+					}
+				} else {
+					var parsedInt = parseInt(value);
+					if (!parsedInt && value.toString() !== '0') {
+						return '';
+					}
+					var theTime = new Date(parsedInt * 1000);
+					var h = theTime.getUTCHours();
+					var m = theTime.getUTCMinutes();
+					var s = theTime.getUTCSeconds();
+					theString = h + ':' + ((m < 10) ? '0' : '') + m + ((type == 'timesec') ? ':' + ((s < 10) ? '0' : '') + s : '');
 				}
-				var theTime = new Date(parsedInt * 1000);
-				var h = theTime.getUTCHours();
-				var m = theTime.getUTCMinutes();
-				var s = theTime.getUTCSeconds();
-				theString = h + ':' + ((m < 10) ? '0' : '') + m + ((type == 'timesec') ? ':' + ((s < 10) ? '0' : '') + s : '');
 				break;
 			case 'password':
 				theString = (value) ? FormEngineValidation.passwordDummy : '';

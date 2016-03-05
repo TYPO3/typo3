@@ -21,6 +21,13 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 				'result': '26-4-1970'
 			},
 			{
+				'description': 'works for type date with iso date',
+				'type': 'date',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '02-12-2016'
+			},
+			{
 				'description': 'works for type datetime',
 				'type': 'datetime',
 				'value': 0,
@@ -35,6 +42,27 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 				'result': '17:46 26-4-1970'
 			},
 			{
+				'description': 'works for type datetime with iso date',
+				'type': 'datetime',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '11:16 02-12-2016'
+			},
+			{
+				'description': 'resolves to empty result for zero value',
+				'type': 'datetime',
+				'value': 0,
+				'config': [],
+				'result': ''
+			},
+			{
+				'description': 'resolves to empty result for invalid value',
+				'type': 'datetime',
+				'value': 'invalid',
+				'config': [],
+				'result': ''
+			},
+			{
 				'description': 'works for type time',
 				'type': 'time',
 				'value': 0,
@@ -47,6 +75,13 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 				'value': 10000000,
 				'config': [],
 				'result': '17:46'
+			},
+			{
+				'description': 'works for type time with iso date',
+				'type': 'time',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '11:16'
 			}
 		];
 
@@ -57,6 +92,69 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 		describe('tests for formatValue', function() {
 			using(formatValueDataProvider, function(testCase) {
 				it(testCase.description, function() {
+					FormEngineValidation.USmode = 0;
+					var result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
+					expect(result).toBe(testCase.result);
+				});
+			});
+		});
+
+		/**
+		 * @type {*[]}
+		 */
+		var formatValueUsModeDataProvider = [
+			{
+				'description': 'works for type date with timestamp in US mode',
+				'type': 'date',
+				'value': 10000000,
+				'config': [],
+				'result': '4-26-1970'
+			},
+			{
+				'description': 'works for type date with iso date in US mode',
+				'type': 'date',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '12-02-2016'
+			},
+			{
+				'description': 'works for type datetime with timestamp in US mode',
+				'type': 'datetime',
+				'value': 10000000,
+				'config': [],
+				'result': '17:46 4-26-1970'
+			},
+			{
+				'description': 'works for type datetime with iso date in US mode',
+				'type': 'datetime',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '11:16 12-02-2016'
+			},
+			{
+				'description': 'works for type time with timestamp in US mode',
+				'type': 'time',
+				'value': 10000000,
+				'config': [],
+				'result': '17:46'
+			},
+			{
+				'description': 'works for type time with iso date in US mode',
+				'type': 'time',
+				'value': '2016-12-02T11:16:06+00:00',
+				'config': [],
+				'result': '11:16'
+			}
+		];
+
+		/**
+		 * @dataProvider formatValueUsModeDataProvider
+		 * @test
+		 */
+		describe('tests for formatValue in US Mode', function() {
+			using(formatValueUsModeDataProvider, function(testCase) {
+				it(testCase.description, function() {
+					FormEngineValidation.USmode = 1;
 					var result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
 					expect(result).toBe(testCase.result);
 				});

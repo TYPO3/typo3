@@ -111,7 +111,7 @@ define(['jquery'], function($) {
 						$hiddenField.val('');
 					} else {
 						var format = $element.data('DateTimePicker').format();
-						var date = moment($element.val(), format);
+						var date = moment.utc($element.val(), format);
 						var calculateTimeZoneOffset = $element.data('date-offset');
 						var timeZoneOffset;
 
@@ -123,20 +123,22 @@ define(['jquery'], function($) {
 
 						if (date.isValid()) {
 							var value;
+							// Format the value for the hidden field that is passed on to the backend, i.e. most likely DataHandler.
+							// The format for that is the timestamp for time fields, and a full-blown ISO-8601 timestamp for all
+							// date-related fields.
 							switch ($element.data('dateType')) {
 								case 'time':
-									value = parseInt(date.format('H')) * 3600 + parseInt(date.format('m')) * 60;
+									value = date.format('HH:mm');
 									break;
 								case 'timesec':
-									value = parseInt(date.format('H')) * 3600 + parseInt(date.format('m')) * 60 + parseInt(date.format('s'));
+									value = date.format('HH:mm:ss');
 									break;
 								default:
-									value = date.unix() - timeZoneOffset;
+									value = date.format();
 							}
 							$hiddenField.val(value);
 						} else {
-							date = moment($hiddenField.val() + timeZoneOffset, 'X');
-							$element.val(date.format(format));
+							$element.val(moment($hiddenField.val()).utc().format(format));
 						}
 					}
 				});
@@ -149,7 +151,7 @@ define(['jquery'], function($) {
 					if ($element.val() === '') {
 						$hiddenField.val('');
 					} else {
-						var date = event.date;
+						var date = event.date.utc();
 
 						var calculateTimeZoneOffset = $element.data('date-offset');
 						var timeZoneOffset, value;
@@ -161,13 +163,13 @@ define(['jquery'], function($) {
 
 						switch ($element.data('dateType')) {
 							case 'time':
-								value = parseInt(date.format('H')) * 3600 + parseInt(date.format('m')) * 60;
+								value = date.format('HH:mm');
 								break;
 							case 'timesec':
-								value = parseInt(date.format('H')) * 3600 + parseInt(date.format('m')) * 60 + parseInt(date.format('s'));
+								value = date.format('HH:mm:ss');
 								break;
 							default:
-								value = date.unix() - timeZoneOffset;
+								value = date.format();
 						}
 						$hiddenField.val(value);
 					}

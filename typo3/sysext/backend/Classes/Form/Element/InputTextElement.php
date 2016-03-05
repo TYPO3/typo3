@@ -79,9 +79,17 @@ class InputTextElement extends AbstractFormElement
             } elseif (in_array('date', $evalList)) {
                 $attributes['data-date-type'] = 'date';
             }
-            if (((int)$parameterArray['itemFormElValue']) !== 0) {
-                $parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
+
+            // convert timestamp to proper ISO-8601 date so we get rid of timezone issues on the client.
+            // This only handles integer timestamps; if the field is a date(time), it already was converted to an
+            // ISO-8601 date by DatabaseRowDateTimeFields.
+            if (MathUtility::canBeInterpretedAsInteger($parameterArray['itemFormElValue']) && $parameterArray['itemFormElValue'] != 0) {
+                // output date as a ISO-8601 date; the stored value is the server time zone, so we need to treat it as such.
+                $timestamp = $parameterArray['itemFormElValue'];
+                $timestamp += date('Z', $timestamp);
+                $parameterArray['itemFormElValue'] = gmdate('c', $timestamp);
             }
+
             if (isset($config['range']['lower'])) {
                 $attributes['data-date-minDate'] = (int)$config['range']['lower'];
             }

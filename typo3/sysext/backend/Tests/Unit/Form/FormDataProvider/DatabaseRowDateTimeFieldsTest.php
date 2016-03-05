@@ -89,7 +89,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = 1437955200; // 27.07.2015 0:00 UTC
+        $expected['databaseRow']['aField'] = '2015-07-27T00:00:00+00:00';
         $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
@@ -117,7 +117,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = 1438010732; // 27.07.2015 15:25:32 UTC
+        $expected['databaseRow']['aField'] = '2015-07-27T15:25:32+00:00';
         $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
