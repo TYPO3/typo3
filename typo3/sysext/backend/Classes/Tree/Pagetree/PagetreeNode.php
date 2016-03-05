@@ -289,7 +289,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function canBeCopied()
     {
         return (
-            $this->canCreate($this->record)
+            $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 1)
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
         );
