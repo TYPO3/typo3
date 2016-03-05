@@ -217,7 +217,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 				// The same is true in Opera 26
 				if (Util.testCssPropertySupport(this.getEl(), 'resize', 'both') && typeof MutationObserver === 'function' && !UserAgent.isWebKit && !UserAgent.isOpera) {
 					this.getEl().style['resize'] = 'both';
-					this.getEl().style['maxHeight'] = this.maxHeight;
+					this.getEl().style['maxHeight'] = this.maxHeight + 'px';
 					// WebKit adds scollbars
 					this.getEl().style['overflow'] = UserAgent.isWebKit ? 'hidden' : 'auto';
 					// For WebKit, we need to reset the resize property set by default on textareas and iframes

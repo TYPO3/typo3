@@ -56,7 +56,7 @@ The value you set should allow sufficient height for the tool bar, the editing a
 				<source>This option will make RTE-enabled fields resizable. A resize handle will appear at the bottom right corner of the RTE.</source>
 			</trans-unit>
 			<trans-unit id="rteMaxHeight.alttitle">
-				<source>Maximal height of resizable RTE in pixels</source>
+				<source>Maximal height of resizeable RTE in pixels</source>
 			</trans-unit>
 			<trans-unit id="rteMaxHeight.description">
 				<source>The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE. Default value is 2000.</source>
