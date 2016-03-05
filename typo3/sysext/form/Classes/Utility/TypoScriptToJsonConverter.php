@@ -64,7 +64,7 @@ class TypoScriptToJsonConverter
      * Convert TypoScript string to JSON
      *
      * @param array $typoscript TypoScript string containing all configuration for the form
-     * @return string The JSON for the form
+     * @return TYPO3\CMS\Form\Domain\Model\Json\FormJsonElement|false The JSON for the form
      */
     public function convert(array $typoscript)
     {

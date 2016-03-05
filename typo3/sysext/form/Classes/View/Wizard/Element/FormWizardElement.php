@@ -81,7 +81,7 @@ class FormWizardElement extends AbstractFormElement
      * Read and convert the content record to JSON
      *
      * @see \TYPO3\CMS\Form\Domain\Repository\ContentRepository::getRecordAsJson
-     * @return string The JSON object if record exists, FALSE if not
+     * @return TYPO3\CMS\Form\Domain\Model\Json\FormJsonElement|false The JSON object if record exists, FALSE if not
      */
     protected function getRecordAsJson()
     {
@@ -143,7 +143,6 @@ class FormWizardElement extends AbstractFormElement
      */
     protected function resultAddWizardSettingsJson(array $settings)
     {
-        $this->getRecordAsJson();
         $recordJson = $this->getRecordAsJson();
         $settings['Configuration'] = $recordJson;
         $settings['ajaxUrl'] = $this->getAjaxUrl();
