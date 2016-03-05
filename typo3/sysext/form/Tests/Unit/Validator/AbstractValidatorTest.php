@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validator;
  */
 
 use TYPO3\CMS\Form\Domain\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
  * Test case
@@ -35,8 +36,12 @@ abstract class AbstractValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function createSubject(array $options)
     {
-        $subject = $this->getAccessibleMock($this->subjectClassName, array('renderMessage'), array($options));
-        $subject->method('renderMessage')->will($this->returnValue('error'));
+        /** @var AbstractValidator $subject */
+        $subject = $this->getMock($this->subjectClassName, ['getLocalLanguageLabel'], ['options' => $options]);
+
+        /** @var FormUtility $formUtilityMock */
+        $formUtilityMock = $this->getMock(FormUtility::class, array(), array(), '', false);
+        $subject->setFormUtility($formUtilityMock);
         return $subject;
     }
 }

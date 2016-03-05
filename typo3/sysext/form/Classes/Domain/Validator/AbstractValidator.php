@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Utility\FormUtility;
 
 abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
@@ -89,7 +90,7 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
     public function getLocalLanguageLabel($type = '')
     {
         $label = static::LOCALISATION_OBJECT_NAME . '.' . $type;
-        $message = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'form');
+        $message = LocalizationUtility::translate($label, 'form');
         return $message;
     }
 
