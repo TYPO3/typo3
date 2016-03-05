@@ -2663,7 +2663,7 @@ class DataHandler
                 case 'date':
                 case 'datetime':
                     $value = (int)$value;
-                    if ($value > 0 && !$this->dontProcessTransformations) {
+                    if ($value !== 0 && !$this->dontProcessTransformations) {
                         $value -= date('Z', $value);
                     }
                     break;
