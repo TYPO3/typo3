@@ -57,6 +57,11 @@ class ShowImageController
     protected $height;
 
     /**
+     * @var string
+     */
+    protected $crop;
+
+    /**
      * @var int
      */
     protected $frame;
@@ -178,7 +183,7 @@ EOF;
             'width' => $this->width,
             'height' => $this->height,
             'frame' => $this->frame,
-
+            'crop' => $this->crop,
         );
         return $this->file->process('Image.CropScaleMask', $processingConfiguration);
     }

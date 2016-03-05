@@ -24,6 +24,7 @@ lib.fluidContent {
 				wrap = <a href="javascript:close();"> | </a>
 				width = {$styles.content.textmedia.linkWrap.width}
 				height = {$styles.content.textmedia.linkWrap.height}
+				crop.data = file:current:crop
 
 				JSwindow = 1
 				JSwindow {

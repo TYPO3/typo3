@@ -712,6 +712,7 @@ tt_content.image.20 {
 			width = {$styles.content.imgtext.linkWrap.width}
 			height = {$styles.content.imgtext.linkWrap.height}
 			effects = {$styles.content.imgtext.linkWrap.effects}
+			crop.data = file:current:crop
 
 			JSwindow = 1
 			JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
