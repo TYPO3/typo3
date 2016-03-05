@@ -71,32 +71,6 @@ class WizardController
     }
 
     /**
-     * The load action called via AJAX
-     *
-     * The action which should be taken when the form in the wizard is loaded
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response the response object
-     * @return ResponseInterface returns a 500 error or a valid JSON response
-     */
-    public function loadAction(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $result = $this->getRepository()->getRecordAsJson();
-        if (!$result) {
-            $response = $response->withStatus(500);
-            $result = ['message' => $this->getLanguageService()->getLL('action_load_message_failed', false)];
-        } else {
-            $result = ['configuration' => $result];
-        }
-        $response->getBody()->write(json_encode($result));
-        return $response
-                ->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
-                ->withHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
-                ->withHeader('Cache-Control', 'no-cache, must-revalidate')
-                ->withHeader('Pragma', 'no-cache');
-    }
-
-    /**
      * Gets the repository object.
      *
      * @return ContentRepository

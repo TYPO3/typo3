@@ -76,30 +76,13 @@ TYPO3.Form.Wizard.Viewport.Right = Ext.extend(Ext.Container, {
 	},
 
 	/**
-	 * Load the form with an AJAX call
+	 * Load the form from config
 	 *
 	 * Loads the configuration and initializes the history
 	 */
 	loadForm: function() {
-		var wizardUrl = TYPO3.Form.Wizard.Settings.ajaxUrl;
-		var url = wizardUrl.substring(wizardUrl.indexOf('&P'));
-		url = TYPO3.settings.ajaxUrls['formwizard_load'] + url;
-		Ext.Ajax.request({
-			url: url,
-			method: 'POST',
-			success: function(response, opts) {
-				var responseObject = Ext.decode(response.responseText);
-				this.loadConfiguration(responseObject.configuration);
-				this.initializeHistory();
-			},
-			failure: function(response, opts) {
-				Ext.MessageBox.alert(
-					'Loading form',
-					'Server-side failure with status code ' + response.status
-				);
-			},
-			scope: this
-		});
+		this.loadConfiguration(TYPO3.Form.Wizard.Settings.Configuration);
+		this.initializeHistory();
 	},
 
 	/**
