@@ -45,7 +45,14 @@ class UpgradeWizard extends Action\AbstractAction
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = [];
         }
 
-        // To make sure initialUpdateDatabaseSchema is first wizard, it is added here instead of ext_localconf.php
+        // To make sure DatabaseCharsetUpdate and initialUpdateDatabaseSchema are first wizards, they are added here instead of ext_localconf.php
+        $databaseCharsetUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class, 'databaseCharsetUpdate');
+        if ($databaseCharsetUpdateObject->shouldRenderWizard()) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+                array('databaseCharsetUpdate' => \TYPO3\CMS\Install\Updates\DatabaseCharsetUpdate::class),
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+            );
+        }
         $initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
         if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(

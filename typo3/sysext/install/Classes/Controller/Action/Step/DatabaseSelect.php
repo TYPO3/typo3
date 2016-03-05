@@ -41,6 +41,7 @@ class DatabaseSelect extends AbstractStepAction
         $localConfigurationPathValuePairs = array();
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+        $canProceed = true;
         if ($postValues['type'] === 'new') {
             $newDatabaseName = $postValues['new'];
             if ($this->isValidDatabaseName($newDatabaseName)) {
@@ -79,6 +80,19 @@ class DatabaseSelect extends AbstractStepAction
             if (!$isInitialInstallation || empty($existingTables)) {
                 $localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
             }
+            // check if database charset is utf-8
+            $defaultDatabaseCharset = $this->getDefaultDatabaseCharset();
+            // also allow utf8mb4
+            if (substr($defaultDatabaseCharset, 0, 4) !== 'utf8') {
+                $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+                $errorStatus->setTitle('Invalid Charset');
+                $errorStatus->setMessage(
+                    'Your database uses character set "' . $defaultDatabaseCharset . '", ' .
+                    'but only "utf8" is supported with TYPO3. You probably want to change this before proceeding.'
+                );
+                $result[] = $errorStatus;
+                $canProceed = false;
+            }
         } else {
             /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
             $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
@@ -87,7 +101,7 @@ class DatabaseSelect extends AbstractStepAction
             $result[] = $errorStatus;
         }
 
-        if (!empty($localConfigurationPathValuePairs)) {
+        if ($canProceed && !empty($localConfigurationPathValuePairs)) {
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
 
@@ -191,5 +205,26 @@ class DatabaseSelect extends AbstractStepAction
     protected function isValidDatabaseName($databaseName)
     {
         return strlen($databaseName) <= 50 && preg_match('/^[a-zA-Z0-9\$_]*$/', $databaseName);
+    }
+
+    /**
+     * Retrieves the default character set of the database.
+     *
+     * @return string
+     */
+    protected function getDefaultDatabaseCharset()
+    {
+        $result = $this->databaseConnection->admin_query('SHOW VARIABLES LIKE "character_set_database"');
+        $row = $this->databaseConnection->sql_fetch_assoc($result);
+
+        $key = $row['Variable_name'];
+        $value = $row['Value'];
+        $databaseCharset = '';
+
+        if ($key == 'character_set_database') {
+            $databaseCharset = $value;
+        }
+
+        return $databaseCharset;
     }
 }

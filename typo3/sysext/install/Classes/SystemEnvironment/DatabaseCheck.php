@@ -50,6 +50,7 @@ class DatabaseCheck
         }
         $statusArray[] = $this->checkMysqlVersion();
         $statusArray[] = $this->checkInvalidSqlModes();
+        $statusArray[] = $this->checkMysqlDatabaseUtf8Status();
         return $statusArray;
     }
 
@@ -105,6 +106,41 @@ class DatabaseCheck
         } else {
             $status = new Status\OkStatus();
             $status->setTitle('MySQL version is fine');
+        }
+
+        return $status;
+    }
+
+    /**
+     * Checks the character set of the database and reports an error if it is not utf-8.
+     *
+     * @return Status\StatusInterface
+     */
+    protected function checkMysqlDatabaseUtf8Status()
+    {
+        $result = $this->getDatabaseConnection()->admin_query('SHOW VARIABLES LIKE "character_set_database"');
+        $row = $this->getDatabaseConnection()->sql_fetch_assoc($result);
+
+        $key = $row['Variable_name'];
+        $value = $row['Value'];
+
+        if ($key !== 'character_set_database') {
+            $status = new Status\ErrorStatus();
+            $status->setTitle('MySQL database character set check failed');
+            $status->setMessage(
+                'Checking database character set failed, got key "' . $key . '" instead of "character_set_database"'
+            );
+        }
+        // also allow utf8mb4
+        if (substr($value, 0, 4) !== 'utf8') {
+            $status = new Status\ErrorStatus();
+            $status->setTitle('MySQL database character set wrong');
+            $status->setMessage(
+                'Your database uses character set "' . $value . '", but only "utf8" is supported with TYPO3.'
+            );
+        } else {
+            $status = new Status\OkStatus();
+            $status->setTitle('Your database uses utf-8. All good.');
         }
 
         return $status;
