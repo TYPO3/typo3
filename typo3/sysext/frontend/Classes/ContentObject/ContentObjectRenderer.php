@@ -5798,14 +5798,14 @@ class ContentObjectRenderer
      *
      * the FAL API is handled with the namespace/prefix "file:..."
      *
-     * @param string $linktxt The string (text) to link
+     * @param string $linkText The string (text) to link
      * @param array $conf TypoScript configuration (see link below)
      * @return string A link-wrapped string.
      * @see stdWrap(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
      */
-    public function typoLink($linktxt, $conf)
+    public function typoLink($linkText, $conf)
     {
-        $linktxt = (string)$linktxt;
+        $linkText = (string)$linkText;
         $tsfe = $this->getTypoScriptFrontendController();
 
         $LD = array();
@@ -5815,25 +5815,25 @@ class ContentObjectRenderer
         $this->lastTypoLinkUrl = '';
         $this->lastTypoLinkTarget = '';
 
-        $resolvedLinkParameters = $this->resolveMixedLinkParameter($linktxt, $linkParameter, $conf);
+        $resolvedLinkParameters = $this->resolveMixedLinkParameter($linkText, $linkParameter, $conf);
         // check if the link handler hook has resolved the link completely already
         if (!is_array($resolvedLinkParameters)) {
             return $resolvedLinkParameters;
         }
 
         $linkParameter = $resolvedLinkParameters['href'];
-        $forceTarget = $resolvedLinkParameters['target'];
+        $target = $resolvedLinkParameters['target'];
         $linkClass = $resolvedLinkParameters['class'];
         $forceTitle = $resolvedLinkParameters['title'];
 
         if (!$linkParameter) {
-            return $linktxt;
+            return $linkText;
         }
 
         // Check, if the target is coded as a JS open window link:
         $JSwindowParts = array();
         $JSwindowParams = '';
-        if ($forceTarget && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $forceTarget, $JSwindowParts)) {
+        if ($target && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $target, $JSwindowParts)) {
             // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
             $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), true);
             $JSwindow_paramsArr = array();
@@ -5847,17 +5847,7 @@ class ContentObjectRenderer
             // Imploding into string:
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
             // Resetting the target since we will use onClick.
-            $forceTarget = '';
-        }
-
-        // Internal target:
-        if ($tsfe->dtdAllowsFrames) {
-            $target = isset($conf['target']) ? $conf['target'] : $tsfe->intTarget;
-        } else {
-            $target = isset($conf['target']) ? $conf['target'] : '';
-        }
-        if ($conf['target.']) {
-            $target = $this->stdWrap($target, $conf['target.']);
+            $target = '';
         }
 
         // Title tag
@@ -5873,26 +5863,23 @@ class ContentObjectRenderer
             // If it's a mail address
             case 'mailto':
                 $linkParameter = preg_replace('/^mailto:/i', '', $linkParameter);
-                list($this->lastTypoLinkUrl, $linktxt) = $this->getMailTo($linkParameter, $linktxt);
+                list($this->lastTypoLinkUrl, $linkText) = $this->getMailTo($linkParameter, $linkText);
                 $finalTagParts['url'] = $this->lastTypoLinkUrl;
             break;
 
             // url (external): If doubleSlash or if a '.' comes before a '/'.
             case 'url':
-                if ($tsfe->dtdAllowsFrames) {
-                    $target = isset($conf['extTarget']) ? $conf['extTarget'] : $tsfe->extTarget;
-                } else {
-                    $target = isset($conf['extTarget']) ? $conf['extTarget'] : '';
+                if (empty($target)) {
+                    if (isset($conf['extTarget'])) {
+                        $target = $conf['extTarget'];
+                    } elseif ($tsfe->dtdAllowsFrames) {
+                        $target = $tsfe->extTarget;
+                    }
+                    if ($conf['extTarget.']) {
+                        $target = $this->stdWrap($target, $conf['extTarget.']);
+                    }
                 }
-                if ($conf['extTarget.']) {
-                    $target = $this->stdWrap($target, $conf['extTarget.']);
-                }
-                if ($forceTarget) {
-                    $target = $forceTarget;
-                }
-                if ($linktxt === '') {
-                    $linktxt = $this->parseFunc($linkParameter, array('makelinks' => 0), '< lib.parseFunc');
-                }
+                $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkParameter);
                 // Parse URL:
                 $urlParts = parse_url($linkParameter);
                 if (!$urlParts['scheme']) {
@@ -5916,25 +5903,23 @@ class ContentObjectRenderer
 
                 // check if the file exists or if a / is contained (same check as in detectLinkType)
                 if (file_exists(rawurldecode($splitLinkParam[0])) || strpos($linkParameter, '/') !== false) {
-                    if ($linktxt === '') {
-                        $linktxt = $this->parseFunc(rawurldecode($linkParameter), array('makelinks' => 0), '< lib.parseFunc');
-                    }
+                    // Setting title if blank value to link
+                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkParameter));
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $GLOBALS['TSFE']->absRefPrefix . $linkParameter, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
-                    $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
-                    if ($conf['fileTarget.']) {
-                        $target = $this->stdWrap($target, $conf['fileTarget.']);
-                    }
-                    if ($forceTarget) {
-                        $target = $forceTarget;
+                    if (empty($target)) {
+                        $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
+                        if ($conf['fileTarget.']) {
+                            $target = $this->stdWrap($target, $conf['fileTarget.']);
+                        }
                     }
                     $this->lastTypoLinkTarget = $target;
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
                     $finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
                     $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $linkType);
                 } else {
-                    $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $splitLinkParam[0] . '" did not exist, so "' . $linktxt . '" was not linked.', 1);
-                    return $linktxt;
+                    $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $splitLinkParam[0] . '" did not exist, so "' . $linkText . '" was not linked.', 1);
+                    return $linkText;
                 }
             break;
 
@@ -5997,15 +5982,13 @@ class ContentObjectRenderer
                     if (is_array($mount_info) && $mount_info['overlay']) {
                         $page = $tsfe->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
                         if (empty($page)) {
-                            $this->getTimeTracker()->setTSlogMessage('typolink(): Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linktxt . '" was not linked.', 1);
-                            return $linktxt;
+                            $this->getTimeTracker()->setTSlogMessage('typolink(): Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1);
+                            return $linkText;
                         }
                         $MPvarAcc['re-map'] = $mount_info['MPvar'];
                     }
-                    // Setting title if blank value to link:
-                    if ($linktxt === '') {
-                        $linktxt = $this->parseFunc($page['title'], array('makelinks' => 0), '< lib.parseFunc');
-                    }
+                    // Setting title if blank value to link
+                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
                     // Query Params:
                     $addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
                     $addQueryParams .= isset($conf['additionalParams.']) ? trim($this->stdWrap($conf['additionalParams'], $conf['additionalParams.'])) : trim($conf['additionalParams']);
@@ -6087,12 +6070,11 @@ class ContentObjectRenderer
                     }
                     // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
                     if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
-                        $target = isset($conf['extTarget']) ? $conf['extTarget'] : $tsfe->extTarget;
-                        if ($conf['extTarget.']) {
-                            $target = $this->stdWrap($target, $conf['extTarget.']);
-                        }
-                        if ($forceTarget) {
-                            $target = $forceTarget;
+                        if (empty($target)) {
+                            $target = isset($conf['extTarget']) ? $conf['extTarget'] : $tsfe->extTarget;
+                            if ($conf['extTarget.']) {
+                                $target = $this->stdWrap($target, $conf['extTarget.']);
+                            }
                         }
                         $LD['target'] = $target;
                         // Convert IDNA-like domain (if any)
@@ -6102,8 +6084,16 @@ class ContentObjectRenderer
                         $this->lastTypoLinkUrl = $this->URLqMark($absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'], $addQueryParams) . $sectionMark;
                     } else {
                         // Internal link or current domain's linking scheme should be used
-                        if ($forceTarget) {
-                            $target = $forceTarget;
+                        // Internal target:
+                        if (empty($target)) {
+                            if (isset($conf['target'])) {
+                                $target = $conf['target'];
+                            } elseif ($tsfe->dtdAllowsFrames) {
+                                $target = $tsfe->intTarget;
+                            }
+                            if ($conf['target.']) {
+                                $target = $this->stdWrap($target, $conf['target.']);
+                            }
                         }
                         $LD = $tsfe->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $targetDomain);
                         if ($targetDomain !== '') {
@@ -6176,8 +6166,8 @@ class ContentObjectRenderer
                     $finalTagParts['url'] = $this->lastTypoLinkUrl;
                     $finalTagParts['targetParams'] = (string)$LD['target'] !== '' ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
                 } else {
-                    $this->getTimeTracker()->setTSlogMessage('typolink(): Page id "' . $linkParameter . '" was not found, so "' . $linktxt . '" was not linked.', 1);
-                    return $linktxt;
+                    $this->getTimeTracker()->setTSlogMessage('typolink(): Page id "' . $linkParameter . '" was not found, so "' . $linkText . '" was not linked.', 1);
+                    return $linkText;
                 }
             break;
         }
@@ -6228,7 +6218,7 @@ class ContentObjectRenderer
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
             $_params = array(
                 'conf' => &$conf,
-                'linktxt' => &$linktxt,
+                'linktxt' => &$linkText,
                 'finalTag' => &$finalAnchorTag,
                 'finalTagParts' => &$finalTagParts
             );
@@ -6252,9 +6242,25 @@ class ContentObjectRenderer
         $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 
         if ($conf['ATagBeforeWrap']) {
-            return $finalAnchorTag . $this->wrap($linktxt, $wrap) . '</a>';
+            return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
         }
-        return $this->wrap($finalAnchorTag . $linktxt . '</a>', $wrap);
+        return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
+    }
+
+    /**
+     * Helper method to a fallback method parsing HTML out of it
+     *
+     * @param string $originalLinkText the original string, if empty, the fallback link text
+     * @param string $fallbackLinkText the string to be used.
+     * @return string the final text
+     */
+    protected function parseFallbackLinkTextIfLinkTextIsEmpty($originalLinkText, $fallbackLinkText)
+    {
+        if ($originalLinkText === '') {
+            return $this->parseFunc($fallbackLinkText, array('makelinks' => 0), '< lib.parseFunc');
+        } else {
+            return $originalLinkText;
+        }
     }
 
     /**
