@@ -167,48 +167,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
     }
 
-
-    public function dataProviderDatetime()
-    {
-        // Three elements: input, timezone of input, expected output (UTC)
-        return [
-            // German standard time (without DST) is one hour ahead of UTC
-            'date in 2016 in German timezone' => [
-                1457103519, 'Europe/Berlin', 1457103519 - 3600
-            ],
-            'date in 1969 in German timezone' => [
-                -7200, 'Europe/Berlin', -10800
-            ],
-            'begin of the epoch in German timezone' => [
-                0, 'Europe/Berlin', -3600
-            ],
-            // Los Angeles is 8 hours behind UTC
-            'date in 2016 in Los Angeles timezone' => [
-                1457103519, 'America/Los_Angeles', 1457103519 + 28800
-            ],
-            'date in UTC' => [
-                1457103519, 'UTC', 1457103519
-            ]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider dataProviderDatetime
-     */
-    public function evalCheckValueDatetime($input, $serverTimezone, $expectedOutput)
-    {
-        $oldTimezone = date_default_timezone_get();
-        date_default_timezone_set($serverTimezone);
-
-        $output = $this->subject->checkValue_input_Eval($input, ['datetime'], '');
-
-        // set before the assertion is performed, so it is restored even for failing tests
-        date_default_timezone_set($oldTimezone);
-
-        $this->assertEquals($expectedOutput, $output['value']);
-    }
-
     /**
      * Data provider for inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly
      *

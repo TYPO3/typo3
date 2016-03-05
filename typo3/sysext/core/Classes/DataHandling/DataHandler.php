@@ -2662,10 +2662,9 @@ class DataHandler
                     break;
                 case 'date':
                 case 'datetime':
-                    if (MathUtility::canBeInterpretedAsInteger($value) && !$this->dontProcessTransformations) {
+                    $value = (int)$value;
+                    if ($value > 0 && !$this->dontProcessTransformations) {
                         $value -= date('Z', $value);
-                    } elseif (!MathUtility::canBeInterpretedAsInteger($value)) {
-                        $value = 0;
                     }
                     break;
                 case 'double2':

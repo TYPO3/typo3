@@ -79,7 +79,7 @@ class InputTextElement extends AbstractFormElement
             } elseif (in_array('date', $evalList)) {
                 $attributes['data-date-type'] = 'date';
             }
-            if (MathUtility::canBeInterpretedAsInteger($parameterArray['itemFormElValue'])) {
+            if ($parameterArray['itemFormElValue'] > 0) {
                 $parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
             }
             if (isset($config['range']['lower'])) {
