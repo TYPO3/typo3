@@ -90,14 +90,13 @@ class Response
     }
 
     /**
+     * @param mixed $sectionIdentifiers
      * @return NULL|array|ResponseSection[]
      */
-    public function getResponseSections()
+    public function getResponseSections(...$sectionIdentifiers)
     {
-        $sectionIdentifiers = func_get_args();
-
         if (empty($sectionIdentifiers)) {
-            $sectionIdentifiers = array('Default');
+            $sectionIdentifiers = ['Default'];
         }
 
         $sections = array();

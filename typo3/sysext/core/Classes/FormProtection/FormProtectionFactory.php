@@ -67,19 +67,20 @@ class FormProtectionFactory
      * @param string $classNameOrType Name of a form protection class, or one
      *                                of the pre-defined form protection types:
      *                                frontend, backend, installtool
+     * @param mixed $constructorArguments Arguments for the class-constructor
      * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection the requested instance
      */
-    public static function get($classNameOrType = 'default')
+    public static function get($classNameOrType = 'default', ...$constructorArguments)
     {
         if (isset(self::$instances[$classNameOrType])) {
             return self::$instances[$classNameOrType];
         }
         if ($classNameOrType === 'default' || $classNameOrType === 'installtool' || $classNameOrType === 'frontend' || $classNameOrType === 'backend') {
             $classNameAndConstructorArguments = self::getClassNameAndConstructorArgumentsByType($classNameOrType);
+            self::$instances[$classNameOrType] = self::createInstance(...$classNameAndConstructorArguments);
         } else {
-            $classNameAndConstructorArguments = func_get_args();
+            self::$instances[$classNameOrType] = self::createInstance($classNameOrType, ...$constructorArguments);
         }
-        self::$instances[$classNameOrType] = self::createInstance($classNameAndConstructorArguments);
         return self::$instances[$classNameOrType];
     }
 
@@ -177,17 +178,17 @@ class FormProtectionFactory
      * Creates an instance for the requested class $className
      * and stores it internally.
      *
-     * @param array $classNameAndConstructorArguments
+     * @param array $className
+     * @param mixed $constructorArguments
      * @throws \InvalidArgumentException
      * @return AbstractFormProtection
      */
-    protected static function createInstance(array $classNameAndConstructorArguments)
+    protected static function createInstance($className, ...$constructorArguments)
     {
-        $className = $classNameAndConstructorArguments[0];
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('$className must be the name of an existing class, but ' . 'actually was "' . $className . '".', 1285352962);
         }
-        $instance = call_user_func_array([GeneralUtility::class, 'makeInstance'], $classNameAndConstructorArguments);
+        $instance = GeneralUtility::makeInstance($className, ...$constructorArguments);
         if (!$instance instanceof AbstractFormProtection) {
             throw new \InvalidArgumentException('$className must be a subclass of ' . AbstractFormProtection::class . ', but actually was "' . $className . '".', 1285353026);
         }

@@ -58,9 +58,8 @@ abstract class AbstractRecordConstraint extends \PHPUnit_Framework_Constraint
         return $this;
     }
 
-    public function setValues()
+    public function setValues(...$values)
     {
-        $values = func_get_args();
         $this->values = $values;
         return $this;
     }

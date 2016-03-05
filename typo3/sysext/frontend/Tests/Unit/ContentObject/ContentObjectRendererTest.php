@@ -183,12 +183,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Handles the arguments that have been sent to the getImgResource hook.
      *
-     * @return 	array
+     * @param string $file
+     * @param array $fileArray
+     * @param $imageResource
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent
+     * @return array
      * @see getImgResourceHookGetsCalled
      */
-    public function isGetImgResourceHookCalledCallback()
+    public function isGetImgResourceHookCalledCallback($file, $fileArray, $imageResource, $parent)
     {
-        list($file, $fileArray, $imageResource, $parent) = func_get_args();
         $this->assertEquals('typo3/clear.gif', $file);
         $this->assertEquals('typo3/clear.gif', $imageResource['origFile']);
         $this->assertTrue(is_array($fileArray));
@@ -3550,12 +3553,15 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Handles the arguments that have been sent to the getImgResource hook.
      *
-     * @return 	string
+     * @param array $sourceRenderConfiguration
+     * @param array $sourceConfiguration
+     * @param $oneSourceCollection
+     * @param $parent
+     * @return string
      * @see getImageSourceCollectionHookCalled
      */
-    public function isGetOneSourceCollectionCalledCallback()
+    public function isGetOneSourceCollectionCalledCallback($sourceRenderConfiguration, $sourceConfiguration, $oneSourceCollection, $parent)
     {
-        list($sourceRenderConfiguration, $sourceConfiguration, $oneSourceCollection, $parent) = func_get_args();
         $this->assertTrue(is_array($sourceRenderConfiguration));
         $this->assertTrue(is_array($sourceConfiguration));
         return 'isGetOneSourceCollectionCalledCallback';

@@ -73,10 +73,13 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * Handles the arguments that have been sent to the getPage_preProcess hook
+     *
+     * @param int $uid
+     * @param $disableGroupAccessCheck
+     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
      */
-    public function isGetPagePreProcessCalledCallback()
+    public function isGetPagePreProcessCalledCallback($uid, $disableGroupAccessCheck, $parent)
     {
-        list($uid, $disableGroupAccessCheck, $parent) = func_get_args();
         $this->assertEquals(42, $uid);
         $this->assertFalse($disableGroupAccessCheck);
         $this->assertTrue($parent instanceof \TYPO3\CMS\Frontend\Page\PageRepository);

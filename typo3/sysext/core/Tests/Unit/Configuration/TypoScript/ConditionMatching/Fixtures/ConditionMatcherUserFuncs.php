@@ -20,18 +20,18 @@ namespace {
 
     function user_testFunctionWithSingleArgument()
     {
-        return count(func_get_args()) === 1;
+        return func_num_args() === 1;
     }
 
     function user_testFunctionWithThreeArguments()
     {
-        return count(func_get_args()) === 3;
+        return func_num_args() === 3;
     }
 
-    function user_testFunctionWithThreeArgumentsSpaces()
+    function user_testFunctionWithThreeArgumentsSpaces(...$arguments)
     {
         $result = true;
-        foreach (func_get_args() as $argument) {
+        foreach ($arguments as $argument) {
             $result &= (trim($argument) == $argument);
         }
         return $result;

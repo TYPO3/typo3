@@ -753,12 +753,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      * As it is static we are using an exception to test if it is really called and works
      *
      * @static
+     * @param string $itemName
      * @throws \InvalidArgumentException
      * @see getFileListCallsConfiguredCallbackFunction
      */
-    public static function callbackStaticTestFunction()
+    public static function callbackStaticTestFunction($itemName)
     {
-        list($itemName) = func_get_args();
         if ($itemName === 'file2') {
             throw new \InvalidArgumentException('$itemName', 1336159604);
         }

@@ -440,14 +440,6 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
     }
 
     /**
-     * @return string
-     */
-    protected function combine()
-    {
-        return implode(':', func_get_args());
-    }
-
-    /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBackendUser()

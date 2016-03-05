@@ -225,14 +225,11 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      * @param object $object The object to be invoked
      * @param string $name the name of the method to call
+     * @param mixed $arguments
      * @return mixed
      */
-    protected function callInaccessibleMethod($object, $name)
+    protected function callInaccessibleMethod($object, $name, ...$arguments)
     {
-        // Remove first two arguments ($object and $name)
-        $arguments = func_get_args();
-        array_splice($arguments, 0, 2);
-
         $reflectionObject = new \ReflectionObject($object);
         $reflectionMethod = $reflectionObject->getMethod($name);
         $reflectionMethod->setAccessible(true);
