@@ -99,7 +99,7 @@ class InputTextElement extends AbstractFormElement
                 $attributes['data-date-type'] = 'date';
                 $dateFormat = $dateFormats['date'];
             }
-            if ($parameterArray['itemFormElValue'] > 0) {
+            if (((int)$parameterArray['itemFormElValue']) !== 0) {
                 $parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
             }
             if (isset($config['range']['lower'])) {
