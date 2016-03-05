@@ -52,7 +52,7 @@
 				<source>Make RTE resizable</source>
 			</trans-unit>
 			<trans-unit id="rteMaxHeight">
-				<source>Maximal height of resizable RTE in pixels</source>
+				<source>Maximal height of resizeable RTE in pixels</source>
 			</trans-unit>
 			<trans-unit id="deprecatedPropertyMessage">
 				<source>Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.</source>
