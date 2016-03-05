@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Acceptance\Backend;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Login;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,32 +14,28 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Acceptance\Step\Backend\Kasper;
+
 /**
  * Acceptance test
  */
-class LoginEditorCest
+class EditorCest
 {
 
     /**
      * Login a non-admin user and logout again
      *
-     * @param \AcceptanceTester $I
+     * @param Kasper $I
      */
-    public function tryToTest(\AcceptanceTester $I)
+    public function tryToTest(Kasper $I)
     {
-        $I->wantTo('login with admin');
-        $I->amOnPage('/typo3/index.php');
-        $I->waitForElement('#t3-username');
-        $I->fillField('#t3-username', 'editor');
-        $I->fillField('#t3-password', 'password');
-        $I->click('#t3-login-submit-section > button');
-        $I->waitForElement('.nav');
-        $I->seeCookie('be_lastLoginProvider');
-        $I->seeCookie('be_typo_user');
+        $I->wantTo('login with editor');
+        $I->loginAsEditor();
+
         // user is redirected to 'about modules' after login, but must not see the 'admin tools' section
         $I->cantSee('Admin tools');
-        $I->click('#typo3-cms-backend-backend-toolbaritems-usertoolbaritem > a');
-        $I->click('Logout');
+
+        $I->logout();
         $I->waitForElement('#t3-username');
     }
 }

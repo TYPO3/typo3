@@ -210,7 +210,9 @@ class AcceptanceCoreEnvironment extends Extension
             't3skin',
             'frontend',
             'recordlist',
+            'reports',
             'sv',
+            'scheduler'
         ];
         $testbase->setUpPackageStates($instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
         $testbase->setUpBasicTypo3Bootstrap($instancePath);
