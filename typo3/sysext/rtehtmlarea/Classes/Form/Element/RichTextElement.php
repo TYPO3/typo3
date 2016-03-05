@@ -308,7 +308,7 @@ class RichTextElement extends AbstractFormElement
             $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
             $inlineStructureDepth = $inlineStackProcessor->getStructureDepth();
             $width -= $inlineStructureDepth > 0 ? ($inlineStructureDepth + 1) * 12 : 0;
-            $widthOverride = isset($backendUser->uc['rteWidth']) && trim($backendUser->uc['rteWidth']) ?: trim($this->processedRteConfiguration['RTEWidthOverride']);
+            $widthOverride = isset($backendUser->uc['rteWidth']) && trim($backendUser->uc['rteWidth']) ? trim($backendUser->uc['rteWidth']) : trim($this->processedRteConfiguration['RTEWidthOverride']);
             if ($widthOverride) {
                 if (strstr($widthOverride, '%')) {
                     if ($this->client['browser'] !== 'msie') {
@@ -320,7 +320,7 @@ class RichTextElement extends AbstractFormElement
             }
             $width = strstr($width, '%') ? $width : $width . 'px';
             $height = 380 + (isset($options['RTELargeHeightIncrement']) ? (int)$options['RTELargeHeightIncrement'] : 0);
-            $heightOverride = isset($backendUser->uc['rteHeight']) && (int)$backendUser->uc['rteHeight'] ?: (int)$this->processedRteConfiguration['RTEHeightOverride'];
+            $heightOverride = isset($backendUser->uc['rteHeight']) && (int)$backendUser->uc['rteHeight'] ? (int)$backendUser->uc['rteHeight'] : (int)$this->processedRteConfiguration['RTEHeightOverride'];
             $height = $heightOverride > 0 ? $heightOverride . 'px' : $height . 'px';
             $paddingRight = '2';
             $editorWrapWidth = '99%';
