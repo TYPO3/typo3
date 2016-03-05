@@ -1,0 +1,261 @@
+@import "_Variables";
+@charset "UTF-8";
+
+#fake-form {
+
+  ol {
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+
+  /* style for each form element */
+  li {
+    overflow: hidden;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+
+    &#element-placeholder{
+      padding: 0;
+      margin: 0;
+    }
+
+    input + label,
+    textarea + label,
+    select + label {
+      .std-li-selector;
+    }
+
+    textarea + label {
+      vertical-align: top;
+    }
+  }
+
+  textarea, input[type=text]{
+    border: 1px solid #c0c0c0;
+  }
+
+  input[type=text]{
+    // equal width like textareas
+    width:300px;
+    padding: 3px;
+  }
+
+  label {
+    display:block;
+    margin-right: 1em;
+    vertical-align: baseline;
+
+    em{
+      .std-em-selector;
+    }
+
+    strong{
+      .std-strong-selector;
+    }
+  }
+
+  .x-checkbox, .x-radio{
+    label{
+      display:inline-block;
+    }
+  }
+
+  legend {
+    border-bottom:0;
+    em{
+      .std-em-selector;
+    }
+
+    strong{
+      .std-strong-selector;
+    }
+  }
+
+  fieldset {
+    position: relative;
+    margin: 0;
+    padding: 0;
+
+    &.submit {
+      border-style: none;
+    }
+
+    &.fieldset-horizontal {
+      border-width: 0;
+
+      &.label-below label {
+        display: block;
+        margin-left: 0;
+        margin-top: 0.2em;
+        font-size: 90%;
+        text-align: left;
+        color: #999999;
+      }
+
+      label{
+        em {
+          display: inline;
+        }
+      }
+
+      ol {
+        padding: 0;
+      }
+
+      li {
+        float: left;
+        margin-right: 1em;
+        padding: 0;
+      }
+    }
+
+    &.fieldset-subgroup {
+      margin-bottom: -2em;
+      border-style: none;
+
+      ol {
+        position: relative;
+        top: -1.4em;
+        padding: 0;
+      }
+
+      li {
+        padding: 0;
+      }
+
+      legend {
+        margin-left: 0;
+        padding: 0;
+      }
+
+      input + label {
+        float: none;
+        width: auto;
+        display: inline;
+        margin: 0 0 0 1em;
+      }
+    }
+  }
+
+  legend {
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+
+    em {
+      position: absolute;
+    }
+
+    strong {
+      position: absolute;
+      top: 1.4em;
+    }
+  }
+
+  /* labels as block, labels displayed above or below the input fields */
+  .labels-block{
+    label {
+      display: block;
+      float: none;
+      margin: 0 0 0.5em;
+      width: auto;
+    }
+
+    input + label,
+    textarea + label{
+      margin: 0.5em 0 0;
+    }
+
+  }
+}
+
+/* labels alignment right */
+#fake-form .labels-alignment-right label,
+#fake-form .labels-alignment-right .fieldset-subgroup legend,
+#fake-form .labels-alignment-right.fieldset-subgroup legend {
+  text-align: right;
+}
+
+#fake-form .labels-block fieldset.fieldset-subgroup,
+#fake-form fieldset.labels-block.fieldset-subgroup {
+  margin-bottom: 0;
+}
+
+#fake-form .labels-block .fieldset-subgroup legend,
+#fake-form .labels-block.fieldset-subgroup legend {
+  width: auto;
+}
+
+#fake-form .labels-block .fieldset-subgroup legend em,
+#fake-form .labels-block.fieldset-subgroup legend em {
+  position: relative;
+}
+
+#fake-form .labels-block .fieldset-subgroup legend strong,
+#fake-form .labels-block.fieldset-subgroup legend strong {
+  position: relative;
+  top: 0;
+}
+
+#fake-form .labels-block .fieldset-subgroup ol,
+#fake-form .labels-block.fieldset-subgroup ol {
+  top: 0;
+  margin: 0;
+  padding: 0.5em 0 0;
+}
+
+/* element HIDDEN */
+#fake-form .formwizard-element.hidden-element {
+  cursor: default;
+}
+
+#fake-form .formwizard-element .hidden-dummy-element {
+  margin: 0;
+  padding: 5px;
+  border:1px dotted #A9A9A9;
+}
+
+/* styles for drag and drop content */
+.x-dd-drag-ghost .formwizard-element {
+  list-style:none;
+}
+
+.x-dd-drop-icon {
+  top: 7px;
+}
+
+.x-dd-drag-ghost ol {
+  margin: 5px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.x-dd-drag-ghost .buttongroup,
+.x-dd-drag-ghost label em,
+.x-dd-drag-ghost label strong {
+  display: none;
+}
+
+.x-dd-drag-ghost label {
+  margin: 0 10px 0 5px;
+}
+
+.x-dd-drag-ghost legend {
+  margin: 0 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  border: none;
+}
+
+.x-grid-panel .remove {
+  background-image: url("../../Images/remove.gif");
+  width: 15px;
+  height: 16px;
+}
+
+.x-dd-drag-proxy,
+.x-dd-drop-nodrop {
+  background-color: #fff;
+  border-color: #c0c0c0;
+}

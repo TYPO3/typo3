@@ -163,8 +163,7 @@ class FormWizardElement extends AbstractFormElement
     protected function resultAddWizardCss()
     {
         $cssFiles = array(
-            'Wizard/Form.css',
-            'Wizard/Wizard.css'
+            'Wizard/Styles.css'
         );
         $baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
         // Load the wizards css
@@ -195,7 +194,7 @@ class FormWizardElement extends AbstractFormElement
             $this->resultArray['html'] = '<textarea id="formengine-textarea-' . $id . '"'
             . ' class="form-control t3js-formengine-textarea formengine-textarea" wrap="off"'
             . ' onchange="TBE_EDITOR.fieldChanged(\'tt_content\',\'' . $this->getCurrentUid() . '\',\'bodytext\',\'data[tt_content][' . $this->getCurrentUid() . '][bodytext]\');"'
-            . ' rows="15" style="max-height: 500px" name="data[tt_content][' . $this->getCurrentUid() . '][bodytext]">' . $content . '</textarea>';
+            . ' rows="15" style="" name="data[tt_content][' . $this->getCurrentUid() . '][bodytext]">' . $content . '</textarea>';
             return $this->resultArray;
         }
 
