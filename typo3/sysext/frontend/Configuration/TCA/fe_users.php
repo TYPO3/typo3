@@ -209,15 +209,13 @@ return array(
         'image' => array(
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.image',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                'uploadfolder' => 'uploads/pics',
-                'show_thumbs' => true,
-                'size' => 3,
-                'maxitems' => 6,
-                'minitems' => 0
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'image',
+                array(
+                    'maxitems' => 6,
+                    'minitems'=> 0
+                ),
+                $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
         ),
         'disable' => array(

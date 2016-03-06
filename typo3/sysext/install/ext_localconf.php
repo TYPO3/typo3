@@ -42,3 +42,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
     = \TYPO3\CMS\Install\Updates\WizardDoneToRegistry::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class]
     = \TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdateAboutModule::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\FrontendUserImageUpdateWizard::class]
+    = \TYPO3\CMS\Install\Updates\FrontendUserImageUpdateWizard::class;
