@@ -13,9 +13,7 @@ if (TYPO3_MODE === 'BE') {
             'name' => 'system_dbint',
             'workspaces' => 'online',
             'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-dbint.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf'
         )
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
@@ -29,9 +27,7 @@ if (TYPO3_MODE === 'BE') {
             'name' => 'system_config',
             'workspaces' => 'online',
             'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-config.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf',
-            ),
+            'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf'
         )
     );
 }

@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'group,user',
             'name' => 'user_task',
             'icon' => 'EXT:taskcenter/Resources/Public/Icons/module-taskcenter.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf'
         )
     );
 }

@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'user,group',
             'name' => 'web_func',
             'icon' => 'EXT:func/Resources/Public/Icons/module-func.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:lang/locallang_mod_web_func.xlf',
-            ),
+            'labels' => 'LLL:EXT:lang/locallang_mod_web_func.xlf'
         )
     );
 }

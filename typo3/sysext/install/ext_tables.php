@@ -21,9 +21,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'system_extinstall',
             'icon' => 'EXT:install/Resources/Public/Icons/module-install.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf',
-            ),
+            'labels' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf'
         )
     );
 }

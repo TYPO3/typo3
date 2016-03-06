@@ -173,7 +173,7 @@ class ModuleLoader
         $finalModuleConfiguration = $setupInformation['configuration'];
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
-        $this->addLabelsForModule($name, $setupInformation['labels']);
+        $this->addLabelsForModule($name, ($finalModuleConfiguration['labels'] ?? $setupInformation['labels']));
 
         // Default script setup
         if ($setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {

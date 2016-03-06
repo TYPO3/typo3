@@ -13,9 +13,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'system_txschedulerM1',
             'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf'
         )
     );
 

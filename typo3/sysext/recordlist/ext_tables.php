@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'user,group',
             'name' => 'web_list',
             'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:lang/locallang_mod_web_list.xlf',
-            ),
+            'labels' => 'LLL:EXT:lang/locallang_mod_web_list.xlf'
         )
     );
 

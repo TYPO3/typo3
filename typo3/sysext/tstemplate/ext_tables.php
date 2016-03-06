@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'web_ts',
             'icon' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf'
         )
     );
 

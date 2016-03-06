@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'group,user',
             'name' => 'user_setup',
             'icon' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf'
         )
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(

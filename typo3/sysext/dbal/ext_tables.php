@@ -12,9 +12,7 @@ if (TYPO3_MODE === 'BE') {
             'access' => 'admin',
             'name' => 'tools_txdbalM1',
             'icon' => 'EXT:dbal/Resources/Public/Icons/module-dbal.svg',
-            'labels' => array(
-                'll_ref' => 'LLL:EXT:dbal/Resources/Private/Language/locallang_mod.xlf',
-            ),
+            'labels' => 'LLL:EXT:dbal/Resources/Private/Language/locallang_mod.xlf'
         )
     );
 }
