@@ -54,6 +54,27 @@
 			<trans-unit id="pasteIntoColumn">
 				<source>Paste into this column</source>
 			</trans-unit>
+			<trans-unit id="pasteAfterRecord">
+				<source>Paste after this record</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.title.paste">
+				<source>Paste record</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.pastecopy">
+				<source>Do you want to copy the record to this position?</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.paste">
+				<source>Do you want to move the record to this position?</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.button.pastecopy">
+				<source>Copy</source>
+			</trans-unit>
+			<trans-unit id="paste.modal.button.paste">
+				<source>Move</source>
+			</trans-unit>
 			<trans-unit id="editColumn">
 				<source>Edit this column</source>
 			</trans-unit>

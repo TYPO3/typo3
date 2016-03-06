@@ -447,6 +447,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
         if ($this->tt_contentConfig['languageColsPointer'] > 0) {
             $userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
@@ -712,12 +713,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $colTitle = $this->getLanguageService()->sL($item[0]);
                         }
                     }
-
-                    $pasteP = ['colPos' => $columnId, 'sys_language_uid' => $lP];
                     $editParam = $this->doEdit && !empty($rowArr)
                         ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
                         : '';
-                    $head[$columnId] .= $this->tt_content_drawColHeader($colTitle, $editParam, '', $pasteP);
+                    $head[$columnId] .= $this->tt_content_drawColHeader($colTitle, $editParam);
                 }
             }
             // For each column, fit the rendered content into a table cell:
@@ -785,17 +784,17 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
-                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'), '', '');
+                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'));
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
                             $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
-                                ' (' . $this->getLanguageService()->getLL('noAccess') . ')', '', '');
+                                ' (' . $this->getLanguageService()->getLL('noAccess') . ')');
                         } elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
                             $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
-                                . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '');
+                                . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')');
                         } else {
-                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('notAssigned'), '', '');
+                            $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('notAssigned'));
                         }
 
                         $grid .= '</td>';
@@ -807,6 +806,26 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             // CSH:
             $out .= BackendUtility::cshItem($this->descrTable, 'columns_multi', null, '<span class="btn btn-default btn-sm">|</span>');
         }
+        $elFromTable = $this->clipboard->elFromTable('tt_content');
+        if (!empty($elFromTable) && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
+            $pasteItem = substr(key($elFromTable), 11);
+            $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
+            $pasteTitle = $pasteRecord['header'] ? $pasteRecord['header'] : $pasteItem;
+            $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';
+            $addExtOnReadyCode = '
+                     top.pasteIntoLinkTemplate = '
+                . $this->tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-into', 'pasteIntoColumn')
+                . ';
+                    top.pasteAfterLinkTemplate = '
+                . $this->tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-after', 'pasteAfterRecord')
+                . ';';
+        } else {
+            $addExtOnReadyCode = '
+                top.pasteIntoLinkTemplate = \'\';
+                top.pasteAfterLinkTemplate = \'\';';
+        }
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addJsInlineCode('pasteLinkTemplates', $addExtOnReadyCode);
         // If language mode, then make another presentation:
         // Notice that THIS presentation will override the value of $out!
         // But it needs the code above to execute since $languageColumn is filled with content we need!
@@ -1396,11 +1415,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * @param string $colName Column name
      * @param string $editParams Edit params (Syntax: &edit[...] for FormEngine)
-     * @param string $newParams New element params (Syntax: &edit[...] for FormEngine) OBSOLETE
-     * @param array|NULL $pasteParams Paste element params (i.e. array(colPos => 1, sys_language_uid => 2))
      * @return string HTML table
      */
-    public function tt_content_drawColHeader($colName, $editParams, $newParams, array $pasteParams = null)
+    public function tt_content_drawColHeader($colName, $editParams = '')
     {
         $iconsArr = [];
         // Create command links:
@@ -1411,20 +1428,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     . htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
                     . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
                     . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-            if ($pasteParams) {
-                $elFromTable = $this->clipboard->elFromTable('tt_content');
-                if (!empty($elFromTable) && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
-                    $iconsArr['paste'] =
-                        '<a href="' . htmlspecialchars($this->clipboard->pasteUrl('tt_content', $this->id, true, $pasteParams)) . '"'
-                        . ' class="t3js-modal-trigger"'
-                        . ' data-severity="warning"'
-                        . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('pasteIntoColumn')) . '"'
-                        . ' data-content="' . htmlspecialchars($this->clipboard->confirmMsgText('pages', $this->pageRecord, 'into', $elFromTable, $colName)) . '"'
-                        . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('pasteIntoColumn')) . '">'
-                        . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-                        . '</a>';
-                }
             }
         }
         $icons = '';
@@ -1437,6 +1440,29 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					<div class="t3-page-column-header-label">' . htmlspecialchars($colName) . '</div>
 				</div>';
         return $out;
+    }
+
+    /**
+     * Draw a paste icon either for pasting into a column or for pasting after a record
+     *
+     * @param int $pasteItem ID of the item in the clipboard
+     * @param string $pasteTitle Title for the JS modal
+     * @param string $copyMode copy or cut
+     * @param string $cssClass CSS class to determine if pasting is done into column or after record
+     * @param string $title title attribute of the generated link
+     *
+     * @return string Generated HTML code with link and icon
+     */
+    protected function tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, $cssClass, $title)
+    {
+        $pasteIcon = json_encode(
+            ' <a data-content="' . htmlspecialchars($pasteItem) . '"'
+            . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
+            . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
+            . ' title="' . htmlspecialchars($this->getLanguageService()->getLL($title)) . '">'
+            . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
+            . '</a>');
+        return $pasteIcon;
     }
 
     /**

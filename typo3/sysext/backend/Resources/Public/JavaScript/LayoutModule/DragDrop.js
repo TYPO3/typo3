@@ -40,7 +40,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	/**
 	 * initializes Drag+Drop for all content elements on the page
 	 */
-	DragDrop.initialize = function() {
+	DragDrop.initialize = function () {
 		$(DragDrop.contentIdentifier).draggable({
 			handle: this.dragHeaderIdentifier,
 			scope: 'tt_content',
@@ -182,7 +182,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 			}
 			parameters['cmd'] = {tt_content: {}};
 			parameters['data'] = {tt_content: {}};
-			var copyAction = evt && evt.originalEvent.ctrlKey;
+			var copyAction = (evt && evt.originalEvent.ctrlKey || $droppableElement.hasClass('t3js-paste-copy'));
 			if (copyAction) {
 				parameters['cmd']['tt_content'][contentElementUid] = {
 					copy: {
@@ -194,15 +194,27 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 						}
 					}
 				};
-				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction);
+				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction, $pasteAction);
 			} else {
 				parameters['data']['tt_content'][contentElementUid] = {
 					colPos: colPos,
 					sys_language_uid: language
 				};
-				parameters['cmd']['tt_content'][contentElementUid] = {move: targetPid};
+				if ($pasteAction) {
+					parameters = {
+						CB: {
+							paste: 'tt_content|' + targetPid,
+							update: {
+								colPos: colPos,
+								sys_language_uid: language
+							}
+						}
+					};
+				} else {
+					parameters['cmd']['tt_content'][contentElementUid] = {move: targetPid};
+				}
 				// fire the request, and show a message if it has failed
-				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction);
+				DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction, $pasteAction);
 			}
 		}
 	};
@@ -213,22 +225,25 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 	 * @param $droppableElement
 	 * @param $draggableElement
 	 * @param parameters
-	 * @param copyAction
+	 * @param $copyAction
+	 * @param $pasteAction
 	 * @private
 	 */
-	DragDrop.ajaxAction = function ($droppableElement, $draggableElement, parameters, copyAction) {
+	DragDrop.ajaxAction = function ($droppableElement, $draggableElement, parameters, $copyAction, $pasteAction) {
 		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function (DataHandler) {
 			DataHandler.process(parameters).done(function (result) {
 				if (!result.hasErrors) {
 					// insert draggable on the new position
-					if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
-						$draggableElement.detach().css({top: 0, left: 0})
-							.insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
-					} else {
-						$draggableElement.detach().css({top: 0, left: 0})
-							.insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
+					if (!$pasteAction) {
+						if (!$droppableElement.parent().hasClass(DragDrop.contentIdentifier.substring(1))) {
+							$draggableElement.detach().css({top: 0, left: 0})
+									.insertAfter($droppableElement.closest(DragDrop.dropZoneIdentifier));
+						} else {
+							$draggableElement.detach().css({top: 0, left: 0})
+									.insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
+						}
 					}
-					if ($('.t3js-page-lang-column').length || copyAction) {
+					if ($('.t3js-page-lang-column').length || $copyAction || $pasteAction) {
 						self.location.reload(true);
 					}
 				}
