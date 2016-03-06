@@ -34,6 +34,38 @@ if ($groupFound && $groupPosition) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', $additionalCTypeItem);
 }
 
+// predefined forms
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+    'tt_content',
+    array(
+        'tx_form_predefinedform' => array(
+            'label' => 'LLL:EXT:form/Resources/Private/Language/Database.xlf:tx_form_predefinedform',
+            'exclude' => 1,
+            'config' => array(
+                'type' => 'select',
+                'items' => array(
+                    array(
+                        'LLL:EXT:form/Resources/Private/Language/Database.xlf:tx_form_predefinedform.selectPredefinedForm',
+                        ''
+                    ),
+                ),
+            ),
+        ),
+    )
+);
+$GLOBALS['TCA']['tt_content']['ctrl']['requestUpdate'] .= ',tx_form_predefinedform';
+
+// Hide bodytext if a predefined form is selected
+$GLOBALS['TCA']['tt_content']['columns']['bodytext']['displayCond']['AND'] = array(
+    'OR' => array(
+        'FIELD:CType:!=:mailform',
+        'AND' => array(
+            'FIELD:CType:=:mailform',
+            'FIELD:tx_form_predefinedform:REQ:false',
+        ),
+    ),
+);
+
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
     'notNewRecords' => 1,
     'enableByTypeConfig' => 1,
@@ -72,6 +104,7 @@ $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,rowDescription,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.8,
 		bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.mailform,
+		tx_form_predefinedform;LLL:EXT:form/Resources/Private/Language/Database.xlf:tx_form_predefinedform,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
