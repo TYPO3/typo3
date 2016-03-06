@@ -359,6 +359,21 @@ class BaseScriptClass
     }
 
     /**
+     * Return the content of the 'main' function inside the "Function menu module" if present
+     *
+     * @return string
+     */
+    public function getExtObjContent()
+    {
+        $savedContent = $this->content;
+        $this->content = '';
+        $this->extObjContent();
+        $newContent = $this->content;
+        $this->content = $savedContent;
+        return $newContent;
+    }
+
+    /**
      * Returns the Language Service
      * @return LanguageService
      */

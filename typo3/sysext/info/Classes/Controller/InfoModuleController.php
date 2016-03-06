@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for the Web > Info module
@@ -57,6 +58,11 @@ class InfoModuleController extends BaseScriptClass
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
+
+    /**
+     * @var StandaloneView
+     */
+    protected $view;
 
     /**
      * Constructor
@@ -107,17 +113,15 @@ class InfoModuleController extends BaseScriptClass
             );
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            $this->content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
-                '" method="post" id="InfoModuleController" name="webinfoForm" class="form-inline form-inline-spaced">';
-            $vContent = $this->moduleTemplate->getVersionSelector($this->id, 1);
-            if ($vContent) {
-                $this->content .= '<div>' . $vContent . '</div>';
-            }
-            $this->extObjContent();
+
+            $this->view = $this->getFluidTemplateObject();
+            $this->view->assign('moduleName', htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)));
+            $this->view->assign('versionSelector', $this->moduleTemplate->getVersionSelector($this->id, 1));
+            $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
-            $this->content .= '</form>';
+            $this->content .= $this->view->render();
         } else {
             // If no access or if ID == zero
             $this->content = $this->moduleTemplate->header($this->languageService->getLL('title'));
@@ -228,5 +232,24 @@ class InfoModuleController extends BaseScriptClass
     public function getModuleTemplate()
     {
         return $this->moduleTemplate;
+    }
+
+    /**
+     * returns a new standalone view, shorthand function
+     *
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject()
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Layouts')));
+        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Partials')));
+        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates')));
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates/Main.html'));
+
+        $view->getRequest()->setControllerExtensionName('info');
+        return $view;
     }
 }
