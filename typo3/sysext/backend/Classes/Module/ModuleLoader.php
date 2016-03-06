@@ -140,9 +140,6 @@ class ModuleLoader
      */
     public function checkMod($name)
     {
-        if ($name === 'user_ws' && !ExtensionManagementUtility::isLoaded('version')) {
-            return false;
-        }
         // Check for own way of configuring module
         if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
             $obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
