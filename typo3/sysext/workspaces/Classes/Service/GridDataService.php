@@ -625,7 +625,7 @@ class GridDataService
     protected function emitSignal($signalName, ...$arguments)
     {
         // Arguments are always ($this, [method argument], [method argument], ...)
-        $signalArguments = $arguments
+        $signalArguments = $arguments;
         array_unshift($signalArguments, $this);
         $slotReturn = $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Workspaces\Service\GridDataService::class, $signalName, $signalArguments);
         return array_slice($slotReturn, 1);
