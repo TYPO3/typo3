@@ -318,7 +318,6 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 }
                 next($workspaceStageRecs);
             }
-        } else {
         }
         if ($nextStage === false) {
             $nextStage[] = array(

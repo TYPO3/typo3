@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\CMS\Workspaces\Service\StagesService;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * ExtDirect action handler
@@ -35,7 +38,7 @@ class ActionHandler extends AbstractHandler
      */
     public function __construct()
     {
-        $this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+        $this->stageService = GeneralUtility::makeInstance(StagesService::class);
     }
 
     /**
@@ -114,7 +117,7 @@ class ActionHandler extends AbstractHandler
      */
     public function viewSingleRecord($table, $uid)
     {
-        return \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $uid);
+        return WorkspaceService::viewSingleRecord($table, $uid);
     }
 
     /**
@@ -410,10 +413,10 @@ class ActionHandler extends AbstractHandler
     public function discardStagesFromPage($pageId)
     {
         $cmdMapArray = array();
-        /** @var $workspaceService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
-        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        /** @var $workspaceService WorkspaceService */
+        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         /** @var $stageService StagesService */
-        $stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+        $stageService = GeneralUtility::makeInstance(StagesService::class);
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
@@ -437,7 +440,7 @@ class ActionHandler extends AbstractHandler
      * $parameters->stageId
      * </code>
      *
-     * @param stdClass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
     public function sentCollectionToStage(\stdClass $parameters)
@@ -451,7 +454,7 @@ class ActionHandler extends AbstractHandler
         if (!is_object($parameters->affects) || empty($parameters->affects)) {
             throw new \InvalidArgumentException('Missing "affected items" in $parameters array.', 1319488195);
         }
-        $recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $stageId);
+        $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $stageId);
         foreach ($parameters->affects as $tableName => $items) {
             foreach ($items as $item) {
                 // Publishing uses live id in command map
@@ -516,7 +519,7 @@ class ActionHandler extends AbstractHandler
      * additional: string
      * comments: string
      *
-     * @param stdClass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
     public function sendToNextStageExecute(\stdClass $parameters)
@@ -531,7 +534,7 @@ class ActionHandler extends AbstractHandler
         $elementRecord = BackendUtility::getRecord($table, $uid);
         $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
-        $recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         if ($setStageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
             $cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
             $cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
@@ -563,7 +566,7 @@ class ActionHandler extends AbstractHandler
      * additional: string
      * comments: string
      *
-     * @param stdClass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
     public function sendToPrevStageExecute(\stdClass $parameters)
@@ -577,7 +580,7 @@ class ActionHandler extends AbstractHandler
         $elementRecord = BackendUtility::getRecord($table, $uid);
         $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
-        $recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         $cmdArray[$table][$uid]['version']['action'] = 'setStage';
         $cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
         $cmdArray[$table][$uid]['version']['comment'] = $comments;
@@ -618,7 +621,7 @@ class ActionHandler extends AbstractHandler
         $setStageId = $parameters->affects->nextStage;
         $comments = $parameters->comments;
         $elements = $parameters->affects->elements;
-        $recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
+        $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
         foreach ($elements as $element) {
             // Avoid any action on records that have already been published to live
             $elementRecord = BackendUtility::getRecord($element->table, $element->uid);
@@ -648,7 +651,7 @@ class ActionHandler extends AbstractHandler
     /**
      * Gets the dialog window to be displayed before a record can be sent to a stage.
      *
-     * @param StageRecord|int $nextStageId
+     * @param StageRecord|int $nextStage
      * @return array
      */
     protected function getSentToStageWindow($nextStage)
@@ -657,43 +660,18 @@ class ActionHandler extends AbstractHandler
             $nextStage = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($nextStage);
         }
 
-        $result = array(
-            'title' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage'),
-            'items' => array(
-                array(
-                    'xtype' => 'panel',
-                    'bodyStyle' => 'margin-bottom: 7px; border: none;',
-                    'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $nextStage->getTitle()
-                )
-            )
-        );
-
+        $result = [];
         if ($nextStage->isDialogEnabled()) {
-            $result['items'][] = array(
-                'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.sendMailTo'),
-                'xtype' => 'checkboxgroup',
-                'itemCls' => 'x-check-group-alt',
-                'columns' => 1,
-                'style' => 'max-height: 200px',
-                'autoScroll' => true,
-                'items' => array(
-                    $this->getReceipientsOfStage($nextStage->getUid())
-                )
-            );
-            $result['items'][] = array(
-                'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.additionalRecipients'),
-                'name' => 'additional',
-                'xtype' => 'textarea',
-                'width' => 250
-            );
+            $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage->getUid());
+            $result['additional'] = [
+                'type' => 'textarea',
+                'value' => ''
+            ];
         }
-        $result['items'][] = array(
-            'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.comments'),
-            'name' => 'comments',
-            'xtype' => 'textarea',
-            'width' => 250,
+        $result['comments'] = [
+            'type' => 'textarea',
             'value' => ($nextStage->isInternal() ? '' : $nextStage->getDefaultComment())
-        );
+        ];
 
         return $result;
     }
@@ -704,7 +682,7 @@ class ActionHandler extends AbstractHandler
      * @param StageRecord|int $stageRecord
      * @return array
      */
-    protected function getReceipientsOfStage($stageRecord)
+    protected function getRecipientsOfStage($stageRecord)
     {
         if (!$stageRecord instanceof StageRecord) {
             $stageRecord = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($stageRecord);
@@ -725,8 +703,9 @@ class ActionHandler extends AbstractHandler
             $disabled = ($checked && !$isPreselectionChangeable);
 
             $result[] = array(
-                'boxLabel' => sprintf('%s (%s)', $name, $backendUser['email']),
-                'name' => 'receipients-' . $backendUserId,
+                'label' => sprintf('%s (%s)', $name, $backendUser['email']),
+                'value' => $backendUserId,
+                'name' => 'recipients-' . $backendUserId,
                 'checked' => $checked,
                 'disabled' => $disabled
             );
@@ -755,7 +734,7 @@ class ActionHandler extends AbstractHandler
     protected function getStageService()
     {
         if (!isset($this->stageService)) {
-            $this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+            $this->stageService = GeneralUtility::makeInstance(StagesService::class);
         }
         return $this->stageService;
     }
@@ -768,17 +747,19 @@ class ActionHandler extends AbstractHandler
      */
     public function sendPageToPreviousStage($id)
     {
-        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
         list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
-        return array(
+        $stageFormFields = $this->getSentToStageWindow($previousStage['uid']);
+        $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
             'items' => $this->getSentToStageWindow($previousStage['uid']),
             'affects' => $workspaceItemsArray,
             'stageId' => $previousStage['uid']
-        );
+        ]);
+        return $result;
     }
 
     /**
@@ -787,48 +768,55 @@ class ActionHandler extends AbstractHandler
      */
     public function sendPageToNextStage($id)
     {
-        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
         list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
-        return array(
+        $stageFormFields = $this->getSentToStageWindow($nextStage['uid']);
+        $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
-            'items' => $this->getSentToStageWindow($nextStage['uid']),
             'affects' => $workspaceItemsArray,
             'stageId' => $nextStage['uid']
-        );
+        ]);
+        return $result;
     }
 
     /**
      * Fetch the current label and visible state of the buttons.
      *
      * @param int $id
-     * @return array Contains the visibility state and label of the stage change buttons.
+     * @return string The pre-rendered HTML for the stage buttons
      */
     public function updateStageChangeButtons($id)
     {
-        $stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
-        $workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        /** @var StagesService $stageService */
+        $stageService = GeneralUtility::makeInstance(StagesService::class);
+        /** @var WorkspaceService $workspaceService */
+        $workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         // fetch the next and previous stage
         $workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
         list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);
         list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
-        $toolbarButtons = array(
-            'feToolbarButtonNextStage' => array(
-                'visible' => is_array($nextStage) && !empty($nextStage),
-                'text' => $nextStage['title']
-            ),
-            'feToolbarButtonPreviousStage' => array(
-                'visible' => is_array($previousStage) && !empty($previousStage),
-                'text' => $previousStage['title']
-            ),
-            'feToolbarButtonDiscardStage' => array(
-                'visible' => is_array($nextStage) && !empty($nextStage) || is_array($previousStage) && !empty($previousStage),
-                'text' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard', true)
-            )
-        );
-        return $toolbarButtons;
+
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $extensionPath = ExtensionManagementUtility::extPath('workspaces');
+        $view->setPartialRootPaths(['default' => $extensionPath . 'Resources/Private/Partials']);
+        $view->setTemplatePathAndFilename($extensionPath . 'Resources/Private/Templates/Preview/Ajax/StageButtons.html');
+        $request = $view->getRequest();
+        $request->setControllerExtensionName('workspaces');
+        $view->assignMultiple([
+            'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
+            'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),
+            'enableDiscardStageButton' => is_array($nextStage) && !empty($nextStage) || is_array($previousStage) && !empty($previousStage),
+            'nextStage' => $nextStage['title'],
+            'nextStageId' => $nextStage['uid'],
+            'prevStage' => $previousStage['title'],
+            'prevStageId' => $previousStage['uid'],
+        ]);
+        $renderedView = $view->render();
+        return $renderedView;
     }
 
     /**

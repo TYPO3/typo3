@@ -1,0 +1,69 @@
+.module-body {
+	padding: 0;
+}
+
+.typo3-topbar-workspace-actions {
+	float: right;
+	height: 100%;
+	display: table;
+}
+
+.workspace-action {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0 4px;
+
+	&:last-child {
+		padding-right: 16px;
+	}
+
+	.active-preview-mode {
+		display: inline-block;
+		text-align: left;
+	}
+
+	.slider-wrapper {
+		.slider {
+			float: left;
+		}
+
+		b {
+			margin: 7px 10px;
+			display: block;
+			float: left;
+		}
+	}
+}
+
+.workspaces {
+	position: relative;
+
+	iframe {
+		border: 0;
+	}
+}
+
+.preview-mode- {
+	&slider {
+		iframe {
+			position: absolute;
+			top: 0;
+			z-index: 100;
+		}
+		#live-view {
+			border-bottom: 2px solid #c83c3c;
+			z-index: 200;
+		}
+	}
+
+	&vbox iframe {
+		width: 50%;
+		height: 100%;
+		float: left;
+	}
+
+	&hbox iframe {
+		width: 100%;
+		height: 50%;
+	}
+}

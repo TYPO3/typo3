@@ -19,12 +19,14 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Workspaces\Service\AdditionalColumnService;
+use TYPO3\CMS\Workspaces\Service\AdditionalResourceService;
 
 /**
  * Abstract action controller.
  */
-class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AbstractController extends ActionController
 {
     /**
      * @var string
@@ -62,6 +64,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         // @todo Evaluate how the intval() call can be used with Extbase validators/filters
         $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $lang = $this->getLanguageService();
         $icons = array(
             'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
             'integrity' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
@@ -74,18 +77,18 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
-        $this->pageRenderer->addInlineLanguageLabelArray(array(
-            'title' => $GLOBALS['LANG']->getLL('title'),
-            'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),
-            'table' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.table'),
-            'depth' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_perm.xlf:Depth'),
-            'depth_0' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-            'depth_1' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-            'depth_2' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-            'depth_3' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-            'depth_4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
-            'depth_infi' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
-        ));
+        $this->pageRenderer->addInlineLanguageLabelArray([
+            'title' => $lang->getLL('title'),
+            'path' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.path'),
+            'table' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.table'),
+            'depth' => $lang->sL('LLL:EXT:lang/locallang_mod_web_perm.xlf:Depth'),
+            'depth_0' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+            'depth_1' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+            'depth_2' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+            'depth_3' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+            'depth_4' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
+            'depth_infi' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
+        ]);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
         $this->assignExtensionSettings();
     }
@@ -125,19 +128,19 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     }
 
     /**
-     * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
+     * @return AdditionalColumnService
      */
     protected function getAdditionalColumnService()
     {
-        return $this->objectManager->get(\TYPO3\CMS\Workspaces\Service\AdditionalColumnService::class);
+        return $this->objectManager->get(AdditionalColumnService::class);
     }
 
     /**
-     * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService
+     * @return AdditionalResourceService
      */
     protected function getAdditionalResourceService()
     {
-        return $this->objectManager->get(\TYPO3\CMS\Workspaces\Service\AdditionalResourceService::class);
+        return $this->objectManager->get(AdditionalResourceService::class);
     }
 
     /**
@@ -146,6 +149,14 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
     /**

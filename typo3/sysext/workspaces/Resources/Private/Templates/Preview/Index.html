@@ -1,3 +1,66 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="popup" />
 
-<f:section name="main"></f:section>
+<f:section name="main">
+	<div id="typo3-topbar">
+		<div class="typo3-topbar-container" role="navigation" id="typo3-top-container">
+			<div class="typo3-topbar-site">
+				<a class="typo3-topbar-site-logo" href="{logoLink}" target="_blank">
+					<img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" title="TYPO3 Content Management System" alt="">
+				</a>
+				<span class="typo3-topbar-site-name">{activeWorkspace}</span>
+			</div>
+			<div class="typo3-topbar-tabs t3js-workspace-tabs" style="float: left; height: 100%;">
+				<ul class="nav nav-tabs" role="tablist" style="position: absolute; bottom: 0">
+					<li role="presentation" class="active"><a href="#visual" aria-controls="visual" role="tab" data-toggle="tab" data-actions="true"><f:translate key="preview.visualPreview" /></a></li>
+					<li role="presentation"><a href="#list" aria-controls="list" role="tab" data-toggle="tab" data-actions="false"><f:translate key="preview.listView" /></a></li>
+				</ul>
+			</div>
+			<div class="typo3-topbar-workspace-actions t3js-workspace-actions">
+				<div class="workspace-action">
+					<div class="slider-wrapper">
+						<b>Live</b><div
+						id="workspace-stage-slider"
+						data-slider-min="0"
+						data-slider-max="100"
+						data-slider-value="100"
+						style="width: 150px;"
+					></div>
+						<b>Workspace</b>
+					</div>
+				</div>
+				<div class="workspace-action t3js-stage-buttons">
+					<f:render partial="Preview/StageButtons" arguments="{_all}"/>
+				</div>
+				<div class="workspace-action t3js-preview-mode">
+					<div class="btn-group">
+						<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="t3js-active-preview-mode active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<f:for each="{splitPreviewModes}" as="mode">
+								<li><a href="#" data-preview-mode="{mode}"><span><f:translate key="preview.mode{mode -> f:format.case(mode: 'capital')}" /></span></a></li>
+							</f:for>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div role="tabpanel" class="workspace-panel">
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active workspaces preview-mode-slider" id="visual">
+				<div class="t3js-workspace-preview">
+					<iframe src="{liveUrl}" style="height: 0px;" id="live-view"></iframe>
+					<iframe src="{wsUrl}" id="workspace-view"></iframe>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane workspaces" id="list">
+				<iframe src="{wsSettingsUrl}" id="workspace-list"></iframe>
+			</div>
+		</div>
+
+	</div>
+</f:section>
+</html>

@@ -49,7 +49,7 @@ class ActionHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
         // Prepare parameter
         $parameter = new \stdClass();
         $parameter->additional = '';
-        $parameter->receipients = array();
+        $parameter->recipients = array();
         $parameter->comments = '';
 
         // Send to LIVE

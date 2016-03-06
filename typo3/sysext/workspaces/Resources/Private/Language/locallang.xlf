@@ -25,16 +25,19 @@
 				<source>Workspaces</source>
 			</trans-unit>
 			<trans-unit id="ok">
-				<source>ok</source>
+				<source>Ok</source>
 			</trans-unit>
 			<trans-unit id="cancel">
-				<source>cancel</source>
+				<source>Cancel</source>
 			</trans-unit>
 			<trans-unit id="chooseMassAction">
-				<source>choose Mass Action</source>
+				<source>Choose mass action</source>
+			</trans-unit>
+			<trans-unit id="chooseSelectionAction">
+				<source>Choose selection action</source>
 			</trans-unit>
 			<trans-unit id="chooseAction">
-				<source>choose Action</source>
+				<source>Choose staging action</source>
 			</trans-unit>
 			<trans-unit id="item">
 				<source>item</source>
@@ -97,6 +100,9 @@
 			<trans-unit id="tooltip.generatePagePreview">
 				<source>Generate page preview links</source>
 			</trans-unit>
+			<trans-unit id="tooltip.showChanges">
+				<source>Show changes</source>
+			</trans-unit>
 			<trans-unit id="previewLink">
 				<source>Preview Link</source>
 			</trans-unit>
@@ -125,22 +131,25 @@
 				<source>Changed</source>
 			</trans-unit>
 			<trans-unit id="column.uid">
-				<source>WS-Id</source>
+				<source>WS ID</source>
 			</trans-unit>
 			<trans-unit id="column.oid">
-				<source>Live-Id</source>
+				<source>Live ID</source>
 			</trans-unit>
 			<trans-unit id="column.workspaceName">
 				<source>Workspace</source>
 			</trans-unit>
 			<trans-unit id="column.livePath">
-				<source>Live-Path</source>
+				<source>Live path</source>
 			</trans-unit>
 			<trans-unit id="column.liveTitle">
-				<source>Live-Title</source>
+				<source>Live title</source>
 			</trans-unit>
 			<trans-unit id="column.wsSwapColumn">
 				<source>Swap workspace</source>
+			</trans-unit>
+			<trans-unit id="column.integrity">
+				<source>Integrity</source>
 			</trans-unit>
 			<trans-unit id="tooltip.viewElementAction">
 				<source>Preview element</source>
@@ -213,8 +222,29 @@
 			<trans-unit id="window.sendToNextStageWindow.additionalRecipients">
 				<source>Additional recipients</source>
 			</trans-unit>
+			<trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint">
+				<source>One recipient per line</source>
+			</trans-unit>
 			<trans-unit id="window.sendToNextStageWindow.comments">
 				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="window.recordChanges">
+				<source>Record changes</source>
+			</trans-unit>
+			<trans-unit id="window.recordInformation">
+				<source>Information for "{0}"</source>
+			</trans-unit>
+			<trans-unit id="window.recordChanges.tabs.changeSummary">
+				<source>Summary of changes</source>
+			</trans-unit>
+			<trans-unit id="window.recordChanges.tabs.comments">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="window.recordChanges.tabs.history">
+				<source>History</source>
+			</trans-unit>
+			<trans-unit id="window.recordHistory">
+				<source>History of record "{0}"</source>
 			</trans-unit>
 			<trans-unit id="error.getStageTitle.stageNotFound">
 				<source>Stage not found</source>

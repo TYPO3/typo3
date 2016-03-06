@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service for history
@@ -79,9 +81,15 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $differences = $this->getDifferences($entry);
         }
+
+        /** @var Avatar $avatar */
+        $avatar = GeneralUtility::makeInstance(Avatar::class);
+        $beUserRecord = BackendUtility::getRecord('be_users', $entry['user']);
+
         return array(
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
             'user' => htmlspecialchars($this->getUserName($entry['user'])),
+            'user_avatar' => $avatar->render($beUserRecord),
             'differences' => $differences
         );
     }

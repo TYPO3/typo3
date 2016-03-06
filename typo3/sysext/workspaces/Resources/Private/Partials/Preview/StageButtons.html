@@ -1,0 +1,11 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{enablePreviousStageButton}">
+	<input type="button" class="btn btn-sm btn-default" value="{prevStage}" data-stage-id="{prevStageId}" data-action="send-to-stage" data-direction="prev">
+</f:if>
+<f:if condition="{enableNextStageButton}">
+	<input type="button" class="btn btn-sm btn-success" value="{nextStage}" data-stage-id="{nextStageId}" data-action="send-to-stage" data-direction="next">
+</f:if>
+<f:if condition="{enableDiscardStageButton}">
+	<input type="button" class="btn btn-sm btn-danger" value="{f:translate(key: 'label_doaction_discard')}" data-action="discard">
+</f:if>
+</html>

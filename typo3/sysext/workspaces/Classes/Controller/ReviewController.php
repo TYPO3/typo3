@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Workspaces\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -66,26 +70,25 @@ class ReviewController extends AbstractController
      */
     public function indexAction()
     {
+        $backendUser = $this->getBackendUser();
+        $moduleTemplate = $this->view->getModuleTemplate();
+
         /** @var WorkspaceService $wsService */
         $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
-        $this->view->assign('showAllWorkspaceTab', true);
-        $this->view->assign('pageUid', GeneralUtility::_GP('id'));
         if (GeneralUtility::_GP('id')) {
             $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
             if ($pageRecord) {
-                $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+                $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
                 $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
             }
         }
-        $this->view->assign('showLegend', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
         $wsList = $wsService->getAvailableWorkspaces();
-        $activeWorkspace = $GLOBALS['BE_USER']->workspace;
+        $activeWorkspace = $backendUser->workspace;
         $performWorkspaceSwitch = false;
         // Only admins see multiple tabs, we decided to use it this
         // way for usability reasons. Regular users might be confused
         // by switching workspaces with the tabs in a module.
-        if (!$GLOBALS['BE_USER']->isAdmin()) {
+        if (!$backendUser->isAdmin()) {
             $wsCur = array($activeWorkspace => true);
             $wsList = array_intersect_key($wsList, $wsCur);
         } else {
@@ -93,7 +96,7 @@ class ReviewController extends AbstractController
                 $switchWs = (int)GeneralUtility::_GP('workspace');
                 if (in_array($switchWs, array_keys($wsList)) && $activeWorkspace != $switchWs) {
                     $activeWorkspace = $switchWs;
-                    $GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
+                    $backendUser->setWorkspace($activeWorkspace);
                     $performWorkspaceSwitch = true;
                     BackendUtility::setUpdateSignal('updatePageTree');
                 } elseif ($switchWs == WorkspaceService::SELECT_ALL_WORKSPACES) {
@@ -101,26 +104,33 @@ class ReviewController extends AbstractController
                 }
             }
         }
-        $this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$GLOBALS['BE_USER']->workspace === 0);
+        $this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$backendUser->workspace === 0);
         $this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, $activeWorkspace));
         $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', $activeWorkspace);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-        $this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
-        $this->view->assign('workspaceList', $wsList);
-        $this->view->assign('activeWorkspaceUid', $activeWorkspace);
-        $this->view->assign('activeWorkspaceTitle', WorkspaceService::getWorkspaceTitle($activeWorkspace));
+        $workspaceIsAccessible = !($backendUser->workspace === 0 && !$backendUser->isAdmin());
+        $this->view->assignMultiple([
+            'showGrid' => $workspaceIsAccessible,
+            'showLegend' => $workspaceIsAccessible,
+            'pageUid' => (int)GeneralUtility::_GP('id'),
+            'performWorkspaceSwitch' => $performWorkspaceSwitch,
+            'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace),
+            'activeWorkspaceUid' => $activeWorkspace,
+            'activeWorkspaceTitle' => WorkspaceService::getWorkspaceTitle($activeWorkspace),
+            'showPreviewLink' => $wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace)
+        ]);
+
         if ($wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace)) {
-            $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-            $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
+            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+            $iconFactory = $moduleTemplate->getIconFactory();
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
-                ->setOnClick('TYPO3.Workspaces.Actions.generateWorkspacePreviewLinksForAllLanguages();return false;')
+                ->setClasses('t3js-preview-link')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
                 ->setIcon($iconFactory->getIcon('module-workspaces-action-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }
-        $this->view->assign('showPreviewLink', $wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace));
-        $GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
+        $backendUser->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
     }
 
     /**
@@ -131,25 +141,26 @@ class ReviewController extends AbstractController
      */
     public function fullIndexAction()
     {
-        $wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
         $wsList = $wsService->getAvailableWorkspaces();
 
-        if (!$GLOBALS['BE_USER']->isAdmin()) {
-            $activeWorkspace = $GLOBALS['BE_USER']->workspace;
+        $activeWorkspace = $this->getBackendUser()->workspace;
+        if (!$this->getBackendUser()->isAdmin()) {
             $wsCur = array($activeWorkspace => true);
             $wsList = array_intersect_key($wsList, $wsCur);
         }
 
         $this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, WorkspaceService::SELECT_ALL_WORKSPACES));
         $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', WorkspaceService::SELECT_ALL_WORKSPACES);
-        $this->view->assign('pageUid', GeneralUtility::_GP('id'));
-        $this->view->assign('showGrid', true);
-        $this->view->assign('showLegend', true);
-        $this->view->assign('showAllWorkspaceTab', true);
-        $this->view->assign('workspaceList', $wsList);
-        $this->view->assign('activeWorkspaceUid', WorkspaceService::SELECT_ALL_WORKSPACES);
-        $this->view->assign('showPreviewLink', false);
-        $GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', WorkspaceService::SELECT_ALL_WORKSPACES);
+        $this->view->assignMultiple([
+            'pageUid' => (int)GeneralUtility::_GP('id'),
+            'showGrid' => true,
+            'showLegend' => true,
+            'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace),
+            'activeWorkspaceUid' => WorkspaceService::SELECT_ALL_WORKSPACES,
+            'showPreviewLink', false
+        ]);
+        $this->getBackendUser()->setAndSaveSessionData('tx_workspace_activeWorkspace', WorkspaceService::SELECT_ALL_WORKSPACES);
         // set flag for javascript
         $this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
     }
@@ -162,17 +173,19 @@ class ReviewController extends AbstractController
      */
     public function singleIndexAction()
     {
-        $wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
         $wsList = $wsService->getAvailableWorkspaces();
-        $activeWorkspace = $GLOBALS['BE_USER']->workspace;
+        $activeWorkspace = $this->getBackendUser()->workspace;
         $wsCur = array($activeWorkspace => true);
         $wsList = array_intersect_key($wsList, $wsCur);
         $backendDomain = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-        $this->view->assign('pageUid', GeneralUtility::_GP('id'));
-        $this->view->assign('showGrid', true);
-        $this->view->assign('showAllWorkspaceTab', false);
-        $this->view->assign('workspaceList', $wsList);
-        $this->view->assign('backendDomain', $backendDomain);
+        $this->view->assignMultiple([
+            'pageUid' => (int)GeneralUtility::_GP('id'),
+            'showGrid' => true,
+            'workspaceList' => $this->prepareWorkspaceTabs($wsList, $activeWorkspace, false),
+            'activeWorkspaceUid' => $activeWorkspace,
+            'backendDomain' => $backendDomain
+        ]);
         // Setting the document.domain early before JavScript
         // libraries are loaded, try to access top frame reference
         // and possibly run into some CORS issue
@@ -194,68 +207,30 @@ class ReviewController extends AbstractController
         $backendRelPath = ExtensionManagementUtility::extRelPath('backend');
         $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         if (WorkspaceService::isOldStyleWorkspaceUsed()) {
-            $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', FlashMessage::WARNING);
+            /** @var $flashMessageService FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        $this->pageRenderer->loadExtJS();
-        $states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
+        $this->pageRenderer->loadExtJS(false, false);
+        $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
         // Load  JavaScript:
         $this->pageRenderer->addExtDirectCode(array(
             'TYPO3.Workspaces'
         ));
-        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.grid.RowExpander.js');
-        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.app.SearchField.js');
-        $this->pageRenderer->addJsFile($backendRelPath . 'Resources/Public/JavaScript/extjs/ux/Ext.ux.FitToParent.js');
-        $resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 
-        // @todo Integrate additional stylesheet resources
-        $this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
-        $this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/RangeMenu.css');
-
-        $filters = array(
-            $resourcePath . 'gridfilters/menu/RangeMenu.js',
-            $resourcePath . 'gridfilters/menu/ListMenu.js',
-            $resourcePath . 'gridfilters/GridFilters.js',
-            $resourcePath . 'gridfilters/filter/Filter.js',
-            $resourcePath . 'gridfilters/filter/StringFilter.js',
-            $resourcePath . 'gridfilters/filter/DateFilter.js',
-            $resourcePath . 'gridfilters/filter/ListFilter.js',
-            $resourcePath . 'gridfilters/filter/NumericFilter.js',
-            $resourcePath . 'gridfilters/filter/BooleanFilter.js',
-            $resourcePath . 'gridfilters/filter/BooleanFilter.js',
-        );
-
-        $custom = $this->getAdditionalResourceService()->getJavaScriptResources();
-
-        $resources = array(
-            $resourcePath . 'Component/RowDetailTemplate.js',
-            $resourcePath . 'Component/RowExpander.js',
-            $resourcePath . 'Component/TabPanel.js',
-            $resourcePath . 'Store/mainstore.js',
-            $resourcePath . 'configuration.js',
-            $resourcePath . 'helpers.js',
-            $resourcePath . 'actions.js',
-            $resourcePath . 'component.js',
-            $resourcePath . 'toolbar.js',
-            $resourcePath . 'grid.js',
-            $resourcePath . 'workspaces.js'
-        );
-
-        $javaScriptFiles = array_merge($filters, $custom, $resources);
-
-        foreach ($javaScriptFiles as $javaScriptFile) {
-            $this->pageRenderer->addJsFile($javaScriptFile);
-        }
         foreach ($this->getAdditionalResourceService()->getLocalizationResources() as $localizationResource) {
             $this->pageRenderer->addInlineLanguageLabelFile($localizationResource);
         }
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
+        $this->pageRenderer->addInlineSetting('Workspaces', 'token', FormProtectionFactory::get('backend')->generateToken('extDirect'));
+        $this->pageRenderer->addInlineSetting('Workspaces', 'id', (int)GeneralUtility::_GP('id'));
     }
 
     /**
@@ -263,9 +238,10 @@ class ReviewController extends AbstractController
      *
      * @param array $workspaceList
      * @param int $activeWorkspace
+     * @param bool $showAllWorkspaceTab
      * @return array
      */
-    protected function prepareWorkspaceTabs(array $workspaceList, $activeWorkspace)
+    protected function prepareWorkspaceTabs(array $workspaceList, $activeWorkspace, $showAllWorkspaceTab = true)
     {
         $tabs = array();
 
@@ -278,12 +254,14 @@ class ReviewController extends AbstractController
             );
         }
 
-        $tabs[] = array(
-            'title' => 'All workspaces',
-            'itemId' => 'workspace-' . WorkspaceService::SELECT_ALL_WORKSPACES,
-            'workspaceId' => WorkspaceService::SELECT_ALL_WORKSPACES,
-            'triggerUrl' => $this->getModuleUri(WorkspaceService::SELECT_ALL_WORKSPACES),
-        );
+        if ($showAllWorkspaceTab) {
+            $tabs[] = array(
+                'title' => 'All workspaces',
+                'itemId' => 'workspace-' . WorkspaceService::SELECT_ALL_WORKSPACES,
+                'workspaceId' => WorkspaceService::SELECT_ALL_WORKSPACES,
+                'triggerUrl' => $this->getModuleUri(WorkspaceService::SELECT_ALL_WORKSPACES),
+            );
+        }
 
         foreach ($workspaceList as $workspaceId => $workspaceTitle) {
             if ($workspaceId === $activeWorkspace) {
@@ -327,5 +305,13 @@ class ReviewController extends AbstractController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

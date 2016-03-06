@@ -39,6 +39,7 @@ module.exports = function(grunt) {
 			install   : '<%= paths.sysext %>install/Resources/',
 			linkvalidator : '<%= paths.sysext %>linkvalidator/Resources/',
 			backend   : '<%= paths.sysext %>backend/Resources/',
+			workspaces: '<%= paths.sysext %>workspaces/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			flags     : 'bower_components/region-flags/svg/',
 			t3icons   : 'bower_components/wmdbsystems-typo3-icons/dist/'
@@ -77,6 +78,11 @@ module.exports = function(grunt) {
 				files: {
 					"<%= paths.linkvalidator %>Public/Css/linkvalidator.css": "<%= paths.less %>linkvalidator.less"
 				}
+			},
+			workspaces: {
+				files: {
+					"<%= paths.workspaces %>Public/Css/preview.css": "<%= paths.workspaces %>Private/Less/preview.less"
+				}
 			}
 		},
 		postcss: {
@@ -109,6 +115,9 @@ module.exports = function(grunt) {
 			},
 			linkvalidator: {
 				src: '<%= paths.linkvalidator %>Public/Css/*.css'
+			},
+			workspaces: {
+				src: '<%= paths.workspaces %>Public/Css/*.css'
 			}
 		},
 		watch: {

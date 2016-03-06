@@ -163,8 +163,10 @@ class GridDataService
                     $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
                     $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
                     $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
+                    $versionArray['value_nextStage'] = (int)$tempStage['uid'];
                     $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
                     $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
+                    $versionArray['value_prevStage'] = (int)$tempStage['uid'];
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                     $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath($record['wspid'], '', 999));
                     $versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));

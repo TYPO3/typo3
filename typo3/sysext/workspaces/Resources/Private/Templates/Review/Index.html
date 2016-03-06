@@ -1,18 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="module" />
 
 <f:section name="main">
 
-<f:if condition="{performWorkspaceSwitch}">
-<script type="text/javascript">
-	top.TYPO3.ModuleMenu.App.refreshMenu();
-	top.TYPO3.WorkspacesMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
-</script>
-</f:if>
+	<f:if condition="{performWorkspaceSwitch}">
+		<script type="text/javascript">
+			top.TYPO3.ModuleMenu.App.refreshMenu();
+			top.TYPO3.WorkspacesMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
+		</script>
+	</f:if>
 
-<f:if condition="{showGrid}">
-	<f:then><div id="workspacegrid"></div>
-	</f:then>
-	<f:else><f:translate key="editorInLive" /></f:else>
-</f:if>
+	<f:if condition="{showGrid}">
+		<f:then>
+			<f:render partial="WorkingTable" arguments="{_all}" />
+		</f:then>
+		<f:else>
+			<f:be.infobox message="{f:translate(key: 'editorInLive')}" state="-1" />
+		</f:else>
+	</f:if>
 
 </f:section>
+</html>
