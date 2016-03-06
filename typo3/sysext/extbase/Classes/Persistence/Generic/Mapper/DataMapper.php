@@ -698,12 +698,15 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         } elseif ($input instanceof \DateTime) {
             if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();
+                $timeZoneToStore = clone $input;
+                // set to UTC to store in database
+                $timeZoneToStore->setTimezone(new \DateTimeZone('UTC'));
                 switch ($storageFormat) {
                     case 'datetime':
-                        $parameter = $input->format('Y-m-d H:i:s');
+                        $parameter = $timeZoneToStore->format('Y-m-d H:i:s');
                         break;
                     case 'date':
-                        $parameter = $input->format('Y-m-d');
+                        $parameter = $timeZoneToStore->format('Y-m-d');
                         break;
                     default:
                         throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are datetime or date.', 1395353470);

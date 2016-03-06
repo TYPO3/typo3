@@ -90,7 +90,7 @@ CREATE TABLE tx_blogexample_domain_model_comment (
 
 	post int(11) DEFAULT '0' NOT NULL,
 
-	date int(11) DEFAULT '0' NOT NULL,
+	date datetime,
 	author varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	content text NOT NULL,

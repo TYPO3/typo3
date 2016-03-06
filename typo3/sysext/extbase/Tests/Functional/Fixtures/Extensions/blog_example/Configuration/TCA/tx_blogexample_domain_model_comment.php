@@ -29,6 +29,7 @@ return array(
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment.date',
             'config' => array(
                 'type' => 'input',
+                'dbType' => 'datetime',
                 'size' => 12,
                 'eval' => 'datetime, required',
                 'default' => time()
