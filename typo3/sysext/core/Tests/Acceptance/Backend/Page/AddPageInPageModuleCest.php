@@ -62,5 +62,4 @@ class AddPageInPageModuleCest
         $I->assertNotEquals(false, strpos($classString, 'has-validation-error'));
         $I->switchToIFrame();
     }
-
 }

@@ -9,6 +9,8 @@ modules:
       url: http://localhost:8000/typo3temp/var/tests/acceptance
       browser: phantomjs
       window_size: 1440x570
+      wait: 1
+      restart: true
 env:
   firefox:
     modules:

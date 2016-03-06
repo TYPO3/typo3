@@ -57,11 +57,11 @@ class CreateASchedulerTaskCest
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->click("div.module button.dropdown-toggle");
         $I->click("//a[contains(@data-value,'saveclose')]");
-        $I->see('The task was added successfully.');
+        $I->waitForText('The task was added successfully.');
 
         // run the task
         $I->click("//a[contains(@title, 'Run task')]");
-        $I->see('Executed: System Status Update');
+        $I->waitForText('Executed: System Status Update');
 
         // leave the iframe
         $I->switchToIFrame();

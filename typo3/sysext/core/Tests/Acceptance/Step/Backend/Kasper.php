@@ -70,8 +70,9 @@ class Kasper extends \AcceptanceTester
         $I->fillField('#t3-username', $username);
         $I->fillField('#t3-password', $password);
         $I->click('#t3-login-submit-section > button');
-        $I->see('Verifying Login Data');
-        $I->waitForElement('.nav');
+        // wait for the next to element to indicate if the backend was loaded successful
+        $I->waitForElement('.nav', 30);
+        $I->waitForElement('#typo3-contentContainer iframe', 30);
         $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
     }

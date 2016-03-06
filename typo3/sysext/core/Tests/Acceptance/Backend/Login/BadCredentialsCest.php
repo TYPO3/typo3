@@ -49,7 +49,7 @@ class BadCredentialsCest
         $I->fillField('#t3-username', 'testify');
         $I->fillField('#t3-password', '123456');
         $I->click('#t3-login-submit-section > button');
-        $I->see('Verifying Login Data');
+        $I->waitForText('Verifying Login Data');
         $I->waitForElement('#t3-login-error');
         $I->see('Your login attempt did not succeed');
     }
