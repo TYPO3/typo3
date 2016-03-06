@@ -333,6 +333,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
             $currentTimeZone = new \DateTimeZone(date_default_timezone_get());
             return $utcDateTime->setTimezone($currentTimeZone);
         } else {
+            // integer timestamps are local server time
             return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, date('c', $value));
         }
     }

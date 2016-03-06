@@ -2,6 +2,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Comment;
+use ExtbaseTeam\BlogExample\Domain\Model\DateExample;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -56,5 +57,64 @@ class DataMapperTest extends FunctionalTestCase
         $existingComment = $this->persistenceManager->getObjectByIdentifier($uid, Comment::class);
 
         $this->assertEquals($date->getTimestamp(), $existingComment->getDate()->getTimestamp());
+    }
+    /**
+     * @test
+     */
+    public function dateValuesAreStoredInUtcInIntegerDatabaseFields()
+    {
+        $example = new DateExample();
+        $date = new \DateTime('2016-03-06T12:40:00+01:00');
+        $example->setDatetimeInt($date);
+
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($example);
+        $this->persistenceManager->clearState();
+
+        /** @var DateExample $example */
+        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+
+        $this->assertEquals($example->getDatetimeInt()->getTimestamp(), $date->getTimestamp());
+    }
+
+    /**
+     * @test
+     */
+    public function dateValuesAreStoredInUtcInTextDatabaseFields()
+    {
+        $example = new DateExample();
+        $date = new \DateTime('2016-03-06T12:40:00+01:00');
+        $example->setDatetimeText($date);
+
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($example);
+        $this->persistenceManager->clearState();
+
+        /** @var DateExample $example */
+        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+
+        $this->assertEquals($example->getDatetimeText()->getTimestamp(), $date->getTimestamp());
+    }
+
+    /**
+     * @test
+     */
+    public function dateValuesAreStoredInUtcInDatetimeDatabaseFields()
+    {
+        $example = new DateExample();
+        $date = new \DateTime('2016-03-06T12:40:00+01:00');
+        $example->setDatetimeDatetime($date);
+
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $uid = $this->persistenceManager->getIdentifierByObject($example);
+        $this->persistenceManager->clearState();
+
+        /** @var DateExample $example */
+        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+
+        $this->assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
     }
 }
