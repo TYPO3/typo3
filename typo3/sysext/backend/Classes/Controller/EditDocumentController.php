@@ -638,14 +638,35 @@ class EditDocumentController extends AbstractModule
                 // Finding the first id, getting the records pid+uid
                 reset($this->editconf[$nTable]);
                 $nUid = key($this->editconf[$nTable]);
-                $nRec = BackendUtility::getRecord($nTable, $nUid, 'pid,uid');
+                $recordFields = 'pid,uid';
+                if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
+                    $recordFields .= ',t3ver_oid';
+                }
+                $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
+                // Determine insertion mode ('top' is self-explaining,
+                // otherwise new elements are inserted after one using a negative uid)
+                $insertRecordOnTop = ($this->getNewIconMode($nTable) == 'top');
                 // Setting a blank editconf array for a new record:
                 $this->editconf = array();
-                if ($this->getNewIconMode($nTable) == 'top') {
-                    $this->editconf[$nTable][$nRec['pid']] = 'new';
+                // Determine related page ID for regular live context
+                if ($nRec['pid'] != -1) {
+                    if ($insertRecordOnTop) {
+                        $relatedPageId = $nRec['pid'];
+                    } else {
+                        $relatedPageId = -$nRec['uid'];
+                    }
+                // Determine related page ID for workspace context
                 } else {
-                    $this->editconf[$nTable][-$nRec['uid']] = 'new';
+                    if ($insertRecordOnTop) {
+                        // Fetch live version of workspace version since the pid value is always -1 in workspaces
+                        $liveRecord = BackendUtility::getRecord($nTable, $nRec['t3ver_oid'], $recordFields);
+                        $relatedPageId = $liveRecord['pid'];
+                    } else {
+                        // Use uid of live version of workspace version
+                        $relatedPageId = -$nRec['t3ver_oid'];
+                    }
                 }
+                $this->editconf[$nTable][$relatedPageId] = 'new';
                 // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
                 $this->R_URL_getvars['edit'] = $this->editconf;
                 // Re-compile the store* values since editconf changed...
