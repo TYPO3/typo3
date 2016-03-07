@@ -1,0 +1,7 @@
+<form action="{moduleName}" method="post" id="PageFunctionsController">
+    <input type="hidden" name="id" value="{id}" />
+    <f:if condition="{versionSelector}">
+        <div><f:format.raw>{versionSelector}</f:format.raw></div>
+    </f:if>
+    <f:format.raw>{functionMenuModuleContent}</f:format.raw>
+</form>

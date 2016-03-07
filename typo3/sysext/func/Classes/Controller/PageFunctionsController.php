@@ -63,6 +63,11 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected $iconFactory;
 
     /**
+     * @var StandaloneView
+     */
+    protected $view;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -125,28 +130,27 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            $this->content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" id="PageFunctionsController" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
-            $vContent = $this->moduleTemplate->getVersionSelector($this->id, true);
-            if ($vContent) {
-                $this->content .= '<div>' . $vContent . '</div>';
-            }
-            $this->extObjContent();
+
+            $this->view = $this->getFluidTemplateObject('func', 'func');
+            $this->view->assign('moduleName', BackendUtility::getModuleUrl('web_func'));
+            $this->view->assign('id', $this->id);
+            $this->view->assign('versionSelector', $this->moduleTemplate->getVersionSelector($this->id, true));
+            $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
-            $this->content .= '</form>';
+            $this->content .= $this->view->render();
         } else {
             // If no access or if ID == zero
             $title = $this->getLanguageService()->getLL('title');
             $message = $this->getLanguageService()->getLL('clickAPage_content');
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:func/Resources/Private/Templates/InfoBox.html'));
-            $view->assignMultiple(array(
+            $this->view = $this->getFluidTemplateObject('func', 'func', 'InfoBox');
+            $this->view->assignMultiple(array(
                 'title' => $title,
                 'message' => $message,
                 'state' => InfoboxViewHelper::STATE_INFO
             ));
-            $this->content = $view->render();
+            $this->content = $this->view->render();
             // Setting up the buttons and markers for docheader
             $this->getButtons();
         }
@@ -230,5 +234,27 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * returns a new standalone view, shorthand function
+     *
+     * @param string $extensionName
+     * @param string $controllerExtensionname
+     * @param string $templateName
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject($extensionName, $controllerExtensionName, $templateName = 'Main')
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Layouts')));
+        $view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Partials')));
+        $view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Templates')));
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:' . $extensionName . '/Resources/Private/Templates/' . $templateName . '.html'));
+
+        $view->getRequest()->setControllerExtensionName($controllerExtensionName);
+        return $view;
     }
 }
