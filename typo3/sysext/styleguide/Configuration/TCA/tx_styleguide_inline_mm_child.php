@@ -19,7 +19,10 @@ return [
         'origUid' => 't3_origuid',
     ],
 
+
     'columns' => [
+
+
         'sys_language_uid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
@@ -61,6 +64,7 @@ return [
                 'default' => '0'
             ]
         ],
+
 
         'title' => [
             'exclude' => 1,
@@ -112,7 +116,10 @@ return [
                 ],
             ]
         ],
+
+
     ],
+
 
     'types' => [
         '0' => [
@@ -122,4 +129,6 @@ return [
             '
         ]
     ],
+
+
 ];
