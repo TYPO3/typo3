@@ -277,14 +277,14 @@ return [
 
         'inline_1' => [
             'exclude' => 1,
-            'label' => 'inline_1 minitems=1, maxitems=3',
+            'label' => 'inline_1 minitems=1, maxitems=1',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_required_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'minitems' => 1,
-                'maxitems' => 3,
+                'maxitems' => 1,
             ],
         ],
         'inline_2' => [
