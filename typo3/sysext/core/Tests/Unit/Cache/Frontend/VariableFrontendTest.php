@@ -75,24 +75,6 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function setUsesIgBinarySerializeIfAvailable()
-    {
-        if (!extension_loaded('igbinary')) {
-            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-        }
-
-        $theString = 'Just some value';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-        $backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
-
-        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $cache->initializeObject();
-        $cache->set('VariableCacheTest', $theString);
-    }
-
-    /**
-     * @test
-     */
     public function getFetchesStringValueFromBackend()
     {
         $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
@@ -125,25 +107,6 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         $this->assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
-    }
-
-    /**
-     * @test
-     */
-    public function getUsesIgBinaryIfAvailable()
-    {
-        if (!extension_loaded('igbinary')) {
-            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-        }
-
-        $theArray = array('Just some value', 'and another one.');
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-        $backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
-
-        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $cache->initializeObject();
-
-        $this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
     }
 
     /**
@@ -199,28 +162,6 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(serialize('one value'), serialize('two value')));
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
-    }
-
-    /**
-     * @test
-     */
-    public function getByTagUsesIgBinaryIfAvailable()
-    {
-        if (!extension_loaded('igbinary')) {
-            $this->markTestSkipped('Cannot test igbinary support, because igbinary is not installed.');
-        }
-
-        $tag = 'sometag';
-        $identifiers = array('one', 'two');
-        $entries = array('one value', 'two value');
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class, array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', false);
-
-        $backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
-        $backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
-
-        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $cache->initializeObject();
         $this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
     }
 }

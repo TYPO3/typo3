@@ -78,11 +78,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
             $this->cacheEntryIdentifiers[$entryIdentifier] = true;
             file_put_contents($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension, $this->get($entryIdentifier));
         }
-        if ($this->useIgBinary === true) {
-            file_put_contents($this->cacheDirectory . 'FrozenCache.data', igbinary_serialize($this->cacheEntryIdentifiers));
-        } else {
-            file_put_contents($this->cacheDirectory . 'FrozenCache.data', serialize($this->cacheEntryIdentifiers));
-        }
+        file_put_contents($this->cacheDirectory . 'FrozenCache.data', serialize($this->cacheEntryIdentifiers));
         $this->frozen = true;
     }
 
@@ -115,11 +111,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         parent::setCache($cache);
         if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
             $this->frozen = true;
-            if ($this->useIgBinary === true) {
-                $this->cacheEntryIdentifiers = igbinary_unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
-            } else {
-                $this->cacheEntryIdentifiers = unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
-            }
+            $this->cacheEntryIdentifiers = unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
         }
     }
 
@@ -394,7 +386,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
                 return false;
             }
         } else {
-            $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
             if ($entryIdentifier !== basename($entryIdentifier)) {
                 throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
             }

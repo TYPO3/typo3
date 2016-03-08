@@ -18,29 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A cache frontend for any kinds of PHP variables
- *
- * This file is a backport from FLOW3
- * @api
  */
 class VariableFrontend extends AbstractFrontend
 {
-    /**
-     * If the extension "igbinary" is installed, use it for increased performance.
-     * Caching the result of extension_loaded() here is faster than calling extension_loaded() multiple times.
-     *
-     * @var bool
-     */
-    protected $useIgBinary = false;
-
-    /**
-     * Initializes this cache frontend
-     *
-     * @return void
-     */
-    public function initializeObject()
-    {
-        $this->useIgBinary = extension_loaded('igbinary');
-    }
 
     /**
      * Saves the value of a PHP variable in the cache. Note that the variable
@@ -57,7 +37,10 @@ class VariableFrontend extends AbstractFrontend
     public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = null)
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-            throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058264);
+            throw new \InvalidArgumentException(
+                '"' . $entryIdentifier . '" is not a valid cache entry identifier.',
+                1233058264
+            );
         }
         foreach ($tags as $tag) {
             if (!$this->isValidTag($tag)) {
@@ -75,17 +58,14 @@ class VariableFrontend extends AbstractFrontend
                 GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
         }
-        if ($this->useIgBinary === true) {
-            $this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);
-        } else {
-            $this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
-        }
+        $this->backend->set($entryIdentifier, serialize($variable), $tags, $lifetime);
     }
 
     /**
      * Finds and returns a variable value from the cache.
      *
      * @param string $entryIdentifier Identifier of the cache entry to fetch
+     *
      * @return mixed The value
      * @throws \InvalidArgumentException if the identifier is not valid
      * @api
@@ -93,13 +73,16 @@ class VariableFrontend extends AbstractFrontend
     public function get($entryIdentifier)
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-            throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058294);
+            throw new \InvalidArgumentException(
+                '"' . $entryIdentifier . '" is not a valid cache entry identifier.',
+                1233058294
+            );
         }
         $rawResult = $this->backend->get($entryIdentifier);
         if ($rawResult === false) {
             return false;
         } else {
-            return $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+            return unserialize($rawResult);
         }
     }
 
@@ -107,6 +90,7 @@ class VariableFrontend extends AbstractFrontend
      * Finds and returns all cache entries which are tagged by the specified tag.
      *
      * @param string $tag The tag to search for
+     *
      * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if the tag is not valid
      * @api
@@ -121,7 +105,7 @@ class VariableFrontend extends AbstractFrontend
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);
             if ($rawResult !== false) {
-                $entries[] = $this->useIgBinary === true ? igbinary_unserialize($rawResult) : unserialize($rawResult);
+                $entries[] = unserialize($rawResult);
             }
         }
         return $entries;

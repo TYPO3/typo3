@@ -63,24 +63,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     protected $frozen = false;
 
     /**
-     * If the extension "igbinary" is installed, use it for increased performance.
-     * Caching the result of extension_loaded() here is faster than calling extension_loaded() multiple times.
-     *
-     * @var bool
-     */
-    protected $useIgBinary = false;
-
-    /**
-     * Initializes this cache frontend
-     *
-     * @return void
-     */
-    public function initializeObject()
-    {
-        $this->useIgBinary = extension_loaded('igbinary');
-    }
-
-    /**
      * Sets a reference to the cache frontend which uses this backend and
      * initializes the default cache directory.
      *
