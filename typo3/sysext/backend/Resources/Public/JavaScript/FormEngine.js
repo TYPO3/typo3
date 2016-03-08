@@ -567,7 +567,7 @@ define(['jquery',
 		FormEngine.initializeSelectCheckboxes();
 
 		// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
-		$(document).on('click', '.t3-btn-moveoption-top, .t3-btn-moveoption-up, .t3-btn-moveoption-down, .t3-btn-moveoption-bottom, .t3-btn-removeoption', function(evt) {
+		$(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
 			evt.preventDefault();
 
 			var $el = $(this)
