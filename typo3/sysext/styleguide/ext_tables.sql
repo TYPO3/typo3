@@ -1968,7 +1968,7 @@ CREATE TABLE tx_styleguide_type (
 );
 
 
-CREATE TABLE tx_styleguide_values_default (
+CREATE TABLE tx_styleguide_valuesdefault (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
