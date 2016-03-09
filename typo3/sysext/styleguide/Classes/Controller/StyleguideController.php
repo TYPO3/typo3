@@ -14,10 +14,14 @@ namespace TYPO3\CMS\Styleguide\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
@@ -25,6 +29,71 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
  */
 class StyleguideController extends ActionController
 {
+
+    /**
+     * Backend Template Container.
+     * Takes care of outer "docheader" and other stuff this module is embedded in.
+     *
+     * @var string
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * BackendTemplateContainer
+     *
+     * @var BackendTemplateView
+     */
+    protected $view;
+
+    /**
+     * Method is called before each action and sets up the doc header.
+     *
+     * @param ViewInterface $view
+     * @return void
+     */
+    protected function initializeView(ViewInterface $view)
+    {
+        parent::initializeView($view);
+
+        $languageService = $this->getLanguageService();
+
+        // Main drop down menu in doc header
+        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('StyleguideModuleMenu');
+        $actions = [
+            'index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
+            'infobox', 'flashMessages', 'icons', 'debug', 'helpers',
+        ];
+        foreach ($actions as $action) {
+            $menuItem = $menu->makeMenuItem();
+
+            $menuItem->setTitle($languageService->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:' . $action));
+
+            $uriBuilder = $this->objectManager->get(UriBuilder::class);
+            $uriBuilder->setRequest($this->request);
+            $menuItem->setHref($uriBuilder->reset()->uriFor($action, [], 'Styleguide'));
+
+            $isActive = $this->request->getControllerActionName() === $action ? true : false;
+            $menuItem->setActive($isActive);
+
+            $menu->addMenuItem($menuItem);
+        }
+        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
+        // Shortcut button
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $getVars = $this->request->getArguments();
+        $extensionName = $this->request->getControllerExtensionName();
+        $moduleName = $this->request->getPluginName();
+        if (count($getVars) === 0) {
+            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+            $getVars = array('id', 'M', $modulePrefix);
+        }
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($moduleName)
+            ->setGetVariables($getVars);
+        $buttonBar->addButton($shortcutButton);
+    }
 
     /**
      * Buttons
@@ -136,7 +205,7 @@ class StyleguideController extends ActionController
     public function tabAction()
     {
         /** @var \TYPO3\CMS\Backend\Template\ModuleTemplate */
-        $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $module = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
 
         $menuItems = array(
             0 => array(
@@ -154,6 +223,14 @@ class StyleguideController extends ActionController
         );
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
 }
