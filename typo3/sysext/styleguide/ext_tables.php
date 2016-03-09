@@ -19,6 +19,43 @@ if (TYPO3_MODE === 'BE') {
         ]
     );
 
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    // Register styleguide svg for use within backend module
+    $iconRegistry->registerIcon(
+        'tcarecords-tx_styleguide_forms-default',
+        TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg' ]
+    );
+    // Register example SVG for icon submodule
+    $iconRegistry->registerIcon(
+        'provider-svg',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_svg_icon.svg',]
+    );
+    // Register example Bitmap for icon submodule
+    $iconRegistry->registerIcon(
+        'provider-bitmap',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        [ 'source' => 'EXT:styleguide/Resources/Public/Icons/provider_bitmap_icon.png' ]
+    );
+    // Register example FontAwesome for icon submodule
+    $iconRegistry->registerIcon(
+        'provider-fontawesome',
+        \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+        [ 'name' => 'desktop' ]
+    );
+    // Register example FontAwesome for icon submodule
+    $iconRegistry->registerIcon(
+        'provider-fontawesome-spinner',
+        \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+        [
+            'name' => 'spinner',
+            'spinning' => TRUE
+        ]
+    );
+
+
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_elements_basic');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_elements_forms');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_elements_group');

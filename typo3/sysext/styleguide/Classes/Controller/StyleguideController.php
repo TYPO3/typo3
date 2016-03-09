@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Styleguide\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
@@ -78,7 +80,17 @@ class StyleguideController extends ActionController
      */
     public function iconsAction()
     {
-        $this->view->assign('icons', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']);
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+        $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
+        $this->view->assign('allIcons', $allIcons);
+
+        $overlays = [];
+        foreach ($allIcons as $key) {
+            if (substr($key, 0, strlen('overlay')) === 'overlay') {
+                $overlays[] = $key;
+            }
+        }
+        $this->view->assign('overlays', $overlays);
     }
 
     /**
