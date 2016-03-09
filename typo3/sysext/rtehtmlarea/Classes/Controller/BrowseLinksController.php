@@ -292,6 +292,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     }
                 }
             }
+            if (isset($this->linkAttributeValues['class'])
+                && isset($classesAnchor[$this->displayedLinkHandlerId])
+                && !in_array($this->linkAttributeValues['class'], $classesAnchor[$this->displayedLinkHandlerId], true)
+            ) {
+                unset($this->linkAttributeValues['class']);
+            }
             // Constructing the class selector options
             foreach ($classesAnchorArray as $class) {
                 if (!in_array($class, $classesAnchor['all']) || in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$this->displayedLinkHandlerId]) && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])) {
