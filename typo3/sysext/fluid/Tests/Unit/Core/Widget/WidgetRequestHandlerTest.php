@@ -78,7 +78,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $objectManager->expects($this->once())->method('get')->willReturn($this->getMock(Response::class));
         $requestDispatcher = $this->getMock(Dispatcher::class, array('dispatch'), array(), '', false);
         $requestDispatcher->expects($this->once())->method('dispatch')->with($request);
-        $this->inject($handler, 'requestBuilder', $requestBuilder);
+        $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
         $this->inject($handler, 'dispatcher', $requestDispatcher);
         $this->inject($handler, 'objectManager', $objectManager);
         $handler->handleRequest();

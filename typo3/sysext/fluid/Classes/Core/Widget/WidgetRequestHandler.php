@@ -56,6 +56,14 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder
      */
+    public function injectRequestBuilder(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder)
+    {
+        // This method intentionally left blank
+    }
+
+    /**
+     * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder
+     */
     public function injectWidgetRequestBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder $requestBuilder)
     {
         $this->requestBuilder = $requestBuilder;
