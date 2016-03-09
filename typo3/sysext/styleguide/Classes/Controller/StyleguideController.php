@@ -18,10 +18,11 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
@@ -55,7 +56,18 @@ class StyleguideController extends ActionController
     {
         parent::initializeView($view);
 
-        $languageService = $this->getLanguageService();
+        // Early return for actions without valid view like tcaCreateAction or tcaDeleteAction
+        if (!($this->view instanceof BackendTemplateView)) {
+            return;
+        }
+
+        // Register main css file globally
+        $this->view->getModuleTemplate()->getPageRenderer()->addCssFile(
+            PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Css/styles.css'))
+        );
+
+        // Hand over flash message queue to module template
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
         // Main drop down menu in doc header
         $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
@@ -67,7 +79,7 @@ class StyleguideController extends ActionController
         foreach ($actions as $action) {
             $menuItem = $menu->makeMenuItem();
 
-            $menuItem->setTitle($languageService->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:' . $action));
+            $menuItem->setTitle(LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:' . $action, 'styleguide'));
 
             $uriBuilder = $this->objectManager->get(UriBuilder::class);
             $uriBuilder->setRequest($this->request);
@@ -135,6 +147,35 @@ class StyleguideController extends ActionController
      */
     public function tcaAction()
     {
+    }
+
+    /**
+     * TCA create default data action
+     */
+    public function tcaCreateAction()
+    {
+        // Tell something was done here
+        $this->addFlashMessage(
+            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody', 'styleguide'),
+            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle', 'styleguide')
+        );
+        // And redirect to display action
+        $this->forward('tca');
+    }
+
+    /**
+     * TCA delete default data action
+     */
+    public function TcaDeleteAction()
+    {
+        // Tell something was done here
+        // Tell something was done here
+        $this->addFlashMessage(
+            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody', 'styleguide'),
+            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle', 'styleguide')
+        );
+        // And redirect to display action
+        $this->forward('tca');
     }
 
     /**
@@ -223,14 +264,6 @@ class StyleguideController extends ActionController
         );
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 
 }

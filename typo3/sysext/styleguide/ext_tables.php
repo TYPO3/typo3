@@ -10,7 +10,7 @@ if (TYPO3_MODE === 'BE') {
         'styleguide',
         '',
         [
-            'Styleguide' => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, debug, helpers, icons, tab'
+            'Styleguide' => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, helpers, icons, tab'
         ],
         [
             'access' => 'user,group',
