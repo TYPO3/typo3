@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 
 /**
  * Backend module for Styleguide
@@ -154,6 +155,9 @@ class StyleguideController extends ActionController
      */
     public function tcaCreateAction()
     {
+        /** @var Generator $generator */
+        $generator = GeneralUtility::makeInstance(Generator::class);
+        $generator->create();
         // Tell something was done here
         $this->addFlashMessage(
             LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody', 'styleguide'),
@@ -168,7 +172,9 @@ class StyleguideController extends ActionController
      */
     public function TcaDeleteAction()
     {
-        // Tell something was done here
+        /** @var Generator $generator */
+        $generator = GeneralUtility::makeInstance(Generator::class);
+        $generator->delete();
         // Tell something was done here
         $this->addFlashMessage(
             LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody', 'styleguide'),

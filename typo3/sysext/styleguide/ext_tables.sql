@@ -1,3 +1,7 @@
+CREATE TABLE pages (
+	tx_styleguide_containsdemo varchar(255) DEFAULT '' NOT NULL,
+);
+
 CREATE TABLE tx_styleguide_elements_basic (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -1158,10 +1162,6 @@ CREATE TABLE tx_styleguide_inline_foreignrecorddefaults_child (
 );
 
 
-##
-# tx_styleguide_inline_mm
-##
-
 CREATE TABLE tx_styleguide_inline_mm (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -1300,10 +1300,6 @@ CREATE TABLE tx_styleguide_inline_mm_childchild (
 	KEY parent (pid)
 );
 
-
-##
-# tx_styleguide_inline_mn
-##
 
 CREATE TABLE tx_styleguide_inline_mn (
 	uid int(11) NOT NULL auto_increment,
