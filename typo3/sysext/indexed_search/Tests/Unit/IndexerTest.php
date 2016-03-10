@@ -132,4 +132,99 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($baseHref, $result);
 	}
 
+	/**
+	 * Tests whether indexer can extract content between "TYPO3SEARCH_begin" and "TYPO3SEARCH_end" markers
+	 *
+	 * @test
+	 */
+	public function typoSearchTagsRemovesBodyContentOutsideMarkers() {
+		$body = <<<EOT
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>Some Title</title>
+<link href='css/normalize.css' rel='stylesheet' type='text/css'/>
+</head>
+<body>
+<div>
+<div class="non_searchable">
+    not searchable content
+</div>
+<!--TYPO3SEARCH_begin-->
+<div class="searchable">
+    lorem ipsum
+</div>
+<!--TYPO3SEARCH_end-->
+<div class="non_searchable">
+    not searchable content
+</div>
+</body>
+</html>
+EOT;
+		$expected = <<<EOT
+
+<div class="searchable">
+    lorem ipsum
+</div>
+
+EOT;
+
+		$result = $this->fixture->typoSearchTags($body);
+		$this->assertTrue($result);
+		$this->assertEquals($expected, $body);
+	}
+
+	/**
+	 * Tests whether indexer can extract content between multiple pairs of "TYPO3SEARCH" markers
+	 *
+	 * @test
+	 */
+	public function typoSearchTagsHandlesMultipleMarkerPairs() {
+		$body = <<<EOT
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>Some Title</title>
+<link href='css/normalize.css' rel='stylesheet' type='text/css'/>
+</head>
+<body>
+<div>
+<div class="non_searchable">
+    not searchable content
+</div>
+<!--TYPO3SEARCH_begin-->
+<div class="searchable">
+    lorem ipsum
+</div>
+<!--TYPO3SEARCH_end-->
+<div class="non_searchable">
+    not searchable content
+</div>
+<!--TYPO3SEARCH_begin-->
+<div class="searchable">
+    lorem ipsum2
+</div>
+<!--TYPO3SEARCH_end-->
+<div class="non_searchable">
+    not searchable content
+</div>
+</body>
+</html>
+EOT;
+		$expected = <<<EOT
+
+<div class="searchable">
+    lorem ipsum
+</div>
+
+<div class="searchable">
+    lorem ipsum2
+</div>
+
+EOT;
+
+		$result = $this->fixture->typoSearchTags($body);
+		$this->assertTrue($result);
+		$this->assertEquals($expected, $body);
+	}
 }
