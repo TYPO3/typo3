@@ -70,6 +70,9 @@ class StyleguideController extends ActionController
         // Hand over flash message queue to module template
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        // Assign action for active handling in view
+        $this->view->assign('action', $this->request->getControllerActionName());
+
         // Shortcut button
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $getVars = $this->request->getArguments();
@@ -147,7 +150,7 @@ class StyleguideController extends ActionController
     /**
      * TCA delete default data action
      */
-    public function TcaDeleteAction()
+    public function tcaDeleteAction()
     {
         /** @var Generator $generator */
         $generator = GeneralUtility::makeInstance(Generator::class);
