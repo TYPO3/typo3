@@ -37,9 +37,9 @@ class Generator
                 $newIdOfEntryPage => [
                     'title' => 'styleguide TCA demo',
                     'pid' => 0 - $this->getUidOfLastTopLevelPage(),
-                    // mark this page as entry point
+                    // Mark this page as entry point
                     'tx_styleguide_containsdemo' => 'tx_styleguide',
-                    // have the "globus" icon for this page
+                    // Have the "globus" icon for this page
                     'is_siteroot' => 1,
                 ],
             ],
@@ -102,7 +102,7 @@ class Generator
      * "prefix"_"identifier"_"childidentifier" structure.
      *
      * Example:
-     * prefix = tx_styleguide_inline, identifer = 1n
+     * prefix = tx_styleguide_inline, identifier = 1n
      * -> "tx_styleguide_inline_1n" is a "main" table
      * -> "tx_styleguide_inline_1n1n" is a "child" table
      *
@@ -197,7 +197,7 @@ class Generator
     /**
      * @return DatabaseConnection
      */
-    protected function getDatabase()
+    protected function getDatabase(): DatabaseConnection
     {
         return $GLOBALS['TYPO3_DB'];
     }
