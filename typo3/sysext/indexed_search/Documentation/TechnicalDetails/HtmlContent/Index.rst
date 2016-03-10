@@ -40,3 +40,5 @@ Rules:
    until that point is excluded and preceding content until next "end"
    marker is included.
 
+#. If there are multiple marker pairs in HTML, content from in between
+   all pairs is included.
