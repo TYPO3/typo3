@@ -1,15 +1,6 @@
 <div class="list-group">
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'index\'', then: 'active')}" action="index">Overview</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'typography\'', then: 'active')}" action="typography">Typography</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'tca\'', then: 'active')}" action="tca">TCA demo records</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'trees\'', then: 'active')}" action="trees">Trees</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'tab\'', then: 'active')}" action="tab">Tab</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'tables\'', then: 'active')}" action="tables">Tables</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'avatar\'', then: 'active')}" action="avatar">Avatar</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'buttons\'', then: 'active')}" action="buttons">Buttons</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'infobox\'', then: 'active')}" action="infobox">Infobox</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'flashMessages\'', then: 'active')}" action="flashMessages">FlashMessages / Notification</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'icons\'', then: 'active')}" action="icons">Icons</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'debug\'', then: 'active')}" action="debug">Debug</f:link.action>
-    <f:link.action class="list-group-item {f:if(condition:'{action} == \'helpers\'', then: 'active')}" action="helpers">Helpers and legal</f:link.action>
+    <span class="list-group-item"><strong>Styleguide examples</strong></span>
+    <f:for each="{actions}" as="action">
+        <f:link.action class="list-group-item {f:if(condition:'{currentAction} == {action}', then: 'active')}" action="{action}"><f:translate key="{action}" /></f:link.action>
+    </f:for>
 </div>

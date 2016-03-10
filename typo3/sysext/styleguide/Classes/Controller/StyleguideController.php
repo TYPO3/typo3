@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Styleguide\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
@@ -48,10 +47,14 @@ class StyleguideController extends ActionController
     protected $view;
 
     /**
+     * @var string
+     */
+    protected $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
+
+    /**
      * Method is called before each action and sets up the doc header.
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -62,16 +65,11 @@ class StyleguideController extends ActionController
             return;
         }
 
-        // Register main css file globally
-        $this->view->getModuleTemplate()->getPageRenderer()->addCssFile(
-            PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Css/styles.css'))
-        );
-
         // Hand over flash message queue to module template
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
-        // Assign action for active handling in view
-        $this->view->assign('action', $this->request->getControllerActionName());
+        $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
+            'infobox', 'flashMessages', 'icons', 'debug', 'helpers']);
+        $this->view->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
@@ -140,8 +138,8 @@ class StyleguideController extends ActionController
         $generator->create();
         // Tell something was done here
         $this->addFlashMessage(
-            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkBody', 'styleguide'),
-            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle', 'styleguide')
+            LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
+            LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide')
         );
         // And redirect to display action
         $this->forward('tca');
@@ -157,8 +155,8 @@ class StyleguideController extends ActionController
         $generator->delete();
         // Tell something was done here
         $this->addFlashMessage(
-            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody', 'styleguide'),
-            LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle', 'styleguide')
+            LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkBody', 'styleguide'),
+            LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkTitle', 'styleguide')
         );
         // And redirect to display action
         $this->forward('tca');
@@ -182,7 +180,7 @@ class StyleguideController extends ActionController
 
         $overlays = [];
         foreach ($allIcons as $key) {
-            if (substr($key, 0, strlen('overlay')) === 'overlay') {
+            if (strpos($key, 'overlay' === 0)) {
                 $overlays[] = $key;
             }
         }
@@ -192,7 +190,8 @@ class StyleguideController extends ActionController
     /**
      * Infobox
      */
-    public function infoboxAction() {
+    public function infoboxAction()
+    {
     }
 
     /**
@@ -231,8 +230,7 @@ class StyleguideController extends ActionController
      */
     public function tabAction()
     {
-        /** @var \TYPO3\CMS\Backend\Template\ModuleTemplate */
-        $module = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+        $module = GeneralUtility::makeInstance(ModuleTemplate::class);
 
         $menuItems = array(
             0 => array(
@@ -251,5 +249,4 @@ class StyleguideController extends ActionController
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
     }
-
 }
