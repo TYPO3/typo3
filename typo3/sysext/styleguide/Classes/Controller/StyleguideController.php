@@ -70,30 +70,6 @@ class StyleguideController extends ActionController
         // Hand over flash message queue to module template
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
-        // Main drop down menu in doc header
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('StyleguideModuleMenu');
-        $actions = [
-            'index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'debug', 'helpers',
-        ];
-        foreach ($actions as $action) {
-            $menuItem = $menu->makeMenuItem();
-
-            $menuItem->setTitle(LocalizationUtility::translate('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:' . $action, 'styleguide'));
-
-            $uriBuilder = $this->objectManager->get(UriBuilder::class);
-            $uriBuilder->setRequest($this->request);
-            $menuItem->setHref($uriBuilder->reset()->uriFor($action, [], 'Styleguide'));
-
-            $isActive = $this->request->getControllerActionName() === $action ? true : false;
-            $menuItem->setActive($isActive);
-
-            $menu->addMenuItem($menuItem);
-        }
-        $this->view->assign('action', $this->request->getControllerActionName());
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-
         // Shortcut button
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $getVars = $this->request->getArguments();
