@@ -640,6 +640,7 @@ abstract class AbstractFormElement extends AbstractNode
                 $aOnClick .= 'return false;';
                 $icons['R'][] = '
 					<a href="#"
+						class="btn btn-default"
 						onclick="' . htmlspecialchars($aOnClick) . '"
 						title="' . htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . '">
 						' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
