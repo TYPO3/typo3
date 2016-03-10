@@ -91,6 +91,7 @@ class StyleguideController extends ActionController
 
             $menu->addMenuItem($menuItem);
         }
+        $this->view->assign('action', $this->request->getControllerActionName());
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
 
         // Shortcut button

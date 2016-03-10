@@ -1,46 +1,50 @@
-<h1><f:translate key="trees" /></h1>
+<f:layout name="Default" />
 
-<h2>Stand alone trees</h2>
-<p>Structures and hierarchical content as trees.</p>
+<f:section name="content">
+	<h1><f:translate key="trees" /></h1>
 
-<div class="nowrap">
-	<ul class="list-tree text-monospace">
-		<li>
-			<a class="list-tree-control list-tree-control-open" href="#">
-				<i class="fa"></i>
-			</a>
-			<span class="list-tree-group">
-				<span class="list-tree-label">Tree branch opened</span>
-			</span>
-			<ul class="list-tree text-monospace">
-				<li>
-					<span class="list-tree-group">
-						<span class="list-tree-label">DINK</span> = <span class="list-tree-value">1</span>
-					</span>
-				</li>
-				<li>
-					<a class="list-tree-control list-tree-control-closed" id="a7856cf" href="#">
-						<i class="fa"></i>
-					</a>
-					<span class="list-tree-group">
-						<span class="list-tree-label">Kids (not expandable)</span>
-					</span>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a class="list-tree-control list-tree-control-closed" href="#">
-				<i class="fa"></i>
-			</a>
-			<span class="list-tree-group">
-				<span class="list-tree-label">Tree branch closed (not expandable)</span>
-			</span>
-		</li>
-	</ul>
-</div>
+	<h2>Stand alone trees</h2>
+	<p>Structures and hierarchical content as trees.</p>
 
-<div class="example code">
-	<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"list-tree text-monospace"</span><span class="tag-border">&gt;</span><br />
-	&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;/</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
-</div>
+	<div class="nowrap">
+		<ul class="list-tree text-monospace">
+			<li>
+				<a class="list-tree-control list-tree-control-open" href="#">
+					<i class="fa"></i>
+				</a>
+				<span class="list-tree-group">
+					<span class="list-tree-label">Tree branch opened</span>
+				</span>
+				<ul class="list-tree text-monospace">
+					<li>
+						<span class="list-tree-group">
+							<span class="list-tree-label">DINK</span> = <span class="list-tree-value">1</span>
+						</span>
+					</li>
+					<li>
+						<a class="list-tree-control list-tree-control-closed" id="a7856cf" href="#">
+							<i class="fa"></i>
+						</a>
+						<span class="list-tree-group">
+							<span class="list-tree-label">Kids (not expandable)</span>
+						</span>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a class="list-tree-control list-tree-control-closed" href="#">
+					<i class="fa"></i>
+				</a>
+				<span class="list-tree-group">
+					<span class="list-tree-label">Tree branch closed (not expandable)</span>
+				</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"list-tree text-monospace"</span><span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;/</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
+	</div>
+</f:section>

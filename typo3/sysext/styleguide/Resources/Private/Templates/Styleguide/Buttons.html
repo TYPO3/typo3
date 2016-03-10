@@ -1,95 +1,99 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
+<f:layout name="Default" />
 
-<h1><f:translate key="buttons" /></h1>
+<f:section name="content">
 
-<!--
-	Form type buttons
--->
+	<h1><f:translate key="buttons" /></h1>
 
-<h3>Form Button</h3>
+	<!--
+		Form type buttons
+	-->
 
-<div class="example">
-	<a href="#" class="btn btn-default">Default button</a>
-	<button class="btn btn-default">Button</button>
-	<input type="button" class="btn btn-default" value="Input button" />
-	<input type="submit" class="btn btn-default" value="Submit button" />
-</div>
+	<h3>Form Button</h3>
 
-<div class="example code">
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">button</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Button<span class="tag-border">&lt;/</span><span class="tag-name">button</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">input</span> <span class="tag-attribute">type</span>=<span class="tag-attribute-value">"button"</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span> <span class="tag-attribute">value</span>=<span class="tag-attribute-value">"Input button"</span> <span class="tag-border">/&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">input</span> <span class="tag-attribute">type</span>=<span class="tag-attribute-value">"submit"</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span> <span class="tag-attribute">value</span>=<span class="tag-attribute-value">"Submit button"</span> <span class="tag-border">/&gt;</span><br />
-</div>
+	<div class="example">
+		<a href="#" class="btn btn-default">Default button</a>
+		<button class="btn btn-default">Button</button>
+		<input type="button" class="btn btn-default" value="Input button" />
+		<input type="submit" class="btn btn-default" value="Submit button" />
+	</div>
 
-<!--
-	twbs Buttons
--->
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">button</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Button<span class="tag-border">&lt;/</span><span class="tag-name">button</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">input</span> <span class="tag-attribute">type</span>=<span class="tag-attribute-value">"button"</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span> <span class="tag-attribute">value</span>=<span class="tag-attribute-value">"Input button"</span> <span class="tag-border">/&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">input</span> <span class="tag-attribute">type</span>=<span class="tag-attribute-value">"submit"</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span> <span class="tag-attribute">value</span>=<span class="tag-attribute-value">"Submit button"</span> <span class="tag-border">/&gt;</span><br />
+	</div>
 
-<h3>Button Types</h3>
+	<!--
+		twbs Buttons
+	-->
 
-<div class="example">
-	<a href="#" class="btn btn-default">Default button</a>
-	<a href="#" class="btn btn-primary">Primary button</a>
-	<a href="#" class="btn btn-success">Success button</a>
-	<a href="#" class="btn btn-warning">Warning button</a>
-	<a href="#" class="btn btn-danger">Danger button</a>
-	<a href="#" class="btn btn-link">Link button</a>
-</div>
+	<h3>Button Types</h3>
 
-<div class="example code">
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-</div>
+	<div class="example">
+		<a href="#" class="btn btn-default">Default button</a>
+		<a href="#" class="btn btn-primary">Primary button</a>
+		<a href="#" class="btn btn-success">Success button</a>
+		<a href="#" class="btn btn-warning">Warning button</a>
+		<a href="#" class="btn btn-danger">Danger button</a>
+		<a href="#" class="btn btn-link">Link button</a>
+	</div>
 
-<!--
-	Buttons with icons
--->
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+	</div>
 
-<h3>Buttons with icons</h3>
+	<!--
+		Buttons with icons
+	-->
 
-<div class="example">
-	<a href="#" class="btn btn-default"><core:icon identifier="apps-filetree-folder-default" />  Default button</a>
-	<a href="#" class="btn btn-primary"><core:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-	<a href="#" class="btn btn-success"><core:icon identifier="apps-filetree-folder-default" />  Success button</a>
-	<a href="#" class="btn btn-warning"><core:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-	<a href="#" class="btn btn-danger"><core:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-	<a href="#" class="btn btn-link"><core:icon identifier="apps-filetree-folder-default" />  Link button</a>
-</div>
+	<h3>Buttons with icons</h3>
 
-<div class="example code">
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-</div>
+	<div class="example">
+		<a href="#" class="btn btn-default"><core:icon identifier="apps-filetree-folder-default" />  Default button</a>
+		<a href="#" class="btn btn-primary"><core:icon identifier="apps-filetree-folder-default" />  Primary button</a>
+		<a href="#" class="btn btn-success"><core:icon identifier="apps-filetree-folder-default" />  Success button</a>
+		<a href="#" class="btn btn-warning"><core:icon identifier="apps-filetree-folder-default" />  Warning button</a>
+		<a href="#" class="btn btn-danger"><core:icon identifier="apps-filetree-folder-default" />  Danger button</a>
+		<a href="#" class="btn btn-link"><core:icon identifier="apps-filetree-folder-default" />  Link button</a>
+	</div>
 
-<!--
-	Disabled buttons
--->
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+	</div>
 
-<h3>Disabled buttons</h3>
+	<!--
+		Disabled buttons
+	-->
 
-<div class="example">
-	<a href="#" class="btn btn-default disabled"><core:icon identifier="apps-filetree-folder-default" />  Default button</a>
-	<a href="#" class="btn btn-primary disabled"><core:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-	<a href="#" class="btn btn-success disabled"><core:icon identifier="apps-filetree-folder-default" />  Success button</a>
-	<a href="#" class="btn btn-warning disabled"><core:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-	<a href="#" class="btn btn-danger disabled"><core:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-	<a href="#" class="btn btn-link disabled"><core:icon identifier="apps-filetree-folder-default" />  Link button</a>
-</div>
+	<h3>Disabled buttons</h3>
 
-<div class="example code">
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default disabled"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary disabled"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success disabled"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning disabled"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger disabled"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-	<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link disabled"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-</div>
+	<div class="example">
+		<a href="#" class="btn btn-default disabled"><core:icon identifier="apps-filetree-folder-default" />  Default button</a>
+		<a href="#" class="btn btn-primary disabled"><core:icon identifier="apps-filetree-folder-default" />  Primary button</a>
+		<a href="#" class="btn btn-success disabled"><core:icon identifier="apps-filetree-folder-default" />  Success button</a>
+		<a href="#" class="btn btn-warning disabled"><core:icon identifier="apps-filetree-folder-default" />  Warning button</a>
+		<a href="#" class="btn btn-danger disabled"><core:icon identifier="apps-filetree-folder-default" />  Danger button</a>
+		<a href="#" class="btn btn-link disabled"><core:icon identifier="apps-filetree-folder-default" />  Link button</a>
+	</div>
+
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-default disabled"</span><span class="tag-border">&gt;</span>Default button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-primary disabled"</span><span class="tag-border">&gt;</span>Primary button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-success disabled"</span><span class="tag-border">&gt;</span>Success button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-warning disabled"</span><span class="tag-border">&gt;</span>Warning button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-danger disabled"</span><span class="tag-border">&gt;</span>Danger button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">a</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"btn btn-link disabled"</span><span class="tag-border">&gt;</span>Link button<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+	</div>
+</f:section>

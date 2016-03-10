@@ -1,49 +1,53 @@
 {namespace be = TYPO3\CMS\Backend\ViewHelpers}
 
-<h1><f:translate key="avatar" /></h1>
+<f:layout name="Default" />
 
-<p class="lead">Make the backend your backend and upload your personal profile picture.<br>
-	Backend users can change their profile pictures within setup module.</p>
+<f:section name="content">
+	<h1><f:translate key="avatar" /></h1>
 
-<h2>Simple</h2>
+	<p class="lead">Make the backend your backend and upload your personal profile picture.<br>
+		Backend users can change their profile pictures within setup module.</p>
 
-<p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
+	<h2>Simple</h2>
 
-<table class="table" style="width: auto;">
-	<tr>
-		<td>
-			<be:avatar />
-		</td>
-		<td>
-			<strong>{backendUser.username}</strong><br>
-			{backendUser.realName}
-		</td>
-	</tr>
-</table>
+	<p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
 
-<div class="example code">
-	&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
-	<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> /<span class="tag-border">&gt;</span>
-</div>
+	<table class="table" style="width: auto;">
+		<tr>
+			<td>
+				<be:avatar />
+			</td>
+			<td>
+				<strong>{backendUser.username}</strong><br>
+				{backendUser.realName}
+			</td>
+		</tr>
+	</table>
 
-<h2>Icon overlay and click menu</h2>
+	<div class="example code">
+		&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
+		<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> /<span class="tag-border">&gt;</span>
+	</div>
 
-<p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
-	Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
+	<h2>Icon overlay and click menu</h2>
 
-<table class="table" style="width: auto;">
-	<tr>
-		<td>
-			<be:avatar showIcon="true" />
-		</td>
-		<td>
-			<strong>{backendUser.username}</strong><br>
-			{backendUser.realName}
-		</td>
-	</tr>
-</table>
+	<p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
+		Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
 
-<div class="example code">
-	&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
-	<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> <span class="tag-attribute">showIcon</span>=<span class="tag-attribute-value">"true"</span> /<span class="tag-border">&gt;</span>
-</div>
+	<table class="table" style="width: auto;">
+		<tr>
+			<td>
+				<be:avatar showIcon="true" />
+			</td>
+			<td>
+				<strong>{backendUser.username}</strong><br>
+				{backendUser.realName}
+			</td>
+		</tr>
+	</table>
+
+	<div class="example code">
+		&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
+		<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> <span class="tag-attribute">showIcon</span>=<span class="tag-attribute-value">"true"</span> /<span class="tag-border">&gt;</span>
+	</div>
+</f:section>
