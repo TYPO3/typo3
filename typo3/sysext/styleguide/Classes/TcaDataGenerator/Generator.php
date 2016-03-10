@@ -30,6 +30,7 @@ class Generator
      */
     public function create()
     {
+        // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
         $data = [
             'pages' => [
@@ -43,6 +44,23 @@ class Generator
                 ],
             ],
         ];
+
+        // Add a page for each main table below entry page
+        $mainTables = $this->getListOfStyleguideMainTables();
+        // Have the first main table inside entry page
+        $neighborPage = $newIdOfEntryPage;
+        foreach ($mainTables as $mainTable) {
+            $newIdOfPage = StringUtility::getUniqueId('NEW');
+            $data['pages'][$newIdOfPage] = [
+                'title' => str_replace('_', ' ', substr($mainTable, strlen('tx_styleguide_'))),
+                'tx_styleguide_containsdemo' => $mainTable,
+                'hidden' => 0,
+                'pid' => $neighborPage,
+            ];
+            // Have next page after this page
+            $neighborPage = '-' . $newIdOfPage;
+        }
+
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($data, []);
@@ -51,6 +69,9 @@ class Generator
     }
 
     /**
+     * Delete all pages and their records that belong to the
+     * tx_styleguide demo pages
+     *
      * @return void
      */
     public function delete()
@@ -69,6 +90,59 @@ class Generator
         $dataHandler->start([], $command);
         $dataHandler->process_cmdmap();
         BackendUtility::setUpdateSignal('updatePageTree');
+    }
+
+    /**
+     * List of styleguide "main" pages.
+     *
+     * A styleguide table is either a "main" entry table or a "child" table that
+     * belongs to a main table. Each "main" table is located at an own page with all its children.
+     *
+     * The difference is a naming thing, styleguide tables have a
+     * "prefix"_"identifier"_"childidentifier" structure.
+     *
+     * Example:
+     * prefix = tx_styleguide_inline, identifer = 1n
+     * -> "tx_styleguide_inline_1n" is a "main" table
+     * -> "tx_styleguide_inline_1n1n" is a "child" table
+     *
+     * In general the list of prefixes is hard coded. If a specific table name is a concatenation
+     * of a prefix plus a single word, then the table is considered a "main" table, if there are more
+     * than one words after prefix, it is a "child" table.
+     *
+     * This method return the list of "main" tables.
+     *
+     * @return array
+     */
+    protected function getListOfStyleguideMainTables(): array
+    {
+        $prefixes = [
+            'tx_styleguide_',
+            'tx_styleguide_elements_',
+            'tx_styleguide_inline_',
+        ];
+        $result = [];
+        foreach ($GLOBALS['TCA'] as $tablename => $_) {
+            foreach ($prefixes as $prefix) {
+                if (!StringUtility::beginsWith($tablename, $prefix)) {
+                    continue;
+                }
+
+                // See if string after $prefix is only one _ separated segment
+                $suffix = substr($tablename, strlen($prefix));
+                $suffixArray = explode('_', $suffix);
+                if (count($suffixArray) !==  1) {
+                    continue;
+                }
+
+                // Found a main table
+                $result[] = $tablename;
+
+                // No need to scan other prefixes
+                break;
+            }
+        }
+        return $result;
     }
 
     /**
