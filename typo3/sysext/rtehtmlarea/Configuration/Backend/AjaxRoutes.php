@@ -12,4 +12,9 @@ return [
         'path' => '/rte/insert-image',
         'target' => \TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController::class . '::buildImageMarkup',
     ],
+    // Spellchecker
+    'rtehtmlarea_spellchecker' => [
+        'path' => '/rte/spellchecker',
+        'target' => \TYPO3\CMS\Rtehtmlarea\Controller\SpellCheckingController::class . '::main'
+    ],
 ];
