@@ -31,11 +31,6 @@ class CaseViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var bool
-     */
-    protected $escapeChildren = false;
-
-    /**
      * @param mixed $value The switch value. If it matches, the child will be rendered
      * @param bool $default If this is set, this child will be rendered, if none else matches
      *

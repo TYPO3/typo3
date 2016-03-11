@@ -40,14 +40,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class DebugViewHelper extends AbstractViewHelper
 {
     /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
+     * This prevents double escaping as the output is encoded in DebuggerUtility::var_dump
+     *
      * @var bool
      */
     protected $escapeChildren = false;
+
+    /**
+     * Output of this viewhelper is already escaped
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().

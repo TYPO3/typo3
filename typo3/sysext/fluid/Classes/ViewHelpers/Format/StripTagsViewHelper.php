@@ -43,11 +43,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class StripTagsViewHelper extends AbstractViewHelper
 {
     /**
+     * No output escaping as some tags may be allowed
+     *
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
+     * To ensure all tags are removed, child node's output must not be escaped
+     *
      * @var bool
      */
     protected $escapeChildren = false;

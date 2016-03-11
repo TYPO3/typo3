@@ -60,11 +60,15 @@ class HtmlViewHelper extends AbstractViewHelper
     protected static $tsfeBackup;
 
     /**
+     * Disable escaping of child nodes' output
+     *
      * @var bool
      */
     protected $escapeChildren = false;
 
     /**
+     * Plain HTML should be returned, no output escaping allowed
+     *
      * @var bool
      */
     protected $escapeOutput = false;

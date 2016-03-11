@@ -85,11 +85,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 class DateViewHelper extends AbstractViewHelper
 {
     /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
+     * Needed as child node's output can return a DateTime object which can't be escaped
+     *
      * @var bool
      */
     protected $escapeChildren = false;

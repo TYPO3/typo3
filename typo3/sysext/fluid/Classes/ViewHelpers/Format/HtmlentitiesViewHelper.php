@@ -41,11 +41,15 @@ use TYPO3\CMS\Core\SingletonInterface;
 class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements SingletonInterface
 {
     /**
+     * Output gets encoded by this viewhelper
+     *
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
+     * This prevents double encoding as the whole output gets encoded at the end
+     *
      * @var bool
      */
     protected $escapeChildren = false;

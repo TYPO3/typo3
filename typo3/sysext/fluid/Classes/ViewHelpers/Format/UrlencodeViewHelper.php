@@ -20,6 +20,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
  * @see http://www.php.net/manual/function.rawurlencode.php
+ * Note: The output is not escaped. You may have to ensure proper escaping on your own.
  *
  * = Examples =
  *
@@ -42,11 +43,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class UrlencodeViewHelper extends AbstractViewHelper
 {
     /**
+     * Prevent escaping for further processing
+     *
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
+     * Prevent double escaping on child node's output
+     *
      * @var bool
      */
     protected $escapeChildren = false;

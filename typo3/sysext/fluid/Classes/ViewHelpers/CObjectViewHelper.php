@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This ViewHelper renders CObjects from the global TypoScript configuration.
+ * NOTE: You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
  *
  * = Examples =
  *
