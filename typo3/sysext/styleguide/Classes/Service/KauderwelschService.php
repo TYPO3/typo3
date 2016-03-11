@@ -20,12 +20,32 @@ namespace TYPO3\CMS\Styleguide\Service;
 class KauderwelschService
 {
     /**
-     * Lorem ipsum test with fixed length
+     * Lorem ipsum test with fixed length and HTML in it.
      *
      * @return string
      */
-    public function getLoremIpsum()
+    public function getLoremIpsum(): string
     {
         return 'Bacon ipsum dolor sit <strong>strong amet capicola</strong> jerky pork chop rump shoulder shank. Shankle strip <a href="#">steak pig salami link</a>. Leberkas shoulder ham hock cow salami bacon <em>em pork pork</em> chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
+    }
+
+    /**
+     * Get a single word
+     *
+     * @return string
+     */
+    public function getWord(): string
+    {
+        return 'lipsum';
+    }
+
+    /**
+     * Get an integer
+     *
+     * @return int
+     */
+    public function getInteger(): int
+    {
+        return 42;
     }
 }

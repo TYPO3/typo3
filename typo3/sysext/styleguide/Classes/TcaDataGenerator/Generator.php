@@ -61,11 +61,19 @@ class Generator
             $neighborPage = '-' . $newIdOfPage;
         }
 
+        // Populate page tree via DataHandler
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
+
+        // Create data for each main table
+        /** @var RecordData $recordData */
+        $recordData = GeneralUtility::makeInstance(RecordData::class);
+        foreach ($mainTables as $mainTable) {
+            $recordData->generate($mainTable);
+        }
     }
 
     /**
