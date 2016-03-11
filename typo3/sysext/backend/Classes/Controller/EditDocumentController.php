@@ -830,7 +830,11 @@ class EditDocumentController extends AbstractModule
             $rootPageData = null;
             $rootLine = BackendUtility::BEgetRootLine($currentPageId);
             $currentPage = reset($rootLine);
-            if ((int)$currentPage['doktype'] === PageRepository::DOKTYPE_DEFAULT) {
+            if ((int)$currentPage['doktype'] === PageRepository::DOKTYPE_DEFAULT
+                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_LINK
+                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_SHORTCUT
+                || (int)$currentPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT
+            ) {
                 // try the current page
                 $previewPageId = $currentPageId;
             } else {
