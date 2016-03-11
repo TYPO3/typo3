@@ -156,27 +156,6 @@ return [
                 'type' => 'input',
             ],
         ],
-        'palette_6_1' => [
-            'exclude' => 1,
-            'label' => 'palette_6_1',
-            'config' => [
-                'type' => 'input',
-            ],
-        ],
-        'palette_6_2' => [
-            'exclude' => 1,
-            'label' => 'palette_6_2',
-            'config' => [
-                'type' => 'input',
-            ],
-        ],
-        'palette_6_3' => [
-            'exclude' => 1,
-            'label' => 'palette_6_3',
-            'config' => [
-                'type' => 'input',
-            ],
-        ],
 
 
     ],
