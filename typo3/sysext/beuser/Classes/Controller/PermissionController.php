@@ -155,12 +155,45 @@ class PermissionController extends ActionController
         $currentRequest = $this->request;
         $moduleName = $currentRequest->getPluginName();
         $getVars = $this->request->getArguments();
+        $lang = $this->getLanguageService();
 
         $extensionName = $currentRequest->getControllerExtensionName();
         if (empty($getVars)) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
             $getVars = array('id', 'M', $modulePrefix);
         }
+
+        if ($currentRequest->getControllerActionName() === 'edit') {
+            // CLOSE button:
+            $closeUrl = $this->uriBuilder->reset()->setArguments(array(
+                'action' => 'index',
+                'id' => $this->id
+            ))->buildBackendUri();
+            $closeButton = $buttonBar->makeLinkButton()
+                ->setHref($closeUrl)
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
+                    'actions-document-close',
+                    Icon::SIZE_SMALL
+                ));
+            $buttonBar->addButton($closeButton);
+
+            // SAVE button:
+            $saveButton = $buttonBar->makeInputButton()
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc'))
+                ->setName('tx_beuser_system_beusertxpermission[submit]')
+                ->setValue('Save')
+                ->setForm('PermissionControllerEdit')
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
+                    'actions-document-save',
+                    Icon::SIZE_SMALL
+                ))
+                ->setShowLabelText(true);
+
+            $buttonBar->addButton($saveButton);
+        }
+
+        // SHORTCUT botton:
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
             ->setGetVariables($getVars);
