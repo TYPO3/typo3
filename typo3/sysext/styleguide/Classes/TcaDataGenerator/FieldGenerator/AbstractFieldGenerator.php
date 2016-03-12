@@ -40,11 +40,25 @@ class AbstractFieldGenerator
         $this->kauderwelschService = GeneralUtility::makeInstance(KauderwelschService::class);
     }
 
+    /**
+     * General match implementation checks input array against $this->matchArray.
+     * If all keys and values of matchArray exist in $data and are identical, this generator matches.
+     *
+     * @param array $data Given data
+     * @return bool
+     */
     public function match(array $data): bool
     {
         return $this->checkMatchArray($data, $this->matchArray);
     }
 
+    /**
+     * Recursive compare of $data with $matchArray.
+     *
+     * @param array $data Given data
+     * @param array $matchArray Part to mach against
+     * @return bool
+     */
     protected function checkMatchArray(array $data, array $matchArray): bool
     {
         $result = true;
