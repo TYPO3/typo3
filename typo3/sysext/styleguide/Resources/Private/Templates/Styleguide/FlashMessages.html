@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -11,17 +12,16 @@
 
     <h3>Notice-Notification</h3>
 
-    <div class="example">
+    <sg:code language="html">
         <p>All notifications will disapears per default after 5 seconds, excepts the error message which is per default sticky.</p>
         <a href="javascript:top.TYPO3.Notification.notice('Test-Notice', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');" class="btn btn-default">Notice-Notification</a>
         <a href="javascript:top.TYPO3.Notification.info('Test-Info', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');" class="btn btn-info">Info-Notification</a>
         <a href="javascript:top.TYPO3.Notification.success('Test-OK', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');" class="btn btn-success">OK-Notification</a>
         <a href="javascript:top.TYPO3.Notification.warning('Test-Warning', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');" class="btn btn-warning">Warning-Notification</a>
         <a href="javascript:top.TYPO3.Notification.error('Test-Error', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');" class="btn btn-danger">Error-Notification</a>
-    </div>
+    </sg:code>
 
-    <div class="example code">
-        <f:format.html>
+    <sg:code language="javascript" codeonly="true">
         <script>
             top.TYPO3.Notification.notice('Test-Notice', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');
             top.TYPO3.Notification.info('Test-Info', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');
@@ -29,6 +29,5 @@
             top.TYPO3.Notification.warning('Test-Warning', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');
             top.TYPO3.Notification.error('Test-Error', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');
         </script>
-        </f:format.html>
-    </div>
+    </sg:code>
 </f:section>

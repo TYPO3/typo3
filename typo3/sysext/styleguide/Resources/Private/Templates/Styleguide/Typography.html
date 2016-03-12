@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -36,12 +37,9 @@
 
 	<p>Module headline "H1" is the main headline within each backend module. Only added once to every backend page.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<h1>H1: Module Headline</h1>
-	</div>
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">h1</span><span class="tag-border">&gt;</span>h1: Module Headline<span class="tag-border">&lt;/</span><span class="tag-name">h1</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         H2
@@ -49,12 +47,9 @@
 
 	<p>Section headline "H2" is the headline for every section in backend modules. Place above each section and use several times..</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<h2>H2: Section Headline</h2>
-	</div>
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">h2</span><span class="tag-border">&gt;</span>H2: Section Headline<span class="tag-border">&lt;/</span><span class="tag-name">h2</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         H3
@@ -62,13 +57,9 @@
 
 	<p>Paragraph headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<h3>H3: Paragraph Headline</h3>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">h3</span><span class="tag-border">&gt;</span>H3: Paragraph Headline<span class="tag-border">&lt;/</span><span class="tag-name">h3</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         H4
@@ -76,13 +67,9 @@
 
 	<p>Moderate headline "H4" might be used to split off meta / footer information.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<h4>H4: Moderate headline</h4>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">h4</span><span class="tag-border">&gt;</span>H4: Moderate Headline<span class="tag-border">&lt;/</span><span class="tag-name">h4</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Copy text
@@ -92,16 +79,12 @@
 
 	<p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
 			vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
 			there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
 			<strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">p</span><span class="tag-border">&gt;</span>Copy text<span class="tag-border">&lt;/</span><span class="tag-name">p</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Lead
@@ -111,13 +94,9 @@
 
 	<p>The lead class can be added to paragraphs and other html content to highlight. Most used for the introduction text in backend modules.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<p class="lead">Introduction text or lead copy text box with highlights.</p>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">p</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"lead"</span><span class="tag-border">&gt;</span>Text<span class="tag-border">&lt;/</span><span class="tag-name">p</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Emphasis
@@ -133,15 +112,10 @@
 
 	<p>Bold font-weight can be gained with strong and b html tag.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<p>This example includes <strong>bold text</strong> based on strong html tag.</p>
 		<p>This example includes <b>bold text</b> based on b htm tag.</p>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">strong</span><span class="tag-border">&gt;</span>Bold text<span class="tag-border">&lt;/</span><span class="tag-name">strong</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;</span><span class="tag-name">b</span><span class="tag-border">&gt;</span>Bold text<span class="tag-border">&lt;/</span><span class="tag-name">b</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Italic
@@ -151,15 +125,10 @@
 
 	<p>Italic font style can be gained with em and i html tag.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<p>This example includes <em>bold text</em> based on em html tag.</p>
 		<p>This example includes <i>bold text</i>  based on i html tag.</p>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">em</span><span class="tag-border">&gt;</span>Italic text<span class="tag-border">&lt;/</span><span class="tag-name">em</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;</span><span class="tag-name">i</span><span class="tag-border">&gt;</span>Italic text<span class="tag-border">&lt;/</span><span class="tag-name">i</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Small text
@@ -169,13 +138,9 @@
 
 	<p>Footer information, small notices can be wrapped in small text tag.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<small>Line of small text</small>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">small</span><span class="tag-border">&gt;</span>Small text<span class="tag-border">&lt;/</span><span class="tag-name">small</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Links
@@ -185,13 +150,9 @@
 
 	<p>Links are currently not decorated.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<p>Copy text with embedded <a href="#">link text</a>.</p>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">a</span><span class="tag-border">&gt;</span>Link<span class="tag-border">&lt;/</span><span class="tag-name">a</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Lists
@@ -201,7 +162,7 @@
 
 	<p>Ordered and unordered lists are styled with disc bullet and decimal.</p>
 
-	<div class="example">
+	<sg:code language="html">
 		<ul>
 			<li>List item zero</li>
 			<li>First item of list</li>
@@ -225,25 +186,7 @@
 			<li>First item of list</li>
 			<li>Last not least item</li>
 		</ol>
-	</div>
-
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span>...<span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;/</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
-		<br />
-		<span class="tag-border">&lt;</span><span class="tag-name">ol</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span>...<span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;/</span><span class="tag-name">ol</span><span class="tag-border">&gt;</span><br />
-		<br />
-		<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"list-unstyled"</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span>...<span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;/</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
-		<br />
-		<span class="tag-border">&lt;</span><span class="tag-name">ol</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"list-unstyled"</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span>...<span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;/</span><span class="tag-name">ol</span><span class="tag-border">&gt;</span>
-	</div>
+	</sg:code>
 
 	<!--
         Colors
@@ -253,7 +196,15 @@
 
 	<p>CI color from the TYPO3 logo and constrast primary color.</p>
 
-	<div class="clearfix">
-		<div class="bg-primary pull-left" style="padding: 20px;">Primary color</div>
-	</div>
+
+	<sg:code language="html">
+		<div class="clearfix">
+			<div class="bg-primary pull-left" style="padding: 20px;">Primary color</div>
+			<div class="bg-notice pull-left" style="padding: 20px;">Notice color</div>
+			<div class="bg-info pull-left" style="padding: 20px;">Info color</div>
+			<div class="bg-warning pull-left" style="padding: 20px;">Warning color</div>
+			<div class="bg-danger pull-left" style="padding: 20px;">Danger color</div>
+			<div class="bg-success pull-left" style="padding: 20px;">Success color</div>
+		</div>
+	</sg:code>
 </f:section>

@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -42,9 +43,9 @@
 		</ul>
 	</div>
 
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"list-tree text-monospace"</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><span class="tag-border">&lt;/</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br />
-		<span class="tag-border">&lt;/</span><span class="tag-name">ul</span><span class="tag-border">&gt;</span><br />
-	</div>
+	<sg:code language="html" codeonly="true">
+		<ul class="list-tree text-monospace">
+			<li></li>
+		</ul>
+	</sg:code>
 </f:section>

@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -7,23 +8,43 @@
 
     <h2>Optional icon</h2>
 
-    <f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
-    <f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
+        <f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
+    </div>
+
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox with default icon"&gt;Your infobox content&lt;/f:be.infobox&gt;
+&lt;f:be.infobox title="Infobox without icon" disableIcon="TRUE"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     <h2>Levels</h2>
 
     <h3>Notice</h3>
-    <f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
+    </div>
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     <h3>Information</h3>
-    <f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
+    </div>
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     <h3>Positive feedback</h3>
-    <f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
+    </div>
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="0"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     <h3>Warning</h3>
-    <f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
+    </div>
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     <h3>Error</h3>
-    <f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
+    <div class="example">
+        <f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
+    </div>
+    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 </f:section>

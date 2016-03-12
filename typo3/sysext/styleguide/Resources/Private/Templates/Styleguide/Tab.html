@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -7,18 +8,48 @@
 
 	<f:format.raw>{tabs}</f:format.raw>
 
-	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>="<span class="tag-attribute-value">nav nav-tabs t3js-tabs</span>" <span class="tag-name">role</span>="<span class="tag-attribute-value">tablist</span>" <span class="tag-name">data-store-last-tab</span>="<span class="tag-attribute-value">1</span>"<span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span> <span class="tag-attribute">class</span>="<span class="tag-attribute-value">active</span>"<span class="tag-border">&gt;</span><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>a <span class="tag-attribute">href</span>="#"<span class="tag-border">&gt;</span><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First label<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/li<span class="tag-border">&gt;</span><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span><span class="tag-border">&gt;</span><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>a <span class="tag-attribute">href</span>="#"<span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second label<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
-		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">li</span><span class="tag-border">&gt;</span><br>
-		<span class="tag-border">&lt;</span>/<span class="tag-name">ul</span><span class="tag-border">&gt;</span><br>
-	</div>
+	<sg:code language="html" codeonly="true">
+		<div role="tabpanel">
+			<ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
+				<li role="presentation" class="t3js-tabmenu-item  active">
+					<a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-toggle="tab">
+						First label
+					</a>
+				</li>
+				<li role="presentation" class="t3js-tabmenu-item ">
+					<a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-toggle="tab">
+						Second label
+					</a>
+				</li>
+				<li role="presentation" class="t3js-tabmenu-item ">
+					<a href="#tab-3" title="" aria-controls="tab-3" role="tab" data-toggle="tab">
+						Third label
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="tab-1">
+					<div class="panel panel-tab">
+						<div class="panel-body">
+							First content
+						</div>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-2">
+					<div class="panel panel-tab">
+						<div class="panel-body">
+							Second content
+						</div>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-3">
+					<div class="panel panel-tab">
+						<div class="panel-body">
+							Third content
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</sg:code>
 </f:section>

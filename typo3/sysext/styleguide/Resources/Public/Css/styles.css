@@ -20,9 +20,19 @@
 	background-color: #272822;
 	color: #f8f8f8;
 	font-family: monospace, fixed;
-	box-shadow: inset 0 0 10px #000;
 }
-
+.example pre {
+	font-size: 14px;
+	margin: 0;
+}
+.example pre[class*="language-"] {
+	margin: 0;
+}
+.example pre code {
+	overflow: scroll;
+	width: 100%;
+	display: block;
+}
 .tag-border {
 	color: #79ABFF;
 }
