@@ -48,4 +48,78 @@ class KauderwelschService
     {
         return 42;
     }
+
+    /**
+     * Timestamp of a day before 1970
+     *
+     * @return int
+     */
+    public function getDateTimestamp(): int
+    {
+        // 1960-1-1 00:00:00 GMT
+        return -315619200;
+    }
+
+    /**
+     * Timestamp of a day before 1970 with seconds
+     *
+     * @return int
+     */
+    public function getDatetimeTimestamp(): int
+    {
+        // 1960-1-1 05:23:42 GMT
+        return -315599778;
+    }
+
+    /**
+     * Date before 1970 as string
+     *
+     * @return string
+     */
+    public function getDateString(): string
+    {
+        // GMT
+        return '1960-01-01';
+    }
+
+    /**
+     * Date before 1970 with seconds as string
+     *
+     * @return string
+     */
+    public function getDatetimeString(): string
+    {
+        // GMT
+        return '1960-01-01 05:42:23';
+    }
+
+    /**
+     * Get a float
+     *
+     * @return float
+     */
+    public function getFloat(): float
+    {
+        return 5.23;
+    }
+
+    /**
+     * Get a link
+     *
+     * @return string
+     */
+    public function getLink(): string
+    {
+        return 'https://typo3.org';
+    }
+
+    /**
+     * Get a color as hex string
+     *
+     * @return string
+     */
+    public function getHexColor(): string
+    {
+        return '#FF8700';
+    }
 }

@@ -276,26 +276,26 @@ return [
         ],
         'input_26' => [
             'exclude' => 1,
-            'label' => 'input_26 default="input_28", value for input_29 and input_30',
+            'label' => 'input_26 default="input_26", value for input_27 and input_28',
             'config' => [
                 'type' => 'input',
-                'default' => 'input_28',
+                'default' => 'input_26',
             ],
         ],
         'input_27' => [
             'exclude' => 1,
-            'label' => 'input_27 placeholder=__row|input_28',
+            'label' => 'input_27 placeholder=__row|input_26',
             'config' => [
                 'type' => 'input',
-                'placeholder' => '__row|input_28',
+                'placeholder' => '__row|input_26',
             ],
         ],
         'input_28' => [
             'exclude' => 1,
-            'label' => 'input_28 placeholder=__row|input_28, mode=useOrOverridePlaceholder, eval=null',
+            'label' => 'input_28 placeholder=__row|input_26, mode=useOrOverridePlaceholder, eval=null',
             'config' => [
                 'type' => 'input',
-                'placeholder' => '__row|input_28',
+                'placeholder' => '__row|input_26',
                 'eval' => 'null',
                 'mode' => 'useOrOverridePlaceholder',
             ],

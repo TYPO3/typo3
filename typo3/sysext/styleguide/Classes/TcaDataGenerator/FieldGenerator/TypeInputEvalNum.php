@@ -19,7 +19,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=input fields
  */
-class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeInputEvalNum extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input
@@ -28,6 +28,7 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
+                'eval' => 'num',
             ],
         ],
     ];
@@ -40,6 +41,6 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getWord();
+        return $this->kauderwelschService->getInteger();
     }
 }

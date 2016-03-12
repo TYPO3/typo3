@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
  * Generate data for type=input fields
  */
-class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeInputEvalUpper extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input
@@ -28,6 +30,7 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
+                'eval' => 'upper',
             ],
         ],
     ];
@@ -40,6 +43,8 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getWord();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
+        return $charsetConverter->conv_case('utf-8', $this->kauderwelschService->getWord(), 'toUpper');
     }
 }

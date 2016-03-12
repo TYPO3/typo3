@@ -17,29 +17,29 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Use "default" value if set in config
  */
-class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterface
+class ConfigDefault extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * Match if ['config']['default'] is set.
+     *
+     * @param array $data
+     * @return bool
      */
-    protected $matchArray = [
-        'fieldConfig' => [
-            'config' => [
-                'type' => 'input',
-            ],
-        ],
-    ];
+    public function match(array $data): bool
+    {
+        return (isset($data['fieldConfig']['config']['default'])) ? true : false;
+    }
 
     /**
-     * Returns the generated value to be inserted into DB for this field
+     * Returns the value of ['config']['default']
      *
      * @param array $data
      * @return string
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getWord();
+        return (string)$data['fieldConfig']['config']['default'];
     }
 }

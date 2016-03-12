@@ -31,6 +31,32 @@ class RecordData
      * @var array
      */
     protected $fieldValueGenerators = [
+
+        // dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
+        FieldGenerator\TypeInputEvalDateDbTypeDate::class,
+        FieldGenerator\TypeInputEvalDatetimeDbTypeDatetime::class,
+
+        // Use value from ['config']['default'] if given
+        FieldGenerator\ConfigDefault::class,
+
+        // Specific type=input generator
+        FieldGenerator\TypeInputMax4::class,
+        FieldGenerator\TypeInputEvalAlphanum::class,
+        FieldGenerator\TypeInputEvalDate::class,
+        FieldGenerator\TypeInputEvalDatetime::class,
+        FieldGenerator\TypeInputEvalDouble2::class,
+        FieldGenerator\TypeInputEvalInt::class,
+        FieldGenerator\TypeInputEvalIsIn::class,
+        FieldGenerator\TypeInputEvalMd5::class,
+        FieldGenerator\TypeInputEvalNum::class,
+        FieldGenerator\TypeInputEvalTime::class,
+        FieldGenerator\TypeInputEvalTimesec::class,
+        FieldGenerator\TypeInputEvalUpper::class,
+        FieldGenerator\TypeInputEvalYear::class,
+        FieldGenerator\TypeInputWizardColorPicker::class,
+        FieldGenerator\TypeInputWizardLink::class,
+        FieldGenerator\TypeInputWizardSelect::class,
+        // General type=input generator
         FieldGenerator\TypeInput::class,
     ];
 
@@ -52,7 +78,7 @@ class RecordData
         ];
         $tca = $GLOBALS['TCA'][$tableName];
         foreach ($tca['columns'] as $fieldName => $fieldConfig) {
-            $criteria = [
+            $data = [
                 'tableName' => $tableName,
                 'fieldName' => $fieldName,
                 'fieldConfig' => $fieldConfig,
@@ -65,8 +91,8 @@ class RecordData
                         1457693564
                     );
                 }
-                if ($generator->match($criteria)) {
-                    $fieldValues[$fieldName] = $generator->generate($criteria);
+                if ($generator->match($data)) {
+                    $fieldValues[$fieldName] = $generator->generate($data);
                     break;
                 }
             }

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
+namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,18 +14,24 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Interface for field value generators
- */
-interface FieldGeneratorInterface {
+use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
+/**
+ * Generate data for type=input fields
+ */
+class TypeInputEvalTime extends AbstractFieldGenerator implements FieldGeneratorInterface
+{
     /**
-     * Return true if this FieldGenerator matches
-     *
-     * @param array $data See RecordData generate() for details on this array
-     * @return bool
+     * @var array General match if type=input
      */
-    public function match(array $data): bool;
+    protected $matchArray = [
+        'fieldConfig' => [
+            'config' => [
+                'type' => 'input',
+                'eval' => 'time',
+            ],
+        ],
+    ];
 
     /**
      * Returns the generated value to be inserted into DB for this field
@@ -33,5 +39,9 @@ interface FieldGeneratorInterface {
      * @param array $data
      * @return string
      */
-    public function generate(array $data): string;
+    public function generate(array $data): string
+    {
+        // 05:23
+        return '19380';
+    }
 }

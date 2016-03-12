@@ -19,7 +19,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=input fields
  */
-class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeInputWizardLink extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input
@@ -28,6 +28,13 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
+                'wizards' => [
+                    'link' => [
+                        'module' => [
+                            'name' => 'wizard_link',
+                        ],
+                    ],
+                ],
             ],
         ],
     ];
@@ -40,6 +47,6 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getWord();
+        return (string)$this->kauderwelschService->getLink();
     }
 }

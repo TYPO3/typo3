@@ -19,7 +19,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=input fields
  */
-class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeInputWizardSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=input
@@ -28,6 +28,11 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
+                'wizards' => [
+                    'season_picker' => [
+                        'type' => 'select',
+                    ],
+                ],
             ],
         ],
     ];
@@ -40,6 +45,10 @@ class TypeInput extends AbstractFieldGenerator implements FieldGeneratorInterfac
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getWord();
+        // Get second value from "items" of wizard
+        $values = $data['fieldConfig']['config']['wizards']['season_picker']['items'];
+        array_shift($values);
+        $keyValue = array_shift($values);
+        return $keyValue[1];
     }
 }
