@@ -180,7 +180,7 @@ class StyleguideController extends ActionController
 
         $overlays = [];
         foreach ($allIcons as $key) {
-            if (strpos($key, 'overlay' === 0)) {
+            if (strpos($key, 'overlay') === 0) {
                 $overlays[] = $key;
             }
         }
