@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -20,8 +21,29 @@
 		}
 	</script>
 
-	<p><a href="javascript:styleguideRandomDebug();" class="btn btn-primary">
-		<i class="fa fa-bomb fa-fw"></i>
-		Send debug message
-	</a></p>
+	<div class="example">
+		<a href="javascript:styleguideRandomDebug();" class="btn btn-primary btn-block btn-lg">
+			<i class="fa fa-bomb fa-fw"></i>
+			Send debug message
+		</a>
+	</div>
+	<sg:code language="javascript" codeonly="true">
+		<script>
+			top.TYPO3.DebugConsole.add(message, header, group);
+		</script>
+	</sg:code>
+
+	<div class="example">
+		<a href="javascript:top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');" class="btn btn-primary btn-block btn-lg">
+			<i class="fa fa-bomb fa-fw"></i>
+			Send debug message to multiple groups
+		</a>
+	</div>
+	<sg:code language="javascript" codeonly="true">
+		<script>
+			top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');
+			top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');
+		</script>
+	</sg:code>
+
 </f:section>

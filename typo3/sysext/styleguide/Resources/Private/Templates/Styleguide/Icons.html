@@ -1,3 +1,4 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="Default" />
 
@@ -285,37 +286,32 @@
 
 				<h2>Registration</h2>
 				<h3>Register SVG</h3>
-	<pre>
-	$iconRegistry->registerIcon(
-	'provider-svg',
-	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-	array(
-		'source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg'
-	)
-	);
-	</pre>
+
+				<sg:code language="php" codeonly="true">
+					$iconRegistry->registerIcon(
+						'provider-svg',
+						\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+						['source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg']
+					);
+				</sg:code>
 
 				<h3>Register Bitmap</h3>
-	<pre>
-	$iconRegistry->registerIcon(
-	'provider-bitmap',
-	\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-	array(
-		'source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png'
-	)
-	);
-	</pre>
+				<sg:code language="php" codeonly="true">
+					$iconRegistry->registerIcon(
+						'provider-bitmap',
+						\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+						['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
+					);
+				</sg:code>
 
 				<h3>Register FontAwesome</h3>
-	<pre>
-	$iconRegistry->registerIcon(
-	'provider-fontawesome',
-	\TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-	array(
-		'name' => 'desktop'
-	)
-	);
-	</pre>
+				<sg:code language="php" codeonly="true">
+					$iconRegistry->registerIcon(
+						'provider-fontawesome',
+						\TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+						['name' => 'desktop']
+					);
+				</sg:code>
 			</div>
 		</div>
 	</div>
