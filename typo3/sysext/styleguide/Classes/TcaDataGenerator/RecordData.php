@@ -58,6 +58,13 @@ class RecordData
         FieldGenerator\TypeInputWizardSelect::class,
         // General type=input generator
         FieldGenerator\TypeInput::class,
+
+        FieldGenerator\TypeTextFormatDatetime::class,
+        FieldGenerator\TypeTextMax30::class,
+        FieldGenerator\TypeTextWizardSelect::class,
+        FieldGenerator\TypeTextWizardTable::class,
+        // General type=text generator
+        FieldGenerator\TypeText::class,
     ];
 
     /**

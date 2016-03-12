@@ -38,7 +38,7 @@ class StyleguideCommandController extends CommandController
     {
         /** @var $service \TYPO3\CMS\Styleguide\Service\KauderwelschService */
         $service = $this->objectManager->get(\TYPO3\CMS\Styleguide\Service\KauderwelschService::class);
-        return $service->getLoremIpsum();
+        return $service->getLoremIpsumHtml();
     }
 
 }

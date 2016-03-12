@@ -565,15 +565,23 @@ return [
         ],
         'text_12' => [
             'exclude' => 1,
-            'label' => 'text_12 placeholder=__row|text_12',
+            'label' => 'text_12 default="text_12", value for text_13 and text_14',
+            'config' => [
+                'type' => 'input',
+                'default' => 'text_12',
+            ],
+        ],
+        'text_13' => [
+            'exclude' => 1,
+            'label' => 'text_13 placeholder=__row|text_12',
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
             ],
         ],
-        'text_13' => [
+        'text_14' => [
             'exclude' => 1,
-            'label' => 'text_13 placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
+            'label' => 'text_14 placeholder=__row|text_12, mode=useOrOverridePlaceholder, eval=null',
             'config' => [
                 'type' => 'text',
                 'placeholder' => '__row|text_12',
@@ -581,7 +589,7 @@ return [
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
-        'text_14' => [
+        'text_15' => [
             'exclude' => 1,
             'label' => 'text_14 defaultExtras="fixed-font : enable-tab"',
             'config' => [
@@ -589,7 +597,7 @@ return [
             ],
             'defaultExtras' => 'fixed-font : enable-tab'
         ],
-        'text_15' => [
+        'text_16' => [
             'label' => 'text_15 wizard table',
             'config' => [
                 'type' => 'text',
@@ -611,7 +619,7 @@ return [
                 ],
             ],
         ],
-        'text_16' => [
+        'text_17' => [
             'label' => 'text_16 wizard select',
             'config' => [
                 'type' => 'text',
@@ -1225,8 +1233,8 @@ return [
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
                     input_31, input_32, input_33, input_34, input_35,
                 --div--;text,
-                    text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
-                    text_11, text_12, text_13, text_14, text_15, text_16,
+                    text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
+                    text_11, text_12, text_13, text_14, text_15, text_16, text_17,
                 --div--;check,
                     checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
                     checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
