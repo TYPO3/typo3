@@ -12,7 +12,7 @@ TYPO3 CMS Backend Styleguide
 Welcome to the living Styleguide for TYPO3 CMS backend.
 Presents supported styles for TYPO3 backend modules.
 
-![](Documentation/Index.png)
+![](Documentation/styleguide_index.png)
 
 [Official repository for TYPO3 CMS extension "styleguide" with changelog.](http://typo3.org/extensions/repository/view/styleguide)
 
