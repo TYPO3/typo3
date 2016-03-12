@@ -284,20 +284,24 @@ class SuggestWizard
 
             $flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
             // @todo: should be done via data preparation, resolveAllSheetsInDS() can be deprecated then
+            if (substr($row['uid'], 0, 3) === 'NEW') {
+                // We have to cleanup record information as they are coming from FormEngines DataProvider
+                $pointerFields = GeneralUtility::trimExplode(',', $flexfieldTCAConfig['ds_pointerField']);
+                foreach ($pointerFields as $pointerField) {
+                    if (is_array($row[$pointerField])) {
+                        $row[$pointerField] = $row[$pointerField][0];
+                    }
+                }
+            }
             $flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
             $flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
             $flexformElement = $parts[count($parts) - 2];
-            $continue = true;
             foreach ($flexformDSArray as $sheet) {
                 foreach ($sheet as $_ => $dataStructure) {
                     $fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
                     if (!empty($fieldConfig)) {
-                        $continue = false;
-                        break;
+                        break(2);
                     }
-                }
-                if (!$continue) {
-                    break;
                 }
             }
             // Flexform field name levels are separated with | instead of encapsulation in [];
