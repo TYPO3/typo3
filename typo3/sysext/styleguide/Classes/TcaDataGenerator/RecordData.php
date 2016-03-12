@@ -26,12 +26,11 @@ class RecordData
     /**
      * List of field generators to be called for values.
      * Order is important: Each class is called top-bottom until one returns
-     * true on match(), then generate() is called.
+     * true on match(), then generate() is called on it.
      *
      * @var array
      */
     protected $fieldValueGenerators = [
-
         // dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
         FieldGenerator\TypeInputEvalDateDbTypeDate::class,
         FieldGenerator\TypeInputEvalDatetimeDbTypeDatetime::class,
@@ -68,6 +67,9 @@ class RecordData
 
         // General type=check generator
         FieldGenerator\TypeCheck::class,
+
+        // General type=radio generator
+        FieldGenerator\TypeRadio::class,
     ];
 
     /**
