@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Styleguide\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**

@@ -13,12 +13,12 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class CodeViewHelper
  */
-class CodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class CodeViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -35,8 +35,8 @@ class CodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('language', 'string', 'the language identifier', true);
-        $this->registerArgument('codeonly', 'bool', 'the language identifier', false, false);
+        $this->registerArgument('language', 'string', 'the language identifier, e.g. html, php, etc.', true);
+        $this->registerArgument('codeonly', 'bool', 'if true show only the code but not the example', false, false);
     }
 
     /**
