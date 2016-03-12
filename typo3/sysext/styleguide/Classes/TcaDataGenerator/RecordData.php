@@ -65,6 +65,9 @@ class RecordData
         FieldGenerator\TypeTextWizardTable::class,
         // General type=text generator
         FieldGenerator\TypeText::class,
+
+        // General type=check generator
+        FieldGenerator\TypeCheck::class,
     ];
 
     /**
