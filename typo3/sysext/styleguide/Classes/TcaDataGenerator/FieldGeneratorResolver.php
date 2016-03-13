@@ -75,7 +75,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeUser::class,
 
         // General type=flex generator
-//        FieldGenerator\TypeFlex::class,
+        FieldGenerator\TypeFlex::class,
     ];
 
     /**
