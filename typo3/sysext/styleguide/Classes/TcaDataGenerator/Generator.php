@@ -30,6 +30,8 @@ class Generator
      */
     public function create()
     {
+        $database = $this->getDatabase();
+
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
         $data = [
@@ -73,7 +75,6 @@ class Generator
         $recordData = GeneralUtility::makeInstance(RecordData::class);
         foreach ($mainTables as $mainTable) {
             $fieldValues = $recordData->generate($mainTable);
-            $database = $this->getDatabase();
             $database->exec_INSERTquery($mainTable, $fieldValues);
         }
     }
