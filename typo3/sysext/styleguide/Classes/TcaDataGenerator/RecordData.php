@@ -24,60 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RecordData
 {
     /**
-     * List of field generators to be called for values.
-     * Order is important: Each class is called top-bottom until one returns
-     * true on match(), then generate() is called on it.
-     *
-     * @var array
-     */
-    protected $fieldValueGenerators = [
-        // dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
-        FieldGenerator\TypeInputEvalDateDbTypeDate::class,
-        FieldGenerator\TypeInputEvalDatetimeDbTypeDatetime::class,
-
-        // Use value from ['config']['default'] if given
-        FieldGenerator\ConfigDefault::class,
-
-        // Specific type=input generator
-        FieldGenerator\TypeInputMax4::class,
-        FieldGenerator\TypeInputEvalAlphanum::class,
-        FieldGenerator\TypeInputEvalDate::class,
-        FieldGenerator\TypeInputEvalDatetime::class,
-        FieldGenerator\TypeInputEvalDouble2::class,
-        FieldGenerator\TypeInputEvalInt::class,
-        FieldGenerator\TypeInputEvalIsIn::class,
-        FieldGenerator\TypeInputEvalMd5::class,
-        FieldGenerator\TypeInputEvalNum::class,
-        FieldGenerator\TypeInputEvalTime::class,
-        FieldGenerator\TypeInputEvalTimesec::class,
-        FieldGenerator\TypeInputEvalUpper::class,
-        FieldGenerator\TypeInputEvalYear::class,
-        FieldGenerator\TypeInputWizardColorPicker::class,
-        FieldGenerator\TypeInputWizardLink::class,
-        FieldGenerator\TypeInputWizardSelect::class,
-        // General type=input generator
-        FieldGenerator\TypeInput::class,
-
-        FieldGenerator\TypeTextFormatDatetime::class,
-        FieldGenerator\TypeTextMax30::class,
-        FieldGenerator\TypeTextWizardSelect::class,
-        FieldGenerator\TypeTextWizardTable::class,
-        // General type=text generator
-        FieldGenerator\TypeText::class,
-
-        // General type=check generator
-        FieldGenerator\TypeCheck::class,
-        // General type=radio generator
-        FieldGenerator\TypeRadio::class,
-        // General type=none generator
-        FieldGenerator\TypeNone::class,
-        // General type=passthrough generator
-        FieldGenerator\TypePassthrough::class,
-        // General type=passthrough generator
-        FieldGenerator\TypeUser::class,
-    ];
-
-    /**
      * Generate data for a given table and insert into database
      *
      * @param string $tableName The tablename to create data for
@@ -94,24 +40,19 @@ class RecordData
             'pid' => $pid,
         ];
         $tca = $GLOBALS['TCA'][$tableName];
+        /** @var FieldGeneratorResolver $resolver */
+        $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
         foreach ($tca['columns'] as $fieldName => $fieldConfig) {
             $data = [
                 'tableName' => $tableName,
                 'fieldName' => $fieldName,
                 'fieldConfig' => $fieldConfig,
             ];
-            foreach ($this->fieldValueGenerators as $fieldValueGenerator) {
-                $generator = GeneralUtility::makeInstance($fieldValueGenerator);
-                if (!$generator instanceof FieldGeneratorInterface) {
-                    throw new Exception(
-                        'Field value generator ' . $fieldValueGenerator . ' must implement FieldGeneratorInterface',
-                        1457693564
-                    );
-                }
-                if ($generator->match($data)) {
-                    $fieldValues[$fieldName] = $generator->generate($data);
-                    break;
-                }
+            try {
+                $generator = $resolver->resolve($data);
+                $fieldValues[$fieldName] = $generator->generate($data);
+            } catch (GeneratorNotFoundException $e) {
+                // No op if no matching generator was found
             }
         }
         return $fieldValues;
