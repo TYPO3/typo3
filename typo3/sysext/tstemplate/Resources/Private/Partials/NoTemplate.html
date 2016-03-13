@@ -1,0 +1,30 @@
+<form action="{content.actionName}" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">
+    <f:be.infobox title="{f:translate(key: 'noTemplate', extensionName:'tstemplate')}" state="{content.state}">
+        <p>
+            <f:translate key="noTemplateDescription" />
+            <br />
+            <f:translate key="createTemplateToEditConfiguration" />
+        </p>
+    </f:be.infobox>
+
+    <h2><f:translate key="newWebsite" />{staticsText}</h2>
+    <div>
+        <p><f:translate key="newWebsiteDescription" /></p>
+        {content.selector -> f:format.raw() -> f:or(alternative: '<input type="hidden" name="createStandard" value="" />')}
+        <input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="{f:translate(key: 'newWebsiteAction', extensionName:'tstemplate')}" />
+    </div>
+
+    <h2><f:translate key="extTemplate" /></h2>
+    <div>
+        <p><f:translate key="extTemplateDescription" /></p>
+        <input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="{f:translate(key: 'extTemplateAction', extensionName:'tstemplate')}" />
+    </div>
+
+    <f:if condition="{content.previousPage}">
+        <h3><f:translate key="goToClosest" /></h3>
+        <div>
+            <p><f:translate key="goToClosestDescription"  arguments="{0: content.previousPage.title, 1: content.previousPage.uid}" /></p>
+            <a class="btn btn-default" href="{content.previousPage.aHref}"><f:translate key="goToClosestAction" /></a>
+        </div>
+    </f:if>
+</form>
