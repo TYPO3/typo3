@@ -2041,6 +2041,16 @@ class GeneralUtility
             // (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
             if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
                 curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, (bool)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_host']);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer']);
+                if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile']) {
+                        curl_setopt($ch, CURLOPT_CAINFO, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile']);
+                    }
+                    if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath']) {
+                        curl_setopt($ch, CURLOPT_CAPATH, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath']);
+                    }
+                }
                 if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyNTLM']) {
                     curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
                 }
