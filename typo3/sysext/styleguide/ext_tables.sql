@@ -1430,7 +1430,7 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric (
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumtext,
+	l18n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
 	t3ver_id int(11) DEFAULT '0' NOT NULL,
