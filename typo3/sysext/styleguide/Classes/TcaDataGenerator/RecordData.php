@@ -67,9 +67,14 @@ class RecordData
 
         // General type=check generator
         FieldGenerator\TypeCheck::class,
-
         // General type=radio generator
         FieldGenerator\TypeRadio::class,
+        // General type=none generator
+        FieldGenerator\TypeNone::class,
+        // General type=passthrough generator
+        FieldGenerator\TypePassthrough::class,
+        // General type=passthrough generator
+        FieldGenerator\TypeUser::class,
     ];
 
     /**
