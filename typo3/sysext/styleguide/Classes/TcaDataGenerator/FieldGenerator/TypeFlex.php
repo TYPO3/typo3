@@ -83,12 +83,15 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
                 }
             }
         }
+
+        // Get string representation of result via FlexFormTools
         $resultString = '';
         if (!empty($resultArray)) {
             /** @var FlexFormTools $flexFormTools */
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $resultString = $flexFormTools->flexArray2Xml($resultArray, true);
         }
+
         return $resultString;
     }
 }
