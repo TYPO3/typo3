@@ -893,7 +893,7 @@ class ContentObjectRenderer
         $fullyQualifiedClassName = $this->contentObjectClassMap[$name];
         $contentObject = GeneralUtility::makeInstance($fullyQualifiedClassName, $this);
         if (!($contentObject instanceof AbstractContentObject)) {
-            throw new ContentRenderingException(sprintf('Registered content object class name "%" must be an instance of AbstractContentObject, but is not!', $fullyQualifiedClassName), 1422564295);
+            throw new ContentRenderingException(sprintf('Registered content object class name "%s" must be an instance of AbstractContentObject, but is not!', $fullyQualifiedClassName), 1422564295);
         }
         return $contentObject;
     }
