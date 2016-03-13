@@ -72,7 +72,9 @@ class Generator
         /** @var RecordData $recordData */
         $recordData = GeneralUtility::makeInstance(RecordData::class);
         foreach ($mainTables as $mainTable) {
-            $recordData->generate($mainTable);
+            $fieldValues = $recordData->generate($mainTable);
+            $database = $this->getDatabase();
+            $database->exec_INSERTquery($mainTable, $fieldValues);
         }
     }
 

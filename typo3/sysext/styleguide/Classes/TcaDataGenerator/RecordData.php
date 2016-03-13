@@ -114,9 +114,6 @@ class RecordData
                 }
             }
         }
-        $database = $this->getDatabase();
-        $database->exec_INSERTquery($tableName, $fieldValues);
-        $fieldValues['uid'] = $database->sql_insert_id();
         return $fieldValues;
     }
 
