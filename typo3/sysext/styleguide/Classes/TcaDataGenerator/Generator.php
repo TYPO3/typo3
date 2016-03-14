@@ -122,9 +122,9 @@ class Generator
         }
 
         // Delete demo groups
-        $demoUserGroups = $recordFinder->findUidsOfDemoBeGroups();
-        if (!empty($demoUserGroups)) {
-            foreach ($demoUserGroups as $demoUserGroup) {
+        $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+        if (!empty($demoGroupUids)) {
+            foreach ($demoGroupUids as $demoUserGroup) {
                 $commands['be_groups'][(int)$demoUserGroup]['delete'] = 1;
             }
         }
