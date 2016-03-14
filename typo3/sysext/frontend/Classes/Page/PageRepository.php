@@ -1120,7 +1120,9 @@ class PageRepository
         if ($show_hidden === -1 && is_object($this->getTypoScriptFrontendController())) {
             // If show_hidden was not set from outside and if TSFE is an object, set it
             // based on showHiddenPage and showHiddenRecords from TSFE
-            $show_hidden = $table === 'pages' ? $this->getTypoScriptFrontendController()->showHiddenPage : $this->getTypoScriptFrontendController()->showHiddenRecords;
+            $show_hidden = $table === 'pages' || $table === 'pages_language_overlay'
+                ? $this->getTypoScriptFrontendController()->showHiddenPage
+                : $this->getTypoScriptFrontendController()->showHiddenRecords;
         }
         if ($show_hidden === -1) {
             $show_hidden = 0;
