@@ -69,7 +69,8 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 if (!empty($result['processedTca']['ctrl']['transOrigDiffSourceField'])
                     && !empty($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']])
                 ) {
-                    $result['defaultLanguageDiffRow'] = unserialize($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']]);
+                    $defaultLanguageKey = $result['tableName'] . ':' . (int)$result['databaseRow']['uid'];
+                    $result['defaultLanguageDiffRow'][$defaultLanguageKey] = unserialize($result['databaseRow'][$result['processedTca']['ctrl']['transOrigDiffSourceField']]);
                 }
 
                 // Add language overlays from further localizations if requested

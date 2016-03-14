@@ -181,7 +181,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
-        $expected['defaultLanguageDiffRow'] = $diffSource;
+        $expected['defaultLanguageDiffRow']['tt_content:42'] = $diffSource;
 
         $this->assertEquals($expected, $this->subject->addData($input));
     }

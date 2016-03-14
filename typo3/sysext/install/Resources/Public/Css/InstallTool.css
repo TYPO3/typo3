@@ -7275,6 +7275,9 @@ button.close {
   background-color: #ebfce3;
   text-decoration: none;
 }
+.diff-item-result.diff-item-result-inline {
+  white-space: normal;
+}
 .module {
   height: 100%;
   width: 100%;
