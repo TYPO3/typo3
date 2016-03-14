@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Manage a page tree with all test / demo styleguide data
@@ -70,8 +72,8 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-        // Add rows of hard coded table rows. Must be done *before* the
-        // casual records, so they can use those records already
+        // Add rows of hard coded tables. Must be done *before* the
+        // casual records, so those can use hard coded records in relations.
         $this->populateHardCodedTableRows();
 
         // Create data for each main table
@@ -98,23 +100,50 @@ class Generator
      */
     public function delete()
     {
-        $topUids = $this->getUidsOfStyleguideEntryPages();
-        if (empty($topUids)) {
-            return;
+        /** @var RecordFinder $recordFinder */
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+
+        $commands = [];
+
+        // Delete page tree and all their records on this tree
+        $topUids = $recordFinder->findUidsOfStyleguideEntryPages();
+        if (!empty($topUids)) {
+            foreach ($topUids as $topUid) {
+                $commands['pages'][(int)$topUid]['delete'] = 1;
+            }
         }
-        $command = [];
-        foreach ($topUids as $topUid) {
-            $command['pages'][(int)$topUid]['delete'] = 1;
+
+        // Delete demo users
+        $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
+        if (!empty($demoUserUids)) {
+            foreach ($demoUserUids as $demoUserUid) {
+                $commands['be_users'][(int)$demoUserUid]['delete'] = 1;
+            }
         }
-        /** @var DataHandler $dataHandler */
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->deleteTree = true;
-        $dataHandler->start([], $command);
-        $dataHandler->process_cmdmap();
-        BackendUtility::setUpdateSignal('updatePageTree');
+
+        // Delete demo groups
+        $demoUserGroups = $recordFinder->findUidsOfDemoBeGroups();
+        if (!empty($demoUserGroups)) {
+            foreach ($demoUserGroups as $demoUserGroup) {
+                $commands['be_groups'][(int)$demoUserGroup]['delete'] = 1;
+            }
+        }
+
+        // Do the thing
+        if (!empty($commands)) {
+            /** @var DataHandler $dataHandler */
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->deleteTree = true;
+            $dataHandler->start([], $commands);
+            $dataHandler->process_cmdmap();
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
     }
 
     /**
+     * Add rows for "tx_styleguide_staticdata" hard coded.
+     * Add rows for test be_users and test be_groups
+     *
      * Table tx_styleguide_staticdata gets a special handling and a
      * couple of records inserted by default.
      *
@@ -122,10 +151,14 @@ class Generator
      */
     protected function populateHardCodedTableRows()
     {
-        /** @var PageFinder $pageFinder */
-        $pageFinder = GeneralUtility::makeInstance(PageFinder::class);
-        $pid = $pageFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $this->getDatabase()->exec_INSERTmultipleRows(
+        $database = $this->getDatabase();
+
+        // tx_styleguide_staticdata is used in other TCA demo fields. We need some default
+        // rows to later connect other fields to these rows.
+        /** @var RecordFinder $recordFinder */
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+        $pid = $recordFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
+        $database->exec_INSERTmultipleRows(
             'tx_styleguide_staticdata',
             [ 'pid', 'value_1' ],
             [
@@ -135,6 +168,48 @@ class Generator
                 [ $pid, 'foobar' ],
             ]
         );
+
+        $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+        if (empty($demoGroupUids)) {
+            // Add two be_groups and fetch their uids to assign the non-admin be_user to these groups
+            $fields = [
+                'pid' => 0,
+                'hidden' => 1,
+                'tx_styleguide_isdemorecord' => 1,
+                'title' => 'styleguide demo group 1',
+            ];
+            $database->exec_INSERTquery('be_groups', $fields);
+            $fields['title'] = 'styleguide demo group 2';
+            $database->exec_INSERTquery('be_groups', $fields);
+            $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+
+            // If there were no groups, it is assumed (!) there are no users either. So they are just created.
+            // This may lead to duplicate demo users if a group was manually deleted, but the styleguide
+            // "delete" action would delete them all anyway and the next "create" action would create a new set.
+            // Also, it may lead to missing be_users if they were manually deleted, but be_groups not.
+            // These edge cases are ignored for now.
+
+            // Add two be_users, one admin user, one non-admin user, both hidden and with a random password
+            /** @var $saltedpassword \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
+            $saltedpassword = SaltFactory::getSaltingInstance();
+            /** @var Random $random */
+            $random = GeneralUtility::makeInstance(Random::class);
+            $fields = [
+                'pid' => 0,
+                'disable' => 1,
+                'admin' => 0,
+                'tx_styleguide_isdemorecord' => 1,
+                'username' => 'styleguide demo user 1',
+                'usergroup' => implode(',', $demoGroupUids),
+                'password' => $saltedpassword->getHashedPassword($random->generateRandomBytes(10)),
+            ];
+            $database->exec_INSERTquery('be_users', $fields);
+            $fields['admin'] = 1;
+            $fields['username'] = 'styleguide demo user 2';
+            $fields['usergroup'] = '';
+            $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
+            $database->exec_INSERTquery('be_users', $fields);
+        }
     }
 
     /**
@@ -212,31 +287,6 @@ class Generator
             $uid = (int)$lastPage['uid'];
         }
         return $uid;
-    }
-
-    /**
-     * Returns a uid list of existing styleguide demo top level pages.
-     * These are pages with pid=0 and tx_styleguide_containsdemo set to 'tx_styleguide'
-     *
-     * @return array
-     */
-    protected function getUidsOfStyleguideEntryPages(): array
-    {
-        $database = $this->getDatabase();
-        $rows = $database->exec_SELECTgetRows(
-            'uid',
-            'pages',
-            'pid = 0'
-                . ' AND tx_styleguide_containsdemo=' . $database->fullQuoteStr('tx_styleguide', 'pages')
-                . BackendUtility::deleteClause('pages')
-        );
-        $uids = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $uids[] = (int)$row['uid'];
-            }
-        }
-        return $uids;
     }
 
     /**

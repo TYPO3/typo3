@@ -32,9 +32,9 @@ class RecordData
     public function generate(string $tableName, int $pid = NULL): array
     {
         if (is_null($pid)) {
-            /** @var PageFinder $pageFinder */
-            $pageFinder = GeneralUtility::makeInstance(PageFinder::class);
-            $pid = $pageFinder->findPidOfMainTableRecord($tableName);
+            /** @var RecordFinder $recordFinder */
+            $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+            $pid = $recordFinder->findPidOfMainTableRecord($tableName);
         }
         $fieldValues = [
             'pid' => $pid,
