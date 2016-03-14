@@ -389,27 +389,36 @@ class SingleFieldContainer extends AbstractContainer
      */
     protected function renderDefaultLanguageDiff($table, $field, $row, $item)
     {
-        if (is_array($this->data['defaultLanguageDataDiff'][$table . ':' . $row['uid']])) {
+        if (is_array($this->data['defaultLanguageDiffRow'][$table . ':' . $row['uid']])) {
             // Initialize:
             $dLVal = array(
-                'old' => $this->data['defaultLanguageDataDiff'][$table . ':' . $row['uid']],
-                'new' => $this->data['defaultLanguageData'][$table . ':' . $row['uid']]
+                'old' => $this->data['defaultLanguageDiffRow'][$table . ':' . $row['uid']],
+                'new' => $this->data['defaultLanguageRow']
             );
             // There must be diff-data:
             if (isset($dLVal['old'][$field])) {
                 if ((string)$dLVal['old'][$field] !== (string)$dLVal['new'][$field]) {
                     // Create diff-result:
+                    /** @var DiffUtility $diffUtility */
                     $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
                     $diffres = $diffUtility->makeDiffDisplay(
                         BackendUtility::getProcessedValue($table, $field, $dLVal['old'][$field], 0, 1),
                         BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
                     );
-                    $item .= '<div class="t3-form-original-language-diff">
-						<div class="t3-form-original-language-diffheader">' .
-                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) .
-                        '</div>
-						<div class="t3-form-original-language-diffcontent">' . $diffres . '</div>
-					</div>';
+                    $item .= '
+						<div class="t3-form-original-language-diff">
+							<div class="t3-form-original-language-diffheader">'
+                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig'))
+							. '</div>
+							<div class="t3-form-original-language-diffcontent">
+								<div class="diff">
+									<div class="diff-item">
+										<div class="diff-item-result diff-item-result-inline">' . $diffres . '</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					';
                 }
             }
         }
