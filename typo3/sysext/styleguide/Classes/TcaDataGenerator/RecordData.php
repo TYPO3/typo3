@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,7 +32,9 @@ class RecordData
     public function generate(string $tableName, int $pid = NULL): array
     {
         if (is_null($pid)) {
-            $pid = $this->findPidOfMainTableRecord($tableName);
+            /** @var PageFinder $pageFinder */
+            $pageFinder = GeneralUtility::makeInstance(PageFinder::class);
+            $pid = $pageFinder->findPidOfMainTableRecord($tableName);
         }
         $fieldValues = [
             'pid' => $pid,
@@ -56,43 +56,6 @@ class RecordData
             }
         }
         return $fieldValues;
-    }
-
-    /**
-     * "Main" tables have a single page they are located on with their possible children.
-     * The methods find this page by getting the highest uid of a page where field
-     * tx_styleguide_containsdemo is set to given table name.
-     *
-     * @param string $tableName
-     * @return int
-     * @throws Exception
-     */
-    protected function findPidOfMainTableRecord(string $tableName): int
-    {
-        $database = $this->getDatabase();
-        $row = $database->exec_SELECTgetSingleRow(
-            'uid',
-            'pages',
-            'tx_styleguide_containsdemo=' . $database->fullQuoteStr($tableName, 'pages')
-                . BackendUtility::deleteClause('pages'),
-            '',
-            'pid DESC'
-        );
-        if (!count($row) === 1) {
-            throw new Exception(
-                'Found no page for main table ' . $tableName,
-                1457690656
-            );
-        }
-        return (int)$row['uid'];
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 }

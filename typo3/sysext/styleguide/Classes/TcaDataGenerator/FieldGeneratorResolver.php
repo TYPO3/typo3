@@ -56,6 +56,7 @@ class FieldGeneratorResolver
         // General type=input generator
         FieldGenerator\TypeInput::class,
 
+        FieldGenerator\TypeTextRenderTypeFormWizard::class,
         FieldGenerator\TypeTextFormatDatetime::class,
         FieldGenerator\TypeTextMax30::class,
         FieldGenerator\TypeTextWizardSelect::class,

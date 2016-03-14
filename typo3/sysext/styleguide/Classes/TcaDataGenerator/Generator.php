@@ -70,10 +70,21 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
+        // Add rows of hard coded table rows. Must be done *before* the
+        // casual records, so they can use those records already
+        $this->populateHardCodedTableRows();
+
         // Create data for each main table
         /** @var RecordData $recordData */
         $recordData = GeneralUtility::makeInstance(RecordData::class);
+        // Some tables are manually taken care off, skip them
+        $tableBlacklist = [
+            'tx_styleguide_staticdata',
+        ];
         foreach ($mainTables as $mainTable) {
+            if (in_array($mainTable, $tableBlacklist)) {
+                continue;
+            }
             $fieldValues = $recordData->generate($mainTable);
             $database->exec_INSERTquery($mainTable, $fieldValues);
         }
@@ -101,6 +112,29 @@ class Generator
         $dataHandler->start([], $command);
         $dataHandler->process_cmdmap();
         BackendUtility::setUpdateSignal('updatePageTree');
+    }
+
+    /**
+     * Table tx_styleguide_staticdata gets a special handling and a
+     * couple of records inserted by default.
+     *
+     * @return void
+     */
+    protected function populateHardCodedTableRows()
+    {
+        /** @var PageFinder $pageFinder */
+        $pageFinder = GeneralUtility::makeInstance(PageFinder::class);
+        $pid = $pageFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
+        $this->getDatabase()->exec_INSERTmultipleRows(
+            'tx_styleguide_staticdata',
+            [ 'pid', 'value_1' ],
+            [
+                [ $pid, 'foo' ],
+                [ $pid, 'bar' ],
+                [ $pid, 'foofoo' ],
+                [ $pid, 'foobar' ],
+            ]
+        );
     }
 
     /**
