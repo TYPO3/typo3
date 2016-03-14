@@ -47,23 +47,31 @@ class ResourceCompressorTest extends BaseTestCase
             ),
             'import in front' => array(
                 '@import url(http://www.example.com/css); body { background: #ffffff; }',
-                'LF/* moved by compressor */LF@import url(http://www.example.com/css);LFbody { background: #ffffff; }'
+                'LF/* moved by compressor */LF@import url(http://www.example.com/css);LF/* moved by compressor */LFbody { background: #ffffff; }'
             ),
             'import in back, without quotes' => array(
                 'body { background: #ffffff; } @import url(http://www.example.com/css);',
-                'LF/* moved by compressor */LF@import url(http://www.example.com/css);LFbody { background: #ffffff; }'
+                'LF/* moved by compressor */LF@import url(http://www.example.com/css);LF/* moved by compressor */LFbody { background: #ffffff; }'
             ),
             'import in back, with double-quotes' => array(
                 'body { background: #ffffff; } @import url("http://www.example.com/css");',
-                'LF/* moved by compressor */LF@import url("http://www.example.com/css");LFbody { background: #ffffff; }'
+                'LF/* moved by compressor */LF@import url("http://www.example.com/css");LF/* moved by compressor */LFbody { background: #ffffff; }'
             ),
             'import in back, with single-quotes' => array(
                 'body { background: #ffffff; } @import url(\'http://www.example.com/css\');',
-                'LF/* moved by compressor */LF@import url(\'http://www.example.com/css\');LFbody { background: #ffffff; }'
+                'LF/* moved by compressor */LF@import url(\'http://www.example.com/css\');LF/* moved by compressor */LFbody { background: #ffffff; }'
             ),
             'import in middle and back, without quotes' => array(
                 'body { background: #ffffff; } @import url(http://www.example.com/A); div { background: #000; } @import url(http://www.example.com/B);',
-                'LF/* moved by compressor */LF@import url(http://www.example.com/A);LF/* moved by compressor */LF@import url(http://www.example.com/B);LFbody { background: #ffffff; }  div { background: #000; }'
+                'LF/* moved by compressor */LF@import url(http://www.example.com/A);@import url(http://www.example.com/B);LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; }'
+            ),
+            'charset declaration is unique' => array(
+                'body { background: #ffffff; } @charset "UTF-8"; div { background: #000; }; @charset "UTF-8";',
+                '@charset "UTF-8";LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; };'
+            ),
+            'order of charset, namespace and import is correct' => array(
+                'body { background: #ffffff; } @charset "UTF-8"; div { background: #000; }; @import "file2.css"; @namespace url(http://www.w3.org/1999/xhtml);',
+                '@charset "UTF-8";LF/* moved by compressor */LF@namespace url(http://www.w3.org/1999/xhtml);LF/* moved by compressor */LF@import "file2.css";LF/* moved by compressor */LFbody { background: #ffffff; }  div { background: #000; };'
             ),
         );
     }
