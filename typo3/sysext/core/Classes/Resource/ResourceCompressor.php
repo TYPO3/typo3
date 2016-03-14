@@ -534,10 +534,37 @@ class ResourceCompressor
         $regex = '/@(charset|import|namespace)\\s*(url)?\\s*\\(?\\s*["\']?[^"\'\\)]+["\']?\\s*\\)?\\s*;/i';
         preg_match_all($regex, $contents, $matches);
         if (!empty($matches[0])) {
+            // Ensure correct order of @charset, @namespace and @import
+            $charset = '';
+            $namespaces = [];
+            $imports = [];
+            foreach ($matches[1] as $index => $keyword) {
+                switch ($keyword) {
+                    case 'charset':
+                        if (empty($charset)) {
+                            $charset = $matches[0][$index];
+                        }
+                        break;
+                    case 'namespace':
+                        $namespaces[] = $matches[0][$index];
+                        break;
+                    case 'import':
+                        $imports[] = $matches[0][$index];
+                        break;
+                }
+            }
+
+            $namespaces = !empty($namespaces) ? implode('', $namespaces) . $comment : '';
+            $imports = !empty($imports) ? implode('', $imports) . $comment : '';
             // remove existing statements
             $contents = str_replace($matches[0], '', $contents);
             // add statements to the top of contents in the order they occur in original file
-            $contents = $comment . implode($comment, $matches[0]) . LF . trim($contents);
+            $contents =
+                $charset
+                . $comment
+                . $namespaces
+                . $imports
+                . trim($contents);
         }
         return $contents;
     }
@@ -602,8 +629,6 @@ class ResourceCompressor
      */
     protected function compressCssString($contents)
     {
-        // Remove multiple charset declarations for standards compliance (and fixing Safari problems).
-        $contents = preg_replace('/^@charset\s+[\'"](\S*?)\b[\'"];/i', '', $contents);
         // Perform some safe CSS optimizations.
         // Regexp to match comment blocks.
         $comment = '/\*[^*]*\*+(?:[^/*][^*]*\*+)*/';
