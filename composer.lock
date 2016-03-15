@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce8008f022cb34b5006f42b79540f0d9",
-    "content-hash": "9a586c7ed60bbb2797d1612101951895",
+    "hash": "88357c81922109fff6061207d1bf7cdc",
+    "content-hash": "c95ad8f0a962c6abba6a42d04a2ec8ce",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -762,16 +762,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "1.0.4",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3Fluid/Fluid.git",
-                "reference": "8c62d41b66ffcbb5317bc67f598899ce1f7832d0"
+                "reference": "e3bc20e60df6960a852a0829c7a0238f643808ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/8c62d41b66ffcbb5317bc67f598899ce1f7832d0",
-                "reference": "8c62d41b66ffcbb5317bc67f598899ce1f7832d0",
+                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/e3bc20e60df6960a852a0829c7a0238f643808ac",
+                "reference": "e3bc20e60df6960a852a0829c7a0238f643808ac",
                 "shasum": ""
             },
             "require": {
@@ -796,7 +796,7 @@
                 "LGPL-3.0+"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2016-02-16 20:22:28"
+            "time": "2016-03-15 17:01:42"
         }
     ],
     "packages-dev": [
