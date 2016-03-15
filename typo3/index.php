@@ -18,9 +18,10 @@ if (version_compare(PHP_VERSION, '7.0.0', '<')) {
 }
 
 /**
- * Main entry point for all backend-related scripts.
+ * Main entry point for all backend-related scripts ...
  */
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../vendor/autoload.php';
     (new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
 });
+
