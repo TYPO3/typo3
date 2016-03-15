@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 /*
@@ -41,6 +42,6 @@ class TypeInputEvalNum extends AbstractFieldGenerator implements FieldGeneratorI
      */
     public function generate(array $data): string
     {
-        return $this->kauderwelschService->getInteger();
+        return (string)$this->kauderwelschService->getInteger();
     }
 }

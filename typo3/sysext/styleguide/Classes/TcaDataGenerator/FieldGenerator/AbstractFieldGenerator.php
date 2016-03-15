@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 /*
@@ -70,7 +71,7 @@ class AbstractFieldGenerator
                         return false;
                     }
                 } elseif ($data[$name] === $value) {
-                    $result = $result & true;
+                    $result = (bool)($result & true);
                 } else {
                     return false;
                 }
