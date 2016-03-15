@@ -25,20 +25,12 @@ class RecordData
      * Generate data for a given table and insert into database
      *
      * @param string $tableName The tablename to create data for
-     * @param int $pid Optional page id of new record. If not given, table is a "main" table and pid is determined ottherwise
+     * @param array $fieldValues Incoming list of field values, Typically uid and pid are set already
      * @return array
      * @throws Exception
      */
-    public function generate(string $tableName, int $pid = NULL): array
+    public function generate(string $tableName, array $fieldValues): array
     {
-        if (is_null($pid)) {
-            /** @var RecordFinder $recordFinder */
-            $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-            $pid = $recordFinder->findPidOfMainTableRecord($tableName);
-        }
-        $fieldValues = [
-            'pid' => $pid,
-        ];
         $tca = $GLOBALS['TCA'][$tableName];
         /** @var FieldGeneratorResolver $resolver */
         $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
@@ -47,6 +39,7 @@ class RecordData
                 'tableName' => $tableName,
                 'fieldName' => $fieldName,
                 'fieldConfig' => $fieldConfig,
+                'fieldValues' => $fieldValues,
             ];
             try {
                 $generator = $resolver->resolve($data);

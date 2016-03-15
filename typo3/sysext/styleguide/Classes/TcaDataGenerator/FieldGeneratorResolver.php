@@ -76,6 +76,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeUser::class,
 
         // type=group
+        FieldGenerator\TypeGroupDbFal::class,
         FieldGenerator\TypeGroupDbAllowedBeUsersBeGroups::class,
         FieldGenerator\TypeGroupDbAllowedBeUsers::class,
         FieldGenerator\TypeGroupDbAllowedStaticdata::class,

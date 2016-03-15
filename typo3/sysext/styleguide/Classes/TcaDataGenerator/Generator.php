@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
@@ -28,6 +30,8 @@ use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 class Generator
 {
     /**
+     * Create a page tree for styleguide records and add records on them.
+     *
      * @return void
      */
     public function create()
@@ -83,12 +87,25 @@ class Generator
         $tableBlacklist = [
             'tx_styleguide_staticdata',
         ];
+        /** @var RecordFinder $recordFinder */
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         foreach ($mainTables as $mainTable) {
             if (in_array($mainTable, $tableBlacklist)) {
                 continue;
             }
-            $fieldValues = $recordData->generate($mainTable);
+            // First insert an empty row and get the uid of this row since
+            // some fields need this uid for relations later.
+            $fieldValues = [
+                'pid' => $recordFinder->findPidOfMainTableRecord($mainTable),
+            ];
             $database->exec_INSERTquery($mainTable, $fieldValues);
+            $fieldValues['uid'] = $database->sql_insert_id();
+            $fieldValues = $recordData->generate($mainTable, $fieldValues);
+            $database->exec_UPDATEquery(
+                $mainTable,
+                'uid = ' . $fieldValues['uid'],
+                $fieldValues
+            );
         }
     }
 
@@ -137,6 +154,18 @@ class Generator
             $dataHandler->start([], $commands);
             $dataHandler->process_cmdmap();
             BackendUtility::setUpdateSignal('updatePageTree');
+        }
+
+        // Delete demo images in fileadmin again
+        /** @var StorageRepository $storageRepository */
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+        $storage = $storageRepository->findByUid(1);
+        $folder = $storage->getRootLevelFolder();
+        try {
+            $folder = $folder->getSubfolder('styleguide');
+            $folder->delete(true);
+        } catch (\InvalidArgumentException $e) {
+            // No op if folder does not exist
         }
     }
 
@@ -209,6 +238,32 @@ class Generator
             $fields['usergroup'] = '';
             $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
             $database->exec_INSERTquery('be_users', $fields);
+        }
+
+        // Add 3 files from resources directory to default storage
+        /** @var StorageRepository $storageRepository */
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+        $storage = $storageRepository->findByUid(1);
+        $folder = $storage->getRootLevelFolder();
+        try {
+            $folder->createFolder('styleguide');
+            $folder = $folder->getSubfolder('styleguide');
+            $files = [
+                'bus_lane.jpg',
+                'telephone_box.jpg',
+                'underground.jpg',
+            ];
+            foreach ($files as $fileName) {
+                $sourceLocation = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
+                // Copy to typo3temp can be removed if https://forge.typo3.org/issues/70012 is solved
+                GeneralUtility::writeFileToTypo3tempDir(PATH_site . 'typo3temp/styleguide/' . $fileName, file_get_contents($sourceLocation));
+                $sourceLocation = PATH_site . 'typo3temp/styleguide/' . $fileName;
+                $storage->addFile($sourceLocation, $folder, $fileName);
+                // Copy to typo3temp can be removed if https://forge.typo3.org/issues/70012 is solved
+                GeneralUtility::rmdir(PATH_site . 'typo3temp/styleguide', true);
+            }
+        } catch (ExistingTargetFolderException $e) {
+            // No op if folder exists. This code assumes file exist, too.
         }
     }
 

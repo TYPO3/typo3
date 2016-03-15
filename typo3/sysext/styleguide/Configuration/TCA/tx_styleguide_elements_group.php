@@ -136,6 +136,8 @@ return [
         ],
         'group_db_6' => [
             // @todo: when and why is this useful?
+            // @todo: something is totally wrong here, the structure within sys_file_reference ends up being
+            // @todo: basically swapped with "foreign" and "local" fields!
             'exclude' => 1,
             'label' => 'group_db_6 FAL relation',
             'config' => [
