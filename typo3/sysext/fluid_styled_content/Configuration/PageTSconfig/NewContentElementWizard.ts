@@ -18,7 +18,6 @@ mod.wizards.newContentElement.wizardItems {
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_description
 			tt_content_defValues {
 				CType = textmedia
-				imageorient = 17
 			}
 		}
 		bullets {
