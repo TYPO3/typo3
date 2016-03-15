@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -210,11 +211,17 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     protected $languageHasTranslationsCache = array();
 
     /**
+     * @var LocalizationController
+     */
+    protected $localizationController;
+
+    /**
      * Construct to initialize class variables.
      */
     public function __construct()
     {
         parent::__construct();
+        $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');

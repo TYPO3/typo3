@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -34,11 +34,17 @@ class LocalizationController
     protected $iconFactory;
 
     /**
+     * @var LocalizationRepository
+     */
+    protected $localizationRepository;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
     }
 
     /**
@@ -59,55 +65,28 @@ class LocalizationController
         $pageId = (int)$params['pageId'];
         $colPos = (int)$params['colPos'];
         $languageId = (int)$params['languageId'];
-        $databaseConnection = $this->getDatabaseConnection();
-        $backendUser = $this->getBackendUser();
 
         /** @var TranslationConfigurationProvider $translationProvider */
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $systemLanguages = $translationProvider->getSystemLanguages($pageId);
 
         $availableLanguages = [];
-        $availableLanguages[0] = $systemLanguages[0];
 
-        $excludeQueryPart = BackendUtility::deleteClause('tt_content')
-            . BackendUtility::versioningPlaceholderClause('tt_content');
+        // First check whether column has localized records
+        $elementsInColumnCount = $this->localizationRepository->getLocalizedRecordCount($pageId, $colPos, $languageId);
 
-        // First check whether column is empty and then load additional languages
-        $elementsInColumnCount = $databaseConnection->exec_SELECTcountRows(
-            'uid',
-            'tt_content',
-            'tt_content.sys_language_uid=' . (int)$languageId
-                . ' AND tt_content.colPos = ' . (int)$colPos
-                . ' AND tt_content.pid=' . (int)$pageId
-                . $excludeQueryPart
-        );
-        $additionalWhere = '';
-        if (!$backendUser->isAdmin()) {
-            $additionalWhere .= ' AND sys_language.hidden=0';
-
-            if (!empty($backendUser->user['allowed_languages'])) {
-                $additionalWhere .= ' AND sys_language.uid IN(' . $databaseConnection->cleanIntList($backendUser->user['allowed_languages']) . ')';
-            }
-        }
         if ($elementsInColumnCount === 0) {
-            $res = $databaseConnection->exec_SELECTquery(
-                'sys_language.uid',
-                'tt_content,sys_language',
-                'tt_content.sys_language_uid=sys_language.uid'
-                    . ' AND tt_content.colPos = ' . (int)$colPos
-                    . ' AND tt_content.pid=' . (int)$pageId
-                    . ' AND sys_language.uid <> ' . (int)$languageId
-                    . $additionalWhere
-                    . $excludeQueryPart,
-                'sys_language.uid',
-                'sys_language.title'
-            );
-            while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-                if (isset($systemLanguages[$row['uid']])) {
-                    $availableLanguages[] = $systemLanguages[$row['uid']];
+            $fetchedAvailableLanguages = $this->localizationRepository->fetchAvailableLanguages($pageId, $colPos, $languageId);
+            $availableLanguages[] = $systemLanguages[0];
+
+            foreach ($fetchedAvailableLanguages as $language) {
+                if (isset($systemLanguages[$language['uid']])) {
+                    $availableLanguages[] = $systemLanguages[$language['uid']];
                 }
             }
-            $databaseConnection->sql_free_result($res);
+        } else {
+            $result = $this->localizationRepository->fetchOriginLanguage($pageId, $colPos, $languageId);
+            $availableLanguages[] = $systemLanguages[$result['sys_language_uid']];
         }
 
         // Pre-render all flag icons
@@ -140,7 +119,7 @@ class LocalizationController
 
         $records = [];
         $databaseConnection = $this->getDatabaseConnection();
-        $res = $this->getRecordsToCopyDatabaseResult($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'], '*');
+        $res = $this->localizationRepository->getRecordsToCopyDatabaseResult($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'], '*');
         while ($row = $databaseConnection->sql_fetch_assoc($res)) {
             $records[] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
@@ -172,7 +151,7 @@ class LocalizationController
         $languageId = (int)$params['languageId'];
         $databaseConnection = $this->getDatabaseConnection();
 
-        $res = $this->getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, 'uid');
+        $res = $this->localizationRepository->getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, 'uid');
         $uids = [];
         while ($row = $databaseConnection->sql_fetch_assoc($res)) {
             $uids[] = (int)$row['uid'];
@@ -252,60 +231,6 @@ class LocalizationController
 
         $response->getBody()->write(json_encode([]));
         return $response;
-    }
-
-    /**
-     * Get records for copy process
-     *
-     * @param int $pageId
-     * @param int $colPos
-     * @param int $destLanguageId
-     * @param int $languageId
-     * @param string $fields
-     * @return bool|\mysqli_result|object
-     */
-    protected function getRecordsToCopyDatabaseResult($pageId, $colPos, $destLanguageId, $languageId, $fields = '*')
-    {
-        $db = $this->getDatabaseConnection();
-
-        // Get original uid of existing elements triggered language / colpos
-        $originalUids = $db->exec_SELECTgetRows(
-            't3_origuid',
-            'tt_content',
-            'sys_language_uid=' . (int)$destLanguageId
-                . ' AND tt_content.colPos = ' . (int)$colPos
-                . ' AND tt_content.pid=' . (int)$pageId
-                . BackendUtility::deleteClause('tt_content')
-                . BackendUtility::versioningPlaceholderClause('tt_content'),
-            '',
-            '',
-            '',
-            't3_origuid'
-        );
-        $originalUidList = $db->cleanIntList(implode(',', array_keys($originalUids)));
-
-        return $db->exec_SELECTquery(
-            $fields,
-            'tt_content',
-            'tt_content.sys_language_uid=' . (int)$languageId
-            . ' AND tt_content.colPos = ' . (int)$colPos
-            . ' AND tt_content.pid=' . (int)$pageId
-            . ' AND tt_content.uid NOT IN (' . $originalUidList . ')'
-            . BackendUtility::deleteClause('tt_content')
-            . BackendUtility::versioningPlaceholderClause('tt_content'),
-            '',
-            'tt_content.sorting'
-        );
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**
