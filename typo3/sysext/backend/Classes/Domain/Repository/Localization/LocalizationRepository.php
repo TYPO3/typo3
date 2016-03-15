@@ -170,6 +170,99 @@ class LocalizationRepository
     }
 
     /**
+     * Fetches the localization for a given record.
+     *
+     * @FIXME: This method is a clone of BackendUtility::getRecordLocalization, using origUid instead of transOrigPointerField
+     *
+     * @param string $table Table name present in $GLOBALS['TCA']
+     * @param int $uid The uid of the record
+     * @param int $language The uid of the language record in sys_language
+     * @param string $andWhereClause Optional additional WHERE clause (default: '')
+     * @return mixed Multidimensional array with selected records; if none exist, FALSE is returned
+     */
+    public function getRecordLocalization($table, $uid, $language, $andWhereClause = '')
+    {
+        $recordLocalization = false;
+
+        // Check if translations are stored in other table
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+            $table = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+        }
+
+        if (BackendUtility::isTableLocalizable($table)) {
+            $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+
+            if (isset($tcaCtrl['origUid'])) {
+                $recordLocalization = BackendUtility::getRecordsByField(
+                    $table,
+                    $tcaCtrl['origUid'],
+                    $uid,
+                    'AND ' . $tcaCtrl['languageField'] . '=' . (int)$language . ($andWhereClause ? ' ' . $andWhereClause : ''),
+                    '',
+                    '',
+                    '1'
+                );
+            }
+        }
+        return $recordLocalization;
+    }
+
+    /**
+     * Returning uid of previous localized record, if any, for tables with a "sortby" column
+     * Used when new localized records are created so that localized records are sorted in the same order as the default language records
+     *
+     * @FIXME: This method is a clone of DataHandler::getPreviousLocalizedRecordUid which is protected there and uses
+     * BackendUtility::getRecordLocalization which we also needed to clone in this class. Also, this method takes two
+     * language arguments.
+     *
+     * @param string $table Table name
+     * @param int $uid Uid of default language record
+     * @param int $pid Pid of default language record
+     * @param int $sourceLanguage Language of origin
+     * @param int $destinationLanguage Language of localization
+     * @return int uid of record after which the localized record should be inserted
+     */
+    public function getPreviousLocalizedRecordUid($table, $uid, $pid, $sourceLanguage, $destinationLanguage)
+    {
+        $previousLocalizedRecordUid = $uid;
+        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+            $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+            $select = $sortRow . ',pid,uid';
+            // For content elements, we also need the colPos
+            if ($table === 'tt_content') {
+                $select .= ',colPos';
+            }
+            // Get the sort value of the default language record
+            $row = BackendUtility::getRecord($table, $uid, $select);
+            if (is_array($row)) {
+                // Find the previous record in default language on the same page
+                $where = 'pid=' . (int)$pid . ' AND ' . 'sys_language_uid=' . (int)$sourceLanguage . ' AND ' . $sortRow . '<' . (int)$row[$sortRow];
+                // Respect the colPos for content elements
+                if ($table === 'tt_content') {
+                    $where .= ' AND colPos=' . (int)$row['colPos'];
+                }
+                $res = $this->getDatabaseConnection()->exec_SELECTquery(
+                    $select,
+                    $table,
+                    $where . BackendUtility::deleteClause($table),
+                    '',
+                    $sortRow . ' DESC',
+                    '1'
+                );
+                // If there is an element, find its localized record in specified localization language
+                if ($previousRow = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+                    $previousLocalizedRecord = $this->getRecordLocalization($table, $previousRow['uid'], $destinationLanguage);
+                    if (is_array($previousLocalizedRecord[0])) {
+                        $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
+                    }
+                }
+                $this->getDatabaseConnection()->sql_free_result($res);
+            }
+        }
+        return $previousLocalizedRecordUid;
+    }
+
+    /**
      * Returns the current BE user.
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication

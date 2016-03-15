@@ -29,6 +29,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class LocalizationController
 {
     /**
+     * @const string
+     */
+    const ACTION_COPY = 'copyFromLanguage';
+
+    /**
+     * @const string
+     */
+    const ACTION_LOCALIZE = 'localize';
+
+    /**
      * @var IconFactory
      */
     protected $iconFactory;
@@ -175,7 +185,7 @@ class LocalizationController
             return $response;
         }
 
-        if ($params['action'] !== 'copyFromLanguage' && $params['action'] !== 'localize') {
+        if ($params['action'] !== static::ACTION_COPY && $params['action'] !== static::ACTION_LOCALIZE) {
             $response->getBody()->write('Invalid action "' . $params['action'] . '" called.');
             $response = $response->withStatus(500);
             return $response;
@@ -184,7 +194,6 @@ class LocalizationController
         $pageId = (int)$params['pageId'];
         $srcLanguageId = (int)$params['srcLanguageId'];
         $destLanguageId = (int)$params['destLanguageId'];
-        $params['uidList'] = array_reverse($params['uidList']);
 
         // Build command map
         $cmd = [
@@ -194,16 +203,23 @@ class LocalizationController
         for ($i = 0, $count = count($params['uidList']); $i < $count; ++$i) {
             $currentUid = $params['uidList'][$i];
 
-            if ($params['action'] === 'localize') {
+            if ($params['action'] === static::ACTION_LOCALIZE) {
                 if ($srcLanguageId === 0) {
                     $cmd['tt_content'][$currentUid] = [
                         'localize' => $destLanguageId
                     ];
                 } else {
+                    $previousUid = $this->localizationRepository->getPreviousLocalizedRecordUid(
+                        'tt_content',
+                        $currentUid,
+                        $pageId,
+                        $srcLanguageId,
+                        $destLanguageId
+                    );
                     $cmd['tt_content'][$currentUid] = [
                         'copy' => [
                             'action' => 'paste',
-                            'target' => $pageId,
+                            'target' => -$previousUid,
                             'update' => [
                                 'sys_language_uid' => $destLanguageId
                             ]
@@ -211,10 +227,17 @@ class LocalizationController
                     ];
                 }
             } else {
+                $previousUid = $this->localizationRepository->getPreviousLocalizedRecordUid(
+                    'tt_content',
+                    $currentUid,
+                    $pageId,
+                    $srcLanguageId,
+                    $destLanguageId
+                );
                 $cmd['tt_content'][$currentUid] = [
                     'copy' => [
                         'action' => 'paste',
-                        'target' => $pageId,
+                        'target' => -$previousUid,
                         'update' => [
                             'sys_language_uid' => $destLanguageId,
                             'l18n_parent' => 0
