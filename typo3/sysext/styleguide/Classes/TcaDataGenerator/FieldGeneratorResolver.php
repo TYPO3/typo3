@@ -75,6 +75,11 @@ class FieldGeneratorResolver
         // General type=user generator
         FieldGenerator\TypeUser::class,
 
+        // type=group
+        FieldGenerator\TypeGroupDbAllowedBeUsersBeGroups::class,
+        FieldGenerator\TypeGroupDbAllowedBeUsers::class,
+        FieldGenerator\TypeGroupDbAllowedStaticdata::class,
+
         // General type=flex generator
         FieldGenerator\TypeFlex::class,
     ];

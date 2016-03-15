@@ -125,6 +125,30 @@ class RecordFinder
     }
 
     /**
+     * Find uids of styleguide static data records
+     *
+     * @return array List of uids
+     */
+    public function findUidsOfStaticdata(): array
+    {
+        $database = $this->getDatabase();
+        $pageUid = $this->findPidOfMainTableRecord('tx_styleguide_staticdata');
+        $rows = $database->exec_SELECTgetRows(
+            'uid',
+            'tx_styleguide_staticdata',
+            'pid = ' . $pageUid
+                . BackendUtility::deleteClause('tx_styleguide_staticdata')
+        );
+        $result = [];
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                $result[] = $row['uid'];
+            }
+        }
+        return $result;
+    }
+
+    /**
      * @return DatabaseConnection
      */
     protected function getDatabase(): DatabaseConnection
