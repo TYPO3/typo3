@@ -7239,11 +7239,10 @@ button.close {
 .diff {
   background-color: #ffffff;
   border: 1px solid #cccccc;
+  display: table;
 }
 .diff-item {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
+  display: table-row;
 }
 .diff-item + .diff-item {
   border-top: 1px solid #cccccc;
@@ -7255,12 +7254,13 @@ button.close {
 }
 .diff-item-title {
   background-color: #fafafa;
-  width: 120px;
   padding-right: 10px;
   font-style: italic;
+  white-space: nowrap;
 }
 .diff-item-result {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  width: 100%;
   white-space: pre;
   word-break: break-all;
   word-wrap: break-word;
