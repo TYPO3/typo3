@@ -36,6 +36,10 @@ class RecordData
         /** @var FieldGeneratorResolver $resolver */
         $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
         foreach ($tca['columns'] as $fieldName => $fieldConfig) {
+            // Generate only if there is no value set, yet
+            if (isset($fieldValues[$fieldName])) {
+                continue;
+            }
             $data = [
                 'tableName' => $tableName,
                 'fieldName' => $fieldName,

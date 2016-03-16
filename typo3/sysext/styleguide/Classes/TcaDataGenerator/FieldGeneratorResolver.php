@@ -84,6 +84,9 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupFile::class,
         FieldGenerator\TypeGroupFolder::class,
 
+        // General type=inline for simple 1:n parent child relations
+        FieldGenerator\TypeInline1n::class,
+
         // General type=flex generator
         FieldGenerator\TypeFlex::class,
     ];

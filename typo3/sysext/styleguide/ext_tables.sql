@@ -281,7 +281,6 @@ CREATE TABLE tx_styleguide_elements_rsainput_flex_1_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	rsainput_1 text,
 
@@ -317,7 +316,6 @@ CREATE TABLE tx_styleguide_elements_rsainput_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	rsainput_1 text,
 
