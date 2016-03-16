@@ -58,6 +58,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInput::class,
 
         FieldGenerator\TypeTextRenderTypeFormWizard::class,
+        FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,
         FieldGenerator\TypeTextMax30::class,
         FieldGenerator\TypeTextWizardSelect::class,
