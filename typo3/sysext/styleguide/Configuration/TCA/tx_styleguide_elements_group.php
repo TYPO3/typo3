@@ -172,7 +172,7 @@ return [
                 'disallowed' => 'ai',
                 'show_thumbs' => true,
                 'size' => 3,
-                'uploadfolder' => 'uploads/pics/',
+                'uploadfolder' => 'uploads/tx_styleguide/',
                 // @todo: Documented feature has no effect since upload field in form is not shown anymore (since fal?)
                 'disable_controls' => 'upload',
                 'max_size' => 2000,
@@ -188,7 +188,7 @@ return [
                 'internal_type' => 'file',
                 'allowed' => 'jpg',
                 'size' => 3,
-                'uploadfolder' => 'uploads/pics/',
+                'uploadfolder' => 'uploads/tx_styleguide/',
                 'disable_controls' => 'delete',
             ],
         ],
@@ -200,7 +200,7 @@ return [
                 'internal_type' => 'file',
                 'allowed' => 'jpg',
                 'size' => 1,
-                'uploadfolder' => 'uploads/pics/',
+                'uploadfolder' => 'uploads/tx_styleguide/',
             ],
         ],
         'group_file_4' => [
@@ -210,7 +210,7 @@ return [
                 'type' => 'group',
                 'internal_type' => 'file',
                 'allowed' => 'jpg',
-                'uploadfolder' => 'uploads/pics/',
+                'uploadfolder' => 'uploads/tx_styleguide/',
                 'selectedListStyle' => 'width:400px;background-color:#ccffcc;',
             ],
         ],
@@ -278,7 +278,7 @@ return [
                                                         <internal_type>file</internal_type>
                                                         <allowed>jpg</allowed>
                                                         <size>3</size>
-                                                        <uploadfolder>uploads/pics</uploadfolder>
+                                                        <uploadfolder>uploads/tx_styleguide</uploadfolder>
                                                     </config>
                                                 </TCEforms>
                                             </group_file_1>
