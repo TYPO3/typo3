@@ -175,7 +175,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnored()
+    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForContentEditRecord()
     {
         $input = [
             'tableName' => 'tt_content',
@@ -400,7 +400,28 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutAdminPermissions()
+    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForNewContentRecord()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'new',
+            'vanillaUid' => 123,
+            'parentPageRow' => null,
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
+
+        $result = $this->subject->addData($input);
+
+        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutPermissions()
     {
         $input = [
             'tableName' => 'pages',
@@ -412,7 +433,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
 
-        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1437745221);
+        $this->setExpectedException(AccessDeniedRootNodeException::class, $this->anything(), 1437745221);
 
         $this->subject->addData($input);
     }
