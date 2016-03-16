@@ -99,12 +99,14 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                         );
                     }
                 }
+            } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
+                // Non admin is creating a record on root node for a table that is actively allowed
+                $userHasAccess = true;
+                $userPermissionOnPage = Permission::ALL;
             } else {
-                // Record is added to root node. This was not defined and implicitly *allowed*
-                // with previous access check implementation. It is currently unsure when exactly
-                // this can be triggered, so we'll throw a RuntimeException hinting us about this.
-                throw new \RuntimeException(
-                    'Not implemented. User ' . $backendUser->user['uid'] . ' creats new record ' . $result['tableName'] . ' on root node.',
+                // Non admin has no create permission on root node records
+                $exception = new AccessDeniedRootNodeException(
+                    'No record creation permission for user ' . $backendUser->user['uid'] . ' on page root node',
                     1437745221
                 );
             }
