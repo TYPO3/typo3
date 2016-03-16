@@ -119,6 +119,7 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
                 }
             }
         }
+
         // Get string representation of result via FlexFormTools
         $resultString = '';
         if (!empty($resultArray)) {

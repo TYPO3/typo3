@@ -774,7 +774,7 @@ CREATE TABLE tx_styleguide_inline_1n_child (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -847,7 +847,7 @@ CREATE TABLE tx_styleguide_inline_1n1n_child (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -885,7 +885,7 @@ CREATE TABLE tx_styleguide_inline_1n1n_childchild (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -958,7 +958,7 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
 	sorting int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
