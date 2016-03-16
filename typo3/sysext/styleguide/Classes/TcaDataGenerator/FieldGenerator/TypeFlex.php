@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorResolver;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorNotFoundException;
@@ -68,23 +69,56 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
             foreach ($dataStructureArray['sheets'] as $sheetName => $sheetArray) {
                 if (isset($sheetArray['ROOT']['el']) && is_array($sheetArray['ROOT']['el'])) {
                     foreach ($sheetArray['ROOT']['el'] as $sheetElementName => $sheetElementArray) {
-                        if (!isset($sheetElementArray['TCEforms']) || !is_array($sheetElementArray['TCEforms'])) {
+                        // Casual field
+                        if (isset($sheetElementArray['TCEforms']) && is_array($sheetElementArray['TCEforms'])) {
+                            $aFlexFieldData['fieldName'] = $sheetElementName;
+                            $aFlexFieldData['fieldConfig'] = $sheetElementArray['TCEforms'];
+                            try {
+                                $generator = $resolver->resolve($aFlexFieldData);
+                                $flexFieldValue = $generator->generate($aFlexFieldData);
+                                $resultArray['data'][$sheetName]['lDEF'][$sheetElementName]['vDEF'] = $flexFieldValue;
+                            } catch (GeneratorNotFoundException $e) {
+                                // No op if no matching generator was found
+                            }
+                            // Field handled, skip rest
                             continue;
                         }
-                        $aFlexFieldData['fieldName'] = $sheetElementName;
-                        $aFlexFieldData['fieldConfig'] = $sheetElementArray['TCEforms'];
-                        try {
-                            $generator = $resolver->resolve($aFlexFieldData);
-                            $flexFieldvalue = $generator->generate($aFlexFieldData);
-                            $resultArray['data'][$sheetName]['lDEF'][$sheetElementName]['vDEF'] = $flexFieldvalue;
-                        } catch (GeneratorNotFoundException $e) {
-                            // No op if no matching generator was found
+                        // Container section
+                        if (isset($sheetElementArray['type']) && $sheetElementArray['type'] === 'array'
+                            && isset($sheetElementArray['section']) && $sheetElementArray['section'] == 1
+                            && isset($sheetElementArray['el']) && is_array($sheetElementArray['el'])
+                        ) {
+                            $containerCounter = 0;
+                            foreach ($sheetElementArray['el'] as $containerName => $containerElementArray) {
+                                if (!isset($containerElementArray['el']) || !is_array($containerElementArray['el'])) {
+                                    continue;
+                                }
+                                $containerCounter ++;
+                                foreach ($containerElementArray['el'] as $containerSingleElementName => $containerSingleElementArray) {
+                                    if (!isset($containerSingleElementArray['TCEforms']) || !is_array($containerSingleElementArray['TCEforms'])) {
+                                        continue;
+                                    }
+                                    $aFlexFieldData['fieldName'] = $containerSingleElementName;
+                                    $aFlexFieldData['fieldConfig'] = $containerSingleElementArray['TCEforms'];
+                                    try {
+                                        $generator = $resolver->resolve($aFlexFieldData);
+                                        $flexFieldValue = $generator->generate($aFlexFieldData);
+                                        $resultArray['data'][$sheetName]['lDEF']
+                                            [$sheetElementName]['el']
+                                            [$containerCounter][$containerName]['el']
+                                            [$containerSingleElementName]['vDEF'] = $flexFieldValue;
+                                    } catch (GeneratorNotFoundException $e) {
+                                        // No op if no matching generator was found
+                                    }
+                                    // Field handled, skip rest
+                                    continue;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-
         // Get string representation of result via FlexFormTools
         $resultString = '';
         if (!empty($resultArray)) {
