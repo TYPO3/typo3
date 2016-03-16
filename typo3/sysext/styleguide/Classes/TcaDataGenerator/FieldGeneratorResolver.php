@@ -82,6 +82,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupDbAllowedBeUsers::class,
         FieldGenerator\TypeGroupDbAllowedStaticdata::class,
         FieldGenerator\TypeGroupFile::class,
+        FieldGenerator\TypeGroupFolder::class,
 
         // General type=flex generator
         FieldGenerator\TypeFlex::class,

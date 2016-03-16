@@ -278,7 +278,7 @@ return [
                                                         <internal_type>file</internal_type>
                                                         <allowed>jpg</allowed>
                                                         <size>3</size>
-                                                        <uploadfolder>uploads/tx_styleguide</uploadfolder>
+                                                        <uploadfolder>uploads/tx_styleguide/</uploadfolder>
                                                     </config>
                                                 </TCEforms>
                                             </group_file_1>

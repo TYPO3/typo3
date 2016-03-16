@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -164,6 +165,20 @@ class RecordFinder
         $folder = $storage->getRootLevelFolder();
         $folder = $folder->getSubfolder('styleguide');
         return $folder->getFiles();
+    }
+
+    /**
+     * Find the demo folder
+     *
+     * @return Folder
+     */
+    public function findDemoFolderObject(): Folder
+    {
+        /** @var StorageRepository $storageRepository */
+        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+        $storage = $storageRepository->findByUid(1);
+        $folder = $storage->getRootLevelFolder();
+        return $folder->getSubfolder('styleguide');
     }
 
     /**
