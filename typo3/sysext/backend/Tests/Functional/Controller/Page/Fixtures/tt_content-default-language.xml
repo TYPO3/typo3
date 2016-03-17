@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>1</uid>
+		<pid>1</pid>
+		<header>Test content 1</header>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tt_content>
+	<tt_content>
+		<uid>2</uid>
+		<pid>1</pid>
+		<header>Test content 2</header>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tt_content>
+	<tt_content>
+		<uid>3</uid>
+		<pid>1</pid>
+		<header>Test content 3</header>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+	</tt_content>
+</dataset>

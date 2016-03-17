@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>4</uid>
+		<pid>1</pid>
+		<sys_language_uid>1</sys_language_uid>
+		<l18n_parent>1</l18n_parent>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+		<header>Test indhold 1</header>
+	</tt_content>
+	<tt_content>
+		<uid>5</uid>
+		<pid>1</pid>
+		<sys_language_uid>1</sys_language_uid>
+		<l18n_parent>2</l18n_parent>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+		<header>Test indhold 2</header>
+	</tt_content>
+	<tt_content>
+		<uid>6</uid>
+		<pid>1</pid>
+		<sys_language_uid>1</sys_language_uid>
+		<l18n_parent>3</l18n_parent>
+		<deleted>0</deleted>
+		<t3ver_oid>0</t3ver_oid>
+		<t3ver_wsid>0</t3ver_wsid>
+		<header>Test indhold 3</header>
+	</tt_content>
+</dataset>
