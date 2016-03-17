@@ -85,6 +85,11 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupFile::class,
         FieldGenerator\TypeGroupFolder::class,
 
+        // type=select
+        FieldGenerator\TypeSelectForeignTableStaticData::class,
+        FieldGenerator\TypeSelectRenderTypeSelectTree::class,
+        FieldGenerator\TypeSelect::class,
+
         // General type=inline for simple 1:n parent child relations
         FieldGenerator\TypeInline1n::class,
 

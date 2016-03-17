@@ -489,7 +489,7 @@ return [
         ],
         'select_tree_3' => [
             'exclude' => 1,
-            'label' => 'select_tree_31 pages, maxLevels=1',
+            'label' => 'select_tree_3 pages, maxLevels=1',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectTree',
