@@ -47,6 +47,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputEvalIsIn::class,
         FieldGenerator\TypeInputEvalMd5::class,
         FieldGenerator\TypeInputEvalNum::class,
+        FieldGenerator\TypeInputEvalRequiredTrimDate::class,
         FieldGenerator\TypeInputEvalTime::class,
         FieldGenerator\TypeInputEvalTimesec::class,
         FieldGenerator\TypeInputEvalUpper::class,
