@@ -48,6 +48,24 @@ img.logo {
 	margin-top: 9px;
 }
 
+.t3-install-displaytwinimageimages {
+	border: 1px solid #cccccc;
+	padding: 10px;
+}
+.t3-install-displaytwinimagetextarea {
+	pre {
+		border-top: 0;
+	}
+}
+.bg-transparent-emulation {
+	padding: 10px;
+	text-align: center;
+	background: url("@{path-sysext}/install/Resources/Public/Images/bg_transparent_emulation.png");
+	img {
+		max-width: 300px;
+	}
+}
+
 @alert-success-text: @gray-darker;
 @alert-success-border: #79a548;
 @alert-success-bg: lighten(#79a548, 20%);
@@ -66,10 +84,6 @@ img.logo {
 
 .alert-notice {
 	.alert-variant(@btn-default-bg; @btn-default-border; @btn-default-color);
-}
-
-table.t3-install-displaytwinimageimages tr > td {
-	padding-right: 20px;
 }
 
 .nav-pills > li > a {

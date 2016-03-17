@@ -54,12 +54,12 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper
 
         $result = array();
         foreach ($commands as $commandGroup) {
-            $result[] = 'Command: ' . $commandGroup[1];
+            $result[] = '<strong>Command:</strong>' . LF . $commandGroup[1];
             // If 3 elements: last one is result
             if (count($commandGroup) === 3) {
-                $result[] = 'Result: ' . $commandGroup[2];
+                $result[] = '<strong>Result:</strong>' . LF . $commandGroup[2];
             }
         }
-        return '<textarea class="form-control" rows="' . count($result) . '" cols="50">' . implode(LF, $result) . '</textarea>';
+        return '<pre><code class="language-bash">' . implode(LF, $result) . '</code></pre>';
     }
 }

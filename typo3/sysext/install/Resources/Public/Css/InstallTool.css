@@ -7804,6 +7804,21 @@ img.logo {
 .typo3-message p {
   margin-top: 9px;
 }
+.t3-install-displaytwinimageimages {
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+.t3-install-displaytwinimagetextarea pre {
+  border-top: 0;
+}
+.bg-transparent-emulation {
+  padding: 10px;
+  text-align: center;
+  background: url("../../../../../../typo3/sysext/install/Resources/Public/Images/bg_transparent_emulation.png");
+}
+.bg-transparent-emulation img {
+  max-width: 300px;
+}
 .alert-notice {
   background-color: #eeeeee;
   border-color: #bbbbbb;
@@ -7814,9 +7829,6 @@ img.logo {
 }
 .alert-notice .alert-link {
   color: #1a1a1a;
-}
-table.t3-install-displaytwinimageimages tr > td {
-  padding-right: 20px;
 }
 .nav-pills > li > a {
   border-radius: 0;
