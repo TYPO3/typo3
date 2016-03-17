@@ -63,9 +63,9 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
         // Loop through this xml mess and call a generator for each found field
         $aFlexFieldData = $data;
         $resultArray = [];
+        /** @var FieldGeneratorResolver $resolver */
+        $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
         if (isset($dataStructureArray['sheets']) && is_array($dataStructureArray['sheets'])) {
-            /** @var FieldGeneratorResolver $resolver */
-            $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
             foreach ($dataStructureArray['sheets'] as $sheetName => $sheetArray) {
                 if (isset($sheetArray['ROOT']['el']) && is_array($sheetArray['ROOT']['el'])) {
                     foreach ($sheetArray['ROOT']['el'] as $sheetElementName => $sheetElementArray) {
@@ -115,6 +115,20 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
                                 }
                             }
                         }
+                    }
+                }
+            }
+        } elseif (isset($dataStructureArray['ROOT']['el']) && is_array($dataStructureArray['ROOT']['el'])) {
+            foreach ($dataStructureArray['ROOT']['el'] as $elementName => $elementArray) {
+                if (isset($elementArray['TCEforms']) && is_array($elementArray['TCEforms'])) {
+                    $aFlexFieldData['fieldName'] = $elementName;
+                    $aFlexFieldData['fieldConfig'] = $elementArray['TCEforms'];
+                    try {
+                        $generator = $resolver->resolve($aFlexFieldData);
+                        $flexFieldValue = $generator->generate($aFlexFieldData);
+                        $resultArray['data']['sDEF']['lDEF'][$elementName]['vDEF'] = $flexFieldValue;
+                    } catch (GeneratorNotFoundException $e) {
+                        // No op if no matching generator was found
                     }
                 }
             }

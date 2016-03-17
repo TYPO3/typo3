@@ -322,15 +322,15 @@ return [
                             <ROOT>
                                 <type>array</type>
                                 <el>
-                                    <select_1>
+                                    <text_1>
                                         <TCEforms>
-                                            <label>input required</label>
+                                            <label>text required</label>
                                             <config>
                                                 <type>text</type>
                                                 <eval>required</eval>
                                             </config>
                                         </TCEforms>
-                                    </select_1>
+                                    </text_1>
                                 </el>
                             </ROOT>
                         </T3DataStructure>
