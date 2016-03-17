@@ -5,10 +5,17 @@ Deprecation: #73067 - Deprecate GeneralUtility::requireOnce and  GeneralUtility:
 Description
 ===========
 
-The following methods from ``TYPO3\CMS\Core\Utility\GeneralUtility`` have been deprecated.
+The following methods from ``TYPO3\CMS\Core\Utility\GeneralUtility`` have been
+marked as deprecated.
 
 ``GeneralUtility::requireOnce()``
 ``GeneralUtility::requireFile()``
+
+
+Impact
+======
+
+Using aforementioned methods will trigger a deprecation log entry.
 
 
 Affected Installations

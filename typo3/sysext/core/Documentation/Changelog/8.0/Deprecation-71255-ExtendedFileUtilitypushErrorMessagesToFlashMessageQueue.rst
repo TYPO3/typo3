@@ -8,6 +8,12 @@ Description
 Method ``\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::pushErrorMessagesToFlashMessageQueue()`` has been marked as deprecated.
 
 
+Impact
+======
+
+Using the method will trigger a deprecation log entry.
+
+
 Affected Installations
 ======================
 

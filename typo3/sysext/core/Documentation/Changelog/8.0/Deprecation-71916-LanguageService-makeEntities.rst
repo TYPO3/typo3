@@ -13,7 +13,7 @@ UTF-8 now.
 Impact
 ======
 
-Using ``$GLOBALS['LANG']->makeEntities()`` will throw a deprecation warning.
+Using ``$GLOBALS['LANG']->makeEntities()`` will trigger a deprecation log entry.
 
 
 Affected Installations

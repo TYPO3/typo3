@@ -5,7 +5,7 @@ Deprecation: #73744 - Deprecate Clipboard->confirmMsg()
 Description
 ===========
 
-Clipboard::confirmMsg has been marked as deprecated.
+``Clipboard::confirmMsg`` has been marked as deprecated.
 
 
 Impact

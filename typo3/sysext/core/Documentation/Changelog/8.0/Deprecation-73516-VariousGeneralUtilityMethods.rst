@@ -20,7 +20,7 @@ Impact
 ======
 
 Calling any of the methods above will trigger a deprecation log entry. Calling ``GeneralUtility::getFileAbsFileName()``
-with the second and third parameter set, will also trigger a deprecation log entry.
+with the second and third parameter set will also trigger a deprecation log entry.
 
 
 Affected Installations

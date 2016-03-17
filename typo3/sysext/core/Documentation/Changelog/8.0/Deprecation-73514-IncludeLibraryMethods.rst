@@ -5,7 +5,7 @@ Deprecation: #73514 - IncludeLibrary Methods
 Description
 ===========
 
-The PHP methods ``TypoScriptFrontendRenderer->includeLibraries()`` and ``ContentObjectRendereer->includeLibs()`` 
+The PHP methods ``TypoScriptFrontendRenderer->includeLibraries()`` and ``ContentObjectRendereer->includeLibs()``
 to include PHP libraries during frontend output have been marked as deprecated.
 
 

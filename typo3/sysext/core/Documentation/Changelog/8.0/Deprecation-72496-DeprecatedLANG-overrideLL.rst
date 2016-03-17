@@ -5,13 +5,13 @@ Deprecation: #72496 - Deprecated $LANG->overrideLL
 Description
 ===========
 
-The method ``LanguageService::overrideLL()`` has been deprecated.
+The method ``LanguageService::overrideLL()`` has been marked as deprecated.
 
 
 Impact
 ======
 
-Calling this method directly will write an entry in the deprecation log.
+Calling this method directly will trigger a deprecation log entry.
 
 
 Affected Installations

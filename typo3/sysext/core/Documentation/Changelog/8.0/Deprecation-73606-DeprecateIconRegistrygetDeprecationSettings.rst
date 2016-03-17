@@ -5,13 +5,13 @@ Deprecation: #73606 - Deprecate IconRegistry::getDeprecationSettings
 Description
 ===========
 
-IconRegistry::getDeprecationSettings has been marked as deprecated.
+``IconRegistry::getDeprecationSettings`` has been marked as deprecated.
 
 
 Impact
 ======
 
-Using ``IconRegistry::getDeprecationSettings()`` will throw a deprecation warning.
+Using ``IconRegistry::getDeprecationSettings()`` will trigger a deprecation log entry.
 
 
 Affected Installations

@@ -5,7 +5,7 @@ Deprecation: #73185 - Deprecate NullTimeTracker
 Description
 ===========
 
-The class ``\TYPO3\CMS\Core\TimeTracker\NullTimeTracker`` has been marked as deprecated in favor of  the TimeTracker class.
+The class ``\TYPO3\CMS\Core\TimeTracker\NullTimeTracker`` has been marked as deprecated in favor of the TimeTracker class.
 
 
 Impact
