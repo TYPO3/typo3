@@ -543,20 +543,7 @@ class PageGenerator
             }
         }
         // JavaScript library files
-        if (is_array($tsfe->pSetup['includeJSlibs.']) || is_array($tsfe->pSetup['includeJSLibs.'])) {
-            if (!is_array($tsfe->pSetup['includeJSlibs.'])) {
-                $tsfe->pSetup['includeJSlibs.'] = array();
-            } else {
-                GeneralUtility::deprecationLog('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with an uppercase L) instead.');
-            }
-            if (!is_array($tsfe->pSetup['includeJSLibs.'])) {
-                $tsfe->pSetup['includeJSLibs.'] = array();
-            }
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $tsfe->pSetup['includeJSLibs.'],
-                $tsfe->pSetup['includeJSlibs.']
-            );
-            unset($tsfe->pSetup['includeJSlibs.']);
+        if (is_array($tsfe->pSetup['includeJSLibs.'])) {
             foreach ($tsfe->pSetup['includeJSLibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
