@@ -46,13 +46,23 @@ class TypeSelect extends AbstractFieldGenerator implements FieldGeneratorInterfa
     {
         $result = [];
         if (isset($data['fieldConfig']['config']['items']) && count($data['fieldConfig']['config']['items']) > 1) {
-            $counter = 0;
+            $numberOfItemsToSelect = 1;
+            if (isset($data['fieldConfig']['config']['minitems'])) {
+                $numberOfItemsToSelect = $data['fieldConfig']['config']['minitems'];
+            }
+            $isFirst = true;
             foreach ($data['fieldConfig']['config']['items'] as $item) {
+                if ($isFirst) {
+                    // Ignore first item
+                    $isFirst = false;
+                    continue;
+                }
                 // Ignore divider
                 if (isset($item[1]) && $item[1] !== '--div--') {
-                    $counter ++;
-                    if ($counter === 2) {
+                    if (count($result) <= $numberOfItemsToSelect) {
                         $result[] = $item[1];
+                    }
+                    if (count($result) === $numberOfItemsToSelect) {
                         break;
                     }
                 }
