@@ -128,6 +128,7 @@ return [
                                                     <config>
                                                         <type>text</type>
                                                         <renderType>t3editor</renderType>
+                                                        <format>html</format>
                                                     </config>
                                                 </TCEforms>
                                             </t3editor_1>
@@ -156,6 +157,7 @@ return [
                                                                     <config>
                                                                         <type>text</type>
                                                                         <renderType>t3editor</renderType>
+                                                                        <format>html</format>
                                                                     </config>
                                                                 </TCEforms>
                                                             </t3editor_1>

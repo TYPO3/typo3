@@ -73,6 +73,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'renderType' => 't3editor',
+                'format' => 'html',
             ],
         ],
 
