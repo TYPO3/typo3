@@ -226,6 +226,8 @@ return [
                                                     <config>
                                                         <type>inline</type>
                                                         <foreign_table>tx_styleguide_flex_flex_3_inline_1_child</foreign_table>
+                                                        <foreign_field>parentid</foreign_field>
+                                                        <foreign_table_field>parenttable</foreign_table_field>
                                                     </config>
                                                 </TCEforms>
                                             </inline_1>
