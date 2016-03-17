@@ -191,6 +191,19 @@ class LocalizationController
             return $response;
         }
 
+        $this->process($params);
+
+        $response->getBody()->write(json_encode([]));
+        return $response;
+    }
+
+    /**
+     * Processes the localization actions
+     *
+     * @param array $params
+     */
+    protected function process($params)
+    {
         $pageId = (int)$params['pageId'];
         $srcLanguageId = (int)$params['srcLanguageId'];
         $destLanguageId = (int)$params['destLanguageId'];
@@ -251,9 +264,6 @@ class LocalizationController
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
-
-        $response->getBody()->write(json_encode([]));
-        return $response;
     }
 
     /**
