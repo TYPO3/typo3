@@ -65,13 +65,13 @@ TYPO3.ModuleMenu.App = {
 			if ($group.hasClass('expanded')) {
 				me.addCollapsedMainMenuItem($group.attr('id'));
 				$group.addClass('collapsed').removeClass('expanded');
-				$groupContainer.slideUp().promise().done(function() {
+				$groupContainer.stop().slideUp().promise().done(function() {
 					TYPO3.Backend.doLayout();
 				});
 			} else {
 				me.removeCollapseMainMenuItem($group.attr('id'));
 				$group.addClass('expanded').removeClass('collapsed');
-				$groupContainer.slideDown().promise().done(function() {
+				$groupContainer.stop().slideDown().promise().done(function() {
 					TYPO3.Backend.doLayout();
 				});
 			}
