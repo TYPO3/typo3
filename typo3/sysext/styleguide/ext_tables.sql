@@ -211,6 +211,7 @@ CREATE TABLE tx_styleguide_elements_group (
 	group_folder_1 text NOT NULL,
 
 	flex_1 text,
+	flex_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
