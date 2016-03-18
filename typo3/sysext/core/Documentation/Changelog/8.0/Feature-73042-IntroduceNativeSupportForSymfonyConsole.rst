@@ -47,6 +47,7 @@ For a non-Composer installation:
 
 	typo3/sysext/core/bin/typo3 backend:lock http://www.mydomain.com/maintenance.html
 
+
 Impact
 ======
 

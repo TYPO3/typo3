@@ -41,7 +41,6 @@ callback   function                     Callback method run after the slide appe
                                         :code:`settings`: The settings defined via :js:`Wizard.set()`
 ========== =============== ============ ======================================================================================================
 
-
 addFinalProcessingSlide
 ~~~~~~~~~~~~~~~~~~~~~~~
 

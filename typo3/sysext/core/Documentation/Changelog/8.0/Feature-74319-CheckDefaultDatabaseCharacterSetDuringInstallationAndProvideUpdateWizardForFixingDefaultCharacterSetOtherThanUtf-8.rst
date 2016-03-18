@@ -2,7 +2,6 @@
 Feature: #74319 - check default database character set during Installation and provide Update wizard for fixing default character set other than utf-8
 ======================================================================================================================================================
 
-
 Description
 ===========
 

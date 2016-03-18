@@ -11,6 +11,7 @@ or a path to an extension, e.g. "EXT:my_theme/Resources/Public/Icons/Logo.png" c
 
 The configuration option within the Backend extension (EXT:backend) is called ``backendLogo``.
 
+
 Impact
 ======
 
