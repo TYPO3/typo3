@@ -30,10 +30,25 @@ use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
  */
 class Generator
 {
+
+    /**
+     * List of handlers to create full table data. There is a
+     * "default" handler for casual tables, but some $mainTables
+     * like several inline scenarios need more sophisticated
+     * handlers.
+     *
+     * @var array
+     */
+    protected $tableHandler = [
+        TableHandler\StaticData::class,
+        TableHandler\General::class,
+    ];
+
     /**
      * Create a page tree for styleguide records and add records on them.
      *
-     * @return void
+     * @throws Exception
+     * @throws GeneratorNotFoundException
      */
     public function create()
     {
@@ -77,36 +92,33 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-        // Add rows of hard coded tables. Must be done *before* the
-        // casual records, so those can use hard coded records in relations.
-        $this->populateHardCodedTableRows();
+        // Add rows of third party tables like be_users and fal records
+        $this->populateRowsOfThirdPartyTables();
 
         // Create data for each main table
-        /** @var RecordData $recordData */
-        $recordData = GeneralUtility::makeInstance(RecordData::class);
-        // Some tables are manually taken care off, skip them
-        $tableBlacklist = [
-            'tx_styleguide_staticdata',
-        ];
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         foreach ($mainTables as $mainTable) {
-            if (in_array($mainTable, $tableBlacklist)) {
-                continue;
+            $generator = NULL;
+            foreach ($this->tableHandler as $handlerName) {
+                $generator = GeneralUtility::makeInstance($handlerName);
+                if (!$generator instanceof TableHandlerInterface) {
+                    throw new Exception(
+                        'Table handler ' . $handlerName . ' must implement TableHandlerInterface',
+                        1458302830
+                    );
+                }
+                if ($generator->match($mainTable)) {
+                    break;
+                } else {
+                    $generator = null;
+                }
             }
-            // First insert an empty row and get the uid of this row since
-            // some fields need this uid for relations later.
-            $fieldValues = [
-                'pid' => $recordFinder->findPidOfMainTableRecord($mainTable),
-            ];
-            $database->exec_INSERTquery($mainTable, $fieldValues);
-            $fieldValues['uid'] = $database->sql_insert_id();
-            $fieldValues = $recordData->generate($mainTable, $fieldValues);
-            $database->exec_UPDATEquery(
-                $mainTable,
-                'uid = ' . $fieldValues['uid'],
-                $fieldValues
-            );
+            if (is_null($generator)) {
+                throw new GeneratorNotFoundException(
+                    'No table handler found',
+                    1458302901
+                );
+            }
+            $generator->handle($mainTable);
         }
     }
 
@@ -171,33 +183,16 @@ class Generator
     }
 
     /**
-     * Add rows for "tx_styleguide_staticdata" hard coded.
-     * Add rows for test be_users and test be_groups
-     *
-     * Table tx_styleguide_staticdata gets a special handling and a
-     * couple of records inserted by default.
+     * Add rows for third party tables like be_users or FAL
      *
      * @return void
      */
-    protected function populateHardCodedTableRows()
+    protected function populateRowsOfThirdPartyTables()
     {
         $database = $this->getDatabase();
 
-        // tx_styleguide_staticdata is used in other TCA demo fields. We need some default
-        // rows to later connect other fields to these rows.
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $pid = $recordFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $database->exec_INSERTmultipleRows(
-            'tx_styleguide_staticdata',
-            [ 'pid', 'value_1' ],
-            [
-                [ $pid, 'foo' ],
-                [ $pid, 'bar' ],
-                [ $pid, 'foofoo' ],
-                [ $pid, 'foobar' ],
-            ]
-        );
 
         $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
         if (empty($demoGroupUids)) {
@@ -299,6 +294,9 @@ class Generator
         ];
         $result = [];
         foreach ($GLOBALS['TCA'] as $tablename => $_) {
+            if ($tablename === 'tx_styleguide_staticdata') {
+                continue;
+            }
             foreach ($prefixes as $prefix) {
                 if (!StringUtility::beginsWith($tablename, $prefix)) {
                     continue;
@@ -318,6 +316,10 @@ class Generator
                 break;
             }
         }
+        // Manual resorting - the "staticdata" table is used by other tables later.
+        // We resort this on top so it is handled first and other tables can rely on
+        // created data already. This is a bit hacky but a quick workaround.
+        array_unshift($result, 'tx_styleguide_staticdata');
         return $result;
     }
 
