@@ -11,7 +11,8 @@ A new event ``modal-destroyed`` has been added that will be triggered after a mo
 Impact
 ======
 
-Bind to the event ``modal-destroyed`` to achieve custom actions after the modal dismissed.
+Bind to the event ``modal-destroyed`` to achieve custom actions after the modal
+has been dismissed.
 
 Example code:
 

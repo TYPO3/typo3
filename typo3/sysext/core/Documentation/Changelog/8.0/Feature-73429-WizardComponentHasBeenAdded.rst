@@ -14,7 +14,7 @@ The wizard supports straight forward actions only, junctions are not possible ye
 Impact
 ======
 
-The wizard component has some public methods:
+The wizard component has the following public methods:
 #. :code:`addSlide(identifier, title, content, severity, callback)`
 #. :code:`addFinalProcessingSlide(callback)`
 #. :code:`set(key, value)`

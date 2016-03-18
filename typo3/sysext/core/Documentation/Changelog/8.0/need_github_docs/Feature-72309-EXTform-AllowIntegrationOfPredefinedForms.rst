@@ -12,13 +12,14 @@ predefined elements.
 
 There are even more advantages:
 
-- Integrators can build there forms with TypoScript which offers much more possibilites than doing
-it within the form wizard. Especially, the integrator is able to use stdWrap functionalities which
-are not available when using the form wizard (for security reasons).
-- There is no need anymore for editors to use the form wizard. They can choose the predefined forms
-which are optimized layout-wise.
-- Forms can be re-used throughout the whole installation.
-- Forms can be stored outside the DB and versionized.
+*  Integrators can build there forms with TypoScript which offers much more
+   possibilites than doing it within the form wizard. Especially, the
+   integrator is able to use stdWrap functionalities which are not available when
+   using the form wizard (for security reasons).
+*  There is no need anymore for editors to use the form wizard. They can choose the
+   predefined forms which are optimized layout-wise.
+*  Forms can be re-used throughout the whole installation.
+*  Forms can be stored outside the DB and versionized.
 
 In order to be able to select the pre-defined form in the backend, the form has to be registered
 using PageTS.

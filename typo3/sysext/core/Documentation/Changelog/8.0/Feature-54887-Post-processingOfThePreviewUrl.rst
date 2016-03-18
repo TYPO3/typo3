@@ -5,7 +5,8 @@ Feature: #54887 - Post-processing of the previewUrl
 Description
 ===========
 
-An additional hook is added to the method ``BackendUtility::viewOnClick()`` to post-process the preview url.
+An additional hook has been added to the method ``BackendUtility::viewOnClick()`` to
+post-process the preview url.
 
 The hook is called with the following signature:
 

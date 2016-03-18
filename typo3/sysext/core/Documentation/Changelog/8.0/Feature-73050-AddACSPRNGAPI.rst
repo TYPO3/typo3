@@ -5,13 +5,15 @@ Feature: #73050 - Add a CSPRNG API
 Description
 ===========
 
-A new cryptographically secure pseudo-random number generator (CSPRNG) is introduced in TYPO3 core. It takes advantage of the new CSPRNG functions in PHP 7.
+A new cryptographically secure pseudo-random number generator (CSPRNG) has been
+introduced in TYPO3 core. It takes advantage of the new CSPRNG functions in PHP 7.
 
 
 API overview
 ============
 
-The API resides in the class :php:`\TYPO3\CMS\Core\Crypto\Random`. It provides several methods. Here is a brief overview of the interface:
+The API resides in the class :php:`\TYPO3\CMS\Core\Crypto\Random`. It provides several
+methods. Here is a brief overview of the interface:
 
 .. code-block:: php
 
