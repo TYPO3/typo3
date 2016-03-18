@@ -2641,7 +2641,7 @@ class BackendUtility
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'postProcess')) {
-                    $previewUrl = $hookObj->postProcess($previewUrl, $pageUid, $backPath, $rootLine, $anchorSection, $viewScript, $additionalGetVars, $switchFocus);
+                    $previewUrl = $hookObj->postProcess($previewUrl, $pageUid, $rootLine, $anchorSection, $viewScript, $additionalGetVars, $switchFocus);
                 }
             }
         }

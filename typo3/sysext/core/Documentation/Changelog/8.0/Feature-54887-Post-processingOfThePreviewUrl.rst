@@ -15,7 +15,6 @@ The hook is called with the following signature:
    /**
     * @param string $previewUrl
     * @param int $pageUid
-    * @param string $backPath
     * @param array $rootLine
     * @param string $anchorSection
     * @param string $viewScript
@@ -23,7 +22,7 @@ The hook is called with the following signature:
     * @param bool $switchFocus
     * @return string The processed preview URL
     */
-   function postProcess($previewUrl, $pageUid, $backPath, $rootLine, $anchorSection, $viewScript, $additionalGetVars, $switchFocus)
+   function postProcess($previewUrl, $pageUid, $rootLine, $anchorSection, $viewScript, $additionalGetVars, $switchFocus)
 
 
 Register the hook
