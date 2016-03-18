@@ -38,8 +38,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
-                'foreign_table_where' => 'AND tx_styleguide_forms_inline_2_child1.pid=###CURRENT_PID### AND tx_styleguide_forms_inline_2_child1.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_styleguide_inline_1n_child',
+                'foreign_table_where' => 'AND tx_styleguide_inline_1n_child.pid=###CURRENT_PID### AND tx_styleguide_inline_1n_child.sys_language_uid IN (-1,0)',
             ]
         ],
         'l18n_diffsource' => [
