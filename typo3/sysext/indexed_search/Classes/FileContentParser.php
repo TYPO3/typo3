@@ -483,7 +483,7 @@ class FileContentParser
                         $cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
                         CommandUtility::exec($cmd);
                         if (@is_file($tempFileName)) {
-                            $content = GeneralUtility::getUrl($tempFileName);
+                            $content = file_get_contents($tempFileName);
                             unlink($tempFileName);
                         } else {
                             $content = '';

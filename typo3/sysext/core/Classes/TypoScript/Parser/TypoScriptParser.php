@@ -936,7 +936,7 @@ class TypoScriptParser
             } else {
                 $includedFiles[] = $absfilename;
                 // check for includes in included text
-                $included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles, $absfilename);
+                $included_text = self::checkIncludeLines(file_get_contents($absfilename), $cycle_counter + 1, $returnFiles, $absfilename);
                 // If the method also has to return all included files, merge currently included
                 // files with files included by recursively calling itself
                 if ($returnFiles && is_array($included_text)) {

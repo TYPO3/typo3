@@ -66,7 +66,7 @@ class MicroDataSchema extends RteHtmlAreaApi
                     $fileName = 'EXT:' . $this->extensionKey . '/Resources/Public/Rdf/MicrodataSchema/SchemaOrgAll.rdf';
                 }
                 $fileName = $this->getFullFileName($fileName);
-                $rdf = GeneralUtility::getUrl($fileName);
+                $rdf = file_get_contents($fileName);
                 if ($rdf) {
                     $this->parseSchema($rdf, $schema);
                 }

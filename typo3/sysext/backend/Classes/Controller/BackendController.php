@@ -365,7 +365,7 @@ class BackendController
             $cssFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
             if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
                 // Don't allow inclusion outside directory
-                $loadOrder = str_replace('../', '', GeneralUtility::getUrl($absoluteComponentPath . 'css/loadorder.txt'));
+                $loadOrder = str_replace('../', '', file_get_contents($absoluteComponentPath . 'css/loadorder.txt'));
                 $cssFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, true);
                 $cssFiles = array_merge($cssFilesOrdered, $cssFiles);
             }
@@ -375,7 +375,7 @@ class BackendController
             $jsFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
             if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
                 // Don't allow inclusion outside directory
-                $loadOrder = str_replace('../', '', GeneralUtility::getUrl($absoluteComponentPath . 'javascript/loadorder.txt'));
+                $loadOrder = str_replace('../', '', file_get_contents($absoluteComponentPath . 'javascript/loadorder.txt'));
                 $jsFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, true);
                 $jsFiles = array_merge($jsFilesOrdered, $jsFiles);
             }

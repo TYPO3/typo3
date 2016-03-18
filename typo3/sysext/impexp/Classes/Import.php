@@ -1775,7 +1775,7 @@ class Import extends ImportExport
         }
         GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
         $this->fileIDMap[$fileID] = $fileName;
-        if (md5(GeneralUtility::getUrl($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
+        if (md5(file_get_contents($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
             return true;
         } else {
             $this->error('ERROR: File content "' . $fileName . '" was corrupted');
@@ -1990,7 +1990,7 @@ class Import extends ImportExport
         }
         if (strtolower($fI['extension']) == 'xml') {
             // XML:
-            $xmlContent = GeneralUtility::getUrl($filename);
+            $xmlContent = file_get_contents($filename);
             if (strlen($xmlContent)) {
                 $this->dat = GeneralUtility::xml2array($xmlContent, '', true);
                 if (is_array($this->dat)) {

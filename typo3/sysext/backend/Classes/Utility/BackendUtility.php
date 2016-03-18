@@ -848,7 +848,7 @@ class BackendUtility
             if (substr($ds_array[$srcPointer], 0, 5) == 'FILE:') {
                 $file = GeneralUtility::getFileAbsFileName(substr($ds_array[$srcPointer], 5));
                 if ($file && @is_file($file)) {
-                    $dataStructArray = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
+                    $dataStructArray = GeneralUtility::xml2array(file_get_contents($file));
                 } else {
                     $dataStructArray = 'The file "' . substr($ds_array[$srcPointer], 5) . '" in ds-array key "' . $srcPointer . '" was not found ("' . $file . '")';
                 }
@@ -901,7 +901,7 @@ class BackendUtility
                         if (strpos($dataStructRec[$fName], '<') === false) {
                             if (is_file(PATH_site . $dataStructRec[$fName])) {
                                 // The value is a pointer to a file
-                                $dataStructArray = GeneralUtility::xml2array(GeneralUtility::getUrl(PATH_site . $dataStructRec[$fName]));
+                                $dataStructArray = GeneralUtility::xml2array(file_get_contents(PATH_site . $dataStructRec[$fName]));
                             } else {
                                 $dataStructArray = sprintf('File \'%s\' was not found', $dataStructRec[$fName]);
                             }
@@ -916,7 +916,7 @@ class BackendUtility
                     // Otherwise expect it to be a file:
                     $file = GeneralUtility::getFileAbsFileName($srcPointer);
                     if ($file && @is_file($file)) {
-                        $dataStructArray = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
+                        $dataStructArray = GeneralUtility::xml2array(file_get_contents($file));
                     } else {
                         // Error message.
                         $dataStructArray = 'The file "' . $srcPointer . '" was not found ("' . $file . '")';
@@ -1043,7 +1043,7 @@ class BackendUtility
                                 $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
                                     $includeTsConfigFilename;
                                 if (file_exists($includeTsConfigFileAndPath)) {
-                                    $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = GeneralUtility::getUrl($includeTsConfigFileAndPath);
+                                    $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
                                 }
                             }
                         }

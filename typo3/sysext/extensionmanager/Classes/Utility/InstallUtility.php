@@ -378,7 +378,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $extTablesSqlFile = PATH_site . $extension['siteRelPath'] . 'ext_tables.sql';
         $extTablesSqlContent = '';
         if (file_exists($extTablesSqlFile)) {
-            $extTablesSqlContent .= GeneralUtility::getUrl($extTablesSqlFile);
+            $extTablesSqlContent .= file_get_contents($extTablesSqlFile);
         }
         if ($extTablesSqlContent !== '') {
             $this->updateDbWithExtTablesSql($extTablesSqlContent);
@@ -560,7 +560,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $sqlData = '';
         if (file_exists($sqlFile)) {
-            $sqlContent = GeneralUtility::getUrl($sqlFile);
+            $sqlContent = file_get_contents($sqlFile);
             $fieldDefinitions = $this->installToolSqlParser->getFieldDefinitions_fileContent($sqlContent);
             $sqlData = $this->databaseUtility->dumpStaticTables($fieldDefinitions);
         }
@@ -681,7 +681,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
             $extTablesStaticSqlFile = PATH_site . $extTablesStaticSqlRelFile;
             if (file_exists($extTablesStaticSqlFile)) {
-                $extTablesStaticSqlContent = GeneralUtility::getUrl($extTablesStaticSqlFile);
+                $extTablesStaticSqlContent = file_get_contents($extTablesStaticSqlFile);
                 $this->importStaticSql($extTablesStaticSqlContent);
             }
             $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, 1);

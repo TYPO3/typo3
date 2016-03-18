@@ -55,7 +55,7 @@ class ExtensionManagerTables extends AbstractUpdate
         $updateStatements = array();
 
         // Get all necessary statements for ext_tables.sql file
-        $rawDefinitions = GeneralUtility::getUrl(ExtensionManagementUtility::extPath('extensionmanager') . '/ext_tables.sql');
+        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables.sql'));
         $fieldDefinitionsFromFile = $this->getInstallToolSqlParser()->getFieldDefinitions_fileContent($rawDefinitions);
         if (count($fieldDefinitionsFromFile)) {
             $fieldDefinitionsFromCurrentDatabase = $this->getInstallToolSqlParser()->getFieldDefinitions_database();
@@ -137,9 +137,9 @@ class ExtensionManagerTables extends AbstractUpdate
             $result = ($result || $this->hasError($customMessages));
         }
 
-        // Perform statis import anyway
-        $rawDefinitions = GeneralUtility::getUrl(ExtensionManagementUtility::extPath('extensionmanager') . 'ext_tables_static+adt.sql');
-        $statements = $this->getInstallToolSqlParser()->getStatementarray($rawDefinitions, 1);
+        // Perform statics import anyway
+        $rawDefinitions = file_get_contents(ExtensionManagementUtility::extPath('extensionmanager', 'ext_tables_static+adt.sql'));
+        $statements = $this->getInstallToolSqlParser()->getStatementArray($rawDefinitions, 1);
         foreach ($statements as $statement) {
             if (trim($statement) !== '') {
                 $this->getDatabaseConnection()->admin_query($statement);

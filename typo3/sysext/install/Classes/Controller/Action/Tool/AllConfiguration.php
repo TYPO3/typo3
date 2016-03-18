@@ -194,7 +194,7 @@ class AllConfiguration extends Action\AbstractAction
     {
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $string = GeneralUtility::getUrl($configurationManager->getDefaultConfigurationFileLocation());
+        $string = file_get_contents($configurationManager->getDefaultConfigurationFileLocation());
 
         $commentArray = array();
         $lines = explode(LF, $string);

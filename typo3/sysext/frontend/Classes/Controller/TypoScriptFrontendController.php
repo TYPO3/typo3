@@ -2037,7 +2037,7 @@ class TypoScriptFrontendController
                         GeneralUtility::getIndpEnv('REQUEST_URI'),
                         htmlspecialchars($reason)
                     ),
-                    GeneralUtility::getUrl($readFile)
+                    file_get_contents($readFile)
                 );
             } else {
                 throw new \RuntimeException('Configuration Error: 404 page "' . $readFile . '" could not be found.', 1294587214);

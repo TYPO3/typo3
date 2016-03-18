@@ -770,7 +770,7 @@ abstract class AbstractItemProvider
                     if (!is_array($dataStructure)) {
                         $file = GeneralUtility::getFileAbsFileName(str_ireplace('FILE:', '', $dataStructure));
                         if ($file && @is_file($file)) {
-                            $dataStructure = GeneralUtility::getUrl($file);
+                            $dataStructure = file_get_contents($file);
                         }
                         $dataStructure = GeneralUtility::xml2array($dataStructure);
                         if (!is_array($dataStructure)) {

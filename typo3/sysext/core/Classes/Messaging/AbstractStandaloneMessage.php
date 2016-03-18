@@ -134,7 +134,7 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
     public function render()
     {
         $markers = array_merge($this->getDefaultMarkers(), $this->markers);
-        $content = GeneralUtility::getUrl($this->htmlTemplate);
+        $content = file_get_contents($this->htmlTemplate);
         $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $content = $templateService->substituteMarkerArray($content, $markers, '', false, true);
         return $content;

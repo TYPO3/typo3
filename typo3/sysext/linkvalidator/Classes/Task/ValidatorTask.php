@@ -271,7 +271,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                 );
             }
         }
-        $htmlFile = GeneralUtility::getURL($file);
+        $htmlFile = file_get_contents($file);
         $this->templateMail = $this->templateService->getSubpart($htmlFile, '###REPORT_TEMPLATE###');
         // The array to put the content into
         $pageSections = '';

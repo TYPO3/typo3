@@ -3784,7 +3784,7 @@ class GeneralUtility
             if ($dataStruct && !is_array($dataStruct)) {
                 $file = self::getFileAbsFileName($dataStruct);
                 if ($file && @is_file($file)) {
-                    $dataStruct = self::xml2array(self::getUrl($file));
+                    $dataStruct = self::xml2array(file_get_contents($file));
                 }
             }
         } else {

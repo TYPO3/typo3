@@ -768,7 +768,7 @@ class Export extends ImportExport
         $fileMd5 = md5_file($fI['ID_absFile']);
         if (!$this->saveFilesOutsideExportFile) {
             // ... and finally add the heavy stuff:
-            $fileRec['content'] = GeneralUtility::getUrl($fI['ID_absFile']);
+            $fileRec['content'] = file_get_contents($fI['ID_absFile']);
         } else {
             GeneralUtility::upload_copy_move($fI['ID_absFile'], $this->getTemporaryFilesPathForExport() . $fileMd5);
         }
@@ -793,7 +793,7 @@ class Export extends ImportExport
                     $fileMd5 = md5_file($RTEoriginal_absPath);
                     if (!$this->saveFilesOutsideExportFile) {
                         // ... and finally add the heavy stuff:
-                        $fileRec['content'] = GeneralUtility::getUrl($RTEoriginal_absPath);
+                        $fileRec['content'] = file_get_contents($RTEoriginal_absPath);
                     } else {
                         GeneralUtility::upload_copy_move($RTEoriginal_absPath, $this->getTemporaryFilesPathForExport() . $fileMd5);
                     }
@@ -838,7 +838,7 @@ class Export extends ImportExport
                                 // Setting this data in the header
                                 $this->dat['header']['files'][$EXTres_ID] = $fileRec;
                                 // ... and finally add the heavy stuff:
-                                $fileRec['content'] = GeneralUtility::getUrl($EXTres_absPath);
+                                $fileRec['content'] = file_get_contents($EXTres_absPath);
                                 $fileRec['content_md5'] = md5($fileRec['content']);
                                 $this->dat['files'][$EXTres_ID] = $fileRec;
                             }

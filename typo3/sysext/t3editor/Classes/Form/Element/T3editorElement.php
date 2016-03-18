@@ -201,7 +201,7 @@ class T3editorElement extends AbstractFormElement
 
         $code[] = '<div class="t3editor">';
         $code[] = '	<div class="t3e_wrap">';
-        $code[] = str_replace(array(CR, LF), '', GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')));
+        $code[] = str_replace(array(CR, LF), '', file_get_contents(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')));
         $code[] = '	</div>';
         $code[] = '	<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
         $code[] = '</div>';

@@ -200,7 +200,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getPreparedTemplate()
     {
-        $T3editor_template = GeneralUtility::getUrl(
+        $T3editor_template = file_get_contents(
             GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')
         );
         return str_replace(array(CR, LF), '', $T3editor_template);

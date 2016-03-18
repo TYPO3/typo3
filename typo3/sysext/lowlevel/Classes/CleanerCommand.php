@@ -111,7 +111,7 @@ This will show you missing files in the TYPO3 system and only report back if err
         $GLOBALS['BE_USER']->setWorkspace(0);
         // Print Howto:
         if ($this->cli_isArg('--showhowto')) {
-            $howto = GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'README.rst');
+            $howto = file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'README.rst');
             echo wordwrap($howto, 120) . LF;
             die;
         }

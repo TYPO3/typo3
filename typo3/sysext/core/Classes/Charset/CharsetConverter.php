@@ -757,10 +757,10 @@ class CharsetConverter implements SingletonInterface
                 // Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
                 $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/charset_' . $charset . '.tbl');
                 if ($cacheFile && @is_file($cacheFile)) {
-                    $this->parsedCharsets[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
+                    $this->parsedCharsets[$charset] = unserialize(file_get_contents($cacheFile));
                 } else {
                     // Parse conversion table into lines:
-                    $lines = GeneralUtility::trimExplode(LF, GeneralUtility::getUrl($charsetConvTableFile), true);
+                    $lines = GeneralUtility::trimExplode(LF, file_get_contents($charsetConvTableFile), true);
                     // Initialize the internal variable holding the conv. table:
                     $this->parsedCharsets[$charset] = array('local' => array(), 'utf8' => array());
                     // traverse the lines:
@@ -824,7 +824,7 @@ class CharsetConverter implements SingletonInterface
                 }
                 // Use cached version if possible
                 if ($cacheFileCase && @is_file($cacheFileCase)) {
-                    $this->caseFolding['utf-8'] = unserialize(GeneralUtility::getUrl($cacheFileCase));
+                    $this->caseFolding['utf-8'] = unserialize(file_get_contents($cacheFileCase));
                     return 2;
                 }
                 break;
@@ -834,7 +834,7 @@ class CharsetConverter implements SingletonInterface
                 }
                 // Use cached version if possible
                 if ($cacheFileASCII && @is_file($cacheFileASCII)) {
-                    $this->toASCII['utf-8'] = unserialize(GeneralUtility::getUrl($cacheFileASCII));
+                    $this->toASCII['utf-8'] = unserialize(file_get_contents($cacheFileASCII));
                     return 2;
                 }
                 break;
@@ -1058,7 +1058,7 @@ class CharsetConverter implements SingletonInterface
         // Use cached version if possible
         $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/cscase_' . $charset . '.tbl');
         if ($cacheFile && @is_file($cacheFile)) {
-            $this->caseFolding[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
+            $this->caseFolding[$charset] = unserialize(file_get_contents($cacheFile));
             return 2;
         }
         // init UTF-8 conversion for this charset
@@ -1120,7 +1120,7 @@ class CharsetConverter implements SingletonInterface
         // Use cached version if possible
         $cacheFile = GeneralUtility::getFileAbsFileName('typo3temp/var/charset/csascii_' . $charset . '.tbl');
         if ($cacheFile && @is_file($cacheFile)) {
-            $this->toASCII[$charset] = unserialize(GeneralUtility::getUrl($cacheFile));
+            $this->toASCII[$charset] = unserialize(file_get_contents($cacheFile));
             return 2;
         }
         // Init UTF-8 conversion for this charset

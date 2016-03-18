@@ -2007,13 +2007,17 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function getTemplateForPart($part)
     {
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
-        $template = GeneralUtility::getUrl($templateFile);
-        if ($this->removeLineBreaksFromTemplate) {
-            $template = strtr($template, array(LF => '', CR => ''));
-        }
-        if ($part !== self::PART_COMPLETE) {
-            $templatePart = explode('###BODY###', $template);
-            $template = $templatePart[$part - 1];
+        if (is_file($templateFile)) {
+            $template = file_get_contents($templateFile);
+            if ($this->removeLineBreaksFromTemplate) {
+                $template = strtr($template, array(LF => '', CR => ''));
+            }
+            if ($part !== self::PART_COMPLETE) {
+                $templatePart = explode('###BODY###', $template);
+                $template = $templatePart[$part - 1];
+            }
+        } else {
+            $template = '';
         }
         return $template;
     }

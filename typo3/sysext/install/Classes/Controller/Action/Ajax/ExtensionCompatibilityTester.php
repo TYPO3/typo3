@@ -119,8 +119,12 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     protected function getExtensionsToExclude()
     {
-        $exclude = GeneralUtility::getUrl($this->protocolFile);
-        return GeneralUtility::trimExplode(',', (string)$exclude);
+        if (is_file($this->protocolFile)) {
+            $exclude = (string)file_get_contents($this->protocolFile);
+            return GeneralUtility::trimExplode(',', $exclude);
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -205,7 +209,8 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     protected function writeCurrentExtensionToFile($extensionKey)
     {
-        $incompatibleExtensions = array_filter(GeneralUtility::trimExplode(',', (string)GeneralUtility::getUrl($this->protocolFile)));
+        $incompatibleExtensions = $this->getExtensionsToExclude();
+        $incompatibleExtensions = array_filter($incompatibleExtensions);
         $incompatibleExtensions = array_merge($incompatibleExtensions, array($extensionKey));
         GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
         $this->logError = true;
@@ -219,7 +224,8 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     protected function removeCurrentExtensionFromFile($extensionKey)
     {
-        $extensionsInFile = array_filter(GeneralUtility::trimExplode(',', (string)GeneralUtility::getUrl($this->protocolFile)));
+        $extensionsInFile = $this->getExtensionsToExclude();
+        $extensionsInFile = array_filter($extensionsInFile);
         $extensionsByKey = array_flip($extensionsInFile);
         unset($extensionsByKey[$extensionKey]);
         $extensionsForFile = array_flip($extensionsByKey);
@@ -244,7 +250,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
         $errors = array();
 
         if (file_exists($this->errorProtocolFile)) {
-            $errors = json_decode(GeneralUtility::getUrl($this->errorProtocolFile));
+            $errors = json_decode(file_get_contents($this->errorProtocolFile));
         }
         switch ($lastError['type']) {
             case E_ERROR:

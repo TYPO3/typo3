@@ -1259,7 +1259,7 @@ function jumpToUrl(URL) {
         }
         $htmlTemplate = '';
         if ($filename !== '') {
-            $htmlTemplate = GeneralUtility::getUrl($filename);
+            $htmlTemplate = file_get_contents($filename);
         }
         return $htmlTemplate;
     }

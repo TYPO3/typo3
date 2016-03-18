@@ -871,7 +871,7 @@ class Bootstrap
             throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".', 1294586847);
         }
         if (@is_file(PATH_typo3conf . 'LOCK_BACKEND') && $forceProceeding === false) {
-            $fileContent = GeneralUtility::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
+            $fileContent = file_get_contents(PATH_typo3conf . 'LOCK_BACKEND');
             if ($fileContent) {
                 header('Location: ' . $fileContent);
             } else {

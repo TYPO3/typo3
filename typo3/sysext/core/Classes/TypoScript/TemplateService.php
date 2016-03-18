@@ -803,8 +803,8 @@ class TemplateService
                             $subrow = array(
                                 'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
                                 'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
-                                'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static.txt')))) : '',
-                                'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
+                                'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', file_get_contents($ISF_filePath . 'include_static.txt')))) : '',
+                                'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', file_get_contents($ISF_filePath . 'include_static_file.txt')))) : '',
                                 'title' => $ISF_file,
                                 'uid' => $mExtKey
                             );
@@ -848,7 +848,7 @@ class TemplateService
         foreach ($extensions as $extension) {
             $fileName = $filePath . $baseName . $extension;
             if (@file_exists($fileName)) {
-                return GeneralUtility::getUrl($fileName);
+                return file_get_contents($fileName);
             }
         }
         return '';
@@ -874,8 +874,8 @@ class TemplateService
             if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
                 $mExtKey = str_replace('_', '', $extKey);
                 $subrow = array(
-                    'constants' => $files['ext_typoscript_constants.txt'] ? GeneralUtility::getUrl($files['ext_typoscript_constants.txt']) : '',
-                    'config' => $files['ext_typoscript_setup.txt'] ? GeneralUtility::getUrl($files['ext_typoscript_setup.txt']) : '',
+                    'constants' => $files['ext_typoscript_constants.txt'] ? @file_get_contents($files['ext_typoscript_constants.txt']) : '',
+                    'config' => $files['ext_typoscript_setup.txt'] ? @file_get_contents($files['ext_typoscript_setup.txt']) : '',
                     'title' => $extKey,
                     'uid' => $mExtKey
                 );
@@ -1163,7 +1163,7 @@ class TemplateService
 
             $tsConfigFile = ExtensionManagementUtility::extPath($extensionKey) . $filePath;
             if (file_exists($tsConfigFile)) {
-                $TSdataArray[] = GeneralUtility::getUrl($tsConfigFile);
+                $TSdataArray[] = file_get_contents($tsConfigFile);
             }
         }
 
@@ -1397,7 +1397,7 @@ class TemplateService
      *
      * @param string $fileName Absolute filepath to record
      * @return NULL|string The content returned
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::fileResource(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::MULTIMEDIA(), GeneralUtility::getUrl()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::fileResource(), GeneralUtility::getUrl()
      */
     public function fileContent($fileName)
     {

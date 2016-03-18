@@ -68,13 +68,13 @@ class SqlExpectedSchemaService
         $loadedExtensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
         foreach ($loadedExtensionInformation as $extensionConfiguration) {
             if ((is_array($extensionConfiguration) || $extensionConfiguration instanceof \ArrayAccess) && $extensionConfiguration['ext_tables.sql']) {
-                $sqlString[] = GeneralUtility::getUrl($extensionConfiguration['ext_tables.sql']);
+                $sqlString[] = file_get_contents($extensionConfiguration['ext_tables.sql']);
             }
             if ($withStatic
                 && (is_array($extensionConfiguration) || $extensionConfiguration instanceof \ArrayAccess)
                 && $extensionConfiguration['ext_tables_static+adt.sql']
             ) {
-                $sqlString[] = GeneralUtility::getUrl($extensionConfiguration['ext_tables_static+adt.sql']);
+                $sqlString[] = file_get_contents($extensionConfiguration['ext_tables_static+adt.sql']);
             }
         }
 

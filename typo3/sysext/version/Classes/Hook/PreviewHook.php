@@ -160,7 +160,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 if ($this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) {
                     $templateFile = PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'];
                     if (@is_file($templateFile)) {
-                        $message = GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
+                        $message = file_get_contents($templateFile);
                     } else {
                         $message = '<strong>ERROR!</strong><br>Template File "'
                             . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']

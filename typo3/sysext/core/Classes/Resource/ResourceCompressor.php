@@ -282,7 +282,7 @@ class ResourceCompressor
             foreach ($filesToInclude as $filename) {
                 $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
-                $contents = GeneralUtility::getUrl($filenameAbsolute);
+                $contents = file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
                 if (StringUtility::beginsWith($contents, "\xEF\xBB\xBF")) {
                     $contents = substr($contents, 3);
@@ -354,7 +354,7 @@ class ResourceCompressor
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
         // only create it, if it doesn't exist, yet
         if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
-            $contents = $this->compressCssString(GeneralUtility::getUrl($filenameAbsolute));
+            $contents = $this->compressCssString(file_get_contents($filenameAbsolute));
             if (strpos($filename, $this->targetDirectory) === false) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
             }
@@ -406,7 +406,7 @@ class ResourceCompressor
         $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
         // only create it, if it doesn't exist, yet
         if (!file_exists(PATH_site . $targetFile) || $this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip')) {
-            $contents = GeneralUtility::getUrl($filenameAbsolute);
+            $contents = file_get_contents($filenameAbsolute);
             $this->writeFileAndCompressed($targetFile, $contents);
         }
         return $this->returnFileReference($targetFile);
@@ -614,7 +614,7 @@ class ResourceCompressor
         $filename = $this->targetDirectory . 'external-' . md5($url);
         // write only if file does not exist and md5 of the content is not the same as fetched one
         if (!file_exists(PATH_site . $filename)
-            && (md5($externalContent) !== md5(GeneralUtility::getUrl(PATH_site . $filename)))
+            && (md5($externalContent) !== md5(file_get_contents(PATH_site . $filename)))
         ) {
             GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
         }

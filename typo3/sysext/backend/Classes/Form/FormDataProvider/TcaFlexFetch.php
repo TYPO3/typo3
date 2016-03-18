@@ -131,7 +131,7 @@ class TcaFlexFetch implements FormDataProviderInterface
                 if (!is_array($sheetStructure)) {
                     $file = GeneralUtility::getFileAbsFileName($sheetStructure);
                     if ($file && @is_file($file)) {
-                        $sheetStructure = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
+                        $sheetStructure = GeneralUtility::xml2array(file_get_contents($file));
                     }
                 }
                 $modifiedDataStructure['sheets'][$sheetName] = $sheetStructure;
