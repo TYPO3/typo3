@@ -388,7 +388,6 @@ CREATE TABLE tx_styleguide_elements_rte_flex_1_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	rte_1 text,
 
@@ -424,7 +423,6 @@ CREATE TABLE tx_styleguide_elements_rte_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	rte_1 text,
 
@@ -606,7 +604,6 @@ CREATE TABLE tx_styleguide_elements_t3editor_flex_1_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	t3editor_1 text,
 
@@ -642,7 +639,6 @@ CREATE TABLE tx_styleguide_elements_t3editor_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	t3editor_1 text,
 
@@ -716,7 +712,6 @@ CREATE TABLE tx_styleguide_flex_flex_3_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	input_1 text,
 
@@ -790,7 +785,7 @@ CREATE TABLE tx_styleguide_inline_1n_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -863,7 +858,7 @@ CREATE TABLE tx_styleguide_inline_1n1n_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -901,7 +896,7 @@ CREATE TABLE tx_styleguide_inline_1n1n_childchild (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -974,7 +969,6 @@ CREATE TABLE tx_styleguide_inline_expand_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
 
 	dummy_1 text NOT NULL,
 	inline_fal_1 int(11) DEFAULT '0' NOT NULL,
@@ -1052,7 +1046,7 @@ CREATE TABLE tx_styleguide_inline_expandsingle_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1162,7 +1156,7 @@ CREATE TABLE tx_styleguide_inline_foreignrecorddefaults_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1780,7 +1774,7 @@ CREATE TABLE tx_styleguide_required_flex_2_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1814,7 +1808,7 @@ CREATE TABLE tx_styleguide_required_inline_1_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1848,7 +1842,7 @@ CREATE TABLE tx_styleguide_required_inline_2_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1882,7 +1876,7 @@ CREATE TABLE tx_styleguide_required_inline_3_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	input_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -1916,7 +1910,7 @@ CREATE TABLE tx_styleguide_required_rte_2_child (
 
 	parentid int(11) DEFAULT '0' NOT NULL,
 	parenttable text NOT NULL,
-	parentidentifier text NOT NULL,
+
 	rte_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
