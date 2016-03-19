@@ -60,6 +60,9 @@
 			<trans-unit id="buttons.confirm.delete_file.yes">
 				<source>Yes, delete this file</source>
 			</trans-unit>
+			<trans-unit id="buttons.confirm.delete_folder.yes">
+				<source>Yes, delete this folder</source>
+			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_record.no">
 				<source>Cancel</source>
 			</trans-unit>

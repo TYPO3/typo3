@@ -968,8 +968,10 @@ class FileList extends AbstractRecordList
             $identifier = $fileOrFolderObject->getIdentifier();
             if ($fileOrFolderObject instanceof Folder) {
                 $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFolder'));
+                $deleteType = 'delete_folder';
             } else {
                 $referenceCountText = BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile'));
+                $deleteType = 'delete_file';
             }
 
             if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
@@ -987,6 +989,7 @@ class FileList extends AbstractRecordList
                 . '" data-title="' . htmlspecialchars($title)
                 . '" data-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier())
                 . '" data-veri-code="' . $this->getBackendUser()->veriCode()
+                . '" data-delete-type="' . $deleteType
                 . '" title="' . htmlspecialchars($title) . '">'
                 . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
         } else {

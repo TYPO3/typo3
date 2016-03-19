@@ -686,7 +686,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Redrawing the page will discard the current data. Do you want to continue?</source>
 			</trans-unit>
 			<trans-unit id="mess.delete">
-				<source>Are you sure you want to delete "%s"?</source>
+				<source>Are you sure you want to delete '%s'?</source>
 			</trans-unit>
 			<trans-unit id="mess.deleteClip">
 				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>

@@ -138,6 +138,7 @@
 											data-content="{f:translate( htmlEscape:'true', key:'LLL:EXT:lang/locallang_core.xlf:mess.delete', arguments: {0:file.name} )}"
 											data-check="{f:if(condition:settings.jsConfirmationDelete, then:'1', else:'0')}"
 											data-delete-url="{deleteUrl}"
+											data-delete-type="delete_file"
 											data-redirect-url="{f:uri.action( action:'search', arguments:{ searchWord:'{searchWord->f:format.htmlentities()}' } )}"
 										>
 											<core:icon identifier="actions-edit-delete" />
