@@ -1145,18 +1145,18 @@ class ClickMenu
             GeneralUtility::quoteJSvalue(
                 '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode()
             );
-
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
+            $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($path);
             $title = $this->languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete');
             $confirmMessage = sprintf(
                 $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'),
-                basename($path)
+                $fileOrFolderObject->getName()
             );
-            $confirmMessage .= BackendUtility::referenceCount(
-                '_FILE',
-                $path,
-                ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile')
-            );
+            if ($fileOrFolderObject instanceof Folder) {
+                $confirmMessage .= BackendUtility::referenceCount('_FILE', $fileOrFolderObject->getIdentifier(), ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFolder'));
+            } else {
+                $confirmMessage .= BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile'));
+            }
             $jsCode = 'top.TYPO3.Modal.confirm(' . GeneralUtility::quoteJSvalue($title) . ', '
                 . GeneralUtility::quoteJSvalue($confirmMessage) . ')'
                 . '.on(\'button.clicked\', function(e) { if (e.target.name === \'ok\') {'
