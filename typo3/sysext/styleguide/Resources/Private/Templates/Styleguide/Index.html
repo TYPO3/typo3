@@ -1,3 +1,5 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
+
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -7,13 +9,21 @@
 		Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.</p>
 
 	<h2>Styleguide examples</h2>
-	<div class="row">
+
+	<ul class="fence list-unstyled">
 		<f:for each="{actions}" as="action">
 			<f:if condition="{action} != 'index'">
-			<div class="col-xs-4">
-				<p><f:link.action class="btn btn-default btn-block btn-lg" action="{action}"><f:translate key="{action}" /></f:link.action></p>
-			</div>
+				<li>
+					<f:link.action class="btn btn-default btn-block btn-lg" action="{action}">
+						<sg:initials text="{f:translate(key: '{action}')}"/>
+					</f:link.action>
+					<f:link.action action="{action}">
+						<f:translate key="{action}"/>
+					</f:link.action>
+				</li>
 			</f:if>
 		</f:for>
-	</div>
+
+	</ul>
+
 </f:section>
