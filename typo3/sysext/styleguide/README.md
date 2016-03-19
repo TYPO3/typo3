@@ -23,12 +23,13 @@ Presents supported styles for TYPO3 backend modules.
 3. Trees
 4. Tab
 5. Tables
-6. Buttons
-7. Infobox
-8. FlashMessages / Notification
-9. Icons
-10. Debug
-11. Helpers
+6. Avatar
+7. Buttons
+8. Infobox
+9. FlashMessages / Notification
+10. Icons
+11. Debug
+12. Helpers
 
 # Installation
 This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module within the Help/Manuals navigation section.
