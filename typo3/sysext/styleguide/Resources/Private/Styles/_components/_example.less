@@ -1,0 +1,48 @@
+// Example
+.example {
+	background-color: #fff;
+	border: 1px solid rgb(237, 237, 237);
+	padding: 12px;
+	margin-bottom: 12px;
+	&.code {
+		background-color: #272822;
+		color: #f8f8f8;
+		font-family: monospace, fixed;
+	}
+	pre {
+		font-size: 14px;
+		margin: 0;
+	}
+	pre[class*="language-"] {
+		margin: 0;
+	}
+	pre code {
+		overflow: scroll;
+		width: 100%;
+		display: block;
+	}
+	&:before {
+		content: 'EXAMPLE';
+		color: rgb(200, 200, 200);
+		display: block;
+		font-weight: normal;
+		font-size: 0.9em;
+		margin-bottom: 12px;
+	}
+}
+
+.tag-border {
+	color: #79ABFF;
+}
+.tag-name {
+	color: #BED6FF;
+}
+.tag-attribute {
+	color: #BED6FF;
+}
+.tag-attribute-value {
+	color: #E6DB74;
+}
+.tag-equals {
+	color: #F8F8F2;
+}

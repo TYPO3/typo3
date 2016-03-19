@@ -1,10 +1,11 @@
-<f:be.pageRenderer includeCssFiles="{0: '{f:uri.resource(path:\'Css/styles.css\')}', 1: '{f:uri.resource(path:\'Css/prism.css\')}'}" includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/prism.js\')}'}" />
+<f:be.pageRenderer
+	includeCssFiles="{0: '{f:uri.resource(path:\'Css/styles.css\')}'}"
+	includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/prism.js\')}'}"
+/>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-3">
-        <f:render partial="Navigation.html" arguments="{currentAction: currentAction, actions: actions}" />
-    </div>
-    <div class="col-xs-12 col-sm-9">
-        <f:render section="content" />
-    </div>
+<div id="container-navigation">
+	<f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+</div>
+<div id="container-content">
+	<f:render section="content" />
 </div>

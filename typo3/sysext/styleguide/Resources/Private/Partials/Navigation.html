@@ -1,6 +1,12 @@
-<div class="list-group">
-    <span class="list-group-item"><strong>Styleguide examples</strong></span>
-    <f:for each="{actions}" as="action">
-        <f:link.action class="list-group-item {f:if(condition:'{currentAction} == {action}', then: 'active')}" action="{action}"><f:translate key="{action}" /></f:link.action>
-    </f:for>
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<div class="sidebar list-group">
+	<f:for each="{actions}" as="action">
+		<f:link.action class="list-group-item {f:if(condition:'{currentAction} == {action}', then: 'active')}" action="{action}">
+			<f:if condition="{action} == 'index'">
+				<i class="fa fa-home"></i>
+			</f:if>
+			<f:translate key="{action}"/>
+		</f:link.action>
+	</f:for>
 </div>
