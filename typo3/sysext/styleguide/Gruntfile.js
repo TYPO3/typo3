@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			less: {
-				files: '<%= paths.private %>**/*.less',
+				files: '<%= paths.private %>/**/*.less',
 				tasks: 'less'
 			}
 		}
