@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Controller for actions relating to update of full extension list from TER
@@ -38,6 +40,11 @@ class UpdateFromTerController extends AbstractController
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
      */
     protected $extensionRepository;
+
+    /**
+     * @var JsonView
+     */
+    protected $defaultViewObjectName = JsonView::class;
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
@@ -91,8 +98,32 @@ class UpdateFromTerController extends AbstractController
         }
         /** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
         $repository = $this->repositoryRepository->findByUid((int)$this->settings['repositoryUid']);
-        $this->view->assign('updated', $updated)
-                ->assign('repository', $repository)
-                ->assign('errorMessage', $errorMessage);
+
+        $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
+        $lastUpdateTime = $repository->getLastUpdate();
+        if (null === $lastUpdateTime) {
+            $lastUpdatedSince = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
+            $lastUpdateTime = date($timeFormat);
+        } else {
+            $lastUpdatedSince = \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
+                time() - $lastUpdateTime->format('U'),
+                $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+            );
+            $lastUpdateTime = $lastUpdateTime->format($timeFormat);
+        }
+        $this->view->assign('value', [
+            'updated' => $updated,
+            'lastUpdateTime' => $lastUpdateTime,
+            'timeSinceLastUpdate' => $lastUpdatedSince,
+            'errorMessage' => $errorMessage
+        ]);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

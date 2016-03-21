@@ -1,8 +1,0 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode additionalAttributes="{dependencies:dependencies,
-url:'{f:uri.action(action:action, controller:\"Download\", arguments:\"{extension:extension.uid, format:\'json\'}\")}',
-message: '{message}',
-hasErrors: '{hasErrors}',
-hasDependencies: '{hasDependencies}',
-title: '{title}'
-}" />

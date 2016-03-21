@@ -1,9 +1,0 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode
-	additionalAttributes="{
-		updated: updated,
-		lastUpdateTime: '{repository.lastUpdate -> f:format.date(format: \'{f:translate(key: \\\'extensionList.updateFromTer.lastUpdate.fullTimeFormat\\\')}\')}',
-		timeSinceLastUpdate: '{em:timeSinceLastUpdate(lastUpdateTime: repository.lastUpdate)}',
-		errorMessage: errorMessage
-	}"
-/>
