@@ -684,8 +684,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $this->internal['maxPages'] = MathUtility::forceIntegerInRange($this->conf['search.']['page_links'], 1, 100, 10);
                 $resultSectionsCount = count($this->resultSections);
                 $addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL(($resultSectionsCount > 1 ? 'inNsections' : 'inNsection')), $resultSectionsCount) : '';
-                $browseBox1 = $this->pi_list_browseresults(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
-                $browseBox2 = $this->pi_list_browseresults(0, '', '', $freeIndexUid);
+                $browseBox1 = $this->renderPagination(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
+                $browseBox2 = $this->renderPagination(0, '', '', $freeIndexUid);
                 // Browsing nav, bottom.
                 $content = $browseBox1 . $rowcontent . $browseBox2;
             } else {
@@ -1601,7 +1601,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
     /**
-     * Returns a results browser
+     * Returns a results browser, former method name: pi_list_browseresults
      *
      * @param bool $showResultCount Show result count
      * @param string $addString String appended to "displaying results..." notice.
@@ -1609,7 +1609,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
      * @return string HTML output
      */
-    public function pi_list_browseresults($showResultCount = true, $addString = '', $addPart = '', $freeIndexUid = -1)
+    protected function renderPagination($showResultCount = true, $addString = '', $addPart = '', $freeIndexUid = -1)
     {
         // Initializing variables:
         $pointer = (int)$this->piVars['pointer'];
