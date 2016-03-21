@@ -1,53 +1,51 @@
 <table border="0" cellpadding="1" cellspacing="1">
-	<f:if condition="{inData.pagetree.id}">
-		<tr class="tableheader bgColor5">
-			<td colspan="2">
-				<f:translate key="makeconfig_exportPagetreeConfiguration" />
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td><strong><f:translate key="makeconfig_pageId" /></strong></td>
-			<td>{inData.pagetree.id}<input type="hidden" value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" /></td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_tree" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay" />
-			</td>
-			<td>
-				<f:if condition="{treeHTML}">
-					<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
-					<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
-				</f:if>
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_levels" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
-			</td>
-			<td>
-				<f:form.select name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
-			</td>
-		</tr>
-		<tr class="bgColor4">
-			<td>
-				<strong><f:translate key="makeconfig_includeTables" /></strong>
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
-			</td>
-			<td>
-				<f:form.select name="tx_impexp[pagetree][tables]" options="{tableSelectOptions}"
-											 multiple="multiple" value="{inData.pagetree.tables}"
-											 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
-				<br/>
-				<f:translate key="makeconfig_maxNumberOfRecords" />
-				<br/>
-				<f:form.textfield name="tx_impexp[pagetree][maxNumber]" value="{inData.pagetree.maxNumber}" />
-				<br/>
-			</td>
-		</tr>
-	</f:if>
+	<tr class="tableheader bgColor5">
+		<td colspan="2">
+			<f:translate key="makeconfig_exportPagetreeConfiguration" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td><strong><f:translate key="makeconfig_pageId" /></strong></td>
+		<td>{inData.pagetree.id}<input type="hidden" value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" /></td>
+	</tr>
+	<tr class="bgColor4">
+		<td>
+			<strong><f:translate key="makeconfig_tree" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay" />
+		</td>
+		<td>
+			<f:if condition="{treeHTML}">
+				<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
+				<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
+			</f:if>
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td>
+			<strong><f:translate key="makeconfig_levels" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
+		</td>
+		<td>
+			<f:form.select name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
+		</td>
+	</tr>
+	<tr class="bgColor4">
+		<td>
+			<strong><f:translate key="makeconfig_includeTables" /></strong>
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit" />
+		</td>
+		<td>
+			<f:form.select name="tx_impexp[pagetree][tables]" options="{tableSelectOptions}"
+										 multiple="multiple" value="{inData.pagetree.tables}"
+										 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+			<br/>
+			<f:translate key="makeconfig_maxNumberOfRecords" />
+			<br/>
+			<f:form.textfield name="tx_impexp[pagetree][maxNumber]" value="{inData.pagetree.maxNumber}" />
+			<br/>
+		</td>
+	</tr>
 	<f:if condition="{records}">
 		<tr class="tableheader bgColor5">
 			<td colspan="2">
