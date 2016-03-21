@@ -16,7 +16,7 @@ as new render type.
 
 Furthermore, all JavaScript is loaded via require.js.
 
-Since integrators and editors had massive problems with overriden form configuration
+Since integrators and editors had massive problems with overridden form configuration
 the wizard cannot be deactivated anymore. Instead, the integrator can configure whether
 to load the form wizard by default or not. The following UserTS is integrated by default:
 

@@ -350,6 +350,23 @@ specConfs.[pid].CSSsuffix
 
 
 
+.. _targetPid:
+
+targetPid
+"""""""""
+
+.. container:: table-row
+
+   Property
+         targetPid
+
+   Data type
+         int
+
+   Description
+         Set the target page UID for the extbase variant of the plugin.
+
+
 .. _whatis-stdwrap:
 
 whatis\_stdWrap
