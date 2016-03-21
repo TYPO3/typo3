@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController;
+
 /**
  * Update from TER controller test
  *
@@ -40,12 +43,18 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected $repositoryHelperMock;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Lang\LanguageService
+     */
+    protected $languageServiceMock;
+
     protected function setUp()
     {
         $this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->repositoryRepositoryMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findByUid'), array($this->mockObjectManager));
         $this->extensionRepositoryMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array(), array($this->mockObjectManager));
         $this->repositoryHelperMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, array('updateExtList'), array(), '', false);
+        $this->languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array('__none'));
     }
 
     /**
@@ -54,9 +63,11 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsEmpty()
     {
-        $controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
-        $repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
+        /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|UpdateFromTerController $controllerMock */
+        $controllerMock = $this->getAccessibleMock(UpdateFromTerController::class, array('getLanguageService'));
+        $controllerMock->expects($this->any())->method('getLanguageService')->will($this->returnValue($this->languageServiceMock));
 
+        $repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
         $viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', false);
         $requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
         $viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
@@ -78,7 +89,10 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function updateExtensionListFromTerDoesNotCallsUpdateExtListIfExtensionListIsNotEmpty()
     {
-        $controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
+        /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|UpdateFromTerController $controllerMock */
+        $controllerMock = $this->getAccessibleMock(UpdateFromTerController::class, array('getLanguageService'));
+        $controllerMock->expects($this->any())->method('getLanguageService')->will($this->returnValue($this->languageServiceMock));
+
         $repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
         $viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', false);
         $requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
@@ -101,7 +115,10 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function updateExtensionListFromTerCallsUpdateExtListIfForceUpdateCheckIsSet()
     {
-        $controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
+        /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|UpdateFromTerController $controllerMock */
+        $controllerMock = $this->getAccessibleMock(UpdateFromTerController::class, array('getLanguageService'));
+        $controllerMock->expects($this->any())->method('getLanguageService')->will($this->returnValue($this->languageServiceMock));
+
         $repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
         $viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', false);
         $requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
