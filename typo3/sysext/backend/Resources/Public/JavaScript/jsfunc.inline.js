@@ -121,7 +121,7 @@ var inline = {
 			// the uid of the calling object (last part in objectId)
 			var recObjectId = '', escapedRecordObjectId;
 
-			var records = formObj[0].value.split(',');
+			var records = this.trimExplode(',', formObj[0].value);
 			for (var i = 0; i < records.length; i++) {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
 				escapedRecordObjectId = this.escapeObjectId(recObjectId);
@@ -465,7 +465,7 @@ var inline = {
 				}
 				// remove the newly used item from each select-field of the child records
 				if (formObj.length && selectedValue) {
-					var records = formObj[0].value.split(',');
+					var records = this.trimExplode(',', formObj[0].value);
 					for (var i = 0; i < records.length; i++) {
 						recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
 						if (recordObj.length && records[i] != recordUid) {
@@ -594,7 +594,7 @@ var inline = {
 
 		// the uid of the calling object (last part in objectId)
 		var callingUid = this.parseObjectId('none', objectId, 1);
-		var records = formObj[0].value.split(',');
+		var records = this.trimExplode(',', formObj[0].value);
 		var current = records.indexOf(callingUid);
 		var changed = false;
 
@@ -639,7 +639,7 @@ var inline = {
 		$element.find('.sortableHandle').each(function (i, e) {
 			order.push(TYPO3.jQuery(e).data('id').toString());
 		});
-		var records = formObj[0].value.split(',');
+		var records = this.trimExplode(',', formObj[0].value);
 
 		// check if ordered uid is really part of the records
 		// virtually deleted items might still be there but ordering shouldn't saved at all on them
@@ -700,7 +700,7 @@ var inline = {
 			var objectName = 'data' + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(objectName);
 			if (formObj.length) {
-				records = formObj[0].value.split(',');
+				records = this.trimExplode(',', formObj[0].value);
 			}
 		}
 
@@ -730,7 +730,7 @@ var inline = {
 			if (formObj.length) {
 				var records = [];
 				if (formObj[0].value.length) {
-					records = formObj[0].value.split(',');
+					records = this.trimExplode(',', formObj[0].value);
 				}
 
 				if (afterUid) {
@@ -780,7 +780,7 @@ var inline = {
 			var parts = [],
 				indexOfRemoveUid = -1;
 			if (formObj[0].value.length) {
-				parts = formObj[0].value.split(',');
+				parts = this.trimExplode(',', formObj[0].value);
 				indexOfRemoveUid = parts.indexOf(removeUid);
 				if (indexOfRemoveUid !== -1) {
 					delete parts[indexOfRemoveUid];
@@ -820,7 +820,7 @@ var inline = {
 			return;
 		}
 
-		var records = formObj[0].value.split(',');
+		var records = this.trimExplode(',', formObj[0].value);
 		var recordObj;
 		for (var i = 0; i < records.length; i++) {
 			recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
@@ -867,7 +867,7 @@ var inline = {
 				return;
 			}
 
-			var records = formObj[0].value.split(',');
+			var records = this.trimExplode(',', formObj[0].value);
 			var recordObj;
 			// walk through all inline records on that level and get the select field
 			for (var i = 0; i < records.length; i++) {
@@ -940,7 +940,7 @@ var inline = {
 			// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i = inlineRecords.length - 1; i >= 0; i--) {
 				if (inlineRecords.get(i).value.length) {
-					records = inlineRecords.get(i).value.split(',');
+					records = this.trimExplode(',', inlineRecords.get(i).value);
 					childObjectId = this.data.map[inlineRecords.get(i).name];
 					childTable = this.data.config[childObjectId].table;
 					for (j = records.length - 1; j >= 0; j--) {
@@ -1155,7 +1155,7 @@ var inline = {
 		var formObj = document.getElementsByName(objectName);
 
 		if (this.data.config && this.data.config[objectPrefix] && formObj.length) {
-			var recordCount = formObj[0].value ? formObj[0].value.split(',').length : 0;
+			var recordCount = formObj[0].value ? this.trimExplode(',', formObj[0].value).length : 0;
 			if (recordCount >= this.data.config[objectPrefix].max) {
 				isBelowMax = false;
 			}
@@ -1300,6 +1300,25 @@ var inline = {
 		escapedSelectorObjectId = escapedObjectId.replace(/\\:/g, '\\\\\\:');
 		escapedSelectorObjectId = escapedSelectorObjectId.replace(/\\\./g, '\\\\\\.');
 		return escapedSelectorObjectId;
+	},
+
+	/**
+	 * Helper function to get clean trimmed array from comma list
+	 *
+	 * @param {String} delimiter
+	 * @param {String} string
+	 * @returns {Array}
+	 */
+	trimExplode: function(delimiter, string) {
+		var result = [];
+		var items = string.split(delimiter);
+		for (var i=0; i<items.length; i++) {
+			var item = items[i].trim();
+			if (item.length > 0) {
+				result.push(item);
+			}
+		}
+		return result;
 	}
 };
 
