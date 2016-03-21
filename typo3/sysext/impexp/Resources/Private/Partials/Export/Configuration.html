@@ -1,56 +1,53 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:if condition="{inData.pagetree.id}">
-	<h3>
-		<f:translate key="makeconfig_exportPagetreeConfiguration" />
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
-	</h3>
-	<div class="row">
-		<div class="col-sm-2">
-			<label class="control-label"><f:translate key="makeconfig_pageId" /></label>
-		</div>
-		<div class="col-sm-10">
-			{inData.pagetree.id}
-			<f:form.hidden value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" />
-		</div>
+<h3>
+	<f:translate key="makeconfig_exportPagetreeConfiguration" />
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg" />
+</h3>
+<div class="row">
+	<div class="col-sm-2">
+		<label class="control-label"><f:translate key="makeconfig_pageId" /></label>
 	</div>
-	<div class="row">
-		<div class="col-sm-2">
-			<label class="control-label">
-				<f:translate key="makeconfig_tree" />
-				<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay" />
-			</label>
-		</div>
-		<div class="col-sm-10">
-			<f:if condition="{treeHTML}">
-				<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
-				<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
-			</f:if>
-		</div>
+	<div class="col-sm-10">
+		{inData.pagetree.id}
 		<f:form.hidden value="{inData.pagetree.id}" name="tx_impexp[pagetree][id]" />
 	</div>
-	<div class="form-group">
-		<label for="impexp-pagetree-levels">
-			<f:translate key="makeconfig_levels" />
+</div>
+<div class="row">
+	<div class="col-sm-2">
+		<label class="control-label">
+			<f:translate key="makeconfig_tree" />
+			<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay" />
 		</label>
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
-		<f:form.select class="form-control" name="tx_impexp[pagetree][levels]" id="impexp-pagetree-levels" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
 	</div>
-	<div class="form-group">
-		<label for="impexp-pagetree-includetables">
-			<f:translate key="makeconfig_includeTables" />
-		</label>
-		<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit"/>
-		<f:form.select class="form-control" name="tx_impexp[pagetree][tables]" id="impexp-pagetree-includetables"
-									 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
-									 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+	<div class="col-sm-10">
+		<f:if condition="{treeHTML}">
+			<f:then><f:format.raw>{treeHTML}</f:format.raw></f:then>
+			<f:else><f:translate key="makeconfig_noTreeExportedOnly" /></f:else>
+		</f:if>
 	</div>
-	<div class="form-group">
-		<label for="impexp-pagetree-maxnumber">
-			<f:translate key="makeconfig_maxNumberOfRecords" />
-		</label>
-		<f:form.textfield class="form-control" name="tx_impexp[pagetree][maxNumber]" id="impexp-pagetree-maxnumber" value="{inData.pagetree.maxNumber}" />
-	</div>
-</f:if>
+</div>
+<div class="form-group">
+	<label for="impexp-pagetree-levels">
+		<f:translate key="makeconfig_levels" />
+	</label>
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode" />
+	<f:form.select class="form-control" name="tx_impexp[pagetree][levels]" id="impexp-pagetree-levels" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
+</div>
+<div class="form-group">
+	<label for="impexp-pagetree-includetables">
+		<f:translate key="makeconfig_includeTables" />
+	</label>
+	<f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit"/>
+	<f:form.select class="form-control" name="tx_impexp[pagetree][tables]" id="impexp-pagetree-includetables"
+								 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
+								 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
+</div>
+<div class="form-group">
+	<label for="impexp-pagetree-maxnumber">
+		<f:translate key="makeconfig_maxNumberOfRecords" />
+	</label>
+	<f:form.textfield class="form-control" name="tx_impexp[pagetree][maxNumber]" id="impexp-pagetree-maxnumber" value="{inData.pagetree.maxNumber}" />
+</div>
 <f:if condition="{records -> f:count()} > 0">
 	<h4>
 		<f:translate key="makeconfig_exportSingleRecord" />

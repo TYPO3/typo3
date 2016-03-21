@@ -36,7 +36,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal'], function ($, Modal) {
 
 		$('.t3js-impexp-toggledisabled').on('click', function() {
 			var $checkboxes = $('table.t3js-impexp-preview tr[data-active="hidden"] input.t3js-exclude-checkbox');
-			$checkboxes.prop('checked', !$checkboxes.get(0).checked);
+			if ($checkboxes.length) {
+				$checkboxes.prop('checked', !$checkboxes.get(0).checked);
+			}
 		});
 	});
 });
