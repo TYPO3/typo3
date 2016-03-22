@@ -59,7 +59,7 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 20;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface

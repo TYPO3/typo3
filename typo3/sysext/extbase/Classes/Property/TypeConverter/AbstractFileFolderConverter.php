@@ -24,7 +24,7 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * @var string

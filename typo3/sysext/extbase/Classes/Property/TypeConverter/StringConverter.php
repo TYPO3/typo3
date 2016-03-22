@@ -40,7 +40,7 @@ class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * Actually convert from $source to $targetType, taking into account the fully

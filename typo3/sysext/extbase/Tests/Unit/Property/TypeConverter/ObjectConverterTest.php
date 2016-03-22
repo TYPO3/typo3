@@ -72,7 +72,7 @@ class ObjectConverterTest extends UnitTestCase
     {
         $this->assertEquals(['array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(0, $this->converter->getPriority(), 'Priority does not match');
+        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**

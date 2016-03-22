@@ -43,7 +43,7 @@ class StringConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->assertEquals(['string', 'integer'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
+        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**

@@ -50,7 +50,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
     /**
      * @var int
      */
-    protected $priority = 0;
+    protected $priority = 10;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\Container\Container

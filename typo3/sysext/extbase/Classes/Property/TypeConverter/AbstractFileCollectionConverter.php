@@ -24,7 +24,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * @var string

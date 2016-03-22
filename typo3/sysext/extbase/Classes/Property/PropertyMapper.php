@@ -319,7 +319,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_array($converters)) {
             return null;
         }
-        krsort($converters);
+        krsort($converters, SORT_NUMERIC);
         reset($converters);
         /** @var AbstractTypeConverter $converter */
         foreach ($converters as $converter) {

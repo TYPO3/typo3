@@ -40,7 +40,7 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * We can only convert empty strings to array or array to array.

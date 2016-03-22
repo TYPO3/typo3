@@ -52,7 +52,7 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * Actually convert from $source to $targetType, by doing a typecast.

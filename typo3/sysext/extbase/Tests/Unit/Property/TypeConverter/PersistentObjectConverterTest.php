@@ -98,7 +98,7 @@ class PersistentObjectConverterTest extends UnitTestCase
     {
         $this->assertEquals(['integer', 'string', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
+        $this->assertEquals(20, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**

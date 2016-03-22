@@ -44,7 +44,7 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected $priority = 10;
 
     /**
      * @param mixed $source
