@@ -321,6 +321,12 @@ TYPO3.Components.PageTree.Actions = {
 			returnUrl = encodeURIComponent(returnUrl);
 		}
 
+		var decodeReturnUrl = decodeURIComponent(returnUrl);
+		var editPageId = TYPO3.Utility.getParameterFromUrl(decodeReturnUrl, 'id');
+		if (parseInt(editPageId, 10) !== parseInt(node.attributes.nodeData.id, 10)) {
+			returnUrl = encodeURIComponent(TYPO3.Utility.updateQueryStringParameter(decodeReturnUrl, 'id', node.attributes.nodeData.id));
+		}
+
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.FormEngine.moduleUrl + '&edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
 		);
