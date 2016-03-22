@@ -65,6 +65,23 @@ define(['jquery'], function($) {
 		return value;
 	};
 
+	/**
+	 * Updates a parameter inside of given url
+	 *
+	 * @param {String} url
+	 * @param {String} key
+	 * @param {String} value
+	 */
+	Utility.updateQueryStringParameter = function(url, key, value) {
+		var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i'),
+			separator = url.indexOf('?') !== -1 ? '&' : '?';
+
+		if (url.match(re)) {
+			return url.replace(re, '$1' + key + '=' + value + '$2');
+		}
+		return url + separator + key + '=' + value;
+	};
+
 	TYPO3.Utility = Utility;
 	return Utility;
 });
