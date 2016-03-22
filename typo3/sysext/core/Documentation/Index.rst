@@ -51,6 +51,15 @@ Important
 
 	Changelog/master/Important-*
 
+Old changes
+===========
+
+.. toctree::
+	:maxdepth: 1
+	:titlesonly:
+
+   	Changelog/8.0/Index
+
 How to contribute
 =================
 
