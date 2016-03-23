@@ -293,86 +293,6 @@ return [
             ],
         ],
 
-        'flex_2' => [
-            'exclude' => 1,
-            'label' => 'flex_2 - Nested Group in Flex',
-            'config' => [
-                'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <meta>
-                                <langDisable>1</langDisable>
-                            </meta>
-                            <ROOT>
-                                <type>array</type>
-                                <el>
-                                    <settings.container>
-                                        <TCEforms>
-                                            <label>Nested Group in Flex</label>
-                                        </TCEforms>
-                                        <section>1</section>
-                                        <type>array</type>
-                                        <el>
-                                            <item>
-                                                <type>array</type>
-                                                <label>New Document</label>
-                                                <title>New Document</title>
-                                                <el>
-                                                    <document>
-                                                        <TCEforms>
-                                                            <label>Document</label>
-                                                            <config>
-                                                                <type>group</type>
-                                                                <internal_type>db</internal_type>
-                                                                <allowed>tx_styleguide_staticdata</allowed>
-                                                                <size>1</size>
-                                                                <maxitems>1</maxitems>
-                                                                <minitems>1</minitems>
-                                                            </config>
-                                                        </TCEforms>
-                                                    </document>
-                                                    <languageContainer>
-                                                        <TCEforms>
-                                                            <label>Nested Documents</label>
-                                                        </TCEforms>
-                                                        <section>1</section>
-                                                        <type>array</type>
-                                                        <el>
-                                                            <item>
-                                                                <type>array</type>
-                                                                <label>New Document</label>
-                                                                <title>New Document</title>
-                                                                <el>
-                                                                    <document>
-                                                                        <TCEforms>
-                                                                            <label>Document</label>
-                                                                            <config>
-                                                                                <type>group</type>
-                                                                                <internal_type>db</internal_type>
-                                                                                <allowed>tx_styleguide_staticdata</allowed>
-                                                                                <size>1</size>
-                                                                                <maxitems>1</maxitems>
-                                                                                <minitems>1</minitems>
-                                                                            </config>
-                                                                        </TCEforms>
-                                                                    </document>
-                                                                </el>
-                                                            </item>
-                                                        </el>
-                                                    </languageContainer>
-                                                </el>
-                                            </item>
-                                        </el>
-                                    </settings.container>
-                                </el>
-                            </ROOT>
-                        </T3DataStructure>
-                    ',
-                ],
-            ],
-        ],
-
 
     ],
 
@@ -387,7 +307,7 @@ return [
                 --div--;internal_type=folder,
                     group_folder_1,
                 --div--;in flex,
-                    flex_1, flex_2,
+                    flex_1,
             ',
         ],
     ],
