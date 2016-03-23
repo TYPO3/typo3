@@ -247,7 +247,6 @@ class GroupElement extends AbstractFormElement
             case 'db':
                 // If the element is of the internal type "db":
                 // Creating string showing allowed types:
-                $onlySingleTableAllowed = false;
                 $languageService = $this->getLanguageService();
 
                 $allowedTables = array();
@@ -256,7 +255,6 @@ class GroupElement extends AbstractFormElement
                         'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables'))
                     );
                 } elseif ($allowed) {
-                    $onlySingleTableAllowed = count($allowed) === 1;
                     foreach ($allowed as $allowedTable) {
                         $allowedTables[] = array(
                             // @todo: access to globals!
@@ -275,10 +273,6 @@ class GroupElement extends AbstractFormElement
                 foreach ($temp_itemArray as $dbRead) {
                     $recordParts = explode('|', $dbRead);
                     list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
-                    // For the case that no table was found and only a single table is defined to be allowed, use that one:
-                    if (!$this_table && $onlySingleTableAllowed) {
-                        $this_table = $allowed;
-                    }
                     $itemArray[] = array('table' => $this_table, 'id' => $this_uid);
                     if (!$disabled && $show_thumbs) {
                         $rr = BackendUtility::getRecordWSOL($this_table, $this_uid);

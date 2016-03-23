@@ -1135,6 +1135,122 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionForInlineElementsNestedInSectionContainers()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'section_1' => [
+                                                    'section' => '1',
+                                                    'type' => 'array',
+                                                    'el' => [
+                                                        'container_1' => [
+                                                            'type' => 'array',
+                                                            'el' => [
+                                                                'aFlexField' => [
+                                                                    'label' => 'aFlexFieldLabel',
+                                                                    'config' => [
+                                                                        'type' => 'inline',
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [],
+        ];
+
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1458745468);
+
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsExceptionForNestedSectionContainers()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'section_1' => [
+                                                    'section' => '1',
+                                                    'type' => 'array',
+                                                    'el' => [
+                                                        'container_1' => [
+                                                            'type' => 'array',
+                                                            'el' => [
+                                                                'section_nested' => [
+                                                                    'section' => '1',
+                                                                    'type' => 'array',
+                                                                    'el' => [
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [],
+        ];
+
+        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1458745712);
+
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
     public function addDataCallsFlexFormSegmentGroupForFieldAndAddsFlexParentDatabaseRow()
     {
         $input = [

@@ -235,6 +235,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      * @param string $fieldName Current handle field name
      * @param array $pageTsConfig Given pageTsConfig of this flex form
      * @return array Modified item array
+     * @throws \UnexpectedValueException
      */
     protected function modifyDataStructureAndDataValuesByFlexFormSegmentGroup(array $result, $fieldName, $pageTsConfig)
     {
@@ -263,8 +264,11 @@ class TcaFlexProcess implements FormDataProviderInterface
                 $pageTsConfig['TCEFORM.'][$tableName . '.'] = $pageTsConfig[$dataStructureSheetName . '.'];
             }
 
+            // List of "new" tca fields that have no value within the flexform, yet. Those will be compiled in one go later.
             $tcaNewColumns = [];
+            // List of "edit" tca fields that have a value in flexform, already. Those will be compiled in one go later.
             $tcaEditColumns = [];
+            // Contains the data values for the "edit" tca fields.
             $tcaValueArray = [
                 'uid' => $result['databaseRow']['uid'],
             ];
@@ -389,6 +393,30 @@ class TcaFlexProcess implements FormDataProviderInterface
                                 [$possibleContainerName]['el']
                                     = [];
                                 foreach ($possibleContainerConfiguration['el'] as $singleFieldName => $singleFieldConfiguration) {
+
+                                    // Nesting type=inline in container sections is not supported. Throw an exception if configured.
+                                    if (isset($singleFieldConfiguration['config']['type']) && $singleFieldConfiguration['config']['type'] === 'inline') {
+                                        throw new \UnexpectedValueException(
+                                            'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
+                                                . ' in section container "' . $possibleContainerName . '": Nesting inline elements in flex form'
+                                                . ' sections is not allowed.',
+                                            1458745468
+                                        );
+                                    }
+
+                                    // Nesting sections is not supported. Throw an exception if configured.
+                                    if (is_array($singleFieldConfiguration)
+                                        && isset($singleFieldConfiguration['type']) && $singleFieldConfiguration['type'] === 'array'
+                                        && isset($singleFieldConfiguration['section']) && (string)$singleFieldConfiguration['section'] === '1'
+                                    ) {
+                                        throw new \UnexpectedValueException(
+                                            'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
+                                                . ' in section container "' . $possibleContainerName . '": Nesting sections in container elements'
+                                                . ' sections is not allowed.',
+                                            1458745712
+                                        );
+                                    }
+
                                     $inputToFlexFormSegment = [
                                         'tableName' => $result['tableName'],
                                         'command' => 'new',
@@ -528,14 +556,6 @@ class TcaFlexProcess implements FormDataProviderInterface
     }
 
     /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Add fields and values used by ds_pointerField to the meta data array so they can be used in AJAX context during rendering.
      *
      * @todo: This method is a stopgap measure to get required information into the AJAX controller
@@ -566,4 +586,13 @@ class TcaFlexProcess implements FormDataProviderInterface
         $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['dataStructurePointers'] = $dsPointers;
         return $result;
     }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
 }
