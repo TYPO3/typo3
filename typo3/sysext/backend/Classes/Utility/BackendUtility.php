@@ -1340,7 +1340,7 @@ class BackendUtility
         }
         $label = static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
         $age = ' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $label) . ')';
-        return $date === 'date' ? self::date($tstamp) : self::datetime($tstamp) . $age;
+        return ($date === 'date' ? self::date($tstamp) : self::datetime($tstamp)) . $age;
     }
 
     /**

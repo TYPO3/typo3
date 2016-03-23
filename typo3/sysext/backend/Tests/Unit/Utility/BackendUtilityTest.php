@@ -1051,4 +1051,18 @@ class BackendUtilityTest extends UnitTestCase
         );
         $this->assertEquals($expected, BackendUtility::getSpecConfParts($defaultExtras));
     }
+
+    /**
+     * @test
+     */
+    public function dateTimeAgeReturnsCorrectValues() {
+        /** @var ObjectProphecy|LanguageService $languageServiceProphecy */
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 3, 23, 2016);
+
+        $this->assertSame('24-03-16 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
+        $this->assertSame('24-03-16 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
+    }
 }
