@@ -6468,7 +6468,7 @@ class ContentObjectRenderer
             $title = $this->stdWrap($title, $conf['title.']);
         }
 
-        $theTypeP = 0;
+        $theTypeP = '';
         // Detecting kind of link
         $linkType = $this->detectLinkTypeFromLinkParameter($linkParameter);
         switch ($linkType) {
