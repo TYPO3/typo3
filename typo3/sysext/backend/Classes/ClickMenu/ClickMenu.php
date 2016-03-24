@@ -924,7 +924,14 @@ class ClickMenu {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)'))) . ')';
+			$fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($path);
+			$confirmMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName());
+			if ($fileOrFolderObject instanceof Folder) {
+				$confirmMessage .= BackendUtility::referenceCount('_FILE', $fileOrFolderObject->getIdentifier(), ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFolder'));
+			} else {
+				$confirmMessage .= BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile'));
+			}
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue($confirmMessage) . ')';
 		} else {
 			$conf = '1==1';
 		}
