@@ -59,6 +59,11 @@ class DownloadController extends AbstractController
     protected $defaultViewObjectName = JsonView::class;
 
     /**
+     * @var JsonView
+     */
+    protected $view;
+
+    /**
      * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
      */
     public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
@@ -127,6 +132,11 @@ class DownloadController extends AbstractController
         $hasDependencies = false;
         $hasErrors = false;
         $dependencyTypes = null;
+        $configuration = [
+            'value' => [
+                'dependencies' => [],
+            ],
+        ];
         if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value']) {
             $action = 'installFromTer';
             try {
@@ -137,6 +147,14 @@ class DownloadController extends AbstractController
                     foreach ($dependencyTypes as $dependencyType => $dependencies) {
                         $extensions = '';
                         foreach ($dependencies as $extensionKey => $dependency) {
+                            if (!isset($configuration['value']['dependencies'][$dependencyType])) {
+                                $configuration['value']['dependencies'][$dependencyType] = [];
+                            }
+                            $configuration['value']['dependencies'][$dependencyType][$extensionKey] = [
+                                '_exclude' => [
+                                    'categoryIndexFromStringOrNumber',
+                                ],
+                            ];
                             $extensions .= $this->translate(
                                 'downloadExtension.dependencies.extensionWithVersion',
                                 array(
@@ -169,6 +187,7 @@ class DownloadController extends AbstractController
             ['extension' => $extension->getUid(), 'format' => 'json'],
             'Download'
         );
+        $this->view->setConfiguration($configuration);
         $this->view->assign('value', [
             'dependencies' => $dependencyTypes,
             'url' => $url,
