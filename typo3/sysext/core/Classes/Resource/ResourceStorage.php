@@ -1149,12 +1149,13 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $targetFolder The target folder where the file should be added
      * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
+     * @param bool $removeOriginal if set the original file will be removed after successful operation
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
      * @return FileInterface
      */
-    public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = DuplicationBehavior::RENAME)
+    public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = DuplicationBehavior::RENAME, $removeOriginal = true)
     {
         $localFilePath = PathUtility::getCanonicalPath($localFilePath);
         // File is not available locally NOR is it an uploaded file
@@ -1174,7 +1175,7 @@ class ResourceStorage implements ResourceStorageInterface
             $targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
         }
 
-        $fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName);
+        $fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName, $removeOriginal);
         $file = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
 
         if ($this->autoExtractMetadataEnabled()) {
