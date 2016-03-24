@@ -185,7 +185,7 @@ class ImportantActions extends Action\AbstractAction
      */
     protected function setNewEncryptionKeyAndLogOut()
     {
-        $newKey = $this->objectManager->get(Random::class)->generateRandomHexString(96);
+        $newKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $newKey);
