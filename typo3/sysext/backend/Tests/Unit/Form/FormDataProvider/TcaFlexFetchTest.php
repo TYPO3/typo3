@@ -226,7 +226,7 @@ class TcaFlexFetchTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1440506893);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1440506893);
 
         $this->subject->addData($input);
     }

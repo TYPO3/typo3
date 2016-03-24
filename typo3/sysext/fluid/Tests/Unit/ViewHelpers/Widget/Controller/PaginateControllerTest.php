@@ -62,8 +62,6 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->query->_set('querySettings', $this->querySettings);
         $this->persistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $this->backend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
-        $this->backend->expects($this->any())->method('getQomFactory')->will($this->returnValue(null));
-        $this->persistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($this->backend));
         $this->query->_set('persistenceManager', $this->persistenceManager);
         $this->dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         $this->query->_set('dataMapper', $this->dataMapper);

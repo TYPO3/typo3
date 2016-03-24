@@ -88,8 +88,10 @@ class ResourceStorageTest extends BaseTestCase
 
         $this->subject = $this->getMock(ResourceStorage::class, $mockedMethods, array($driverObject, $storageRecord));
         $this->subject->expects($this->any())->method('getIndexer')->will($this->returnValue($this->getMock(\TYPO3\CMS\Core\Resource\Index\Indexer::class, array(), array(), '', false)));
-        foreach ($permissionMethods as $method) {
-            $this->subject->expects($this->any())->method($method)->will($this->returnValue(true));
+        if ($mockPermissionChecks) {
+            foreach ($permissionMethods as $method) {
+                $this->subject->expects($this->any())->method($method)->will($this->returnValue(true));
+            }
         }
     }
 

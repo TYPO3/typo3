@@ -48,24 +48,6 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function debuggerDoesNotRewindInstanceOfArrayAccess()
-    {
-        $parameters = array();
-        for ($i = 0; $i < 5; $i++) {
-            $argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('argument_' . $i, 'integer');
-            $parameters[$i] = $argument;
-        }
-
-        /** @var $arguments \ArrayAccess */
-        $arguments = $this->getMock('ArrayAccess');
-
-        $arguments->expects($this->never())->method('rewind');
-        $this->debugger->var_dump($arguments, null, 8, true, false, true);
-    }
-
-    /**
-     * @test
-     */
     public function varDumpShowsPropertiesOfStdClassObjects()
     {
         $testObject = new \stdClass();

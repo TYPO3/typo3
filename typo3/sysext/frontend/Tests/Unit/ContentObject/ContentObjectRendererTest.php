@@ -95,7 +95,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->createMockedLoggerAndLogManager();
 
         $this->templateServiceMock = $this->getMock(TemplateService::class, array('getFileName', 'linkData'));
-        $pageRepositoryMock = $this->getMock(PageRepositoryFixture::class, array('getRawRecord'));
+        $pageRepositoryMock = $this->getMock(PageRepositoryFixture::class, array('getRawRecord', 'getMountPointInfo'));
 
         $this->typoScriptFrontendControllerMock = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', false);
         $this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;

@@ -53,7 +53,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438185331);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438185331);
 
         $this->subject->addData($input);
     }
@@ -113,7 +113,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438183881);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438183881);
 
         $this->subject->addData($input);
     }
@@ -212,7 +212,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438185437);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438185437);
 
         $this->subject->addData($input);
     }
@@ -345,7 +345,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1325862241);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1325862241);
 
         $this->subject->addData($input);
     }
@@ -376,7 +376,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438253614);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438253614);
 
         $this->subject->addData($input);
     }

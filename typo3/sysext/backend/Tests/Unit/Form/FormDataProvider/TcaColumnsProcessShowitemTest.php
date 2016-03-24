@@ -50,7 +50,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438614542);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438614542);
         $this->subject->addData($input);
     }
 

@@ -51,8 +51,8 @@
 		"typo3fluid/fluid": "^1.0.6"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.8.0",
-		"mikey179/vfsStream": "1.6.0",
+		"phpunit/phpunit": "~5.2.0",
+		"mikey179/vfsStream": "~1.6.0",
 		"codeception/codeception": "^2.1",
 		"se/selenium-server-standalone": "~2.48.2"
 	},

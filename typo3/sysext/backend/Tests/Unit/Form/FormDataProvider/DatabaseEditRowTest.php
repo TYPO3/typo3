@@ -83,7 +83,7 @@ class DatabaseEditRowTest extends UnitTestCase
         $this->dbProphecy->quoteStr($input['tableName'], $input['tableName'])->willReturn($input['tableName']);
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=' . $input['vanillaUid'])->willReturn($resultRow);
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437663061);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1437663061);
 
         $this->subject->addData($input);
     }
@@ -99,7 +99,7 @@ class DatabaseEditRowTest extends UnitTestCase
             'vanillaUid' => -10,
         ];
 
-        $this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437656456);
+        $this->setExpectedException(\InvalidArgumentException::class, '', 1437656456);
 
         $this->subject->addData($input);
     }
@@ -115,7 +115,7 @@ class DatabaseEditRowTest extends UnitTestCase
             'vanillaUid' => 10,
         ];
 
-        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1437655862);
+        $this->setExpectedException(\RuntimeException::class, '', 1437655862);
 
         $this->subject->addData($input);
     }
@@ -133,7 +133,7 @@ class DatabaseEditRowTest extends UnitTestCase
         $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
         $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn(false);
 
-        $this->setExpectedException(DatabaseRecordException::class, $this->anything(), 1437656081);
+        $this->setExpectedException(DatabaseRecordException::class, '', 1437656081);
 
         $this->subject->addData($input);
     }
@@ -151,7 +151,7 @@ class DatabaseEditRowTest extends UnitTestCase
         $this->dbProphecy->quoteStr(Argument::cetera())->willReturn($input['tableName']);
         $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->willReturn('invalid result data');
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437656323);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1437656323);
 
         $this->subject->addData($input);
     }

@@ -98,7 +98,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content'] = array('foo');
         $this->dbProphecy->exec_SELECTgetSingleRow('*', 'tt_content', 'uid=23')->shouldBeCalled()->willReturn(null);
 
-        $this->setExpectedException(DatabaseDefaultLanguageException::class, $this->anything(), 1438249426);
+        $this->setExpectedException(DatabaseDefaultLanguageException::class, '', 1438249426);
 
         $this->subject->addData($input);
     }

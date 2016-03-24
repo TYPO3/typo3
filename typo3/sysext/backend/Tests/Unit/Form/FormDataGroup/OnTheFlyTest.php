@@ -41,7 +41,7 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileThrowsExceptionWithEmptyOnTheFlyList()
     {
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108674);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1441108674);
         $this->subject->compile([]);
     }
 
@@ -98,7 +98,7 @@ class OnTheFlyTest extends UnitTestCase
         ];
         $this->subject->setProviderList($providerList);
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1441108719);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1441108719);
         $this->subject->compile([]);
     }
 }

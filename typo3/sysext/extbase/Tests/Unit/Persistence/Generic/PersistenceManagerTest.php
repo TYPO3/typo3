@@ -267,7 +267,6 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
         $mockSession->expects($this->any())->method('hasIdentifier')->will($this->returnValue(false));
         $mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
-        $mockBackend->expects($this->any())->method('getObjectDataByIdentifier')->will($this->returnValue(false));
 
         $persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
         $persistenceManager->_set('persistenceSession', $mockSession);
@@ -278,20 +277,6 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $object = $persistenceManager->getObjectByIdentifier('abcdefg');
         $this->assertNull($object);
-    }
-
-    /**
-     * @test
-     */
-    public function tearDownWithBackendNotSupportingTearDownDoesNothing()
-    {
-        $mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
-        $mockBackend->expects($this->never())->method('tearDown');
-
-        $persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
-        $persistenceManager->_set('backend', $mockBackend);
-
-        $persistenceManager->tearDown();
     }
 
     /**

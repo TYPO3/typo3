@@ -68,7 +68,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1438594829);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438594829);
         $this->subject->addData($input);
     }
 
@@ -121,7 +121,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->any(), 1438607163);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438607163);
         $this->subject->addData($input);
     }
 
@@ -146,7 +146,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->any(), 1438607164);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438607164);
         $this->subject->addData($input);
     }
 
@@ -171,7 +171,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->any(), 1438607165);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1438607165);
         $this->subject->addData($input);
     }
 

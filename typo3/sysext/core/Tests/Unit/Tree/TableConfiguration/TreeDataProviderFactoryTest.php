@@ -112,7 +112,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             ],
             'internal_type' => 'foo',
         ];
-        $this->setExpectedException(\RuntimeException::class, $this->anything(), 1438875249);
+        $this->setExpectedException(\RuntimeException::class, '', 1438875249);
         $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
     }
 }

@@ -58,7 +58,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\InvalidArgumentException::class, $this->anything(), 1437991120);
+        $this->setExpectedException(\InvalidArgumentException::class, '', 1437991120);
 
         $this->subject->addData($input);
     }

@@ -76,7 +76,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1443793404);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1443793404);
         $this->subject->addData($input);
     }
 
@@ -214,7 +214,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1443829370);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1443829370);
         $this->subject->addData($input);
     }
 
@@ -240,7 +240,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             ],
         ];
         // not $globals definition for child here -> not localizable
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1443944274);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1443944274);
         $this->subject->addData($input);
     }
 
@@ -586,7 +586,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444995464);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444995464);
         $this->subject->addData($input);
     }
 
@@ -608,7 +608,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444996537);
         $this->subject->addData($input);
     }
 
@@ -630,7 +630,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444996537);
         $this->subject->addData($input);
     }
 
@@ -655,7 +655,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'notSelectOrGroup',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444996537);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444996537);
         $this->subject->addData($input);
     }
 
@@ -681,7 +681,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'type' => 'group',
             'internal_type' => 'notDb'
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444999130);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444999130);
         $this->subject->addData($input);
     }
 
@@ -706,7 +706,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'select',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1445078627);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1445078627);
         $this->subject->addData($input);
     }
 
@@ -732,7 +732,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'type' => 'group',
             'internal_type' => 'db',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1445078628);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1445078628);
         $this->subject->addData($input);
     }
 

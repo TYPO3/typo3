@@ -256,7 +256,7 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 )
             )
         );
-        $reflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $reflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, [ 'getClassNameByObject' ]);
         $reflectionService->expects($this->any())->method('getClassNameByObject')->will($this->returnCallback(function ($object) {
             return get_class($object);
         }));

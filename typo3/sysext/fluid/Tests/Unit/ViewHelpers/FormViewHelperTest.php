@@ -225,7 +225,6 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, array('dummy'), array(), '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $this->request->expects($this->atLeastOnce())->method('getControllerExtensionName')->will($this->returnValue('extensionName'));
-        $this->request->expects($this->never())->method('getControllerSubextensionName');
         $this->request->expects($this->atLeastOnce())->method('getControllerName')->will($this->returnValue('controllerName'));
         $this->request->expects($this->atLeastOnce())->method('getControllerActionName')->will($this->returnValue('controllerActionName'));
         $hiddenFields = $viewHelper->_call('renderHiddenReferrerFields');

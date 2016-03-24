@@ -39,7 +39,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
         $mockCache = $this->getMock(PhpFrontend::class, array('has', 'set', 'getBackend'), array(), '', false);
-        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend'), array(), '', false);
+        $mockCacheBackend = $this->getMock(SimpleFileBackend::class, array('has', 'set', 'getBackend', 'getCacheDirectory'), array(), '', false);
         $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
         $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
         $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));

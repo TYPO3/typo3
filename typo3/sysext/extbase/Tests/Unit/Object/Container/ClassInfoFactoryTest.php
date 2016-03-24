@@ -64,9 +64,8 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function buildClassInfoReturnsCustomClassInfoForDateTime()
     {
-
         /** @var \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory $classInfoFactory */
-        $classInfoFactory = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class, array('dummy'));
+        $classInfoFactory = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class, array('getConstructorArguments'));
         $classInfoFactory->expects($this->never())->method('getConstructorArguments');
 
         $classInfo = $classInfoFactory->buildClassInfoFromClassName('DateTime');

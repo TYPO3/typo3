@@ -64,7 +64,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'command' => 'new',
             'databaseRow' => 'not-an-array',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444431128);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444431128);
         $this->subject->addData($input);
     }
 
@@ -519,7 +519,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'databaseRow' => [],
             'inlineChildChildUid' => 42,
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434102);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434102);
         $this->subject->addData($input);
     }
 
@@ -533,7 +533,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'databaseRow' => [],
             'inlineChildChildUid' => '42',
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434103);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434103);
         $this->subject->addData($input);
     }
 
@@ -589,7 +589,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1444434104);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1444434104);
         $this->subject->addData($input);
     }
 

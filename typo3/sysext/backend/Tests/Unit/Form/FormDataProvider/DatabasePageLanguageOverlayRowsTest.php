@@ -51,7 +51,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     {
         $this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn(null);
         $this->dbProphecy->sql_error(Argument::cetera())->willReturn(null);
-        $this->setExpectedException(\UnexpectedValueException::class,  $this->anything(), 1440777705);
+        $this->setExpectedException(\UnexpectedValueException::class,  '', 1440777705);
         $this->subject->addData(['effectivePid' => 1]);
     }
 

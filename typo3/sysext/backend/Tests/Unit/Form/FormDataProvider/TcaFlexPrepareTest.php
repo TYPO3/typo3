@@ -60,7 +60,7 @@ class TcaFlexPrepareTest extends UnitTestCase
             ],
         ];
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1440676540);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1440676540);
 
         $this->subject->addData($input);
     }

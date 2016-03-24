@@ -144,7 +144,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setArgumentShouldSetVendorIfVendorIsGiven()
     {
-        $request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setFormat'));
+        $request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setFormat', 'setVendor'));
         $request->expects($this->any())->method('setVendor')->with('VENDOR');
         $request->setArgument('@vendor', 'VENDOR');
         $this->assertFalse($request->hasArgument('@vendor'));

@@ -108,8 +108,7 @@ class StringFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getByTagRejectsInvalidTags()
     {
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, array(), array(), '', false);
-        $backend->expects($this->never())->method('getByTag');
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array(), array(), '', false);
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\StringFrontend('StringFrontend', $backend);
         $cache->getByTag('SomeInvalid\\Tag');
     }

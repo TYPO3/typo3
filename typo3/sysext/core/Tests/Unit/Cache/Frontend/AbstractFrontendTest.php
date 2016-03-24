@@ -66,7 +66,7 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function flushByTagRejectsInvalidTags()
     {
         $identifier = 'someCacheIdentifier';
-        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\BackendInterface::class, array(), array(), '', false);
+        $backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class, array(), array(), '', false);
         $backend->expects($this->never())->method('flushByTag');
         $cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
         $cache->flushByTag('SomeInvalid\\Tag');

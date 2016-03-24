@@ -93,7 +93,7 @@ class FlexFormSegmentTest extends UnitTestCase
         );
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 
-        $this->setExpectedException(\UnexpectedValueException::class, $this->anything(), 1437906441);
+        $this->setExpectedException(\UnexpectedValueException::class, '', 1437906441);
 
         $this->subject->compile([]);
     }
