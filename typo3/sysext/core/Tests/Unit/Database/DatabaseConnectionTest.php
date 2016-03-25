@@ -14,12 +14,48 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Test case
  *
  */
-class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class DatabaseConnectionTest extends UnitTestCase
 {
+    /**
+     * @var DatabaseConnection
+     */
+    protected $subject;
+    /**
+     * @var string
+     */
+    protected $testTable = 'test_database_connection';
+
+    /**
+     * @var string
+     */
+    protected $testField = 'test_field';
+
+    /**
+     * @var string
+     */
+    protected $anotherTestField = 'another_test_field';
+
+    /**
+     * Set the test up
+     *
+     * @return void
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->subject = $this->getAccessibleMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $this->subject->_set('databaseName', 'typo3_test');
+    }
+
     //////////////////////////////////////////////////
     // Write/Read tests for charsets and binaries
     //////////////////////////////////////////////////
@@ -34,8 +70,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $binaryString .= chr($i);
         }
 
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -47,21 +83,22 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mysqliMock
             ->expects($this->once())
             ->method('query')
-            ->with('INSERT INTO aTable (fieldblob) VALUES (' . $binaryString . ')');
+            ->with("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$binaryString})");
         $subject->_set('link', $mysqliMock);
 
-        $subject->exec_INSERTquery('aTable', array('fieldblob' => $binaryString));
+        $subject->exec_INSERTquery($this->testTable, [$this->testField => $binaryString]);
     }
 
     /**
      * @test
+     * @requires function gzcompress
      */
     public function storedGzipCompressedDataReturnsSameData()
     {
-        $testStringWithBinary = @gzcompress('sdfkljer4587');
+        $testStringWithBinary = gzcompress('sdfkljer4587');
 
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -73,10 +110,10 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $mysqliMock
             ->expects($this->once())
             ->method('query')
-            ->with('INSERT INTO aTable (fieldblob) VALUES (' . $testStringWithBinary . ')');
+            ->with("INSERT INTO {$this->testTable} ({$this->testField}) VALUES ({$testStringWithBinary})");
         $subject->_set('link', $mysqliMock);
 
-        $subject->exec_INSERTquery('aTable', array('fieldblob' => $testStringWithBinary));
+        $subject->exec_INSERTquery($this->testTable, [$this->testField => $testStringWithBinary]);
     }
 
     ////////////////////////////////
@@ -89,8 +126,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function listQueryWithIntegerCommaAsValue()
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject
             ->expects($this->any())
@@ -108,8 +145,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function listQueryThrowsExceptionIfValueContainsComma()
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject->_set('isConnected', true);
         $subject->listQuery('aField', 'foo,bar', 'aTable');
     }
@@ -125,77 +162,76 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function searchQueryDataProvider()
     {
-        return array(
-            'One search word in one field' => array(
+        return [
+            'One search word in one field' => [
                 '(pages.title LIKE \'%TYPO3%\')',
-                array('TYPO3'),
-                array('title'),
+                ['TYPO3'],
+                ['title'],
                 'pages',
-                'AND'
-            ),
-
-            'One search word with special chars (for like)' => array(
+                'AND',
+            ],
+            'One search word with special chars (for like)' => [
                 '(pages.title LIKE \'%TYPO3\\_100\\%%\')',
-                array('TYPO3_100%'),
-                array('title'),
+                ['TYPO3_100%'],
+                ['title'],
                 'pages',
-                'AND'
-            ),
-
-            'One search word in multiple fields' => array(
-                '(pages.title LIKE \'%TYPO3%\' OR pages.keyword LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\')',
-                array('TYPO3'),
-                array('title', 'keyword', 'description'),
+                'AND',
+            ],
+            'One search word in multiple fields' => [
+                "(pages.title LIKE '%TYPO3%' OR pages.keyword LIKE '%TYPO3%' OR pages.description LIKE '%TYPO3%')",
+                ['TYPO3'],
+                ['title', 'keyword', 'description'],
                 'pages',
-                'AND'
-            ),
-
-            'Multiple search words in one field with AND constraint' => array(
-                '(pages.title LIKE \'%TYPO3%\') AND (pages.title LIKE \'%is%\') AND (pages.title LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title'),
+                'AND',
+            ],
+            'Multiple search words in one field with AND constraint' => [
+                "(pages.title LIKE '%TYPO3%') AND (pages.title LIKE '%is%') AND (pages.title LIKE '%great%')",
+                ['TYPO3', 'is', 'great'],
+                ['title'],
                 'pages',
-                'AND'
-            ),
-
-            'Multiple search words in one field with OR constraint' => array(
-                '(pages.title LIKE \'%TYPO3%\') OR (pages.title LIKE \'%is%\') OR (pages.title LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title'),
+                'AND',
+            ],
+            'Multiple search words in one field with OR constraint' => [
+                "(pages.title LIKE '%TYPO3%') OR (pages.title LIKE '%is%') OR (pages.title LIKE '%great%')",
+                ['TYPO3', 'is', 'great'],
+                ['title'],
                 'pages',
-                'OR'
-            ),
-
-            'Multiple search words in multiple fields with AND constraint' => array(
-                '(pages.title LIKE \'%TYPO3%\' OR pages.keywords LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\') AND ' .
-                    '(pages.title LIKE \'%is%\' OR pages.keywords LIKE \'%is%\' OR pages.description LIKE \'%is%\') AND ' .
-                    '(pages.title LIKE \'%great%\' OR pages.keywords LIKE \'%great%\' OR pages.description LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title', 'keywords', 'description'),
+                'OR',
+            ],
+            'Multiple search words in multiple fields with AND constraint' => [
+                "(pages.title LIKE '%TYPO3%' OR pages.keywords LIKE '%TYPO3%' OR pages.description LIKE '%TYPO3%') " .
+                "AND (pages.title LIKE '%is%' OR pages.keywords LIKE '%is%' OR pages.description LIKE '%is%') " .
+                "AND (pages.title LIKE '%great%' OR pages.keywords LIKE '%great%' OR pages.description LIKE '%great%')",
+                ['TYPO3', 'is', 'great'],
+                ['title', 'keywords', 'description'],
                 'pages',
-                'AND'
-            ),
-
-            'Multiple search words in multiple fields with OR constraint' => array(
-                '(pages.title LIKE \'%TYPO3%\' OR pages.keywords LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\') OR ' .
-                    '(pages.title LIKE \'%is%\' OR pages.keywords LIKE \'%is%\' OR pages.description LIKE \'%is%\') OR ' .
-                    '(pages.title LIKE \'%great%\' OR pages.keywords LIKE \'%great%\' OR pages.description LIKE \'%great%\')',
-                array('TYPO3', 'is', 'great'),
-                array('title', 'keywords', 'description'),
+                'AND',
+            ],
+            'Multiple search words in multiple fields with OR constraint' => [
+                "(pages.title LIKE '%TYPO3%' OR pages.keywords LIKE '%TYPO3%' OR pages.description LIKE '%TYPO3%') " .
+                "OR (pages.title LIKE '%is%' OR pages.keywords LIKE '%is%' OR pages.description LIKE '%is%') " .
+                "OR (pages.title LIKE '%great%' OR pages.keywords LIKE '%great%' OR pages.description LIKE '%great%')",
+                ['TYPO3', 'is', 'great'],
+                ['title', 'keywords', 'description'],
                 'pages',
-                'OR'
-            ),
-        );
+                'OR',
+            ],
+        ];
     }
 
     /**
      * @test
      * @dataProvider searchQueryDataProvider
+     * @param string $expectedResult
+     * @param array $searchWords
+     * @param array $fields
+     * @param string $table
+     * @param string $constraint
      */
-    public function searchQueryCreatesQuery($expectedResult, $searchWords, $fields, $table, $constraint)
+    public function searchQueryCreatesQuery($expectedResult, array $searchWords, array $fields, $table, $constraint)
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(DatabaseConnection::class, ['quoteStr'], [], '', false);
         $subject
             ->expects($this->any())
             ->method('quoteStr')
@@ -215,8 +251,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function escapeStringForLikeComparison()
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
         $this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
     }
 
@@ -232,17 +268,44 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripOrderByForOrderByKeywordDataProvider()
     {
-        return array(
-            'single ORDER BY' => array('ORDER BY name, tstamp', 'name, tstamp'),
-            'single ORDER BY in lower case' => array('order by name, tstamp', 'name, tstamp'),
-            'ORDER BY with additional space behind' => array('ORDER BY  name, tstamp', 'name, tstamp'),
-            'ORDER BY without space between the words' => array('ORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice' => array('ORDER BY ORDER BY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces in the first occurrence' => array('ORDERBY ORDER BY  name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces in the second occurrence' => array('ORDER BYORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces' => array('ORDERBYORDERBY name, tstamp', 'name, tstamp'),
-            'ORDER BY added twice without spaces afterwards' => array('ORDERBYORDERBYname, tstamp', 'name, tstamp'),
-        );
+        return [
+            'single ORDER BY' => [
+                'ORDER BY name, tstamp',
+                'name, tstamp'
+            ],
+            'single ORDER BY in lower case' => [
+                'order by name, tstamp',
+                'name, tstamp'
+            ],
+            'ORDER BY with additional space behind' => [
+                'ORDER BY  name, tstamp',
+                'name, tstamp'
+            ],
+            'ORDER BY without space between the words' => [
+                'ORDERBY name, tstamp',
+                'name, tstamp'
+            ],
+            'ORDER BY added twice' => [
+                'ORDER BY ORDER BY name, tstamp',
+                'name, tstamp'
+            ],
+            'ORDER BY added twice without spaces in the first occurrence' => [
+                'ORDERBY ORDER BY  name, tstamp',
+                'name, tstamp',
+            ],
+            'ORDER BY added twice without spaces in the second occurrence' => [
+                'ORDER BYORDERBY name, tstamp',
+                'name, tstamp',
+            ],
+            'ORDER BY added twice without spaces' => [
+                'ORDERBYORDERBY name, tstamp',
+                'name, tstamp'
+            ],
+            'ORDER BY added twice without spaces afterwards' => [
+                'ORDERBYORDERBYname, tstamp',
+                'name, tstamp'
+            ],
+        ];
     }
 
     /**
@@ -254,8 +317,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult)
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
         $strippedQuery = $subject->stripOrderBy($orderByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -272,17 +335,44 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripGroupByForGroupByKeywordDataProvider()
     {
-        return array(
-            'single GROUP BY' => array('GROUP BY name, tstamp', 'name, tstamp'),
-            'single GROUP BY in lower case' => array('group by name, tstamp', 'name, tstamp'),
-            'GROUP BY with additional space behind' => array('GROUP BY  name, tstamp', 'name, tstamp'),
-            'GROUP BY without space between the words' => array('GROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice' => array('GROUP BY GROUP BY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces in the first occurrence' => array('GROUPBY GROUP BY  name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces in the second occurrence' => array('GROUP BYGROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces' => array('GROUPBYGROUPBY name, tstamp', 'name, tstamp'),
-            'GROUP BY added twice without spaces afterwards' => array('GROUPBYGROUPBYname, tstamp', 'name, tstamp'),
-        );
+        return [
+            'single GROUP BY' => [
+                'GROUP BY name, tstamp',
+                'name, tstamp'
+            ],
+            'single GROUP BY in lower case' => [
+                'group by name, tstamp',
+                'name, tstamp'
+            ],
+            'GROUP BY with additional space behind' => [
+                'GROUP BY  name, tstamp',
+                'name, tstamp'
+            ],
+            'GROUP BY without space between the words' => [
+                'GROUPBY name, tstamp',
+                'name, tstamp'
+            ],
+            'GROUP BY added twice' => [
+                'GROUP BY GROUP BY name, tstamp',
+                'name, tstamp'
+            ],
+            'GROUP BY added twice without spaces in the first occurrence' => [
+                'GROUPBY GROUP BY  name, tstamp',
+                'name, tstamp',
+            ],
+            'GROUP BY added twice without spaces in the second occurrence' => [
+                'GROUP BYGROUPBY name, tstamp',
+                'name, tstamp',
+            ],
+            'GROUP BY added twice without spaces' => [
+                'GROUPBYGROUPBY name, tstamp',
+                'name, tstamp'
+            ],
+            'GROUP BY added twice without spaces afterwards' => [
+                'GROUPBYGROUPBYname, tstamp',
+                'name, tstamp'
+            ],
+        ];
     }
 
     /**
@@ -294,8 +384,8 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult)
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', false);
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
+        $subject = $this->getMock(DatabaseConnection::class, ['dummy'], [], '', false);
         $strippedQuery = $subject->stripGroupBy($groupByClause);
         $this->assertEquals($expectedResult, $strippedQuery);
     }
@@ -312,54 +402,54 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cleanIntArrayDataProvider()
     {
-        return array(
-            'simple array' => array(
-                array(1, 2, 3),
-                array(1, 2, 3)
-            ),
-            'string array' => array(
-                array('2', '4', '8'),
-                array(2, 4, 8)
-            ),
-            'string array with letters #1' => array(
-                array('3', '6letters', '12'),
-                array(3, 6, 12)
-            ),
-            'string array with letters #2' => array(
-                array('3', 'letters6', '12'),
-                array(3, 0, 12)
-            ),
-            'string array with letters #3' => array(
-                array('3', '6letters4', '12'),
-                array(3, 6, 12)
-            ),
-            'associative array' => array(
-                array('apples' => 3, 'bananas' => 4, 'kiwis' => 9),
-                array('apples' => 3, 'bananas' => 4, 'kiwis' => 9)
-            ),
-            'associative string array' => array(
-                array('apples' => '1', 'bananas' => '5', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'associative string array with letters #1' => array(
-                array('apples' => '1', 'bananas' => 'no5', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 0, 'kiwis' => 7)
-            ),
-            'associative string array with letters #2' => array(
-                array('apples' => '1', 'bananas' => '5yes', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'associative string array with letters #3' => array(
-                array('apples' => '1', 'bananas' => '5yes9', 'kiwis' => '7'),
-                array('apples' => 1, 'bananas' => 5, 'kiwis' => 7)
-            ),
-            'multidimensional associative array' => array(
-                array('apples' => '1', 'bananas' => array(3, 4), 'kiwis' => '7'),
+        return [
+            'simple array' => [
+                [1, 2, 3],
+                [1, 2, 3],
+            ],
+            'string array' => [
+                ['2', '4', '8'],
+                [2, 4, 8],
+            ],
+            'string array with letters #1' => [
+                ['3', '6letters', '12'],
+                [3, 6, 12],
+            ],
+            'string array with letters #2' => [
+                ['3', 'letters6', '12'],
+                [3, 0, 12],
+            ],
+            'string array with letters #3' => [
+                ['3', '6letters4', '12'],
+                [3, 6, 12],
+            ],
+            'associative array' => [
+                ['apples' => 3, 'bananas' => 4, 'kiwis' => 9],
+                ['apples' => 3, 'bananas' => 4, 'kiwis' => 9],
+            ],
+            'associative string array' => [
+                ['apples' => '1', 'bananas' => '5', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7],
+            ],
+            'associative string array with letters #1' => [
+                ['apples' => '1', 'bananas' => 'no5', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 0, 'kiwis' => 7],
+            ],
+            'associative string array with letters #2' => [
+                ['apples' => '1', 'bananas' => '5yes', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7],
+            ],
+            'associative string array with letters #3' => [
+                ['apples' => '1', 'bananas' => '5yes9', 'kiwis' => '7'],
+                ['apples' => 1, 'bananas' => 5, 'kiwis' => 7],
+            ],
+            'multidimensional associative array' => [
+                ['apples' => '1', 'bananas' => [3, 4], 'kiwis' => '7'],
                 // intval(array(...)) is 1
                 // But by specification "cleanIntArray" should only get used on one-dimensional arrays
-                array('apples' => 1, 'bananas' => 1, 'kiwis' => 7)
-            ),
-        );
+                ['apples' => 1, 'bananas' => 1, 'kiwis' => 7],
+            ],
+        ];
     }
 
     /**
@@ -371,10 +461,20 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function cleanIntArray($exampleData, $expectedResult)
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $subject */
-        $subject = new \TYPO3\CMS\Core\Database\DatabaseConnection();
-        $sanitizedArray = $subject->cleanIntArray($exampleData);
+        $sanitizedArray = $this->subject->cleanIntArray($exampleData);
         $this->assertEquals($expectedResult, $sanitizedArray);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function cleanIntListReturnsCleanedString()
+    {
+        $str = '234,-434,4.3,0, 1';
+        $result = $this->subject->cleanIntList($str);
+        $this->assertSame('234,-434,4,0,1', $result);
     }
 
     /**
@@ -382,9 +482,19 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function sqlForSelectMmQuery()
     {
-        $subject = new \TYPO3\CMS\Core\Database\DatabaseConnection();
-        $result = $subject->SELECT_mm_query('*', 'sys_category', 'sys_category_record_mm', 'tt_content', 'AND sys_category.uid = 1', '', 'sys_category.title DESC');
-        $expected = 'SELECT * FROM sys_category,sys_category_record_mm,tt_content WHERE sys_category.uid=sys_category_record_mm.uid_local AND tt_content.uid=sys_category_record_mm.uid_foreign AND sys_category.uid = 1 ORDER BY sys_category.title DESC';
+        $result = $this->subject->SELECT_mm_query(
+            '*',
+            'sys_category',
+            'sys_category_record_mm',
+            'tt_content',
+            'AND sys_category.uid = 1',
+            '',
+            'sys_category.title DESC'
+        );
+        $expected = 'SELECT * FROM sys_category,sys_category_record_mm,tt_content ' .
+            'WHERE sys_category.uid=sys_category_record_mm.uid_local ' .
+            'AND tt_content.uid=sys_category_record_mm.uid_foreign ' .
+            'AND sys_category.uid = 1 ORDER BY sys_category.title DESC';
         $this->assertEquals($expected, $result);
     }
 
@@ -395,28 +505,28 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function noQuoteForFullQuoteArrayDataProvider()
     {
-        return array(
-            'noQuote boolean false' => array(
-                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
-                array('aField' => '\'aValue\'', 'anotherField' => '\'anotherValue\''),
-                false
-            ),
-            'noQuote boolean true' => array(
-                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
-                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
-                true
-            ),
-            'noQuote list of fields' => array(
-                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
-                array('aField' => '\'aValue\'', 'anotherField' => 'anotherValue'),
-                'anotherField'
-            ),
-            'noQuote array of fields' => array(
-                array('aField' => 'aValue', 'anotherField' => 'anotherValue'),
-                array('aField' => 'aValue', 'anotherField' => '\'anotherValue\''),
-                array('aField')
-            ),
-        );
+        return [
+            'noQuote boolean false' => [
+                ['aField' => 'aValue', 'anotherField' => 'anotherValue'],
+                ['aField' => "'aValue'", 'anotherField' => "'anotherValue'"],
+                false,
+            ],
+            'noQuote boolean true' => [
+                ['aField' => 'aValue', 'anotherField' => 'anotherValue'],
+                ['aField' => 'aValue', 'anotherField' => 'anotherValue'],
+                true,
+            ],
+            'noQuote list of fields' => [
+                ['aField' => 'aValue', 'anotherField' => 'anotherValue'],
+                ['aField' => "'aValue'", 'anotherField' => 'anotherValue'],
+                'anotherField',
+            ],
+            'noQuote array of fields' => [
+                ['aField' => 'aValue', 'anotherField' => 'anotherValue'],
+                ['aField' => 'aValue', 'anotherField' => "'anotherValue'"],
+                ['aField'],
+            ],
+        ];
     }
 
     /**
@@ -428,11 +538,11 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function noQuoteForFullQuoteArray(array $input, array $expected, $noQuote)
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getMock(
-            \TYPO3\CMS\Core\Database\DatabaseConnection::class,
-            array('fullQuoteStr'),
-            array(),
+            DatabaseConnection::class,
+            ['fullQuoteStr'],
+            [],
             '',
             false
         );
@@ -443,5 +553,231 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 return '\'' . (string)$data . '\'';
             }));
         $this->assertSame($expected, $subject->fullQuoteArray($input, 'aTable', $noQuote));
+    }
+
+    /**
+     * @test
+     */
+    public function sqlSelectDbReturnsTrue()
+    {
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject->_set('isConnected', true);
+        $subject->_set('databaseName', $this->testTable);
+
+        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock
+            ->expects($this->once())
+            ->method('select_db')
+            ->with($this->equalTo($this->testTable))->will($this->returnValue(true));
+        $subject->_set('link', $mysqliMock);
+
+        $this->assertTrue($subject->sql_select_db());
+    }
+
+    /**
+     * @test
+     */
+    public function sqlSelectDbReturnsFalse()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = GeneralUtility::SYSLOG_SEVERITY_WARNING;
+
+        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(DatabaseConnection::class, ['dummy'], [], '', false);
+        $subject->_set('isConnected', true);
+        $subject->_set('databaseName', $this->testTable);
+
+        $mysqliMock = $this->getMock('mysqli');
+        $mysqliMock
+            ->expects($this->once())
+            ->method('select_db')
+            ->with($this->equalTo($this->testTable))->will($this->returnValue(false));
+        $subject->_set('link', $mysqliMock);
+
+        $this->assertFalse($subject->sql_select_db());
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function insertQueryCreateValidQuery()
+    {
+        $this->subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
+        $this->subject->expects($this->any())
+            ->method('fullQuoteStr')
+            ->will($this->returnCallback(function ($data) {
+                return '\'' . (string)$data . '\'';
+            }));
+
+        $fieldValues = [$this->testField => 'Foo'];
+        $queryExpected = "INSERT INTO {$this->testTable} ({$this->testField}) VALUES ('Foo')";
+        $queryGenerated = $this->subject->INSERTquery($this->testTable, $fieldValues);
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function insertQueryCreateValidQueryFromMultipleValues()
+    {
+        $this->subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
+        $this->subject->expects($this->any())
+            ->method('fullQuoteStr')
+            ->will($this->returnCallback(function ($data) {
+                return '\'' . (string)$data . '\'';
+            }));
+        $fieldValues = [
+            $this->testField => 'Foo',
+            $this->anotherTestField => 'Bar',
+        ];
+        $queryExpected = "INSERT INTO {$this->testTable} ({$this->testField},{$this->anotherTestField}) " .
+            "VALUES ('Foo','Bar')";
+        $queryGenerated = $this->subject->INSERTquery($this->testTable, $fieldValues);
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function insertMultipleRowsCreateValidQuery()
+    {
+        $this->subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
+        $this->subject->expects($this->any())
+            ->method('fullQuoteStr')
+            ->will($this->returnCallback(function ($data) {
+                return '\'' . (string)$data . '\'';
+            }));
+        $fields = [$this->testField, $this->anotherTestField];
+        $values = [
+            ['Foo', 100],
+            ['Bar', 200],
+            ['Baz', 300],
+        ];
+        $queryExpected = "INSERT INTO {$this->testTable} ({$this->testField}, {$this->anotherTestField}) " .
+            "VALUES ('Foo', '100'), ('Bar', '200'), ('Baz', '300')";
+        $queryGenerated = $this->subject->INSERTmultipleRows($this->testTable, $fields, $values);
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function updateQueryCreateValidQuery()
+    {
+        $this->subject = $this->getAccessibleMock(DatabaseConnection::class, ['fullQuoteStr'], [], '', false);
+        $this->subject->expects($this->any())
+            ->method('fullQuoteStr')
+            ->will($this->returnCallback(function ($data) {
+                return '\'' . (string)$data . '\'';
+            }));
+
+        $fieldsValues = [$this->testField => 'aTestValue'];
+        $queryExpected = "UPDATE {$this->testTable} SET {$this->testField}='aTestValue' WHERE id=1";
+        $queryGenerated = $this->subject->UPDATEquery($this->testTable, 'id=1', $fieldsValues);
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function deleteQueryCreateValidQuery()
+    {
+        $queryExpected = "DELETE FROM {$this->testTable} WHERE id=1";
+        $queryGenerated = $this->subject->DELETEquery($this->testTable, 'id=1');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectQueryCreateValidQuery()
+    {
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable} WHERE id=1";
+        $queryGenerated = $this->subject->SELECTquery($this->testField, $this->testTable, 'id=1');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectQueryCreateValidQueryWithEmptyWhereClause()
+    {
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable}";
+        $queryGenerated = $this->subject->SELECTquery($this->testField, $this->testTable, '');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectQueryCreateValidQueryWithGroupByClause()
+    {
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable} WHERE id=1 GROUP BY id";
+        $queryGenerated = $this->subject->SELECTquery($this->testField, $this->testTable, 'id=1', 'id');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectQueryCreateValidQueryWithOrderByClause()
+    {
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable} WHERE id=1 ORDER BY id";
+        $queryGenerated = $this->subject->SELECTquery($this->testField, $this->testTable, 'id=1', '', 'id');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectQueryCreateValidQueryWithLimitClause()
+    {
+        $queryGenerated = $this->subject->SELECTquery($this->testField, $this->testTable, 'id=1', '', '', '1,2');
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable} WHERE id=1 LIMIT 1,2";
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function selectSubQueryCreateValidQuery()
+    {
+        $queryExpected = "SELECT {$this->testField} FROM {$this->testTable} WHERE id=1";
+        $queryGenerated = $this->subject->SELECTsubquery($this->testField, $this->testTable, 'id=1');
+        $this->assertSame($queryExpected, $queryGenerated);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function truncateQueryCreateValidQuery()
+    {
+        $queryExpected = "TRUNCATE TABLE {$this->testTable}";
+        $queryGenerated = $this->subject->TRUNCATEquery($this->testTable);
+        $this->assertSame($queryExpected, $queryGenerated);
     }
 }
