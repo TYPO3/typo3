@@ -711,6 +711,10 @@ class SetupModuleController extends AbstractModule
      */
     public function renderStartModuleSelect($params, $pObj)
     {
+        // Load available backend modules
+        $this->loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->loadModules->observeWorkspaces = true;
+        $this->loadModules->load($GLOBALS['TBE_MODULES']);
         $startModuleSelect = '<option value="">' . $this->getLanguageService()->getLL('startModule.firstInMenu', true) . '</option>';
         foreach ($pObj->loadModules->modules as $mainMod => $modData) {
             if (!empty($modData['sub']) && is_array($modData['sub'])) {
@@ -719,9 +723,9 @@ class SetupModuleController extends AbstractModule
                     $modName = $subData['name'];
                     $modules .= '<option value="' . htmlspecialchars($modName) . '"';
                     $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
-                    $modules .= '>' . $this->getLanguageService()->moduleLabels['tabs'][$modName . '_tab'] . '</option>';
+                    $modules .= '>' . $this->getLanguageService()->sL($this->loadModules->getLabelsForModule($modName)['title'], true) . '</option>';
                 }
-                $groupLabel = $this->getLanguageService()->moduleLabels['tabs'][$mainMod . '_tab'];
+                $groupLabel = $this->getLanguageService()->sL($this->loadModules->getLabelsForModule($mainMod)['title'], true);
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }
