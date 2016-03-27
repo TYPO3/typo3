@@ -182,10 +182,10 @@ class SystemEnvironmentBuilder
     protected static function checkMainPathsExist()
     {
         if (!is_file(PATH_thisScript)) {
-            static::dieWithMessage('Unable to determine path to entry script.');
+            static::exitWithMessage('Unable to determine path to entry script.');
         }
         if (!is_dir(PATH_typo3 . 'sysext')) {
-            static::dieWithMessage('Calculated absolute path to typo3/sysext directory does not exist.' . LF . LF
+            static::exitWithMessage('Calculated absolute path to typo3/sysext directory does not exist.' . LF . LF
                 . 'Something in the main file, folder and link structure is wrong and must be fixed! A typical document root contains a couple of symbolic links:' . LF
                 . '* A symlink "typo3_src" pointing to the TYPO3 CMS core.' . LF
                 . '* A symlink "typo3" - the backend entry point - pointing to "typo3_src/typo3"' . LF
@@ -396,14 +396,23 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Echo out a text message and die
+     * Send http headers, echo out a text message and exit with error code
      *
      * @param string $message
      */
-    protected static function dieWithMessage($message)
+    protected static function exitWithMessage($message)
     {
-        header('Content-type: text/plain');
-        die($message);
+        $headers = [
+            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500,
+            'Content-type: text/plain'
+        ];
+        if (!headers_sent()) {
+            foreach ($headers as $header) {
+                header($header);
+            }
+        }
+        echo $message . LF;
+        exit(1);
     }
 
     /**

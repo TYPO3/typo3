@@ -57,7 +57,7 @@ class FunctionalTestsBootstrap
     protected function loadClassFiles()
     {
         if (!class_exists('PHPUnit_Framework_TestCase')) {
-            die('PHPUnit wasn\'t found. Please check your settings and command.');
+            $this->exitWithMessage('PHPUnit wasn\'t found. Please check your settings and command.');
         }
         if (!class_exists(BaseTestCase::class)) {
             // PHPUnit is invoked globally, so we need to include the project autoload file
@@ -82,7 +82,7 @@ class FunctionalTestsBootstrap
         }
 
         if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
-            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
         }
 
         return $this;
@@ -135,6 +135,17 @@ class FunctionalTestsBootstrap
             $webRoot = getcwd();
         }
         return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
+    }
+
+    /**
+     * Echo out a text message and exit with error code
+     *
+     * @param string $message
+     */
+    protected function exitWithMessage($message)
+    {
+        echo $message . LF;
+        exit(1);
     }
 }
 

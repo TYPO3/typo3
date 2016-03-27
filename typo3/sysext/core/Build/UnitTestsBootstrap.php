@@ -100,7 +100,7 @@ class UnitTestsBootstrap
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
         if (!file_exists(PATH_thisScript)) {
-            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
         }
 
         return $this;
@@ -185,7 +185,7 @@ class UnitTestsBootstrap
     {
         $classLoaderFilepath = __DIR__ . '/../../../../vendor/autoload.php';
         if (!file_exists($classLoaderFilepath)) {
-            die('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
         }
         $classLoader = require $classLoaderFilepath;
 
@@ -226,6 +226,17 @@ class UnitTestsBootstrap
             ->ensureClassLoadingInformationExists();
 
         return $this;
+    }
+
+    /**
+     * Echo out a text message and exit with error code
+     *
+     * @param string $message
+     */
+    protected function exitWithMessage($message)
+    {
+        echo $message . LF;
+        exit(1);
     }
 }
 
