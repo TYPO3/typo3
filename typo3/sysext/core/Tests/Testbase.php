@@ -86,7 +86,7 @@ class Testbase
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
         if (!file_exists(PATH_thisScript)) {
-            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
         }
     }
 
@@ -104,7 +104,7 @@ class Testbase
         }
 
         if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
-            die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
         }
     }
 
@@ -687,6 +687,26 @@ class Testbase
             $webRoot = getcwd();
         }
         return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
+    }
+
+    /**
+     * Send http headers, echo out a text message and exit with error code
+     *
+     * @param string $message
+     */
+    protected function exitWithMessage($message)
+    {
+        $headers = [
+            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500,
+            'Content-type: text/plain'
+        ];
+        if (!headers_sent()) {
+            foreach ($headers as $header) {
+                header($header);
+            }
+        }
+        echo $message . LF;
+        exit(1);
     }
 
     /**
