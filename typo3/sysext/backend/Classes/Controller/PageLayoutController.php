@@ -375,6 +375,9 @@ class PageLayoutController
                 0 => $lang->getLL('m_default')
             )
         );
+        // initialize page/be_user TSconfig settings
+        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
+        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
         // example settings:
         //  $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables']['tx_myext'] =
         //      array ('default' => array(
@@ -433,8 +436,6 @@ class PageLayoutController
             unset($availableActionArray['2']);
         }
         // page/be_user TSconfig settings and blinding of menu-items
-        $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-        $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
         if ($this->modTSconfig['properties']['QEisDefault']) {
             ksort($availableActionArray);
         }

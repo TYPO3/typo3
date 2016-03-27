@@ -614,7 +614,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 $row,
                                 $this->tt_contentConfig['showInfo'] ? 15 : 5,
                                 $disableMoveAndNewButtons,
-                                !$this->tt_contentConfig['languageMode'],
+                                true,
                                 $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
                             );
                             $innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
