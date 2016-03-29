@@ -64,13 +64,13 @@ class SystemEnvironmentBuilder
      * This entry method is used in all scopes (FE, BE, eid, ajax, ...)
      *
      * @internal This method should not be used by 3rd party code. It will change without further notice.
-     * @param string $relativePathPart Relative path of the entry script back to document root
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return void
      */
-    public static function run($relativePathPart = '')
+    public static function run($entryPointLevel = 0)
     {
         self::defineBaseConstants();
-        self::definePaths($relativePathPart);
+        self::definePaths($entryPointLevel);
         self::checkMainPathsExist();
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
@@ -146,10 +146,10 @@ class SystemEnvironmentBuilder
     /**
      * Calculate all required base paths and set as constants.
      *
-     * @param string $relativePathPart Relative path of the entry script back to document root
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return void
      */
-    protected static function definePaths($relativePathPart = '')
+    protected static function definePaths($entryPointLevel = 0)
     {
         // Relative path from document root to typo3/ directory
         // Hardcoded to "typo3/"
@@ -164,7 +164,7 @@ class SystemEnvironmentBuilder
         // Absolute path of the document root of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/"
         if (!defined('PATH_site')) {
-            define('PATH_site', self::getPathSite($relativePathPart));
+            define('PATH_site', self::getPathSite($entryPointLevel));
         }
         // Absolute path of the typo3 directory of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3/"
@@ -356,43 +356,43 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Calculate the document root part to the instance from PATH_thisScript
+     * Calculate the document root part to the instance from PATH_thisScript.
+     * This is based on the amount of subdirectories "under" PATH_site where PATH_thisScript is located.
      *
-     * We have two main scenarios for entry points:
-     * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php sets $relativePathPart to
-     * empty string to hint this code that the document root is identical to the directory the script is located at.
-     * - An indirect include of any Backend related script (-> typo3/index.php or the install tool).
-     * - A Backend script: This is the case for the index.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
-     * or 'typo3/index.php' that are located inside typo3/ directly. In this case the Bootstrap->run() command sets
-     * 'typo3/' as $relativePathPart as base to calculate the document root.
+     * The following main scenarios for entry points exist by default in the TYPO3 core:
+     * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php is located in the same directory
+     * as the main project. The document root is identical to the directory the script is located at.
+     * - The install tool, located under typo3/sysext/install/Start/Install.php.
+     * - A Backend script: This is the case for the typo3/index.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
+     * or 'typo3/index.php' that are located inside typo3/ directly.
      *
-     * @param string $relativePathPart Relative directory part from document root to script path
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return string Absolute path to document root of installation
      */
-    protected static function getPathSite($relativePathPart)
+    protected static function getPathSite($entryPointLevel)
     {
-        $entryScriptDirectory = self::getUnifiedDirectoryNameWithTrailingSlash(PATH_thisScript);
-        if ($relativePathPart !== '') {
-            $pathSite = substr($entryScriptDirectory, 0, -strlen($relativePathPart));
+        $entryScriptDirectory = self::getUnifiedDirectoryName(PATH_thisScript);
+        if ($entryPointLevel > 0) {
+            list($pathSite) = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel+1);
         } else {
             $pathSite = $entryScriptDirectory;
         }
-        return $pathSite;
+        return $pathSite . '/';
     }
 
     /**
      * Remove file name from script path and unify for Windows and Unix
      *
      * @param string $absolutePath Absolute path to script
-     * @return string Directory name of script file location, unified for Windows and Unix
+     * @return string Directory name of script file location, unified for Windows and Unix without the trailing slash
      */
-    protected static function getUnifiedDirectoryNameWithTrailingSlash($absolutePath)
+    protected static function getUnifiedDirectoryName($absolutePath)
     {
         $directory = dirname($absolutePath);
         if (TYPO3_OS === 'WIN') {
             $directory = str_replace('\\', '/', $directory);
         }
-        return $directory . '/';
+        return $directory;
     }
 
     /**

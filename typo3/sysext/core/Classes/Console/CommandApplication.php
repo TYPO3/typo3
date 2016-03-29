@@ -30,9 +30,10 @@ class CommandApplication implements ApplicationInterface
     protected $bootstrap;
 
     /**
-     * @var string
+     * Number of subdirectories where the entry script is located, relative to PATH_site
+     * @var int
      */
-    protected $entryPointPath = 'typo3/sysext/core/bin/';
+    protected $entryPointLevel = 4;
 
     /**
      * All available request handlers that can deal with a CLI Request
@@ -55,7 +56,7 @@ class CommandApplication implements ApplicationInterface
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup($this->entryPointPath);
+            ->baseSetup($this->entryPointLevel);
 
         foreach ($this->availableRequestHandlers as $requestHandler) {
             $this->bootstrap->registerRequestHandlerImplementation($requestHandler);

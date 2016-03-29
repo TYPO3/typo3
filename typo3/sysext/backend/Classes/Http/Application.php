@@ -27,9 +27,11 @@ class Application implements ApplicationInterface
     protected $bootstrap;
 
     /**
-     * @var string
+     * Number of subdirectories where the entry script is located, relative to PATH_site
+     * Usually this is equal to PATH_site = 0
+     * @var int
      */
-    protected $entryPointPath = 'typo3/';
+    protected $entryPointLevel = 1;
 
     /**
      * @var \Psr\Http\Message\ServerRequestInterface
@@ -58,11 +60,11 @@ class Application implements ApplicationInterface
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | (!empty($_GET['ajaxID']) ? TYPO3_REQUESTTYPE_AJAX : 0))
-            ->baseSetup($this->entryPointPath);
+            ->baseSetup($this->entryPointLevel);
 
         // Redirect to install tool if base configuration is not found
         if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
-            $this->bootstrap->redirectToInstallTool($this->entryPointPath);
+            $this->bootstrap->redirectToInstallTool($this->entryPointLevel);
         }
 
         foreach ($this->availableRequestHandlers as $requestHandler) {

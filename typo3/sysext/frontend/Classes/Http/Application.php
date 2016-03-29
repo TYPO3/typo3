@@ -28,10 +28,11 @@ class Application implements ApplicationInterface
     protected $bootstrap;
 
     /**
-     * Usually this is equal to PATH_site = kept empty
-     * @var string
+     * Number of subdirectories where the entry script is located, relative to PATH_site
+     * Usually this is equal to PATH_site = 0
+     * @var int
      */
-    protected $entryPointPath = '';
+    protected $entryPointLevel = 0;
 
     /**
      * All available request handlers that can deal with a Frontend Request
@@ -54,11 +55,11 @@ class Application implements ApplicationInterface
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_FE)
-            ->baseSetup($this->entryPointPath);
+            ->baseSetup($this->entryPointLevel);
 
         // Redirect to install tool if base configuration is not found
         if (!$this->bootstrap->checkIfEssentialConfigurationExists()) {
-            $this->bootstrap->redirectToInstallTool($this->entryPointPath);
+            $this->bootstrap->redirectToInstallTool($this->entryPointLevel);
         }
 
         foreach ($this->availableRequestHandlers as $requestHandler) {

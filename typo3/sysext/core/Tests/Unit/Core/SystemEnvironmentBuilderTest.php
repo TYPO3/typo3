@@ -113,14 +113,14 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function getUnifiedDirectoryNameWithTrailingSlashReturnsCorrectPathOnUnix()
+    public function getUnifiedDirectoryNameReturnsCorrectPathOnUnix()
     {
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('Test not available on Windows OS.');
         }
         $input = '/foo/bar/test.php';
-        $expected = '/foo/bar/';
-        $actual = $this->subject->_call('getUnifiedDirectoryNameWithTrailingSlash', $input);
+        $expected = '/foo/bar';
+        $actual = $this->subject->_call('getUnifiedDirectoryName', $input);
         $this->assertEquals($expected, $actual);
     }
 

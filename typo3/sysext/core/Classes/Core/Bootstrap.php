@@ -184,17 +184,17 @@ class Bootstrap
      *
      * Script execution will be aborted if something fails here.
      *
-     * @param string $relativePathPart Relative path of entry script back to document root
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return Bootstrap
      * @throws \RuntimeException when TYPO3_REQUESTTYPE was not set before, setRequestType() needs to be called before
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function baseSetup($relativePathPart = '')
+    public function baseSetup($entryPointLevel = 0)
     {
         if (!defined('TYPO3_REQUESTTYPE')) {
             throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
         }
-        SystemEnvironmentBuilder::run($relativePathPart);
+        SystemEnvironmentBuilder::run($entryPointLevel);
         if (!self::$usesComposerClassLoading && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
         }
@@ -235,12 +235,16 @@ class Bootstrap
     /**
      * Redirect to install tool if LocalConfiguration.php is missing.
      *
+     * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @internal This is not a public API method, do not use in own extensions
      */
-    public function redirectToInstallTool($relativePathPart = '')
+    public function redirectToInstallTool($entryPointLevel = 0)
     {
-        $backPathToSiteRoot = str_repeat('../', count(explode('/', $relativePathPart)) - 1);
-        header('Location: ' . $backPathToSiteRoot . 'typo3/sysext/install/Start/Install.php');
+        $path = TYPO3_mainDir . 'sysext/install/Start/Install.php';
+        if ($entryPointLevel > 0) {
+            $path = str_repeat('../', $entryPointLevel) . $path;
+        }
+        header('Location: ' . $path);
         die;
     }
 

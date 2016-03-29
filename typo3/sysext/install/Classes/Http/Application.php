@@ -27,9 +27,10 @@ class Application implements ApplicationInterface
     protected $bootstrap;
 
     /**
-     * @var string
+     * Number of subdirectories where the entry script is located, relative to PATH_site
+     * @var int
      */
-    protected $entryPointPath = 'typo3/sysext/install/Start/';
+    protected $entryPointLevel = 4;
 
     /**
      * All available request handlers that can handle an install tool request
@@ -51,7 +52,7 @@ class Application implements ApplicationInterface
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_INSTALL)
-            ->baseSetup($this->entryPointPath);
+            ->baseSetup($this->entryPointLevel);
 
         foreach ($this->availableRequestHandlers as $requestHandler) {
             $this->bootstrap->registerRequestHandlerImplementation($requestHandler);

@@ -538,7 +538,7 @@ class Testbase
         Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup('')
+            ->baseSetup()
             ->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
