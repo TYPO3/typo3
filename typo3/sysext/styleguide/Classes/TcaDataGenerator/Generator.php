@@ -52,8 +52,6 @@ class Generator
      */
     public function create()
     {
-        $database = $this->getDatabase();
-
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
         $data = [
