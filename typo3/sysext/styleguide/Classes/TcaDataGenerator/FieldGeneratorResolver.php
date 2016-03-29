@@ -92,6 +92,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeSelectRenderTypeSelectTree::class,
         FieldGenerator\TypeSelect::class,
 
+        FieldGenerator\TypeInlineFal::class,
         // General type=inline for simple 1:n parent child relations
         FieldGenerator\TypeInline1n::class,
 
