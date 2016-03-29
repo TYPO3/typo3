@@ -98,7 +98,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	public function __construct(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
 		if (count($childNodes) > 3) {
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('A boolean expression has more than tree parts.', 1244201848);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('A boolean expression has more than three parts.', 1244201848);
 		} elseif (count($childNodes) === 0) {
 			// In this case, we do not have child nodes; i.e. the current SyntaxTreeNode
 			// is a text node with a literal comparison like "1 == 1"
