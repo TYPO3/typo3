@@ -64,7 +64,7 @@ CREATE TABLE be_users (
 	disable tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
-	lang char(2) DEFAULT '' NOT NULL,
+	lang varchar(6) DEFAULT '' NOT NULL,
 	email varchar(80) DEFAULT '' NOT NULL,
 	db_mountpoints text,
 	options tinyint(4) unsigned DEFAULT '0' NOT NULL,
