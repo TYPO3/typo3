@@ -148,7 +148,7 @@ define(['jquery', 'moment'], function ($, moment) {
 						theString = date.format('DD-MM-YYYY');
 					}
 				} else {
-					parsedInt = parseInt(value);
+					parsedInt = value * 1;
 					if (!parsedInt) {
 						return '';
 					}
@@ -250,6 +250,10 @@ define(['jquery', 'moment'], function ($, moment) {
 		}
 
 		$.each(rules, function(k, rule) {
+			if (markParent) {
+				// abort any further validation as validating the field already failed
+				return false;
+			}
 			switch (rule.type) {
 				case 'required':
 					if (value === '') {
@@ -413,12 +417,10 @@ define(['jquery', 'moment'], function ($, moment) {
 			case 'is_in':
 				if (config.is_in) {
 					theValue = '' + value;
-					for (a = 0; a < theValue.length; a++) {
-						var theChar = theValue.substr(a, 1);
-						if (config.is_in.indexOf(theChar) != -1) {
-							newString += theChar;
-						}
-					}
+					// Escape special characters, see https://stackoverflow.com/a/6969486/4828813
+					config.is_in = config.is_in.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+					var re = new RegExp('[^' + config.is_in + ']+', 'g');
+					newString = theValue.replace(re, '');
 				} else {
 					newString = theValue;
 				}
@@ -604,6 +606,7 @@ define(['jquery', 'moment'], function ($, moment) {
 	};
 
 	/**
+	 * Trims leading whitespace characters
 	 *
 	 * @param {String} value
 	 * @returns {String}
@@ -617,6 +620,7 @@ define(['jquery', 'moment'], function ($, moment) {
 	};
 
 	/**
+	 * Trims trailing whitespace characters
 	 *
 	 * @param {String} value
 	 * @returns {String}
