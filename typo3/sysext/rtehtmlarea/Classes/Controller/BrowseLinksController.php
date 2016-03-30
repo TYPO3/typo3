@@ -223,13 +223,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
         }
 
-        if (empty($this->currentLinkParts['data-htmlarea-external'])) {
+        if (empty($this->currentLinkParts['data-htmlarea-external']) && strpos($this->currentLinkParts['url'], 'mailto:') === false) {
             // strip siteUrl prefix except for external and mail links
-            if (strpos($this->currentLinkParts['url'], 'mailto:') === false) {
-                $paramsPosition = strpos($this->currentLinkParts['url'], '?');
-                if ($paramsPosition !== false) {
-                    $this->currentLinkParts['url'] = substr($this->currentLinkParts['url'], $paramsPosition + 1);
-                }
+            $paramsPosition = strpos($this->currentLinkParts['url'], '?');
+            if ($paramsPosition !== false) {
+                $this->currentLinkParts['url'] = substr($this->currentLinkParts['url'], $paramsPosition + 1);
             }
             // special treatment for page links, remove the id= part
             $idPosition = strpos($this->currentLinkParts['url'], 'id=');
