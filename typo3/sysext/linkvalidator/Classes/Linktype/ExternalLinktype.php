@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\HttpRequest;
+use GuzzleHttp\Exception\TooManyRedirectsException;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -63,50 +64,36 @@ class ExternalLinktype extends AbstractLinktype
             }
             return $this->urlReports[$url];
         }
-        $config = array(
-            'follow_redirects' => true,
-            'strict_redirects' => true
+
+        $options = array(
+            'cookies' => true,
+            'allow_redirects' => ['strict' => true]
         );
-        /** @var $request HttpRequest */
-        $request = GeneralUtility::makeInstance(HttpRequest::class, $url, 'HEAD', $config);
-        // Observe cookies
-        $request->setCookieJar(true);
+
+        /** @var RequestFactory $requestFactory */
+        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         try {
-            /** @var $response \HTTP_Request2_Response */
-            $response = $request->send();
-            $status = isset($response) ? $response->getStatus() : 0;
+            $response = $requestFactory->request($url, 'HEAD', $options);
             // HEAD was not allowed or threw an error, now trying GET
-            if ($status >= 400) {
-                $request->setMethod('GET');
-                $request->setHeader('Range', 'bytes = 0 - 4048');
-                /** @var $response \HTTP_Request2_Response */
-                $response = $request->send();
+            if ($response->getStatusCode() >= 400) {
+                $options['headers']['Range'] = 'bytes = 0 - 4048';
+                $response = $requestFactory->request($url, 'GET', $options);
             }
+            if ($response->getStatusCode() >= 300) {
+                $isValidUrl = false;
+                $errorParams['errorType'] = $response->getStatusCode();
+                $errorParams['message'] = $response->getReasonPhrase();
+            }
+        } catch (TooManyRedirectsException $e) {
+            $lastRequest = $e->getRequest();
+            $response = $e->getResponse();
+            $errorParams['errorType'] = 'loop';
+            $errorParams['location'] = (string)$lastRequest->getUri();
+            $errorParams['errorCode'] = $response->getStatusCode();
         } catch (\Exception $e) {
             $isValidUrl = false;
-            // A redirect loop occurred
-            if ($e->getCode() === 40) {
-                $traceUrl = $request->getUrl()->getURL();
-                /** @var \HTTP_Request2_Response $event['data'] */
-                $event = $request->getLastEvent();
-                if ($event['data'] instanceof \HTTP_Request2_Response) {
-                    $traceCode = $event['data']->getStatus();
-                } else {
-                    $traceCode = 'loop';
-                }
-                $errorParams['errorType'] = 'loop';
-                $errorParams['location'] = $traceUrl;
-                $errorParams['errorCode'] = $traceCode;
-            } else {
-                $errorParams['errorType'] = 'exception';
-            }
+            $errorParams['errorType'] = 'exception';
             $errorParams['message'] = $e->getMessage();
-        }
-        $status = isset($response) ? $response->getStatus() : 0;
-        if ($status >= 300) {
-            $isValidUrl = false;
-            $errorParams['errorType'] = $status;
-            $errorParams['message'] = $response->getReasonPhrase();
         }
         if (!$isValidUrl) {
             $this->setErrorParams($errorParams);

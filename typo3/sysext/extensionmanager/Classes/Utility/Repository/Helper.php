@@ -148,7 +148,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078780);
         }
         if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {
-            $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource, 0, array(TYPO3_user_agent));
+            $fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource);
             if ($fileContent !== false) {
                 if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($localResource, $fileContent) !== null) {
                     throw new ExtensionManagerException(sprintf('Could not write to file %s.', $localResource), 1342635378);
@@ -268,7 +268,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
         if (!is_file($this->getLocalExtListFile())) {
             $updateNecessity |= self::PROBLEM_EXTENSION_FILE_NOT_EXISTING;
         } else {
-            $remotemd5 = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->getRemoteExtHashFile(), 0, array(TYPO3_user_agent));
+            $remotemd5 = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->getRemoteExtHashFile());
             if ($remotemd5 !== false) {
                 $localmd5 = md5_file($this->getLocalExtListFile());
                 if ($remotemd5 !== $localmd5) {

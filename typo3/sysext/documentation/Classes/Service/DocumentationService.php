@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -181,11 +182,11 @@ class DocumentationService
         }
 
         if (!$hasArchive) {
-            /** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-            $http = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\HttpRequest::class, $packageUrl);
-            $response = $http->send();
-            if ($response->getStatus() == 200) {
-                GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $response->getBody());
+            /** @var RequestFactory $requestFactory */
+            $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+            $response = $requestFactory->request($packageUrl, 'GET');
+            if ($response->getStatusCode() === 200) {
+                GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $response->getBody()->getContents());
             }
         }
 

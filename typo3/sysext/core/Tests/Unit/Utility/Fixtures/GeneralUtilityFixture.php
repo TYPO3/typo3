@@ -59,29 +59,6 @@ class GeneralUtilityFixture extends GeneralUtility
     }
 
     /**
-     * Parses HTTP headers and returns the content of the "Location" header
-     * or the empty string if no such header found.
-     *
-     * @param string $content
-     * @return string
-     */
-    public static function getRedirectUrlFromHttpHeaders($content)
-    {
-        return parent::getRedirectUrlFromHttpHeaders($content);
-    }
-
-    /**
-     * Strips HTTP headers from the content.
-     *
-     * @param string $content
-     * @return string
-     */
-    public static function stripHttpHeaders($content)
-    {
-        return parent::stripHttpHeaders($content);
-    }
-
-    /**
      * Gets the absolute path to the deprecation log file.
      *
      * @return string Absolute path to the deprecation log file

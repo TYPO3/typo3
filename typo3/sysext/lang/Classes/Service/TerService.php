@@ -40,7 +40,7 @@ class TerService extends TerUtility implements SingletonInterface
         $result = false;
         $extPath = GeneralUtility::strtolower($extensionKey);
         $mirrorUrl .= $extPath[0] . '/' . $extPath[1] . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
-        $remote = GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
+        $remote = GeneralUtility::getUrl($mirrorUrl);
         if ($remote !== false) {
             $parsed = $this->parseL10nXML($remote);
             $result = $parsed['languagePackIndex'];
@@ -190,7 +190,7 @@ class TerService extends TerUtility implements SingletonInterface
             // Nothing to do
         }
 
-        $l10nResponse = GeneralUtility::getURL($mirrorUrl . $packageUrl, 0, array(TYPO3_user_agent));
+        $l10nResponse = GeneralUtility::getUrl($mirrorUrl . $packageUrl);
         if ($l10nResponse === false) {
             throw new XmlParserException('Error: Translation could not be fetched.', 1345736785);
         } else {

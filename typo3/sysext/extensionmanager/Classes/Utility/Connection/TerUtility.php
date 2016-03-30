@@ -62,7 +62,7 @@ class TerUtility
         }
         $extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
         $mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
-        $t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl, 0, array(TYPO3_user_agent));
+        $t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl);
         $md5 = md5($t3x);
         if ($t3x === false) {
             throw new ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);

@@ -535,7 +535,7 @@ class Bootstrap
      */
     protected function defineUserAgentConstant()
     {
-        define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
+        define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['headers']['User-Agent']);
         return $this;
     }
 

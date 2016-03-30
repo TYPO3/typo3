@@ -69,24 +69,6 @@ return array(
         'USdateFormat' => false,                // Boolean: If TRUE, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
         'loginCopyrightWarrantyProvider' => '',    // String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
         'loginCopyrightWarrantyURL' => '',        // String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
-        'curlUse' => false,                        // Boolean: If set, try to use cURL to fetch external URLs
-        'curlProxyNTLM' => false,                    // Boolean: Proxy NTLM authentication support.
-        /**
-         * @deprecated since 4.6 - will be removed in 6.2.
-         */
-        'curlProxyServer' => '',                // String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
-        /**
-         * @deprecated since 4.6 - will be removed in 6.2.
-         */
-        'curlProxyTunnel' => false,                // Boolean: If set, use a tunneled connection through the proxy (useful for websense etc.). Deprecated since 4.6 - will be removed in 6.2. See below for http options.
-        /**
-         * @deprecated since 4.6 - will be removed in 6.2.
-         */
-        'curlProxyUserPass' => '',                // String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
-        /**
-         * @deprecated since 4.6 - will be removed in 6.2.
-         */
-        'curlTimeout' => 0,                        // Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf',    // Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
         'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,pdf,svg,ai,mp3,wav,mp4,webm,youtube,vimeo',    // Commalist of file extensions perceived as media files by TYPO3. Lowercase and no spaces between!
         'binPath' => '',                        // String: List of absolute paths where external programs should be searched for. Eg. <code>/usr/local/webbin/,/home/xyz/bin/</code>. (ImageMagick path have to be configured separately)
@@ -1136,26 +1118,21 @@ return array(
         'defaultMailFromAddress' => '',        // String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
         'defaultMailFromName' => ''// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
     ),
-    'HTTP' => array( // HTTP configuration to tune how TYPO3 behaves on HTTP request. Have a look at <a href="http://pear.php.net/manual/en/package.http.http-request2.config.php>HTTP_Request2 Manual</a> for some background information on those settings.
-        'adapter' => 'socket',        // String: Default adapter - either "socket" or "curl".
+    'HTTP' => array(    // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
+        'allow_redirects' => array( // Mixed, set to false if you want to allow redirects, or use it as an array to add more values, see http://docs.guzzlephp.org/en/latest/request-options.html#allow-redirects for syntax
+            'max' => 5,        // Integer: Maximum number of tries before an exception is thrown.
+            'strict' => false        // Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers).
+        ),
+        'cert' => null,  // Mixed: Set to a string to specify the path to a file containing a PEM formatted client side certificate. See http://docs.guzzlephp.org/en/latest/request-options.html#cert
         'connect_timeout' => 10,        // Integer: Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.
+        'proxy' => null,        // Mixed: Default proxy server as "proxy.example.org", multiple proxies for different protocols can be added separately as array, as well as authentication and port, see http://docs.guzzlephp.org/en/latest/request-options.html#proxy
+        'ssl_key' => null,        // Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key
         'timeout' => 0,        // Integer: Default timeout for whole request. Exception will be thrown if sending the request takes more than this number of seconds. Should be greater than connection timeout (see above) or "0" to not set a limit. Defaults to "0".
-        'protocol_version' => '1.1',        // String: Default HTTP protocol version. Use either "1.0" or "1.1".
-        'follow_redirects' => false,        // Boolean: If set, redirects are followed by default. If number of tries are exceeded, an exception is thrown.
-        'max_redirects' => 5,        // Integer: Maximum number of tries before an exception is thrown.
-        'strict_redirects' => false,        // Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers). There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.curl">issues with cURL adapter</a>. Defaults to FALSE.
-        'proxy_host' => '',        // String: Default proxy server as "proxy.example.org" (You must not set the protocol or the port here. Set the port below.)
-        'proxy_port' => '',        // Integer: Default proxy server port.
-        'proxy_user' => '',        // String: Default user name.
-        'proxy_password' => '',        // String: Default password.
-        'proxy_auth_scheme' => 'basic',        // String: Default authentication method. Can either be "basic" or "digest". Defaults to "basic".
-        'ssl_verify_peer' => false,        // Boolean: Whether to verify peer's SSL certificate. Turned off by default, due to <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket" target="_blank">issues with Socket adapter</a>. You are advised to use the <em>curl</em> adapter and enable this option!
-        'ssl_verify_host' => true,        // Boolean: Whether to check that Common Name in SSL certificate matches hostname. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket" target="_blank">issues with Socket Adapter</a>.
-        'ssl_cafile' => '',        // String: Certificate Authority file to verify the peer with (use when ssl_verify_peer is TRUE).
-        'ssl_capath' => '',        // String: Directory holding multiple Certificate Authority files.
-        'ssl_local_cert' => '',        // String: Name of a file containing local certificate.
-        'ssl_passphrase' => '',        // String: Passphrase with which local certificate was encoded.
-        'userAgent' => 'TYPO3/' . TYPO3_version// String: Default user agent. If empty, this will be "TYPO3/x.y.z", while x.y.z is the current version. This overrides the constant <em>TYPO3_user_agent</em>.
+        'verify' => true,       // Mixed: Describes the SSL certificate verification behavior of a request. http://docs.guzzlephp.org/en/latest/request-options.html#verify
+        'version' => '1.1',        // String: Default HTTP protocol version. Use either "1.0" or "1.1".
+        'headers' => array( // Additional HTTP headers sent by every request TYPO3 executes.
+            'User-Agent' => 'TYPO3/' . TYPO3_version // String: Default user agent. If empty, this will be "TYPO3/x.y.z", while x.y.z is the current version. This overrides the constant <em>TYPO3_user_agent</em>.
+        )
     ),
     'LOG' => array(
         'writerConfiguration' => array(

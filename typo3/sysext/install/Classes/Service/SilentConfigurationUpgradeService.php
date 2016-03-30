@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
-use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -87,6 +87,13 @@ class SilentConfigurationUpgradeService
         'FE/XCLASS',
         // #43085
         'GFX/image_processing',
+        // #70056
+        'SYS/curlUse',
+        'SYS/curlProxyNTLM',
+        'SYS/curlProxyServer',
+        'SYS/curlProxyTunnel',
+        'SYS/curlProxyUserPass',
+        'SYS/curlTimeout',
     );
 
     public function __construct(ConfigurationManager $configurationManager = null)
@@ -105,9 +112,8 @@ class SilentConfigurationUpgradeService
         $this->generateEncryptionKeyIfNeeded();
         $this->configureBackendLoginSecurity();
         $this->configureSaltedPasswords();
-        $this->setProxyAuthScheme();
         $this->migrateImageProcessorSetting();
-        $this->transferDeprecatedCurlSettings();
+        $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
         $this->removeObsoleteLocalConfigurationSettings();
@@ -220,83 +226,189 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] must be either
-     * 'digest' or 'basic'. 'basic' is default in DefaultConfiguration, so the
-     * setting can be removed from LocalConfiguration if it is not set to 'digest'.
+     * Parse old curl and HTTP options and set new HTTP options, related to Guzzle
      *
      * @return void
      */
-    protected function setProxyAuthScheme()
-    {
-        // Get current value from LocalConfiguration
-        try {
-            $currentValueInLocalConfiguration = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_auth_scheme');
-        } catch (\RuntimeException $e) {
-            // If an exception is thrown, the value is not set in LocalConfiguration, so we don't need to do anything
-            return;
-        }
-        if ($currentValueInLocalConfiguration !== 'digest') {
-            $this->configurationManager->removeLocalConfigurationKeysByPath(array('HTTP/proxy_auth_scheme'));
-            $this->throwRedirectException();
-        }
-    }
-
-    /**
-     * Parse old curl options and set new http ones instead
-     *
-     * @return void
-     */
-    protected function transferDeprecatedCurlSettings()
+    protected function transferHttpSettings()
     {
         $changed = false;
+        $newParameters = [];
+        $obsoleteParameters = [];
+
+        // Remove / migrate options to new options
         try {
-            $curlProxyServer = $this->configurationManager->getLocalConfigurationValueByPath('SYS/curlProxyServer');
+            // Check if the adapter option is set, if so, set it to the parameters that are obsolete
+            $this->configurationManager->getLocalConfigurationValueByPath('HTTP/adapter');
+            $obsoleteParameters[] = 'HTTP/adapter';
         } catch (\RuntimeException $e) {
-            $curlProxyServer = '';
         }
         try {
-            $proxyHost = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_host');
+            $newParameters['HTTP/version'] = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/protocol_version');
+            $obsoleteParameters[] = 'HTTP/protocol_version';
         } catch (\RuntimeException $e) {
-            $proxyHost = '';
         }
-        if (!empty($curlProxyServer) && empty($proxyHost)) {
-            $curlProxy = rtrim(preg_replace('#^https?://#', '', $curlProxyServer), '/');
-            $proxyParts = GeneralUtility::revExplode(':', $curlProxy, 2);
-            $this->configurationManager->setLocalConfigurationValueByPath('HTTP/proxy_host', $proxyParts[0]);
-            $this->configurationManager->setLocalConfigurationValueByPath('HTTP/proxy_port', $proxyParts[1]);
-            $changed = true;
+        try {
+            $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_verify_host');
+            $obsoleteParameters[] = 'HTTP/ssl_verify_host';
+        } catch (\RuntimeException $e) {
+        }
+        try {
+            $legacyUserAgent = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/userAgent');
+            $newParameters['HTTP/headers/User-Agent'] = $legacyUserAgent;
+            $obsoleteParameters[] = 'HTTP/userAgent';
+        } catch (\RuntimeException $e) {
         }
 
+        // Redirects
         try {
-            $curlProxyUserPass = $this->configurationManager->getLocalConfigurationValueByPath('SYS/curlProxyUserPass');
+            $legacyFollowRedirects = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/follow_redirects');
+            $obsoleteParameters[] = 'HTTP/follow_redirects';
         } catch (\RuntimeException $e) {
-            $curlProxyUserPass = '';
+            $legacyFollowRedirects = '';
         }
         try {
-            $proxyUser = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_user');
+            $legacyMaximumRedirects = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/max_redirects');
+            $obsoleteParameters[] = 'HTTP/max_redirects';
         } catch (\RuntimeException $e) {
-            $proxyUser = '';
+            $legacyMaximumRedirects = '';
         }
-        if (!empty($curlProxyUserPass) && empty($proxyUser)) {
-            $userPassParts = explode(':', $curlProxyUserPass, 2);
-            $this->configurationManager->setLocalConfigurationValueByPath('HTTP/proxy_user', $userPassParts[0]);
-            $this->configurationManager->setLocalConfigurationValueByPath('HTTP/proxy_password', $userPassParts[1]);
-            $changed = true;
+        try {
+            $legacyStrictRedirects = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/strict_redirects');
+            $obsoleteParameters[] = 'HTTP/strict_redirects';
+        } catch (\RuntimeException $e) {
+            $legacyStrictRedirects = '';
         }
 
+        // Check if redirects have been disabled
+        if ($legacyFollowRedirects !== '' && (bool)$legacyFollowRedirects === false) {
+            $newParameters['HTTP/allow_redirects'] = false;
+        } elseif ($legacyMaximumRedirects !== '' || $legacyStrictRedirects !== '') {
+            $newParameters['HTTP/allow_redirects'] = [];
+            if ($legacyMaximumRedirects !== '' && (int)$legacyMaximumRedirects !== 5) {
+                $newParameters['HTTP/allow_redirects']['max'] = (int)$legacyMaximumRedirects;
+            }
+            if ($legacyStrictRedirects !== '' && (bool)$legacyStrictRedirects === true) {
+                $newParameters['HTTP/allow_redirects']['strict'] = true;
+            }
+            // defaults are used, no need to set the option in LocalConfiguration.php
+            if (empty($newParameters['HTTP/allow_redirects'])) {
+                unset($newParameters['HTTP/allow_redirects']);
+            }
+        }
+
+        // Migrate Proxy settings
         try {
-            $curlUse = $this->configurationManager->getLocalConfigurationValueByPath('SYS/curlUse');
+            // Currently without protocol or port
+            $legacyProxyHost = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_host');
+            $obsoleteParameters[] = 'HTTP/proxy_host';
         } catch (\RuntimeException $e) {
-            $curlUse = '';
+            $legacyProxyHost = '';
         }
         try {
-            $adapter = $this->configurationManager->getConfigurationValueByPath('HTTP/adapter');
+            $legacyProxyPort = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_port');
+            $obsoleteParameters[] = 'HTTP/proxy_port';
         } catch (\RuntimeException $e) {
-            $adapter = '';
+            $legacyProxyPort = '';
         }
-        if (!empty($curlUse) && $adapter !== 'curl') {
-            $GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter'] = 'curl';
-            $this->configurationManager->setLocalConfigurationValueByPath('HTTP/adapter', 'curl');
+        try {
+            $legacyProxyUser = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_user');
+            $obsoleteParameters[] = 'HTTP/proxy_user';
+        } catch (\RuntimeException $e) {
+            $legacyProxyUser = '';
+        }
+        try {
+            $legacyProxyPassword = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_password');
+            $obsoleteParameters[] = 'HTTP/proxy_password';
+        } catch (\RuntimeException $e) {
+            $legacyProxyPassword = '';
+        }
+        // Auth Scheme: Basic, digest etc.
+        try {
+            $legacyProxyAuthScheme = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/proxy_auth_scheme');
+            $obsoleteParameters[] = 'HTTP/proxy_auth_scheme';
+        } catch (\RuntimeException $e) {
+            $legacyProxyAuthScheme = '';
+        }
+
+        if ($legacyProxyHost !== '') {
+            $proxy = 'http://';
+            if ($legacyProxyAuthScheme !== '' && $legacyProxyUser !== '' && $legacyProxyPassword !== '') {
+                $proxy .= $legacyProxyUser . ':' . $legacyProxyPassword . '@';
+            }
+            $proxy .= $legacyProxyHost;
+            if ($legacyProxyPort !== '') {
+                $proxy .= ':' . $legacyProxyPort;
+            }
+            $newParameters['HTTP/proxy'] = $proxy;
+        }
+
+        // Verify peers
+        // see http://docs.guzzlephp.org/en/latest/request-options.html#verify
+        try {
+            $legacySslVerifyPeer = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_verify_peer');
+            $obsoleteParameters[] = 'HTTP/ssl_verify_peer';
+        } catch (\RuntimeException $e) {
+            $legacySslVerifyPeer = '';
+        }
+
+        // Directory holding multiple Certificate Authority files
+        try {
+            $legacySslCaPath = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_capath');
+            $obsoleteParameters[] = 'HTTP/ssl_capath';
+        } catch (\RuntimeException $e) {
+            $legacySslCaPath = '';
+        }
+        // Certificate Authority file to verify the peer with (use when ssl_verify_peer is TRUE)
+        try {
+            $legacySslCaFile = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_cafile');
+            $obsoleteParameters[] = 'HTTP/ssl_cafile';
+        } catch (\RuntimeException $e) {
+            $legacySslCaFile = '';
+        }
+        if ($legacySslVerifyPeer !== '') {
+            if ($legacySslCaFile !== '' && $legacySslCaPath !== '') {
+                $newParameters['HTTP/verify'] = $legacySslCaPath . $legacySslCaFile;
+            } elseif ((bool)$legacySslVerifyPeer === false) {
+                $newParameters['HTTP/verify'] = false;
+            }
+        }
+
+        // SSL Key + Passphrase
+        // Name of a file containing local certificate
+        try {
+            $legacySslLocalCert = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_local_cert');
+            $obsoleteParameters[] = 'HTTP/ssl_local_cert';
+        } catch (\RuntimeException $e) {
+            $legacySslLocalCert = '';
+        }
+
+        // Passphrase with which local certificate was encoded
+        try {
+            $legacySslPassphrase = $this->configurationManager->getLocalConfigurationValueByPath('HTTP/ssl_passphrase');
+            $obsoleteParameters[] = 'HTTP/ssl_passphrase';
+        } catch (\RuntimeException $e) {
+            $legacySslPassphrase = '';
+        }
+
+        if ($legacySslLocalCert !== '') {
+            if ($legacySslPassphrase !== '') {
+                $newParameters['HTTP/ssl_key'] = [
+                    $legacySslLocalCert,
+                    $legacySslPassphrase
+                ];
+            } else {
+                $newParameters['HTTP/ssl_key'] = $legacySslLocalCert;
+            }
+        }
+
+        // Update the LocalConfiguration file if obsolete parameters or new parameters are set
+        if (!empty($obsoleteParameters)) {
+            $this->configurationManager->removeLocalConfigurationKeysByPath($obsoleteParameters);
+            $changed = true;
+        }
+        if (!empty($newParameters)) {
+            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($newParameters);
             $changed = true;
         }
         if ($changed) {
@@ -496,7 +608,8 @@ class SilentConfigurationUpgradeService
      *
      * @return void
      */
-    protected function migrateThumbnailsPngSetting() {
+    protected function migrateThumbnailsPngSetting()
+    {
         $changedValues = array();
         try {
             $currentThumbnailsPngValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails_png');

@@ -4527,50 +4527,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function getRedirectUrlFromHttpHeadersDataProvider()
-    {
-        return array(
-            'Extracts redirect URL from Location header' => array("HTTP/1.0 302 Redirect\r\nServer: Apache\r\nLocation: http://example.com/\r\nX-pad: avoid browser bug\r\n\r\nLocation: test\r\n", 'http://example.com/'),
-            'Returns empty string if no Location is found in header' => array("HTTP/1.0 302 Redirect\r\nServer: Apache\r\nX-pad: avoid browser bug\r\n\r\nLocation: test\r\n", ''),
-        );
-    }
-
-    /**
-     * @param string $httpResponse
-     * @param string $expected
-     * @test
-     * @dataProvider getRedirectUrlFromHttpHeadersDataProvider
-     */
-    public function getRedirectUrlReturnsRedirectUrlFromHttpResponse($httpResponse, $expected)
-    {
-        $this->assertEquals($expected, GeneralUtilityFixture::getRedirectUrlFromHttpHeaders($httpResponse));
-    }
-
-    /**
-     * @return array
-     */
-    public function getStripHttpHeadersDataProvider()
-    {
-        return array(
-            'Simple content' => array("HTTP/1.0 302 Redirect\r\nServer: Apache\r\nX-pad: avoid browser bug\r\n\r\nHello, world!", 'Hello, world!'),
-            'Content with multiple returns' => array("HTTP/1.0 302 Redirect\r\nServer: Apache\r\nX-pad: avoid browser bug\r\n\r\nHello, world!\r\n\r\nAnother hello here!", "Hello, world!\r\n\r\nAnother hello here!"),
-        );
-    }
-
-    /**
-     * @param string $httpResponse
-     * @param string $expected
-     * @test
-     * @dataProvider getStripHttpHeadersDataProvider
-     */
-    public function stripHttpHeadersStripsHeadersFromHttpResponse($httpResponse, $expected)
-    {
-        $this->assertEquals($expected, GeneralUtilityFixture::stripHttpHeaders($httpResponse));
-    }
-
-    /**
      * @test
      */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()

@@ -718,7 +718,6 @@ class Clipboard
         return $message;
     }
 
-
     /**
      * Returns confirm JavaScript message
      *

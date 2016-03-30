@@ -325,114 +325,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
     /**
      * @test
      */
-    public function noProxyAuthSchemeSetInLocalConfiguration()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $closure = function () {
-            throw new \RuntimeException('Path does not exist in array', 1341397869);
-        };
-
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'removeLocalConfigurationKeysByPath',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(1))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnCallback($closure));
-        $this->configurationManager->expects($this->never())
-            ->method('removeLocalConfigurationKeysByPath');
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
-    }
-
-    /**
-     * @test
-     */
-    public function proxyAuthSchemeIsDigest()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('HTTP/proxy_auth_scheme', 'digest')
-        );
-
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'removeLocalConfigurationKeysByPath',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(1))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->never())
-            ->method('removeLocalConfigurationKeysByPath');
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
-    }
-
-    /**
-     * @test
-     */
-    public function proxyAuthSchemeIsBasic()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('HTTP/proxy_auth_scheme', 'basic')
-        );
-
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'removeLocalConfigurationKeysByPath',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(1))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->once())
-            ->method('removeLocalConfigurationKeysByPath')
-            ->with($this->equalTo(array('HTTP/proxy_auth_scheme')));
-
-        $this->setExpectedException(RedirectException::class);
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
-    }
-
-    /**
-     * @test
-     */
     public function doNotGenerateEncryptionKeyIfExists()
     {
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -504,28 +396,112 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
     }
 
     /**
-     * Dataprovider for transferDeprecatedCurlSettings
+     * Data provider for transferHttpSettings
      *
      * @return array
      */
-    public function curlProxySettingsToHttpSettingsMapping()
+    public function httpSettingsMappingDataProvider()
     {
-        return array(
-            array('http://proxy:3128/', 'proxy', '3128'),
-            array('http://proxy:3128', 'proxy', '3128'),
-            array('proxy:3128', 'proxy', '3128'),
-            array('https://proxy:3128/', 'proxy', '3128'),
-        );
+        return [
+            'No changes overridden in Local Configuration' => [
+                ['timeout' => 100],
+                ['HTTP/timeout' => 100],
+                false
+            ],
+            'Old and unused settings removed' => [
+                ['adapter' => 'curl'],
+                [],
+                true
+            ],
+            'Old and used settings changed' => [
+                ['protocol_version' => '1.1'],
+                ['HTTP/version' => '1.1'],
+                true
+            ],
+
+            /** redirect options */
+            'Redirects moved to default' => [
+                ['follow_redirects' => true],
+                [],
+                true
+            ],
+            'Redirects moved #1' => [
+                ['follow_redirects' => true, 'max_redirects' => 200, 'strict_redirects' => false],
+                ['HTTP/allow_redirects' => ['max' => 200]],
+                true
+            ],
+            'Redirects moved #2' => [
+                ['follow_redirects' => false, 'max_redirects' => 200, 'strict_redirects' => false],
+                ['HTTP/allow_redirects' => false],
+                true
+            ],
+            'Redirects moved #3' => [
+                ['follow_redirects' => true, 'max_redirects' => 400, 'strict_redirects' => 1],
+                ['HTTP/allow_redirects' => ['max' => 400, 'strict' => true]],
+                true
+            ],
+
+            /** Proxy settings */
+            'Proxy host set' => [
+                ['proxy_host' => 'vpn.myproxy.com'],
+                ['HTTP/proxy' => 'http://vpn.myproxy.com'],
+                true
+            ],
+            'Proxy host set + port' => [
+                ['proxy_host' => 'vpn.myproxy.com', 'proxy_port' => 8080],
+                ['HTTP/proxy' => 'http://vpn.myproxy.com:8080'],
+                true
+            ],
+            'Proxy host set + port + verification' => [
+                ['proxy_host' => 'vpn.myproxy.com', 'proxy_port' => 8080, 'proxy_auth_scheme' => 'basic', 'proxy_user' => 'myuser', 'proxy_password' => 'mysecret'],
+                ['HTTP/proxy' => 'http://myuser:mysecret@vpn.myproxy.com:8080'],
+                true
+            ],
+
+            /** SSL verification */
+            'Only ssl_capath set, invalid migration' => [
+                ['ssl_capath' => '/foo/bar/'],
+                [],
+                true
+            ],
+            'Verification activated, but only ssl_capath set, using default' => [
+                ['ssl_verify_peer' => 1, 'ssl_capath' => '/foo/bar/'],
+                [],
+                true
+            ],
+            'Verification activated, with ssl_capath and ssl_cafile set' => [
+                ['ssl_verify_peer' => 1, 'ssl_capath' => '/foo/bar/', 'ssl_cafile' => 'supersecret.crt'],
+                ['HTTP/verify' => '/foo/bar/supersecret.crt'],
+                true
+            ],
+
+            /** SSL key + passphrase */
+            'SSL key certification' => [
+                ['ssl_local_cert' => '/foo/bar/supersecret.key'],
+                ['HTTP/ssl_key' => '/foo/bar/supersecret.key'],
+                true
+            ],
+            'SSL key certification + passphrase' => [
+                ['ssl_local_cert' => '/foo/bar/supersecret.key', 'ssl_passphrase' => 'donotcopypasteme'],
+                ['HTTP/ssl_key' => ['/foo/bar/supersecret.key', 'donotcopypasteme']],
+                true
+            ],
+            'SSL key passphrase only - no migration' => [
+                ['ssl_passphrase' => 'donotcopypasteme'],
+                [],
+                true
+            ],
+        ];
     }
 
     /**
      * @test
-     * @dataProvider curlProxySettingsToHttpSettingsMapping
-     * @param string $curlProxyServer
-     * @param string $proxyHost
-     * @param string $proxyPort
+     * @dataProvider httpSettingsMappingDataProvider
+     * @param array $currentLocalConfiguration
+     * @param array $newSettings
+     * @param bool $localConfigurationNeedsUpdate
      */
-    public function transferDeprecatedCurlSettings($curlProxyServer, $proxyHost, $proxyPort)
+    public function transferHttpSettingsIfSet($currentLocalConfiguration, $newSettings, $localConfigurationNeedsUpdate)
     {
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
@@ -536,120 +512,33 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
             false
         );
 
-        $currentLocalConfiguration = array(
-            array('SYS/curlProxyServer',  $curlProxyServer),
-            array('HTTP/proxy_host', ''),
-            array('SYS/curlProxyUserPass',  ''),
-            array('HTTP/proxy_user', ''),
-            array('SYS/curlUse', false)
-        );
         $this->createConfigurationManagerWithMockedMethods(
             array(
-                'getLocalConfigurationValueByPath',
-                'setLocalConfigurationValueByPath',
-                'getConfigurationValueByPath'
+                'setLocalConfigurationValuesByPathValuePairs',
+                'removeLocalConfigurationKeysByPath',
+                'getLocalConfiguration'
             )
         );
-        $this->configurationManager->expects($this->exactly(5))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->exactly(2))
-            ->method('setLocalConfigurationValueByPath')
-            ->withConsecutive(
-                array('HTTP/proxy_host', $proxyHost),
-                array('HTTP/proxy_port', $proxyPort)
-            );
 
-        $this->setExpectedException(RedirectException::class);
+        $this->configurationManager->expects($this->any())
+            ->method('getLocalConfiguration')
+            ->willReturn(['HTTP' => $currentLocalConfiguration]);
+        if ($localConfigurationNeedsUpdate) {
+            if (!empty($newSettings)) {
+                $this->configurationManager->expects($this->once())
+                    ->method('setLocalConfigurationValuesByPathValuePairs')
+                    ->with($newSettings);
+            }
+            $this->configurationManager->expects($this->atMost(1))->method('removeLocalConfigurationKeysByPath');
+        }
+
+        if ($localConfigurationNeedsUpdate) {
+            $this->setExpectedException(RedirectException::class);
+        }
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
-        $silentConfigurationUpgradeServiceInstance->_call('transferDeprecatedCurlSettings');
-    }
-
-    /**
-     * @test
-     */
-    public function curlProxyServerDoesNotOverwriteHttpSettings()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('SYS/curlProxyServer', 'http://proxyOld:3128/'),
-            array('SYS/curlProxyUserPass', 'userOld:passOld'),
-            array('HTTP/proxy_host', 'proxyNew'),
-            array('HTTP/proxy_port', '3128'),
-            array('HTTP/proxy_user', 'userNew'),
-            array('HTTP/proxy_pass', 'passNew'),
-            array('SYS/curlUse', false)
-        );
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'setLocalConfigurationValueByPath',
-                'getConfigurationValueByPath'
-            )
-        );
-        $this->configurationManager->expects($this->exactly(5))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->never())
-            ->method('setLocalConfigurationValueByPath');
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('transferDeprecatedCurlSettings');
-    }
-
-    /**
-     * @test
-     */
-    public function curlAdapterUsedIfCurlUse()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('SYS/curlProxyServer', ''),
-            array('SYS/curlProxyUserPass', ''),
-            array('HTTP/proxy_host', 'proxyNew'),
-            array('HTTP/proxy_user', 'userNew'),
-            array('SYS/curlUse', true)
-        );
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'getConfigurationValueByPath',
-                'setLocalConfigurationValueByPath',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(5))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->once())
-            ->method('setLocalConfigurationValueByPath')
-            ->withConsecutive(
-                array('HTTP/adapter', 'curl')
-            );
-
-        $this->setExpectedException(RedirectException::class);
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('transferDeprecatedCurlSettings');
+        $silentConfigurationUpgradeServiceInstance->_call('transferHttpSettings');
     }
 
     /**
