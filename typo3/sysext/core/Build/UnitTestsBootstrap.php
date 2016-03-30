@@ -27,11 +27,6 @@
  *     typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
  */
 call_user_func(function () {
-    // Ensure cli only as security measure
-    if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
-        die('This script supports command line usage only. Please check your command.');
-    }
-
     $testbase = new \TYPO3\CMS\Core\Tests\Testbase();
     $testbase->enableDisplayErrors();
     $testbase->defineBaseConstants();

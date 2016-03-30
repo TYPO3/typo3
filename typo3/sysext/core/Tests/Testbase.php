@@ -33,6 +33,18 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
  */
 class Testbase
 {
+    /**
+     * This class must be called in CLI environment as a security measure
+     * against path disclosures and other stuff. Check this within
+     * constructor to make sure this check can't be circumvented.
+     */
+    public function __construct()
+    {
+        // Ensure cli only as security measure
+        if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
+            die('This script supports command line usage only. Please check your command.');
+        }
+    }
 
     /**
      * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
@@ -696,15 +708,6 @@ class Testbase
      */
     protected function exitWithMessage($message)
     {
-        $headers = [
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500,
-            'Content-type: text/plain'
-        ];
-        if (!headers_sent()) {
-            foreach ($headers as $header) {
-                header($header);
-            }
-        }
         echo $message . LF;
         exit(1);
     }

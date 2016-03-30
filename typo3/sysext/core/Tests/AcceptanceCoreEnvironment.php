@@ -159,7 +159,6 @@ class AcceptanceCoreEnvironment extends Extension
 
         $instancePath = ORIGINAL_ROOT . 'typo3temp/var/tests/acceptance';
 
-        $testbase = new Testbase();
         $testbase->defineTypo3ModeBe();
         $testbase->setTypo3TestingContext();
         $testbase->removeOldInstanceIfExists($instancePath);
