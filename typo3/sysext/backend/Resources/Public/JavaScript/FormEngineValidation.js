@@ -287,7 +287,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 						}
 						if (typeof rule.config.upper !== 'undefined') {
 							var maxValue = rule.config.upper * 1;
-							if (!isNaN(maxValue) && value < minValue) {
+							if (!isNaN(maxValue) && value > maxValue) {
 								markParent = true;
 							}
 						}
