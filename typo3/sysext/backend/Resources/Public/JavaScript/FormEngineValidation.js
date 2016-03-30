@@ -247,6 +247,8 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		var selected = 0;
 		var returnValue = value;
 		var $relatedField;
+		var minItems;
+		var maxItems;
 		$.each(rules, function(k, rule) {
 			switch (rule.type) {
 				case 'required':
@@ -261,20 +263,31 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 							$relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
 							if ($relatedField.length) {
 								selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
-								if (selected < rule.minItems || selected > rule.maxItems) {
-									markParent = true;
-								}
 							} else {
 								selected = $field.val();
-								if (selected < rule.minItems || selected > rule.maxItems) {
+							}
+							if (typeof rule.minItems !== 'undefined') {
+								minItems = rule.minItems * 1;
+								if (!isNaN(minItems) && selected < minItems) {
+									markParent = true;
+								}
+							}
+							if (typeof rule.maxItems !== 'undefined') {
+								maxItems = rule.maxItems * 1;
+								if (!isNaN(maxItems) && selected > maxItems) {
 									markParent = true;
 								}
 							}
 						}
-						if (rule.config.lower || rule.config.upper) {
-							var minValue = rule.config.lower || 0;
-							var maxValue = rule.config.upper || Number.MAX_VALUE;
-							if (value < minValue || value > maxValue) {
+						if (typeof rule.config.lower !== 'undefined') {
+							var minValue = rule.config.lower * 1;
+							if (!isNaN(minValue) && value < minValue) {
+								markParent = true;
+							}
+						}
+						if (typeof rule.config.upper !== 'undefined') {
+							var maxValue = rule.config.upper * 1;
+							if (!isNaN(maxValue) && value < minValue) {
 								markParent = true;
 							}
 						}
@@ -285,12 +298,18 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 						$relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
 						if ($relatedField.length) {
 							selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
-							if (selected < rule.minItems || selected > rule.maxItems) {
-								markParent = true;
-							}
 						} else {
 							selected = $field.find('option:selected').length;
-							if (selected < rule.minItems || selected > rule.maxItems) {
+						}
+						if (typeof rule.minItems !== 'undefined') {
+							minItems = rule.minItems * 1;
+							if (!isNaN(minItems) && selected < minItems) {
+								markParent = true;
+							}
+						}
+						if (typeof rule.maxItems !== 'undefined') {
+							maxItems = rule.maxItems * 1;
+							if (!isNaN(maxItems) && selected > maxItems) {
 								markParent = true;
 							}
 						}
@@ -299,16 +318,34 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 				case 'group':
 					if (rule.minItems || rule.maxItems) {
 						selected = $field.find('option').length;
-						if (selected < rule.minItems || selected > rule.maxItems) {
-							markParent = true;
+						if (typeof rule.minItems !== 'undefined') {
+							minItems = rule.minItems * 1;
+							if (!isNaN(minItems) && selected < minItems) {
+								markParent = true;
+							}
+						}
+						if (typeof rule.maxItems !== 'undefined') {
+							maxItems = rule.maxItems * 1;
+							if (!isNaN(maxItems) && selected > maxItems) {
+								markParent = true;
+							}
 						}
 					}
 					break;
 				case 'inline':
 					if (rule.minItems || rule.maxItems) {
 						selected = FormEngineValidation.trimExplode(',', $field.val()).length;
-						if (selected < rule.minItems || selected > rule.maxItems) {
-							markParent = true;
+						if (typeof rule.minItems !== 'undefined') {
+							minItems = rule.minItems * 1;
+							if (!isNaN(minItems) && selected < minItems) {
+								markParent = true;
+							}
+						}
+						if (typeof rule.maxItems !== 'undefined') {
+							maxItems = rule.maxItems * 1;
+							if (!isNaN(maxItems) && selected > maxItems) {
+								markParent = true;
+							}
 						}
 					}
 					break;
