@@ -3827,12 +3827,13 @@ class ContentObjectRenderer
      */
     public function substring($content, $options)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         $options = GeneralUtility::intExplode(',', $options . ',');
         if ($options[1]) {
-            return $tsfe->csConvObj->substr('utf-8', $content, $options[0], $options[1]);
+            return $charsetConverter->substr('utf-8', $content, $options[0], $options[1]);
         } else {
-            return $tsfe->csConvObj->substr('utf-8', $content, $options[0]);
+            return $charsetConverter->substr('utf-8', $content, $options[0]);
         }
     }
 
@@ -6779,22 +6780,23 @@ class ContentObjectRenderer
      */
     public function caseshift($theValue, $case)
     {
-        $tsfe = $this->getTypoScriptFrontendController();
+        /** @var CharsetConverter $charsetConverter */
+        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         switch (strtolower($case)) {
             case 'upper':
-                $theValue = $tsfe->csConvObj->conv_case('utf-8', $theValue, 'toUpper');
+                $theValue = $charsetConverter->conv_case('utf-8', $theValue, 'toUpper');
                 break;
             case 'lower':
-                $theValue = $tsfe->csConvObj->conv_case('utf-8', $theValue, 'toLower');
+                $theValue = $charsetConverter->conv_case('utf-8', $theValue, 'toLower');
                 break;
             case 'capitalize':
                 $theValue = ucwords($theValue);
                 break;
             case 'ucfirst':
-                $theValue = $tsfe->csConvObj->convCaseFirst('utf-8', $theValue, 'toUpper');
+                $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toUpper');
                 break;
             case 'lcfirst':
-                $theValue = $tsfe->csConvObj->convCaseFirst('utf-8', $theValue, 'toLower');
+                $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toLower');
                 break;
             case 'uppercamelcase':
                 $theValue = GeneralUtility::underscoredToUpperCamelCase($theValue);

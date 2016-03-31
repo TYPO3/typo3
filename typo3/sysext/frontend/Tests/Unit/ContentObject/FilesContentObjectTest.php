@@ -56,7 +56,6 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $sysPageMock = $this->getMock(PageRepository::class, array('getRawRecord'));
         $this->tsfe->sys_page = $sysPageMock;
         $GLOBALS['TSFE'] = $this->tsfe;
-        $GLOBALS['TSFE']->csConvObj = new CharsetConverter();
 
         $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setContentObjectClassMap(array(

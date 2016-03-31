@@ -102,7 +102,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->typoScriptFrontendControllerMock->config = array();
         $this->typoScriptFrontendControllerMock->page = array();
         $this->typoScriptFrontendControllerMock->sys_page = $pageRepositoryMock;
-        $this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
         $GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
         $GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 

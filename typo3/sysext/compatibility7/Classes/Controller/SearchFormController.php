@@ -2315,7 +2315,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function utf8_to_currentCharset($str)
     {
         GeneralUtility::logDeprecatedFunction();
-        return $this->frontendController->csConv($str, 'utf-8');
+        return $str;
     }
 
     /**
