@@ -3841,12 +3841,12 @@ class GeneralUtility
      * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-     * @param string $checkPrefix Not used anymore since 6.0
+     * @param string $_ Not used anymore since 6.0
      * @param int $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
      * @return mixed Content from method/function call or FALSE if the class/method/function was not found
      * @see getUserObj()
      */
-    public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = '', $errorMode = 0)
+    public static function callUserFunction($funcName, &$params, &$ref, $_ = '', $errorMode = 0)
     {
         $content = false;
         // Check if we're using a closure and invoke it directly.

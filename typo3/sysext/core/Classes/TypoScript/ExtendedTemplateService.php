@@ -1286,7 +1286,7 @@ class ExtendedTemplateService extends TemplateService
                         case 'user':
                             $userFunction = $typeDat['paramstr'];
                             $userFunctionParams = array('fieldName' => $fN, 'fieldValue' => $fV);
-                            $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this, '');
+                            $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
                             break;
                         case 'small':
 

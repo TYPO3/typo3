@@ -199,7 +199,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
         } elseif ($csrfTokenCheck && !$this->isValidRequest($request)) {
             $ajaxObj->setError('Invalid CSRF token detected for ajaxID "' . $ajaxID . '"!');
         } else {
-            $success = GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, false, true);
+            $success = GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, '', 1);
             if ($success === false) {
                 $ajaxObj->setError('Registered backend function for ajaxID "' . $ajaxID . '" was not found.');
             }

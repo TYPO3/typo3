@@ -550,7 +550,7 @@ class SetupModuleController extends AbstractModule
                     break;
                 case 'select':
                     if ($config['itemsProcFunc']) {
-                        $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
+                        $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
                     } else {
                         $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
                             name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
@@ -562,7 +562,7 @@ class SetupModuleController extends AbstractModule
                     }
                     break;
                 case 'user':
-                    $html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this, '');
+                    $html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this);
                     break;
                 case 'button':
                     if ($config['onClick']) {

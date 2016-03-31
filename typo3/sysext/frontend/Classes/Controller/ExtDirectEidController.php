@@ -45,7 +45,7 @@ class ExtDirectEidController
         $ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID]['callbackMethod'];
         $this->ajaxObject = GeneralUtility::makeInstance(AjaxRequestHandler::class, 'ExtDirect::' . $ajaxID);
         $parameters = array();
-        GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, false, true);
+        GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, '', 1);
     }
 
     /**

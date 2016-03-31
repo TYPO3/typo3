@@ -394,7 +394,7 @@ class SuggestWizardDefaultReceiver
                 'row' => $row,
                 'entry' => &$entry
             );
-            GeneralUtility::callUserFunction($this->config['renderFunc'], $params, $this, '');
+            GeneralUtility::callUserFunction($this->config['renderFunc'], $params, $this);
         }
         return $entry;
     }
