@@ -629,10 +629,10 @@ class SetupModuleController extends AbstractModule
                     $html = '';
             }
 
-            $code[] = '<div class="form-section"><div class="form-group">' .
+            $code[] = '<div class="form-section"><div class="row"><div class="form-group col-md-12">' .
                 $label .
                 $html .
-                '</div></div>';
+                '</div></div></div>';
         }
 
         $result[] = array(
@@ -840,7 +840,7 @@ class SetupModuleController extends AbstractModule
             $out = '<span style="color:#999999">' . $out . '</span>';
         }
         if ($addLabelTag) {
-            $out = '<label for="' . ($altLabelTagId ?: 'field_' . htmlspecialchars($key)) . '">' . $out . '</label>';
+            $out = '<label>' . $out . '</label>';
         }
         return $out;
     }
