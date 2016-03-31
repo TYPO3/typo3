@@ -7,8 +7,8 @@ Description
 
 The Reference Index Updater Command Line command has been changed to use a Symfony Command.
 
-To update the reference index on non-composer-mode installations is now called on the command line via 
-``typo3/sysext/core/bin/typo3 softreference:index``. To just check the reference index, the option ``-c``(alternatively the property "check" can be used) is used like this ``typo3/sysext/core/bin/typo3 softreference:index -c``
+To update the reference index on non-composer-mode installations is now called on the command line via
+``typo3/sysext/core/bin/typo3 referenceindex:update``. To just check the reference index, the option ``-c``(alternatively the property "check" can be used) is used like this ``typo3/sysext/core/bin/typo3 referenceindex:update -c``
 
 For installations set up via composer, the typo3 CLI binary is available in the "bin/" directory directly inside the
 project root.
@@ -18,10 +18,10 @@ The command can be used like this:
 .. code-block:: sh
 
 	# update the reference index
-	bin/typo3 softreference:index
+	bin/typo3 referenceindex:update
 	# check the reference index
-	bin/typo3 softreference:index -c
-	bin/typo3 softreference:index --check
+	bin/typo3 referenceindex:update -c
+	bin/typo3 referenceindex:update --check
 
 The additional option --silent does not output anything when running the CLI command.
 
