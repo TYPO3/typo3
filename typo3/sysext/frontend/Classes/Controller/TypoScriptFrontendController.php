@@ -2732,7 +2732,8 @@ class TypoScriptFrontendController
     {
         // Setting locale
         if ($this->config['config']['locale_all']) {
-            $locale = setlocale(LC_ALL, $this->config['config']['locale_all']);
+            $availableLocales = GeneralUtility::trimExplode(',', $this->config['config']['locale_all'], true);
+            $locale = setlocale(LC_ALL, ...$availableLocales);
             if (!$locale) {
                 $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
             }
