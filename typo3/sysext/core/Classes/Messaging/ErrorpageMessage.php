@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class representing error messages shown on a page.
  * Classic Example: "No pages are found on rootlevel"
+ * This class is deprecated since TYPO3 v8 in favor of the ErrorPageController, and will be removed in TYPO3 v9
  */
 class ErrorpageMessage extends AbstractStandaloneMessage
 {
@@ -27,9 +29,11 @@ class ErrorpageMessage extends AbstractStandaloneMessage
      * @param string $message The error message
      * @param string $title Title of the message, can be empty
      * @param int $severity Optional severity, must be either of AbstractMessage::INFO or related constants
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the ErrorPageController instead
      */
     public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->setHtmlTemplate(ExtensionManagementUtility::siteRelPath('core') . 'Resources/Private/Templates/Page/Error.html');
         parent::__construct($message, $title, $severity);
     }

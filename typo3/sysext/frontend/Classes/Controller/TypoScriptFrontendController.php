@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
-use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -2017,11 +2017,10 @@ class TypoScriptFrontendController
         // Create response:
         // Simply boolean; Just shows TYPO3 error page with reason:
         if (strtolower($code) === 'true' || (string)$code === '1' || gettype($code) === 'boolean') {
-            $title = 'Page Not Found';
-            $message = 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : '');
-            $messagePage = GeneralUtility::makeInstance(ErrorpageMessage::class, $message, $title);
-            $messagePage->output();
-            die;
+            echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+                'Page Not Found',
+                'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : '')
+            );
         } elseif (GeneralUtility::isFirstPartOfStr($code, 'USER_FUNCTION:')) {
             $funcRef = trim(substr($code, 14));
             $params = array(
@@ -2125,10 +2124,10 @@ class TypoScriptFrontendController
                 echo $content;
             }
         } else {
-            $title = 'Page Not Found';
-            $message = $reason ? 'Reason: ' . htmlspecialchars($reason) : 'Page cannot be found.';
-            $messagePage = GeneralUtility::makeInstance(ErrorpageMessage::class, $message, $title);
-            $messagePage->output();
+            echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+                'Page Not Found',
+                $reason ? 'Reason: ' . $reason : 'Page cannot be found.'
+            );
         }
         die;
     }

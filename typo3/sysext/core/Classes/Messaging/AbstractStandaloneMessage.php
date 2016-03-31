@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class as base for standalone messages (error pages etc.)
+ * This class is deprecated since TYPO3 v8 in favor of the ErrorPageController, and will be removed in TYPO3 v9
  */
 abstract class AbstractStandaloneMessage extends AbstractMessage
 {
@@ -49,9 +50,11 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
      * @param string $message Message
      * @param string $title Title
      * @param int $severity Severity, see class constants of AbstractMessage
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the ErrorPageController instead
      */
     public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!empty($message)) {
             $this->setMessage($message);
         }

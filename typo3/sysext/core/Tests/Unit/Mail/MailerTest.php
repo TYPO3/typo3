@@ -59,26 +59,26 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
-     * Data provider for wrongConfigigurationThrowsException
+     * Data provider for wrongConfigurationThrowsException
      *
      * @return array Data sets
      */
-    public static function wrongConfigigurationProvider()
+    public static function wrongConfigurationProvider()
     {
         return array(
             'smtp but no host' => array(array('transport' => 'smtp')),
             'sendmail but no command' => array(array('transport' => 'sendmail')),
             'mbox but no file' => array(array('transport' => 'mbox')),
-            'no instance of Swift_Transport' => array(array('transport' => \TYPO3\CMS\Core\Messaging\ErrorpageMessage::class))
+            'no instance of Swift_Transport' => array(array('transport' => \TYPO3\CMS\Core\Controller\ErrorPageController::class))
         );
     }
 
     /**
      * @test
      * @param $settings
-     * @dataProvider wrongConfigigurationProvider
+     * @dataProvider wrongConfigurationProvider
      */
-    public function wrongConfigigurationThrowsException($settings)
+    public function wrongConfigurationThrowsException($settings)
     {
         $this->expectException(\TYPO3\CMS\Core\Exception::class);
         $this->expectExceptionCode(1291068569);

@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Controller\ErrorPageController;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A quite exception handler which catches but ignores any exception.
@@ -53,12 +56,12 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     {
         $this->sendStatusHeaders($exception);
         $this->writeLogEntries($exception, self::CONTEXT_WEB);
-        $messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\ErrorpageMessage::class,
+        echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+            $this->getTitle($exception),
             $this->getMessage($exception),
-            $this->getTitle($exception)
+            AbstractMessage::ERROR,
+            $this->discloseExceptionInformation($exception) ? $exception->getCode() : 0
         );
-        $messageObj->output();
     }
 
     /**
@@ -113,7 +116,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     protected function getTitle(\Throwable $exception)
     {
         if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && $exception->getTitle() !== '') {
-            return htmlspecialchars($exception->getTitle());
+            return $exception->getTitle();
         } else {
             return $this->defaultTitle;
         }
@@ -128,14 +131,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     protected function getMessage(\Throwable $exception)
     {
         if ($this->discloseExceptionInformation($exception)) {
-            // Exception has an error code given
-            if ($exception->getCode() > 0) {
-                $moreInformationLink = '<p>More information regarding this error might be available <a href="'
-                    . TYPO3_URL_EXCEPTION . $exception->getCode() . '" target="_blank">online</a>.</p>';
-            } else {
-                $moreInformationLink = '';
-            }
-            return htmlspecialchars($exception->getMessage()) . $moreInformationLink;
+            return $exception->getMessage();
         } else {
             return $this->defaultMessage;
         }
