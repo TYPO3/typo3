@@ -1253,9 +1253,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($row['data_page_mp']) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
-        if ($row['sys_language_uid']) {
-            $urlParameters['L'] = $row['sys_language_uid'];
-        }
+        $urlParameters['L'] = intval($row['sys_language_uid']);
         // markup-GET vars:
         $urlParameters = array_merge($urlParameters, $markUpSwParams);
         // This will make sure that the path is retrieved if it hasn't been
