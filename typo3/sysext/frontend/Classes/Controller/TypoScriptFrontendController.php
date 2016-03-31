@@ -2732,15 +2732,8 @@ class TypoScriptFrontendController
     {
         // Setting locale
         if ($this->config['config']['locale_all']) {
-            // There's a problem that PHP parses float values in scripts wrong if the
-            // locale LC_NUMERIC is set to something with a comma as decimal point
-            // Do we set all except LC_NUMERIC
-            $locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
-            if ($locale) {
-                setlocale(LC_CTYPE, $this->config['config']['locale_all']);
-                setlocale(LC_MONETARY, $this->config['config']['locale_all']);
-                setlocale(LC_TIME, $this->config['config']['locale_all']);
-            } else {
+            $locale = setlocale(LC_ALL, $this->config['config']['locale_all']);
+            if (!$locale) {
                 $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
             }
         }
