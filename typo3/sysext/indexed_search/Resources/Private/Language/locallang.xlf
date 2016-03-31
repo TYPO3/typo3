@@ -277,16 +277,19 @@ All search words are converted to lowercase.
 				<source>List: External documents</source>
 			</trans-unit>
 			<trans-unit id="administration.menu.searchStatistic">
-				<source>Search statistic</source>
+				<source>Search statistics</source>
 			</trans-unit>
 			<trans-unit id="administration.menu.statistic">
-				<source>Detailed statistic</source>
+				<source>Detailed statistics</source>
 			</trans-unit>
 			<trans-unit id="administration.index.description">
-				<source>General statics</source>
+				<source>General statistics</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics">
+				<source>Indexing Engine Statistics</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.header">
-				<source>Statistics</source>
+				<source>Row count by database table</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.name">
 				<source>Name</source>
@@ -296,6 +299,9 @@ All search words are converted to lowercase.
 			</trans-unit>
 			<trans-unit id="administration.statistics.headerTypes">
 				<source>Hash Header Types</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.headerTypes.count">
+				<source>Count / Unique count</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.word">
 				<source>Word</source>
@@ -349,7 +355,7 @@ All search words are converted to lowercase.
 				<source>Updated</source>
 			</trans-unit>
 			<trans-unit id="field.parseTime">
-				<source>Parsetime</source>
+				<source>Parsetime [ms]</source>
 			</trans-unit>
 			<trans-unit id="field.groups">
 				<source>#sec/gr/full</source>
