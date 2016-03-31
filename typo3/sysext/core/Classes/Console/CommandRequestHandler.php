@@ -80,6 +80,19 @@ class CommandRequestHandler implements RequestHandlerInterface
 
         // Make sure output is not buffered, so command-line output and interaction can take place
         $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
+
+        if (!$command) {
+            $cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
+
+            $output->writeln('Old entrypoint keys available:');
+            asort($cliKeys);
+            foreach ($cliKeys as $key => $value) {
+                $output->writeln('  ' . $value);
+            }
+            $output->writeln('');
+            $output->writeln('TYPO3 Console Commands:');
+        }
+
         $exitCode = $this->application->run($input, $output);
         exit($exitCode);
     }
@@ -105,7 +118,7 @@ class CommandRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * This request handler can handle any CLI request, but checks for
+     * This request handler can handle any CLI request
      *
      * @param InputInterface $input
      * @return bool Always TRUE
@@ -113,7 +126,7 @@ class CommandRequestHandler implements RequestHandlerInterface
     public function canHandleRequest(InputInterface $input)
     {
         $this->populateAvailableCommands();
-        return $this->getCommandToRun($input) !== false;
+        return true;
     }
 
     /**
