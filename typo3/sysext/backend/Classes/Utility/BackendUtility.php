@@ -3215,9 +3215,11 @@ class BackendUtility
      * @param string $ajaxIdentifier Identifier of the AJAX callback
      * @param array $urlParameters URL parameters that should be added as key value pairs
      * @return string Calculated URL
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the UriBuilder directly.
      */
     public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = array())
     {
+        GeneralUtility::logDeprecatedFunction();
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {

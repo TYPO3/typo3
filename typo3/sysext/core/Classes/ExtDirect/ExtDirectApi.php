@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\ExtDirect;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -142,7 +143,9 @@ class ExtDirectApi
         if (TYPO3_MODE === 'FE') {
             $url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=' . rawurlencode($namespace));
         } else {
-            $url = BackendUtility::getAjaxUrl('ext_direct_route', array('namespace' => $namespace));
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = $uriBuilder->buildUriFromRoute('ajax_ext_direct_route', ['namespace' => $namespace]);
         }
         return $url;
     }

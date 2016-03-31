@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,7 +95,16 @@ class Spellchecker extends RteHtmlAreaApi
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.contentISOLanguage = "' . $this->configuration['contentISOLanguage'] . '";';
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";';
             $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
-            $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . ($this->isFrontend() || $this->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : BackendUtility::getAjaxUrl('rtehtmlarea_spellchecker')) . '";';
+
+            // Get the eID script or the AJAX path
+            if ($this->isFrontend() || $this->isFrontendEditActive()) {
+                $path = ($GLOBALS['TSFE']->absRefPrefix ?: '') . 'index.php?eID=rtehtmlarea_spellchecker';
+            } else {
+                /** @var UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $path = $uriBuilder->buildUriFromRoute('ajax_rtehtmlarea_spellchecker');
+            }
+            $jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . $path . '";';
         }
         return implode(LF, $jsArray);
     }

@@ -136,9 +136,11 @@ class UriBuilder
      * @param string $referenceType The type of reference to be generated (one of the constants)
      *
      * @return Uri The generated Uri
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the buildUriFromRoute() method
      */
     public function buildUriFromAjaxId($ajaxIdentifier, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
     {
+        GeneralUtility::logDeprecatedFunction();
         $parameters = array(
             'ajaxID' => $ajaxIdentifier
         ) + $parameters;

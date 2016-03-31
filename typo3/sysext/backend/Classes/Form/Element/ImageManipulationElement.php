@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -106,8 +107,10 @@ class ImageManipulationElement extends AbstractFormElement
             );
             $wizardData['token'] = GeneralUtility::hmac(implode('|', $wizardData), 'ImageManipulationWizard');
 
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $buttonAttributes = array(
-                'data-url' => BackendUtility::getAjaxUrl('wizard_image_manipulation', $wizardData),
+                'data-url' => $uriBuilder->buildUriFromRoute('ajax_wizard_image_manipulation', $wizardData),
                 'data-severity' => 'notice',
                 'data-image-name' => $file->getNameWithoutExtension(),
                 'data-image-uid' => $file->getUid(),
