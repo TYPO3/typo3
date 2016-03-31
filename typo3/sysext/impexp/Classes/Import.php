@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -1590,9 +1591,13 @@ class Import extends ImportExport
             return false;
         }
         // Just for security, check again. Should actually not be necessary.
-        if (!$fileProcObj->checkPathAgainstMounts($fileName) && !$bypassMountCheck) {
-            $this->error('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
-            return false;
+        if (!$bypassMountCheck) {
+            try {
+                ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(dirname($fileName));
+            } catch (InsufficientFolderAccessPermissionsException $e) {
+                $this->error('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
+                return false;
+            }
         }
         $fI = GeneralUtility::split_fileref($fileName);
         if (!$fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) && (!$this->allowPHPScripts || !$this->getBackendUser()->isAdmin())) {

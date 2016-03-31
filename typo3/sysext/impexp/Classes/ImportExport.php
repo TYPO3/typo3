@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -939,26 +941,22 @@ abstract class ImportExport
      */
     public function verifyFolderAccess($dirPrefix, $noAlternative = false)
     {
-        $fileProcObj = $this->getFileProcObj();
-        // Check, if dirPrefix is inside a valid Filemount for user:
-        $result = $fileProcObj->checkPathAgainstMounts(PATH_site . $dirPrefix);
-        // If not, try to find another relative filemount and use that instead:
-        if (!$result) {
-            if ($noAlternative) {
-                return false;
-            }
-            // Find first web folder:
-            $result = $fileProcObj->findFirstWebFolder();
-            // If that succeeded, return the path to it:
-            if ($result) {
-                // Remove the "fileadmin/" prefix of input path - and append the rest to the return value:
-                if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
-                    $dirPrefix = substr($dirPrefix, strlen($this->fileadminFolderName . '/'));
-                }
-                return PathUtility::stripPathSitePrefix($fileProcObj->mounts[$result]['path'] . $dirPrefix);
-            }
-        } else {
+        // Check the absolute path for PATH_site, if the user has access - no problem
+        try {
+            ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($dirPrefix);
             return $dirPrefix;
+        } catch (InsufficientFolderAccessPermissionsException $e) {
+            // Check all storages available for the user as alternative
+            if (!$noAlternative) {
+                $fileStorages = $this->getBackendUser()->getFileStorages();
+                foreach ($fileStorages as $fileStorage) {
+                    try {
+                        $folder = $fileStorage->getFolder(rtrim($dirPrefix, '/'));
+                        return $folder->getPublicUrl();
+                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                    }
+                }
+            }
         }
         return false;
     }
