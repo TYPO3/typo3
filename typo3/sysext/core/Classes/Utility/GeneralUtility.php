@@ -1619,9 +1619,11 @@ class GeneralUtility
      * @param string $charset Forced charset to prologue
      * @return string An XML string made from the input content in the array.
      * @see xml2array(),array2xml()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
      */
     public static function array2xml_cs(array $array, $docTag = 'phparray', array $options = array(), $charset = '')
     {
+        static::logDeprecatedFunction();
         // Set default charset unless explicitly specified
         $charset = $charset ?: 'utf-8';
         // Return XML:
@@ -1629,8 +1631,6 @@ class GeneralUtility
     }
 
     /**
-     * Deprecated to call directly (unless you are aware of using XML prologues)! Use "array2xml_cs" instead (which adds an XML-prologue)
-     *
      * Converts a PHP array into an XML string.
      * The XML output is optimized for readability since associative keys are used as tag names.
      * This also means that only alphanumeric characters are allowed in the tag names AND only keys NOT starting with numbers (so watch your usage of keys!). However there are options you can set to avoid this problem.

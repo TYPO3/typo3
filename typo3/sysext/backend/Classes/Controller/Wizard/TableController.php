@@ -279,7 +279,7 @@ class TableController extends AbstractWizardController
             // Convert to string (either line based or XML):
             if ($this->xmlStorage) {
                 // Convert the input array to XML:
-                $bodyText = GeneralUtility::array2xml_cs($this->TABLECFG['c'], 'T3TableWizard');
+                $bodyText = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . GeneralUtility::array2xml($this->TABLECFG['c'], '', 0, 'T3TableWizard');
                 // Setting cfgArr directly from the input:
                 $configuration = $this->TABLECFG['c'];
             } else {
