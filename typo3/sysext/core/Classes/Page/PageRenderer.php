@@ -1597,6 +1597,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function addRequireJsConfiguration(array $configuration)
     {
+        if (TYPO3_MODE === 'BE') {
+            // Load RequireJS in backend context at first. Doing this in FE could break the output
+            $this->loadRequireJs();
+        }
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->requireJsConfig, $configuration);
     }
 
