@@ -757,7 +757,7 @@ class SetupModuleController extends AbstractModule
                 $opt[] = '<option value="' . (int)$rr['uid'] . '"' . ($this->simUser === (int)$rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
             if (!empty($opt)) {
-                $this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+                $this->simulateSelector = '<select id="field_simulate" class="form-control" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
             }
         }
         // This can only be set if the previous code was executed.
@@ -787,12 +787,12 @@ class SetupModuleController extends AbstractModule
             return '';
         }
 
-        return '<p>'
-            . '<label for="field_simulate" style="margin-right: 20px;">'
-            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate'))
-            . '</label>'
-            . $this->simulateSelector
-            . '</p>';
+        return '<div class="form-inline"><div class="form-group"><p>'
+             . '<label for="field_simulate" style="margin-right: 20px;">'
+             . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate'))
+             . '</label>'
+             . $this->simulateSelector
+             . '</p></div></div>';
     }
 
     /**
