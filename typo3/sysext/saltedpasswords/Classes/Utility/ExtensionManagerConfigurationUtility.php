@@ -169,7 +169,7 @@ class ExtensionManagerConfigurationUtility
         $this->init();
         $extConf = $this->extConf['BE'];
         // The backend is called over SSL
-        $isBackendCalledOverSsl = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0;
+        $isBackendCalledOverSsl = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'];
         $rsaAuthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
         // SSL configured?
         $lang = $this->getLanguageService();

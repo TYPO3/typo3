@@ -914,22 +914,16 @@ class Bootstrap
      */
     public function checkSslBackendAndRedirectIfNeeded()
     {
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
-            if (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-                if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 2) {
-                    if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
-                        $sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-                    } else {
-                        $sslPortSuffix = '';
-                    }
-                    list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
-                    list($server, $address) = explode('/', $url, 2);
-                    header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
-                    die;
-                } else {
-                    throw new \RuntimeException('TYPO3 Backend not accessed via SSL: TYPO3 Backend is configured to only be accessible through SSL. Change the URL in your browser and try again.', 1389265726);
-                }
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+            if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
+                $sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
+            } else {
+                $sslPortSuffix = '';
             }
+            list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
+            list($server, $address) = explode('/', $url, 2);
+            header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
+            die;
         }
         return $this;
     }

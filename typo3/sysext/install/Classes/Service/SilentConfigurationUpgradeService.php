@@ -121,6 +121,7 @@ class SilentConfigurationUpgradeService
         $this->setImageMagickDetailSettings();
         $this->removeObsoleteLocalConfigurationSettings();
         $this->migrateThumbnailsPngSetting();
+        $this->migrateLockSslSetting();
     }
 
     /**
@@ -626,6 +627,25 @@ class SilentConfigurationUpgradeService
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
             $this->throwRedirectException();
+        }
+    }
+
+    /**
+     * Migrate the configuration setting BE/lockSSL to boolean if set in the LocalConfiguration.php file
+     *
+     * @return void
+     */
+    protected function migrateLockSslSetting()
+    {
+        try {
+            $currentOption = $this->configurationManager->getLocalConfigurationValueByPath('BE/lockSSL');
+            // check if the current option is an integer/string and if it is active
+            if (!is_bool($currentOption) && (int)$currentOption > 0) {
+                $this->configurationManager->setLocalConfigurationValueByPath('BE/lockSSL', true);
+                $this->throwRedirectException();
+            }
+        } catch (\RuntimeException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
         }
     }
 }
