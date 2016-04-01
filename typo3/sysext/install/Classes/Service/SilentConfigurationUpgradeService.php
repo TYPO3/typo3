@@ -94,6 +94,9 @@ class SilentConfigurationUpgradeService
         'SYS/curlProxyTunnel',
         'SYS/curlProxyUserPass',
         'SYS/curlTimeout',
+        // #75355
+        'BE/niceFlexFormXMLtags',
+        'BE/compactFlexFormXML'
     );
 
     public function __construct(ConfigurationManager $configurationManager = null)

@@ -316,9 +316,7 @@ class FlexFormTools
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {
             $this->flexArray2Xml_options['useCDATA'] = 1;
         }
-        $options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
-        $spaceInd = $GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4;
-        $output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
+        $output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $this->flexArray2Xml_options);
         if ($addPrologue) {
             $output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
         }
