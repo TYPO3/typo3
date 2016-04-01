@@ -36,7 +36,6 @@ class FlexFormElementContainer extends AbstractContainer
      */
     public function render()
     {
-        $table = $this->data['tableName'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormRowData = $this->data['flexFormRowData'];
         $flexFormFormPrefix = $this->data['flexFormFormPrefix'];
@@ -50,6 +49,8 @@ class FlexFormElementContainer extends AbstractContainer
                 !is_array($flexFormFieldArray)
                 // Not a section or container and not a list of single items
                 || (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
+                // Type passthrough is not rendered
+                || (isset($flexFormFieldArray['config']['type']) && $flexFormFieldArray['config']['type'] === 'passthrough')
             ) {
                 continue;
             }

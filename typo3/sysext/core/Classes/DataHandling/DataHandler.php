@@ -3084,6 +3084,20 @@ class DataHandler
                     $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
                 }
             } else {
+                // init with value from config for passthrough fields
+                if (!empty($dsConf['TCEforms']['config']['type']) && $dsConf['TCEforms']['config']['type'] === 'passthrough') {
+                    if (!empty($dataValues_current[$key]['vDEF'])) {
+                        // If there is existing value, keep it
+                        $dataValues[$key]['vDEF'] = $dataValues_current[$key]['vDEF'];
+                    } elseif (
+                        !empty($dsConf['TCEforms']['config']['default'])
+                        && isset($pParams[1])
+                        && !MathUtility::canBeInterpretedAsInteger($pParams[1])
+                    ) {
+                        // If is new record and a default is specified for field, use it.
+                        $dataValues[$key]['vDEF'] = $dsConf['TCEforms']['config']['default'];
+                    }
+                }
                 if (!is_array($dsConf['TCEforms']['config']) || !is_array($dataValues[$key])) {
                     continue;
                 }
