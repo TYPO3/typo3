@@ -43,12 +43,12 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      * Get the widget rendering context, or throw an exception if it cannot be found.
      *
      * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     protected function getWidgetRenderingContext()
     {
         $renderingContext = $this->getWidgetContext()->getViewHelperChildNodeRenderingContext();
-        if (!$renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface) {
+        if (!$renderingContext instanceof \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface) {
             throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
         }
         return $renderingContext;

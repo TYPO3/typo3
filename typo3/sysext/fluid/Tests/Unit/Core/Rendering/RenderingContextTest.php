@@ -24,7 +24,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Parsing state
      *
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     protected $renderingContext;
 

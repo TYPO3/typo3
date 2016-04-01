@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @api
  */
-abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper implements ViewHelperInterface
+abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
 {
     /**
      * TRUE if arguments have already been initialized
@@ -60,7 +60,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     protected $controllerContext;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     protected $renderingContext;
 
@@ -90,15 +90,17 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     protected $objectManager;
 
     /**
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return void
      */
-    public function setRenderingContext(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
+    public function setRenderingContext(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
         $this->renderingContext = $renderingContext;
-        $this->controllerContext = $renderingContext->getControllerContext();
         $this->templateVariableContainer = $renderingContext->getVariableProvider();
         $this->viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+        if ($renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext) {
+            $this->controllerContext = $renderingContext->getControllerContext();
+        }
     }
 
     /**
@@ -128,7 +130,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      * @param string $description Description of the argument
      * @param bool $required If TRUE, argument is required. Defaults to FALSE.
      * @param mixed $defaultValue Default value of argument
-     * @return ViewHelperInterface $this, to allow chaining.
+     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface $this, to allow chaining.
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @api
      */
@@ -151,7 +153,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      * @param string $description Description of the argument
      * @param bool $required If TRUE, argument is required. Defaults to FALSE.
      * @param mixed $defaultValue Default value of argument
-     * @return ViewHelperInterface $this, to allow chaining.
+     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface $this, to allow chaining.
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @api
      */
@@ -198,7 +200,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     {
         $renderMethodParameters = array();
         foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
-            if ($argumentDefinition->isMethodParameter()) {
+            if ($argumentDefinition instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition && $argumentDefinition->isMethodParameter()) {
                 $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
             }
         }

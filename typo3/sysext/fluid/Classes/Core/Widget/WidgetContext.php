@@ -70,7 +70,7 @@ class WidgetContext
      * Only available inside non-AJAX requests.
      * @todo rename to something more meaningful.
      *
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      * @transient
      */
     protected $viewHelperChildNodeRenderingContext;
@@ -249,10 +249,10 @@ class WidgetContext
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes
-     * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext
      * @return void
      */
-    public function setViewHelperChildNodes(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext)
+    public function setViewHelperChildNodes(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext)
     {
         $this->viewHelperChildNodes = $viewHelperChildNodes;
         $this->viewHelperChildNodeRenderingContext = $viewHelperChildNodeRenderingContext;
@@ -267,7 +267,7 @@ class WidgetContext
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     public function getViewHelperChildNodeRenderingContext()
     {

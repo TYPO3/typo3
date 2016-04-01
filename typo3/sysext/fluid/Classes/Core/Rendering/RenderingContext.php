@@ -132,6 +132,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->setTemplateProcessors(array(
             $objectManager->get(XmlnsNamespaceTemplatePreProcessor::class),
         ));
+        /** @var FluidTemplateCache $cache */
         $cache = $objectManager->get(CacheManager::class)->getCache('fluid_template');
         if (is_a($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend'], FluidTemplateCache::class, true)) {
             $this->setCache($cache);

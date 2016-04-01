@@ -136,7 +136,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $rootNode->expects($this->at(1))->method('addChildNode')->with($node2);
         $rootNode->expects($this->at(2))->method('addChildNode')->with($node3);
         $this->objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class)->will($this->returnValue($rootNode));
-        $renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class);
+        $renderingContext = $this->getMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
         $this->viewHelper->_set('renderingContext', $renderingContext);
         $this->widgetContext->expects($this->once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
         $this->viewHelper->setChildNodes(array($node1, $node2, $node3));
