@@ -18,14 +18,21 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Displays icon identified by icon identifier
  */
 class IconViewHelper extends AbstractViewHelper
 {
+    /**
+     * View helper returns HTML, thus we need to disable output escaping
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Prints icon html for $identifier key
      *
