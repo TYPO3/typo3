@@ -51,8 +51,9 @@ class DateValidatorTest extends AbstractValidatorTest
     /**
      * @test
      * @dataProvider validDateProvider
+     * @param array $input
      */
-    public function validateForValidInputHasEmptyErrorResult($input)
+    public function validateForValidInputHasEmptyErrorResult(array $input)
     {
         $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
         $options['format'] = $input[0];
@@ -66,12 +67,17 @@ class DateValidatorTest extends AbstractValidatorTest
     /**
      * @test
      * @dataProvider invalidDateProvider
+     * @param array $input
      */
-    public function validateForInvalidInputHasNotEmptyErrorResult($input)
+    public function validateForInvalidInputHasNotEmptyErrorResult(array $input)
     {
         $options = array('element' => uniqid('test'), 'errorMessage' => uniqid('error'));
         $options['format'] = $input[0];
         $subject = $this->createSubject($options);
+
+        $subject->expects($this->once())
+            ->method('humanReadableDateFormat')
+            ->willReturnArgument(0);
 
         $this->assertNotEmpty(
             $subject->validate($input[1])->getErrors()
