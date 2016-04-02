@@ -28,3 +28,5 @@ Migration
 =========
 
 Use ``getVariableProvider`` instead of ``getTemplateVariableContainer``.
+
+.. index:: php

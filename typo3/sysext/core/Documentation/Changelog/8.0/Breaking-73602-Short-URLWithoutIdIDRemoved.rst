@@ -29,3 +29,5 @@ Migration
 =========
 
 Use the proper ``index.php?id=23`` when using URLs to be called in the frontend.
+
+.. index:: routing, php

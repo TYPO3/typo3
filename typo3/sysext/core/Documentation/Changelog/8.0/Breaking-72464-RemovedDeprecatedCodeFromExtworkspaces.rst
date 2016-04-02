@@ -41,3 +41,5 @@ Migration
 
 First migrate to TYPO3 CMS 7 and use the accordant upgrade wizard
 (WorkspacesNotificationSettingsUpdate) and then upgrade to TYPO3 CMS 8.
+
+.. index:: php

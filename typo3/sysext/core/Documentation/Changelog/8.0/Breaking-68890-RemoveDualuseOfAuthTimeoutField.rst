@@ -22,3 +22,5 @@ Migration
 =========
 
 Extensions modifying ``auth_timeout_field`` to a numeric value should switch to using ``sessionTimeout``.
+
+.. index:: php, setting

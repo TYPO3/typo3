@@ -41,3 +41,5 @@ For ``DocumentTemplate->JScodeLibArray`` use PageRenderer instead.
 If the option ``$TYPO3_CONF_VARS[SYS][displayErrors]`` is set to "2" use "-1" instead.
 
 All table definitions should be moved to <your_extension>/Configuration/TCA/<table_name>
+
+.. index:: php

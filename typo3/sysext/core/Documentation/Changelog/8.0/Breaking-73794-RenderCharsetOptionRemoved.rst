@@ -31,3 +31,5 @@ Migration
 
 Remove the TypoScript option from any TypoScript settings. If data sources (files, database input) are used that are
 different than UTF-8, a manual conversion via the CharsetConverter PHP class is needed.
+
+.. index:: typoscript

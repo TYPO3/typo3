@@ -68,3 +68,5 @@ Migration
 * Remove argument ``alternateBackgroundColors`` from ``f:be.tableList`` where found.
 * Update namespace of parent class in ViewHelpers subclassing any of the classes listed above.
 * Update ViewHelper class to use ``escapeChildren`` and/or ``escapeOutput`` depending on desired behavior.
+
+.. index:: fluid

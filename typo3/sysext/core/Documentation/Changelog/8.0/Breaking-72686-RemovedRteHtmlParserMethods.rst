@@ -36,3 +36,5 @@ Migration
 Use ``GeneralUtility::getUrl()`` instead of ``RteHtmlParser->getUrl()``.
 
 Use ``GeneralUtility::getIndpEnv('TYPO3_SITE_URL')`` instead of ``RteHtmlParser->siteUrl()``.
+
+.. index:: php, htmlarea

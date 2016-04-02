@@ -27,3 +27,5 @@ Migration
 
 Use the Install Tool and the Preset information to see which other, better supported conversion libraries (mbstring
 or iconv) are available.
+
+.. index:: setting

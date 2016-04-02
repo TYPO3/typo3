@@ -36,3 +36,5 @@ Migration
 ``RecordList::printContent()`` use ``RecordList::mainAction()`` instead
 ``AbstractLinkBrowserController::initVariables()`` no replacement for using multiple UIDs
 ``ElementBrowserFramesetController::printContent()`` use ``ElementBrowserFramesetController::mainAction()`` instead
+
+.. index:: php

@@ -37,3 +37,5 @@ Migration
 ``UserElementsController::printContent()`` call ``UserElementsController::mainAction()`` instead
 ``ParseHtmlController::main()`` call ``ParseHtmlController::main_parse_html()`` instead
 ``ParseHtmlController::printContent()`` call ``ParseHtmlController::mainAction()`` instead
+
+.. index:: php

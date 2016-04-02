@@ -31,3 +31,5 @@ Migration
 =========
 
 Some replacements are available in the ``\TYPO3\CMS\Backend\Template\ModuleTemplate`` class.
+
+.. index:: php

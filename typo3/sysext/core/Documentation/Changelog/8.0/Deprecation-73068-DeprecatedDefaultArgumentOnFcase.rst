@@ -36,3 +36,5 @@ Migration
 =========
 
 Switch ``f:case`` to ``f:defaultCase`` for the case node that is your default case.
+
+.. index:: fluid

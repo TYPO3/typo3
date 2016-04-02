@@ -28,3 +28,5 @@ Migration
 =========
 
 Use the Backend Ajax Routes logic instead.
+
+.. index:: routing, javascript

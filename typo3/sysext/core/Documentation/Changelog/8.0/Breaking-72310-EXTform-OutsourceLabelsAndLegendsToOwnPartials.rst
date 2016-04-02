@@ -48,3 +48,5 @@ New:
 .. code-block:: html
 
         {f:render(partial: '{themeName}/Show/AdditionalElements/Label', arguments: {model: model, themeName: themeName})}
+
+.. index:: fluid

@@ -35,3 +35,5 @@ Migration
 ``LocalizationFactory::getParsedData`` only supports the new location of language files
 ``LocallangArrayParser`` use XLIFF language files now
 ``\TYPO3\CMS\Lang\LanguageService::localizedFileRef`` no replacement; not needed when XLIFF files are used
+
+.. index:: php

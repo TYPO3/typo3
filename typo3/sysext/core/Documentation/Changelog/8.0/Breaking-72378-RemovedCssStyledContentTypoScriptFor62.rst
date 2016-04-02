@@ -24,3 +24,5 @@ Migration
 =========
 
 Use the current TypoScript used in CSS Styled Content.
+
+.. index:: typoscript

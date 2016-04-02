@@ -32,3 +32,5 @@ Affected Installations
 ======================
 
 Instances which use custom calls to the methods or classes above.
+
+.. index:: php

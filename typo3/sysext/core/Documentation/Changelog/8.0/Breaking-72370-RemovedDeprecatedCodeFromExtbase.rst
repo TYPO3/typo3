@@ -29,3 +29,5 @@ Migration
 
 Use the according method in ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule()`` instead of the removed one from ext:extbase.
 Objects are instantiated differently calling ``parent::__wakeup()`` is no longer necessary. No migration needed.
+
+.. index:: php

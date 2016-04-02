@@ -25,3 +25,5 @@ Migration
 =========
 
 Use ``entryHtmlParser`` and ``exitHtmlParser`` to apply htmlspecialchars while transforming content from the RTE or to the RTE.
+
+.. index:: typoscript

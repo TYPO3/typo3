@@ -27,3 +27,5 @@ Migration
 =========
 
 Remove any calls to the method and the public property.
+
+.. index:: php

@@ -29,3 +29,5 @@ Affected Installations
 ======================
 
 Any installation which uses a third-party extension that modifies the HtmlParsing via PHP.
+
+.. index:: php

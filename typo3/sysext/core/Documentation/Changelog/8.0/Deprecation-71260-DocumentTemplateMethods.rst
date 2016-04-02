@@ -30,3 +30,5 @@ Migration
 =========
 
 Use plain HTML instead.
+
+.. index:: php

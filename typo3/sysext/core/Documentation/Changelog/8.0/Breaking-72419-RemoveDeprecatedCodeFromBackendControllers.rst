@@ -52,3 +52,5 @@ Migration
 =========
 
 For ``BackendController::addToolbarItem`` Toolbar items are registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] now.
+
+.. index:: php

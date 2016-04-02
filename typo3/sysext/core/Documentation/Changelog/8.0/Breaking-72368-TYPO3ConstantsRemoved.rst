@@ -28,3 +28,5 @@ Migration
 =========
 
 Use ``TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI`` or ``TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL`` instead.
+
+.. index:: php

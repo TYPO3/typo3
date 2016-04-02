@@ -29,3 +29,5 @@ Affected Installations
 ======================
 
 TYPO3 instances having the option above set to "1".
+
+.. index:: setting

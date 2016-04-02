@@ -46,3 +46,5 @@ Migration
 ``substituteMarkerArray()`` call ``MarkerBasedTemplateService::substituteMarkerArray()`` instead
 ``substituteMarkerAndSubpartArrayRecursive()`` call ``MarkerBasedTemplateService::substituteMarkerAndSubpartArrayRecursive()`` instead
 ``XHTML_clean()`` call ``HtmlParser::HTMLcleaner()`` instead
+
+.. index:: php

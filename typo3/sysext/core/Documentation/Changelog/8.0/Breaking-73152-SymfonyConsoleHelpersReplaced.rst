@@ -45,3 +45,5 @@ Remove the 2nd argument when calling these methods:
 
 - ``ConsoleOutput::progressAdvance()``
 - ``ConsoleOutput::progressSet()``
+
+.. index:: php

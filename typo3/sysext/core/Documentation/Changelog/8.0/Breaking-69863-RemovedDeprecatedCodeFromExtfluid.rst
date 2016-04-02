@@ -49,3 +49,5 @@ For ``StandaloneView::getPartialRootPath`` use ``StandaloneView::setPartialRootP
 Keep in mind that these methods expect an **array** instead of a string.
 
 For ``IconViewHelper`` use ``\TYPO3\CMS\Core\ViewHelpers\IconViewHelper`` instead.
+
+.. index:: php

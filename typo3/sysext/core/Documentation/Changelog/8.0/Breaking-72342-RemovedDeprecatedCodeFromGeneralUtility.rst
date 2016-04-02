@@ -63,3 +63,5 @@ For ``quoted_printable()`` use mailer API instead.
 For ``encodeHeader()`` use mailer API instead.
 For ``substUrlsInPlainText()`` use mailer API instead.
 For ``cleanOutputBuffers()`` use ob_* functions directly or ``self::flushOutputBuffers.``
+
+.. index:: php

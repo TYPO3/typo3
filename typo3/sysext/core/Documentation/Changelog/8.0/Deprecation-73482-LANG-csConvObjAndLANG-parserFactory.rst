@@ -29,3 +29,5 @@ Migration
 Instantiate CharsetConverter (csConvObj) and LocalizationFactory (parserFactory) via ``GeneralUtility::makeInstance``
 directly if needed, as they are Singleton objects and then fetched from the General Utility Object container
 functionalities.
+
+.. index:: php

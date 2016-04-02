@@ -32,3 +32,5 @@ Migration
 
 Change all occurrences of the TypoScript setting ``plugin.tx_indexedsearch.settings.showRules = 0``
 to ``plugin.tx_indexedsearch.settings.displayRules = 1``.
+
+.. index:: setting, typoscript

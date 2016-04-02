@@ -25,3 +25,5 @@ Migration
 =========
 
 Installations using pi1 should migrate to Extbase plugin or install compatibility7 extension.
+
+.. index:: php

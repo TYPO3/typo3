@@ -20,3 +20,5 @@ Migration
 =========
 
 Use the newly introduced ``getBackendUserAuthentication()`` method.
+
+.. index:: php

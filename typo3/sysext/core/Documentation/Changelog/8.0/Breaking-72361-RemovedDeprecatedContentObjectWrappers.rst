@@ -62,3 +62,5 @@ Example for the SVG() ContentObject call:
 .. code-block:: php
 
 	$cObj->cObjGetSingle('SVG', $conf);
+
+.. index:: php

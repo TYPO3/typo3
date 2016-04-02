@@ -25,3 +25,5 @@ Migration
 =========
 
 Use or extend one or both of the new classes (TYPO3\CMS\Impexp\Import and TYPO3\CMS\Impexp\Export).
+
+.. index:: php

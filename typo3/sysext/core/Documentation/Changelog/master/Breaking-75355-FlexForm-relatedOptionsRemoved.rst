@@ -30,3 +30,5 @@ Affected Installations
 Any installation having these properties set in their LocalConfiguration.php.
 
 Any extension evaluating these parameters on its own.
+
+.. index:: flexform

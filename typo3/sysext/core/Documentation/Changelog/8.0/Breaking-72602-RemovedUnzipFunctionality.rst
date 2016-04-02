@@ -26,3 +26,5 @@ Migration
 =========
 
 Use a third-party extension to integrate unzip functionality into TYPO3.
+
+.. index:: php

@@ -32,3 +32,5 @@ If a charset conversion is necessary, the conversion can be done directly by ins
 	/** @var \TYPO3\CMS\Core\Charset\CharsetConverter $charsetConverter */
 	$charsetConverter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 	$output = $charsetConverter->conv($str, $charsetConverter->parse_charset($from), 'utf-8');
+
+.. index:: php

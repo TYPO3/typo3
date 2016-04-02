@@ -13,3 +13,5 @@ Impact
 ======
 
 It is not possible to have just "aboutmodules" or "about" installed without having the other module show as well.
+
+.. index:: php

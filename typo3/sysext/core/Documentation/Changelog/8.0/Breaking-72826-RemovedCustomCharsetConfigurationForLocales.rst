@@ -48,3 +48,5 @@ the subproperty ``charset`` can be set to the custom character set (e.g. ``iso-8
 
 In each case, it should be configured that the ``config.locale_all`` option should have a character set given, to avoid
 any side-effects with the TypoScript stdWrap option ``strftime``.
+
+.. index:: php, typoscript

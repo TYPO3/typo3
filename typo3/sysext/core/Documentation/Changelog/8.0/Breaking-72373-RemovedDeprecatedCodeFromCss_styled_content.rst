@@ -28,3 +28,5 @@ Migration
 =========
 
 Use default TypoScript from CSS Styled Content derived from the current version.
+
+.. index:: php

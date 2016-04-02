@@ -49,3 +49,5 @@ your extension like this:
             'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf'
         )
     );
+
+.. index:: php, icons

@@ -24,3 +24,5 @@ Migration
 =========
 
 Implement the method by yourself.
+
+.. index:: php

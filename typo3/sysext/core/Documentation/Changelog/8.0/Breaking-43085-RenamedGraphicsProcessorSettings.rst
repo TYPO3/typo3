@@ -62,3 +62,5 @@ im\_stripProfileCommand        processor\_stripColorProfileCommand
 im\_useStripProfileByDefault   processor\_stripColorProfileByDefault
 colorspace                     processor\_colorspace
 ============================   ===============================================
+
+.. index:: setting, LocalConfiguration.php

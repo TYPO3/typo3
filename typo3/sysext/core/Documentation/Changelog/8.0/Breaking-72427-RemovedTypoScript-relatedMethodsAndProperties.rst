@@ -25,3 +25,5 @@ Impact
 Calling the methods above will result in a PHP fatal error.
 
 Using the removed TypoScript conditions will have no effect anymore.
+
+.. index:: php, typoscript

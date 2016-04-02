@@ -27,3 +27,5 @@ Migration
 
 The install tool automatically sets the value of ``$TYPO3_CONF_VARS[GFX][thumbnails_png]`` to true,
 if it has been set to 1, 2 or 3 previously.
+
+.. index:: setting

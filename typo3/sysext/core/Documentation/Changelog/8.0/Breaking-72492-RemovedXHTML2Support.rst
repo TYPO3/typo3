@@ -24,3 +24,5 @@ Migration
 =========
 
 Disable all header code and set your own doctype.
+
+.. index:: html

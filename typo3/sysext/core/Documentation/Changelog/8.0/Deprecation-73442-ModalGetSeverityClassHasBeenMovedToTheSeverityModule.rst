@@ -24,3 +24,5 @@ Migration
 =========
 
 Change the calls to :js:`Severity.getCssClass(severity)`.
+
+.. index:: javascript

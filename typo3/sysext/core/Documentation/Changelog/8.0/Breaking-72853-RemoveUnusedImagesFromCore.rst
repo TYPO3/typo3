@@ -103,3 +103,5 @@ Migration
 =========
 
 No migration
+
+.. index:: icons

@@ -25,3 +25,5 @@ Migration
 =========
 
 Change template to not depend on single quotes being escaped in any ObjectAccessor, consider adding ``{variable -> f:format.htmlspecialchars(keepQuotes: 1)}`` or ``<f:format.htmlspecialchars keepQuotes="1">{variable}</f:format.htmlentities>`` when accessing variables but be aware of possible XSS implications due to incomplete escaping.
+
+.. index:: fluid

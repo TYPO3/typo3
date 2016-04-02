@@ -32,3 +32,5 @@ Migration
 Use the RTE processing option ``RTE.default.proc.allowTags`` to include the tags without rewriting them to custom <span> tags.
 
 If special handling is still necessary, an existing hook can be used to re-implement the logic.
+
+.. index:: typoscript, htmlarea

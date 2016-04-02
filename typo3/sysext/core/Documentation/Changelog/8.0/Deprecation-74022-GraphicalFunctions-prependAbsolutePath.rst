@@ -24,3 +24,5 @@ Migration
 =========
 
 Use ``GeneralUtility::getFileAbsFileName()`` instead.
+
+.. index:: php

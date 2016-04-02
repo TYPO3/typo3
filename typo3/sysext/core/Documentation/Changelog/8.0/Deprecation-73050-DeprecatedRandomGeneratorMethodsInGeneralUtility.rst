@@ -28,3 +28,5 @@ Migration
 Replace calls to :php:`GeneralUtility::generateRandomBytes()` with :php:`GeneralUtility::makeInstance(Random::class)->generateRandomBytes()`.
 
 Also replace calls to :php:`GeneralUtility::getRandomHexString()` with :php:`GeneralUtility::makeInstance(Random::class)->generateRandomHexString()`.
+
+.. index:: php

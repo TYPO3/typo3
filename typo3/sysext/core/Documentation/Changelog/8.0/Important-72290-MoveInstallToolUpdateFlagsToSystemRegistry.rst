@@ -9,3 +9,5 @@ The flags to mark install tool updates (aka "wizards") as done have been moved f
 ``LocalConfiguration.php`` to the system registry in the database.
 
 The update can be performed from the install tool.
+
+.. index:: settings

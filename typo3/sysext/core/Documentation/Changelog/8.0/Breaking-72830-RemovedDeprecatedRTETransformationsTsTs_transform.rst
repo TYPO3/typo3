@@ -29,3 +29,5 @@ Migration
 =========
 
 Use ``ts_css`` instead, which is set by default since TYPO3 4.0.
+
+.. index:: typoscript

@@ -21,3 +21,5 @@ Affected Installations
 ======================
 
 TYPO3 instances with custom Rich Text Editors (EXT:rtehtmlarea is not affected).
+
+.. index:: typoscript, htmlarea

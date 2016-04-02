@@ -28,3 +28,5 @@ Migration
 =========
 
 Implement the two new methods in custom implementations of the ``FolderInterface``.
+
+.. index:: php

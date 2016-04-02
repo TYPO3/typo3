@@ -48,3 +48,5 @@ Migration
 
 Move all existing code in extensions that link to the deprecated entry points to use methods
 like ``BackendUtility::getModuleUrl()`` and ``BackendUtility::getAjaxUrl()`` or the UriBuilder class.
+
+.. index:: php

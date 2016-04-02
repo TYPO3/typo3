@@ -35,3 +35,4 @@ Migration
 * ``Bootstrap->executeExtTablesAdditionalFile()`` (TYPO3_extTableDef_script) Move your TCA overrides to Configuration/TCA/Overrides of your project specific extension, or slot the signal "tcaIsBeingBuilt" for further processing.
 * ``DatabaseTreeDataProvider->emitDeprecatedPostProcessTreeDataSignal()`` Update the signal name to TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider.
 
+.. index:: php

@@ -30,3 +30,5 @@ Migration
 ``MySQLActualType`` call ``dbmsSpecifics->getNativeFieldType`` instead
 ``MySQLMetaType`` call ``dbmsSpecifics->getMetaFieldType`` instead
 ``MetaType`` call ``getMetadata`` instead
+
+.. index:: php

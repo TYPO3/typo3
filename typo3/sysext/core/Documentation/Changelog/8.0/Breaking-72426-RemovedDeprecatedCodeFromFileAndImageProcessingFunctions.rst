@@ -40,3 +40,5 @@ Migration
 ``FileListController::$MCONF`` no replacement, configuration is done when registering the module in ext_tables.php
 ``FileList::getButtonsAndOtherMarkers`` buttons are now defined in FileListController
 ``GraphicalFunctions::pngToGifByImagemagick`` no replacement, the png_to_gif option has been removed
+
+.. index:: php

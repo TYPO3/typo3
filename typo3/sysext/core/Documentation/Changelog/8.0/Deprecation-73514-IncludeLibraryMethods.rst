@@ -26,3 +26,5 @@ Migration
 =========
 
 Use proper object orientation and class loading methods to load code in the Frontend when necessary.
+
+.. index:: php

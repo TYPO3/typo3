@@ -29,3 +29,5 @@ Migration
 =========
 
 Use the option ``routeTarget`` when registering a module, and PSR-7 equivalent entry-points in module controllers.
+
+.. index:: php

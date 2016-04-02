@@ -27,3 +27,5 @@ Migration
 =========
 
 No migration needed. Make sure that all external TypoScript configuration files are stored with UTF-8 character set.
+
+.. index:: php

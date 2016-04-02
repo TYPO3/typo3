@@ -25,3 +25,5 @@ Migration
 =========
 
 Replace calls to ``getContentObject()`` with ``getContentObjectRenderer()``.
+
+.. index:: php

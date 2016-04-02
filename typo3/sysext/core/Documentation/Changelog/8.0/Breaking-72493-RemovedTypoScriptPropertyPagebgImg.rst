@@ -18,3 +18,5 @@ Migration
 =========
 
 Use the TypoScript property ``page.bodyTagCObject`` instead.
+
+.. index:: typoscript

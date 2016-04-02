@@ -27,3 +27,5 @@ Migration
 
 Make sure everything that was previously loaded via includeLibs is now encapsulated in proper PHP classes,
 which is referenced by USER/USER_INT when needed.
+
+.. index:: php, typoscript

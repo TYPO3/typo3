@@ -25,3 +25,5 @@ Migration
 
 Simply remove the methods from the affected code, as these methods are not needed anymore. All calculations
 for the paths are now done automatically.
+
+.. index:: php

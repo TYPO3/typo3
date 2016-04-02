@@ -26,3 +26,5 @@ Migration
 =========
 
 Use a custom RequestHandler, the Backend Routing, AJAX Registration or the Module Configuration for skipping the user authentication when necessary.
+
+.. index:: php

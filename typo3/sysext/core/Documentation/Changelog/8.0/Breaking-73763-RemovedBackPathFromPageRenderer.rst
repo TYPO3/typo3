@@ -27,3 +27,5 @@ Migration
 =========
 
 Simply remove the call to ``PageRenderer->setBackPath()`` in your own scripts.
+
+.. index:: php

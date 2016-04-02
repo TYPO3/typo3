@@ -39,3 +39,5 @@ Migration
 TypoScript option ``jumpurl`` can be passed in the ``typolinkConfiguration`` property.
 
 TypoScript property ``andWhere`` can be migrated to ``where``.
+
+.. index:: php, typoscript

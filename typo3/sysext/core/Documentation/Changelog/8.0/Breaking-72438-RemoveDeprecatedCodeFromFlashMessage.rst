@@ -76,3 +76,5 @@ This ViewHelper can also be used to show some help or instruction how to use a b
 ------------------------
 For any other information e.g. a list of files which has changed, must be handled in the action / view of the module or plugin. This is not a use case for a FlashMessage or Callout!
 Example: Display a list of a hundred files within a FlashMessage or Callout is a bad idea, build custom markup in the view to handle this kind of message.
+
+.. index:: php

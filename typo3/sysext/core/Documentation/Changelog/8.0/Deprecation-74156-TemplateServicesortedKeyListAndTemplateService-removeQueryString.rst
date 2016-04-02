@@ -25,3 +25,5 @@ Migration
 =========
 
 Use ``ArrayUtility::filterAndSortByNumericKeys`` and ``rtrim($url, '?')`` as drop-in replacements.
+
+.. index:: php

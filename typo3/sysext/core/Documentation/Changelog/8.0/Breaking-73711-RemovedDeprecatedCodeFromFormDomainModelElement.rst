@@ -19,3 +19,5 @@ Affected Installations
 ======================
 
 Instances which use the methods above to access the protected ``$layout`` variable.
+
+.. index:: php

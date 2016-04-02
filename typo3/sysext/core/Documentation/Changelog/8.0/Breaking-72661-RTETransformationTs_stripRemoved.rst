@@ -29,3 +29,5 @@ Migration
 Use TSconfig options like ``RTE.default.removeTags`` to specify which tags should be removed when saving data
 to the database, or even better ``RTE.default.proc.allowTags`` which tags are whitelisted to the database together
 with the default RTE processing command ``ts_css``.
+
+.. index:: typoscript, htmlarea

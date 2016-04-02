@@ -19,3 +19,5 @@ Impact
 ======
 
 The option ``.includeLibs`` on a plugin TypoScript object has no effect anymore.
+
+.. index:: php, typoscript
