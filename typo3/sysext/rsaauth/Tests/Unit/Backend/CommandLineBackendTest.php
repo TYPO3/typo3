@@ -29,7 +29,7 @@ class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     protected function setUp()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('This test is not available on Windows.');
+            $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
         }
 
         $this->subject = new CommandLineBackend();

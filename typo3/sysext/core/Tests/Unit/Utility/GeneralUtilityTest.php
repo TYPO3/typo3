@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
+    const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
     /**
      * @var array A backup of registered singleton instances
      */
@@ -1594,9 +1595,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithSlash()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
+        $_SERVER['SCRIPT_NAME'] = '/typo3/';
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         $this->assertEquals('/', $result[0]);
     }
@@ -2718,7 +2717,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsGroup()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissionsSetsGroup() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         if (!function_exists('posix_getegid')) {
             $this->markTestSkipped('Function posix_getegid() not available, fixPermissionsSetsGroup() tests skipped');
@@ -2743,7 +2742,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsToFile()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2763,7 +2762,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsToHiddenFile()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2783,7 +2782,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsToDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2803,7 +2802,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsToDirectoryWithTrailingSlash()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2824,7 +2823,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsToHiddenDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2845,7 +2844,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsCorrectlySetsPermissionsRecursive()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory and file structure
         $baseDirectory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2896,7 +2895,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsDoesNotSetPermissionsToNotAllowedPath()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = PATH_site . 'typo3temp/var/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
@@ -2912,7 +2911,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsPermissionsWithRelativeFileReference()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
@@ -2932,7 +2931,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsDefaultPermissionsToFile()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
@@ -2950,7 +2949,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fixPermissionsSetsDefaultPermissionsToDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('fixPermissions() tests not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
@@ -3007,7 +3006,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function mkdirSetsPermissionsOfCreatedDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         $oldUmask = umask(19);
@@ -3048,7 +3047,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     private function checkGroups($methodName)
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped($methodName . '() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
             return false;
         }
         if (!function_exists('posix_getegid')) {
@@ -3129,7 +3128,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function mkdirDeepFixesPermissionsOfCreatedDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('mkdirDeepFixesPermissionsOfCreatedDirectory() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
@@ -3147,7 +3146,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function mkdirDeepFixesPermissionsOnNewParentDirectory()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('mkdirDeepFixesPermissionsOnNewParentDirectory() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $subDirectory = $directory . '/bar';
@@ -3166,7 +3165,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $baseDirectory = PATH_site . 'typo3temp/var/tests/';
         $existingDirectory = $this->getUniqueId('test_existing_') . '/';
@@ -3364,9 +3363,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesLinkToDirectory()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $existingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
         mkdir($existingDirectory);
         $this->testFilesToDelete[] = $existingDirectory;
@@ -3381,12 +3377,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesDeadLinkToDirectory()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $notExistingDirectory = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_') . '/';
         $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        mkdir($notExistingDirectory);
         symlink($notExistingDirectory, $symlinkName);
+        rmdir($notExistingDirectory);
+
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
     }
@@ -3396,12 +3392,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function rmdirRemovesDeadLinkToFile()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $notExistingFile = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
         $symlinkName = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
+        touch($notExistingFile);
         symlink($notExistingFile, $symlinkName);
+        unlink($notExistingFile);
         GeneralUtility::rmdir($symlinkName, true);
         $this->assertFalse(is_link($symlinkName));
     }
@@ -4367,7 +4362,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function syslogFixesPermissionsOnFileIfUsingFileLogging()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('syslogFixesPermissionsOnFileIfUsingFileLogging() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Fake all required settings
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
@@ -4389,7 +4384,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function deprecationLogFixesPermissionsOnLogFile()
     {
         if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
+            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filePath = PATH_site . GeneralUtilityFixture::DEPRECATION_LOG_PATH;
         @mkdir(dirname($filePath));

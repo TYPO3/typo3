@@ -103,9 +103,6 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file)
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() test not available on Windows.');
-        }
         // Create test file
         touch($file);
         if (!is_file($file)) {

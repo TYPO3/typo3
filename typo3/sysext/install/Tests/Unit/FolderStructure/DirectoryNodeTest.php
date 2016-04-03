@@ -474,9 +474,6 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function createDirectoryReturnsErrorStatusIfDirectoryWasNotCreated()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'), array(), '', false);
         $path = $this->getVirtualTestDir('root_');
@@ -597,9 +594,6 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isWritableReturnsFalseIfNodeExistsButFileCanNotBeCreated()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         }
@@ -629,9 +623,6 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isDirectoryReturnsFalseIfNameIsALinkToADirectory()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, array('getAbsolutePath'), array(), '', false);
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('root_');

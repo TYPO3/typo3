@@ -252,15 +252,14 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isLinkReturnsTrueIfNameIsLink()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', false);
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = PATH_site . $this->getUniqueId('linkTarget_');
+        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
+        touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
+        $this->testFilesToDelete[] = $target;
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->_call('isLink'));
@@ -271,9 +270,6 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isFileReturnsFalseIfNameIsAFile()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', false);
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('file_');
@@ -342,13 +338,12 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = $this->getUniqueId('linkTarget_');
+        $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('linkTarget_');
+        touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
+        $this->testFilesToDelete[] = $target;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
             array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),
@@ -358,7 +353,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isLink')->will($this->returnValue(true));
-        $node->expects($this->once())->method('getTarget')->will($this->returnValue($target));
+        $node->expects($this->once())->method('getTarget')->will($this->returnValue(str_replace('/', DIRECTORY_SEPARATOR, $target)));
         $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->_call('isTargetCorrect'));
     }
@@ -369,13 +364,12 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
-        $target = $this->getUniqueId('linkTarget_');
+        $target = PATH_site . 'typo3temp/var/tests/' .$this->getUniqueId('linkTarget_');
+        touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
+        $this->testFilesToDelete[] = $target;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
             array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),

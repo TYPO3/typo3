@@ -2336,6 +2336,10 @@ class GeneralUtility
             clearstatcache();
         } elseif (is_link($path)) {
             $OK = @unlink($path);
+            if (!$OK && TYPO3_OS === 'WIN') {
+                // Try to delete dead folder links on Windows systems
+                $OK = @rmdir($path);
+            }
             clearstatcache();
         }
         return $OK;

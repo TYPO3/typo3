@@ -127,14 +127,13 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function existsReturnsTrueIfIsLinkAndTargetIsDead()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('link_');
         $target = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('notExists_');
+        touch($target);
         symlink($target, $path);
+        unlink($target);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->_call('exists'));
@@ -176,9 +175,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function fixPermissionReturnsNoticeStatusIfPermissionCanNotBeChanged()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         }
@@ -207,9 +203,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function fixPermissionReturnsNoticeStatusIfPermissionsCanNotBeChanged()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         }
@@ -238,9 +231,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function fixPermissionReturnsOkStatusIfPermissionCanBeFixedAndSetsPermissionToCorrectValue()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
             \TYPO3\CMS\Install\FolderStructure\AbstractNode::class,
@@ -291,9 +281,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function getCurrentPermissionReturnsCurrentDirectoryPermission()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
         $path = $this->getVirtualTestDir('dir_');
@@ -308,9 +295,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTest
      */
     public function getCurrentPermissionReturnsCurrentFilePermission()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         /** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\AbstractNode::class, array('getAbsolutePath'), array(), '', false);
         $file = $this->getVirtualTestFilePath('file_');

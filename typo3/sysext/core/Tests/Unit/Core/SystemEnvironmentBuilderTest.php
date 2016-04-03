@@ -101,9 +101,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getPathThisScriptCliAddsCurrentWorkingDirectoryFromServerEnvironmentToLocalPathOnUnix()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $GLOBALS['_SERVER']['argv'][0] = 'foo';
         $fakedAbsolutePart = '/' . $this->getUniqueId('Absolute') . '/';
         $_SERVER['PWD'] = $fakedAbsolutePart;
@@ -115,9 +112,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getUnifiedDirectoryNameReturnsCorrectPathOnUnix()
     {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped('Test not available on Windows OS.');
-        }
         $input = '/foo/bar/test.php';
         $expected = '/foo/bar';
         $actual = $this->subject->_call('getUnifiedDirectoryName', $input);
