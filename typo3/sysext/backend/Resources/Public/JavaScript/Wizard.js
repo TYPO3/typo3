@@ -303,7 +303,7 @@ define(['jquery',
 	 */
 	Wizard.runSlideCallback = function(slide, $slide) {
 		if (typeof slide.callback === 'function') {
-			slide.callback($slide, Wizard.setup.settings);
+			slide.callback($slide, Wizard.setup.settings, slide.identifier);
 		}
 	};
 
