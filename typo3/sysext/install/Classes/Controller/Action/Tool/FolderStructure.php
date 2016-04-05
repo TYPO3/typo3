@@ -31,7 +31,6 @@ class FolderStructure extends Action\AbstractAction
     {
         /** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
         $folderStructureFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
-        /** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
         $structureFacade = $folderStructureFactory->getStructure();
 
         $fixedStatusObjects = array();

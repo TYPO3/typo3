@@ -24,25 +24,12 @@ class DefaultFactory
     /**
      * Get default structure object hierarchy
      *
-     * @throws Exception
-     * @return RootNode
+     * @return StructureFacadeInterface
      */
     public function getStructure()
     {
         $rootNode = new RootNode($this->getDefaultStructureDefinition(), null);
-        if (!($rootNode instanceof RootNodeInterface)) {
-            throw new Exception(
-                'Root node must implement RootNodeInterface',
-                1366139176
-            );
-        }
         $structureFacade = new StructureFacade($rootNode);
-        if (!($structureFacade instanceof StructureFacadeInterface)) {
-            throw new Exception(
-                'Structure facade must implement StructureFacadeInterface',
-                1366535827
-            );
-        }
         return $structureFacade;
     }
 
