@@ -49,7 +49,7 @@ CREATE TABLE index_rel (
   phash int(11) DEFAULT '0' NOT NULL,
   wid int(11) DEFAULT '0' NOT NULL,
   count tinyint(3) unsigned DEFAULT '0' NOT NULL,
-  first tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  first int(11) unsigned DEFAULT '0' NOT NULL,
   freq smallint(5) unsigned DEFAULT '0' NOT NULL,
   flags tinyint(3) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (phash,wid),
