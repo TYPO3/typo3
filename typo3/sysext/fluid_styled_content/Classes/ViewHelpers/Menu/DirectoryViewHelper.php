@@ -40,6 +40,13 @@ class DirectoryViewHelper extends AbstractViewHelper
     use MenuViewHelperTrait;
 
     /**
+     * Output escaping is disabled as child content contains HTML by default
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize ViewHelper arguments
      *
      * @return void
