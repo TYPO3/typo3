@@ -17,7 +17,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
 
 /**
  * This view helper is an abstract ViewHelper which implements an if/else condition.
- * @see TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
  *
  * = Usage =
  *
