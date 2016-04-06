@@ -438,13 +438,13 @@ class GraphicalFunctions
                     $Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
                     imagefill($destImg, 0, 0, $Bcolor);
                 } else {
-                    $Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
-                    ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+                    $Bcolor = imagecolorallocate($destImg, 0, 0, 0);
+                    imagefilledrectangle($destImg, 0, 0, $w, $h, $Bcolor);
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theImage);
-                imageDestroy($cpImg);
-                imageDestroy($destImg);
+                imagedestroy($cpImg);
+                imagedestroy($destImg);
                 // Prepare mask image
                 $cpImg = $this->imageCreateFromFile($BBmask[3]);
                 $destImg = imagecreatetruecolor($w, $h);
@@ -453,13 +453,13 @@ class GraphicalFunctions
                     $Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
                     imagefill($destImg, 0, 0, $Bcolor);
                 } else {
-                    $Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
-                    ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+                    $Bcolor = imagecolorallocate($destImg, 0, 0, 0);
+                    imagefilledrectangle($destImg, 0, 0, $w, $h, $Bcolor);
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theMask);
-                imageDestroy($cpImg);
-                imageDestroy($destImg);
+                imagedestroy($cpImg);
+                imagedestroy($destImg);
                 // Mask the images
                 $this->ImageWrite($im, $theDest);
                 // Let combineExec handle maskNegation
@@ -469,7 +469,7 @@ class GraphicalFunctions
                 // ... and if nothing went wrong we load it onto the old one.
                 if ($backIm) {
                     if (!$this->saveAlphaLayer) {
-                        ImageColorTransparent($backIm, -1);
+                        imagecolortransparent($backIm, -1);
                     }
                     $im = $backIm;
                 }
@@ -501,7 +501,7 @@ class GraphicalFunctions
             }
             $cpImg = $this->imageCreateFromFile($conf['file']);
             $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
-            imageDestroy($cpImg);
+            imagedestroy($cpImg);
         }
     }
 
@@ -640,7 +640,7 @@ class GraphicalFunctions
             $cols = $this->convertColor($conf['fontColor']);
             // NiceText is calculated
             if (!$conf['niceText']) {
-                $Fcolor = ImageColorAllocate($im, $cols[0], $cols[1], $cols[2]);
+                $Fcolor = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
                 // antiAliasing is setup:
                 $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
                 for ($a = 0; $a < $conf['iterations']; $a++) {
@@ -666,9 +666,9 @@ class GraphicalFunctions
                 $newH = ceil($sF * imagesy($im));
                 // Make mask
                 $maskImg = imagecreatetruecolor($newW, $newH);
-                $Bcolor = ImageColorAllocate($maskImg, 255, 255, 255);
-                ImageFilledRectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
-                $Fcolor = ImageColorAllocate($maskImg, 0, 0, 0);
+                $Bcolor = imagecolorallocate($maskImg, 255, 255, 255);
+                imagefilledrectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
+                $Fcolor = imagecolorallocate($maskImg, 0, 0, 0);
                 // If any kind of spacing applies, we use this function:
                 if ($spacing || $wordSpacing) {
                     $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
@@ -676,7 +676,7 @@ class GraphicalFunctions
                     $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf, $sF);
                 }
                 $this->ImageWrite($maskImg, $fileMask);
-                ImageDestroy($maskImg);
+                imagedestroy($maskImg);
                 // Downscales the mask
                 if ($this->NO_IM_EFFECTS) {
                     $command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
@@ -693,10 +693,10 @@ class GraphicalFunctions
                 $this->imageMagickExec($fileMask, $fileMask, $command);
                 // Make the color-file
                 $colorImg = imagecreatetruecolor($w, $h);
-                $Ccolor = ImageColorAllocate($colorImg, $cols[0], $cols[1], $cols[2]);
-                ImageFilledRectangle($colorImg, 0, 0, $w, $h, $Ccolor);
+                $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
+                imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
                 $this->ImageWrite($colorImg, $fileColor);
-                ImageDestroy($colorImg);
+                imagedestroy($colorImg);
                 // The mask is applied
                 // The main pictures is saved temporarily
                 $this->ImageWrite($im, $fileMenu);
@@ -706,7 +706,7 @@ class GraphicalFunctions
                 // ... and if nothing went wrong we load it onto the old one.
                 if ($backIm) {
                     if (!$this->saveAlphaLayer) {
-                        ImageColorTransparent($backIm, -1);
+                        imagecolortransparent($backIm, -1);
                     }
                     $im = $backIm;
                 }
@@ -724,7 +724,7 @@ class GraphicalFunctions
      * Calculates text position for printing the text onto the image based on configuration like alignment and workarea.
      *
      * @param array $conf TypoScript array for the TEXT GIFBUILDER object
-     * @param array $workArea Workarea definition
+     * @param array $workArea Work area definition
      * @param array $BB Bounding box information, was set in \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
      * @return array [0]=x, [1]=y, [2]=w, [3]=h
      * @access private
@@ -1008,7 +1008,7 @@ class GraphicalFunctions
                  */
                 $try = 0;
                 do {
-                    $calc = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+                    $calc = imagettfbbox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
                 } while ($calc[2] < 0 && $try++ < 10);
                 // Calculate offsets:
                 if (empty($offsetInfo)) {
@@ -1055,7 +1055,7 @@ class GraphicalFunctions
             // Set custom color if any (only when niceText is off):
             if ($strCfg['color'] && $sF == 1) {
                 $cols = $this->convertColor($strCfg['color']);
-                $colorIndex = ImageColorAllocate($im, $cols[0], $cols[1], $cols[2]);
+                $colorIndex = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
                 $colorIndex = $color >= 0 ? $colorIndex : -$colorIndex;
             }
             // Setting xSpaceBefore
@@ -1066,9 +1066,9 @@ class GraphicalFunctions
             $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 // Render part:
-                ImageTTFText($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
+                imagettftext($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
                 // Calculate offset to apply:
-                $wordInf = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
+                $wordInf = imagettfbbox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
                 $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
                 $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
             } else {
@@ -1476,22 +1476,22 @@ class GraphicalFunctions
             // BlurColor Image laves
             $blurColImg = imagecreatetruecolor($w, $h);
             $bcols = $this->convertColor($conf['color']);
-            $Bcolor = ImageColorAllocate($blurColImg, $bcols[0], $bcols[1], $bcols[2]);
-            ImageFilledRectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
+            $Bcolor = imagecolorallocate($blurColImg, $bcols[0], $bcols[1], $bcols[2]);
+            imagefilledrectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
             $this->ImageWrite($blurColImg, $fileColor);
-            ImageDestroy($blurColImg);
+            imagedestroy($blurColImg);
             // The mask is made: BlurTextImage
             $blurTextImg = imagecreatetruecolor($w + $blurBorder * 2, $h + $blurBorder * 2);
             // Black background
-            $Bcolor = ImageColorAllocate($blurTextImg, 0, 0, 0);
-            ImageFilledRectangle($blurTextImg, 0, 0, $w + $blurBorder * 2, $h + $blurBorder * 2, $Bcolor);
+            $Bcolor = imagecolorallocate($blurTextImg, 0, 0, 0);
+            imagefilledrectangle($blurTextImg, 0, 0, $w + $blurBorder * 2, $h + $blurBorder * 2, $Bcolor);
             $txtConf['fontColor'] = 'white';
             $blurBordArr = array($blurBorder, $blurBorder);
             $this->makeText($blurTextImg, $txtConf, $this->applyOffset($workArea, $blurBordArr));
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
             // Destroy
-            ImageDestroy($blurTextImg);
+            imagedestroy($blurTextImg);
             $command = '';
             if ($this->V5_EFFECTS) {
                 $command .= $this->v5_blur($blurRate + 1);
@@ -1513,7 +1513,7 @@ class GraphicalFunctions
                 $blurTextImg = imagecreatetruecolor($w, $h);
                 $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
                 // Destroy the temporary mask
-                ImageDestroy($blurTextImg_tmp);
+                imagedestroy($blurTextImg_tmp);
                 // Adjust the mask
                 $intensity = 40;
                 if ($conf['intensity']) {
@@ -1530,7 +1530,7 @@ class GraphicalFunctions
                 // Dump the mask again
                 $this->ImageWrite($blurTextImg, $fileMask);
                 // Destroy the mask
-                ImageDestroy($blurTextImg);
+                imagedestroy($blurTextImg);
                 // The pictures are combined
                 // The main pictures is saved temporarily
                 $this->ImageWrite($im, $fileMenu);
@@ -1540,7 +1540,7 @@ class GraphicalFunctions
                 // ... and if nothing went wrong we load it onto the old one.
                 if ($backIm) {
                     if (!$this->saveAlphaLayer) {
-                        ImageColorTransparent($backIm, -1);
+                        imagecolortransparent($backIm, -1);
                     }
                     $im = $backIm;
                 }
@@ -1583,7 +1583,7 @@ class GraphicalFunctions
             $opacity = abs($opacity - 100);
             $opacity = round(127 * $opacity / 100);
         }
-        $tmpColor = ImageColorAllocateAlpha($im, $cols[0], $cols[1], $cols[2], $opacity);
+        $tmpColor = imagecolorallocatealpha($im, $cols[0], $cols[1], $cols[2], $opacity);
         imagefilledrectangle($im, $cords[0], $cords[1], $cords[0] + $cords[2] - 1, $cords[1] + $cords[3] - 1, $tmpColor);
     }
 
@@ -1753,7 +1753,7 @@ class GraphicalFunctions
                     $this->outputLevels($im, $params[0], $params[1]);
                     break;
                 case 'autolevels':
-                    $this->autoLevels($im);
+                    $this->autolevels($im);
                     break;
             }
         }
@@ -1776,8 +1776,8 @@ class GraphicalFunctions
         $cords = $this->objPosition($conf, $this->workArea, array($cords[2], $cords[3]));
         $newIm = imagecreatetruecolor($cords[2], $cords[3]);
         $cols = $this->convertColor($conf['backColor'] ? $conf['backColor'] : $this->setup['backColor']);
-        $Bcolor = ImageColorAllocate($newIm, $cols[0], $cols[1], $cols[2]);
-        ImageFilledRectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
+        $Bcolor = imagecolorallocate($newIm, $cols[0], $cols[1], $cols[2]);
+        imagefilledrectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
         $newConf = array();
         $workArea = array(0, 0, $cords[2], $cords[3]);
         if ($cords[0] < 0) {
@@ -1815,7 +1815,7 @@ class GraphicalFunctions
             $theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params']);
             $tmpImg = $this->imageCreateFromFile($theNewFile[3]);
             if ($tmpImg) {
-                ImageDestroy($im);
+                imagedestroy($im);
                 $im = $tmpImg;
                 $this->w = imagesx($im);
                 $this->h = imagesy($im);
@@ -1865,10 +1865,10 @@ class GraphicalFunctions
      */
     public function autolevels(&$im)
     {
-        $totalCols = ImageColorsTotal($im);
+        $totalCols = imagecolorstotal($im);
         $grayArr = [];
         for ($c = 0; $c < $totalCols; $c++) {
-            $cols = ImageColorsForIndex($im, $c);
+            $cols = imagecolorsforindex($im, $c);
             $grayArr[] = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
         }
         $min = min($grayArr);
@@ -1876,11 +1876,11 @@ class GraphicalFunctions
         $delta = $max - $min;
         if ($delta) {
             for ($c = 0; $c < $totalCols; $c++) {
-                $cols = ImageColorsForIndex($im, $c);
+                $cols = imagecolorsforindex($im, $c);
                 $cols['red'] = floor(($cols['red'] - $min) / $delta * 255);
                 $cols['green'] = floor(($cols['green'] - $min) / $delta * 255);
                 $cols['blue'] = floor(($cols['blue'] - $min) / $delta * 255);
-                ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
+                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
             }
         }
     }
@@ -1905,13 +1905,13 @@ class GraphicalFunctions
                 $high = 255 - $temp;
             }
             $delta = $high - $low;
-            $totalCols = ImageColorsTotal($im);
+            $totalCols = imagecolorstotal($im);
             for ($c = 0; $c < $totalCols; $c++) {
-                $cols = ImageColorsForIndex($im, $c);
+                $cols = imagecolorsforindex($im, $c);
                 $cols['red'] = $low + floor($cols['red'] / 255 * $delta);
                 $cols['green'] = $low + floor($cols['green'] / 255 * $delta);
                 $cols['blue'] = $low + floor($cols['blue'] / 255 * $delta);
-                ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
+                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
             }
         }
     }
@@ -1930,13 +1930,13 @@ class GraphicalFunctions
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
             $high = MathUtility::forceIntegerInRange($high, 0, 255);
             $delta = $high - $low;
-            $totalCols = ImageColorsTotal($im);
+            $totalCols = imagecolorstotal($im);
             for ($c = 0; $c < $totalCols; $c++) {
-                $cols = ImageColorsForIndex($im, $c);
+                $cols = imagecolorsforindex($im, $c);
                 $cols['red'] = MathUtility::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
                 $cols['green'] = MathUtility::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
                 $cols['blue'] = MathUtility::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
-                ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
+                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
             }
         }
     }
@@ -1953,7 +1953,7 @@ class GraphicalFunctions
         $fI = GeneralUtility::split_fileref($file);
         $ext = strtolower($fI['fileext']);
         $result = $this->randomName() . '.' . $ext;
-        $reduce = MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0);
+        $reduce = MathUtility::forceIntegerInRange($cols, 0, $ext === 'gif' ? 256 : $this->truecolorColors, 0);
         if ($reduce > 0) {
             $params = ' -colors ' . $reduce;
             if ($reduce <= 256) {
@@ -2001,8 +2001,7 @@ class GraphicalFunctions
         $sharpenArr = explode(',', ',' . $this->im5fx_sharpenSteps);
         $sharpenF = trim($sharpenArr[$factor]);
         if ($sharpenF) {
-            $cmd = ' -sharpen ' . $sharpenF;
-            return $cmd;
+            return ' -sharpen ' . $sharpenF;
         }
         return '';
     }
@@ -2021,8 +2020,7 @@ class GraphicalFunctions
         $blurArr = explode(',', ',' . $this->im5fx_blurSteps);
         $blurF = trim($blurArr[$factor]);
         if ($blurF) {
-            $cmd = ' -blur ' . $blurF;
-            return $cmd;
+            return ' -blur ' . $blurF;
         }
         return '';
     }
@@ -2069,9 +2067,9 @@ class GraphicalFunctions
         $string = $cParts[0];
         if (strstr($string, '#')) {
             $string = preg_replace('/[^A-Fa-f0-9]*/', '', $string);
-            $col[] = HexDec(substr($string, 0, 2));
-            $col[] = HexDec(substr($string, 2, 2));
-            $col[] = HexDec(substr($string, 4, 2));
+            $col[] = hexdec(substr($string, 0, 2));
+            $col[] = hexdec(substr($string, 2, 2));
+            $col[] = hexdec(substr($string, 4, 2));
         } elseif (strstr($string, ',')) {
             $string = preg_replace('/[^,0-9]*/', '', $string);
             $strArr = explode(',', $string);
@@ -2090,7 +2088,7 @@ class GraphicalFunctions
         if (trim($cParts[1])) {
             $cParts[1] = trim($cParts[1]);
             if ($cParts[1][0] === '*') {
-                $val = doubleval(substr($cParts[1], 1));
+                $val = (float)substr($cParts[1], 1);
                 $col[0] = MathUtility::forceIntegerInRange($col[0] * $val, 0, 255);
                 $col[1] = MathUtility::forceIntegerInRange($col[1] * $val, 0, 255);
                 $col[2] = MathUtility::forceIntegerInRange($col[2] * $val, 0, 255);
@@ -2653,9 +2651,9 @@ class GraphicalFunctions
                 GeneralUtility::fixPermissions($theFile);
             }
         } elseif (($type === 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
-            $tempImage = imageCreateFromGif($theFile);
-            imageGif($tempImage, $theFile);
-            imageDestroy($tempImage);
+            $tempImage = imagecreatefromgif($theFile);
+            imagegif($tempImage, $theFile);
+            imagedestroy($tempImage);
             $returnCode = 'GD';
             if (@is_file($theFile)) {
                 GeneralUtility::fixPermissions($theFile);
@@ -2744,7 +2742,7 @@ class GraphicalFunctions
         $this->imageMagickExec($theFile, $theFile, $command);
         $tmpImg = $this->imageCreateFromFile($theFile);
         if ($tmpImg) {
-            ImageDestroy($im);
+            imagedestroy($im);
             $im = $tmpImg;
             $this->w = imagesx($im);
             $this->h = imagesy($im);
@@ -2829,7 +2827,7 @@ class GraphicalFunctions
      */
     public function destroy()
     {
-        ImageDestroy($this->im);
+        imagedestroy($this->im);
     }
 
     /**
@@ -2861,22 +2859,22 @@ class GraphicalFunctions
             case 'jpg':
 
             case 'jpeg':
-                if (function_exists('imageJpeg')) {
+                if (function_exists('imagejpeg')) {
                     if ($quality == 0) {
                         $quality = $this->jpegQuality;
                     }
-                    $result = imageJpeg($destImg, $theImage, $quality);
+                    $result = imagejpeg($destImg, $theImage, $quality);
                 }
                 break;
             case 'gif':
-                if (function_exists('imageGif')) {
+                if (function_exists('imagegif')) {
                     imagetruecolortopalette($destImg, true, 256);
-                    $result = imageGif($destImg, $theImage);
+                    $result = imagegif($destImg, $theImage);
                 }
                 break;
             case 'png':
-                if (function_exists('imagePng')) {
-                    $result = ImagePng($destImg, $theImage);
+                if (function_exists('imagepng')) {
+                    $result = imagepng($destImg, $theImage);
                 }
                 break;
         }
@@ -2900,12 +2898,12 @@ class GraphicalFunctions
         switch ($ext) {
             case 'gif':
                 if (function_exists('imagecreatefromgif')) {
-                    return imageCreateFromGif($sourceImg);
+                    return imagecreatefromgif($sourceImg);
                 }
                 break;
             case 'png':
                 if (function_exists('imagecreatefrompng')) {
-                    $imageHandle = imageCreateFromPng($sourceImg);
+                    $imageHandle = imagecreatefrompng($sourceImg);
                     if ($this->saveAlphaLayer) {
                         imagesavealpha($imageHandle, true);
                     }
@@ -2916,15 +2914,15 @@ class GraphicalFunctions
 
             case 'jpeg':
                 if (function_exists('imagecreatefromjpeg')) {
-                    return imageCreateFromJpeg($sourceImg);
+                    return imagecreatefromjpeg($sourceImg);
                 }
                 break;
         }
         // If non of the above:
         $i = @getimagesize($sourceImg);
         $im = imagecreatetruecolor($i[0], $i[1]);
-        $Bcolor = ImageColorAllocate($im, 128, 128, 128);
-        ImageFilledRectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
+        $Bcolor = imagecolorallocate($im, 128, 128, 128);
+        imagefilledrectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
         return $im;
     }
 
@@ -2969,7 +2967,7 @@ class GraphicalFunctions
             $postName = $this->randomName() . '.png';
             $tmpImg = null;
             if (count($colArr) > 1) {
-                $this->imageWrite($img, $preName);
+                $this->ImageWrite($img, $preName);
                 $firstCol = $this->hexColor($firstColArr);
                 foreach ($colArr as $transparentColor) {
                     $transparentColor = $this->convertColor($transparentColor);
@@ -2988,9 +2986,9 @@ class GraphicalFunctions
             if ($tmpImg) {
                 $img = $tmpImg;
                 if ($closest) {
-                    $retCol = ImageColorClosest($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
+                    $retCol = imagecolorclosest($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
                 } else {
-                    $retCol = ImageColorExact($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
+                    $retCol = imagecolorexact($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
                 }
             }
             // Unlink files from process
@@ -3031,28 +3029,28 @@ class GraphicalFunctions
             $im = imagecreatefromgif($basePath . 'NotFound.gif');
         }
         // Sets background color and print color.
-        $white = imageColorAllocate($im, 255, 255, 255);
-        $black = imageColorAllocate($im, 0, 0, 0);
+        $white = imagecolorallocate($im, 255, 255, 255);
+        $black = imagecolorallocate($im, 0, 0, 0);
         // Prints the text strings with the build-in font functions of GD
         $x = 0;
         $font = 0;
         if ($textline1) {
             imagefilledrectangle($im, $x, 9, 56, 16, $white);
-            imageString($im, $font, $x, 9, $textline1, $black);
+            imagestring($im, $font, $x, 9, $textline1, $black);
         }
         if ($textline2) {
             imagefilledrectangle($im, $x, 19, 56, 26, $white);
-            imageString($im, $font, $x, 19, $textline2, $black);
+            imagestring($im, $font, $x, 19, $textline2, $black);
         }
         if ($textline3) {
             imagefilledrectangle($im, $x, 29, 56, 36, $white);
-            imageString($im, $font, $x, 29, substr($textline3, -14), $black);
+            imagestring($im, $font, $x, 29, substr($textline3, -14), $black);
         }
         // Outputting the image stream and exit
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])) {
-            imagePng($im, $filename);
+            imagepng($im, $filename);
         } else {
-            imageGif($im, $filename);
+            imagegif($im, $filename);
         }
     }
 }
