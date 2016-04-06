@@ -41,6 +41,7 @@ class Generator
      */
     protected $tableHandler = [
         TableHandler\StaticData::class,
+        TableHandler\InlineMnSymmetric::class,
         TableHandler\General::class,
     ];
 

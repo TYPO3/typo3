@@ -1443,7 +1443,7 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	title tinytext NOT NULL,
+	input_1 tinytext NOT NULL,
 	branches int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),

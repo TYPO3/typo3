@@ -50,6 +50,7 @@ class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implement
             if ($data['tableName'] !== 'tx_styleguide_inline_expandsingle_child'
                 && $data['tableName'] !== 'tx_styleguide_inline_usecombination_child'
                 && $data['tableName'] !== 'tx_styleguide_inline_usecombinationbox_child'
+                && $data['tableName'] !== 'tx_styleguide_inline_mnsymmetric'
             ) {
                 $match = false;
             }
