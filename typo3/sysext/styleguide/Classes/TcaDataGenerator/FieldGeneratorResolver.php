@@ -55,6 +55,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputWizardColorPicker::class,
         FieldGenerator\TypeInputWizardLink::class,
         FieldGenerator\TypeInputWizardSelect::class,
+        FieldGenerator\TypeInputDynamicTextWithRecordUid::class,
         // General type=input generator
         FieldGenerator\TypeInput::class,
 
@@ -93,6 +94,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeSelect::class,
 
         FieldGenerator\TypeInlineFal::class,
+        FieldGenerator\TypeInlineExpandsingle::class,
         // General type=inline for simple 1:n parent child relations
         FieldGenerator\TypeInline1n::class,
 
