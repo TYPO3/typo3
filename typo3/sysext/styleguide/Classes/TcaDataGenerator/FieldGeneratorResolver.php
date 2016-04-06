@@ -95,6 +95,7 @@ class FieldGeneratorResolver
 
         FieldGenerator\TypeInlineFal::class,
         FieldGenerator\TypeInlineExpandsingle::class,
+        FieldGenerator\TypeInlineUsecombination::class,
         // General type=inline for simple 1:n parent child relations
         FieldGenerator\TypeInline1n::class,
 

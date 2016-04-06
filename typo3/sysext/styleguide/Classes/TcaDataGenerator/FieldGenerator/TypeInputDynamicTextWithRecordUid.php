@@ -47,7 +47,10 @@ class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implement
     {
         $match = parent::match($data);
         if ($match) {
-            if ($data['tableName'] !== 'tx_styleguide_inline_expandsingle_child') {
+            if ($data['tableName'] !== 'tx_styleguide_inline_expandsingle_child'
+                && $data['tableName'] !== 'tx_styleguide_inline_usecombination_child'
+                && $data['tableName'] !== 'tx_styleguide_inline_usecombinationbox_child'
+            ) {
                 $match = false;
             }
         }

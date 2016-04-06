@@ -61,6 +61,7 @@ class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGene
      */
     public function generate(array $data): string
     {
+        $database = $this->getDatabase();
         $childRowsToCreate = 3;
         for ($i = 0; $i < $childRowsToCreate; $i++) {
             // Insert an empty row again to have the uid already. This is useful for
@@ -70,7 +71,6 @@ class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGene
                 'parentid' => $data['fieldValues']['uid'],
                 'parenttable' => $data['tableName'],
             ];
-            $database = $this->getDatabase();
             $database->exec_INSERTquery('tx_styleguide_inline_expandsingle_child', $childFieldValues);
             $childFieldValues['uid'] = $database->sql_insert_id();
             $recordData = GeneralUtility::makeInstance(RecordData::class);

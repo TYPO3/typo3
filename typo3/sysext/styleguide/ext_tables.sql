@@ -1557,7 +1557,6 @@ CREATE TABLE tx_styleguide_inline_usecombination_child (
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
 	input_1 varchar(255) DEFAULT '' NOT NULL,
-	select_child int(11) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -1632,7 +1631,6 @@ CREATE TABLE tx_styleguide_inline_usecombinationbox_child (
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
 	input_1 varchar(255) DEFAULT '' NOT NULL,
-	select_child int(11) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
