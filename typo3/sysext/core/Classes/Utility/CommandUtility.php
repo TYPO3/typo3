@@ -94,7 +94,7 @@ class CommandUtility
     public static function imageMagickCommand($command, $parameters, $path = '')
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        $isExt = TYPO3_OS == 'WIN' ? '.exe' : '';
+        $isExt = TYPO3_OS === 'WIN' ? '.exe' : '';
         if (!$path) {
             $path = $gfxConf['processor_path'];
         }
@@ -107,17 +107,19 @@ class CommandUtility
         if ($gfxConf['processor'] === 'GraphicsMagick') {
             $path = self::escapeShellArgument($path . 'gm' . $isExt) . ' ' . self::escapeShellArgument($command);
         } else {
-            $path = self::escapeShellArgument($path . ($command === 'composite' ? 'composite' : $command) . $isExt);
+            $path = self::escapeShellArgument($path . $command . $isExt);
         }
         // strip profile information for thumbnails and reduce their size
-        if ($parameters && $command !== 'identify' && $gfxConf['processor_stripColorProfileByDefault'] && $gfxConf['processor_stripColorProfileCommand'] !== '') {
-            if (strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false) {
-                // Determine whether the strip profile action has be disabled by TypoScript:
-                if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
-                    $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
-                } else {
-                    $parameters = str_replace('###SkipStripProfile###', '', $parameters);
-                }
+        if ($parameters && $command !== 'identify'
+            && $gfxConf['processor_stripColorProfileByDefault']
+            && $gfxConf['processor_stripColorProfileCommand'] !== ''
+            && strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false
+        ) {
+            // Determine whether the strip profile action has be disabled by TypoScript:
+            if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
+                $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
+            } else {
+                $parameters = str_replace('###SkipStripProfile###', '', $parameters);
             }
         }
         $cmdLine = $path . ' ' . $parameters;
@@ -163,7 +165,7 @@ class CommandUtility
         foreach (self::$paths as $path => $validPath) {
             // Ignore invalid (FALSE) paths
             if ($validPath) {
-                if (TYPO3_OS == 'WIN') {
+                if (TYPO3_OS === 'WIN') {
                     // Windows OS
                         // @todo Why is_executable() is not called here?
                     if (@is_file($path . $cmd)) {
@@ -193,7 +195,7 @@ class CommandUtility
 
             // Try to get the executable with the command 'which'.
             // It does the same like already done, but maybe on other paths
-        if (TYPO3_OS != 'WIN') {
+        if (TYPO3_OS !== 'WIN') {
             $cmd = @self::exec('which ' . $cmd);
             if (@is_executable($cmd)) {
                 self::$applications[$cmd]['app'] = $cmd;
@@ -220,7 +222,7 @@ class CommandUtility
             return false;
         }
 
-            // Handler
+        // Handler
         if ($handler) {
             $handler = self::getCommand($handler);
 
@@ -230,7 +232,7 @@ class CommandUtility
             $handler .= ' ' . $handlerOpt . ' ';
         }
 
-            // Command
+        // Command
         if (!self::checkCommand($cmd)) {
             return false;
         }
@@ -330,7 +332,7 @@ class CommandUtility
         if ($doCheck) {
             foreach (self::$paths as $path => $valid) {
                 // Ignore invalid (FALSE) paths
-                if ($valid and !@is_dir($path)) {
+                if ($valid && !@is_dir($path)) {
                     self::$paths[$path] = false;
                 }
             }
@@ -375,7 +377,7 @@ class CommandUtility
 
             // Image magick paths first
             // processor_path_lzw take precedence over processor_path
-        if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']))) {
+        if ($imPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']) {
             $imPath = self::fixPath($imPath);
             $pathsArr[$imPath] = $imPath;
         }
@@ -392,7 +394,7 @@ class CommandUtility
             // Add path from environment
             // @todo how does this work for WIN
         if ($GLOBALS['_SERVER']['PATH']) {
-            $sep = (TYPO3_OS == 'WIN' ? ';' : ':');
+            $sep = (TYPO3_OS === 'WIN' ? ';' : ':');
             $envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], true);
             foreach ($envPath as $val) {
                 $val = self::fixPath($val);
