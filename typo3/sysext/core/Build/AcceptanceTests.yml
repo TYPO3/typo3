@@ -11,4 +11,5 @@ settings:
 extensions:
   enabled:
     - Codeception\Extension\RunFailed
+    - Codeception\Extension\Recorder
     - TYPO3\CMS\Core\Tests\AcceptanceCoreEnvironment
