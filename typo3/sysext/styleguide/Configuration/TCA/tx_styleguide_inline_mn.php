@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'Form engine - inline mn',
-        'label' => 'title',
+        'label' => 'input_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -66,10 +66,10 @@ return [
         ],
 
 
-        'title' => [
+        'input_1' => [
             'exclude' => 1,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'Title',
+            'label' => 'input_1',
             'config' => [
                 'type' => 'input',
                 'size' => '30',
@@ -104,7 +104,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, title, inline_1,
+                --div--;General, input_1, inline_1,
                 --div--;Visibility, sys_language_uid, l18n_parent,l18n_diffsource, hidden
             '
         ]

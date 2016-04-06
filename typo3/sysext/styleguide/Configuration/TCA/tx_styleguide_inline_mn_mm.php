@@ -110,7 +110,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, title, parentid, childid, check_1,
+                --div--;General, parentid, childid, check_1,
                 --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort'
         ]
     ],
