@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -251,12 +252,7 @@ class Generator
             ];
             foreach ($files as $fileName) {
                 $sourceLocation = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
-                // Copy to typo3temp can be removed if https://forge.typo3.org/issues/70012 is solved
-                GeneralUtility::writeFileToTypo3tempDir(PATH_site . 'typo3temp/styleguide/' . $fileName, file_get_contents($sourceLocation));
-                $sourceLocation = PATH_site . 'typo3temp/styleguide/' . $fileName;
-                $storage->addFile($sourceLocation, $folder, $fileName);
-                // Copy to typo3temp can be removed if https://forge.typo3.org/issues/70012 is solved
-                GeneralUtility::rmdir(PATH_site . 'typo3temp/styleguide', true);
+                $storage->addFile($sourceLocation, $folder, $fileName,  DuplicationBehavior::RENAME, false);
             }
         } catch (ExistingTargetFolderException $e) {
             // No op if folder exists. This code assumes file exist, too.
