@@ -40,7 +40,7 @@ return array(
                 'type' => 'input',
                 'size' => '10',
                 'max' => '40',
-                'eval' => 'nospace,trim,required,password',
+                'eval' => 'trim,required,password',
                 'autocomplete' => false,
             )
         ),
