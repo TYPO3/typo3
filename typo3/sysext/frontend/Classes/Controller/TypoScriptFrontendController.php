@@ -2370,7 +2370,7 @@ class TypoScriptFrontendController
                     if ($debugCacheTime) {
                         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
                         $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-                        $this->content .= LF . '<!-- Cached page generated ' . date(($dateFormat . ' ' . $timeFormat), $row['tstamp']) . '. Expires ' . Date(($dateFormat . ' ' . $timeFormat), $row['expires']) . ' -->';
+                        $this->content .= LF . '<!-- Cached page generated ' . date(($dateFormat . ' ' . $timeFormat), $row['tstamp']) . '. Expires ' . date(($dateFormat . ' ' . $timeFormat), $row['expires']) . ' -->';
                     }
                 }
                 $this->getTimeTracker()->pull();

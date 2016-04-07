@@ -134,7 +134,7 @@ abstract class AbstractFormElement extends AbstractNode
 
         $fieldChangeFunc = $PA['fieldChangeFunc'];
         $item = $itemKinds[0];
-        $md5ID = 'ID' . GeneralUtility::shortmd5($itemName);
+        $md5ID = 'ID' . GeneralUtility::shortMD5($itemName);
         $prefixOfFormElName = 'data[' . $table . '][' . $row['uid'] . '][' . $field . ']';
         $flexFormPath = '';
         if (GeneralUtility::isFirstPartOfStr($PA['itemFormElName'], $prefixOfFormElName)) {

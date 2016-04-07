@@ -1145,7 +1145,7 @@ class QueryGenerator
         $out[] = '<option value=""></option>';
         foreach ($GLOBALS['TCA'] as $tN => $value) {
             if ($this->getBackendUserAuthentication()->check('tables_select', $tN)) {
-                $out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($this->getLanguageService()->sl($GLOBALS['TCA'][$tN]['ctrl']['title'])) . '</option>';
+                $out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tN]['ctrl']['title'])) . '</option>';
             }
         }
         $out[] = '</select>';

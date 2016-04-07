@@ -86,7 +86,7 @@ class ConfigurationStatus implements StatusProviderInterface
             $value = $this->getLanguageService()->getLL('status_empty');
             $severity = ReportStatus::WARNING;
             $url =  BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
-            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::dateTime($lastRefIndexUpdate));
+            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);
     }

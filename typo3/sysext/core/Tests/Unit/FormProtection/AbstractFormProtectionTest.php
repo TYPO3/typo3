@@ -116,7 +116,7 @@ class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function generateTokenReturns32CharacterHexToken()
     {
-        $this->assertRegexp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
+        $this->assertRegExp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
     }
 
     /**

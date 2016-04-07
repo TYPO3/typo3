@@ -52,8 +52,8 @@ class LogicalOr implements OrInterface
      */
     public function collectBoundVariableNames(&$boundVariables)
     {
-        $this->constraint1->collectBoundVariablenames($boundVariables);
-        $this->constraint2->collectBoundVariablenames($boundVariables);
+        $this->constraint1->collectBoundVariableNames($boundVariables);
+        $this->constraint2->collectBoundVariableNames($boundVariables);
     }
 
     /**

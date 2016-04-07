@@ -104,7 +104,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'new' => 'new',
         );
 
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getLocalConfiguration',
                 'writeLocalConfiguration',
@@ -125,7 +125,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getDefaultConfigurationValueByPathReturnsCorrectValue()
     {
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getDefaultConfiguration',
             )
@@ -145,7 +145,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getLocalConfigurationValueByPathReturnsCorrectValue()
     {
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getLocalConfiguration',
             )
@@ -165,7 +165,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function getConfigurationValueByPathReturnsCorrectValue()
     {
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getDefaultConfiguration',
                 'getLocalConfiguration',
@@ -192,7 +192,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setLocalConfigurationValueByPathReturnFalseIfPathIsNotValid()
     {
-        $this->createsubjectWithMockedMethods(array(
+        $this->createSubjectWithMockedMethods(array(
                 'isValidLocalConfigurationPath',
             ));
         $this->subject->expects($this->once())
@@ -216,7 +216,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'toUpdate' => 'updated',
         );
 
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'isValidLocalConfigurationPath',
                 'getLocalConfiguration',
@@ -251,7 +251,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'new' => 'new',
         );
 
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'isValidLocalConfigurationPath',
                 'getLocalConfiguration',
@@ -289,7 +289,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'notChanged' => 23,
         );
 
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getLocalConfiguration',
                 'writeLocalConfiguration',
@@ -317,7 +317,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $currentLocalConfiguration = array(
             'notChanged' => 23,
         );
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getLocalConfiguration',
                 'writeLocalConfiguration',
@@ -341,7 +341,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $currentLocalConfiguration = array(
             'notChanged' => 23,
         );
-        $this->createsubjectWithMockedMethods(
+        $this->createSubjectWithMockedMethods(
             array(
                 'getLocalConfiguration',
                 'writeLocalConfiguration',

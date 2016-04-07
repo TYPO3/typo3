@@ -197,7 +197,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                         if (GeneralUtility::_GP($this->previewKey)) {
                             // Lifetime is 1 hour, does it matter much?
                             // Requires the user to click the link from their email again if it expires.
-                            SetCookie($this->previewKey, GeneralUtility::_GP($this->previewKey), 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+                            setcookie($this->previewKey, GeneralUtility::_GP($this->previewKey), 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
                         }
                         return $previewConfig;
                     } elseif (GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode === GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {

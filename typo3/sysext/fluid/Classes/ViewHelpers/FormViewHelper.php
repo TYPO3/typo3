@@ -369,7 +369,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
     protected function renderRequestHashField()
     {
         $formFieldNames = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formFieldNames');
-        $this->postProcessUriArgumentsForRequesthash($this->formActionUriArguments, $formFieldNames);
+        $this->postProcessUriArgumentsForRequestHash($this->formActionUriArguments, $formFieldNames);
         $requestHash = $this->requestHashService->generateRequestHash($formFieldNames, $this->getFieldNamePrefix());
         // in v4, we need to prefix __hmac as well to make it show up in the request object.
         return '<input type="hidden" name="' . $this->prefixFieldName('__hmac') . '" value="' . htmlspecialchars($requestHash) . '" />';

@@ -277,7 +277,7 @@ class FormBuilder
             ));
         } else {
             $this->setAttributes($elementBuilder, $element, $userConfiguredElementTypoScript);
-            $userConfiguredElementTypoScript = $elementBuilder->getUserConfiguredElementTypoScript();
+            $userConfiguredElementTypoScript = $elementBuilder->getUserConfiguredElementTyposcript();
             $this->setValidationMessages($element);
 
             $this->signalSlotDispatcher->dispatch(
@@ -386,7 +386,7 @@ class FormBuilder
         $elementBuilder->setViewHelperDefaulArgumentsToAdditionalArguments();
         $elementBuilder->moveAllOtherUserdefinedPropertiesToAdditionalArguments();
         $htmlAttributes = $elementBuilder->getHtmlAttributes();
-        $userConfiguredElementTypoScript = $elementBuilder->getUserConfiguredElementTypoScript();
+        $userConfiguredElementTypoScript = $elementBuilder->getUserConfiguredElementTyposcript();
         $additionalArguments = $elementBuilder->getAdditionalArguments();
         $element->setHtmlAttributes($htmlAttributes);
         $additionalArguments = $this->typoScriptService->convertTypoScriptArrayToPlainArray($additionalArguments);

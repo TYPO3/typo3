@@ -184,7 +184,7 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         $iFile = $this->ext_localGfxPrefix . $imgConf;
         $tFile = $this->ext_localWebGfxPrefix . $imgConf;
-        $imageInfo = @getImagesize($iFile);
+        $imageInfo = @getimagesize($iFile);
         return '<img src="' . $tFile . '" ' . $imageInfo[3] . '>';
     }
 

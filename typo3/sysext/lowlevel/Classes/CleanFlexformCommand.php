@@ -91,7 +91,7 @@ Cleaning XML for FlexForm fields.
                         if ($echoLevel > 2) {
                             echo ' was DIRTY, needs cleanup!';
                         }
-                        $this->cleanFlexForm_dirtyFields[\TYPO3\CMS\Core\Utility\GeneralUtility::shortMd5($tableName . ':' . $uid . ':' . $colName)] = $tableName . ':' . $uid . ':' . $colName;
+                        $this->cleanFlexForm_dirtyFields[\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($tableName . ':' . $uid . ':' . $colName)] = $tableName . ':' . $uid . ':' . $colName;
                     } else {
                         if ($echoLevel > 2) {
                             echo ' was CLEAN';

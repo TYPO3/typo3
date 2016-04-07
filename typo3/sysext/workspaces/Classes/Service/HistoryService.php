@@ -108,7 +108,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
                     );
                     if (!empty($fieldDifferences)) {
                         $differences[] = array(
-                            'label' => $this->getLanguageService()->sl((string)BackendUtility::getItemLabel($tableName, $field)),
+                            'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, $field)),
                             'html' => nl2br(trim($fieldDifferences)),
                         );
                     }

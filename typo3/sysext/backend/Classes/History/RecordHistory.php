@@ -463,7 +463,7 @@ class RecordHistory
                     // Re-write field names with labels
                     $tmpFieldList = explode(',', $entry['fieldlist']);
                     foreach ($tmpFieldList as $key => $value) {
-                        $tmp = str_replace(':', '', $languageService->sl(BackendUtility::getItemLabel($entry['tablename'], $value), true));
+                        $tmp = str_replace(':', '', $languageService->sL(BackendUtility::getItemLabel($entry['tablename'], $value), true));
                         if ($tmp) {
                             $tmpFieldList[$key] = $tmp;
                         } else {
@@ -567,7 +567,7 @@ class RecordHistory
                     );
                     $lines[] = array(
                         'title' => ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', true), 2) : '') . '
-                          ' . $languageService->sl(BackendUtility::getItemLabel($table, $fN), true),
+                          ' . $languageService->sL(BackendUtility::getItemLabel($table, $fN), true),
                         'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
                     );
                 }

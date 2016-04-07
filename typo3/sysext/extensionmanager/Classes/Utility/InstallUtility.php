@@ -496,7 +496,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function importStaticSql($rawDefinitions)
     {
-        $statements = $this->installToolSqlParser->getStatementarray($rawDefinitions, 1);
+        $statements = $this->installToolSqlParser->getStatementArray($rawDefinitions, 1);
         list($statementsPerTable, $insertCount) = $this->installToolSqlParser->getCreateTables($statements, 1);
         $db = $this->getDatabaseConnection();
         // Traverse the tables

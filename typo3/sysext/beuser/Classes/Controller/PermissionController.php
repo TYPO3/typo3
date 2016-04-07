@@ -119,7 +119,7 @@ class PermissionController extends ActionController
         parent::initializeView($view);
         $view->assign(
             'previewUrl',
-            BackendUtility::viewonclick(
+            BackendUtility::viewOnClick(
                 $this->pageInfo['uid'], '',
                 BackendUtility::BEgetRootLine($this->pageInfo['uid'])
             )

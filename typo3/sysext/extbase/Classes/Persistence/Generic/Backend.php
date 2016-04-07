@@ -224,7 +224,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     {
         $query = $this->emitBeforeGettingObjectDataSignal($query);
         $result = $this->storageBackend->getObjectDataByQuery($query);
-        $result = $this->emitafterGettingObjectDataSignal($query, $result);
+        $result = $this->emitAfterGettingObjectDataSignal($query, $result);
         return $result;
     }
 

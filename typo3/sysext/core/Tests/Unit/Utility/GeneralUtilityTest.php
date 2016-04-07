@@ -4377,7 +4377,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         // Call method, get actual permissions and clean up
-        GeneralUtility::syslog('testLog', 'test', GeneralUtility::SYSLOG_SEVERITY_NOTICE);
+        GeneralUtility::sysLog('testLog', 'test', GeneralUtility::SYSLOG_SEVERITY_NOTICE);
         $this->testFilesToDelete[] = $testLogFilename;
         clearstatcache();
         $this->assertEquals('0777', substr(decoct(fileperms($testLogFilename)), 2));

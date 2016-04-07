@@ -95,7 +95,7 @@ Will report lost files.';
                     $include = false;
                 }
             }
-            $shortKey = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($value);
+            $shortKey = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($value);
             if ($include) {
                 // First, allow "index.html", ".htaccess" files since they are often used for good reasons
                 if (substr($value, -11) == '/index.html' || substr($value, -10) == '/.htaccess') {

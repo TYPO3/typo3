@@ -2357,7 +2357,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
      * Free result memory
      * free_result() wrapper function
      *
-     * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
+     * @param bool|\mysqli_result|\ADORecordSet|object $res MySQLi result object / DBAL object
      * @return bool Returns TRUE on success or FALSE on failure.
      */
     public function sql_free_result($res)

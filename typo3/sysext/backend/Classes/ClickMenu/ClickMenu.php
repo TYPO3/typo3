@@ -1113,7 +1113,7 @@ class ClickMenu
         $isSel = '';
         // Pseudo table name for use in the clipboard.
         $table = '_FILE';
-        $uid = GeneralUtility::shortmd5($path);
+        $uid = GeneralUtility::shortMD5($path);
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected($table, $uid);
         }

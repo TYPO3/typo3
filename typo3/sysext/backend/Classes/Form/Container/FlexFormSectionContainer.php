@@ -55,7 +55,7 @@ class FlexFormSectionContainer extends AbstractContainer
         // Creating IDs for form fields:
         // It's important that the IDs "cascade" - otherwise we can't dynamically expand the flex form
         // because this relies on simple string substitution of the first parts of the id values.
-        $flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMd5(uniqid('id', true));
+        $flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMD5(uniqid('id', true));
 
         // Render each existing container
         foreach ($flexFormRowData as $flexFormContainerCounter => $existingSectionContainerData) {

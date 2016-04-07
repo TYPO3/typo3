@@ -97,7 +97,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'class' => $className
             )
         );
-        $this->initializesubject();
+        $this->initializeSubject();
         $this->assertEquals($className, $this->subject->getDriverClass($shortName));
     }
 
@@ -113,7 +113,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 'class' => $className
             )
         );
-        $this->initializesubject();
+        $this->initializeSubject();
         $this->assertTrue($this->subject->driverExists($shortName));
         $this->assertFalse($this->subject->driverExists($this->getUniqueId()));
     }
@@ -125,7 +125,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
         );
-        $this->initializesubject();
+        $this->initializeSubject();
         $this->assertFalse($this->subject->driverExists($this->getUniqueId()));
     }
 }

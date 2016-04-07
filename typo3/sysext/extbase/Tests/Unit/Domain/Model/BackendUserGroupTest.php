@@ -419,7 +419,7 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setDirectoryOperationAllowedSetsDirectoryOperationAllowed()
     {
         $this->subject->setFileOperationPermissions(0);
-        $this->subject->setDirectoryoperationAllowed(true);
+        $this->subject->setDirectoryOperationAllowed(true);
         $this->assertTrue($this->subject->isDirectoryOperationAllowed());
     }
 

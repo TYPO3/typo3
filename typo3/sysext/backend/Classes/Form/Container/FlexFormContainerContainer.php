@@ -44,7 +44,7 @@ class FlexFormContainerContainer extends AbstractContainer
         $parameterArray = $this->data['parameterArray'];
 
         // Every container adds its own part to the id prefix
-        $flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMd5(uniqid('id', true));
+        $flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMD5(uniqid('id', true));
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $toggleIcons = '<span class="t3js-flex-control-toggle-icon-open" style="' . ($flexFormContainerElementCollapsed ? 'display: none;' : '') . '">'

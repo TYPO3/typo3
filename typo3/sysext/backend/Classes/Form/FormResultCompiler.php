@@ -256,7 +256,7 @@ class FormResultCompiler
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 
-        $pageRenderer->addInlineLanguagelabelFile(
+        $pageRenderer->addInlineLanguageLabelFile(
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
             'file_upload'
         );

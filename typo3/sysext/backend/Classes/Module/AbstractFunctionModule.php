@@ -173,7 +173,7 @@ abstract class AbstractFunctionModule
         $this->pObj = $pObj;
         // Path of this script:
         $reflector = new \ReflectionObject($this);
-        $this->thisPath = dirname($reflector->getFilename());
+        $this->thisPath = dirname($reflector->getFileName());
         if (!@is_dir($this->thisPath)) {
             throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
         }

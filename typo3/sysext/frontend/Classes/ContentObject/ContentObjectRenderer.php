@@ -1497,7 +1497,7 @@ class ContentObjectRenderer
             $extension = $fileInfo['fileext'];
             if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
                 $imgFile = $incFile;
-                $imgInfo = @getImageSize($imgFile);
+                $imgInfo = @getimagesize($imgFile);
                 return '<img src="' . $tsfe->absRefPrefix . $imgFile . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
             } elseif (filesize($incFile) < 1024 * 1024) {
                 return $tsfe->tmpl->fileContent($incFile);
@@ -4843,7 +4843,7 @@ class ContentObjectRenderer
                     if (GeneralUtility::inList($allowTags, $tag[0]) || $denyTags != '*' && !GeneralUtility::inList($denyTags, $tag[0])) {
                         $contentAccum[$contentAccumP] .= $data;
                     } else {
-                        $contentAccum[$contentAccumP] .= HTMLSpecialChars($data);
+                        $contentAccum[$contentAccumP] .= htmlspecialchars($data);
                     }
                 }
                 $inside = false;

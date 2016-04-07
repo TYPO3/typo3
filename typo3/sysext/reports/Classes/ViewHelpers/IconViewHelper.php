@@ -58,7 +58,7 @@ class IconViewHelper extends AbstractBackendViewHelper
         $title = $arguments['title'];
 
         if (!empty($icon)) {
-            $absIconPath = GeneralUtility::getFileAbsFilename($icon);
+            $absIconPath = GeneralUtility::getFileAbsFileName($icon);
             if (file_exists($absIconPath)) {
                 $icon = '../' . str_replace(PATH_site, '', $absIconPath);
             }

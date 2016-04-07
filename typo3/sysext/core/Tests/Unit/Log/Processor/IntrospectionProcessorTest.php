@@ -166,7 +166,7 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($this->dummyBacktrace));
 
-        $this->processor->setAppendFullBacktrace(true);
+        $this->processor->setAppendFullBackTrace(true);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);

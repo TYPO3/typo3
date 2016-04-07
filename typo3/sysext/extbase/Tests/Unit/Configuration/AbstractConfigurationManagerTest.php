@@ -408,7 +408,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
         $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
-        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallBack(function ($a) { return $a; }));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallback(function ($a) { return $a; }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = array(
             'Controller1' => array(
@@ -435,7 +435,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
         $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
-        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallBack(function ($a) { return $a; }));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallback(function ($a) { return $a; }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = array(
             'Controller1' => array(
@@ -462,7 +462,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
         $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
-        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallBack(function ($a) { return $a; }));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallback(function ($a) { return $a; }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = array();
         $actualResult = $mergedConfiguration['controllerConfiguration'];
@@ -486,7 +486,7 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testPluginConfiguration));
         $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($this->testSwitchableControllerActions));
-        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallBack(function ($a) { return $a; }));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallback(function ($a) { return $a; }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = array(
             'Controller1' => array(

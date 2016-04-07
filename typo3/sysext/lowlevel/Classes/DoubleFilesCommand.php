@@ -117,7 +117,7 @@ This will check the system for double files relations.';
         foreach ($resultArray['dirname_registry'] as $dir => $temp) {
             ksort($resultArray['dirname_registry'][$dir]);
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dir, 'uploads/')) {
-                $resultArray['warnings'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($dir)] = 'Directory "' . $dir . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ' . implode(',', array_keys($temp));
+                $resultArray['warnings'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($dir)] = 'Directory "' . $dir . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ' . implode(',', array_keys($temp));
             }
         }
         return $resultArray;

@@ -192,7 +192,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
                 'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved', true),
                 'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', true),
                 'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', true),
-                'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl($file . 'labels.temporaryDBmount', true),
+                'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sL($file . 'labels.temporaryDBmount', true),
                 'deleteDialogTitle' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem', true),
                 'deleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning', true),
                 'recursiveDeleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recursiveDeleteWarning', true)

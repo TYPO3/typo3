@@ -394,8 +394,8 @@ class GifBuilder extends GraphicalFunctions
         } else {
             // Fill the background with the given color
             $BGcols = $this->convertColor($this->setup['backColor']);
-            $Bcolor = ImageColorAllocate($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
-            ImageFilledRectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
+            $Bcolor = imagecolorallocate($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
+            imagefilledrectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
         }
         // Traverse the GIFBUILDER objects an render each one:
         if (is_array($this->setup)) {
@@ -515,7 +515,7 @@ class GifBuilder extends GraphicalFunctions
         if (!$this->saveAlphaLayer) {
             if ($this->setup['transparentBackground']) {
                 // Auto transparent background is set
-                $Bcolor = ImageColorClosest($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
+                $Bcolor = imagecolorclosest($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
                 imagecolortransparent($this->im, $Bcolor);
             } elseif (is_array($this->setup['transparentColor_array'])) {
                 // Multiple transparent colors are set. This is done via the trick that all transparent colors get

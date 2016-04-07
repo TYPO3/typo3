@@ -498,9 +498,9 @@ class ImportExportController extends BaseScriptClass
             // Export for download:
             if ($inData['download_export']) {
                 $mimeType = 'application/octet-stream';
-                Header('Content-Type: ' . $mimeType);
-                Header('Content-Length: ' . strlen($out));
-                Header('Content-Disposition: attachment; filename=' . basename($dlFile));
+                header('Content-Type: ' . $mimeType);
+                header('Content-Length: ' . strlen($out));
+                header('Content-Disposition: attachment; filename=' . basename($dlFile));
                 echo $out;
                 die;
             }

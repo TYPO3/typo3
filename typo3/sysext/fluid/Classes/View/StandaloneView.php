@@ -53,8 +53,8 @@ class StandaloneView extends AbstractTemplateView
 
         /** @var WebRequest $request */
         $request = $this->objectManager->get(WebRequest::class);
-        $request->setRequestURI(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseURI(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        $request->setBaseUri(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($request);

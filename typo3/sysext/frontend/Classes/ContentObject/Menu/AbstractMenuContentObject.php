@@ -591,7 +591,7 @@ abstract class AbstractMenuContentObject
                     $menuItems = $this->prepareMenuItemsForRootlineMenu();
                     break;
                 case 'browse':
-                    $menuItems = $this->prepareMenuitemsForBrowseMenu($value, $alternativeSortingField, $additionalWhere);
+                    $menuItems = $this->prepareMenuItemsForBrowseMenu($value, $alternativeSortingField, $additionalWhere);
                     break;
             }
             if ($this->mconf['sectionIndex']) {

@@ -60,7 +60,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
 
             // Resolve placeholders from language files
             if (StringUtility::beginsWith($fieldConfig['config']['placeholder'], 'LLL:')) {
-                $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getLanguageService()->sl($fieldConfig['config']['placeholder']);
+                $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getLanguageService()->sL($fieldConfig['config']['placeholder']);
             }
 
             // Remove empty placeholders

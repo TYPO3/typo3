@@ -385,7 +385,7 @@ class ColorpickerController extends AbstractWizardController
      */
     public function getIndex($im, $x, $y)
     {
-        $rgb = ImageColorAt($im, $x, $y);
+        $rgb = imagecolorat($im, $x, $y);
         $colorRgb = imagecolorsforindex($im, $rgb);
         $index['r'] = dechex($colorRgb['red']);
         $index['g'] = dechex($colorRgb['green']);

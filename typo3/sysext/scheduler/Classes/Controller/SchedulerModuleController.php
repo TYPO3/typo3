@@ -513,7 +513,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 $this->addMessage($this->getLanguageService()->getLL('msg.maynotDeleteRunningTask'), FlashMessage::ERROR);
             } else {
                 if ($this->scheduler->removeTask($task)) {
-                    $this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+                    $this->getBackendUser()->writelog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
                     $this->addMessage($this->getLanguageService()->getLL('msg.deleteSuccess'));
                 } else {
                     $this->addMessage($this->getLanguageService()->getLL('msg.deleteError'), FlashMessage::ERROR);
@@ -1287,7 +1287,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Save to database
             $result = $this->scheduler->saveTask($task);
             if ($result) {
-                $this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+                $this->getBackendUser()->writelog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
                 $this->addMessage($this->getLanguageService()->getLL('msg.updateSuccess'));
             } else {
                 $this->addMessage($this->getLanguageService()->getLL('msg.updateError'), FlashMessage::ERROR);
@@ -1321,7 +1321,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Add to database
             $result = $this->scheduler->addTask($task);
             if ($result) {
-                $this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+                $this->getBackendUser()->writelog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
                 $this->addMessage($this->getLanguageService()->getLL('msg.addSuccess'));
 
                 // set the uid of the just created task so that we

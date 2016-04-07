@@ -34,7 +34,7 @@ class FileLinktype extends AbstractLinktype
      */
     public function fetchType($value, $type, $key)
     {
-        if (StringUtility::beginswith(strtolower($value['tokenValue']), 'file:')) {
+        if (StringUtility::beginsWith(strtolower($value['tokenValue']), 'file:')) {
             $type = 'file';
         }
         return $type;

@@ -481,7 +481,7 @@ abstract class AbstractRecordList
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(('top.launchView(' . $launchViewParameter . '); return false;')) . '"';
             }
-            $htmlCode .= ' title="' . htmlspecialchars($this->getLanguageService()->sl('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' .  $references . ')') . '">';
+            $htmlCode .= ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references') . ' (' .  $references . ')') . '">';
             $htmlCode .= $references;
             $htmlCode .= '</a>';
         }

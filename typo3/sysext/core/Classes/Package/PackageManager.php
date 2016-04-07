@@ -316,7 +316,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $registerOnlyNewPackages = !empty($this->packages);
         $this->registerPackagesFromConfiguration($registerOnlyNewPackages);
         if ($this->packageStatesConfiguration != $previousPackageStatesConfiguration) {
-            $this->sortAndsavePackageStates();
+            $this->sortAndSavePackageStates();
         }
     }
 

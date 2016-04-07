@@ -156,7 +156,7 @@ class CheckboxElement extends AbstractFormElement
      */
     protected function checkBoxParams($itemName, $formElementValue, $checkbox, $checkboxesCount, $additionalJavaScript = '')
     {
-        $elementName = 'document.editform[' . Generalutility::quoteJSvalue($itemName) . ']';
+        $elementName = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . ']';
         $checkboxPow = pow(2, $checkbox);
         $onClick = $elementName . '.value=this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
             . $elementName . '.value&' . (pow(2, $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;

@@ -219,7 +219,7 @@ class FolderTreeView extends AbstractTreeView
      */
     public function getId($folderObject)
     {
-        return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
+        return GeneralUtility::md5int($folderObject->getCombinedIdentifier());
     }
 
     /**

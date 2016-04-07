@@ -421,7 +421,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     public function flush()
     {
         if ($this->connected) {
-            $this->redis->flushdb();
+            $this->redis->flushDB();
         }
     }
 

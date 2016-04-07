@@ -414,7 +414,7 @@ class FileList extends AbstractRecordList
                 }
             }
 
-            $out .= '<thead>' . $this->addelement(1, '', $theData, '', '', '', 'th') . '</thead>';
+            $out .= '<thead>' . $this->addElement(1, '', $theData, '', '', '', 'th') . '</thead>';
             $out .= '<tbody>' . $iOut . '</tbody>';
             // half line is drawn
             // finish
@@ -559,7 +559,7 @@ class FileList extends AbstractRecordList
                     }
                 }
             }
-            $out .= $this->addelement(1, $theIcon, $theData);
+            $out .= $this->addElement(1, $theIcon, $theData);
         }
         return $out;
     }
@@ -763,7 +763,7 @@ class FileList extends AbstractRecordList
                         }
                 }
             }
-            $out .= $this->addelement(1, $theIcon, $theData);
+            $out .= $this->addElement(1, $theIcon, $theData);
         }
         return $out;
     }
@@ -846,7 +846,7 @@ class FileList extends AbstractRecordList
         $cells = array();
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $fullName = $fileOrFolderObject->getName();
-        $md5 = GeneralUtility::shortmd5($fullIdentifier);
+        $md5 = GeneralUtility::shortMD5($fullIdentifier);
         // For normal clipboard, add copy/cut buttons:
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected('_FILE', $md5);

@@ -531,12 +531,12 @@ class PageGenerator
                 } else {
                     $namespace = PageRenderer::JQUERY_NAMESPACE_NONE;
                 }
-                $pageRenderer->loadJQuery($version, $source, $namespace);
+                $pageRenderer->loadJquery($version, $source, $namespace);
             }
             if ($tsfe->pSetup['javascriptLibs.']['ExtJs']) {
                 $css = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'];
                 $theme = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'];
-                $pageRenderer->loadExtJs($css, $theme);
+                $pageRenderer->loadExtJS($css, $theme);
                 if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
                     $pageRenderer->enableExtJsDebug();
                 }

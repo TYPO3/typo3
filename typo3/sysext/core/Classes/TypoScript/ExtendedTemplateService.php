@@ -1113,7 +1113,7 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         if ($iFile !== null) {
-            $imageInfo = @getImagesize($iFile);
+            $imageInfo = @getimagesize($iFile);
             return '<img src="' . $tFile . '" ' . $imageInfo[3] . '>';
         }
         return '';
@@ -1552,17 +1552,17 @@ class ExtendedTemplateService extends TemplateService
                                 if ($var && !GeneralUtility::inList($this->HTMLcolorList, strtolower($var))) {
                                     $var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
                                     $useFulHex = strlen($var) > 3;
-                                    $col[] = HexDec($var[0]);
-                                    $col[] = HexDec($var[1]);
-                                    $col[] = HexDec($var[2]);
+                                    $col[] = hexdec($var[0]);
+                                    $col[] = hexdec($var[1]);
+                                    $col[] = hexdec($var[2]);
                                     if ($useFulHex) {
-                                        $col[] = HexDec($var[3]);
-                                        $col[] = HexDec($var[4]);
-                                        $col[] = HexDec($var[5]);
+                                        $col[] = hexdec($var[3]);
+                                        $col[] = hexdec($var[4]);
+                                        $col[] = hexdec($var[5]);
                                     }
-                                    $var = substr(('0' . DecHex($col[0])), -1) . substr(('0' . DecHex($col[1])), -1) . substr(('0' . DecHex($col[2])), -1);
+                                    $var = substr(('0' . dechex($col[0])), -1) . substr(('0' . dechex($col[1])), -1) . substr(('0' . dechex($col[2])), -1);
                                     if ($useFulHex) {
-                                        $var .= substr(('0' . DecHex($col[3])), -1) . substr(('0' . DecHex($col[4])), -1) . substr(('0' . DecHex($col[5])), -1);
+                                        $var .= substr(('0' . dechex($col[3])), -1) . substr(('0' . dechex($col[4])), -1) . substr(('0' . dechex($col[5])), -1);
                                     }
                                     $var = '#' . strtoupper($var);
                                 }

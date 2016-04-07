@@ -371,7 +371,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      */
     public function setHashCount($hashCount = null)
     {
-        self::$hashCount = !is_NULL($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = !is_null($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**
@@ -384,7 +384,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      */
     public function setMaxHashCount($maxHashCount = null)
     {
-        self::$maxHashCount = !is_NULL($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
+        self::$maxHashCount = !is_null($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
     }
 
     /**
@@ -397,6 +397,6 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      */
     public function setMinHashCount($minHashCount = null)
     {
-        self::$minHashCount = !is_NULL($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
+        self::$minHashCount = !is_null($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
     }
 }

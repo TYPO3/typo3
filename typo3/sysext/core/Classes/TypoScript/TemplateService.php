@@ -499,11 +499,11 @@ class TemplateService
                 // If TypoScript setup structure was cached we unserialize it here:
                 $this->setup = $setupData;
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSLogMessage('Using cached TS template data');
+                    $this->getTimeTracker()->setTSlogMessage('Using cached TS template data');
                 }
             } else {
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSLogMessage('Not using any cached TS data');
+                    $this->getTimeTracker()->setTSlogMessage('Not using any cached TS data');
                 }
 
                 // Make configuration
