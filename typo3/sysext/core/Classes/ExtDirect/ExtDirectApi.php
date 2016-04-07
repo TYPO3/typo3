@@ -145,7 +145,7 @@ class ExtDirectApi
         } else {
             /** @var UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = $uriBuilder->buildUriFromRoute('ajax_ext_direct_route', ['namespace' => $namespace]);
+            $url = (string)$uriBuilder->buildUriFromRoute('ajax_ext_direct_route', ['namespace' => $namespace]);
         }
         return $url;
     }
