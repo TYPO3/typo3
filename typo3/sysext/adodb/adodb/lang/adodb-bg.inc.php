@@ -1,36 +1,36 @@
 <?php
 /*
-	Bulgarian language, v1.0, 25.03.2004, encoding by Windows-1251 charset
+	Bulgarian language, v1.0, 25.03.2004, encoding by UTF-8 charset
 	contributed by Valentin Sheiretsky <valio#valio.eu.org>
 */
 
 $ADODB_LANG_ARRAY = array (
-			'LANG'                      => 'bg',
-            DB_ERROR                    => 'неизвестна грешка',
-            DB_ERROR_ALREADY_EXISTS     => 'вече съществува',
-            DB_ERROR_CANNOT_CREATE      => 'не може да бъде създадена',
-            DB_ERROR_CANNOT_DELETE      => 'не може да бъде изтрита',
-            DB_ERROR_CANNOT_DROP        => 'не може да бъде унищожена',
-            DB_ERROR_CONSTRAINT         => 'нарушено условие',
-            DB_ERROR_DIVZERO            => 'деление на нула',
-            DB_ERROR_INVALID            => 'неправилно',
-            DB_ERROR_INVALID_DATE       => 'некоректна дата или час',
-            DB_ERROR_INVALID_NUMBER     => 'невалиден номер',
-            DB_ERROR_MISMATCH           => 'погрешна употреба',
-            DB_ERROR_NODBSELECTED       => 'не е избрана база данни',
-            DB_ERROR_NOSUCHFIELD        => 'несъществуващо поле',
-            DB_ERROR_NOSUCHTABLE        => 'несъществуваща таблица',
+            'LANG'                      => 'bg',
+            DB_ERROR                    => 'РЅРµРёР·РІРµСЃС‚РЅР° РіСЂРµС€РєР°',
+            DB_ERROR_ALREADY_EXISTS     => 'РІРµС‡Рµ СЃСЉС‰РµСЃС‚РІСѓРІР°',
+            DB_ERROR_CANNOT_CREATE      => 'РЅРµ РјРѕР¶Рµ РґР° Р±СЉРґРµ СЃСЉР·РґР°РґРµРЅР°',
+            DB_ERROR_CANNOT_DELETE      => 'РЅРµ РјРѕР¶Рµ РґР° Р±СЉРґРµ РёР·С‚СЂРёС‚Р°',
+            DB_ERROR_CANNOT_DROP        => 'РЅРµ РјРѕР¶Рµ РґР° Р±СЉРґРµ СѓРЅРёС‰РѕР¶РµРЅР°',
+            DB_ERROR_CONSTRAINT         => 'РЅР°СЂСѓС€РµРЅРѕ СѓСЃР»РѕРІРёРµ',
+            DB_ERROR_DIVZERO            => 'РґРµР»РµРЅРёРµ РЅР° РЅСѓР»Р°',
+            DB_ERROR_INVALID            => 'РЅРµРїСЂР°РІРёР»РЅРѕ',
+            DB_ERROR_INVALID_DATE       => 'РЅРµРєРѕСЂРµРєС‚РЅР° РґР°С‚Р° РёР»Рё С‡Р°СЃ',
+            DB_ERROR_INVALID_NUMBER     => 'РЅРµРІР°Р»РёРґРµРЅ РЅРѕРјРµСЂ',
+            DB_ERROR_MISMATCH           => 'РїРѕРіСЂРµС€РЅР° СѓРїРѕС‚СЂРµР±Р°',
+            DB_ERROR_NODBSELECTED       => 'РЅРµ Рµ РёР·Р±СЂР°РЅР° Р±Р°Р·Р° РґР°РЅРЅРё',
+            DB_ERROR_NOSUCHFIELD        => 'РЅРµСЃСЉС‰РµСЃС‚РІСѓРІР°С‰Рѕ РїРѕР»Рµ',
+            DB_ERROR_NOSUCHTABLE        => 'РЅРµСЃСЉС‰РµСЃС‚РІСѓРІР°С‰Р° С‚Р°Р±Р»РёС†Р°',
             DB_ERROR_NOT_CAPABLE        => 'DB backend not capable',
-            DB_ERROR_NOT_FOUND          => 'не е намерена',
-            DB_ERROR_NOT_LOCKED         => 'не е заключена',
-            DB_ERROR_SYNTAX             => 'грешен синтаксис',
-            DB_ERROR_UNSUPPORTED        => 'не се поддържа',
-            DB_ERROR_VALUE_COUNT_ON_ROW => 'некоректен брой колони в реда',
-            DB_ERROR_INVALID_DSN        => 'невалиден DSN',
-            DB_ERROR_CONNECT_FAILED     => 'връзката не може да бъде осъществена',
-            0	                        => 'няма грешки', // DB_OK
-            DB_ERROR_NEED_MORE_DATA     => 'предоставените данни са недостатъчни',
-            DB_ERROR_EXTENSION_NOT_FOUND=> 'разширението не е намерено',
-            DB_ERROR_NOSUCHDB           => 'несъществуваща база данни',
-            DB_ERROR_ACCESS_VIOLATION   => 'нямате достатъчно права'
+            DB_ERROR_NOT_FOUND          => 'РЅРµ Рµ РЅР°РјРµСЂРµРЅР°',
+            DB_ERROR_NOT_LOCKED         => 'РЅРµ Рµ Р·Р°РєР»СЋС‡РµРЅР°',
+            DB_ERROR_SYNTAX             => 'РіСЂРµС€РµРЅ СЃРёРЅС‚Р°РєСЃРёСЃ',
+            DB_ERROR_UNSUPPORTED        => 'РЅРµ СЃРµ РїРѕРґРґСЉСЂР¶Р°',
+            DB_ERROR_VALUE_COUNT_ON_ROW => 'РЅРµРєРѕСЂРµРєС‚РµРЅ Р±СЂРѕР№ РєРѕР»РѕРЅРё РІ СЂРµРґР°',
+            DB_ERROR_INVALID_DSN        => 'РЅРµРІР°Р»РёРґРµРЅ DSN',
+            DB_ERROR_CONNECT_FAILED     => 'РІСЂСЉР·РєР°С‚Р° РЅРµ РјРѕР¶Рµ РґР° Р±СЉРґРµ РѕСЃСЉС‰РµСЃС‚РІРµРЅР°',
+            0	                        => 'РЅСЏРјР° РіСЂРµС€РєРё', // DB_OK
+            DB_ERROR_NEED_MORE_DATA     => 'РїСЂРµРґРѕСЃС‚Р°РІРµРЅРёС‚Рµ РґР°РЅРЅРё СЃР° РЅРµРґРѕСЃС‚Р°С‚СЉС‡РЅРё',
+            DB_ERROR_EXTENSION_NOT_FOUND=> 'СЂР°Р·С€РёСЂРµРЅРёРµС‚Рѕ РЅРµ Рµ РЅР°РјРµСЂРµРЅРѕ',
+            DB_ERROR_NOSUCHDB           => 'РЅРµСЃСЉС‰РµСЃС‚РІСѓРІР°С‰Р° Р±Р°Р·Р° РґР°РЅРЅРё',
+            DB_ERROR_ACCESS_VIOLATION   => 'РЅСЏРјР°С‚Рµ РґРѕСЃС‚Р°С‚СЉС‡РЅРѕ РїСЂР°РІР°'
 );

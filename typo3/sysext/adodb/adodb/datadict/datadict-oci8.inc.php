@@ -1,7 +1,9 @@
 <?php
 
 /**
-  V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
+  @version   v5.20.3  01-Jan-2016
+  @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
+  @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -24,7 +26,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 	var $typeX = 'VARCHAR(4000)';
 	var $typeXL = 'CLOB';
 
-	function MetaType($t,$len=-1, $fieldobj=false)
+	function MetaType($t, $len=-1, $fieldobj=false)
 	{
 		if (is_object($t)) {
 			$fieldobj = $t;
@@ -116,7 +118,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function AddColumnSQL($tabname, $flds)
 	{
-		$tabname = $this->TableName ($tabname);
+		$tabname = $this->TableName($tabname);
 		$f = array();
 		list($lines,$pkey) = $this->_GenFields($flds);
 		$s = "ALTER TABLE $tabname ADD (";
@@ -131,7 +133,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
-		$tabname = $this->TableName ($tabname);
+		$tabname = $this->TableName($tabname);
 		$f = array();
 		list($lines,$pkey) = $this->_GenFields($flds);
 		$s = "ALTER TABLE $tabname MODIFY(";
@@ -145,7 +147,6 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
-		$tabname = $this->TableName ($tabname);
 		if (!is_array($flds)) $flds = explode(',',$flds);
 		foreach ($flds as $k => $v) $flds[$k] = $this->NameQuote($v);
 
@@ -200,9 +201,9 @@ end;
 		if ($this->schema) {
 			$t = strpos($tabname, '.');
 			if ($t !== FALSE) {
-				$tab = substr($sequenceTriggerTableName, $t + 1);
+					$tab = substr($sequenceTriggerTableName, $t + 1);
 			} else {
-				$tab = $sequenceTriggerTableName;
+					$tab = $sequenceTriggerTableName;
 			}
 			$seqname = $this->schema . '.' . $this->seqPrefix . $tab;
 			$trigname = $this->schema . '.' . $this->trigPrefix . $tab;
@@ -212,11 +213,11 @@ end;
 		}
 
 		if (strlen($seqname) > 30) {
-			$seqname = $this->seqPrefix . uniqid('');
-		}
+			$seqname = $this->seqPrefix.uniqid('');
+		} // end if
 		if (strlen($trigname) > 30) {
-			$trigname = $this->trigPrefix . uniqid('');
-		}
+			$trigname = $this->trigPrefix.uniqid('');
+		} // end if
 
 		if (isset($tableoptions['REPLACE'])) $sql[] = "DROP SEQUENCE $seqname";
 		$seqCache = '';

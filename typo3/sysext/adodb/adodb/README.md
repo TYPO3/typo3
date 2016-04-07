@@ -1,12 +1,27 @@
-ADODB Library for PHP5
+ADOdb Library for PHP5
 ======================
 
-(c) 2000-2014 John Lim (jlim@natsoft.com)
+[![Join chat on Gitter](https://img.shields.io/gitter/room/form-data/form-data.svg)](https://gitter.im/adodb/adodb?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Released under both BSD and GNU Lesser GPL library license.
-This means you can use it in proprietary products.
+(c) 2000-2013 John Lim (jlim@natsoft.com)  
+(c) 2014      Damien Regad, Mark Newnham and the ADOdb community
+
+Released under both [BSD 3-Clause](https://github.com/ADOdb/ADOdb/blob/master/LICENSE.md#bsd-3-clause-license) 
+and [GNU Lesser GPL library 2.1](https://github.com/ADOdb/ADOdb/blob/master/LICENSE.md#gnu-lesser-general-public-license) 
+licenses.  
+This means you can use it in proprietary products; 
+see [License](https://github.com/ADOdb/ADOdb/blob/master/LICENSE.md) for details.
 
 Home page: http://adodb.sourceforge.net/
+
+> **WARNING: known issue with Associative Fetch Mode in ADOdb v5.19
+-- PLEASE UPGRADE TO v5.20 !**  
+> When fetching data in Associative mode (i.e. when `$ADODB_FETCH_MODE` is
+> set to *ADODB_FETCH_ASSOC*), recordsets do not return any data (empty strings)
+> when using some database drivers. The problem has been reported on MSSQL,
+> Interbase and Foxpro, but possibly affects other drivers as well; all drivers
+> derived from the above are also impacted.
+> For further details, please refer to [Issue #20](https://github.com/ADOdb/ADOdb/issues/20).
 
 
 Introduction
@@ -78,8 +93,11 @@ statement for databases described in testdatabases.inc.php. The benchmark
 tables are created in test.php.
 
 
-Feature Requests and Bug Reports
-================================
+Support
+=======
+
+To discuss with the ADOdb development team and users, connect to our
+[Gitter chatroom](https://gitter.im/adodb/adodb) using your Github credentials.
 
 Please report bugs, issues and feature requests on Github:
 
