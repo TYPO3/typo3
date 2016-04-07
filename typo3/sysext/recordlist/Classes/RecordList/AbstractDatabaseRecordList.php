@@ -454,7 +454,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             if (!$hideTable) {
                 // Don't show table if hidden by TCA ctrl section
                 // Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-                $hideTable = $hideTable || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable']) || in_array($tableName, $hideTablesArray, true);
+                $hideTable = $hideTable || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable']) || in_array($tableName, $hideTablesArray, true) || in_array('*', $hideTablesArray, true);
                 // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
                 if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
                     $hideTable = (bool)$this->tableTSconfigOverTCA[$tableName . '.']['hideTable'];
