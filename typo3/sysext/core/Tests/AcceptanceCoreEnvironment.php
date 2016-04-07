@@ -18,6 +18,8 @@ use Codeception\Event\SuiteEvent;
 use Codeception\Events;
 use Codeception\Extension;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 
 /**
  * This codeception extension creates a full TYPO3 instance within
@@ -174,7 +176,12 @@ class AcceptanceCoreEnvironment extends Extension
         }
         $testbase->createLastRunTextfile($instancePath);
         $testbase->setUpInstanceCoreLinks($instancePath);
-        $testbase->linkTestExtensionsToInstance($instancePath, $this->testExtensionsToLoad);
+        // ext:styleguide is always loaded
+        $testExtensionsToLoad = array_merge(
+            [ 'typo3conf/ext/styleguide' ],
+            $this->testExtensionsToLoad
+        );
+        $testbase->linkTestExtensionsToInstance($instancePath, $testExtensionsToLoad);
         $testbase->linkPathsInTestInstance($instancePath, $this->pathsToLinkInTestInstance);
         $localConfiguration = $testbase->getOriginalDatabaseSettingsFromEnvironmentOrLocalConfiguration();
         $originalDatabaseName = $localConfiguration['DB']['database'];
@@ -191,7 +198,8 @@ class AcceptanceCoreEnvironment extends Extension
         $localConfiguration['SYS']['debugExceptionHandler'] = '';
         $localConfiguration['SYS']['trustedHostsPattern'] = 'localhost:8000';
         $localConfiguration['SYS']['encryptionKey'] = 'iAmInvalid';
-        $localConfiguration['SYS']['setDBinit'] = 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';';
+        // @todo: This sql_mode should be enabled as soon as styleguide and dataHandler can cope with it
+        //$localConfiguration['SYS']['setDBinit'] = 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';';
         $localConfiguration['SYS']['caching']['cacheConfigurations']['extbase_object']['backend'] = NullBackend::class;
         $testbase->setUpLocalConfiguration($instancePath, $localConfiguration, $this->configurationToUseInTestInstance);
         $defaultCoreExtensionsToLoad = [
@@ -213,7 +221,7 @@ class AcceptanceCoreEnvironment extends Extension
             'sv',
             'scheduler'
         ];
-        $testbase->setUpPackageStates($instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $this->testExtensionsToLoad);
+        $testbase->setUpPackageStates($instancePath, $defaultCoreExtensionsToLoad, $this->coreExtensionsToLoad, $testExtensionsToLoad);
         $testbase->setUpBasicTypo3Bootstrap($instancePath);
         $testbase->setUpTestDatabase($localConfiguration['DB']['database'], $originalDatabaseName);
         $testbase->loadExtensionTables();
@@ -228,5 +236,16 @@ class AcceptanceCoreEnvironment extends Extension
         foreach ($this->xmlDatabaseFixtures as $fixture) {
             $testbase->importXmlDatabaseFixture(ORIGINAL_ROOT . $fixture);
         }
+
+        // styleguide generator uses DataHandler for some parts. DataHandler needs an initialized BE user
+        // with admin right and the live workspace.
+        Bootstrap::getInstance()->initializeBackendUser();
+        $GLOBALS['BE_USER']->user['admin'] = 1;
+        $GLOBALS['BE_USER']->user['uid'] = 1;
+        $GLOBALS['BE_USER']->workspace = 0;
+        Bootstrap::getInstance()->initializeLanguageObject();
+
+        $styleguideGenerator = new Generator();
+        $styleguideGenerator->create();
     }
 }
