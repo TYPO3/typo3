@@ -76,7 +76,7 @@ class RichTextNodeResolver implements NodeResolverInterface
                     $rteSetupConfiguration = BackendUtility::RTEsetup($rteSetup['properties'], $table, $fieldName, $rteTcaTypeValue);
                     if (!$rteSetupConfiguration['disabled']) {
                         // Finally, we're sure the editor should really be rendered ...
-                        return RichtextElement::class;
+                        return RichTextElement::class;
                     }
                 }
             }

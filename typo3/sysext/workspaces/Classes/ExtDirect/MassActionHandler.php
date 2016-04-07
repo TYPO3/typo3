@@ -62,10 +62,10 @@ class MassActionHandler extends AbstractHandler
     /**
      * Publishes the current workspace.
      *
-     * @param stdclass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
-    public function publishWorkspace(\stdclass $parameters)
+    public function publishWorkspace(\stdClass $parameters)
     {
         $result = array(
             'init' => false,
@@ -91,10 +91,10 @@ class MassActionHandler extends AbstractHandler
     /**
      * Flushes the current workspace.
      *
-     * @param stdclass $parameters
+     * @param \stdClass $parameters
      * @return array
      */
-    public function flushWorkspace(\stdclass $parameters)
+    public function flushWorkspace(\stdClass $parameters)
     {
         $result = array(
             'init' => false,

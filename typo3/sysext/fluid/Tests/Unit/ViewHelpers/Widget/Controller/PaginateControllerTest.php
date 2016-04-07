@@ -190,7 +190,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $objects = new ObjectStorage();
         for ($i = 0; $i <= 25; $i++) {
-            $item = new \StdClass;
+            $item = new \stdClass;
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
@@ -209,7 +209,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->controller->_set('currentPage', 2);
         $objects = new ObjectStorage();
         for ($i = 0; $i <= 55; $i++) {
-            $item = new \StdClass;
+            $item = new \stdClass;
             $objects->attach($item);
         }
         $this->controller->_set('objects', $objects);
@@ -227,7 +227,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $objects = array();
         for ($i = 0; $i <= 25; $i++) {
-            $item = new \StdClass;
+            $item = new \stdClass;
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);
@@ -246,7 +246,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->controller->_set('currentPage', 2);
         $objects = array();
         for ($i = 0; $i <= 55; $i++) {
-            $item = new \StdClass;
+            $item = new \stdClass;
             $objects[] = $item;
         }
         $this->controller->_set('objects', $objects);

@@ -303,7 +303,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathValidDataProvider()
     {
-        $testObject = new \StdClass();
+        $testObject = new \stdClass();
         $testObject->foo = 'foo';
         $testObject->bar = 'bar';
         return array(
@@ -453,7 +453,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function setValueByPathSetsCorrectValueDataProvider()
     {
-        $testObject = new \StdClass();
+        $testObject = new \stdClass();
         $testObject->foo = 'foo';
         $testObject->bar = 'bar';
         return array(

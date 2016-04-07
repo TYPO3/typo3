@@ -137,18 +137,18 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
             '<option value="1">Foo</option>' . chr(10)
         );
 
-        $obj1 = new \StdClass();
+        $obj1 = new \stdClass();
         $obj1->uid = 1;
         $obj1->title = 'Foo';
 
-        $obj2 = new \StdClass();
+        $obj2 = new \stdClass();
         $obj2->uid = -1;
         $obj2->title = 'Bar';
 
-        $obj3 = new \StdClass();
+        $obj3 = new \stdClass();
         $obj3->title = 'Baz';
 
-        $obj4 = new \StdClass();
+        $obj4 = new \stdClass();
         $obj4->uid = 2;
 
         $this->arguments['optionValueField'] = 'uid';

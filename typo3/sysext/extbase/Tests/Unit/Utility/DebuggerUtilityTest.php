@@ -37,7 +37,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
         $objectStorage = $this->getMock(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, array('dummy'));
         for ($i = 0; $i < 5; $i++) {
-            $obj = new \StdClass();
+            $obj = new \stdClass();
             $obj->property = $i;
             $objectStorage->attach($obj);
         }

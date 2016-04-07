@@ -77,7 +77,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function collectionValidatorFailsForAValueNotBeingACollection()
     {
-        $this->assertTrue($this->validator->validate(new \StdClass())->hasErrors());
+        $this->assertTrue($this->validator->validate(new \stdClass())->hasErrors());
     }
 
     /**
