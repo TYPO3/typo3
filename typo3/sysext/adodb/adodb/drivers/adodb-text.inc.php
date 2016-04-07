@@ -1,6 +1,8 @@
 <?php
 /*
-V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
+@version   v5.20.3  01-Jan-2016
+@copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
+@copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
    Set tabs to 4.
 */
 
@@ -88,7 +90,7 @@ class ADODB_text extends ADOConnection {
 	var $_reznames;
 	var $_reztypes;
 
-	function ADODB_text()
+	function __construct()
 	{
 	}
 
@@ -374,9 +376,9 @@ class ADORecordSet_text extends ADORecordSet_array
 
 	var $databaseType = "text";
 
-	function ADORecordSet_text(&$conn,$mode=false)
+	function __construct(&$conn,$mode=false)
 	{
-		$this->ADORecordSet_array();
+		parent::__construct();
 		$this->InitArray($conn->_rezarray,$conn->_reztypes,$conn->_reznames);
 		$conn->_rezarray = false;
 	}

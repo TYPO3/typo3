@@ -2,31 +2,31 @@
 // by "El-Shamaa, Khaled" <k.el-shamaa#cgiar.org>
 $ADODB_LANG_ARRAY = array (
 			'LANG'			    => 'ar',
-	    DB_ERROR			=> 'ฮุร Ûํั ใอฯฯ',
-	    DB_ERROR_ALREADY_EXISTS	=> 'ใๆฬๆฯ ใำศÞว',
-	    DB_ERROR_CANNOT_CREATE	=> 'แว ํใ฿ไ ลไิวม',
-	    DB_ERROR_CANNOT_DELETE	=> 'แว ํใ฿ไ อะÝ',
-	    DB_ERROR_CANNOT_DROP	=> 'แว ํใ฿ไ อะÝ',
-	    DB_ERROR_CONSTRAINT 	=> 'ฺใแํษ ลฯฮวแ ใใไๆฺษ',
-	    DB_ERROR_DIVZERO		=> 'ฺใแํษ วแสÞำํใ ฺแ์ ีÝั',
-	    DB_ERROR_INVALID		=> 'Ûํั ีอํอ',
-	    DB_ERROR_INVALID_DATE	=> 'ีํÛษ ๆÞส รๆ สวัํฮ Ûํั ีอํอษ',
-	    DB_ERROR_INVALID_NUMBER	=> 'ีํÛษ ัÞใ Ûํั ีอํอษ',
-	    DB_ERROR_MISMATCH		=> 'Ûํั ใสุวศÞ',
-	    DB_ERROR_NODBSELECTED	=> 'แใ ํสใ ลฮสํวั Þวฺฯษ วแศํวไวส ศฺฯ',
-	    DB_ERROR_NOSUCHFIELD	=> 'แํำ ๅไวแ฿ อÞแ ศๅะว วแวำใ',
-	    DB_ERROR_NOSUCHTABLE	=> 'แํำ ๅไวแ฿ ฬฯๆแ ศๅะว วแวำใ',
-	    DB_ERROR_NOT_CAPABLE	=> 'Þวฺฯษ วแศํวไวส วแใัสศุ ศๅว Ûํั Þวฯัษ',
-	    DB_ERROR_NOT_FOUND		=> 'แใ ํสใ ลํฬวฯๅ',
-	    DB_ERROR_NOT_LOCKED 	=> 'Ûํั ใÞÝๆแ',
-	    DB_ERROR_SYNTAX		=> 'ฮุร Ýํ วแีํÛษ',
-	    DB_ERROR_UNSUPPORTED	=> 'Ûํั ใฯฺๆใ',
-	    DB_ERROR_VALUE_COUNT_ON_ROW => 'ฺฯฯ วแÞํใ Ýํ วแำฬแ',
-	    DB_ERROR_INVALID_DSN	=> 'DSN Ûํั ีอํอ',
-	    DB_ERROR_CONNECT_FAILED	=> 'Ýิแ ฺใแํษ วแลสีวแ',
-	    0			       => 'แํำ ๅไวแ฿ รฮุวม', // DB_OK
-	    DB_ERROR_NEED_MORE_DATA	=> 'วแศํวไวส วแใาๆฯษ Ûํั ฿วÝํษ',
-	    DB_ERROR_EXTENSION_NOT_FOUND=> 'แใ ํสใ ลํฬวฯ วแลึวÝษ วแใสฺแÞษ',
-	    DB_ERROR_NOSUCHDB		=> 'แํำ ๅไวแ฿ Þวฺฯษ ศํวไวส ศๅะว วแวำใ',
-	    DB_ERROR_ACCESS_VIOLATION	=> 'ำใวอํวส Ûํั ฿วÝํษ'
+	    DB_ERROR			=> 'ุฎุทุฃ ุบูุฑ ู…ุญุฏุฏ',
+	    DB_ERROR_ALREADY_EXISTS	=> 'ู…ูุฌูุฏ ู…ุณุจูุง',
+	    DB_ERROR_CANNOT_CREATE	=> 'ูุง ูู…ูู ุฅูุดุงุก',
+	    DB_ERROR_CANNOT_DELETE	=> 'ูุง ูู…ูู ุญุฐู',
+	    DB_ERROR_CANNOT_DROP	=> 'ูุง ูู…ูู ุญุฐู',
+	    DB_ERROR_CONSTRAINT 	=> 'ุนู…ููุฉ ุฅุฏุฎุงู ู…ู…ููุนุฉ',
+	    DB_ERROR_DIVZERO		=> 'ุนู…ููุฉ ุงูุชูุณูู… ุนูู ุตูุฑ',
+	    DB_ERROR_INVALID		=> 'ุบูุฑ ุตุญูุญ',
+	    DB_ERROR_INVALID_DATE	=> 'ุตูุบุฉ ููุช ุฃู ุชุงุฑูุฎ ุบูุฑ ุตุญูุญุฉ',
+	    DB_ERROR_INVALID_NUMBER	=> 'ุตูุบุฉ ุฑูู… ุบูุฑ ุตุญูุญุฉ',
+	    DB_ERROR_MISMATCH		=> 'ุบูุฑ ู…ุชุทุงุจู',
+	    DB_ERROR_NODBSELECTED	=> 'ูู… ูุชู… ุฅุฎุชูุงุฑ ูุงุนุฏุฉ ุงูุจูุงูุงุช ุจุนุฏ',
+	    DB_ERROR_NOSUCHFIELD	=> 'ููุณ ููุงูู ุญูู ุจูุฐุง ุงูุงุณู…',
+	    DB_ERROR_NOSUCHTABLE	=> 'ููุณ ููุงูู ุฌุฏูู ุจูุฐุง ุงูุงุณู…',
+	    DB_ERROR_NOT_CAPABLE	=> 'ูุงุนุฏุฉ ุงูุจูุงูุงุช ุงูู…ุฑุชุจุท ุจูุง ุบูุฑ ูุงุฏุฑุฉ',
+	    DB_ERROR_NOT_FOUND		=> 'ูู… ูุชู… ุฅูุฌุงุฏู',
+	    DB_ERROR_NOT_LOCKED 	=> 'ุบูุฑ ู…ูููู',
+	    DB_ERROR_SYNTAX		=> 'ุฎุทุฃ ูู ุงูุตูุบุฉ',
+	    DB_ERROR_UNSUPPORTED	=> 'ุบูุฑ ู…ุฏุนูู…',
+	    DB_ERROR_VALUE_COUNT_ON_ROW => 'ุนุฏุฏ ุงูููู… ูู ุงูุณุฌู',
+	    DB_ERROR_INVALID_DSN	=> 'DSN ุบูุฑ ุตุญูุญ',
+	    DB_ERROR_CONNECT_FAILED	=> 'ูุดู ุนู…ููุฉ ุงูุฅุชุตุงู',
+	    0			       => 'ููุณ ููุงูู ุฃุฎุทุงุก', // DB_OK
+	    DB_ERROR_NEED_MORE_DATA	=> 'ุงูุจูุงูุงุช ุงูู…ุฒูุฏุฉ ุบูุฑ ูุงููุฉ',
+	    DB_ERROR_EXTENSION_NOT_FOUND=> 'ูู… ูุชู… ุฅูุฌุงุฏ ุงูุฅุถุงูุฉ ุงูู…ุชุนููุฉ',
+	    DB_ERROR_NOSUCHDB		=> 'ููุณ ููุงูู ูุงุนุฏุฉ ุจูุงูุงุช ุจูุฐุง ุงูุงุณู…',
+	    DB_ERROR_ACCESS_VIOLATION	=> 'ุณู…ุงุญูุงุช ุบูุฑ ูุงููุฉ'
 );

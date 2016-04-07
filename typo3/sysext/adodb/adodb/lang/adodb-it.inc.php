@@ -4,7 +4,7 @@
 $ADODB_LANG_ARRAY = array (
             'LANG'                      => 'it',
             DB_ERROR                    => 'errore sconosciuto',
-            DB_ERROR_ALREADY_EXISTS     => 'esiste gi&agrave;',
+            DB_ERROR_ALREADY_EXISTS     => 'esiste già',
             DB_ERROR_CANNOT_CREATE      => 'non posso creare',
             DB_ERROR_CANNOT_DELETE      => 'non posso cancellare',
             DB_ERROR_CANNOT_DROP        => 'non posso eliminare',
