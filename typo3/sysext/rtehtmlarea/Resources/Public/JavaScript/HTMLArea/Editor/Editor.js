@@ -506,6 +506,11 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	 * Focus on the editor
 	 */
 	Editor.prototype.focus = function () {
+		if (document.activeElement.tagName.toLowerCase() !== 'body') {
+			// Only focus the editor if the body tag is focused, which is
+			// the default after loading a page
+			return;
+		}
 		switch (this.getMode()) {
 			case 'wysiwyg':
 				this.iframe.focus();
