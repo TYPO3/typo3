@@ -64,6 +64,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class CropViewHelper extends AbstractViewHelper
 {
     /**
+     * Output escaping is enabled, thus we must disable escaping for rendered children
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
