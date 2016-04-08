@@ -1198,15 +1198,15 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-dd-drop-nodrop .x-dd-drop-icon{
-  background-image: url(images/dd/drop-no.gif);
+	background-image: url(images/dd/drop-no.gif);
 }
 
 .x-dd-drop-ok .x-dd-drop-icon{
-  background-image: url(images/dd/drop-yes.gif);
+	background-image: url(images/dd/drop-yes.gif);
 }
 
 .x-dd-drop-ok-add .x-dd-drop-icon{
-  background-image: url(images/dd/drop-add.gif);
+	background-image: url(images/dd/drop-add.gif);
 }
 
 .x-view-selector {
@@ -1225,21 +1225,23 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node-expanded .x-tree-node-icon{
-	background-image:url(../Resources/Public/Images/filetree-folder-opened.png);
+	background-image:url('../../core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-contains.svg');
 }
 
 .x-tree-node-leaf .x-tree-node-icon{
-	background-image:url(images/tree/leaf.gif);
+	background-image:url('../../core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-not-in-menu.svg');
 }
 
 .x-tree-node-collapsed .x-tree-node-icon{
-	background-image:url(../Resources/Public/Images/filetree-folder-default.png);
+	background-image:url('../../core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-folder-default.svg');
 }
 
 .x-tree-node-loading .x-tree-node-icon{
 	background-image: url('../images/spinner/ffffff.gif') !important;
 }
-
+.x-tree-node .icon, .x-tree-node .x-tree-node-icon {
+	margin-right: 3px;
+}
 .x-tree-node .x-tree-node-inline-icon {
 	background-image: none;
 }
@@ -1249,8 +1251,8 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node-loading a span{
-	 font-style: italic;
-	 color:#444444;
+	font-style: italic;
+	color:#444444;
 }
 
 .ext-ie .x-tree-node-el input {
@@ -1356,24 +1358,24 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-node div.x-tree-drag-insert-below{
- 	 border-bottom-color:#686868;
+	border-bottom-color:#686868;
 }
 
 .x-tree-node div.x-tree-drag-insert-above{
-	 border-top-color:#686868;
+	border-top-color:#686868;
 }
 
 .x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a{
- 	 border-bottom-color:#686868;
+	border-bottom-color:#686868;
 }
 
 .x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a{
-	 border-top-color:#686868;
+	border-top-color:#686868;
 }
 
 .x-tree-node .x-tree-drag-append a span{
-	 background-color:#ddd;
-	 border-color:gray;
+	background-color:#ddd;
+	border-color:gray;
 }
 
 .x-tree-node .x-tree-node-over {
@@ -1385,19 +1387,19 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-drop-ok-append .x-dd-drop-icon{
-  background-image: url(images/tree/drop-add.gif);
+	background-image: url(images/tree/drop-add.gif);
 }
 
 .x-tree-drop-ok-above .x-dd-drop-icon{
-  background-image: url(images/tree/drop-over.gif);
+	background-image: url(images/tree/drop-over.gif);
 }
 
 .x-tree-drop-ok-below .x-dd-drop-icon{
-  background-image: url(images/tree/drop-under.gif);
+	background-image: url(images/tree/drop-under.gif);
 }
 
 .x-tree-drop-ok-between .x-dd-drop-icon{
-  background-image: url(images/tree/drop-between.gif);
+	background-image: url(images/tree/drop-between.gif);
 }
 .x-date-picker {
 	border-color: #373737;
@@ -1530,7 +1532,7 @@ td.x-date-mp-sel a {
 }
 
 td.x-date-mp-sep {
-   border-right-color:#A2AAB8;
+	border-right-color:#A2AAB8;
 }
 
 .x-tip {
@@ -1898,7 +1900,7 @@ a.x-menu-item:focus {
 }
 
 .x-dlg-mask{
-   background-color:#ccc;
+	background-color:#ccc;
 }
 
 .x-window-plain .x-window-mc {
@@ -2200,7 +2202,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	padding-right: 3px;
 }
 .icon-tree-search-open {
-	background-image: url("images/tree/system-tree-search-open.png") !important;
+	background-image: url("../../core/Resources/Public/Icons/T3Icons/actions/actions-filter.svg") !important;
 }
 .icon-select-recursive {
 	background-image: url("images/tree/tcatree-select-recursive.png") !important;
