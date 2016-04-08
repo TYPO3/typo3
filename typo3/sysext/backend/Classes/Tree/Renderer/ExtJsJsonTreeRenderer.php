@@ -54,18 +54,12 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
         $nodeArray = array(
-            'iconCls' => $node->getIcon(),
-            'text' => $node->getLabel(),
+            'iconTag' => $node->getIcon(),
+            'text' => htmlspecialchars($node->getLabel()),
             'leaf' => !$node->hasChildNodes(),
-            'id' => $node->getId(),
-            'uid' => $node->getId()
+            'id' => htmlspecialchars($node->getId()),
+            'uid' => htmlspecialchars($node->getId())
         );
-
-        foreach ($nodeArray as &$nodeItem) {
-            if (is_string($nodeItem)) {
-                $nodeItem = htmlspecialchars($nodeItem);
-            }
-        }
 
         return $nodeArray;
     }
