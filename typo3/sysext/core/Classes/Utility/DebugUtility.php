@@ -128,16 +128,18 @@ class DebugUtility
     /**
      * Displays the "path" of the function call stack in a string, using debug_backtrace
      *
+     * @param bool $prependFileNames If set to true file names are added to the output
      * @return string
      */
-    public static function debugTrail()
+    public static function debugTrail($prependFileNames = false)
     {
         $trail = debug_backtrace(0);
         $trail = array_reverse($trail);
         array_pop($trail);
         $path = array();
         foreach ($trail as $dat) {
-            $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
+            $fileInformation = $prependFileNames && !empty($dat['file']) ? $dat['file'] . ':' : '';
+            $pathFragment = $fileInformation . $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file
             if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
                 $pathFragment .= '(' . PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . PathUtility::stripPathSitePrefix($dat['file']);
