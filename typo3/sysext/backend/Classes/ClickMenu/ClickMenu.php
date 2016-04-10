@@ -717,7 +717,7 @@ class ClickMenu
     public function DB_editAccess($table, $uid)
     {
         $url = BackendUtility::getModuleUrl('record_edit', array(
-            'columnsOnly' => rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : ''))),
+            'columnsOnly' => (implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : '')),
             'edit[' . $table . '][' . $uid . ']' => 'edit'
         ));
         return $this->linkItem(
