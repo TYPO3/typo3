@@ -17,6 +17,8 @@
 				<input id="t3-install-form-password" type="password" name="install[values][password]" class="t3-install-form-input-text form-control" autofocus="autofocus" />
 			</div>
 			<f:render partial="Action/Common/SubmitButton" arguments="{name:'login', text:'Login', className:'btn-success'}"/>
+			<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool" class="btn btn-danger pull-right"><i class="fa fa-lock"></i> Lock Install Tool again</a>
+
 		</form>
 	</div>
 	<div id="t3-install-box-border-bottom">&nbsp;</div>
