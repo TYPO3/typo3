@@ -242,7 +242,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     '</table></div>';
 
             $this->content = $this->moduleTemplate->header($lang->getLL('moduleTitle'));
-            $this->content .= '<div><p class="lead">' . $lang->getLL('overview') . '</p>' . $table . '</div>';
+            $this->content .= '<p class="lead">' . $lang->getLL('overview') . '</p>' . $table;
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
@@ -620,8 +620,6 @@ page.10.value = HELLO WORLD!
      */
     public function renderList($pArray, $lines = array(), $c = 0)
     {
-        static $i;
-
         if (!is_array($pArray)) {
             return $lines;
         }
@@ -630,14 +628,14 @@ page.10.value = HELLO WORLD!
         foreach ($pArray as $k => $v) {
             if (MathUtility::canBeInterpretedAsInteger($k)) {
                 if (isset($pArray[$k . '_'])) {
-                    $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
+                    $lines[] = '<tr>
+						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '" title="' . htmlspecialchars('ID: ' . $k) . '">' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . ' ' . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 						<td>' . $pArray[$k . '_']['count'] . '</td>
-						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
-						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
+						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '') . '</td>
+						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '') . '</td>
 						</tr>';
                 } else {
-                    $lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+                    $lines[] = '<tr>
 						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . $this->moduleTemplate->getIconFactory()->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), Icon::SIZE_SMALL)->render() . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
 						<td></td>
 						<td></td>

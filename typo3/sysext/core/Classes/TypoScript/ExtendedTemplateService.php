@@ -697,19 +697,19 @@ class ExtendedTemplateService extends TemplateService
                 $A_B = '';
                 $A_E = '';
             }
-            $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . $A_B
+            $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
                 . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
                 . $A_E . '&nbsp;&nbsp;';
             $RL = $this->ext_getRootlineNumber($row['pid']);
             $statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-            $keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+            $keyArray[] = '<tr>
 							<td nowrap="nowrap">' . $HTML . '</td>
-							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;</td>
-							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;' . '</td>
-							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
+							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>
+							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
 							<td align="center">' . ($row['pid'] ?: '') . '</td>
 							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
-							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
+							<td>' . ($row['next'] ? $row['next'] : '') . '</td>
 						</tr>';
             if ($deeper) {
                 $keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);

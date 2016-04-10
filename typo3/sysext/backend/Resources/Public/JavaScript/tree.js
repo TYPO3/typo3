@@ -69,7 +69,6 @@ Ext.extend(TYPO3.Components.Tree.StandardTree, Ext.tree.TreePanel, {
 		var text = filterText.getValue();
 		Ext.each(this.hiddenNodes, function(node) {
 			node.ui.show();
-			node.ui.removeClass('bgColor6');
 		});
 		if (!text) {
 			this.filter.clear();
@@ -87,8 +86,6 @@ Ext.extend(TYPO3.Components.Tree.StandardTree, Ext.tree.TreePanel, {
 				if (!re.test(node.text)) {
 					node.ui.hide();
 					me.hiddenNodes.push(node);
-				} else {
-					node.ui.addClass('bgColor6');
 				}
 			}
 		}, this);
