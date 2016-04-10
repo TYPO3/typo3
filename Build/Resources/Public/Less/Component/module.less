@@ -55,7 +55,7 @@
 // Docheader
 //
 .module-docheader {
-	.clearfix;
+	&:extend(.clearfix all);
 	position: fixed;
 	width: 100%;
 	top: 0;
@@ -67,7 +67,7 @@
 	padding: @module-docheader-padding;
 	.transition(margin-top 0.3s ease-in-out);
 	.module-docheader-bar {
-		.clearfix;
+		&:extend(.clearfix all);
 		min-height: @module-docheader-bar-height;
 		margin: @module-docheader-bar-margin;
 		line-height: @module-docheader-bar-height;
