@@ -41,11 +41,6 @@ class ExtendedTemplateService extends TemplateService
     public $edit_divider = '###MOD_TS:EDITABLE_CONSTANTS###';
 
     /**
-     * @var string
-     */
-    public $HTMLcolorList = 'aqua,beige,black,blue,brown,fuchsia,gold,gray,green,lime,maroon,navy,olive,orange,purple,red,silver,tan,teal,turquoise,yellow,white';
-
-    /**
      * @var array
      */
     public $categories = array(
@@ -265,6 +260,21 @@ class ExtendedTemplateService extends TemplateService
      * @var string
      */
     public $lastComment = '';
+
+    /**
+     * @var array
+     */
+    protected $inlineJavaScript = [];
+
+    /**
+     * Gets the inline JavaScript.
+     *
+     * @return array
+     */
+    public function getInlineJavaScript()
+    {
+        return $this->inlineJavaScript;
+    }
 
     /**
      * Substitute constant
@@ -1199,17 +1209,20 @@ class ExtendedTemplateService extends TemplateService
                                 . ' name="' . $fN . '" value="' . $fV . '"' . ' onChange="uFormUrl(' . $aname . ')" />';
                             break;
                         case 'color':
-                            $colorNames = explode(',', ',' . $this->HTMLcolorList);
-                            $p_field = '';
-                            foreach ($colorNames as $val) {
-                                $sel = '';
-                                if ($val == strtolower($params['value'])) {
-                                    $sel = ' selected';
-                                }
-                                $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $val . '</option>';
+                            $p_field = '
+                                <input class="form-control formengine-colorpickerelement" type="text" id="input-' . $idName . '" rel="' . $idName .
+                                '" name="' . $fN . '" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
+
+                            if (empty($this->inlineJavaScript[$typeDat['type']])) {
+                                $this->inlineJavaScript[$typeDat['type']] = '
+                                    require([\'TYPO3/CMS/Core/Contrib/jquery.minicolors\'], function() {
+                                        TYPO3.jQuery(\'.formengine-colorpickerelement\').minicolors({
+                                            theme: \'bootstrap\',
+                                            format: \'hex\',
+                                            align: \'bottom left\'
+                                        });
+                                    });';
                             }
-                            $p_field = '<select class="form-control t3js-color-select" id="select-' . $idName . '" rel="' . $idName . '" name="C' . $fN . '" onChange="uFormUrl(' . $aname . ');"' . $this->getDocumentTemplate()->formWidth(7) . '>' . $p_field . '</select>';
-                            $p_field .= '<input class="form-control t3js-color-input" type="text" id="input-' . $idName . '" rel="' . $idName . '" name="' . $fN . '" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
                             break;
                         case 'wrap':
                             $wArr = explode('|', $fV);
@@ -1297,12 +1310,6 @@ class ExtendedTemplateService extends TemplateService
                     $defaultTyposcriptID = 'defaultTS-' . $idName;
                     $checkboxName = 'check[' . $params['name'] . ']';
                     $checkboxID = 'check-' . $idName;
-                    // Handle type=color specially
-                    if ($typeDat['type'] === 'color' && substr($params['value'], 0, 2) != '{$') {
-                        $appendedGroupAddon = '<span class="input-group-addon colorbox" id="colorbox-' . $idName . '" style="background-color:' . $params['value'] . ';"></span>';
-                    } else {
-                        $appendedGroupAddon = '';
-                    }
                     $userTyposcriptStyle = '';
                     $deleteIconHTML = '';
                     $constantCheckbox = '';

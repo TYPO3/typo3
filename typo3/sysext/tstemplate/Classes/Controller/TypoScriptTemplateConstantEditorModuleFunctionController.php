@@ -172,6 +172,10 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
             $templateService->ext_getTSCE_config($category);
 
             $printFields = trim($templateService->ext_printFields($theConstants, $category));
+            foreach ($templateService->getInlineJavaScript() as $name => $inlineJavaScript) {
+                $this->pageRenderer->addJsInlineCode($name, $inlineJavaScript);
+            }
+
             if ($printFields) {
                 $theOutput .= '<div>' . $printFields . '</div>';
             }

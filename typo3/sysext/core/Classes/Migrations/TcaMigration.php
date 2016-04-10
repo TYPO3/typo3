@@ -53,6 +53,7 @@ class TcaMigration
         $tca = $this->migrateSelectFieldIconTable($tca);
         $tca = $this->migrateElementBrowserWizardToLinkHandler($tca);
         $tca = $this->migrateDefaultExtrasRteTransFormOptions($tca);
+        $tca = $this->migrateColorPickerWizardToRenderType($tca);
         // @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
         return $tca;
     }
@@ -631,7 +632,7 @@ class TcaMigration
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
                 if (
                     isset($fieldConfig['config']['wizards']['link']['module']['name']) && $fieldConfig['config']['wizards']['link']['module']['name'] === 'wizard_element_browser'
-                    && isset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']) &&  $fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode'] === 'wizard'
+                    && isset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']) && $fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode'] === 'wizard'
                 ) {
                     $fieldConfig['config']['wizards']['link']['module']['name'] = 'wizard_link';
                     unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']);
@@ -702,6 +703,40 @@ class TcaMigration
                                 . '\'][\'columnsOverrides\'][\'' . $fieldName
                                 . '\'][\'defaultExtras\']' .
                                 ' was changed to "' . $fieldConfig['defaultExtras'] . '"';
+                        }
+                    }
+                }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates fields having a colorpicker wizard to a color field
+     *
+     * @param array $tca Incoming TCA
+     * @return array Migrated TCA
+     */
+    protected function migrateColorPickerWizardToRenderType(array $tca)
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (isset($fieldConfig['config'])) {
+                    if (isset($fieldConfig['config']['wizards'])) {
+                        foreach ($fieldConfig['config']['wizards'] as $wizardName => $wizard) {
+                            if (isset($wizard['type']) && ($wizard['type'] === 'colorbox')) {
+                                unset($fieldConfig['config']['wizards'][$wizardName]);
+                                $fieldConfig['config']['renderType'] = 'colorpicker';
+
+                                $this->messages[] = 'The color-picker wizard using \'colorbox\' is deprecated'
+                                    . ' in TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']'
+                                    . '[\'wizards\'][\'' . $wizardName . '\'] and is changed to ' . $table
+                                    . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] = \'colorpicker\'';
+                            }
                         }
                     }
                 }

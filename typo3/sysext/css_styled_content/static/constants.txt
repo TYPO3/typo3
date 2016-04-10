@@ -63,7 +63,9 @@ styles.content.imgtext {
   textMargin = 10
 
     # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
-  borderColor = black
+  borderColor = #000000
+    # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
+  borderColor2 = #000000
     # cat=content/cImage/i2; type=int[0-100]; label= Image border, thickness: Thickness of border around images in content elements when "Border"-option for element is set.
   borderThick = 2
     # cat=content/cImage/i3; type=int+; label= Image border, padding: Padding left and right to the image, around the border.
@@ -91,15 +93,15 @@ styles.content.table {
     # cat=content/cTable/k3; type=color; label= Table background color, Color 2: Background color for table when "Backgr. Color" has been set to "Color 2"
   backgroundColor.2 = #F5FFAA
     # cat=content/cTable/k5; type=color; label= Table background color, Black: Background color for table when "Backgr. Color" has been set to "Black"
-  backgroundColor.240 = black
+  backgroundColor.240 = #000000
     # cat=content/cTable/k6; type=color; label= Table background color, White: Background color for table when "Backgr. Color" has been set to "White"
-  backgroundColor.241 = white
+  backgroundColor.241 = #FFFFFF
     # cat=content/cTable/k7; type=color; label= Table background color, Dark Gray: Background color for table when "Backgr. Color" has been set to "Dark Gray"
   backgroundColor.242 = #333333
     # cat=content/cTable/k8; type=color; label= Table background color, Gray: Background color for table when "Backgr. Color" has been set to "Gray"
-  backgroundColor.243 = gray
+  backgroundColor.243 = #808080
     # cat=content/cTable/k9; type=color; label= Table background color, Silver: Background color for table when "Backgr. Color" has been set to "Silver"
-  backgroundColor.244 = silver
+  backgroundColor.244 = #C0C0C0
 }
 
  # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page"

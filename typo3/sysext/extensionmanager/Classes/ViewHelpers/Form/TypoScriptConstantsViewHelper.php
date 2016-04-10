@@ -101,26 +101,20 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
             $this->tag->addAttribute('value', $configuration->getValue());
         }
 
-        // configure colorpicker wizard
-        $params = array(
-            'formName' => 'configurationform',
-            'itemName' => $elementName,
-        );
-        $onClick =
-            'this.blur();' .
-            'vHWin=window.open(' .
-                GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker', array('P' => $params))) . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
-                '\'popUpem-' . GeneralUtility::shortMD5($elementName) . '\',' .
-                '\'height=400,width=400,status=0,menubar=0,scrollbars=1\'' .
-            ');' .
-            'vHWin.focus();' .
-            'return false;';
-
-        // wrap the field
-        $output = '<div class="form-wizards-wrap form-wizards-aside">'
-                . '<div class="form-wizards-element">' . $this->tag->render() . '</div>'
-                . '<div class="form-wizards-items"><a href="#" onClick="' . htmlspecialchars($onClick) . '" class="btn btn-default"><span class="t3-icon fa fa-eyedropper"></span></a></div>'
-                . '</div>';
+        $output = '
+            <div class="form-wizards-element">
+                <input class="form-control t3js-color-input formengine-colorpickerelement" type="text"
+                  name="' . htmlspecialchars($elementName) . '" value="' . $this->tag->getAttribute('value') . '"/>
+                <script type="text/javascript">
+                    require([\'TYPO3/CMS/Core/Contrib/jquery.minicolors\'], function () {
+                        $(\'.formengine-colorpickerelement\').minicolors({
+                            theme: \'bootstrap\',
+                            format: \'hex\',
+                            position: \'bottom left\'
+                        });
+                    });
+                </script>
+            </div>';
 
         return $output;
     }

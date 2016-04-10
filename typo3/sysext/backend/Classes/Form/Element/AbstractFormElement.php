@@ -66,6 +66,11 @@ abstract class AbstractFormElement extends AbstractNode
     protected $clipboard = null;
 
     /**
+     * @var NodeFactory
+     */
+    protected $nodeFactory;
+
+    /**
      * Container objects give $nodeFactory down to other containers.
      *
      * @param NodeFactory $nodeFactory
@@ -306,46 +311,6 @@ abstract class AbstractFormElement extends AbstractNode
                         '</a>';
                     break;
 
-                case 'colorbox':
-                    $params = array();
-                    $params['params'] = $wizardConfiguration['params'];
-                    $params['exampleImg'] = $wizardConfiguration['exampleImg'];
-                    $params['table'] = $table;
-                    $params['uid'] = $row['uid'];
-                    $params['pid'] = $row['pid'];
-                    $params['field'] = $field;
-                    $params['flexFormPath'] = $flexFormPath;
-                    $params['md5ID'] = $md5ID;
-                    $params['returnUrl'] = $this->data['returnUrl'];
-
-                    $params['formName'] = 'editform';
-                    $params['itemName'] = $itemName;
-                    $params['hmac'] = GeneralUtility::hmac($params['formName'] . $params['itemName'], 'wizard_js');
-                    $params['fieldChangeFunc'] = $fieldChangeFunc;
-                    $params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
-
-                    // Resolving script filename and setting URL.
-                    $urlParameters = array();
-                    if (isset($wizardConfiguration['module']['urlParameters']) && is_array($wizardConfiguration['module']['urlParameters'])) {
-                        $urlParameters = $wizardConfiguration['module']['urlParameters'];
-                    }
-                    $wScript = BackendUtility::getModuleUrl($wizardConfiguration['module']['name'], $urlParameters, '');
-                    $url = $wScript . (strstr($wScript, '?') ? '' : '?') . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
-
-                    $aOnClick =
-                        'this.blur();' .
-                        'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
-                            'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,300' .
-                            ')' .
-                            '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
-                            GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
-                            GeneralUtility::quoteJSvalue($wizardConfiguration['JSopenParams']) .
-                        ');' .
-                        'vHWin.focus();' .
-                        'return false;';
-
-                    $otherWizards[] = '<a id="' . $md5ID . '" class="btn btn-default" href="#" onclick="' . htmlspecialchars($aOnClick) . '"><span class="t3-icon fa fa-eyedropper"></span></a>';
-                    break;
                 case 'slider':
                     $params = array();
                     $params['fieldConfig'] = $PA['fieldConf']['config'];

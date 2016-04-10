@@ -112,6 +112,9 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
+			options: {
+				livereload: true
+			},
 			less: {
 				files: '<%= paths.less %>**/*.less',
 				tasks: 'css'
@@ -169,6 +172,17 @@ module.exports = function(grunt) {
 				runBower: false,
 				srcPrefix: "bower_components/"
 			},
+			glob: {
+				files: {
+					// When using glob patterns, destinations are *always* folder names
+					// into which matching files will be copied
+					// Also note that subdirectories are **not** maintained
+					// if a destination is specified
+					// For example, one of the files copied here is
+					// 'lodash/dist/lodash.js' -> 'public/js/libs/lodash/lodash.js'
+					'<%= paths.sysext %>core/Resources/Public/Images/colorpicker': 'jquery-minicolors/*.png'
+				}
+			},
 			all: {
 				options: {
 					destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
@@ -186,6 +200,7 @@ module.exports = function(grunt) {
 					'autosize.js': 'autosize/dist/autosize.min.js',
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
+					'jquery.minicolors.js': 'jquery-minicolors/jquery.minicolors.min.js',
 					/* disabled until autocomplete groupBy is fixed by the author
 						see https://github.com/devbridge/jQuery-Autocomplete/pull/387
 					'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
