@@ -7304,42 +7304,10 @@ button.close {
   padding: 0 24px;
   transition: margin-top 0.3s ease-in-out;
 }
-.module-docheader:before,
-.module-docheader:after {
-  content: " ";
-  display: table;
-}
-.module-docheader:after {
-  clear: both;
-}
-.module-docheader:before,
-.module-docheader:after {
-  content: " ";
-  display: table;
-}
-.module-docheader:after {
-  clear: both;
-}
 .module-docheader .module-docheader-bar {
   min-height: 26px;
   margin: 4px 0;
   line-height: 26px;
-}
-.module-docheader .module-docheader-bar:before,
-.module-docheader .module-docheader-bar:after {
-  content: " ";
-  display: table;
-}
-.module-docheader .module-docheader-bar:after {
-  clear: both;
-}
-.module-docheader .module-docheader-bar:before,
-.module-docheader .module-docheader-bar:after {
-  content: " ";
-  display: table;
-}
-.module-docheader .module-docheader-bar:after {
-  clear: both;
 }
 .module-docheader .module-docheader-bar label {
   margin-top: 0;
@@ -7384,45 +7352,22 @@ button.close {
 .module-docheader + .module-body {
   padding-top: 89px;
 }
-.clearfix:before,
 .clearfix:after,
-.dl-horizontal dd:before,
 .dl-horizontal dd:after,
-.container:before,
 .container:after,
-.container-fluid:before,
 .container-fluid:after,
-.row:before,
 .row:after,
-.form-horizontal .form-group:before,
 .form-horizontal .form-group:after,
-.btn-toolbar:before,
 .btn-toolbar:after,
-.btn-group-vertical > .btn-group:before,
 .btn-group-vertical > .btn-group:after,
-.nav:before,
 .nav:after,
-.panel-body:before,
 .panel-body:after,
-.modal-header:before,
 .modal-header:after,
-.modal-footer:before,
-.modal-footer:after {
-  content: " ";
+.modal-footer:after,
+.module-docheader:after,
+.module-docheader .module-docheader-bar:after {
+  content: "";
   display: table;
-}
-.clearfix:after,
-.dl-horizontal dd:after,
-.container:after,
-.container-fluid:after,
-.row:after,
-.form-horizontal .form-group:after,
-.btn-toolbar:after,
-.btn-group-vertical > .btn-group:after,
-.nav:after,
-.panel-body:after,
-.modal-header:after,
-.modal-footer:after {
   clear: both;
 }
 .center-block {

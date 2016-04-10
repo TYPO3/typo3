@@ -216,7 +216,7 @@
 	.dropdown-list {
 		.list-unstyled();
 		> li {
-			.clearfix();
+			&:extend(.clearfix all);
 			position: relative;
 			&.active .dropdown-list-link {
 				background-color: @topbar-dropdown-link-active-bg;
@@ -236,7 +236,7 @@
 			padding: 1px 0 0;
 		}
 		.modlink {
-			.clearfix();
+			&:extend(.clearfix all);
 			width: 210px;
 			.submodule-icon {
 				float: left;
