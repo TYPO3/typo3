@@ -7314,7 +7314,16 @@ button.close {
   margin-bottom: 0;
 }
 .module-docheader .module-docheader-bar .form-group {
+  vertical-align: top;
   margin: 0;
+}
+@media (min-width: 768px) {
+  .module-docheader .module-docheader-bar .form-group {
+    display: inline-block;
+  }
+}
+.module-docheader .module-docheader-bar .form-group .form-control {
+  vertical-align: top;
 }
 .module-docheader .module-docheader-bar .form-inline-spaced {
   margin: 0;

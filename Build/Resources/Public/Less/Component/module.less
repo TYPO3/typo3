@@ -76,7 +76,14 @@
 			margin-bottom: 0;
 		}
 		.form-group {
+			vertical-align: top;
 			margin: 0;
+			@media (min-width: @screen-sm-min) {
+				display: inline-block;
+			}
+			.form-control {
+				vertical-align: top;
+			}
 		}
 		.form-inline-spaced {
 			margin: 0;

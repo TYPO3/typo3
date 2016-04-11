@@ -7323,7 +7323,16 @@ button.close {
   margin-bottom: 0;
 }
 .module-docheader .module-docheader-bar .form-group {
+  vertical-align: top;
   margin: 0;
+}
+@media (min-width: 768px) {
+  .module-docheader .module-docheader-bar .form-group {
+    display: inline-block;
+  }
+}
+.module-docheader .module-docheader-bar .form-group .form-control {
+  vertical-align: top;
 }
 .module-docheader .module-docheader-bar .form-inline-spaced {
   margin: 0;
@@ -9235,6 +9244,7 @@ div#contentMenu1 {
   overflow: visible;
 }
 .typo3-pagetree-toppanel .x-btn button {
+  padding: 0;
   font-size: inherit;
 }
 .typo3-pagetree-toppanel-filter {
@@ -10667,7 +10677,7 @@ a.badge-danger:focus {
 }
 .btn-sm,
 .btn-group-sm > .btn {
-  min-height: 26px;
+  height: 26px;
 }
 .btn-group {
   font-size: 0;
