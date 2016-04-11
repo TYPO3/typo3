@@ -196,6 +196,35 @@ class FormUtility
     }
 
     /**
+     * Render array values recursively as cObjects using the
+     * method renderItem.
+     *
+     * @param array $arrayToRender
+     * @return array
+     */
+    public function renderArrayItems(array &$arrayToRender = array())
+    {
+        foreach ($arrayToRender as $attributeName => &$attributeValue) {
+            $attributeNameWithoutDot = rtrim($attributeName, '.');
+            if (
+                isset($arrayToRender[$attributeNameWithoutDot])
+                && isset($arrayToRender[$attributeNameWithoutDot . '.'])
+            ) {
+                $attributeValue = $this->renderItem(
+                    $arrayToRender[$attributeNameWithoutDot . '.'],
+                    $arrayToRender[$attributeNameWithoutDot]
+                );
+                unset($arrayToRender[$attributeNameWithoutDot . '.']);
+            } elseif (
+                !isset($arrayToRender[$attributeNameWithoutDot])
+                && isset($arrayToRender[$attributeNameWithoutDot . '.'])
+            ) {
+                $this->renderArrayItems($attributeValue);
+            }
+        }
+    }
+
+    /**
      * If the name is not defined it is automatically generated
      * using the following syntax: id-{element_counter}
      * The name attribute will be transformed if it contains some
