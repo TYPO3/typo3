@@ -805,20 +805,17 @@
     "packages-dev": [
         {
             "name": "7elix/styleguide",
-            "version": "8.0.0",
+            "version": "8.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/7elix/TYPO3.CMS.Styleguide.git",
-                "reference": "95efabd7505cee5ad60993e024578cc7e1e0b295"
+                "reference": "d6707d62071ddcf06b8cab85c01d1213ede4bc88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/95efabd7505cee5ad60993e024578cc7e1e0b295",
-                "reference": "95efabd7505cee5ad60993e024578cc7e1e0b295",
+                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/d6707d62071ddcf06b8cab85c01d1213ede4bc88",
+                "reference": "d6707d62071ddcf06b8cab85c01d1213ede4bc88",
                 "shasum": ""
-            },
-            "require": {
-                "typo3/cms-core": ">=8.0,<9.0"
             },
             "type": "typo3-cms-extension",
             "autoload": {
@@ -844,7 +841,7 @@
                 "style guide",
                 "typo3"
             ],
-            "time": "2016-04-07 20:21:25"
+            "time": "2016-04-11 14:09:46"
         },
         {
             "name": "codeception/codeception",
