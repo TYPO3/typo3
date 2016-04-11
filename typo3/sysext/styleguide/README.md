@@ -35,7 +35,7 @@ Presents supported styles for TYPO3 backend modules.
 This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module within the Help/Manuals navigation section.
 
 ## Composer
-With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where root composer.json file resides):
+With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where the root composer.json file resides):
 
 ```
 composer require 7elix/styleguide
