@@ -8,6 +8,7 @@ modules:
     WebDriver:
       url: http://localhost:8000/typo3temp/var/tests/acceptance
       browser: phantomjs
+      port: 4445
       window_size: 1440x570
       wait: 1
       restart: true
@@ -17,3 +18,4 @@ env:
       config:
         WebDriver:
           browser: firefox
+          port: 4444
