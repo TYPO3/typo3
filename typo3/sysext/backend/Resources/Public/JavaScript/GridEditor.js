@@ -20,7 +20,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	/**
 	 * The main ContextHelp object
 	 *
-	 * @type {{colCount: number, rowCount: number, data: {}, nameLabel: string, columnLabel: string, targetElement: null}}
+	 * @type {{selectorEditor: string, selectorAddColumn: string, selectorRemoveColumn: string, selectorAddRow: string, selectorRemoveRow: string, selectorLinkEditor: string, selectorLinkExpandRight: string, selectorLinkShrinkLeft: string, selectorLinkExpandDown: string, selectorLinkShrinkUp: string, selectorDocHeaderSave: string, selectorDocHeaderSaveClose: string, selectorConfigPreview: string, selectorConfigPreviewButton: string, colCount: number, rowCount: number, field: string, data: Array, nameLabel: string, columnLabel: string, targetElement: null}}
 	 * @exports TYPO3/CMS/Backend/GridEditor
 	 */
 	var GridEditor = {
@@ -36,8 +36,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		selectorLinkShrinkUp: '.t3js-grideditor-link-shrink-up',
 		selectorDocHeaderSave: '.t3js-grideditor-savedok',
 		selectorDocHeaderSaveClose: '.t3js-grideditor-savedokclose',
+		selectorConfigPreview: '.t3js-grideditor-preview-config',
+		selectorConfigPreviewButton: '.t3js-grideditor-preview-button',
 		colCount: 1,
 		rowCount: 1,
+		field: '',
 		data: [],
 		nameLabel: 'name',
 		columnLabel: 'columen label',
@@ -53,39 +56,36 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		var $element = $(GridEditor.selectorEditor);
 		GridEditor.colCount = $element.data('colcount');
 		GridEditor.rowCount = $element.data('rowcount');
+		GridEditor.field = $('input[name="' + $element.data('field') + '"]');
 		GridEditor.data = $element.data('data');
 		GridEditor.nameLabel = config.nameLabel || 'Name';
 		GridEditor.columnLabel = config.columnLabel || 'Column';
 		GridEditor.targetElement = $(GridEditor.selectorEditor);
+		$(GridEditor.selectorConfigPreview).hide();
 
-		$(document).on('click', GridEditor.selectorDocHeaderSave, function(e) {
-			e.preventDefault();
-			storeData(GridEditor.export2LayoutRecord());
-		});
-		$(document).on('click', GridEditor.selectorDocHeaderSaveClose, function(e) {
-			e.preventDefault();
-			storeData(GridEditor.export2LayoutRecord());
-			window.close();
-		});
 		$(document).on('click', GridEditor.selectorAddColumn, function(e) {
 			e.preventDefault();
 			GridEditor.addColumn();
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorRemoveColumn, function(e) {
 			e.preventDefault();
 			GridEditor.removeColumn();
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorAddRow, function(e) {
 			e.preventDefault();
 			GridEditor.addRow();
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorRemoveRow, function(e) {
 			e.preventDefault();
 			GridEditor.removeRow();
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorLinkEditor, function(e) {
 			e.preventDefault();
@@ -101,6 +101,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			var row = $element.data('row');
 			GridEditor.addColspan(col, row);
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorLinkShrinkLeft, function(e) {
 			e.preventDefault();
@@ -109,6 +110,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			var row = $element.data('row');
 			GridEditor.removeColspan(col, row);
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorLinkExpandDown, function(e) {
 			e.preventDefault();
@@ -117,6 +119,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			var row = $element.data('row');
 			GridEditor.addRowspan(col, row);
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
 		$(document).on('click', GridEditor.selectorLinkShrinkUp, function(e) {
 			e.preventDefault();
@@ -125,9 +128,53 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			var row = $element.data('row');
 			GridEditor.removeRowspan(col, row);
 			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
+		});
+
+		$(GridEditor.selectorConfigPreviewButton).empty().append(TYPO3.lang['button.showPageTsConfig']);
+		$(document).on('click', GridEditor.selectorConfigPreviewButton, function(e) {
+			e.preventDefault();
+			var $preview = $(GridEditor.selectorConfigPreview);
+			var $button = $(GridEditor.selectorConfigPreviewButton);
+			if ($preview.is(':visible')) {
+				$button.empty().append(TYPO3.lang['button.showPageTsConfig']);
+				$(GridEditor.selectorConfigPreview).slideUp();
+			} else {
+				$button.empty().append(TYPO3.lang['button.hidePageTsConfig']);
+				$(GridEditor.selectorConfigPreview).slideDown();
+			}
+
 		});
 
 		GridEditor.drawTable();
+		GridEditor.writeConfig(GridEditor.export2LayoutRecord());
+	};
+
+	/**
+	 * write data back to hidden field
+	 *
+	 * @param data
+	 */
+	GridEditor.writeConfig = function(data) {
+		GridEditor.field.val(data);
+		var configLines = data.split('\n');
+		var config = '';
+		for (var i=0; i<configLines.length; i++) {
+			if (configLines[i].length) {
+				config += '\t\t\t' + configLines[i] + '\n';
+			}
+		}
+		$(GridEditor.selectorConfigPreview).find('code').empty().append(
+			'mod.web_layout.BackendLayouts {\n' +
+			'  exampleKey {\n' +
+			'    title = Example\n' +
+			'    icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif\n' +
+			'    config {\n' +
+			config.replace(new RegExp('\t', 'g'), '  ') +
+			'    }\n' +
+			'  }\n' +
+			'}\n'
+		);
 	};
 
 	/**
@@ -285,22 +332,22 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 				var $container = $('<div class="cell_container">');
 				$cell.append($container);
 				var dataString = ' data-col="' + col + '" data-row="' + row + '"';
-				$container.append($('<a class="t3js-grideditor-link-editor link link_editor" title="' + TYPO3.lang['editCell'] + '" ' + dataString + '  href="#"><!-- --></a>'));
+				$container.append($('<a class="t3js-grideditor-link-editor link link_editor" title="' + TYPO3.lang['grid_editCell'] + '" ' + dataString + '  href="#"><!-- --></a>'));
 				if (GridEditor.cellCanSpanRight(col, row)) {
-					$container.append($('<a class="t3js-grideditor-link-expand-right link link_expand_right" href="#"  title="' + TYPO3.lang['mergeCell'] + '" ' + dataString + '><!-- --></a>'));
+					$container.append($('<a class="t3js-grideditor-link-expand-right link link_expand_right" href="#"  title="' + TYPO3.lang['grid_mergeCell'] + '" ' + dataString + '><!-- --></a>'));
 				}
 				if (GridEditor.cellCanShrinkLeft(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-shrink-left link link_shrink_left" href="#" title="' + TYPO3.lang['splitCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append('<a class="t3js-grideditor-link-shrink-left link link_shrink_left" href="#" title="' + TYPO3.lang['grid_splitCell'] + '" ' + dataString + '><!-- --></a>');
 				}
 				if (GridEditor.cellCanSpanDown(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-expand-down link link_expand_down" href="#" title="' + TYPO3.lang['mergeCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append('<a class="t3js-grideditor-link-expand-down link link_expand_down" href="#" title="' + TYPO3.lang['grid_mergeCell'] + '" ' + dataString + '><!-- --></a>');
 				}
 				if (GridEditor.cellCanShrinkUp(col, row)) {
-					$container.append('<a class="t3js-grideditor-link-shrink-up link link_shrink_up" href="#" title="' + TYPO3.lang['splitCell'] + '" ' + dataString + '><!-- --></a>');
+					$container.append('<a class="t3js-grideditor-link-shrink-up link link_shrink_up" href="#" title="' + TYPO3.lang['grid_splitCell'] + '" ' + dataString + '><!-- --></a>');
 				}
-				$cell.append('<div class="cell_data">' + TYPO3.lang['name'] + ': ' + (cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang['notSet'])
-					+ '<br />' + TYPO3.lang['column'] + ': '
-					+ (cell.column === undefined ? TYPO3.lang['notSet'] : parseInt(cell.column, 10)) + '</div>');
+				$cell.append('<div class="cell_data">' + TYPO3.lang['grid_name'] + ': ' + (cell.name ? GridEditor.stripMarkup(cell.name) : TYPO3.lang['grid_notSet'])
+					+ '<br />' + TYPO3.lang['grid_column'] + ': '
+					+ (cell.column === undefined ? TYPO3.lang['grid_notSet'] : parseInt(cell.column, 10)) + '</div>');
 
 				if (cell.colspan > 1) {
 					$cell.attr('colspan', cell.colspan);
@@ -367,20 +414,29 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			return false;
 		}
 
+		var colPos;
+		if (cell.column === 0) {
+			colPos = 0;
+		} else if(parseInt(cell.column, 10)) {
+			colPos = parseInt(cell.column, 10);
+		} else {
+			colPos = '';
+		}
+
 		var $markup = $('<div>');
 		$markup.append(
 			'<div>' +
 				'<div class="form-group">' +
-					'<label>' + TYPO3.lang['nameHelp'] + '</label>' +
+					'<label>' + TYPO3.lang['grid_nameHelp'] + '</label>' +
 					'<input type="text" class="t3js-grideditor-field-name form-control" name="name" value="' + (GridEditor.stripMarkup(cell.name) || '') + '">' +
 				'</div>' +
 				'<div class="form-group">' +
-					'<label>' + TYPO3.lang['columnHelp'] + '</label>' +
-					'<input type="text" class="t3js-grideditor-field-colpos form-control" name="name" value="' + (parseInt(cell.column, 10) || '') + '">' +
+					'<label>' + TYPO3.lang['grid_columnHelp'] + '</label>' +
+					'<input type="text" class="t3js-grideditor-field-colpos form-control" name="name" value="' + colPos + '">' +
 				'</div>' +
 			'</div>'
 		);
-		var $modal = Modal.show(TYPO3.lang['title'], $markup, Severity.notice, [
+		var $modal = Modal.show(TYPO3.lang['grid_windowTitle'], $markup, Severity.notice, [
 			{
 				text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
 				active: true,
@@ -397,12 +453,13 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 		$modal.data('row', row);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'cancel') {
-				$(this).trigger('modal-dismiss');
+				Modal.currentModal.trigger('modal-dismiss');
 			} else if (e.target.name === 'ok') {
 				GridEditor.setName($modal.find('.t3js-grideditor-field-name').val(), $modal.data('col'), $modal.data('row'));
 				GridEditor.setColumn($modal.find('.t3js-grideditor-field-colpos').val(), $modal.data('col'), $modal.data('row'));
 				GridEditor.drawTable();
-				$(this).trigger('modal-dismiss');
+				GridEditor.writeConfig(GridEditor.export2LayoutRecord());
+				Modal.currentModal.trigger('modal-dismiss');
 			}
 		});
 	};

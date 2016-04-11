@@ -11347,6 +11347,9 @@ span.warningboxheader {
 .grideditor div.cell_container:hover {
   opacity: 0.5;
 }
+.grideditor .grideditor-preview {
+  margin-top: 5px;
+}
 .grideditor .link {
   display: block;
   position: absolute;

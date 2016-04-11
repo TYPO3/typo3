@@ -38,12 +38,6 @@ return [
     ],
 
     /** Wizards */
-    // Register backend_layout wizard
-    'wizard_backend_layout' => [
-        'path' => '/wizard/backend_layout',
-        'target' => Controller\BackendLayoutWizardController::class . '::mainAction'
-    ],
-
     // Register colorpicker wizard
     'wizard_colorpicker' => [
         'path' => '/wizard/colorpicker',

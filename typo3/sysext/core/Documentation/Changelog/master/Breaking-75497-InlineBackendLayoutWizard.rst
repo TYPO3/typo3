@@ -1,0 +1,28 @@
+===============================================
+Breaking: #75497 - inline backend layout wizard
+===============================================
+
+Description
+===========
+
+The ``BackendLayoutWizardController`` has been removed and a new renderType has been added to render the backend layout wizard inline in FormEngine.
+
+Also the backend route ``wizard_backend_layout`` has been removed.
+
+
+Impact
+======
+
+Extending or using the ``BackendLayoutWizardController`` will break your installation.
+
+
+Affected Installations
+======================
+
+An installation which uses an extension which make use of ``BackendLayoutWizardController``
+
+
+Migration
+=========
+
+Use the renderType "belayoutwizard", which renders the backend layout wizard inline in FormEngine.

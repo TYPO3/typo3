@@ -46,22 +46,8 @@ return array(
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.config',
             'config' => array(
                 'type' => 'text',
-                'rows' => '10',
-                'cols' => '48',
-                'wrap' => 'OFF',
-                'wizards' => array(
-                    0 => array(
-                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.wizard',
-                        'type' => 'popup',
-                        'icon' => 'wizard-backendlayout',
-                        'module' => array(
-                            'name' => 'wizard_backend_layout'
-                        ),
-                        'JSopenParams' => 'height=800,width=800,status=0,menubar=0,scrollbars=0'
-                    )
-                )
-            ),
-            'defaultExtras' => 'fixed-font : enable-tab',
+                'renderType' => 'belayoutwizard',
+            )
         ),
         'hidden' => array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
@@ -87,7 +73,9 @@ return array(
     ),
     'types' => array(
         '1' => array(
-            'showitem' => 'hidden, title, icon, description, config',
+            'showitem' => 'title,icon,config,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.access, hidden,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.tabs.extended, description',
         ),
     )
 );

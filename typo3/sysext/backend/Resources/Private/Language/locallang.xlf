@@ -85,6 +85,12 @@ Have a nice day.</source>
 			<trans-unit id="login.donate">
 				<source>Donate</source>
 			</trans-unit>
+			<trans-unit id="button.showPageTsConfig">
+				<source>Show PageTS-Config</source>
+			</trans-unit>
+			<trans-unit id="button.hidePageTsConfig">
+				<source>Hide PageTS-Config</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

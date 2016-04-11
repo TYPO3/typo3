@@ -621,6 +621,12 @@
 			<trans-unit id="backend_layout.icon">
 				<source>Icon</source>
 			</trans-unit>
+			<trans-unit id="backend_layout.tabs.access">
+				<source>Access</source>
+			</trans-unit>
+			<trans-unit id="backend_layout.tabs.extended">
+				<source>Extended</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
