@@ -32,6 +32,6 @@
     }
   },
   "require": {
-    "typo3/cms-core": ">=8.0,<9.0"
+    "typo3/cms": "dev-master||>=8.0,<9.0"
   }
 }
