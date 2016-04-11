@@ -27,14 +27,17 @@ use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Install\Service\ClearCacheService;
 
 /**
  * The main data handler class which takes care of correctly updating and inserting records.
@@ -7803,7 +7806,6 @@ class DataHandler
         if (is_object($this->BE_USER)) {
             $this->BE_USER->writelog(3, 1, 0, 0, 'User %s has cleared the cache (cacheCmd=%s)', array($this->BE_USER->user['username'], $cacheCmd));
         }
-        // Clear cache for either ALL pages or ALL tables!
         switch (strtolower($cacheCmd)) {
             case 'pages':
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
@@ -7812,11 +7814,13 @@ class DataHandler
                 break;
             case 'all':
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
-                    // Clear cache group "all" of caching framework caches
-                    $this->getCacheManager()->flushCachesInGroup('all');
+                    // Delete typo3temp/var/Cache manually as quick, straight and brutal approach here
+                    GeneralUtility::flushDirectory(PATH_site . 'typo3temp/var/Cache', true, true);
+                    $this->getCacheManager()->flushCaches();
                     $this->databaseConnection->exec_TRUNCATEquery('cache_treelist');
+                    // Delete Opcode Cache
+                    GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
                 }
-
                 break;
             case 'temp_cached':
             case 'system':

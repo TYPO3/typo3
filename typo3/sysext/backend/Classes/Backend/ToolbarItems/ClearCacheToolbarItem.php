@@ -67,24 +67,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             $this->optionValues[] = 'pages';
         }
 
-        // Clear cache for ALL tables!
-        if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all')) {
-            $this->cacheActions[] = array(
-                'id' => 'all',
-                'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesTitle')),
-                'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesDescription')),
-                'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),
-                'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-medium', Icon::SIZE_SMALL)->render()
-            );
-            $this->optionValues[] = 'all';
-        }
-
         // Clearing of system cache (core cache, class cache etc)
         // is only shown explicitly if activated for a BE-user (not activated for admins by default)
         // or if the system runs in development mode (only for admins)
         // or if $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] is set (only for admins)
-        if (
-            $backendUser->getTSConfigVal('options.clearCache.system')
+        if ($backendUser->getTSConfigVal('options.clearCache.all')
             || (GeneralUtility::getApplicationContext()->isDevelopment() && $backendUser->isAdmin())
             || ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true && $backendUser->isAdmin())
         ) {
@@ -92,10 +79,10 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
                 'id' => 'system',
                 'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle')),
                 'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription')),
-                'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'system']),
+                'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $backendUser->veriCode(), 'cacheCmd' => 'all']),
                 'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
             );
-            $this->optionValues[] = 'system';
+            $this->optionValues[] = 'all';
         }
 
         // Hook for manipulating cacheActions
@@ -156,8 +143,9 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         foreach ($this->cacheActions as $cacheAction) {
             $title = $cacheAction['description'] ?: $cacheAction['title'];
             $result[] = '<li>';
-            $result[] = '<a class="dropdown-list-link" href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($title) . '">';
+            $result[] = '<a class="dropdown-list-link" href="' . htmlspecialchars($cacheAction['href']) . '">';
             $result[] = $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']);
+            $result[] = '<br/><small>' . htmlspecialchars($title) . '</small>';
             $result[] = '</a>';
             $result[] = '</li>';
         }

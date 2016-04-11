@@ -16,7 +16,7 @@
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon
  */
-define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
+define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/Notification'], function($, Icons, Notification) {
 	'use strict';
 
 	/**
@@ -67,8 +67,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 			url: ajaxUrl,
 			type: 'post',
 			cache: false,
-			complete: function() {
+			complete: function(jqXHRObject, status) {
 				$(ClearCacheMenu.options.toolbarIconSelector, ClearCacheMenu.options.containerSelector).replaceWith($existingIcon);
+				if (status !== 'success' || jqXHRObject.responseText !== '') {
+					Notification.error('An error occurs', 'An error occured while clearing the cache. It is likely not all caches were cleared as expected.', 0);
+				}
 			}
 		});
 	};

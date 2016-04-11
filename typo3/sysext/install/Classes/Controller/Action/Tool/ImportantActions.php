@@ -48,8 +48,6 @@ class ImportantActions extends Action\AbstractAction
         }
         if (isset($this->postValues['set']['clearAllCache'])) {
             $actionMessages[] = $this->clearAllCache();
-        }
-        if (isset($this->postValues['set']['clearOpcodeCache'])) {
             $actionMessages[] = $this->clearOpcodeCache();
         }
 

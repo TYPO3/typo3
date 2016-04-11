@@ -12578,6 +12578,12 @@ iframe {
   background-color: #c83c3c;
   color: #ffffff;
 }
+.typo3-topbar-navigation-items .dropdown-list-link small {
+  white-space: normal;
+  width: 270px;
+  display: block;
+  padding-left: 21px;
+}
 .typo3-topbar-navigation-items .dropdown-list-link-edit,
 .typo3-topbar-navigation-items .dropdown-list-link-delete,
 .typo3-topbar-navigation-items .dropdown-list-link-close {
