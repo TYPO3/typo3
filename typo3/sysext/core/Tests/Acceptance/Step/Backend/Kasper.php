@@ -50,6 +50,8 @@ class Kasper extends \AcceptanceTester
         $I = $this;
         $I->amGoingTo('step backend login');
         $I->amGoingTo('logout');
+        // ensure that we are on the main frame
+        $I->switchToIFrame();
         $I->click('#typo3-cms-backend-backend-toolbaritems-usertoolbaritem > a');
         $I->click('Logout');
         $I->waitForElement('#t3-username');
