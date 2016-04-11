@@ -37,7 +37,7 @@ call_user_func(function () {
     $GLOBALS['TCA']['tt_content']['types']['textmedia'] = [
         'showitem' => '
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.general;general,
-				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,rowDescription,
+				--palette--;' . $frontendLanguageFilePrefix . 'palette.header;header,
 				bodytext;' . $frontendLanguageFilePrefix . 'bodytext_formlabel,
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.media,
 				assets,
@@ -50,7 +50,7 @@ call_user_func(function () {
 			--div--;' . $frontendLanguageFilePrefix . 'tabs.access,
 				hidden;' . $frontendLanguageFilePrefix . 'field.default.hidden,
 				--palette--;' . $frontendLanguageFilePrefix . 'palette.access;access,
-			--div--;' . $frontendLanguageFilePrefix . 'tabs.extended
+			--div--;' . $frontendLanguageFilePrefix . 'tabs.extended,rowDescription
 		',
         'columnsOverrides' => ['bodytext' => ['defaultExtras' => 'richtext:rte_transform']]
     ];

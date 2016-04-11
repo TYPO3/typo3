@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -112,16 +113,30 @@ class OuterWrapContainer extends AbstractContainer
             }
         }
 
-        $html = array();
-        $html[] = '<h1>' . $pageTitle . '</h1>';
-        $html[] = '<div class="typo3-TCEforms">';
-        $html[] =    $childHtml;
-        $html[] =    '<div class="help-block text-right">';
-        $html[] =        $icon . ' <strong>' . htmlspecialchars($tableTitle) . '</strong>' . ' ' . $newOrUid;
-        $html[] =    '</div>';
-        $html[] = '</div>';
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/OuterWrapContainer.html'
+        ));
 
-        $result['html'] = implode(LF, $html);
+        $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
+            ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;
+        if ($descriptionColumn !== null) {
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.recordInformation');
+            $content = $this->data['databaseRow'][$descriptionColumn];
+            $view->assignMultiple([
+                'infoBoxMessageTitle' => $title,
+                'infoBoxMessage' => $content
+            ]);
+        }
+
+        $view->assignMultiple(array(
+            'pageTitle' => $pageTitle,
+            'childHtml' => $childHtml,
+            'icon' => $icon,
+            'tableTitle' => $tableTitle,
+            'newOrUid' => $newOrUid
+        ));
+        $result['html'] = $view->render();
         return $result;
     }
 

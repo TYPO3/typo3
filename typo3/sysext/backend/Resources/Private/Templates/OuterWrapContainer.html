@@ -1,0 +1,15 @@
+<h1><f:format.raw>{pageTitle}</f:format.raw></h1>
+
+<f:if condition="{infoBoxMessage}">
+	<f:be.infobox title="{infoBoxMessageTitle}">
+		{infoBoxMessage}
+	</f:be.infobox>
+</f:if>
+
+<div class="typo3-TCEforms">
+	<f:format.raw>{childHtml}</f:format.raw>
+	<div class="help-block text-right">
+		<f:format.raw>{icon}</f:format.raw>
+		<strong><f:format.raw>{tableTitle}</f:format.raw></strong> <f:format.raw>{newOrUid}</f:format.raw>
+	</div>
+</div>
