@@ -30,8 +30,5 @@
       "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
       "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
     }
-  },
-  "require": {
-    "typo3/cms": "dev-master||>=8.0,<9.0"
   }
 }
