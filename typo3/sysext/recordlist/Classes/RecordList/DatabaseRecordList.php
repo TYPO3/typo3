@@ -943,7 +943,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     trim($row[$thumbsCol]) &&
                     preg_match('/(^|(.*(;|,)?))' . $thumbsCol . '(((;|,).*)|$)/', $visibleColumns) === 1
                 ) {
-                    $theData[$fCol] .= '<br />' . $this->thumbCode($row, $table, $thumbsCol);
+                    $thumbCode = '<br />' . $this->thumbCode($row, $table, $thumbsCol);
+                    $theData[$fCol] .= $thumbCode;
+                    $theData['__label'] .= $thumbCode;
                 }
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
                     && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0
