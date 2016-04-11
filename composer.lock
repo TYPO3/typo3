@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "52d9a34249e63fd04a6a0380c22c1d7b",
-    "content-hash": "603929cd9797026c25345778b263653f",
+    "hash": "dcc7f3710b29a0a989d3cb526ded9760",
+    "content-hash": "934285f91691c38a5c9c6f61a9bb4d3b",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1499,16 +1499,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "v2.48.2",
+            "version": "v2.53.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "2e52d21fe1db34b65b3b7c0e9b2e5ff9ba670f40"
+                "reference": "b67b6b933edce2ffa26f075247a05c464a335cea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/2e52d21fe1db34b65b3b7c0e9b2e5ff9ba670f40",
-                "reference": "2e52d21fe1db34b65b3b7c0e9b2e5ff9ba670f40",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/b67b6b933edce2ffa26f075247a05c464a335cea",
+                "reference": "b67b6b933edce2ffa26f075247a05c464a335cea",
                 "shasum": ""
             },
             "require-dev": {
@@ -1534,7 +1534,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2016-01-05 13:12:30"
+            "time": "2016-03-21 15:02:15"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
