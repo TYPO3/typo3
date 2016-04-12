@@ -71,7 +71,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @todo Define visibility
 	 */
 	public function ext_addP() {
-		$str = '&act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $GLOBALS['SOBE']->browser->expandPage . '&bparams=' . rawurlencode($GLOBALS['SOBE']->browser->bparams);
+		$str = '&act=' . rawurlencode($GLOBALS['SOBE']->browser->act) . '&mode=' . rawurlencode($GLOBALS['SOBE']->browser->mode) . '&expandPage=' . rawurlencode($GLOBALS['SOBE']->browser->expandPage) . '&bparams=' . rawurlencode($GLOBALS['SOBE']->browser->bparams);
 		return $str;
 	}
 
@@ -93,7 +93,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 		}
 		$title = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 		$ficon = IconUtility::getIcon($table, $row);
-		$aOnClick = 'return insertElement(\'' . $table . '\', \'' . $row['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', \'' . $ficon . '\');';
+		$aOnClick = 'return insertElement(' . GeneralUtility::quoteJSvalue($table) . ', \'' . $row['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', \'' . $ficon . '\');';
 		$ATag = '<a href="#" onclick="' . $aOnClick . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 		$ATag_e = '</a>';

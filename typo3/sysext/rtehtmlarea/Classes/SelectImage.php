@@ -278,7 +278,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 <body>
 <script type="text/javascript">
 /*<![CDATA[*/
-	insertImage(' . GeneralUtility::quoteJSvalue($url, 1) . ',' . $width . ',' . $height . ',' . GeneralUtility::quoteJSvalue($altText, 1) . ',' . GeneralUtility::quoteJSvalue($titleText, 1) . ',' . GeneralUtility::quoteJSvalue($additionalParams, 1) . ');
+	insertImage(' . GeneralUtility::quoteJSvalue($url) . ',' . (int)$width . ',' . (int)$height . ',' . GeneralUtility::quoteJSvalue($altText) . ',' . GeneralUtility::quoteJSvalue($titleText) . ',' . GeneralUtility::quoteJSvalue($additionalParams) . ');
 /*]]>*/
 </script>
 </body>
@@ -305,7 +305,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
 			$classesImageJSOptions = '<option value=""></option>';
 			foreach ($classesImageArray as $class) {
-				$classesImageJSOptions .= '<option value="' . $class . '">' . $class . '</option>';
+				$classesImageJSOptions .= '<option value="' . htmlspecialchars($class) . '">' . htmlspecialchars($class) . '</option>';
 			}
 		}
 		$lockPlainWidth = 'false';
@@ -331,10 +331,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 			}
 			function jumpToUrl(URL,anchor) {
-				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $act . '" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=' . $editorNo . '" : "";
-				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=' . $sys_language_content . '" : "";
-				var RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams) . '";
+				var add_act = URL.indexOf("act=")==-1 ? "&act=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($act)) . ' : "";
+				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($editorNo)) . ' : "";
+				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($sys_language_content) . ' : "";
+				var RTEtsConfigParams = "&RTEtsConfigParams=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
@@ -344,11 +344,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				return false;
 			}
 			function insertImage(file,width,height) {
-				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass ? ' class="' . $this->defaultClass . '"' : '') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
+				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass ? ' class="\' + ' . GeneralUtility::quoteJSvalue(htmlspecialchars($this->defaultClass)) . ' + \'"' : '') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
 				var thePreviewWindow="";
-				thePreviewWindow = window.open("' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				thePreviewWindow = window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'show_item.php?table=') . ' +url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}

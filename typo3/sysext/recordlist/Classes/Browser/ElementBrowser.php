@@ -500,23 +500,23 @@ class ElementBrowser {
 
 			function browse_links_setTarget(target) {	//
 				cur_target=target;
-				add_target="&curUrl[target]="+escape(target);
+				add_target="&curUrl[target]="+encodeURIComponent(target);
 			}
 			function browse_links_setClass(cssClass) {   //
 				cur_class = cssClass;
-				add_class = "&curUrl[class]=" + escape(cssClass);
+				add_class = "&curUrl[class]=" + encodeURIComponent(cssClass);
 			}
 			function browse_links_setTitle(title) {	//
 				cur_title=title;
-				add_title="&curUrl[title]="+escape(title);
+				add_title="&curUrl[title]="+encodeURIComponent(title);
 			}
 			function browse_links_setValue(value) {	//
 				cur_href=value;
-				add_href="&curUrl[href]="+value;
+				add_href="&curUrl[href]="+encodeURIComponent(value);
 			}
 			function browse_links_setParams(params) {	//
 				cur_params=params;
-				add_params="&curUrl[params]="+escape(params);
+				add_params="&curUrl[params]="+encodeURIComponent(params);
 			}
 		';
 		// Functions used, if the link selector is in wizard mode (= TCEforms fields)
@@ -573,8 +573,8 @@ class ElementBrowser {
 				}
 				function checkReference() {	//
 					if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName']
-						. ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"] ) {
-						return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"];
+						. ' && window.opener.document.' . $this->P['formName'] . '[' . GeneralUtility::quoteJSvalue($this->P['itemName']) . '] ) {
+						return window.opener.document.' . $this->P['formName'] . '[' . GeneralUtility::quoteJSvalue($this->P['itemName']) . '];
 					} else {
 						close();
 					}
@@ -618,12 +618,12 @@ class ElementBrowser {
 			// Functions used, if the link selector is in RTE mode:
 			$JScode .= '
 				function link_typo3Page(id,anchor) {	//
-					var theLink = \'' . $this->siteURL . '?id=\'+id+(anchor?anchor:"");
+					var theLink = ' . GeneralUtility::quoteJSvalue($this->siteURL) . '+\'?id=\'+id+(anchor?anchor:"");
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
 				function link_folder(folder) {	//
-					var theLink = \'' . $this->siteURL . '\'+folder;
+					var theLink = ' . GeneralUtility::quoteJSvalue($this->siteURL) . '+folder;
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
@@ -645,8 +645,8 @@ class ElementBrowser {
 				if (URL.charAt(0) === \'?\') {
 					URL = ' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + URL.substring(1);
 				}
-				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act . '" : "";
-				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=' . $this->mode . '" : "";
+				var add_act = URL.indexOf("act=")==-1 ? "&act="+' . GeneralUtility::quoteJSvalue($this->act) . ' : "";
+				var add_mode = URL.indexOf("mode=")==-1 ? "&mode="+' . GeneralUtility::quoteJSvalue($this->mode) . ' : "";
 				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params'
 					. ($addPassOnParams ? '+' . GeneralUtility::quoteJSvalue($addPassOnParams) : '')
 					. '+(typeof(anchor)=="string"?anchor:"");
@@ -661,14 +661,13 @@ class ElementBrowser {
 		 */
 		$pArr = explode('|', $this->bparams);
 		// This is JavaScript especially for the TBE Element Browser!
-		$formFieldName = 'data[' . $pArr[0] . '][' . $pArr[1] . '][' . $pArr[2] . ']';
 		// insertElement - Call check function (e.g. for uniqueness handling):
 		$JScodeCheck = '';
 		if ($pArr[4] && $pArr[5]) {
 			$JScodeCheck = '
 					// Call a check function in the opener window (e.g. for uniqueness handling):
 				if (parent.window.opener) {
-					var res = parent.window.opener.' . $pArr[5] . '("' . addslashes($pArr[4]) . '",table,uid,type);
+					var res = parent.window.opener.' . $pArr[5] . '(' . GeneralUtility::quoteJSvalue($pArr[4]) . ',table,uid,type);
 					if (!res.passed) {
 						if (res.message) alert(res.message);
 						performAction = false;
@@ -685,7 +684,7 @@ class ElementBrowser {
 			$JScodeHelper = '
 						// Call helper function to manage data in the opener window:
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[6] . '("' . addslashes($pArr[4]) . '",table,uid,type,"' . addslashes($pArr[0]) . '");
+						parent.window.opener.' . $pArr[6] . '(' . GeneralUtility::quoteJSvalue($pArr[4]) . ',table,uid,type,' . GeneralUtility::quoteJSvalue($pArr[0]) . ');
 					} else {
 						alert("Error - reference to main window is not set properly!");
 						parent.close();
@@ -698,7 +697,7 @@ class ElementBrowser {
 			// Call user defined action function:
 			$JScodeAction = '
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[7] . '("' . addslashes($pArr[4]) . '",table,uid,type);
+						parent.window.opener.' . $pArr[7] . '(' . GeneralUtility::quoteJSvalue($pArr[4]) . ',table,uid,type);
 						if (close) { focusOpenerAndClose(close); }
 					} else {
 						alert("Error - reference to main window is not set properly!");
@@ -708,7 +707,7 @@ class ElementBrowser {
 			$JScodeActionMultiple = '
 						// Call helper function to manage data in the opener window:
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[7] . 'Multiple("' . addslashes($pArr[4]) . '",table,uid,type,"'
+						parent.window.opener.' . $pArr[7] . 'Multiple(' . GeneralUtility::quoteJSvalue($pArr[4]) . ',table,uid,type,"'
 						. addslashes($pArr[0]) . '");
 					} else {
 						alert("Error - reference to main window is not set properly!");
@@ -722,14 +721,17 @@ class ElementBrowser {
 		} else {
 			$JScodeAction = '
 					if (setReferences()) {
-						parent.window.opener.group_change("add","' . $pArr[0] . '","' . $pArr[1] . '","' . $pArr[2]
-							. '",elRef,targetDoc);
+						parent.window.opener.group_change("add",'
+							. GeneralUtility::quoteJSvalue($pArr[0]) . ','
+							. GeneralUtility::quoteJSvalue($pArr[1]) . ','
+							. GeneralUtility::quoteJSvalue($pArr[2]) . ',elRef,targetDoc);
 					} else {
 						alert("Error - reference to main window is not set properly!");
 					}
 					focusOpenerAndClose(close);
 			';
 		}
+		$formFieldName = 'data[' . $pArr[0] . '][' . $pArr[1] . '][' . $pArr[2] . ']';
 		$JScode .= '
 			var elRef="";
 			var targetDoc="";
@@ -744,9 +746,9 @@ class ElementBrowser {
 			}
 			function setReferences() {	//
 				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform'
-					. '&& parent.window.opener.content.document.editform["' . $formFieldName . '"]) {
+					. '&& parent.window.opener.content.document.editform[' . GeneralUtility::quoteJSvalue($formFieldName) . ']) {
 					targetDoc = parent.window.opener.content.document;
-					elRef = targetDoc.editform["' . $formFieldName . '"];
+					elRef = targetDoc.editform[' . GeneralUtility::quoteJSvalue($formFieldName) . '];
 					return true;
 				} else {
 					return false;
@@ -769,7 +771,7 @@ class ElementBrowser {
 			}
 			function addElement(elName, elValue, altElValue, close) {	//
 				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin) {
-					parent.window.opener.setFormValueFromBrowseWin("' . $pArr[0] . '",altElValue?altElValue:elValue,elName);
+					parent.window.opener.setFormValueFromBrowseWin(' . GeneralUtility::quoteJSvalue($pArr[0]) . ',altElValue?altElValue:elValue,elName);
 					focusOpenerAndClose(close);
 				} else {
 					alert("Error - reference to main window is not set properly!");
@@ -1112,7 +1114,7 @@ class ElementBrowser {
 				-->
 							<table border="0" cellpadding="1" cellspacing="1" id="typo3-linkSpecial">
 								<tr>
-									<td class="bgColor5" class="c-wCell" valign="top"><strong>'
+									<td class="bgColor5 c-wCell" valign="top"><strong>'
 										. $GLOBALS['LANG']->getLL('special', TRUE) . '</strong></td>
 								</tr>
 								' . implode('', $subcats) . '
@@ -1618,7 +1620,7 @@ class ElementBrowser {
 				// Putting list element HTML together:
 				$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $cc ? 'bottom' : '')
 						. '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol
-					. '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">'
+					. '<a href="#" onclick="return link_typo3Page(' . GeneralUtility::quoteJSvalue($expPageId) . ',\'#' . $row['uid'] . '\');">'
 					. $icon . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a><br />';
 				// Finding internal anchor points:
 				if (GeneralUtility::inList('text,textpic', $row['CType'])) {
@@ -1781,7 +1783,7 @@ class ElementBrowser {
 			$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 			$folderIcon = IconUtility::getSpriteIconForResource($folder);
 			$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
-			$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
+			$picon = '<a href="#" onclick="return link_folder(' . GeneralUtility::quoteJSvalue('file:' . $folder->getCombinedIdentifier()) . ');">'
 				. $folderIcon . '</a>';
 			if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
 				$out .= '<img'
@@ -1836,7 +1838,7 @@ class ElementBrowser {
 							('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
 							'width="18" height="16"'
 						) . ' alt="" />' . $arrCol .
-					'<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' .
+					'<a href="#" onclick="return link_folder(' . GeneralUtility::quoteJSvalue($itemUid) . ');">' .
 						$icon .
 						htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
 					'</a><br />';
@@ -1911,7 +1913,7 @@ class ElementBrowser {
 					$fileObject->getProperty('height')
 				);
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-				$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1" />';
+				$clickIcon = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="5" vspace="5" border="1" />';
 			} else {
 				$clickIcon = '';
 				$pDim = '';
@@ -2141,7 +2143,7 @@ class ElementBrowser {
 		foreach ($files as $fileObject) {
 			$fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
 			// URL of image:
-			$iUrl = GeneralUtility::rawurlencodeFP($fileObject->getPublicUrl(TRUE));
+			$iUrl = GeneralUtility::rawUrlEncodeFP($fileObject->getPublicUrl(TRUE));
 			// Show only web-images
 			$fileExtension = strtolower($fileObject->getExtension());
 			if (GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
@@ -2452,7 +2454,7 @@ class ElementBrowser {
 				Form, for uploading files:
 			-->
 			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform"'
-			. 'id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
+			. ' id="typo3-uplFilesForm" enctype="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
 						<td>' . $this->barheader($GLOBALS['LANG']->sL(
@@ -2473,7 +2475,7 @@ class ElementBrowser {
 				<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" /><br />';
 		}
 		// Make footer of upload form, including the submit button:
-		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
+		$redirectValue = $this->getThisScript() . 'act=' . rawurlencode($this->act) . '&mode=' . rawurlencode($this->mode)
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
@@ -2538,7 +2540,7 @@ class ElementBrowser {
 				. '<input type="hidden" name="file[newfolder][' . $a . '][target]" value="'
 				. htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 		// Make footer of upload form, including the submit button:
-		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
+		$redirectValue = $this->getThisScript() . 'act=' . rawurlencode($this->act) . '&mode=' . rawurlencode($this->mode)
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
