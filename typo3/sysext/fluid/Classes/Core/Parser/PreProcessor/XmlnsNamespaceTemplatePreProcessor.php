@@ -41,7 +41,7 @@ class XmlnsNamespaceTemplatePreProcessor implements TemplateProcessorInterface
      * the next TemplateProcessorInterface instance.
      *
      * Detects all tags that carry an `xmlns:` definition using a Fluid-compatible prefix and a
-     * conventional namespace URL (http://typo3.org/ns/). Extracts the detected namespaces and 
+     * conventional namespace URL (http://typo3.org/ns/). Extracts the detected namespaces and
      * removes the detected tag.
      *
      * @param string $templateSource
@@ -51,19 +51,19 @@ class XmlnsNamespaceTemplatePreProcessor implements TemplateProcessorInterface
     {
         $matches = array();
         $namespacePattern = 'xmlns:([a-z0-9]+)="(http\\:\\/\\/typo3\\.org\\/ns\\/[^"]+)"';
-        $matched = preg_match_all('/<([a-z0-9]+)\\s+(?:[^>]+\\s+)*' . $namespacePattern . '[^>]*>/', $templateSource, $matches, PREG_SET_ORDER);
+        $matched = preg_match('/<([a-z0-9]+)(?:[^>]*?)\\s+' . $namespacePattern . '[^>]*>/', $templateSource, $matches);
         if ($matched) {
             $namespaces = array();
-            preg_match_all('/' . $namespacePattern . '/', $matches[0][0], $namespaces, PREG_SET_ORDER);
+            preg_match_all('/' . $namespacePattern . '/', $matches[0], $namespaces, PREG_SET_ORDER);
             foreach ($namespaces as $set) {
                 $namespaceUrl = $set[2];
                 $namespaceUri = substr($namespaceUrl, 20);
                 $namespacePhp = str_replace('/', '\\', $namespaceUri);
                 $this->renderingContext->getViewHelperResolver()->addNamespace($set[1], $namespacePhp);
             }
-            if (strpos($matches[0][0], 'data-namespace-typo3-fluid="true"')) {
-                $templateSource = str_replace($matches[0][0], '', $templateSource);
-                $closingTagName = $matches[0][1];
+            if (strpos($matches[0], 'data-namespace-typo3-fluid="true"')) {
+                $templateSource = str_replace($matches[0], '', $templateSource);
+                $closingTagName = $matches[1];
                 $closingTag = '</' . $closingTagName . '>';
                 if (strpos($templateSource, $closingTag)) {
                     $templateSource = substr($templateSource, 0, strrpos($templateSource, $closingTag)) .
@@ -75,8 +75,8 @@ class XmlnsNamespaceTemplatePreProcessor implements TemplateProcessorInterface
                     foreach ($namespaces as $namespace) {
                         $namespaceAttributesToRemove[] = preg_quote($namespace[1], '/') . '="' . preg_quote($namespace[2], '/') . '"';
                     }
-                    $matchWithRemovedNamespaceAttributes = preg_replace('/(?:\\s*+xmlns:(?:' . implode('|', $namespaceAttributesToRemove) . ')\\s*+)++/', ' ', $matches[0][0]);
-                    $templateSource = str_replace($matches[0][0], $matchWithRemovedNamespaceAttributes, $templateSource);
+                    $matchWithRemovedNamespaceAttributes = preg_replace('/(?:\\s*+xmlns:(?:' . implode('|', $namespaceAttributesToRemove) . ')\\s*+)++/', ' ', $matches[0]);
+                    $templateSource = str_replace($matches[0], $matchWithRemovedNamespaceAttributes, $templateSource);
                 }
             }
         }

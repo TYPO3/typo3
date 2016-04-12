@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\PreProcessor;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture;
@@ -212,6 +213,15 @@ class XmlnsNamespaceTemplatePreProcessorTest extends UnitTestCase
                     ['fe', 'TYPO3\\CMS\\Frontend\\ViewHelpers']
                 ],
                 "\n\t\t" . '<f:if condition="{demo}">Hello World</f:if>' . "\n"
+            ),
+            'Test with big markup template' => array(
+                file_get_contents(GeneralUtility::getFileAbsFileName('EXT:fluid/Tests/Unit/Core/Fixtures/TestNamespaceTemplateBig.html')),
+                [
+                    ['f', 'TYPO3\\CMS\\Fluid\\ViewHelpers'],
+                    ['core', 'TYPO3\\CMS\\Core\\ViewHelpers'],
+                    ['fl', 'TYPO3\\CMS\\Filelist\\ViewHelpers']
+                ],
+                file_get_contents(GeneralUtility::getFileAbsFileName('EXT:fluid/Tests/Unit/Core/Fixtures/TestNamespaceTemplateBigExpectedResult.html'))
             ),
             'Only handle first tag with xmlns ViewHelpers found' => array(
                 '<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">' . "\n"
