@@ -138,7 +138,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			// element can be added
 			if (addNewValue) {
 				// finally add the option
-				var $option = $('<option value="' + value + '" title="' + title + '"></option>');
+				var $option = $('<option></option>');
 				$option.attr({value: value, title: title}).text(label);
 				$option.appendTo($fieldEl);
 
