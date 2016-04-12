@@ -574,7 +574,7 @@ abstract class AbstractUserAuthentication
             GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
         }
         // Active logout (eg. with "logout" button)
-        if ($loginData['status'] == 'logout') {
+        if ($loginData['status'] === 'logout') {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(255, 2, 0, 2, 'User %s logged out', array($this->user['username']), '', 0, 0);
@@ -586,7 +586,7 @@ abstract class AbstractUserAuthentication
             $this->logoff();
         }
         // Active login (eg. with login form)
-        if ($loginData['status'] == 'login') {
+        if ($loginData['status'] === 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('Active login (eg. with login form)', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
@@ -1385,7 +1385,7 @@ abstract class AbstractUserAuthentication
      */
     public function compareUident($user, $loginData, $passwordCompareStrategy = '')
     {
-        return (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
+        return (string)$loginData['uident_text'] !== '' && (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
     }
 
     /**
