@@ -131,6 +131,7 @@ class AcceptanceCoreEnvironment extends Extension
      */
     protected $xmlDatabaseFixtures = [
         'typo3/sysext/core/Tests/Acceptance/Fixtures/be_users.xml',
+        'typo3/sysext/core/Tests/Acceptance/Fixtures/be_sessions.xml',
         'typo3/sysext/core/Tests/Acceptance/Fixtures/be_groups.xml',
     ];
 
@@ -191,6 +192,7 @@ class AcceptanceCoreEnvironment extends Extension
         // Set some hard coded base settings for the instance. Those could be overruled by
         // $this->configurationToUseInTestInstance if needed again.
         $localConfiguration['BE']['debug'] = true;
+        $localConfiguration['BE']['lockHashKeyWords'] = '';
         $localConfiguration['BE']['installToolPassword'] = '$P$notnotnotnotnotnot.validvalidva';
         $localConfiguration['SYS']['isInitialInstallationInProgress'] = false;
         $localConfiguration['SYS']['isInitialDatabaseImportDone'] = true;

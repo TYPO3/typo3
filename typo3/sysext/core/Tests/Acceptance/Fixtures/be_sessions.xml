@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<be_sessions>
+		<ses_id>886526ce72b86870739cc41991144ec1</ses_id>
+		<ses_name>be_typo_user</ses_name>
+		<ses_iplock>[DISABLED]</ses_iplock>
+		<ses_hashlock>222419149</ses_hashlock>
+		<ses_userid>1</ses_userid>
+		<ses_tstamp>1777777777</ses_tstamp>
+		<ses_data></ses_data>
+		<ses_backuserid>0</ses_backuserid>
+	</be_sessions>
+	<be_sessions>
+		<ses_id>ff83dfd81e20b34c27d3e97771a4525a</ses_id>
+		<ses_name>be_typo_user</ses_name>
+		<ses_iplock>[DISABLED]</ses_iplock>
+		<ses_hashlock>222419149</ses_hashlock>
+		<ses_userid>2</ses_userid>
+		<ses_tstamp>1777777777</ses_tstamp>
+		<ses_data></ses_data>
+		<ses_backuserid>0</ses_backuserid>
+	</be_sessions>
+</dataset>
