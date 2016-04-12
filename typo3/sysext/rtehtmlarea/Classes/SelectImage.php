@@ -333,7 +333,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			function jumpToUrl(URL,anchor) {
 				var add_act = URL.indexOf("act=")==-1 ? "&act=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($act)) . ' : "";
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($editorNo)) . ' : "";
-				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($sys_language_content) . ' : "";
+				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($sys_language_content)) . ' : "";
 				var RTEtsConfigParams = "&RTEtsConfigParams=" + ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
