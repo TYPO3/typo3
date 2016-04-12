@@ -1,3 +1,8 @@
+2016-04-12  cd53673                  [RELEASE] Release of TYPO3 6.2.21 (TYPO3 Release Team)
+2016-04-12  5645614  #75541          [BUGFIX] Add missing bracket in EXT:rtehtmlarea to fix syntax error (Andreas Fernandez)
+2016-04-12  c236b4d                  [TASK] Set TYPO3 version to 6.2.21-dev (TYPO3 Release Team)
+
+
 2016-04-12  efbf8a9                  [RELEASE] Release of TYPO3 6.2.20 (TYPO3 Release Team)
 2016-04-12  1fcfd5b  #75055          [SECURITY] Disallow login with empty password (Nicole Cordes)
 2016-04-12  5a8e0a1  #28175          [SECURITY] Limit user access in workspace previews (Nicole Cordes)
