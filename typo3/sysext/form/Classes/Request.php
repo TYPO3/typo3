@@ -275,6 +275,19 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		$formData = $this->getByMethod();
 		if (isset($_FILES[$this->prefix]) && is_array($_FILES[$this->prefix])) {
 			foreach ($_FILES[$this->prefix]['tmp_name'] as $fieldName => $uploadedFile) {
+				if (
+					$_FILES[$this->prefix]['error'][$fieldName] !== UPLOAD_ERR_OK
+					|| !is_uploaded_file($_FILES[$this->prefix]['tmp_name'][$fieldName])
+				) {
+					unset($formData[$fieldName]);
+					continue;
+				}
+				# Remove items with blacklisted keys
+				$formData[$fieldName] = array_diff_key(
+					$formData[$fieldName],
+					array('tempFilename' => 1, 'originalFilename' => 1, 'type' => 1, 'size' => 1)
+				);
+
 				if (is_uploaded_file($uploadedFile)) {
 					$tempFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::upload_to_tempfile($uploadedFile);
 					if (TYPO3_OS === 'WIN') {
