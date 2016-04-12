@@ -68,7 +68,7 @@ script:
     fi
   - >
     if [[ "$ACCEPTANCE_TESTS" == "yes" ]]; then
-        php -S 0.0.0.0:8000 >/dev/null 2>&1 &;
+        php -S 0.0.0.0:8000 >/dev/null 2>&1 &
         export typo3DatabaseName="typo3";
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
