@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Belog\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -48,7 +51,14 @@ class SystemInformationController extends AbstractController
 
         $this->setStartAndEndTimeFromTimeSelector($constraint);
         // we can't use the extbase repository here as the required TypoScript may not be parsed yet
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $timestamp . ' AND error IN(-1,1,2)');
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $count = $queryBuilder->count('error')
+            ->from('sys_log')
+            ->where($queryBuilder->expr()->gte('tstamp', $timestamp))
+            ->andWhere($queryBuilder->expr()->in('error', [-1, 1, 2]))
+            ->execute()
+            ->fetchColumn(0);
 
         if ($count > 0) {
             $systemInformationToolbarItem->addSystemMessage(
@@ -80,13 +90,5 @@ class SystemInformationController extends AbstractController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
